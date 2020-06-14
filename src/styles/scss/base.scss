@@ -1,0 +1,44 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+// @font-face {
+//   font-family: "Custom Font";
+//   src: url('../../assets/fonts/CustomFont.woff2') format('woff2'),
+//   url('../../assets/fonts/CustomFont.woff') format('woff');
+//   font-style: normal;
+//   font-weight: normal;
+// }
+
+body {
+  // font-family: "Custom Font", 'Open Sans', sans-serif;
+  background-color: $customColor;
+  -webkit-appearance: none;
+  margin: 0px;
+  letter-spacing: 0.3px;
+  -moz-user-select: none; /* Mozilla Firefox */
+  -ms-user-select: none; /* Internet Explorer (not supported) */
+  -o-user-select: none; /* Opera Presto (not supported) */
+  -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
+}
+
+a {
+  text-decoration: none;
+}
+
+p {
+  margin-top: 0;
+}
+
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+button {
+  outline: none;
+  &:hover:enabled {
+    cursor: pointer;
+  }
+}
