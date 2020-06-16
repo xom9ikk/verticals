@@ -4,23 +4,68 @@
   box-sizing: border-box;
 }
 
-// @font-face {
-//   font-family: "Custom Font";
-//   src: url('../../assets/fonts/CustomFont.woff2') format('woff2'),
-//   url('../../assets/fonts/CustomFont.woff') format('woff');
-//   font-style: normal;
-//   font-weight: normal;
-// }
+@font-face {
+  font-family: "Nunito Extra Light";
+  src: url('../../assets/fonts/Nunito-ExtraLight.woff2') format('woff2'),
+  url("../../assets/fonts/Nunito-ExtraLight.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Nunito Light";
+  src: url('../../assets/fonts/Nunito-Light.woff2') format('woff2'),
+  url("../../assets/fonts/Nunito-Light.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Nunito Regular";
+  src: url('../../assets/fonts/Nunito-Regular.woff2') format('woff2'),
+  url("../../assets/fonts/Nunito-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Nunito Semi Bold";
+  src: url('../../assets/fonts/Nunito-SemiBold.woff2') format('woff2'),
+  url("../../assets/fonts/Nunito-SemiBold.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Nunito Bold";
+  src: url('../../assets/fonts/Nunito-Bold.woff2') format('woff2'),
+  url("../../assets/fonts/Nunito-Bold.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Nunito Extra Bold";
+  src: url('../../assets/fonts/Nunito-ExtraBold.woff2') format('woff2'),
+  url("../../assets/fonts/Nunito-ExtraBold.woff") format("woff");
+  font-style: normal;
+  font-weight: normal;
+}
 
 body {
-  // font-family: "Custom Font", 'Open Sans', sans-serif;
-  background-color: $customColor;
+  font-family: "Nunito Regular", "Nunito Medium", 'Open Sans', sans-serif;
+  background-color: $white;
   -webkit-appearance: none;
-  margin: 0px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
   letter-spacing: 0.3px;
   -moz-user-select: none; /* Mozilla Firefox */
-  -ms-user-select: none; /* Internet Explorer (not supported) */
-  -o-user-select: none; /* Opera Presto (not supported) */
+  -ms-user-select: none; /* Internet Explorer */
+  -o-user-select: none; /* Opera Presto */
   -webkit-user-select: none; /* Google Chrome, Opera Next, Safari */
 }
 

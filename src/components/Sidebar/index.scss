@@ -1,0 +1,63 @@
+.sidebar {
+  $block: &;
+
+  height: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: $sidebar-width;
+  background: $sidebar-gradient;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  transition: width .1s ease-in-out;
+  overflow: hidden;
+  &__inner {
+    position: relative;
+    max-height: 100%;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  &__toggler {
+    position: fixed;
+    display: flex;
+    width: $sidebar-width;
+    justify-content: flex-end;
+    padding: 5px 5px 0 0;
+    background: $sidebar-gradient;
+  }
+
+  &--unpinned {
+    width: 20px;
+    //transition: none !important;
+    #{$block}__inner {
+      opacity: 0;
+      display: none;
+      transition: none !important;
+    }
+  }
+
+  &--overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: $sidebar-width;
+    #{$block}__inner {
+      opacity: 1;
+      display: block;
+      //transition: none !important;
+    }
+  }
+}
+
+.boards-container {
+  max-height: 100%;
+  margin: 75px 20px 50px;
+  box-sizing: content-box;
+}
+
+.boards-list {
+  //max-height: 100px;
+}

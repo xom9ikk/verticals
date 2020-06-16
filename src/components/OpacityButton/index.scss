@@ -1,0 +1,42 @@
+.opacity-button {
+  $block: &;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: none;
+  height: 36px;
+  background: none;
+  padding: 8px 10px 8px 10px;
+  border-radius: 6px;
+  transition: background .1s ease-in-out, opacity .1s ease-in-out;
+
+  span {
+    color: transparent;
+    padding-left: 10px;
+    transition: color .1s ease-in-out;
+  }
+
+  &:hover {
+    background: rgb(210, 227, 253);
+
+    img {
+      filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg)
+    }
+
+    span {
+      color: $black !important;
+    }
+  }
+
+  &--invisible {
+    opacity: 0;
+  }
+
+  &--hover-block {
+    span {
+      color: $text;
+    }
+  }
+}

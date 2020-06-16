@@ -1,0 +1,55 @@
+.button {
+  $block: &;
+  height: 42px;
+  padding: 10px 12px 10px 12px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 6px;
+  background-color: $white;
+  font-size: 16px;
+  transition: opacity .1s ease, color .1s ease, box-shadow .1s ease;
+  box-shadow: rgb(218, 218, 218) 0 0 0 1px;
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    color: $black;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    img {
+      max-height: 24px;
+      max-width: 24px;
+    }
+  }
+  &:hover {
+    opacity: 0.85;
+    box-shadow: rgb(35, 135, 251) 0 0 0 2px;
+  }
+  &--max {
+    width: 100%;
+  }
+  &--min {
+    width: 100%;
+  }
+  &--danger {
+    background-color: $danger;
+    #{$block}__content {
+      color: $white;
+    }
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  &--primary {
+    background-color: $primary;
+    box-shadow: none;
+    #{$block}__content {
+      color: $white;
+    }
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}

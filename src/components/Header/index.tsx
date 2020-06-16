@@ -1,11 +1,20 @@
 import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '../Button';
 
 interface IHeader {
-  title: string;
 }
 
-export const Header: FC<IHeader> = ({ title }) => (
+export const Header: FC<IHeader> = () => (
   <header className="header">
-    {title}
+    <div className="header__wrapper">
+      <div className="header__logo">
+        <img src="/svg/logo.svg" alt="logo" />
+        <Link to="/">
+          Verticals
+        </Link>
+      </div>
+      <Button type="button">Sign Up</Button>
+    </div>
   </header>
 );

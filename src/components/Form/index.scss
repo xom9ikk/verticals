@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  &__inner {
+    width: 280px;
+    padding-bottom: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  &__title {
+    color: $black;
+    font-family: "Nunito Extra Bold", sans-serif;
+    font-size: 40px;
+    line-height: 50px;
+    text-align: center;
+  }
+  &__subtitle {
+    color: $text;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .input {
+    margin-bottom: 20px;
+  }
+  .button {
+    margin-bottom: 20px;
+  }
+  a {
+    margin-bottom: 20px;
+  }
+}

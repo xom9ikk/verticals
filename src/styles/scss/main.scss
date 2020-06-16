@@ -1,3 +1,30 @@
 @import './variables/colors';
+@import './variables/constants';
 @import './base';
 @import '../../index';
+
+#root {
+  display: flex;
+  flex: 1;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  &--horizontal {
+    flex-direction: row;
+  }
+  &--vertical {
+    flex-direction: column;
+  }
+}
+
+.link {
+  color: $primary;
+  font-size: 14px;
+}
+
+.text {
+  color: $text-light;
+  font-size: 14px;
+}

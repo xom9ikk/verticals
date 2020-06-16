@@ -1,8 +1,27 @@
 .header {
   display: flex;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 30px;
-  padding: 40px;
-  font-family: monospace;
+  min-height: $header-height;
+  &__wrapper {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 30px;
+  }
+  &__logo {
+    display: flex;
+    align-items: center;
+    img {
+      height: $header-height * 0.4;
+    }
+    a {
+      color: $black;
+      font-family: "Nunito Regular", sans-serif;
+      margin-left: 10px;
+      font-size: 32px;
+      &:visited {
+        color: inherit;
+      }
+    }
+  }
 }
