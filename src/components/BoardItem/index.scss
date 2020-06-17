@@ -1,0 +1,33 @@
+.board-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0px;
+  background: none;
+  width: 100%;
+  padding: 6px 10px 6px 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background .1s ease-in-out;
+  &__content {
+    display: flex;
+    flex: 1;
+  }
+  &__image {
+    max-height: 24px;
+    max-width: 24px;
+  }
+  &__text {
+    font-family: 'Nunito Regular', sans-serif;
+    font-size: 16px;
+    margin-left: 5px;
+    color: rgba(0,0,0,0.8);
+    line-height: 24px;
+  }
+  &:hover {
+    background: rgb(255, 255, 255);
+  }
+  &--active {
+    background: rgb(210, 227, 253) !important;
+  }
+}

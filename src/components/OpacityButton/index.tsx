@@ -9,6 +9,9 @@ interface IOpacityButton {
   size?: number;
   isHide?: boolean;
   onClick?: ()=>void;
+  isMaxWidth?:boolean;
+  onMouseEnter?:()=>void;
+  onMouseLeave?:()=>void;
 }
 
 export const OpacityButton: FC<IOpacityButton> = ({
@@ -20,6 +23,9 @@ export const OpacityButton: FC<IOpacityButton> = ({
   size,
   isHide = false,
   onClick,
+  isMaxWidth,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   const classes = ['opacity-button'];
   if (isHide && !isHoverBlock) {
@@ -28,11 +34,16 @@ export const OpacityButton: FC<IOpacityButton> = ({
   if (isHoverBlock) {
     classes.push('opacity-button--hover-block');
   }
+  if (isMaxWidth) {
+    classes.push('opacity-button--max-width');
+  }
   return (
     <button
       className={classes.join(' ')}
       style={size ? { height: size, width: size } : {}}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <img
         src={imageSrc}

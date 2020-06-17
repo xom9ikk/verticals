@@ -6,6 +6,12 @@ export const Main: FC = () => (
     <Sidebar />
     <div>
       content
+      content
+      content
+      content
+      content
+      content
+      content
     </div>
   </div>
 );

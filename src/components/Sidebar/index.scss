@@ -1,17 +1,13 @@
 .sidebar {
   $block: &;
 
-  height: 100%;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  width: $sidebar-width;
+  max-height: 100%;
+  width: $sidebar-width+1;
   background: $sidebar-gradient;
   border-right: 1px solid rgba(0, 0, 0, 0.05);
-  transition: width .1s ease-in-out;
-  overflow: hidden;
+  transition: all .1s ease-out;
   &__inner {
-    position: relative;
-    max-height: 100%;
+    max-height: 100vh;
     overflow: scroll;
 
     &::-webkit-scrollbar {
@@ -30,32 +26,37 @@
 
   &--unpinned {
     width: 20px;
-    //transition: none !important;
     #{$block}__inner {
       opacity: 0;
       display: none;
-      transition: none !important;
+    }
+    #{$block}__toggler {
+      width: 0;
     }
   }
 
-  &--overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: $sidebar-width;
-    #{$block}__inner {
-      opacity: 1;
-      display: block;
-      //transition: none !important;
-    }
-  }
+  //&--overlay {
+  //  position: absolute;
+  //  top: 0;
+  //  bottom: 0;
+  //  left: 0;
+  //  width: $sidebar-width;
+  //  transition: none !important;
+  //  #{$block}__inner {
+  //    opacity: 1;
+  //    display: block;
+  //    //width: $sidebar-width;
+  //    //transition: none !important;
+  //  }
+  //}
 }
 
 .boards-container {
   max-height: 100%;
   margin: 75px 20px 50px;
   box-sizing: content-box;
+  overflow: scroll;
+
 }
 
 .boards-list {

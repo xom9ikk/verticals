@@ -13,6 +13,7 @@
   transition: background .1s ease-in-out, opacity .1s ease-in-out;
 
   span {
+    font-size: 15px;
     color: transparent;
     padding-left: 10px;
     transition: color .1s ease-in-out;
@@ -38,5 +39,9 @@
     span {
       color: $text;
     }
+  }
+  &--max-width {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
