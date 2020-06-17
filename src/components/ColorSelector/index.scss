@@ -1,0 +1,11 @@
+.color-selector {
+  border: none;
+  outline: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: opacity .1s ease-in-out, box-shadow .1s ease-in-out;
+  &:hover {
+    opacity: 0.8;
+  }
+}

@@ -1,4 +1,4 @@
-.opacity-button {
+.menu {
   $block: &;
 
   display: flex;
@@ -37,9 +37,10 @@
 
   &--hover-block {
     span {
-      color: $text;
+      color: $text-light;
     }
   }
+
   &--max-width {
     width: 100%;
     justify-content: flex-start;

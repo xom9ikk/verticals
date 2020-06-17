@@ -1,16 +1,16 @@
 .toolbar {
   $block: &;
 
-  width: $sidebar-width;
-  left: 0;
+  width: $column-width;
   height: 64px;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   z-index:1;
   background: $sidebar-gradient;
   &__inner {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 20px;
     padding: 10px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.05);

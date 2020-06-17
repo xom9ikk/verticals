@@ -1,4 +1,4 @@
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Input } from '../Input';
 
 interface ISearch {

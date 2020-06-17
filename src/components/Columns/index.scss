@@ -1,0 +1,7 @@
+.columns {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  //overflow-x: hidden;
+  overflow-y: scroll;
+}

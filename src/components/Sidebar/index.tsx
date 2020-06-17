@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Toolbar } from '../Toolbar';
-import { OpacityButton } from '../OpacityButton';
+import { Menu } from '../Menu';
 import { Search } from '../Search';
 import { BoardList } from '../BoardList';
 
@@ -11,40 +11,36 @@ export const Sidebar: FC<ISidebar> = () => {
   const [isPinnedSidebar, setIsPinnedSidebar] = useState<boolean>(true);
   const [isHover, setIsHover] = useState<boolean>(false);
 
-  const classes = ['sidebar'];
-  if (!isPinnedSidebar && !isHover) {
-    classes.push('sidebar--unpinned');
-  }
-
   useEffect(() => {
     setIsHover(false);
   }, [isPinnedSidebar]);
 
   return (
-    <aside
-      className={classes.join(' ')}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
-    >
-      <div className="sidebar__inner">
-        <div className="sidebar__toggler">
-          <OpacityButton
-            imageSrc={`/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
-            alt="add"
-            imageSize={16}
-            size={20}
-            isHide
-            isHoverBlock={isHover}
-            onClick={() => setIsPinnedSidebar((prev) => !prev)}
-          />
-        </div>
-        <Search />
-        <div>
-          <div className="icon">icon</div>
+    <>
+      <div className={`sidebar__overlay ${!isPinnedSidebar && !isHover ? 'sidebar__overlay--unpinned' : ''}`} />
+      <aside
+        className={`sidebar ${!isPinnedSidebar && !isHover ? 'sidebar--unpinned' : ''}`}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
+        <div className="sidebar__inner">
+          <div className="sidebar__toggler">
+            <Menu
+              imageSrc={`/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
+              alt="add"
+              imageSize={16}
+              size={20}
+              isHide
+              isHoverBlock={isHover}
+              onClick={() => setIsPinnedSidebar((prev) => !prev)}
+            />
+          </div>
+          <Search />
           <BoardList />
+          <Toolbar />
         </div>
-        <Toolbar />
-      </div>
-    </aside>
+      </aside>
+    </>
+
   );
 };

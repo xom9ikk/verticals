@@ -1,0 +1,33 @@
+.checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 1px solid $text-light;
+  border-radius: 3px;
+  cursor: pointer;
+  background: none;
+  outline: none;
+  transition: box-shadow .1s ease-in-out, background .1s ease-in-out, border .1s ease-in-out;
+  img {
+    opacity: 0;
+    width: 12px;
+    height: 12px;
+  }
+  &:hover {
+    box-shadow: rgb(210, 227, 253) 0 0 0 2px;
+  }
+  &--active {
+    background: $primary;
+    border: 1px solid $primary;
+    &:hover {
+      box-shadow: none;
+    }
+    img {
+      opacity: 1;
+      transition: opacity .1s ease-in-out;
+    }
+  }
+}

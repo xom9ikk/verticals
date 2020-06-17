@@ -1,0 +1,60 @@
+.column {
+  $block: &;
+
+  display: flex;
+  flex-direction: column;
+  width: $column-width;
+  height: 100vh;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 23px 10px;
+  transition: background .1s ease-in-out;
+  &__wrapper {
+    height: 100%;
+    border-radius: 6px;
+    margin-bottom: 50px;
+    //overflow-x: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    &--hovered {
+      background: #f7f7f7;
+      #{$block}__title-editable {
+        background: #f7f7f7;
+      }
+      #{$block}__description-editable {
+        background: #f7f7f7;
+      }
+    }
+  }
+  &__header {
+    display: flex;
+    flex-direction: column;
+    padding: 17px 10px 10px;
+  }
+  &__title-container {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__title-editable {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+    resize: none;
+    font-size: 28px;
+    font-family: 'Nunito Extra Bold', sans-serif;
+  }
+  &__description-editable {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+    resize: none;
+    font-size: 14px;
+    color: $text;
+    font-family: 'Nunito Regular', sans-serif;
+  }
+}

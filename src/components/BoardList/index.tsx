@@ -1,13 +1,14 @@
 import React, { FC, useState } from 'react';
-import { OpacityButton } from '../OpacityButton';
+import { Menu } from '../Menu';
 import { BoardItem } from '../BoardItem';
+import { Profile } from '../Profile';
 
 interface IBoardList {
 }
 
 export const BoardList: FC<IBoardList> = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [activeBoard, setIsActiveBoard] = useState<string>('');
+  const [activeBoard, setIsActiveBoard] = useState<string>('id3');
   const boardItems = [{
     id: 'id1',
     icon: '/svg/board/star.svg',
@@ -41,7 +42,7 @@ export const BoardList: FC<IBoardList> = () => {
     icon: '/svg/board/item.svg',
     text: 'Books',
   }, {
-    id: 'id9',
+    id: 'trash',
     icon: '/svg/board/trash.svg',
     text: 'Trash',
   }];
@@ -55,9 +56,11 @@ export const BoardList: FC<IBoardList> = () => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
+      <Profile />
       {
         boardItems && boardItems.map(({ id, icon, text }) => (
           <BoardItem
+            key={id}
             id={id}
             icon={icon}
             text={text}
@@ -66,7 +69,7 @@ export const BoardList: FC<IBoardList> = () => {
           />
         ))
       }
-      <OpacityButton
+      <Menu
         imageSrc="/svg/add.svg"
         alt="add"
         text="Add board"

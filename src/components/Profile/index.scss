@@ -1,0 +1,17 @@
+.profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px 6px 6px;
+  //position: relative;
+  &__avatar {
+    margin: 3px;
+    max-width: 44px;
+    max-height: 44px;
+    border-radius: 50%;
+    transition: box-shadow .1s ease-in-out;
+    &:hover {
+      box-shadow: rgb(210, 227, 253) 0 0 0 3px;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.menu-button {
+  outline: none;
+  border: none;
+  background: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  transition: background .1s ease-in-out;
+  font-size: 14px;
+  color: $black;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  &:hover {
+    background: #d2e3fd;
+  }
+  &__block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  span {
+    color: $text-light;
+  }
+}
