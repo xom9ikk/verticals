@@ -1,14 +1,15 @@
 .card {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 6px 10px 6px 10px;
   cursor: grab;
   &__block {
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding-top: 5px;
     span {
+      margin-top: -4px;
       margin-left: 10px;
     }
   }

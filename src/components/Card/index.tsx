@@ -4,6 +4,7 @@ import { Checkbox } from '../Checkbox';
 import { ColorPicker } from '../ColorPicker';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
+import { Submenu } from '../Submenu';
 
 interface ICard {
   title: string;
@@ -40,6 +41,7 @@ export const Card: FC<ICard> = ({ title, isDone }) => {
         size={24}
         isHide
         isHoverBlock={isHover}
+        position="right"
       >
         <ColorPicker colors={colors} onClick={console.log} />
         <MenuButton
@@ -54,10 +56,23 @@ export const Card: FC<ICard> = ({ title, isDone }) => {
           text="Add date"
           imageSrc="/svg/menu/add-date.svg"
         />
-        <MenuButton
+        <Submenu
           text="Complete"
           imageSrc="/svg/menu/complete.svg"
-        />
+        >
+          <MenuButton
+            text="Mark as to do"
+            imageSrc="/svg/menu/rounded-square.svg"
+          />
+          <MenuButton
+            text="Mark as doing"
+            imageSrc="/svg/menu/rounded-square-half-filled.svg"
+          />
+          <MenuButton
+            text="Mark as done"
+            imageSrc="/svg/menu/rounded-square-check.svg"
+          />
+        </Submenu>
         <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuButton
           text="Notifications"

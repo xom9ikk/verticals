@@ -14,6 +14,7 @@ interface IMenu {
   onMouseEnter?:()=>void;
   onMouseLeave?:()=>void;
   position?: 'top' | 'left' | 'right' | 'bottom';
+  isInvertColor?: boolean;
 }
 
 export const Menu: FC<IMenu> = ({
@@ -29,6 +30,7 @@ export const Menu: FC<IMenu> = ({
   onMouseEnter,
   onMouseLeave,
   position,
+  isInvertColor,
   children,
 }) => {
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
@@ -42,7 +44,11 @@ export const Menu: FC<IMenu> = ({
   if (isMaxWidth) {
     classes.push('menu--max-width');
   }
-  console.log(children);
+  if (isInvertColor) {
+    classes.push('menu--invert');
+  }
+  // TODO: rerender
+  // console.log(children);
   return (
     <>
       <Popup

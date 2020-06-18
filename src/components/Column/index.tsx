@@ -38,6 +38,7 @@ export const Column: FC<IColumn> = ({ title, description, todos }) => {
             <TextareaAutosize
               className="column__title-editable"
               defaultValue={title}
+              placeholder="New Column"
               minRows={1}
             />
             <Menu
@@ -83,6 +84,7 @@ export const Column: FC<IColumn> = ({ title, description, todos }) => {
             className="column__description-editable"
             defaultValue={description}
             minRows={1}
+            placeholder="Notes"
           />
         </div>
         {

@@ -3,6 +3,7 @@ import { Menu } from '../Menu';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 import { ColorPicker } from '../ColorPicker';
+import { Submenu } from '../Submenu';
 
 interface IBoardItem {
   id: string;
@@ -60,6 +61,7 @@ export const BoardItem: FC<IBoardItem> = ({
           onMouseEnter={() => setIsMenuClick(true)}
           onMouseLeave={() => setIsMenuClick(false)}
           position="right"
+          isInvertColor={isActive}
         >
           <ColorPicker colors={colors} onClick={console.log} />
           <MenuButton
@@ -68,10 +70,30 @@ export const BoardItem: FC<IBoardItem> = ({
             hintText="E"
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <MenuButton
+          <Submenu
             text="Card style"
             imageSrc="/svg/menu/rect.svg"
-          />
+          >
+            <MenuButton
+              text="Checkboxes"
+              imageSrc="/svg/menu/square.svg"
+            />
+            <MenuButton
+              text="Arrows"
+              imageSrc="/svg/menu/arrow.svg"
+            />
+            <MenuButton
+              text="Dots"
+              imageSrc="/svg/menu/circle.svg"
+            />
+            <MenuButton
+              text="Dashes"
+              imageSrc="/svg/menu/dash.svg"
+            />
+            <MenuButton
+              text="Nothing"
+            />
+          </Submenu>
           <MenuButton
             text="Copy link"
             imageSrc="/svg/menu/copy-link.svg"

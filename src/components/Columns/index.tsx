@@ -19,5 +19,11 @@ export const Columns: FC<IColumns> = ({ data }) => (
         />
       ))
       }
+    <Column
+      key={`${data[0].id}new`}
+      title=""
+      description=""
+      todos={[]}
+    />
   </div>
 );

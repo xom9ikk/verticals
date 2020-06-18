@@ -45,4 +45,10 @@
     width: 100%;
     justify-content: flex-start;
   }
+
+  &--invert {
+    &:hover {
+      background: $sidebar-gradient;
+    }
+  }
 }

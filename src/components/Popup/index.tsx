@@ -3,11 +3,13 @@ import React, { FC } from 'react';
 interface IPopup {
   isOpen: boolean
   position?: 'top' | 'left' | 'right' | 'bottom';
+  style?: any;
 }
 
 export const Popup: FC<IPopup> = ({
   isOpen,
   position,
+  style,
   children,
 }) => {
   const classes = ['popup'];
@@ -17,8 +19,10 @@ export const Popup: FC<IPopup> = ({
   classes.push(`popup--${position || 'top'}`);
   return (
     <>
-      <div className={classes.join(' ')}>
-        {children}
+      <div className={classes.join(' ')} style={style}>
+        <div className="popup__inner">
+          {children}
+        </div>
       </div>
     </>
   );

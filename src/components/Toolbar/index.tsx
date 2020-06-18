@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Menu } from '../Menu';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
+import { Submenu } from '../Submenu';
 
 interface IToolbar {
 }
@@ -35,14 +36,38 @@ export const Toolbar: FC<IToolbar> = () => {
             imageSrc="/svg/menu/hide-sidebar.svg"
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <MenuButton
+
+          <Submenu
             text="Language: English"
             imageSrc="/svg/menu/language.svg"
-          />
-          <MenuButton
+          >
+            <MenuButton
+              text="Русский"
+            />
+            <MenuButton
+              text="Español"
+            />
+            <MenuButton
+              text="Français"
+            />
+            <MenuButton
+              text="English"
+            />
+          </Submenu>
+          <Submenu
             text="More"
             imageSrc="/svg/dots.svg"
-          />
+          >
+            <MenuButton
+              text="Write to developer"
+            />
+            <MenuButton
+              text="Terms of Service"
+            />
+            <MenuButton
+              text="Privacy Policy"
+            />
+          </Submenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuButton
             text="Log out"
