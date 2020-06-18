@@ -17,6 +17,19 @@
     &::-webkit-scrollbar {
       width: 0;
     }
+    &--draggable {
+      background: rgb(210, 227, 253);
+      transform: scale(1.04);
+      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
+      -10px -10px 30px rgba(210, 227, 253, 0.3);
+
+      #{$block}__title-editable {
+        background: rgb(210, 227, 253);
+      }
+      #{$block}__description-editable {
+        background: rgb(210, 227, 253);
+      }
+    }
     &--hovered {
       background: #f7f7f7;
       #{$block}__title-editable {

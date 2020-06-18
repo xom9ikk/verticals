@@ -12,7 +12,7 @@ export const Popup: FC<IPopup> = ({
   style,
   children,
 }) => {
-  console.log('popup rerender');
+  // console.log('popup rerender');
   const classes = ['popup'];
   if (!isOpen) {
     classes.push('popup--invisible');

@@ -1,9 +1,13 @@
 .card {
+  $block: &;
+
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 6px 10px 6px 10px;
   cursor: grab;
+  border-radius: 6px;
+  transition: background-color 0.2s ease-in-out;
   &__block {
     display: flex;
     justify-content: center;
@@ -14,8 +18,13 @@
     }
   }
   &:hover {
-    border-radius: 6px;
-    transition: background-color 0.2s ease 0s;
     background: #f7f7f7;
+  }
+  &--draggable {
+    transition: transform 1s ease-in-out;
+    background: rgb(210, 227, 253);
+    transform: scale(1.04);
+    box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
+    -10px -10px 30px rgba(210, 227, 253, 0.3);
   }
 }

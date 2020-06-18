@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { Columns } from '../components/Columns';
 
+let count = 0;
+
 const data = [
   {
     id: 'id1',
@@ -88,7 +90,7 @@ const data = [
         title: 'MPEG-DASH',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
   {
     id: 'id2',
@@ -187,7 +189,7 @@ const data = [
         title: 'Bignumber',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
   {
     id: 'id3',
@@ -234,7 +236,7 @@ const data = [
         title: 'Zeit',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
   {
     id: 'id4',
@@ -253,7 +255,7 @@ const data = [
         title: 'RabbitMQ',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
   {
     id: 'id5',
@@ -292,7 +294,7 @@ const data = [
         title: 'ClickHouse',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
   {
     id: 'id6',
@@ -363,7 +365,7 @@ const data = [
         title: 'Firewall',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
   {
     id: 'id7',
@@ -406,16 +408,26 @@ const data = [
         title: 'WebStorm',
         isDone: false,
       },
-    ].map((el) => ({ ...el, id: Math.random().toString() })),
+    ].map((el) => ({ ...el, id: `id-${(count += 1).toString()}` })),
   },
 ];
+
+const dataV2 = {};
+data.forEach((el) => {
+  // @ts-ignore
+  dataV2[el.id] = {
+    title: el.title,
+    description: el.description,
+    todos: el.todos,
+  };
+});
 
 export const Main: FC = () => (
   <div className="container container--horizontal">
     <Sidebar />
     <Columns
         // @ts-ignore
-      data={data}
+      initialColumns={dataV2}
     />
   </div>
 );

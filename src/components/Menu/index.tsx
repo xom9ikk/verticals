@@ -60,7 +60,7 @@ export const Menu: FC<IMenu> = ({
   }, [isOpenPopup]);
 
   // TODO: rerender
-  console.log('menu rerender');
+  // console.log('menu rerender');
 
   const popup = useMemo(() => (
     <Popup

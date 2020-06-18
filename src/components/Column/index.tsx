@@ -1,5 +1,10 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, {
+  FC, useEffect, useMemo, useState,
+} from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import {
+  DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DropResult,
+} from 'react-beautiful-dnd';
 import { Menu } from '../Menu';
 import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
@@ -7,6 +12,8 @@ import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 
 interface IColumn {
+  index: number;
+  columnId: string;
   title: string;
   description: string;
   todos: Array<{
@@ -16,18 +23,49 @@ interface IColumn {
   }>;
 }
 
-export const Column: FC<IColumn> = ({ title, description, todos }) => {
+export const Column: FC<IColumn> = ({
+  index, columnId, title, description, todos,
+}) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
   const todoCards = useMemo(() => (
-    todos.map(({ id, title: cardTitle, isDone }) => (
-      <Card
-        key={id}
-        title={cardTitle}
-        isDone={isDone}
-      />
-    ))
+    <Droppable
+      droppableId={columnId}
+      type="QUOTE"
+    >
+      {
+        (dropProvided,
+          droppableSnapshot) => (
+            <div
+              ref={dropProvided.innerRef}
+              style={{ minHeight: 36 }}
+            >
+              {
+                todos.map((todo, index) =>
+                // console.log('todo:', todo);
+                  (
+                    <Draggable key={todo.id} draggableId={todo.id} index={index}>
+                      {(
+                        dragProvided: DraggableProvided,
+                        dragSnapshot: DraggableStateSnapshot,
+                      ) => (
+                        <Card
+                          provided={dragProvided}
+                          snapshot={dragSnapshot}
+                          key={todo.id}
+                          title={todo.title}
+                          isDone={todo.isDone}
+                        />
+                      )}
+                    </Draggable>
+                  ))
+              }
+              {dropProvided.placeholder}
+            </div>
+        )
+      }
+    </Droppable>
   ), [todos]);
 
   const contextMenu = useMemo(() => (
@@ -86,40 +124,95 @@ export const Column: FC<IColumn> = ({ title, description, todos }) => {
     <CardToolbar isHoverBlock={isHover} />
   ), [isHover]);
 
-  return (
-    <div
-      className="column"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
-    >
-      <div
-        className={`column__wrapper ${isHoverHeader ? 'column__wrapper--hovered' : ''}`}
-      >
+  // @ts-ignore
+  // const reorder = (list, startIndex, endIndex) => {
+  //   const result = Array.from(list);
+  //   const [removed] = result.splice(startIndex, 1);
+  //   result.splice(endIndex, 0, removed);
+  //
+  //   return result;
+  // };
+
+  // const onDragEnd = (result: DropResult) => {
+  //   if (!result.destination) {
+  //     return;
+  //   }
+  //
+  //   const items = reorder(
+  //     todos,
+  //     result.source.index,
+  //     result.destination.index,
+  //   );
+  //
+  //   setTodos(items);
+  // };
+  //
+  // const getListStyle = (isDraggingOver: boolean) => ({
+  //   // background: isDraggingOver ? 'lightblue' : 'grey',
+  //   // padding: 8,
+  //   // width: 250,
+  // });
+
+  // const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+  //   userSelect: 'none',
+  //   // padding: 8 * 2,
+  //   // margin: `0 0 ${8}px 0`,
+  //   background: isDragging ? '#eeeeee' : '',
+  //   ...draggableStyle,
+  // });
+
+  const column = useMemo(() => (
+    <Draggable draggableId={title} index={index}>
+      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <div
-          className="column__header"
-          onMouseEnter={() => setIsHoverHeader(true)}
-          onMouseLeave={() => setIsHoverHeader(false)}
+          className="column"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
         >
-          <div className="column__title-container">
-            <TextareaAutosize
-              className="column__title-editable"
-              defaultValue={title}
-              placeholder="New Column"
-              minRows={1}
-            />
-            { (title || description || todos.length) ? contextMenu : null}
+          <div
+            className={`column__wrapper 
+            ${isHoverHeader ? 'column__wrapper--hovered' : ''}
+            ${snapshot.isDragging ? 'column__wrapper--draggable' : ''}
+            `}
+          >
+            <div
+              className="column__header"
+              {...provided.dragHandleProps}
+              aria-label={`${title} quote list`}
+              onMouseEnter={() => setIsHoverHeader(true)}
+              onMouseLeave={() => setIsHoverHeader(false)}
+            >
+              <div
+                className="column__title-container"
+              >
+                <TextareaAutosize
+                  className="column__title-editable"
+                  defaultValue={title}
+                  placeholder="New Column"
+                  minRows={1}
+                />
+                { (title || description || todos.length) ? contextMenu : null}
+              </div>
+              <TextareaAutosize
+                className="column__description-editable"
+                defaultValue={description + todos.length}
+                minRows={1}
+                placeholder="Notes"
+              />
+            </div>
+            { todoCards }
+            { addCard }
           </div>
-          <TextareaAutosize
-            className="column__description-editable"
-            defaultValue={description}
-            minRows={1}
-            placeholder="Notes"
-          />
+          { cardToolbar }
         </div>
-        { todoCards }
-        { addCard }
-      </div>
-      { cardToolbar }
-    </div>
+      )}
+    </Draggable>
+  ),
+  [todos, isHover, isHoverHeader]);
+
+  return (
+    <>{column}</>
   );
 };

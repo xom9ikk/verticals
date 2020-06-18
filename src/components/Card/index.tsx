@@ -7,6 +7,8 @@ import { Divider } from '../Divider';
 import { Submenu } from '../Submenu';
 
 interface ICard {
+  provided: any;
+  snapshot: any;
   title: string;
   isDone: boolean;
 }
@@ -22,11 +24,16 @@ const colors = [
   '#d8d8d8',
 ];
 
-export const Card: FC<ICard> = ({ title, isDone }) => {
+export const Card: FC<ICard> = ({
+  provided, snapshot, title, isDone,
+}) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   return (
     <div
-      className="card"
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      className={`card ${snapshot.isDragging ? 'card--draggable' : ''}`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
