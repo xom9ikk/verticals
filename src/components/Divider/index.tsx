@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 interface IDivider {
   verticalSpacer?: number;
@@ -6,13 +6,16 @@ interface IDivider {
 }
 
 export const Divider: FC<IDivider> = ({ verticalSpacer, horizontalSpacer }) => {
-  const style = {
-    marginTop: typeof verticalSpacer === 'number' ? verticalSpacer : 10,
-    marginBottom: typeof verticalSpacer === 'number' ? verticalSpacer : 30,
-    marginLeft: typeof horizontalSpacer === 'number' ? horizontalSpacer : 0,
-    marginRight: typeof horizontalSpacer === 'number' ? horizontalSpacer : 0,
-  };
+  const divider = useMemo(() => {
+    const style = {
+      marginTop: typeof verticalSpacer === 'number' ? verticalSpacer : 10,
+      marginBottom: typeof verticalSpacer === 'number' ? verticalSpacer : 30,
+      marginLeft: typeof horizontalSpacer === 'number' ? horizontalSpacer : 0,
+      marginRight: typeof horizontalSpacer === 'number' ? horizontalSpacer : 0,
+    };
+    return (<div className="divider" style={style} />);
+  }, [verticalSpacer, horizontalSpacer]);
   return (
-    <div className="divider" style={style} />
+    <>{ divider }</>
   );
 };

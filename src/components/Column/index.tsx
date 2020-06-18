@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Menu } from '../Menu';
 import { Card } from '../Card';
@@ -19,6 +19,72 @@ interface IColumn {
 export const Column: FC<IColumn> = ({ title, description, todos }) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
+
+  const todoCards = useMemo(() => (
+    todos.map(({ id, title: cardTitle, isDone }) => (
+      <Card
+        key={id}
+        title={cardTitle}
+        isDone={isDone}
+      />
+    ))
+  ), [todos]);
+
+  const contextMenu = useMemo(() => (
+    <Menu
+      imageSrc="/svg/dots.svg"
+      alt="menu"
+      imageSize={22}
+      size={24}
+      isHide
+      isHoverBlock={isHover}
+      position="bottom"
+    >
+      <MenuButton
+        text="Edit column"
+        imageSrc="/svg/menu/edit.svg"
+      />
+      <Divider verticalSpacer={7} horizontalSpacer={10} />
+      <MenuButton
+        text="Duplicate"
+        imageSrc="/svg/menu/duplicate.svg"
+      />
+      <Divider verticalSpacer={7} horizontalSpacer={10} />
+      <MenuButton
+        text="Add card"
+        imageSrc="/svg/menu/add-card.svg"
+      />
+      <MenuButton
+        text="Add heading"
+        imageSrc="/svg/menu/add-heading.svg"
+      />
+      <MenuButton
+        text="Add column after"
+        imageSrc="/svg/menu/add-column.svg"
+      />
+      <Divider verticalSpacer={7} horizontalSpacer={10} />
+      <MenuButton
+        text="Delete"
+        imageSrc="/svg/menu/delete.svg"
+        hintText="⌫"
+      />
+    </Menu>
+  ), [isHover]);
+
+  const addCard = useMemo(() => (
+    <Menu
+      imageSrc="/svg/add.svg"
+      alt="add"
+      text="Add card"
+      isHide
+      isHoverBlock={isHover}
+      isMaxWidth
+    />
+  ), [isHover]);
+
+  const cardToolbar = useMemo(() => (
+    <CardToolbar isHoverBlock={isHover} />
+  ), [isHover]);
 
   return (
     <div
@@ -41,44 +107,7 @@ export const Column: FC<IColumn> = ({ title, description, todos }) => {
               placeholder="New Column"
               minRows={1}
             />
-            <Menu
-              imageSrc="/svg/dots.svg"
-              alt="menu"
-              imageSize={22}
-              size={24}
-              isHide
-              isHoverBlock={isHover}
-              position="bottom"
-            >
-              <MenuButton
-                text="Edit column"
-                imageSrc="/svg/menu/edit.svg"
-              />
-              <Divider verticalSpacer={7} horizontalSpacer={10} />
-              <MenuButton
-                text="Duplicate"
-                imageSrc="/svg/menu/duplicate.svg"
-              />
-              <Divider verticalSpacer={7} horizontalSpacer={10} />
-              <MenuButton
-                text="Add card"
-                imageSrc="/svg/menu/add-card.svg"
-              />
-              <MenuButton
-                text="Add heading"
-                imageSrc="/svg/menu/add-heading.svg"
-              />
-              <MenuButton
-                text="Add column after"
-                imageSrc="/svg/menu/add-column.svg"
-              />
-              <Divider verticalSpacer={7} horizontalSpacer={10} />
-              <MenuButton
-                text="Delete"
-                imageSrc="/svg/menu/delete.svg"
-                hintText="⌫"
-              />
-            </Menu>
+            { (title || description || todos.length) ? contextMenu : null}
           </div>
           <TextareaAutosize
             className="column__description-editable"
@@ -87,25 +116,10 @@ export const Column: FC<IColumn> = ({ title, description, todos }) => {
             placeholder="Notes"
           />
         </div>
-        {
-          todos.map(({ id, title: cardTitle, isDone }) => (
-            <Card
-              key={id}
-              title={cardTitle}
-              isDone={isDone}
-            />
-          ))
-        }
-        <Menu
-          imageSrc="/svg/add.svg"
-          alt="add"
-          text="Add card"
-          isHide
-          isHoverBlock={isHover}
-          isMaxWidth
-        />
+        { todoCards }
+        { addCard }
       </div>
-      <CardToolbar isHoverBlock={isHover} />
+      { cardToolbar }
     </div>
   );
 };

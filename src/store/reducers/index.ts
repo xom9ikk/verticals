@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { IRootState } from './state';
-import { CustomReducer } from './custom';
+import { SystemReducer } from './system';
 
 export const rootReducer = combineReducers<IRootState>({
-  custom: CustomReducer as any,
+  system: SystemReducer as any,
 });

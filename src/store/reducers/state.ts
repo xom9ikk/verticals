@@ -1,7 +1,7 @@
 import {
-  ICustomInterface,
+  ISystem,
 } from '../../types';
 
 export interface IRootState {
-  custom: ICustomInterface,
+  system: ISystem,
 }
