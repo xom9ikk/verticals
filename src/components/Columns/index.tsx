@@ -165,7 +165,7 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
         index={index}
         columnId={key}
         key={key}
-        title={columns[key].title + columns[key].todos.length}
+        title={columns[key].title}
         todos={columns[key].todos}
         description={columns[key].description}
       />

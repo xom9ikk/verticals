@@ -3,9 +3,15 @@ import { Menu } from '../Menu';
 
 interface ICardToolbar {
   isHoverBlock: boolean;
+  onClickCard: () => void;
+  onClickHeading: () => void;
 }
 
-export const CardToolbar: FC<ICardToolbar> = ({ isHoverBlock }) => (
+export const CardToolbar: FC<ICardToolbar> = ({
+  isHoverBlock,
+  onClickCard,
+  onClickHeading,
+}) => (
   <div
     className={`card-toolbar ${!isHoverBlock ? 'card-toolbar--invisible' : ''}`}
   >
@@ -16,6 +22,9 @@ export const CardToolbar: FC<ICardToolbar> = ({ isHoverBlock }) => (
         alt="add"
         isHoverBlock={isHoverBlock}
         isMaxWidth
+        position="top"
+        isShowPopup={false}
+        onClick={onClickCard}
       />
       <Menu
         imageSrc="/svg/add-head.svg"
@@ -23,6 +32,8 @@ export const CardToolbar: FC<ICardToolbar> = ({ isHoverBlock }) => (
         isHoverBlock={isHoverBlock}
         imageSize={24}
         size={36}
+        isShowPopup={false}
+        onClick={onClickHeading}
       />
     </div>
   </div>

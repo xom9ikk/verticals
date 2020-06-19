@@ -43,7 +43,7 @@
       transition: color .1s ease-in-out;
     }
     &:hover {
-      background: rgb(210, 227, 253);
+      background: $primary-light;
       img {
         filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg)
       }

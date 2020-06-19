@@ -14,11 +14,12 @@ interface IMenu {
   imageSize?: number;
   size?: number;
   isHide?: boolean;
+  isShowPopup?: boolean;
   onClick?: ()=>void;
   isMaxWidth?:boolean;
   onMouseEnter?:()=>void;
   onMouseLeave?:()=>void;
-  position?: 'top' | 'left' | 'right' | 'bottom';
+  position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   isInvertColor?: boolean;
 }
 
@@ -30,6 +31,7 @@ export const Menu: FC<IMenu> = ({
   imageSize = 12,
   size,
   isHide = false,
+  isShowPopup = true,
   onClick,
   isMaxWidth,
   onMouseEnter,
@@ -63,12 +65,14 @@ export const Menu: FC<IMenu> = ({
   // console.log('menu rerender');
 
   const popup = useMemo(() => (
+    isShowPopup && (
     <Popup
       isOpen={isOpen}
       position={position}
     >
       {children}
     </Popup>
+    )
   ), [isOpen, position]);
 
   const button = useMemo(() => {
@@ -85,22 +89,25 @@ export const Menu: FC<IMenu> = ({
     if (isInvertColor) {
       classes.push('menu--invert');
     }
+
+    const clickHandler = () => {
+      onClick?.();
+      if (isOpenPopup) {
+        dispatch(SystemActions.setIsOpenPopup(false));
+        if (isOpen) {
+          setIsOpen(false);
+        }
+      }
+      if (!isOpen) {
+        setIsClicked(true);
+      }
+    };
+
     return (
       <button
         className={classes.join(' ')}
         style={size ? { height: size, width: size } : {}}
-        onClick={() => {
-          onClick?.();
-          if (isOpenPopup) {
-            dispatch(SystemActions.setIsOpenPopup(false));
-            if (isOpen) {
-              setIsOpen(false);
-            }
-          }
-          if (!isOpen) {
-            setIsClicked(true);
-          }
-        }}
+        onClick={clickHandler}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >

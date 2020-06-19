@@ -7,7 +7,7 @@
   height: 100vh;
   border-right: 1px solid rgba(0, 0, 0, 0.05);
   padding: 23px 10px;
-  transition: background .1s ease-in-out;
+  transition: background .2s ease-in-out, scale .2s ease-in-out;
   &__wrapper {
     height: 100%;
     border-radius: 6px;
@@ -18,16 +18,19 @@
       width: 0;
     }
     &--draggable {
-      background: rgb(210, 227, 253);
-      transform: scale(1.04);
+      background: $primary-light;
+      transform: scale(1.02);
       box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
       -10px -10px 30px rgba(210, 227, 253, 0.3);
 
       #{$block}__title-editable {
-        background: rgb(210, 227, 253);
+        background: $primary-light;
       }
       #{$block}__description-editable {
-        background: rgb(210, 227, 253);
+        background: $primary-light;
+      }
+      .card__textarea {
+        background: $primary-light !important;
       }
     }
     &--hovered {
@@ -54,6 +57,7 @@
   &__title-editable {
     padding: 0;
     margin: 0;
+    min-height: 38px;
     outline: none;
     border: none;
     resize: none;
@@ -63,6 +67,7 @@
   &__description-editable {
     padding: 0;
     margin: 0;
+    min-height: 38px;
     outline: none;
     border: none;
     resize: none;

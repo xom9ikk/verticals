@@ -17,7 +17,7 @@
     height: 12px;
   }
   &:hover {
-    box-shadow: rgb(210, 227, 253) 0 0 0 2px;
+    box-shadow: $primary-light 0 0 0 2px;
   }
   &--active {
     background: $primary;

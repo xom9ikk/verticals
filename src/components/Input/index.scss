@@ -45,7 +45,7 @@
       border-color: #9490b5;
     }
     &:focus {
-      box-shadow: rgb(210, 227, 253) 0px 0px 0px 2px;
+      box-shadow: $primary-light 0px 0px 0px 2px;
     }
     &--invalid {
       border-color: $danger !important;

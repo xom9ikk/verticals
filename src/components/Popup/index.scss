@@ -14,15 +14,18 @@
     display: none;
   }
   &--top {
-    -webkit-transform: translate(35%, -60%);
+    transform: translate(37%, -60%);
   }
+  //&--top-max-width {
+  //  transform: translate(0%, -100%);
+  //}
   &--left {
-    -webkit-transform: translate(-100%, 0%);
+    transform: translate(-100%, 0%);
   }
   &--right {
-    -webkit-transform: translate(100%, 0%);
+    transform: translate(100%, 0%);
   }
   &--bottom {
-    -webkit-transform: translate(32%, 60%);
+    transform: translate(30%, 60%);
   }
 }

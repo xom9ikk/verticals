@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Sidebar } from '../components/Sidebar';
 import { Columns } from '../components/Columns';
+import { SystemActions } from '../store/actions';
 
 let count = 0;
 
@@ -422,12 +424,32 @@ data.forEach((el) => {
   };
 });
 
-export const Main: FC = () => (
-  <div className="container container--horizontal">
-    <Sidebar />
-    <Columns
-        // @ts-ignore
-      initialColumns={dataV2}
-    />
-  </div>
-);
+export const Main: FC = () => {
+  const dispatch = useDispatch();
+
+  const keydownHandler = (event: any) => {
+    switch (event.code) {
+      case 'Escape': {
+        dispatch(SystemActions.setIsOpenPopup(false));
+        break;
+      }
+      default: break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', keydownHandler);
+    return () => {
+      document.removeEventListener('keydown', keydownHandler);
+    };
+  }, []);
+  return (
+    <div className="container container--horizontal">
+      <Sidebar />
+      <Columns
+            // @ts-ignore
+        initialColumns={dataV2}
+      />
+    </div>
+  );
+};

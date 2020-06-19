@@ -7,24 +7,57 @@
   padding: 6px 10px 6px 10px;
   cursor: grab;
   border-radius: 6px;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color .2s ease-in-out, height .2s ease-in-out;
   &__block {
     display: flex;
     justify-content: center;
     padding-top: 5px;
     span {
+      font-size: 15px;
       margin-top: -4px;
       margin-left: 10px;
+    }
+  }
+  &__textarea {
+    outline: none;
+    border: none;
+    resize: none;
+    font-family: 'Nunito Regular';
+    font-size: 15px;
+    margin-top: -6px;
+    margin-left: 10px;
+    transition: inherit;
+    background: inherit;
+    min-height: 20px;
+    &--description {
+      font-size: 14px;
+      color: $text-dark;
+    }
+    &::placeholder {
+      color: $text-light;
+    }
+    &:-ms-input-placeholder {
+      color: $text-light;
+    }
+    &::-ms-input-placeholder {
+      color: $text-light;
     }
   }
   &:hover {
     background: #f7f7f7;
   }
+  &__editable {
+    width: $column-width - 27;
+    margin: 3px 3px;
+    padding: 7px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
+    &:hover {
+      background: $white;
+    }
+  }
   &--draggable {
-    transition: transform 1s ease-in-out;
-    background: rgb(210, 227, 253);
-    transform: scale(1.04);
-    box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
+    background: $primary-light;
+    box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.5),
     -10px -10px 30px rgba(210, 227, 253, 0.3);
   }
 }

@@ -5,11 +5,13 @@ import TextareaAutosize from 'react-textarea-autosize';
 import {
   DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DropResult,
 } from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
 import { Menu } from '../Menu';
 import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
+import { IRootState } from '../../store/reducers/state';
 
 interface IColumn {
   index: number;
@@ -26,6 +28,8 @@ interface IColumn {
 export const Column: FC<IColumn> = ({
   index, columnId, title, description, todos,
 }) => {
+  const { isEditableCard } = useSelector((state: IRootState) => state.system);
+  const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
@@ -42,24 +46,22 @@ export const Column: FC<IColumn> = ({
               style={{ minHeight: 36 }}
             >
               {
-                todos.map((todo, index) =>
-                // console.log('todo:', todo);
-                  (
-                    <Draggable key={todo.id} draggableId={todo.id} index={index}>
-                      {(
-                        dragProvided: DraggableProvided,
-                        dragSnapshot: DraggableStateSnapshot,
-                      ) => (
-                        <Card
-                          provided={dragProvided}
-                          snapshot={dragSnapshot}
-                          key={todo.id}
-                          title={todo.title}
-                          isDone={todo.isDone}
-                        />
-                      )}
-                    </Draggable>
-                  ))
+                todos.map((todo, index) => (
+                  <Draggable key={todo.id} draggableId={todo.id} index={index}>
+                    {(
+                      dragProvided: DraggableProvided,
+                      dragSnapshot: DraggableStateSnapshot,
+                    ) => (
+                      <Card
+                        provided={dragProvided}
+                        snapshot={dragSnapshot}
+                        key={todo.id}
+                        title={todo.title}
+                        isDone={todo.isDone}
+                      />
+                    )}
+                  </Draggable>
+                ))
               }
               {dropProvided.placeholder}
             </div>
@@ -110,6 +112,7 @@ export const Column: FC<IColumn> = ({
   ), [isHover]);
 
   const addCard = useMemo(() => (
+    !isOpenNewCard && (
     <Menu
       imageSrc="/svg/add.svg"
       alt="add"
@@ -117,11 +120,34 @@ export const Column: FC<IColumn> = ({
       isHide
       isHoverBlock={isHover}
       isMaxWidth
+      isShowPopup={false}
+      onClick={() => setIsOpenNewCard(true)}
     />
-  ), [isHover]);
+    )
+  ), [isHover, isOpenNewCard]);
+
+  // useEffect(() => {
+  //   if (!isEditableCard) {
+  //     // save new card if title || description
+  //     setIsOpenNewCard(false);
+  //   }
+  // }, [isEditableCard]);
+
+  const newCard = useMemo(() => (
+    isOpenNewCard && (
+      <Card
+        isEditableDefault
+        onExitFromEditable={() => setIsOpenNewCard(false)}
+      />
+    )
+  ), [isOpenNewCard]);
 
   const cardToolbar = useMemo(() => (
-    <CardToolbar isHoverBlock={isHover} />
+    <CardToolbar
+      isHoverBlock={isHover}
+      onClickCard={() => setIsOpenNewCard(true)}
+      onClickHeading={() => console.log('open heading')}
+    />
   ), [isHover]);
 
   // @ts-ignore
@@ -172,7 +198,7 @@ export const Column: FC<IColumn> = ({
           onMouseLeave={() => setIsHover(false)}
         >
           <div
-            className={`column__wrapper 
+            className={`column__wrapper
             ${isHoverHeader ? 'column__wrapper--hovered' : ''}
             ${snapshot.isDragging ? 'column__wrapper--draggable' : ''}
             `}
@@ -197,12 +223,15 @@ export const Column: FC<IColumn> = ({
               </div>
               <TextareaAutosize
                 className="column__description-editable"
-                defaultValue={description + todos.length}
-                minRows={1}
+                defaultValue={description}
+                // minRows={1}
                 placeholder="Notes"
               />
             </div>
             { todoCards }
+            {
+              newCard
+            }
             { addCard }
           </div>
           { cardToolbar }
@@ -210,7 +239,7 @@ export const Column: FC<IColumn> = ({
       )}
     </Draggable>
   ),
-  [todos, isHover, isHoverHeader]);
+  [todos, isHover, isHoverHeader, isOpenNewCard]);
 
   return (
     <>{column}</>
