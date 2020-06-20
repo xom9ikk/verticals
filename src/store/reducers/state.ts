@@ -1,7 +1,10 @@
 import {
-  ISystem,
+  ISystem, IBoards, IColumns, ITodos,
 } from '../../types';
 
 export interface IRootState {
-  system: ISystem,
+  system: ISystem;
+  boards: IBoards;
+  columns: IColumns;
+  todos: ITodos;
 }

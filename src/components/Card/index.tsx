@@ -13,11 +13,11 @@ import { SystemActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
 
 interface ICard {
-  title?: string;
-  description?: string;
-  isDone?: boolean;
+  initialTitle?: string;
+  initialDescription?: string;
+  initialIsDone?: boolean;
   isEditableDefault?: boolean;
-  onExitFromEditable?: (title: string, description: string) => void;
+  onExitFromEditable?: (title?: string, description?: string, isDone?: boolean) => void;
   provided?: any;
   snapshot?: any;
 }
@@ -34,9 +34,9 @@ const colors = [
 ];
 
 export const Card: FC<ICard> = ({
-  title = '',
-  description = '',
-  isDone = false,
+  initialTitle = '',
+  initialDescription = '',
+  initialIsDone = false,
   isEditableDefault,
   onExitFromEditable,
   provided,
@@ -47,8 +47,20 @@ export const Card: FC<ICard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const { isEditableCard } = useSelector((state: IRootState) => state.system);
-  const [titleValue, setTitleValue] = useState<string>(title);
-  const [descriptionValue, setDescriptionValue] = useState<string>(description);
+  const [titleValue, setTitleValue] = useState<string>(initialTitle);
+  const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+  const [isDone, setIsDone] = useState<boolean>(initialIsDone);
+
+  const getNewData = () => ({
+    title: initialTitle !== titleValue ? titleValue.trim() : undefined,
+    description: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
+    isDone: initialIsDone !== isDone ? isDone : undefined,
+  });
+
+  const sendData = () => {
+    const { title, description, isDone } = getNewData();
+    onExitFromEditable?.(title, description, isDone);
+  };
 
   useEffect(() => {
     if (isDoubleClicked) {
@@ -61,9 +73,9 @@ export const Card: FC<ICard> = ({
   }, [isDoubleClicked]);
 
   useEffect(() => {
-    if (isDoubleClicked === false && !isEditableCard) {
+    if (isDoubleClicked === false && !isEditableCard && isEditable) {
       setIsEditable(false);
-      onExitFromEditable?.(titleValue, descriptionValue);
+      sendData();
       setIsDoubleClicked(undefined);
     }
   }, [isEditableCard]);
@@ -71,14 +83,15 @@ export const Card: FC<ICard> = ({
   const doubleClickHandler = () => {
     if (isEditableCard) {
       dispatch(SystemActions.setIsEditableCard(false));
-      if (isEditable) {
-        setIsEditable(false);
-        onExitFromEditable?.(titleValue, descriptionValue);
-      }
+      // if (isEditable) {
+      //   setIsEditable(false);
+      //   console.log('2');
+      //   sendData();
+      // }
     }
-    if (!isEditable) {
-      setIsDoubleClicked(true);
-    }
+    // if (!isEditable) {
+    setIsDoubleClicked(true);
+    // }
   };
 
   useEffect(() => {
@@ -103,7 +116,8 @@ export const Card: FC<ICard> = ({
         setTitleValue(titleValue.trim());
         descriptionInputRef.current?.focus();
       } else {
-        onExitFromEditable?.(titleValue.trim(), descriptionValue.trim());
+        console.log('3');
+        sendData();
         setIsEditable(false);
       }
     }
@@ -187,7 +201,7 @@ export const Card: FC<ICard> = ({
 
   const card = useMemo(() => (
     <div className="card__block">
-      <Checkbox isActiveDefault={isDone} />
+      <Checkbox isActive={isDone} onClick={() => setIsDone((prev) => !prev)} />
       {
             isEditable ? (
               <div className="card__editable-content">

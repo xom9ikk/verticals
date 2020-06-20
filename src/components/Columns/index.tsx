@@ -1,42 +1,39 @@
 /* eslint-disable @typescript-eslint/no-use-before-define,no-underscore-dangle */
 import React, {
-  FC, useMemo, useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
 import {
   DragDropContext, DraggableLocation, Droppable, DroppableProvided, DropResult,
 } from 'react-beautiful-dnd';
 import { Column } from '../Column';
+import { ITodo, ITodos } from '../../types';
 
-// type Column = { id: string; title: string,
-// description: string, todos: Array<any>, index: number };
-
-type Quote = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
-
-interface QuoteMap {
+interface TodoMap {
   [key: string]: {
-    todos: Quote[],
+    todos: ITodo[],
     title: string,
     description: string,
   },
 }
 
 interface IColumn {
-  initialColumns: QuoteMap
+  initialColumns: TodoMap
 }
 
-type ReorderQuoteMapArgs = {
-  quoteMap: QuoteMap,
+type ReorderTodoMapArgs = {
+  quoteMap: TodoMap,
   source: DraggableLocation,
   destination: DraggableLocation,
 };
 
 export const Columns: FC<IColumn> = ({ initialColumns }) => {
-  const [columns, setColumns] = useState<QuoteMap>(initialColumns);
-  const [orderedId, setOrderedId] = useState<Array<string>>(Object.keys(initialColumns));
+  const [columns, setColumns] = useState<TodoMap>(initialColumns);
+  const [orderedId, setOrderedId] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    setColumns(initialColumns);
+    setOrderedId(Object.keys(initialColumns || {}));
+  }, [initialColumns]);
 
   const onDragEnd = (result: DropResult) => {
     if (result.combine) {
@@ -48,13 +45,13 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
       }
 
       // @ts-ignore
-      const column: Quote[] = columns[result.source.droppableId];
-      const withQuoteRemoved: Quote[] = [...column];
-      withQuoteRemoved.splice(result.source.index, 1);
+      const column: ITodos = columns[result.source.droppableId];
+      const withTodoRemoved: ITodos = [...column];
+      withTodoRemoved.splice(result.source.index, 1);
       // @ts-ignore
-      const _columns: QuoteMap = {
+      const _columns: TodoMap = {
         ...columns,
-        [result.source.droppableId]: withQuoteRemoved,
+        [result.source.droppableId]: withTodoRemoved,
       };
       setColumns(_columns);
       return;
@@ -87,7 +84,7 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
       return;
     }
     // console.log('before', columns);
-    const data = reorderQuoteMap({
+    const data = reorderTodoMap({
       quoteMap: columns,
       source,
       destination,
@@ -103,20 +100,20 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
     return result;
   };
 
-  const reorderQuoteMap = ({
+  const reorderTodoMap = ({
     quoteMap,
     source,
     destination,
-  }: ReorderQuoteMapArgs): QuoteMap => {
+  }: ReorderTodoMapArgs): TodoMap => {
     const currentDescription: string = quoteMap[source.droppableId].description;
     const currentTitle: string = quoteMap[source.droppableId].title;
-    const current: Quote[] = [...quoteMap[source.droppableId].todos];
+    const current: ITodo[] = [...quoteMap[source.droppableId].todos];
 
     const nextTitle: string = quoteMap[destination.droppableId].title;
     const nextDescription: string = quoteMap[destination.droppableId].description;
-    const next: Quote[] = [...quoteMap[destination.droppableId].todos];
+    const next: ITodo[] = [...quoteMap[destination.droppableId].todos];
 
-    const target: Quote = current[source.index];
+    const target: ITodo = current[source.index];
 
     // moving to same list
     if (source.droppableId === destination.droppableId) {
@@ -138,12 +135,12 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
     // insert into next
     next.splice(destination.index, 0, target);
 
-    console.log('source.droppableId', source.droppableId);
-    console.log('destination.droppableId', destination.droppableId);
-    console.log('source.index', source.index);
-    console.log('target', target);
-    console.log('current', current);
-    console.log('next', next);
+    // console.log('source.droppableId', source.droppableId);
+    // console.log('destination.droppableId', destination.droppableId);
+    // console.log('source.index', source.index);
+    // console.log('target', target);
+    // console.log('current', current);
+    // console.log('next', next);
     return {
       ...quoteMap,
       [source.droppableId]: {
@@ -160,16 +157,19 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
   };
 
   const drawColumns = useMemo(() => (
-    orderedId && orderedId.map((key, index) => (
-      <Column
-        index={index}
-        columnId={key}
-        key={key}
-        title={columns[key].title}
-        todos={columns[key].todos}
-        description={columns[key].description}
-      />
-    ))
+    orderedId && orderedId.map((key, index) => {
+      console.log('rerender', key, 'todos:', columns[key].todos);
+      return (
+        <Column
+          index={index}
+          columnId={key}
+          key={key}
+          title={columns[key].title}
+          todos={columns[key].todos}
+          description={columns[key].description}
+        />
+      );
+    })
   ), [columns, orderedId]);
 
   return (
@@ -178,8 +178,6 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
         droppableId="board"
         type="COLUMN"
         direction="horizontal"
-        // ignoreContainerClipping={false}
-        // isCombineEnabled={false}
       >
         {(provided: DroppableProvided) => (
           <div
@@ -188,12 +186,6 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
             {...provided.droppableProps}
           >
             { drawColumns }
-            {/* <Column */}
-            {/*  key="new" */}
-            {/*  title="" */}
-            {/*  description="" */}
-            {/*  todos={[]} */}
-            {/* /> */}
             {provided.placeholder}
           </div>
         )}

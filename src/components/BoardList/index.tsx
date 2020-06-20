@@ -1,52 +1,17 @@
 import React, { FC, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Menu } from '../Menu';
 import { BoardItem } from '../BoardItem';
 import { Profile } from '../Profile';
+import { IRootState } from '../../store/reducers/state';
 
 interface IBoardList {
 }
 
 export const BoardList: FC<IBoardList> = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [activeBoard, setIsActiveBoard] = useState<string>('id3');
-
-  const items = [{
-    id: 'id1',
-    icon: '/svg/board/star.svg',
-    text: 'Today',
-  }, {
-    id: 'id2',
-    icon: '/svg/board/item.svg',
-    text: 'To reading',
-  }, {
-    id: 'id3',
-    icon: '/svg/board/item.svg',
-    text: 'Technologies etc.',
-  }, {
-    id: 'id4',
-    icon: '/svg/board/item.svg',
-    text: 'Projects',
-  }, {
-    id: 'id5',
-    icon: '/svg/board/item.svg',
-    text: 'Branches',
-  }, {
-    id: 'id6',
-    icon: '/svg/board/item.svg',
-    text: 'Films',
-  }, {
-    id: 'id7',
-    icon: '/svg/board/item.svg',
-    text: 'Buy',
-  }, {
-    id: 'id8',
-    icon: '/svg/board/item.svg',
-    text: 'Books',
-  }, {
-    id: 'trash',
-    icon: '/svg/board/trash.svg',
-    text: 'Trash',
-  }];
+  const [activeBoard, setIsActiveBoard] = useState<string>('board-3');
+  const { boards } = useSelector((state: IRootState) => state);
 
   const changeBoardHandler = (id: string) => {
     console.log('active board', id);
@@ -54,17 +19,17 @@ export const BoardList: FC<IBoardList> = () => {
   };
 
   const boardItems = useMemo(() => (
-    items.map(({ id, icon, text }) => (
+    boards.map(({ id, icon, title }) => (
       <BoardItem
         key={id}
         id={id}
         icon={icon}
-        text={text}
+        title={title}
         isActive={activeBoard === id}
         onClick={changeBoardHandler}
       />
     ))
-  ), [items]);
+  ), [boards, activeBoard]);
 
   const profile = useMemo(() => (
     <Profile />

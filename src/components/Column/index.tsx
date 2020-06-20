@@ -1,39 +1,52 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useMemo, useState,
 } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import {
-  DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DroppableProvided, DropResult,
+  Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Menu } from '../Menu';
 import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
-import { IRootState } from '../../store/reducers/state';
+import { TodosActions } from '../../store/actions';
+import { ITodos } from '../../types';
 
 interface IColumn {
   index: number;
   columnId: string;
   title: string;
   description: string;
-  todos: Array<{
-    id: string;
-    title: string;
-    isDone: boolean;
-  }>;
+  todos: ITodos;
 }
 
 export const Column: FC<IColumn> = ({
   index, columnId, title, description, todos,
 }) => {
+  const dispatch = useDispatch();
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
-  const exitFromCardEditableHandler = (newTitle: string, newDescription: string, id?: string) => {
+  const exitFromCardEditableHandler = (
+    newTitle?: string,
+    newDescription?: string,
+    isDone?: boolean,
+    id?: string,
+  ) => {
     console.log('id', id, '->', newTitle, '->', newDescription);
+    if (id) {
+      if (newTitle) {
+        dispatch(TodosActions.updateTitle(id, newTitle));
+      }
+      if (newDescription) {
+        dispatch(TodosActions.updateDescription(id, newDescription));
+      }
+    } else if (newTitle || newDescription) {
+      dispatch(TodosActions.add(columnId, newTitle, newDescription, isDone));
+    }
     setIsOpenNewCard(false);
   };
 
@@ -43,13 +56,12 @@ export const Column: FC<IColumn> = ({
       type="QUOTE"
     >
       {
-            (dropProvided,
-              droppableSnapshot) => (
-                <div
-                  ref={dropProvided.innerRef}
-                  style={{ minHeight: 36 }}
-                >
-                  {
+            (dropProvided) => (
+              <div
+                ref={dropProvided.innerRef}
+                style={{ minHeight: 36 }}
+              >
+                {
                     todos.map((todo, todoIndex) => (
                       <Draggable
                         key={todo.id}
@@ -64,18 +76,22 @@ export const Column: FC<IColumn> = ({
                             provided={dragProvided}
                             snapshot={dragSnapshot}
                             key={todo.id}
-                            title={todo.title}
-                            isDone={todo.isDone}
+                            initialTitle={todo.title}
+                            initialDescription={todo.description}
+                            initialIsDone={todo.isDone}
                             onExitFromEditable={
-                              (t, d) => exitFromCardEditableHandler(t, d, todo.id)
-                            }
+                                    (newTitle, newDescription,
+                                      isDone) => exitFromCardEditableHandler(
+                                      newTitle, newDescription, isDone, todo.id,
+                                    )
+                                  }
                           />
                         )}
                       </Draggable>
                     ))
                   }
-                  {dropProvided.placeholder}
-                </div>
+                {dropProvided.placeholder}
+              </div>
             )
           }
     </Droppable>

@@ -8,7 +8,7 @@ import { Submenu } from '../Submenu';
 interface IBoardItem {
   id: string;
   icon: string;
-  text: string;
+  title: string;
   isActive: boolean;
   onClick: (id: string)=>void;
 }
@@ -25,7 +25,7 @@ const colors = [
 export const BoardItem: FC<IBoardItem> = ({
   id,
   icon,
-  text,
+  title,
   isActive,
   onClick,
 }) => {
@@ -47,7 +47,7 @@ export const BoardItem: FC<IBoardItem> = ({
           alt="ico"
           className="board-item__image"
         />
-        <span className="board-item__text">{text}</span>
+        <span className="board-item__text">{title}</span>
       </div>
       {
           id !== 'trash' && (

@@ -1,17 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 interface ICheckbox {
-  isActiveDefault: boolean;
+  isActive: boolean;
+  onClick: ()=>void;
 }
 
-export const Checkbox: FC<ICheckbox> = ({ isActiveDefault }) => {
-  const [isActive, setIsActive] = useState<boolean>(isActiveDefault);
-  return (
-    <button
-      className={`checkbox ${isActive ? 'checkbox--active' : ''}`}
-      onClick={() => setIsActive((prev) => !prev)}
-    >
-      <img src="/svg/tick.svg" alt="tick" />
-    </button>
-  );
-};
+export const Checkbox: FC<ICheckbox> = ({ isActive, onClick }) => (
+  <button
+    className={`checkbox ${isActive ? 'checkbox--active' : ''}`}
+    onClick={onClick}
+  >
+    <img src="/svg/tick.svg" alt="tick" />
+  </button>
+);
