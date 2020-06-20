@@ -17,7 +17,7 @@
     &::-webkit-scrollbar {
       width: 0;
     }
-    &--draggable {
+    &--dragging {
       background: $primary-light;
       transform: scale(1.02);
       box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),

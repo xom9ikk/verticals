@@ -28,10 +28,14 @@ interface IColumn {
 export const Column: FC<IColumn> = ({
   index, columnId, title, description, todos,
 }) => {
-  const { isEditableCard } = useSelector((state: IRootState) => state.system);
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
+
+  const exitFromCardEditableHandler = (newTitle: string, newDescription: string, id?: string) => {
+    console.log('id', id, '->', newTitle, '->', newDescription);
+    setIsOpenNewCard(false);
+  };
 
   const todoCards = useMemo(() => (
     <Droppable
@@ -39,36 +43,43 @@ export const Column: FC<IColumn> = ({
       type="QUOTE"
     >
       {
-        (dropProvided,
-          droppableSnapshot) => (
-            <div
-              ref={dropProvided.innerRef}
-              style={{ minHeight: 36 }}
-            >
-              {
-                todos.map((todo, index) => (
-                  <Draggable key={todo.id} draggableId={todo.id} index={index}>
-                    {(
-                      dragProvided: DraggableProvided,
-                      dragSnapshot: DraggableStateSnapshot,
-                    ) => (
-                      <Card
-                        provided={dragProvided}
-                        snapshot={dragSnapshot}
+            (dropProvided,
+              droppableSnapshot) => (
+                <div
+                  ref={dropProvided.innerRef}
+                  style={{ minHeight: 36 }}
+                >
+                  {
+                    todos.map((todo, todoIndex) => (
+                      <Draggable
                         key={todo.id}
-                        title={todo.title}
-                        isDone={todo.isDone}
-                      />
-                    )}
-                  </Draggable>
-                ))
-              }
-              {dropProvided.placeholder}
-            </div>
-        )
-      }
+                        draggableId={todo.id}
+                        index={todoIndex}
+                      >
+                        {(
+                          dragProvided: DraggableProvided,
+                          dragSnapshot: DraggableStateSnapshot,
+                        ) => (
+                          <Card
+                            provided={dragProvided}
+                            snapshot={dragSnapshot}
+                            key={todo.id}
+                            title={todo.title}
+                            isDone={todo.isDone}
+                            onExitFromEditable={
+                              (t, d) => exitFromCardEditableHandler(t, d, todo.id)
+                            }
+                          />
+                        )}
+                      </Draggable>
+                    ))
+                  }
+                  {dropProvided.placeholder}
+                </div>
+            )
+          }
     </Droppable>
-  ), [todos]);
+  ), [todos, columnId, exitFromCardEditableHandler]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -126,21 +137,14 @@ export const Column: FC<IColumn> = ({
     )
   ), [isHover, isOpenNewCard]);
 
-  // useEffect(() => {
-  //   if (!isEditableCard) {
-  //     // save new card if title || description
-  //     setIsOpenNewCard(false);
-  //   }
-  // }, [isEditableCard]);
-
   const newCard = useMemo(() => (
     isOpenNewCard && (
-      <Card
-        isEditableDefault
-        onExitFromEditable={() => setIsOpenNewCard(false)}
-      />
+    <Card
+      isEditableDefault
+      onExitFromEditable={(t, d) => exitFromCardEditableHandler(t, d)}
+    />
     )
-  ), [isOpenNewCard]);
+  ), [isOpenNewCard, exitFromCardEditableHandler]);
 
   const cardToolbar = useMemo(() => (
     <CardToolbar
@@ -149,43 +153,6 @@ export const Column: FC<IColumn> = ({
       onClickHeading={() => console.log('open heading')}
     />
   ), [isHover]);
-
-  // @ts-ignore
-  // const reorder = (list, startIndex, endIndex) => {
-  //   const result = Array.from(list);
-  //   const [removed] = result.splice(startIndex, 1);
-  //   result.splice(endIndex, 0, removed);
-  //
-  //   return result;
-  // };
-
-  // const onDragEnd = (result: DropResult) => {
-  //   if (!result.destination) {
-  //     return;
-  //   }
-  //
-  //   const items = reorder(
-  //     todos,
-  //     result.source.index,
-  //     result.destination.index,
-  //   );
-  //
-  //   setTodos(items);
-  // };
-  //
-  // const getListStyle = (isDraggingOver: boolean) => ({
-  //   // background: isDraggingOver ? 'lightblue' : 'grey',
-  //   // padding: 8,
-  //   // width: 250,
-  // });
-
-  // const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-  //   userSelect: 'none',
-  //   // padding: 8 * 2,
-  //   // margin: `0 0 ${8}px 0`,
-  //   background: isDragging ? '#eeeeee' : '',
-  //   ...draggableStyle,
-  // });
 
   const column = useMemo(() => (
     <Draggable draggableId={title} index={index}>
@@ -200,7 +167,7 @@ export const Column: FC<IColumn> = ({
           <div
             className={`column__wrapper
             ${isHoverHeader ? 'column__wrapper--hovered' : ''}
-            ${snapshot.isDragging ? 'column__wrapper--draggable' : ''}
+            ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
             `}
           >
             <div
@@ -224,14 +191,12 @@ export const Column: FC<IColumn> = ({
               <TextareaAutosize
                 className="column__description-editable"
                 defaultValue={description}
-                // minRows={1}
+                minRows={1}
                 placeholder="Notes"
               />
             </div>
             { todoCards }
-            {
-              newCard
-            }
+            { newCard }
             { addCard }
           </div>
           { cardToolbar }
@@ -239,7 +204,7 @@ export const Column: FC<IColumn> = ({
       )}
     </Draggable>
   ),
-  [todos, isHover, isHoverHeader, isOpenNewCard]);
+  [todos, columnId, isHover, isHoverHeader, isOpenNewCard]);
 
   return (
     <>{column}</>

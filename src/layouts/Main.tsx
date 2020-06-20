@@ -431,6 +431,7 @@ export const Main: FC = () => {
     switch (event.code) {
       case 'Escape': {
         dispatch(SystemActions.setIsOpenPopup(false));
+        dispatch(SystemActions.setIsEditableCard(false));
         break;
       }
       default: break;

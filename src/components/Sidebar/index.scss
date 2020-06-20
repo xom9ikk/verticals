@@ -19,7 +19,7 @@
     }
   }
 
-  &__toggler {
+  &__toggle {
     position: fixed;
     display: flex;
     width: $column-width;
@@ -34,7 +34,7 @@
       opacity: 0;
       display: none;
     }
-    #{$block}__toggler {
+    #{$block}__toggle {
       width: 0;
     }
   }

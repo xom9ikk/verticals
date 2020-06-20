@@ -24,7 +24,7 @@ export const Sidebar: FC<ISidebar> = () => {
         onMouseLeave={() => setIsHover(false)}
       >
         <div className="sidebar__inner">
-          <div className="sidebar__toggler">
+          <div className="sidebar__toggle">
             <Menu
               imageSrc={`/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
               alt="add"
@@ -32,6 +32,7 @@ export const Sidebar: FC<ISidebar> = () => {
               size={20}
               isHide
               isHoverBlock={isHover}
+              isShowPopup={false}
               onClick={() => setIsPinnedSidebar((prev) => !prev)}
             />
           </div>
