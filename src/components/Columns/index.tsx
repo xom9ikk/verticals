@@ -17,7 +17,8 @@ interface TodoMap {
 }
 
 interface IColumn {
-  initialColumns: TodoMap
+  boardId: string;
+  initialColumns: TodoMap;
 }
 
 type ReorderTodoMapArgs = {
@@ -26,7 +27,7 @@ type ReorderTodoMapArgs = {
   destination: DraggableLocation,
 };
 
-export const Columns: FC<IColumn> = ({ initialColumns }) => {
+export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
   const [columns, setColumns] = useState<TodoMap>(initialColumns);
   const [orderedId, setOrderedId] = useState<Array<string>>([]);
 
@@ -163,6 +164,7 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
         <Column
           index={index}
           columnId={key}
+          boardId={boardId}
           key={key}
           title={columns[key].title}
           todos={columns[key].todos}
@@ -186,6 +188,7 @@ export const Columns: FC<IColumn> = ({ initialColumns }) => {
             {...provided.droppableProps}
           >
             { drawColumns }
+            <Column boardId={boardId} />
             {provided.placeholder}
           </div>
         )}

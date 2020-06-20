@@ -56,6 +56,7 @@ export const Main: FC = () => {
     <div className="container container--horizontal">
       <Sidebar />
       <Columns
+          boardId={}
         initialColumns={preparedData}
       />
     </div>

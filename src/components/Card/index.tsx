@@ -11,11 +11,12 @@ import { Divider } from '../Divider';
 import { Submenu } from '../Submenu';
 import { SystemActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
+import { useFocus } from '../../use/focus';
 
 interface ICard {
-  initialTitle?: string;
-  initialDescription?: string;
-  initialIsDone?: boolean;
+  title?: string;
+  description?: string;
+  isDone?: boolean;
   isEditableDefault?: boolean;
   onExitFromEditable?: (title?: string, description?: string, isDone?: boolean) => void;
   provided?: any;
@@ -34,15 +35,16 @@ const colors = [
 ];
 
 export const Card: FC<ICard> = ({
-  initialTitle = '',
-  initialDescription = '',
-  initialIsDone = false,
+  title: initialTitle = '',
+  description: initialDescription = '',
+  isDone: initialIsDone = false,
   isEditableDefault,
   onExitFromEditable,
   provided,
   snapshot,
 }) => {
   const dispatch = useDispatch();
+  const { focus } = useFocus();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
@@ -50,16 +52,18 @@ export const Card: FC<ICard> = ({
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const [isDone, setIsDone] = useState<boolean>(initialIsDone);
+  const titleInputRef = useRef<any>(null);
+  const descriptionInputRef = useRef<any>(null);
 
   const getNewData = () => ({
-    title: initialTitle !== titleValue ? titleValue.trim() : undefined,
-    description: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
-    isDone: initialIsDone !== isDone ? isDone : undefined,
+    newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
+    newDescription: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
+    newIsDone: initialIsDone !== isDone ? isDone : undefined,
   });
 
   const sendData = () => {
-    const { title, description, isDone } = getNewData();
-    onExitFromEditable?.(title, description, isDone);
+    const { newTitle, newDescription, newIsDone } = getNewData();
+    onExitFromEditable?.(newTitle, newDescription, newIsDone);
   };
 
   useEffect(() => {
@@ -100,11 +104,8 @@ export const Card: FC<ICard> = ({
     }
   }, [isEditableDefault]);
 
-  const titleInputRef = useRef<any>(null);
-  const descriptionInputRef = useRef<any>(null);
-
   useEffect(() => {
-    titleInputRef.current?.focus();
+    focus(titleInputRef);
   }, [isEditable]);
 
   const keydownHandler = (event: any, isDescription: boolean) => {
@@ -114,7 +115,7 @@ export const Card: FC<ICard> = ({
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
       if (!isDescription) {
         setTitleValue(titleValue.trim());
-        descriptionInputRef.current?.focus();
+        focus(descriptionInputRef);
       } else {
         console.log('3');
         sendData();
@@ -211,7 +212,7 @@ export const Card: FC<ICard> = ({
                   value={titleValue}
                   placeholder="New Card"
                   minRows={1}
-                  maxRows={4}
+                  maxRows={20}
                   onChange={(event) => changeHandler(event, false)}
                   onKeyUp={(event) => keydownHandler(event, false)}
                 />
@@ -221,9 +222,9 @@ export const Card: FC<ICard> = ({
                   value={descriptionValue}
                   placeholder="Notes"
                   minRows={1}
-                  maxRows={4}
+                  maxRows={20}
                   onChange={(event) => changeHandler(event, true)}
-                  onKeyDown={(event) => keydownHandler(event, true)}
+                  onKeyDownCapture={(event) => keydownHandler(event, true)}
                 />
               </div>
             ) : (<span>{titleValue}</span>

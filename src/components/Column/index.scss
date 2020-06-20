@@ -46,15 +46,23 @@
   &__header {
     display: flex;
     flex-direction: column;
-    padding: 17px 10px 10px;
+    padding: 17px 10px 13px;
+    border-radius: 6px;
+    letter-spacing: 0;
+    &--editable {
+      box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
+      width: $column-width - 27;
+      margin: 3px;
+      padding: 14px 16px 10px 7px;
+    }
   }
-  &__title-container {
+  &__header-container {
     display: flex;
     margin-bottom: 10px;
     justify-content: space-between;
     align-items: center;
   }
-  &__title-editable {
+  &__title {
     padding: 0;
     margin: 0;
     min-height: 38px;
@@ -63,8 +71,13 @@
     resize: none;
     font-size: 28px;
     font-family: 'Nunito Extra Bold', sans-serif;
+    background: inherit;
+    max-height: 100px;
+    &--empty {
+      color: $text-light;
+    }
   }
-  &__description-editable {
+  &__description {
     padding: 0;
     margin: 0;
     min-height: 38px;
@@ -74,5 +87,10 @@
     font-size: 14px;
     color: $text;
     font-family: 'Nunito Regular', sans-serif;
+    background: inherit;
+    max-height: 100px;
+    &--empty {
+      color: $text-light;
+    }
   }
 }

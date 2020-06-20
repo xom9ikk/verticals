@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { ColumnsActions } from '../actions';
-import { IColumns } from '../../types';
+import { IColumn, IColumns } from '../../types';
 
 const initialState: IColumns = [
   {
@@ -47,7 +47,26 @@ const initialState: IColumns = [
   },
 ];
 
-export const ColumnsReducer = handleActions<IColumns, IColumns>({
+export const ColumnsReducer = handleActions<IColumns, any>({
   [ColumnsActions.Type.SET_COLUMNS]:
         (state, action) => ([...action.payload]),
+  [ColumnsActions.Type.UPDATE_TITLE]:
+      (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
+        ? {
+          ...column,
+          title: action.payload.title,
+        }
+        : column))),
+  [ColumnsActions.Type.UPDATE_DESCRIPTION]:
+      (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
+        ? {
+          ...column,
+          description: action.payload.description,
+        }
+        : column))),
+  [ColumnsActions.Type.ADD]:
+      (state, action) => ([...state, {
+        id: Math.random().toString(),
+        ...action.payload,
+      }]),
 }, initialState);

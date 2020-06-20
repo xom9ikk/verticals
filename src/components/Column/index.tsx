@@ -1,5 +1,5 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import {
@@ -11,24 +11,32 @@ import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
-import { TodosActions } from '../../store/actions';
+import { ColumnsActions, TodosActions } from '../../store/actions';
 import { ITodos } from '../../types';
+import { useFocus } from '../../use/focus';
 
 interface IColumn {
-  index: number;
-  columnId: string;
-  title: string;
-  description: string;
-  todos: ITodos;
+  index?: number;
+  columnId?: string;
+  boardId: string;
+  title?: string;
+  description?: string;
+  todos?: ITodos;
 }
 
 export const Column: FC<IColumn> = ({
-  index, columnId, title, description, todos,
+  index, columnId, boardId, title: initialTitle, description: initialDescription, todos,
 }) => {
   const dispatch = useDispatch();
+  const { focus } = useFocus();
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
+  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
+  const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
+  const titleInputRef = useRef<any>(null);
+  const descriptionInputRef = useRef<any>(null);
 
   const exitFromCardEditableHandler = (
     newTitle?: string,
@@ -45,14 +53,61 @@ export const Column: FC<IColumn> = ({
         dispatch(TodosActions.updateDescription(id, newDescription));
       }
     } else if (newTitle || newDescription) {
-      dispatch(TodosActions.add(columnId, newTitle, newDescription, isDone));
+      dispatch(TodosActions.add(columnId || 'todo-this-case', newTitle, newDescription, isDone));
     }
     setIsOpenNewCard(false);
   };
 
+  useEffect(() => {
+    focus(titleInputRef);
+  }, [isEditable]);
+
+  const getNewData = () => ({
+    newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
+    newDescription: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
+  });
+
+  const saveData = () => {
+    const { newTitle, newDescription } = getNewData();
+    if (columnId) {
+      if (newTitle) {
+        dispatch(ColumnsActions.updateTitle(columnId, newTitle));
+      }
+      if (newDescription) {
+        dispatch(ColumnsActions.updateDescription(columnId, newDescription));
+      }
+    } else if (newTitle || newDescription) {
+      dispatch(ColumnsActions.add(boardId, newTitle, newDescription));
+    }
+  };
+
+  const keydownHandler = (event: any, isDescription: boolean) => {
+    const {
+      key, ctrlKey, shiftKey,
+    } = event;
+    if (key === 'Enter' && !ctrlKey && !shiftKey) {
+      if (!isDescription) {
+        focus(descriptionInputRef);
+        setTitleValue(titleValue.trim());
+      } else {
+        console.log('3');
+        saveData();
+        setIsEditable(false);
+      }
+    }
+  };
+
+  const changeHandler = (event: any, isDescription: boolean) => {
+    const { value } = event.target;
+    console.log(value);
+    return isDescription
+      ? setDescriptionValue(value)
+      : setTitleValue(value);
+  };
+
   const todoCards = useMemo(() => (
     <Droppable
-      droppableId={columnId}
+      droppableId={columnId || 'todo-this-case'}
       type="QUOTE"
     >
       {
@@ -62,7 +117,7 @@ export const Column: FC<IColumn> = ({
                 style={{ minHeight: 36 }}
               >
                 {
-                    todos.map((todo, todoIndex) => (
+                    todos?.map((todo, todoIndex) => (
                       <Draggable
                         key={todo.id}
                         draggableId={todo.id}
@@ -76,9 +131,9 @@ export const Column: FC<IColumn> = ({
                             provided={dragProvided}
                             snapshot={dragSnapshot}
                             key={todo.id}
-                            initialTitle={todo.title}
-                            initialDescription={todo.description}
-                            initialIsDone={todo.isDone}
+                            title={todo.title}
+                            description={todo.description}
+                            isDone={todo.isDone}
                             onExitFromEditable={
                                     (newTitle, newDescription,
                                       isDone) => exitFromCardEditableHandler(
@@ -171,7 +226,7 @@ export const Column: FC<IColumn> = ({
   ), [isHover]);
 
   const column = useMemo(() => (
-    <Draggable draggableId={title} index={index}>
+    <Draggable draggableId={titleValue} index={index || 777}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <div
           className="column"
@@ -182,34 +237,65 @@ export const Column: FC<IColumn> = ({
         >
           <div
             className={`column__wrapper
-            ${isHoverHeader ? 'column__wrapper--hovered' : ''}
+            ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
             ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
             `}
           >
             <div
-              className="column__header"
+              className={`column__header ${isEditable ? 'column__header--editable' : ''}`}
               {...provided.dragHandleProps}
-              aria-label={`${title} quote list`}
+              aria-label={`${titleValue} quote list`}
               onMouseEnter={() => setIsHoverHeader(true)}
               onMouseLeave={() => setIsHoverHeader(false)}
+              onDoubleClick={() => setIsEditable(true)}
             >
               <div
-                className="column__title-container"
+                className="column__header-container"
               >
-                <TextareaAutosize
-                  className="column__title-editable"
-                  defaultValue={title}
-                  placeholder="New Column"
-                  minRows={1}
-                />
-                { (title || description || todos.length) ? contextMenu : null}
+                {
+                  isEditable ? (
+                    <TextareaAutosize
+                      ref={titleInputRef}
+                      className="column__title column__title--editable"
+                      defaultValue={titleValue}
+                      placeholder="New Column"
+                      minRows={1}
+                      maxRows={4}
+                      onChange={(event) => changeHandler(event, false)}
+                      onKeyUp={(event) => keydownHandler(event, false)}
+                    />
+                  ) : (
+                    <>
+                      <span
+                        className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
+                      >
+                        {titleValue || 'New column'}
+                      </span>
+                      { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
+                    </>
+                  )
+                }
               </div>
-              <TextareaAutosize
-                className="column__description-editable"
-                defaultValue={description}
-                minRows={1}
-                placeholder="Notes"
-              />
+              {
+                isEditable ? (
+                  <TextareaAutosize
+                    ref={descriptionInputRef}
+                    className="column__description column__description--editable"
+                    defaultValue={descriptionValue}
+                    placeholder="Notes"
+                    minRows={1}
+                    maxRows={4}
+                    onChange={(event) => changeHandler(event, true)}
+                    onKeyDownCapture={(event) => keydownHandler(event, true)}
+                  />
+                ) : (
+                  <span
+                    className={`column__description ${!descriptionValue ? 'column__description--empty' : ''}`}
+                  >
+                    {descriptionValue || 'Notes'}
+                  </span>
+                )
+              }
             </div>
             { todoCards }
             { newCard }
@@ -220,7 +306,7 @@ export const Column: FC<IColumn> = ({
       )}
     </Draggable>
   ),
-  [todos, columnId, isHover, isHoverHeader, isOpenNewCard]);
+  [todos, columnId, isHover, isHoverHeader, isOpenNewCard, isEditable]);
 
   return (
     <>{column}</>
