@@ -5,27 +5,35 @@ import TextareaAutosize from 'react-textarea-autosize';
 import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '../Menu';
 import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
-import { ColumnsActions, TodosActions } from '../../store/actions';
+import { ColumnsActions, SystemActions, TodosActions } from '../../store/actions';
 import { ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
+import { IRootState } from '../../store/reducers/state';
 
 interface IColumn {
-  index?: number;
+  index: number;
   columnId?: string;
   boardId: string;
   title?: string;
   description?: string;
   todos?: ITodos;
+  isDraggable?: boolean;
 }
 
 export const Column: FC<IColumn> = ({
-  index, columnId, boardId, title: initialTitle, description: initialDescription, todos,
+  index,
+  columnId,
+  boardId,
+  title: initialTitle,
+  description: initialDescription,
+  todos,
+  isDraggable = true,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
@@ -33,12 +41,14 @@ export const Column: FC<IColumn> = ({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
+  const { isEditableColumn } = useSelector((state: IRootState) => state.system);
   const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
-  const exitFromCardEditableHandler = (
+  const saveCard = (
     newTitle?: string,
     newDescription?: string,
     isDone?: boolean,
@@ -63,11 +73,15 @@ export const Column: FC<IColumn> = ({
   }, [isEditable]);
 
   const getNewData = () => ({
-    newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
-    newDescription: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
+    newTitle: initialTitle !== titleValue
+      ? titleValue.trim()
+      : undefined,
+    newDescription: initialDescription !== descriptionValue
+      ? descriptionValue.trim()
+      : undefined,
   });
 
-  const saveData = () => {
+  const saveColumn = () => {
     const { newTitle, newDescription } = getNewData();
     if (columnId) {
       if (newTitle) {
@@ -78,6 +92,10 @@ export const Column: FC<IColumn> = ({
       }
     } else if (newTitle || newDescription) {
       dispatch(ColumnsActions.add(boardId, newTitle, newDescription));
+      if (!isDraggable) {
+        setTitleValue('');
+        setDescriptionValue('');
+      }
     }
   };
 
@@ -90,8 +108,7 @@ export const Column: FC<IColumn> = ({
         focus(descriptionInputRef);
         setTitleValue(titleValue.trim());
       } else {
-        console.log('3');
-        saveData();
+        saveColumn();
         setIsEditable(false);
       }
     }
@@ -99,11 +116,59 @@ export const Column: FC<IColumn> = ({
 
   const changeHandler = (event: any, isDescription: boolean) => {
     const { value } = event.target;
-    console.log(value);
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
   };
+
+  useEffect(() => {
+    if (isDoubleClicked) {
+      setIsDoubleClicked(false);
+      dispatch(SystemActions.setIsEditableColumn(true));
+      if (!isEditableColumn && isDoubleClicked) {
+        setIsEditable(true);
+      }
+    }
+  }, [isDoubleClicked]);
+
+  useEffect(() => {
+    if (isDoubleClicked === false && !isEditableColumn && isEditable) {
+      setIsEditable(false);
+      saveColumn();
+      setIsDoubleClicked(undefined);
+    }
+  }, [isEditableColumn]);
+
+  const doubleClickHandler = () => {
+    if (isEditableColumn) {
+      dispatch(SystemActions.setIsEditableColumn(false));
+    }
+    setIsDoubleClicked(true);
+  };
+
+  const addCard = useMemo(() => (
+    (!isOpenNewCard && isDraggable) && (
+      <Menu
+        imageSrc="/svg/add.svg"
+        alt="add"
+        text="Add card"
+        isHide
+        isHoverBlock={isHover}
+        isMaxWidth
+        isShowPopup={false}
+        onClick={() => setIsOpenNewCard(true)}
+      />
+    )
+  ), [isHover, isOpenNewCard]);
+
+  const newCard = useMemo(() => (
+    isOpenNewCard && (
+      <Card
+        isEditableDefault
+        onExitFromEditable={(t, d) => saveCard(t, d)}
+      />
+    )
+  ), [isOpenNewCard]);
 
   const todoCards = useMemo(() => (
     <Droppable
@@ -111,12 +176,13 @@ export const Column: FC<IColumn> = ({
       type="QUOTE"
     >
       {
-            (dropProvided) => (
+            (dropProvided, dropSnapshot) => (
               <div
+                className="column__container"
                 ref={dropProvided.innerRef}
-                style={{ minHeight: 36 }}
               >
-                {
+                <div>
+                  {
                     todos?.map((todo, todoIndex) => (
                       <Draggable
                         key={todo.id}
@@ -136,7 +202,7 @@ export const Column: FC<IColumn> = ({
                             isDone={todo.isDone}
                             onExitFromEditable={
                                     (newTitle, newDescription,
-                                      isDone) => exitFromCardEditableHandler(
+                                      isDone) => saveCard(
                                       newTitle, newDescription, isDone, todo.id,
                                     )
                                   }
@@ -145,12 +211,15 @@ export const Column: FC<IColumn> = ({
                       </Draggable>
                     ))
                   }
+                  { newCard }
+                  { addCard }
+                </div>
                 {dropProvided.placeholder}
               </div>
             )
           }
     </Droppable>
-  ), [todos, columnId, exitFromCardEditableHandler]);
+  ), [todos, columnId, saveCard]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -193,30 +262,6 @@ export const Column: FC<IColumn> = ({
     </Menu>
   ), [isHover]);
 
-  const addCard = useMemo(() => (
-    !isOpenNewCard && (
-    <Menu
-      imageSrc="/svg/add.svg"
-      alt="add"
-      text="Add card"
-      isHide
-      isHoverBlock={isHover}
-      isMaxWidth
-      isShowPopup={false}
-      onClick={() => setIsOpenNewCard(true)}
-    />
-    )
-  ), [isHover, isOpenNewCard]);
-
-  const newCard = useMemo(() => (
-    isOpenNewCard && (
-    <Card
-      isEditableDefault
-      onExitFromEditable={(t, d) => exitFromCardEditableHandler(t, d)}
-    />
-    )
-  ), [isOpenNewCard, exitFromCardEditableHandler]);
-
   const cardToolbar = useMemo(() => (
     <CardToolbar
       isHoverBlock={isHover}
@@ -225,8 +270,67 @@ export const Column: FC<IColumn> = ({
     />
   ), [isHover]);
 
-  const column = useMemo(() => (
-    <Draggable draggableId={titleValue} index={index || 777}>
+  const memoDescription = useMemo(() => (
+    <>
+      {
+          isEditable ? (
+            <TextareaAutosize
+              ref={descriptionInputRef}
+              className="column__description column__description--editable"
+              value={descriptionValue}
+              placeholder="Notes"
+              minRows={1}
+              maxRows={4}
+              onChange={(event) => changeHandler(event, true)}
+              onKeyUp={(event) => keydownHandler(event, true)}
+            />
+          ) : (
+            <span
+              className={`column__description ${!descriptionValue ? 'column__description--empty' : ''}`}
+            >
+              {descriptionValue || 'Notes'}
+            </span>
+          )
+        }
+    </>
+  ), [isEditable, descriptionValue]);
+
+  const memoTitle = useMemo(() => (
+    <div
+      className="column__header-container"
+    >
+      {
+          isEditable ? (
+            <TextareaAutosize
+              ref={titleInputRef}
+              className="column__title column__title--editable"
+              value={titleValue}
+              placeholder="New column"
+              minRows={1}
+              maxRows={4}
+              onChange={(event) => changeHandler(event, false)}
+              onKeyUp={(event) => keydownHandler(event, false)}
+            />
+          ) : (
+            <>
+              <span
+                className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
+              >
+                {titleValue || 'New column'}
+              </span>
+              { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
+            </>
+          )
+        }
+    </div>
+  ), [isEditable, titleValue, descriptionValue, todos, contextMenu]);
+
+  const memoColumn = useMemo(() => (
+    <Draggable
+      draggableId={`${columnId}-${index}` || `new-${index}`}
+      index={index}
+      isDragDisabled={!isDraggable}
+    >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <div
           className="column"
@@ -247,68 +351,25 @@ export const Column: FC<IColumn> = ({
               aria-label={`${titleValue} quote list`}
               onMouseEnter={() => setIsHoverHeader(true)}
               onMouseLeave={() => setIsHoverHeader(false)}
-              onDoubleClick={() => setIsEditable(true)}
+              onDoubleClick={doubleClickHandler}
             >
-              <div
-                className="column__header-container"
-              >
-                {
-                  isEditable ? (
-                    <TextareaAutosize
-                      ref={titleInputRef}
-                      className="column__title column__title--editable"
-                      defaultValue={titleValue}
-                      placeholder="New Column"
-                      minRows={1}
-                      maxRows={4}
-                      onChange={(event) => changeHandler(event, false)}
-                      onKeyUp={(event) => keydownHandler(event, false)}
-                    />
-                  ) : (
-                    <>
-                      <span
-                        className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
-                      >
-                        {titleValue || 'New column'}
-                      </span>
-                      { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
-                    </>
-                  )
-                }
-              </div>
-              {
-                isEditable ? (
-                  <TextareaAutosize
-                    ref={descriptionInputRef}
-                    className="column__description column__description--editable"
-                    defaultValue={descriptionValue}
-                    placeholder="Notes"
-                    minRows={1}
-                    maxRows={4}
-                    onChange={(event) => changeHandler(event, true)}
-                    onKeyDownCapture={(event) => keydownHandler(event, true)}
-                  />
-                ) : (
-                  <span
-                    className={`column__description ${!descriptionValue ? 'column__description--empty' : ''}`}
-                  >
-                    {descriptionValue || 'Notes'}
-                  </span>
-                )
-              }
+              { memoTitle }
+              { memoDescription }
             </div>
             { todoCards }
-            { newCard }
-            { addCard }
           </div>
           { cardToolbar }
         </div>
       )}
     </Draggable>
   ),
-  [todos, columnId, isHover, isHoverHeader, isOpenNewCard, isEditable]);
+  [
+    index, todos, columnId, isHover,
+    isHoverHeader, isOpenNewCard, isEditable,
+    titleValue, descriptionValue,
+  ]);
 
   return (
-    <>{column}</>
+    <>{memoColumn}</>
   );
 };

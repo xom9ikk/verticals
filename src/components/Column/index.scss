@@ -5,7 +5,8 @@
   flex-direction: column;
   width: $column-width;
   height: 100vh;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  //border-right: 1px solid rgba(0, 0, 0, 0.05);
+  //margin-right: 1px;
   padding: 23px 10px;
   transition: background .2s ease-in-out, scale .2s ease-in-out;
   &__wrapper {
@@ -43,17 +44,22 @@
       }
     }
   }
+  &__container {
+    height: calc(100vh - 203px);
+  }
   &__header {
     display: flex;
     flex-direction: column;
     padding: 17px 10px 13px;
     border-radius: 6px;
+    border: none;
+    outline: none;
     letter-spacing: 0;
     &--editable {
       box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
       width: $column-width - 27;
       margin: 3px;
-      padding: 14px 16px 10px 7px;
+      padding: 14px 9px 10px 7px;
     }
   }
   &__header-container {
@@ -72,9 +78,13 @@
     font-size: 28px;
     font-family: 'Nunito Extra Bold', sans-serif;
     background: inherit;
-    max-height: 100px;
+    max-height: 70px;
+    overflow: hidden;
     &--empty {
       color: $text-light;
+    }
+    &--editable {
+      overflow: scroll;
     }
   }
   &__description {
@@ -88,9 +98,20 @@
     color: $text;
     font-family: 'Nunito Regular', sans-serif;
     background: inherit;
-    max-height: 100px;
+    max-height: 80px;
+    overflow: hidden;
     &--empty {
       color: $text-light;
     }
+    &--editable {
+      overflow: scroll;
+    }
+  }
+  &__overlay {
+    position: absolute;
+    height: 100vh;
+    width: $column-width;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: -1;
   }
 }

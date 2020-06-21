@@ -1,13 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Toolbar } from '../Toolbar';
 import { Menu } from '../Menu';
-import { Search } from '../Search';
-import { BoardList } from '../BoardList';
 
 interface ISidebar {
 }
 
-export const Sidebar: FC<ISidebar> = () => {
+export const Sidebar: FC<ISidebar> = ({ children }) => {
   const [isPinnedSidebar, setIsPinnedSidebar] = useState<boolean>(true);
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -36,9 +33,7 @@ export const Sidebar: FC<ISidebar> = () => {
               onClick={() => setIsPinnedSidebar((prev) => !prev)}
             />
           </div>
-          <Search />
-          <BoardList />
-          <Toolbar />
+          {children}
         </div>
       </aside>
     </>

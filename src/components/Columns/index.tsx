@@ -28,10 +28,11 @@ type ReorderTodoMapArgs = {
 };
 
 export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
-  const [columns, setColumns] = useState<TodoMap>(initialColumns);
+  const [columns, setColumns] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<string>>([]);
 
   useEffect(() => {
+    console.log('initialColumn change');
     setColumns(initialColumns);
     setOrderedId(Object.keys(initialColumns || {}));
   }, [initialColumns]);
@@ -157,10 +158,10 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
     };
   };
 
-  const drawColumns = useMemo(() => (
-    orderedId && orderedId.map((key, index) => {
-      console.log('rerender', key, 'todos:', columns[key].todos);
-      return (
+  const memoColumns = useMemo(() => (
+    orderedId && orderedId.map((key, index) =>
+      // console.log('rerender', key, 'todos:', columns[key].todos);
+      (
         <Column
           index={index}
           columnId={key}
@@ -170,29 +171,43 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
           todos={columns[key].todos}
           description={columns[key].description}
         />
-      );
-    })
-  ), [columns, orderedId]);
+      ))
+  ), [columns, orderedId, boardId]);
+
+  const memoNewColumn = useMemo(() => (
+    <Column
+      boardId={boardId}
+      index={orderedId.length}
+      isDraggable={false}
+    />
+  ), [boardId, orderedId]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable
-        droppableId="board"
-        type="COLUMN"
-        direction="horizontal"
-      >
-        {(provided: DroppableProvided) => (
-          <div
-            className="columns"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            { drawColumns }
-            <Column boardId={boardId} />
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable
+          droppableId="board"
+          type="COLUMN"
+          direction="horizontal"
+        >
+          {(provided: DroppableProvided) => (
+            <div
+              className="columns"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              { memoColumns }
+              { memoNewColumn }
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {
+        [...new Array(orderedId.length + 1)].map((el, index) => (
+          <div className="column__overlay" style={{ left: 260 + 260 * index }} />
+        ))
+      }
+    </>
   );
 };

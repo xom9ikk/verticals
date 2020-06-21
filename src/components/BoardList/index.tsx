@@ -6,17 +6,13 @@ import { Profile } from '../Profile';
 import { IRootState } from '../../store/reducers/state';
 
 interface IBoardList {
+  activeBoard: string;
+  onChange: (boardId: string) => void;
 }
 
-export const BoardList: FC<IBoardList> = () => {
+export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [activeBoard, setIsActiveBoard] = useState<string>('board-3');
   const { boards } = useSelector((state: IRootState) => state);
-
-  const changeBoardHandler = (id: string) => {
-    console.log('active board', id);
-    setIsActiveBoard(id);
-  };
 
   const boardItems = useMemo(() => (
     boards.map(({ id, icon, title }) => (
@@ -26,7 +22,7 @@ export const BoardList: FC<IBoardList> = () => {
         icon={icon}
         title={title}
         isActive={activeBoard === id}
-        onClick={changeBoardHandler}
+        onClick={() => onChange(id)}
       />
     ))
   ), [boards, activeBoard]);
