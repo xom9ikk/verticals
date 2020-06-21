@@ -11,6 +11,7 @@
   &__block {
     display: flex;
     justify-content: center;
+    flex: 1;
     padding-top: 5px;
     span {
       font-size: 15px;
@@ -19,6 +20,10 @@
       max-height: 440px;
       overflow: hidden;
     }
+  }
+  &__inner {
+    display: flex;
+    flex: 1;
   }
   &__textarea {
     outline: none;

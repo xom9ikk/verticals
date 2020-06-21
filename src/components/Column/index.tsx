@@ -183,33 +183,35 @@ export const Column: FC<IColumn> = ({
               >
                 <div>
                   {
-                    todos?.map((todo, todoIndex) => (
-                      <Draggable
-                        key={todo.id}
-                        draggableId={todo.id}
-                        index={todoIndex}
-                      >
-                        {(
-                          dragProvided: DraggableProvided,
-                          dragSnapshot: DraggableStateSnapshot,
-                        ) => (
-                          <Card
-                            provided={dragProvided}
-                            snapshot={dragSnapshot}
-                            key={todo.id}
-                            title={todo.title}
-                            description={todo.description}
-                            isDone={todo.isDone}
-                            onExitFromEditable={
+                    todos
+                      ?.sort((a, b) => a.position - b.position)
+                      ?.map((todo, todoIndex) => (
+                        <Draggable
+                          key={todo.id}
+                          draggableId={todo.id}
+                          index={todoIndex}
+                        >
+                          {(
+                            dragProvided: DraggableProvided,
+                            dragSnapshot: DraggableStateSnapshot,
+                          ) => (
+                            <Card
+                              provided={dragProvided}
+                              snapshot={dragSnapshot}
+                              key={todo.id}
+                              title={todo.title}
+                              description={todo.description}
+                              isDone={todo.isDone}
+                              onExitFromEditable={
                                     (newTitle, newDescription,
                                       isDone) => saveCard(
                                       newTitle, newDescription, isDone, todo.id,
                                     )
                                   }
-                          />
-                        )}
-                      </Draggable>
-                    ))
+                            />
+                          )}
+                        </Draggable>
+                      ))
                   }
                   { newCard }
                   { addCard }

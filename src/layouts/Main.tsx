@@ -12,28 +12,26 @@ import { Toolbar } from '../components/Toolbar';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
-  const { columns, todos } = useSelector((state: IRootState) => state);
-  const [preparedData, setPreparedData] = useState<any>();
   const [activeBoardId, setActiveBoardId] = useState<string>('board-3');
 
-  useEffect(() => {
-    const data = {};
-    columns
-      ?.filter((column) => column.boardId === activeBoardId)
-      ?.forEach((column) => {
-        // @ts-ignore
-        data[column.id] = {
-          title: column.title,
-          description: column.description,
-          todos: todos.filter((todo) => todo.columnId === column.id),
-        };
-      });
-    console.log(data);
-    setPreparedData(data);
-  }, [todos,
-    // TODO: need?
-    columns,
-    activeBoardId]);
+  // useEffect(() => {
+  //   const data = {};
+  //   columns
+  //     ?.filter((column) => column.boardId === activeBoardId)
+  //     ?.forEach((column) => {
+  //       // @ts-ignore
+  //       data[column.id] = {
+  //         title: column.title,
+  //         description: column.description,
+  //         todos: todos.filter((todo) => todo.columnId === column.id),
+  //       };
+  //     });
+  //   console.log(data);
+  //   setPreparedData(data);
+  // }, [todos,
+  //   // TODO: need?
+  //   columns,
+  //   activeBoardId]);
 
   const keydownHandler = (event: any) => {
     switch (event.code) {
@@ -67,9 +65,8 @@ export const Main: FC = () => {
   const memoColumns = useMemo(() => (
     <Columns
       boardId={activeBoardId}
-      initialColumns={preparedData}
     />
-  ), [activeBoardId, preparedData]);
+  ), [activeBoardId]);
 
   return (
     <div className="container container--horizontal">

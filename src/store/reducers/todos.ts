@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
 import { TodosActions } from '../actions';
 import { ITodo, ITodos } from '../../types';
@@ -9,534 +10,623 @@ const initialState: ITodos = [
     title: 'Javascript',
     columnId: 'column-1',
     isDone: false,
+    position: 0,
   },
   {
     id: '',
     title: 'ES6+',
     columnId: 'column-1',
     isDone: false,
+    position: 1,
   },
   {
     id: '',
     title: 'Typescript',
     columnId: 'column-1',
     isDone: false,
+    position: 2,
   },
   {
     id: '',
     title: 'NodeJS',
     columnId: 'column-1',
     isDone: false,
+    position: 3,
   },
   {
     id: '',
     title: 'Semver',
     columnId: 'column-1',
     isDone: false,
+    position: 4,
   },
   {
     id: '',
     title: 'WebSocket',
     columnId: 'column-1',
     isDone: false,
+    position: 5,
   },
   {
     id: '',
     title: 'Rest API',
     columnId: 'column-1',
     isDone: false,
+    position: 6,
   },
   {
     id: '',
     title: 'JSON',
     columnId: 'column-1',
     isDone: false,
+    position: 7,
   },
   {
     id: '',
     title: 'Microservices architecture',
     columnId: 'column-1',
     isDone: false,
+    position: 8,
   },
   {
     id: '',
     title: 'gRPC',
     columnId: 'column-1',
     isDone: false,
+    position: 9,
   },
   {
     id: '',
     title: 'Protobuf',
     columnId: 'column-1',
     isDone: false,
+    position: 10,
   },
   {
     id: '',
     title: 'Git',
     columnId: 'column-1',
     isDone: false,
+    position: 11,
   },
   {
     id: '',
     title: 'BunnyCDN',
     columnId: 'column-1',
     isDone: false,
+    position: 12,
   },
   {
     id: '',
     title: 'Google Cloud',
     columnId: 'column-1',
     isDone: false,
+    position: 13,
   },
   {
     id: '',
     title: 'FFmpeg',
     columnId: 'column-1',
     isDone: false,
+    position: 14,
   },
   {
     id: '',
     title: 'Cuda',
     columnId: 'column-1',
     isDone: false,
+    position: 15,
   },
   {
     id: '',
     title: 'WebRTC',
     columnId: 'column-1',
     isDone: false,
+    position: 16,
   },
   {
     id: '',
     title: 'RTMP',
     columnId: 'column-1',
     isDone: false,
+    position: 17,
   },
   {
     id: '',
     title: 'HLS',
     columnId: 'column-1',
     isDone: false,
+    position: 18,
   },
   {
     id: '',
     title: 'MPEG-DASH',
     columnId: 'column-1',
     isDone: false,
+    position: 19,
   },
   {
     id: '',
     title: 'Axios',
     columnId: 'column-2',
     isDone: false,
+    position: 0,
   },
   {
     id: '',
     title: 'Webpack',
     columnId: 'column-2',
     isDone: false,
+    position: 1,
   },
   {
     id: '',
     title: 'Ava/Mocha/Chai/JEST',
     columnId: 'column-2',
     isDone: false,
+    position: 2,
   },
   {
     id: '',
     title: 'Lodash',
     columnId: 'column-2',
     isDone: false,
+    position: 3,
   },
   {
     id: '',
     title: 'Underscore',
     columnId: 'column-2',
     isDone: false,
+    position: 4,
   },
   {
     id: '',
     title: 'Ramda',
     columnId: 'column-2',
     isDone: false,
+    position: 5,
   },
   {
     id: '',
     title: 'Date-fns',
     columnId: 'column-2',
     isDone: false,
+    position: 6,
   },
   {
     id: '',
     title: 'Mongoose',
     columnId: 'column-2',
     isDone: false,
+    position: 7,
   },
   {
     id: '',
     title: 'Express',
     columnId: 'column-2',
     isDone: false,
+    position: 8,
   },
   {
     id: '',
     title: 'Moment.js',
     columnId: 'column-2',
     isDone: false,
+    position: 9,
   },
   {
     id: '',
     title: 'JWT',
     columnId: 'column-2',
     isDone: false,
+    position: 10,
   },
   {
     id: '',
     title: 'Socket.io',
     columnId: 'column-2',
     isDone: false,
+    position: 11,
   },
   {
     id: '',
     title: 'ZeroMQ',
     columnId: 'column-2',
     isDone: false,
+    position: 12,
   },
   {
     id: '',
     title: 'Sequalize',
     columnId: 'column-2',
     isDone: false,
+    position: 13,
   },
   {
     id: '',
     title: 'TypeORM',
     columnId: 'column-2',
     isDone: false,
+    position: 14,
   },
   {
     id: '',
     title: 'Swagger',
     columnId: 'column-2',
     isDone: false,
+    position: 15,
   },
   {
     id: '',
     title: 'Sentry',
     columnId: 'column-2',
     isDone: false,
+    position: 16,
   },
   {
     id: '',
     title: 'Redux',
     columnId: 'column-2',
     isDone: false,
+    position: 17,
   },
   {
     id: '',
     title: 'Redux-thunk',
     columnId: 'column-2',
     isDone: false,
+    position: 18,
   },
   {
     id: '',
     title: 'Redux-saga',
     columnId: 'column-2',
     isDone: false,
+    position: 19,
   },
   {
     id: '',
     title: 'Pino',
     columnId: 'column-2',
     isDone: false,
+    position: 20,
   },
   {
     id: '',
     title: 'Knex',
     columnId: 'column-2',
     isDone: false,
+    position: 21,
   },
   {
     id: '',
     title: 'Bignumber',
     columnId: 'column-2',
     isDone: false,
+    position: 22,
   },
   {
     id: '',
     title: 'Vue.js',
     columnId: 'column-3',
     isDone: false,
+    position: 0,
   },
   {
     id: '',
     title: 'Nuxt.js',
     columnId: 'column-3',
     isDone: false,
+    position: 1,
   },
   {
     id: '',
     title: 'Angular 9',
     columnId: 'column-3',
     isDone: false,
+    position: 2,
   },
   {
     id: '',
     title: 'React',
     columnId: 'column-3',
     isDone: false,
+    position: 3,
   },
   {
     id: '',
     title: 'Next.js',
     columnId: 'column-3',
     isDone: false,
+    position: 4,
   },
   {
     id: '',
     title: 'Pug',
     columnId: 'column-3',
     isDone: false,
+    position: 5,
   },
   {
     id: '',
     title: 'SCSS/SASS',
     columnId: 'column-3',
     isDone: false,
+    position: 6,
   },
   {
     id: '',
     title: 'Babel',
     columnId: 'column-3',
     isDone: false,
+    position: 7,
   },
   {
     id: '',
     title: 'Gulp',
     columnId: 'column-3',
     isDone: false,
+    position: 8,
   },
   {
     id: '',
     title: 'Zeit',
     columnId: 'column-3',
     isDone: false,
+    position: 9,
   },
   {
     id: '',
     title: 'Nest.js',
     columnId: 'column-4',
     isDone: false,
+    position: 10,
   },
   {
     id: '',
     title: 'GraphQL',
     columnId: 'column-4',
     isDone: false,
+    position: 0,
   },
   {
     id: '',
     title: 'RabbitMQ',
     columnId: 'column-4',
     isDone: false,
+    position: 1,
   },
   {
     id: '',
     title: 'PostgreSQL',
     columnId: 'column-5',
     isDone: false,
+    position: 2,
   },
   {
     id: '',
     title: 'MongoDB',
     columnId: 'column-5',
     isDone: false,
+    position: 3,
   },
   {
     id: '',
     title: 'Redis',
     columnId: 'column-5',
     isDone: false,
+    position: 4,
   },
   {
     id: '',
     title: 'InfluxDB',
     columnId: 'column-5',
     isDone: false,
+    position: 5,
   },
   {
     id: '',
     title: 'ElasticSearch',
     columnId: 'column-5',
     isDone: false,
+    position: 6,
   },
   {
     id: '',
     title: 'Cassandra',
     columnId: 'column-5',
     isDone: false,
+    position: 7,
   },
   {
     id: '',
     title: 'TimescaleDB',
     columnId: 'column-5',
     isDone: false,
+    position: 8,
   },
   {
     id: '',
     title: 'ClickHouse',
     columnId: 'column-5',
     isDone: false,
+    position: 9,
   },
   {
     id: '',
     title: 'Linux',
     columnId: 'column-6',
     isDone: false,
+    position: 0,
   },
   {
     id: '',
     title: 'Bash',
     columnId: 'column-6',
     isDone: false,
+    position: 1,
   },
   {
     id: '',
     title: 'Docker',
     columnId: 'column-6',
     isDone: false,
+    position: 2,
   },
   {
     id: '',
     title: 'Docker-compose',
     columnId: 'column-6',
     isDone: false,
+    position: 3,
   },
   {
     id: '',
     title: 'Portainer',
     columnId: 'column-6',
     isDone: false,
+    position: 4,
   },
   {
     id: '',
     title: 'Buildkite',
     columnId: 'column-6',
     isDone: false,
+    position: 5,
   },
   {
     id: '',
     title: 'TeamCity',
     columnId: 'column-6',
     isDone: false,
+    position: 6,
   },
   {
     id: '',
     title: 'Nginx',
     columnId: 'column-6',
     isDone: false,
+    position: 7,
   },
   {
     id: '',
     title: 'Envoy',
     columnId: 'column-6',
     isDone: false,
+    position: 8,
   },
   {
     id: '',
     title: 'Chronograf',
     columnId: 'column-6',
     isDone: false,
+    position: 9,
   },
   {
     id: '',
     title: 'Telegraf',
     columnId: 'column-6',
     isDone: false,
+    position: 10,
   },
   {
     id: '',
     title: 'Prometheus',
     columnId: 'column-6',
     isDone: false,
+    position: 11,
   },
   {
     id: '',
     title: 'Nodeexporter',
     columnId: 'column-6',
     isDone: false,
+    position: 12,
   },
   {
     id: '',
     title: 'Grafana',
     columnId: 'column-6',
     isDone: false,
+    position: 13,
   },
   {
     id: '',
     title: 'Launchdarky',
     columnId: 'column-6',
     isDone: false,
+    position: 14,
   },
   {
     id: '',
     title: 'Firewall',
     columnId: 'column-6',
     isDone: false,
+    position: 15,
   },
   {
     id: '',
     title: 'npm',
     columnId: 'column-7',
     isDone: false,
+    position: 0,
   },
   {
     id: '',
     title: 'RxJS',
     columnId: 'column-7',
     isDone: false,
+    position: 1,
   },
   {
     id: '',
     title: 'Insomnia',
     columnId: 'column-7',
     isDone: false,
+    position: 2,
   },
   {
     id: '',
     title: 'Jira',
     columnId: 'column-7',
     isDone: false,
+    position: 3,
   },
   {
     id: '',
     title: 'Confluence',
     columnId: 'column-7',
     isDone: false,
+    position: 4,
   },
   {
     id: '',
     title: 'Slack',
     columnId: 'column-7',
     isDone: false,
+    position: 5,
   },
   {
     id: '',
     title: 'Hyper',
     columnId: 'column-7',
     isDone: false,
+    position: 6,
   },
   {
     id: '',
     title: 'Gitkraken',
     columnId: 'column-7',
     isDone: false,
+    position: 7,
   },
   {
     id: '',
     title: 'WebStorm',
     columnId: 'column-7',
     isDone: false,
+    position: 8,
   },
 ].map((el) => ({ ...el, id: `todo-${(count += 1).toString()}` }));
 
@@ -562,4 +652,81 @@ export const TodosReducer = handleActions<ITodos, any>({
           id: Math.random().toString(),
           ...action.payload,
         }]),
+  [TodosActions.Type.UPDATE_COLUMN]:
+        (state, action) => {
+          const start = new Date().getTime();
+          const targetTodo = {
+            ...state.filter((todo: ITodo) => todo.id === action.payload.id)[0],
+            columnId: action.payload.targetColumnId,
+            position: action.payload.position,
+          };
+          const targetColumn = state
+            .filter((todo: ITodo) => todo.columnId === action.payload.targetColumnId)
+            .sort((a, b) => a.position - b.position);
+          const sourceColumn = state
+            .filter((todo: ITodo) => todo.columnId === action.payload.sourceColumnId
+                && todo.id !== action.payload.id)
+            .sort((a, b) => a.position - b.position);
+          const otherColumns = state
+            .filter((todo: ITodo) => todo.columnId !== action.payload.targetColumnId
+                && todo.columnId !== action.payload.sourceColumnId);
+
+          let positionCounter: number = action.payload.position + 1;
+          let isInsert = false;
+
+          targetColumn.splice(action.payload.position, 0, targetTodo);
+
+          const newTargetColumn = targetColumn.map((todo: ITodo) => {
+            if (todo.id === action.payload.id) {
+              isInsert = true;
+              return {
+                ...todo,
+                columnId: action.payload.targetColumnId,
+                position: action.payload.position,
+              };
+            }
+            if (isInsert) {
+              return {
+                ...todo,
+                position: positionCounter++,
+              };
+            }
+            return todo;
+          });
+
+          const newSourceColumn = sourceColumn.map((todo: ITodo, index) => ({
+            ...todo,
+            position: index,
+          }));
+          const end = new Date().getTime();
+          console.log(end - start);
+          const res = [
+            ...otherColumns,
+            ...newTargetColumn,
+            ...newSourceColumn,
+          ];
+
+          // const res = state.map((todo: ITodo) => {
+          //   if (todo.id === action.payload.id) {
+          //     isInsert = true;
+          //     return {
+          //       ...todo,
+          //       columnId: action.payload.columnId,
+          //       position: action.payload.position,
+          //     };
+          //   }
+          //   if (isInsert && todo.columnId === action.payload.columnId) {
+          //     positionCounter += 1;
+          //     return {
+          //       ...todo,
+          //       position: positionCounter,
+          //     };
+          //   }
+          //   return todo;
+          // });
+          console.log('newTargetColumn', newTargetColumn);
+          console.log('newSourceColumn', newSourceColumn);
+          return res;
+        }
+  ,
 }, initialState);

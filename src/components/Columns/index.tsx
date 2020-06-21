@@ -1,12 +1,15 @@
-/* eslint-disable @typescript-eslint/no-use-before-define,no-underscore-dangle */
+/* eslint-disable @typescript-eslint/no-use-before-define,no-underscore-dangle,no-plusplus */
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import {
   DragDropContext, DraggableLocation, Droppable, DroppableProvided, DropResult,
 } from 'react-beautiful-dnd';
+import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '../Column';
 import { ITodo, ITodos } from '../../types';
+import { ColumnsActions, TodosActions } from '../../store/actions';
+import { IRootState } from '../../store/reducers/state';
 
 interface TodoMap {
   [key: string]: {
@@ -18,7 +21,6 @@ interface TodoMap {
 
 interface IColumn {
   boardId: string;
-  initialColumns: TodoMap;
 }
 
 type ReorderTodoMapArgs = {
@@ -27,15 +29,27 @@ type ReorderTodoMapArgs = {
   destination: DraggableLocation,
 };
 
-export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
-  const [columns, setColumns] = useState<TodoMap>({});
+export const Columns: FC<IColumn> = ({ boardId }) => {
+  const dispatch = useDispatch();
+  const { columns, todos } = useSelector((state: IRootState) => state);
+  const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<string>>([]);
 
   useEffect(() => {
-    console.log('initialColumn change');
-    setColumns(initialColumns);
-    setOrderedId(Object.keys(initialColumns || {}));
-  }, [initialColumns]);
+    const data = {};
+    columns
+        ?.filter((column) => column.boardId === boardId)
+        ?.forEach((column) => {
+          // @ts-ignore
+          data[column.id] = {
+            title: column.title,
+            description: column.description,
+            todos: todos.filter((todo) => todo.columnId === column.id),
+          };
+        });
+    setPreparedData(data);
+    setOrderedId(Object.keys(data));
+  }, [boardId, columns, todos]);
 
   const onDragEnd = (result: DropResult) => {
     if (result.combine) {
@@ -52,10 +66,10 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
       withTodoRemoved.splice(result.source.index, 1);
       // @ts-ignore
       const _columns: TodoMap = {
-        ...columns,
+        ...preparedData,
         [result.source.droppableId]: withTodoRemoved,
       };
-      setColumns(_columns);
+      setPreparedData(_columns);
       return;
     }
 
@@ -87,12 +101,12 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
     }
     // console.log('before', columns);
     const data = reorderTodoMap({
-      quoteMap: columns,
+      quoteMap: preparedData,
       source,
       destination,
     });
     // console.log('after', data);
-    setColumns(data);
+    setPreparedData(data);
   };
 
   const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
@@ -109,12 +123,12 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
   }: ReorderTodoMapArgs): TodoMap => {
     const currentDescription: string = quoteMap[source.droppableId].description;
     const currentTitle: string = quoteMap[source.droppableId].title;
-    const current: ITodo[] = [...quoteMap[source.droppableId].todos];
-
+    let current: ITodo[] = [...quoteMap[source.droppableId].todos];
+    //
     const nextTitle: string = quoteMap[destination.droppableId].title;
     const nextDescription: string = quoteMap[destination.droppableId].description;
-    const next: ITodo[] = [...quoteMap[destination.droppableId].todos];
-
+    let next: ITodo[] = [...quoteMap[destination.droppableId].todos];
+    //
     const target: ITodo = current[source.index];
 
     // moving to same list
@@ -137,21 +151,40 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
     // insert into next
     next.splice(destination.index, 0, target);
 
+    // @ts-ignore
+    // current = current.map((todo, index) => ({
+    //   ...todo, position: index,
+    // }));
+    // // eslint-disable-next-line no-const-assign
+    // next = next.map((todo, index) => ({
+    //   ...todo, position: index,
+    // }));
+
     // console.log('source.droppableId', source.droppableId);
     // console.log('destination.droppableId', destination.droppableId);
     // console.log('source.index', source.index);
     // console.log('target', target);
     // console.log('current', current);
     // console.log('next', next);
+    // console.log('move', target, 'from', source.droppableId, 'to', destination.droppableId);
+
+    dispatch(TodosActions.updateColumn(
+      target.id, source.droppableId, destination.droppableId, destination.index,
+    ));
+
     return {
       ...quoteMap,
       [source.droppableId]: {
-        todos: current,
+        todos: current.map((todo, index) => ({
+          ...todo, position: index,
+        })),
         description: currentDescription,
         title: currentTitle,
       },
       [destination.droppableId]: {
-        todos: next,
+        todos: next.map((todo, index) => ({
+          ...todo, position: index,
+        })),
         description: nextDescription,
         title: nextTitle,
       },
@@ -159,20 +192,18 @@ export const Columns: FC<IColumn> = ({ boardId, initialColumns }) => {
   };
 
   const memoColumns = useMemo(() => (
-    orderedId && orderedId.map((key, index) =>
-      // console.log('rerender', key, 'todos:', columns[key].todos);
-      (
-        <Column
-          index={index}
-          columnId={key}
-          boardId={boardId}
-          key={key}
-          title={columns[key].title}
-          todos={columns[key].todos}
-          description={columns[key].description}
-        />
-      ))
-  ), [columns, orderedId, boardId]);
+    orderedId && orderedId.map((key, index) => (
+      <Column
+        index={index}
+        columnId={key}
+        boardId={boardId}
+        key={key}
+        title={preparedData[key].title}
+        todos={preparedData[key].todos}
+        description={preparedData[key].description}
+      />
+    ))
+  ), [preparedData, orderedId, boardId]);
 
   const memoNewColumn = useMemo(() => (
     <Column

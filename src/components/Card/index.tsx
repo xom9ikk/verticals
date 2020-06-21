@@ -205,7 +205,9 @@ export const Card: FC<ICard> = ({
       <Checkbox isActive={isDone} onClick={() => setIsDone((prev) => !prev)} />
       {
             isEditable ? (
-              <div className="card__editable-content">
+              <div
+                className="card__editable-content"
+              >
                 <TextareaAutosize
                   ref={titleInputRef}
                   className="card__textarea"
@@ -227,12 +229,21 @@ export const Card: FC<ICard> = ({
                   onKeyDownCapture={(event) => keydownHandler(event, true)}
                 />
               </div>
-            ) : (<span>{titleValue}</span>
+            ) : (
+              <div
+                className="card__inner"
+                onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
+              >
+                <span>
+                  {titleValue}
+                </span>
+              </div>
+
             )
           }
     </div>
   ), [
-    isDone, isEditable,
+    isDone, isEditable, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue,
     onExitFromEditable,
@@ -249,7 +260,6 @@ export const Card: FC<ICard> = ({
       `}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      onDoubleClick={!isEditableDefault ? doubleClickHandler : null}
     >
       { card }
       { contextMenu }
