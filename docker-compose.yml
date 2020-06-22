@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+  verticals-prod:
+    image: verticals-prod
+    container_name: verticals-prod
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "172.50.13.1:8080:80"
+    networks:
+      verticals-prod_net:
+        ipv4_address: 172.50.13.11
+
+networks:
+  verticals-prod_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.50.13.0/24"
