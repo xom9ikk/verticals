@@ -4,21 +4,32 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 6px 10px 6px 10px;
   cursor: grab;
   border-radius: 6px;
-  transition: background-color .2s ease-in-out, height .2s ease-in-out;
+  transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
+  &__block-wrapper {
+    display: flex;
+    flex: 1;
+    padding-left: 10px;
+    &--editable {
+      padding: 0;
+    }
+  }
   &__block {
     display: flex;
+    padding: 10px 10px 8px 2px;
     justify-content: center;
+    align-items: center;
     flex: 1;
-    padding-top: 5px;
+    line-height: 20px;
     span {
       font-size: 15px;
       margin-top: -4px;
       margin-left: 10px;
       max-height: 440px;
+      max-width: $column-width - 100;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   &__inner {
@@ -29,13 +40,14 @@
     outline: none;
     border: none;
     resize: none;
-    font-family: 'Nunito Regular';
+    font-family: 'Nunito Regular', sans-serif;
     font-size: 15px;
     margin-top: -6px;
     margin-left: 10px;
     transition: inherit;
     background: inherit;
     min-height: 20px;
+    width: 180px;
     &--description {
       font-size: 14px;
       color: $text-dark;
@@ -53,7 +65,7 @@
   &:hover {
     background: #f7f7f7;
   }
-  &__editable {
+  &--editable {
     width: $column-width - 27;
     margin: 3px 3px;
     padding: 7px;
@@ -61,6 +73,9 @@
     &:hover {
       background: $white;
     }
+  }
+  &--pressed {
+    background: $primary-light !important;
   }
   &--dragging {
     background: $primary-light;

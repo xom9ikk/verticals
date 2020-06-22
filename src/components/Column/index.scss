@@ -8,13 +8,13 @@
   //border-right: 1px solid rgba(0, 0, 0, 0.05);
   //margin-right: 1px;
   padding: 23px 10px;
-  transition: background .2s ease-in-out, scale .2s ease-in-out;
   &__wrapper {
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
     //overflow-x: hidden;
     overflow-y: scroll;
+    transition: background .1s ease-in-out, scale .5s ease-in-out;
     &::-webkit-scrollbar {
       width: 0;
     }
@@ -33,6 +33,9 @@
       .card__textarea {
         background: $primary-light !important;
       }
+    }
+    &--pressed {
+      background: $primary-light !important;
     }
     &--hovered {
       background: #f7f7f7;

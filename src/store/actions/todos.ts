@@ -8,6 +8,7 @@ enum Type {
   ADD = 'TODOS/ADD',
   UPDATE_COLUMN = 'TODOS/UPDATE_COLUMN',
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
+  SWAP = 'TODOS/SWAP',
 }
 
 const setTodos = createAction(
@@ -41,8 +42,8 @@ const updateColumn = createAction(
 
 const updatePosition = createAction(
   Type.UPDATE_POSITION,
-  (id: string, position: number) => ({
-    id, position,
+  (id: string, position: number, columnId: string) => ({
+    id, position, columnId,
   }),
 );
 

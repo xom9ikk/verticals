@@ -39,6 +39,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     const data = {};
     columns
         ?.filter((column) => column.boardId === boardId)
+        ?.sort((a, b) => a.position - b.position)
         ?.forEach((column) => {
           // @ts-ignore
           data[column.id] = {
@@ -52,26 +53,26 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   }, [boardId, columns, todos]);
 
   const onDragEnd = (result: DropResult) => {
-    if (result.combine) {
-      if (result.type === 'COLUMN') {
-        const shallow: string[] = [...orderedId];
-        shallow.splice(result.source.index, 1);
-        setOrderedId(shallow);
-        return;
-      }
-
-      // @ts-ignore
-      const column: ITodos = columns[result.source.droppableId];
-      const withTodoRemoved: ITodos = [...column];
-      withTodoRemoved.splice(result.source.index, 1);
-      // @ts-ignore
-      const _columns: TodoMap = {
-        ...preparedData,
-        [result.source.droppableId]: withTodoRemoved,
-      };
-      setPreparedData(_columns);
-      return;
-    }
+    // if (result.combine) {
+    //   if (result.type === 'COLUMN') {
+    //     const shallow: string[] = [...orderedId];
+    //     shallow.splice(result.source.index, 1);
+    //     setOrderedId(shallow);
+    //     return;
+    //   }
+    //
+    //   // @ts-ignore
+    //   const column: ITodos = preparedData[result.source.droppableId];
+    //   const withTodoRemoved: ITodos = [...column];
+    //   withTodoRemoved.splice(result.source.index, 1);
+    //   // @ts-ignore
+    //   const _columns: TodoMap = {
+    //     ...preparedData,
+    //     [result.source.droppableId]: withTodoRemoved,
+    //   };
+    //   setPreparedData(_columns);
+    //   return;
+    // }
 
     // dropped nowhere
     if (!result.destination) {
@@ -91,6 +92,9 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
 
     // reordering column
     if (result.type === 'COLUMN') {
+      dispatch(ColumnsActions.updatePosition(
+        source.index, destination.index, source.droppableId,
+      ));
       const _orderedId: string[] = reorder(
         orderedId,
         source.index,
@@ -99,20 +103,23 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       setOrderedId(_orderedId);
       return;
     }
-    // console.log('before', columns);
     const data = reorderTodoMap({
       quoteMap: preparedData,
       source,
       destination,
     });
-    // console.log('after', data);
     setPreparedData(data);
   };
 
-  const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
-    const result = Array.from(list);
+  const reorder = (list: any[], startIndex: number, endIndex: number, isTodo = false): any[] => {
+    let result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
+    if (!isTodo) {
+      return result;
+    }
+    result = result.map((todo, index) => ({ ...todo, position: index }));
+    console.log('result reorder', result);
     return result;
   };
 
@@ -123,20 +130,23 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   }: ReorderTodoMapArgs): TodoMap => {
     const currentDescription: string = quoteMap[source.droppableId].description;
     const currentTitle: string = quoteMap[source.droppableId].title;
-    let current: ITodo[] = [...quoteMap[source.droppableId].todos];
+    const current: ITodo[] = [...quoteMap[source.droppableId].todos];
     //
     const nextTitle: string = quoteMap[destination.droppableId].title;
     const nextDescription: string = quoteMap[destination.droppableId].description;
-    let next: ITodo[] = [...quoteMap[destination.droppableId].todos];
+    const next: ITodo[] = [...quoteMap[destination.droppableId].todos];
     //
     const target: ITodo = current[source.index];
 
     // moving to same list
     if (source.droppableId === destination.droppableId) {
+      dispatch(TodosActions.updatePosition(
+        target.id, destination.index, destination.droppableId,
+      ));
       const reordered = {
         title: currentTitle,
         description: currentTitle,
-        todos: reorder(current, source.index, destination.index),
+        todos: reorder(current, source.index, destination.index, true),
       };
       return {
         ...quoteMap,
@@ -145,32 +155,13 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     }
 
     // moving to different list
-
+    dispatch(TodosActions.updateColumn(
+      target.id, source.droppableId, destination.droppableId, destination.index,
+    ));
     // remove from original
     current.splice(source.index, 1);
     // insert into next
     next.splice(destination.index, 0, target);
-
-    // @ts-ignore
-    // current = current.map((todo, index) => ({
-    //   ...todo, position: index,
-    // }));
-    // // eslint-disable-next-line no-const-assign
-    // next = next.map((todo, index) => ({
-    //   ...todo, position: index,
-    // }));
-
-    // console.log('source.droppableId', source.droppableId);
-    // console.log('destination.droppableId', destination.droppableId);
-    // console.log('source.index', source.index);
-    // console.log('target', target);
-    // console.log('current', current);
-    // console.log('next', next);
-    // console.log('move', target, 'from', source.droppableId, 'to', destination.droppableId);
-
-    dispatch(TodosActions.updateColumn(
-      target.id, source.droppableId, destination.droppableId, destination.index,
-    ));
 
     return {
       ...quoteMap,
@@ -217,7 +208,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
-          droppableId="board"
+          droppableId={boardId}
           type="COLUMN"
           direction="horizontal"
         >

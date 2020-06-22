@@ -6,6 +6,7 @@ enum Type {
   UPDATE_TITLE = 'COLUMNS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'COLUMNS/UPDATE_DESCRIPTION',
   ADD = 'COLUMNS/ADD',
+  UPDATE_POSITION = 'COLUMNS/UPDATE_POSITION',
 }
 
 const setColumns = createAction(
@@ -30,10 +31,18 @@ const add = createAction(
   }),
 );
 
+const updatePosition = createAction(
+  Type.UPDATE_POSITION,
+  (sourcePosition: number, destinationPosition: number, boardId: string) => ({
+    sourcePosition, destinationPosition, boardId,
+  }),
+);
+
 export const ColumnsActions = {
   Type,
   setColumns,
   updateTitle,
   updateDescription,
   add,
+  updatePosition,
 };

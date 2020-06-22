@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash.debounce';
 import { Menu } from '../Menu';
 import { Checkbox } from '../Checkbox';
 import { ColorPicker } from '../ColorPicker';
@@ -48,6 +50,7 @@ export const Card: FC<ICard> = ({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
+  const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const { isEditableCard } = useSelector((state: IRootState) => state.system);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
@@ -69,12 +72,13 @@ export const Card: FC<ICard> = ({
   useEffect(() => {
     if (isDoubleClicked) {
       setIsDoubleClicked(false);
+      console.log('double click setIsEditableCard', true);
       dispatch(SystemActions.setIsEditableCard(true));
       if (!isEditableCard && isDoubleClicked) {
         setIsEditable(true);
       }
     }
-  }, [isDoubleClicked]);
+  }, [isDoubleClicked, isEditableCard]);
 
   useEffect(() => {
     if (isDoubleClicked === false && !isEditableCard && isEditable) {
@@ -85,7 +89,9 @@ export const Card: FC<ICard> = ({
   }, [isEditableCard]);
 
   const doubleClickHandler = () => {
+    console.log('double click isEditableCard', isEditableCard);
     if (isEditableCard) {
+      console.log('dispatch setIsEditableCard false');
       dispatch(SystemActions.setIsEditableCard(false));
       // if (isEditable) {
       //   setIsEditable(false);
@@ -94,6 +100,7 @@ export const Card: FC<ICard> = ({
       // }
     }
     // if (!isEditable) {
+    console.log('dispatch setIsDoubleClicked true');
     setIsDoubleClicked(true);
     // }
   };
@@ -132,6 +139,11 @@ export const Card: FC<ICard> = ({
       : setTitleValue(value);
   };
 
+  const debouncePress = useCallback(
+    debounce((isPress: boolean) => setIsMouseDown(isPress), 300),
+    [],
+  );
+
   const contextMenu = useMemo(() => !isEditable && (
   <Menu
     imageSrc="/svg/dots.svg"
@@ -141,6 +153,7 @@ export const Card: FC<ICard> = ({
     isHide
     isHoverBlock={isHover}
     position="right"
+    style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
   >
     <ColorPicker colors={colors} onClick={console.log} />
     <MenuButton
@@ -201,9 +214,21 @@ export const Card: FC<ICard> = ({
   ), [isEditable, isHover]);
 
   const card = useMemo(() => (
-    <div className="card__block">
-      <Checkbox isActive={isDone} onClick={() => setIsDone((prev) => !prev)} />
-      {
+    <div className={`card__block-wrapper ${isEditable ? 'card__block-wrapper--editable' : ''}`}>
+      <Checkbox
+        isActive={isDone}
+        onClick={() => setIsDone((prev) => !prev)}
+        style={{ marginTop: 10, marginBottom: 10 }}
+      />
+      <div
+        className="card__block"
+        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
+        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+        onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
+        onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
+        onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
+      >
+        {
             isEditable ? (
               <div
                 className="card__editable-content"
@@ -232,7 +257,6 @@ export const Card: FC<ICard> = ({
             ) : (
               <div
                 className="card__inner"
-                onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
               >
                 <span>
                   {titleValue}
@@ -241,13 +265,20 @@ export const Card: FC<ICard> = ({
 
             )
           }
+      </div>
     </div>
   ), [
-    isDone, isEditable, isEditableDefault,
+    isDone, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue,
     onExitFromEditable,
   ]);
+
+  useEffect(() => {
+    if (!snapshot?.isDragging) {
+      setIsMouseDown(false);
+    }
+  }, [snapshot?.isDragging]);
 
   return (
     <div
@@ -256,7 +287,8 @@ export const Card: FC<ICard> = ({
       {...provided?.dragHandleProps}
       className={`card 
       ${snapshot?.isDragging ? 'card--dragging' : ''}
-      ${isEditable ? 'card__editable' : ''}
+      ${isEditable ? 'card--editable' : ''}
+      ${isMouseDown ? 'card--pressed' : ''}
       `}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}

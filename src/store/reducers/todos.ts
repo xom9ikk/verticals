@@ -381,77 +381,77 @@ const initialState: ITodos = [
     title: 'Nest.js',
     columnId: 'column-4',
     isDone: false,
-    position: 10,
+    position: 0,
   },
   {
     id: '',
     title: 'GraphQL',
     columnId: 'column-4',
     isDone: false,
-    position: 0,
+    position: 1,
   },
   {
     id: '',
     title: 'RabbitMQ',
     columnId: 'column-4',
     isDone: false,
-    position: 1,
+    position: 2,
   },
   {
     id: '',
     title: 'PostgreSQL',
     columnId: 'column-5',
     isDone: false,
-    position: 2,
+    position: 0,
   },
   {
     id: '',
     title: 'MongoDB',
     columnId: 'column-5',
     isDone: false,
-    position: 3,
+    position: 1,
   },
   {
     id: '',
     title: 'Redis',
     columnId: 'column-5',
     isDone: false,
-    position: 4,
+    position: 2,
   },
   {
     id: '',
     title: 'InfluxDB',
     columnId: 'column-5',
     isDone: false,
-    position: 5,
+    position: 3,
   },
   {
     id: '',
     title: 'ElasticSearch',
     columnId: 'column-5',
     isDone: false,
-    position: 6,
+    position: 4,
   },
   {
     id: '',
     title: 'Cassandra',
     columnId: 'column-5',
     isDone: false,
-    position: 7,
+    position: 5,
   },
   {
     id: '',
     title: 'TimescaleDB',
     columnId: 'column-5',
     isDone: false,
-    position: 8,
+    position: 6,
   },
   {
     id: '',
     title: 'ClickHouse',
     columnId: 'column-5',
     isDone: false,
-    position: 9,
+    position: 7,
   },
   {
     id: '',
@@ -654,35 +654,37 @@ export const TodosReducer = handleActions<ITodos, any>({
         }]),
   [TodosActions.Type.UPDATE_COLUMN]:
         (state, action) => {
-          const start = new Date().getTime();
-          const targetTodo = {
-            ...state.filter((todo: ITodo) => todo.id === action.payload.id)[0],
-            columnId: action.payload.targetColumnId,
-            position: action.payload.position,
-          };
+          const {
+            id, sourceColumnId, targetColumnId, position,
+          } = action.payload;
           const targetColumn = state
-            .filter((todo: ITodo) => todo.columnId === action.payload.targetColumnId)
+            .filter((todo: ITodo) => todo.columnId === targetColumnId)
             .sort((a, b) => a.position - b.position);
           const sourceColumn = state
-            .filter((todo: ITodo) => todo.columnId === action.payload.sourceColumnId
-                && todo.id !== action.payload.id)
+            .filter((todo: ITodo) => todo.columnId === sourceColumnId
+                && todo.id !== id)
             .sort((a, b) => a.position - b.position);
           const otherColumns = state
-            .filter((todo: ITodo) => todo.columnId !== action.payload.targetColumnId
-                && todo.columnId !== action.payload.sourceColumnId);
+            .filter((todo: ITodo) => todo.columnId !== targetColumnId
+                && todo.columnId !== sourceColumnId);
+          const targetTodo = {
+            ...state.filter((todo: ITodo) => todo.id === id)[0],
+            columnId: targetColumnId,
+            position,
+          };
 
-          let positionCounter: number = action.payload.position + 1;
+          targetColumn.splice(position, 0, targetTodo);
+
+          let positionCounter: number = position + 1;
           let isInsert = false;
 
-          targetColumn.splice(action.payload.position, 0, targetTodo);
-
           const newTargetColumn = targetColumn.map((todo: ITodo) => {
-            if (todo.id === action.payload.id) {
+            if (todo.id === id) {
               isInsert = true;
               return {
                 ...todo,
-                columnId: action.payload.targetColumnId,
-                position: action.payload.position,
+                columnId: targetColumnId,
+                position,
               };
             }
             if (isInsert) {
@@ -698,35 +700,37 @@ export const TodosReducer = handleActions<ITodos, any>({
             ...todo,
             position: index,
           }));
-          const end = new Date().getTime();
-          console.log(end - start);
-          const res = [
+          return [
             ...otherColumns,
             ...newTargetColumn,
             ...newSourceColumn,
           ];
-
-          // const res = state.map((todo: ITodo) => {
-          //   if (todo.id === action.payload.id) {
-          //     isInsert = true;
-          //     return {
-          //       ...todo,
-          //       columnId: action.payload.columnId,
-          //       position: action.payload.position,
-          //     };
-          //   }
-          //   if (isInsert && todo.columnId === action.payload.columnId) {
-          //     positionCounter += 1;
-          //     return {
-          //       ...todo,
-          //       position: positionCounter,
-          //     };
-          //   }
-          //   return todo;
-          // });
-          console.log('newTargetColumn', newTargetColumn);
-          console.log('newSourceColumn', newSourceColumn);
-          return res;
-        }
-  ,
+        },
+  [TodosActions.Type.UPDATE_POSITION]:
+        (state, action) => {
+          const {
+            id, position, columnId,
+          } = action.payload;
+          const targetColumn = state
+            .filter((todo: ITodo) => todo.columnId === columnId)
+            .sort((a, b) => a.position - b.position);
+          const targetTodo = targetColumn
+            .filter((todo: ITodo) => todo.id === id)[0];
+          const targetTodoIndex = targetColumn
+            .findIndex((todo: ITodo) => todo.id === id);
+          const otherColumns = state
+            .filter((todo: ITodo) => todo.columnId !== columnId);
+          targetColumn.splice(targetTodoIndex, 1);
+          targetColumn.splice(position, 0, {
+            ...targetTodo, position,
+          });
+          const newTargetColumn = targetColumn.map((todo, index) => ({
+            ...todo,
+            position: index,
+          }));
+          return [
+            ...otherColumns,
+            ...newTargetColumn,
+          ];
+        },
 }, initialState);

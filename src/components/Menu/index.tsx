@@ -21,6 +21,7 @@ interface IMenu {
   onMouseLeave?:()=>void;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   isInvertColor?: boolean;
+  style?: any;
 }
 
 export const Menu: FC<IMenu> = ({
@@ -38,6 +39,7 @@ export const Menu: FC<IMenu> = ({
   onMouseLeave,
   position,
   isInvertColor,
+  style,
   children,
 }) => {
   const dispatch = useDispatch();
@@ -106,7 +108,7 @@ export const Menu: FC<IMenu> = ({
     return (
       <button
         className={classes.join(' ')}
-        style={size ? { height: size, width: size } : {}}
+        style={size ? { ...style, height: size, width: size } : { ...style }}
         onClick={clickHandler}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}

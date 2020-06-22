@@ -181,7 +181,7 @@ export const Column: FC<IColumn> = ({
                 className="column__container"
                 ref={dropProvided.innerRef}
               >
-                <div>
+                <div style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}>
                   {
                     todos
                       ?.sort((a, b) => a.position - b.position)
@@ -203,19 +203,19 @@ export const Column: FC<IColumn> = ({
                               description={todo.description}
                               isDone={todo.isDone}
                               onExitFromEditable={
-                                    (newTitle, newDescription,
-                                      isDone) => saveCard(
-                                      newTitle, newDescription, isDone, todo.id,
-                                    )
-                                  }
+                                (newTitle, newDescription,
+                                  isDone) => saveCard(
+                                  newTitle, newDescription, isDone, todo.id,
+                                )
+                              }
                             />
                           )}
                         </Draggable>
                       ))
                   }
-                  { newCard }
-                  { addCard }
                 </div>
+                { newCard }
+                { addCard }
                 {dropProvided.placeholder}
               </div>
             )
