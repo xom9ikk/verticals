@@ -12,13 +12,14 @@ import { Toolbar } from '../components/Toolbar';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
-  const [activeBoardId, setActiveBoardId] = useState<string>('board-3');
+  const [activeBoardId, setActiveBoardId] = useState<string>('board-2');
 
   const keydownHandler = (event: any) => {
     switch (event.code) {
       case 'Escape': {
         dispatch(SystemActions.setIsOpenPopup(false));
         dispatch(SystemActions.setIsEditableCard(false));
+        dispatch(SystemActions.setIsEditableBoard(false));
         break;
       }
       default: break;

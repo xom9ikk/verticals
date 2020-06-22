@@ -1,5 +1,3 @@
-import { EnumColors } from './colors';
-
 export interface ITodo {
   id: string;
   columnId: string;
@@ -7,7 +5,7 @@ export interface ITodo {
   position: number;
   description?: string;
   isDone?: boolean;
-  color?: EnumColors;
+  color?: number;
 }
 
 export type ITodos = Array<ITodo>;

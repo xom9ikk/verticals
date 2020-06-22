@@ -27,7 +27,12 @@ export const Popup: FC<IPopup> = ({
   // }
   return (
     <>
-      <div className={classes.join(' ')} style={style}>
+      <div
+        className={classes.join(' ')}
+        style={style}
+        onClick={(e) => e.stopPropagation()}
+        onDoubleClick={(e) => e.stopPropagation()}
+      >
         <div className="popup__inner">
           {children}
         </div>

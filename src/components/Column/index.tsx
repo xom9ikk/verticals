@@ -159,7 +159,7 @@ export const Column: FC<IColumn> = ({
         onClick={() => setIsOpenNewCard(true)}
       />
     )
-  ), [isHover, isOpenNewCard]);
+  ), [isHover, isOpenNewCard, isDraggable]);
 
   const newCard = useMemo(() => (
     isOpenNewCard && (
@@ -221,7 +221,7 @@ export const Column: FC<IColumn> = ({
             )
           }
     </Droppable>
-  ), [todos, columnId, saveCard]);
+  ), [todos, columnId, isOpenNewCard, isHover]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -350,7 +350,7 @@ export const Column: FC<IColumn> = ({
             <div
               className={`column__header ${isEditable ? 'column__header--editable' : ''}`}
               {...provided.dragHandleProps}
-              aria-label={`${titleValue} quote list`}
+              // aria-label={`${titleValue} quote list`}
               onMouseEnter={() => setIsHoverHeader(true)}
               onMouseLeave={() => setIsHoverHeader(false)}
               onDoubleClick={doubleClickHandler}

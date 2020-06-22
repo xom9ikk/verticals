@@ -2,13 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0;
   background: none;
-  width: 100%;
+  width: 95%;
   padding: 6px 10px 6px 6px;
   cursor: pointer;
   border-radius: 6px;
-  transition: background .1s ease-in-out;
+  border: none;
+  margin: 0px 0px 0px 6px;
   &__content {
     display: flex;
     flex: 1;
@@ -20,14 +20,74 @@
   &__text {
     font-family: 'Nunito Regular', sans-serif;
     font-size: 16px;
-    margin-left: 5px;
+    margin-left: 10px;
     color: rgba(0,0,0,0.8);
     line-height: 24px;
+    white-space: nowrap;
+    max-width: $column-width - 120;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &:hover {
     background: rgb(255, 255, 255);
   }
   &--active {
     background: $primary-light !important;
+  }
+  &--editable {
+    background: $white !important;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    .card__editable-content {
+      padding-top: 5px;
+    }
+    .card__textarea {
+      font-size: 16px;
+      &--description {
+        font-size: 15px;
+      }
+    }
+  }
+  &--dragging {
+    background: $primary-light !important;
+    box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.5),
+    -10px -10px 30px rgba(210, 227, 253, 0.3);
+  }
+  &--red {
+    background: rgba(255, 106, 86, 0.3);
+    &:hover {
+      background: rgba(255, 106, 86, 0.15);
+    }
+  }
+  &--yellow {
+    background: rgba(254, 233, 48, 0.3);
+    &:hover {
+      background: rgba(254, 233, 48, 0.15);
+    }
+  }
+  &--green {
+    background: rgba(156, 196, 71, 0.3);
+    &:hover {
+      background: rgba(156, 196, 71, 0.15);
+    }
+  }
+  &--turquoise {
+    background: rgba(50, 218, 188, 0.3);
+    &:hover {
+      background: rgba(50, 218, 188, 0.15);
+    }
+  }
+  &--blue {
+    background: rgba(95, 193, 233, 0.3);
+    &:hover {
+      background: rgba(95, 193, 233, 0.15);
+    }
+  }
+  &--gray {
+    background: rgba(216, 216, 216, 0.3);
+    &:hover {
+      background: rgba(216, 216, 216, 0.15);
+    }
   }
 }

@@ -155,7 +155,7 @@ export const Card: FC<ICard> = ({
     position="right"
     style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
   >
-    <ColorPicker colors={colors} onClick={console.log} />
+    <ColorPicker onPick={console.log} />
     <MenuButton
       text="Edit card"
       imageSrc="/svg/menu/edit.svg"

@@ -650,6 +650,7 @@ export const TodosReducer = handleActions<ITodos, any>({
   [TodosActions.Type.ADD]:
         (state, action) => ([...state, {
           id: Math.random().toString(),
+          position: state.length,
           ...action.payload,
         }]),
   [TodosActions.Type.UPDATE_COLUMN]:
