@@ -15,6 +15,7 @@ interface TodoMap {
   [key: string]: {
     todos: ITodo[],
     title: string,
+    color: number,
     description: string,
   },
 }
@@ -45,10 +46,12 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
           data[column.id] = {
             title: column.title,
             description: column.description,
+            color: column.color,
             todos: todos.filter((todo) => todo.columnId === column.id),
           };
         });
     setPreparedData(data);
+    console.log(preparedData);
     setOrderedId(Object.keys(data));
   }, [boardId, columns, todos]);
 
@@ -130,10 +133,12 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   }: ReorderTodoMapArgs): TodoMap => {
     const currentDescription: string = quoteMap[source.droppableId].description;
     const currentTitle: string = quoteMap[source.droppableId].title;
+    const currentColor: number = quoteMap[source.droppableId].color;
     const current: ITodo[] = [...quoteMap[source.droppableId].todos];
     //
     const nextTitle: string = quoteMap[destination.droppableId].title;
     const nextDescription: string = quoteMap[destination.droppableId].description;
+    const nextColor: number = quoteMap[destination.droppableId].color;
     const next: ITodo[] = [...quoteMap[destination.droppableId].todos];
     //
     const target: ITodo = current[source.index];
@@ -146,6 +151,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       const reordered = {
         title: currentTitle,
         description: currentTitle,
+        color: currentColor,
         todos: reorder(current, source.index, destination.index, true),
       };
       return {
@@ -169,6 +175,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         todos: current.map((todo, index) => ({
           ...todo, position: index,
         })),
+        color: currentColor,
         description: currentDescription,
         title: currentTitle,
       },
@@ -176,6 +183,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         todos: next.map((todo, index) => ({
           ...todo, position: index,
         })),
+        color: nextColor,
         description: nextDescription,
         title: nextTitle,
       },
@@ -186,6 +194,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     orderedId && orderedId.map((key, index) => (
       <Column
         index={index}
+        color={preparedData[key].color}
         columnId={key}
         boardId={boardId}
         key={key}

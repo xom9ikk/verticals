@@ -14,32 +14,30 @@ import { Submenu } from '../Submenu';
 import { SystemActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
 import { useFocus } from '../../use/focus';
+import { EnumColors, EnumTodoType } from '../../types';
 
 interface ICard {
+  boardId: string;
   title?: string;
   description?: string;
   isDone?: boolean;
+  color?: number;
   isEditableDefault?: boolean;
-  onExitFromEditable?: (title?: string, description?: string, isDone?: boolean) => void;
+  onExitFromEditable?: (
+    title?: string,
+    description?: string,
+    isDone?: boolean,
+    newColor?: number) => void;
   provided?: any;
   snapshot?: any;
 }
 
-// TODO: move to constants
-// TODO: interfaces for todos
-const colors = [
-  '#ff6a56',
-  '#fee930',
-  '#9cc447',
-  '#32dabc',
-  '#5fc1e9',
-  '#d8d8d8',
-];
-
 export const Card: FC<ICard> = ({
+  boardId,
   title: initialTitle = '',
   description: initialDescription = '',
   isDone: initialIsDone = false,
+  color,
   isEditableDefault,
   onExitFromEditable,
   provided,
@@ -51,12 +49,19 @@ export const Card: FC<ICard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const { isEditableCard } = useSelector((state: IRootState) => state.system);
+  const { system: { isEditableCard }, boards } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const [isDone, setIsDone] = useState<boolean>(initialIsDone);
+  const [cardType, setCardType] = useState<EnumTodoType>();
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
+
+  useEffect(() => {
+    const card = boards
+      .filter((board) => board.id === boardId)[0]?.cardType;
+    setCardType(card);
+  }, [boards]);
 
   const getNewData = () => ({
     newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
@@ -64,9 +69,9 @@ export const Card: FC<ICard> = ({
     newIsDone: initialIsDone !== isDone ? isDone : undefined,
   });
 
-  const sendData = () => {
+  const saveTodo = (newColor?: number) => {
     const { newTitle, newDescription, newIsDone } = getNewData();
-    onExitFromEditable?.(newTitle, newDescription, newIsDone);
+    onExitFromEditable?.(newTitle, newDescription, newIsDone, newColor);
   };
 
   useEffect(() => {
@@ -83,7 +88,7 @@ export const Card: FC<ICard> = ({
   useEffect(() => {
     if (isDoubleClicked === false && !isEditableCard && isEditable) {
       setIsEditable(false);
-      sendData();
+      saveTodo();
       setIsDoubleClicked(undefined);
     }
   }, [isEditableCard]);
@@ -96,7 +101,7 @@ export const Card: FC<ICard> = ({
       // if (isEditable) {
       //   setIsEditable(false);
       //   console.log('2');
-      //   sendData();
+      //   saveTodo();
       // }
     }
     // if (!isEditable) {
@@ -125,7 +130,7 @@ export const Card: FC<ICard> = ({
         focus(descriptionInputRef);
       } else {
         console.log('3');
-        sendData();
+        saveTodo();
         setIsEditable(false);
       }
     }
@@ -137,6 +142,11 @@ export const Card: FC<ICard> = ({
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
+  };
+
+  const colorPickHandler = (newColor: number) => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    saveTodo(newColor);
   };
 
   const debouncePress = useCallback(
@@ -155,7 +165,7 @@ export const Card: FC<ICard> = ({
     position="right"
     style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
   >
-    <ColorPicker onPick={console.log} />
+    <ColorPicker onPick={colorPickHandler} />
     <MenuButton
       text="Edit card"
       imageSrc="/svg/menu/edit.svg"
@@ -213,13 +223,51 @@ export const Card: FC<ICard> = ({
   </Menu>
   ), [isEditable, isHover]);
 
+  useEffect(() => {
+    if (!isEditableDefault) {
+      saveTodo();
+    }
+  }, [isDone]);
+
+  const bullets = ['arrow.svg', 'dot.svg', 'dash.svg'];
+
+  const renderBullet = (type: EnumTodoType) => {
+    switch (type) {
+      case EnumTodoType.Checkboxes:
+        return (
+          <Checkbox
+            isActive={isDone}
+            onClick={() => {
+              setIsDone((prev) => !prev);
+            }}
+            style={{ marginTop: 10, marginBottom: 10 }}
+          />
+        );
+      case EnumTodoType.Arrows:
+      case EnumTodoType.Dots:
+      case EnumTodoType.Dashes:
+        return (
+          <img className="card__bullet" src={`/svg/card/${bullets[type - 1]}`} alt="bullet" />
+        );
+      case EnumTodoType.Nothing:
+        return (
+          <></>
+        );
+      default: return (
+        <></>
+      );
+    }
+  };
+
   const card = useMemo(() => (
-    <div className={`card__block-wrapper ${isEditable ? 'card__block-wrapper--editable' : ''}`}>
-      <Checkbox
-        isActive={isDone}
-        onClick={() => setIsDone((prev) => !prev)}
-        style={{ marginTop: 10, marginBottom: 10 }}
-      />
+    <div className={`card__block-wrapper 
+    ${isEditable ? 'card__block-wrapper--editable' : ''}
+    `}
+    >
+      {
+        renderBullet(cardType || EnumTodoType.Checkboxes)
+      }
+
       <div
         className="card__block"
         onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
@@ -271,7 +319,7 @@ export const Card: FC<ICard> = ({
     isDone, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue,
-    onExitFromEditable,
+    onExitFromEditable, cardType,
   ]);
 
   useEffect(() => {
@@ -280,15 +328,19 @@ export const Card: FC<ICard> = ({
     }
   }, [snapshot?.isDragging]);
 
+  // @ts-ignore
+  const colorClass = `card--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
+
   return (
     <div
       ref={provided?.innerRef}
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
-      className={`card 
+      className={`card
       ${snapshot?.isDragging ? 'card--dragging' : ''}
       ${isEditable ? 'card--editable' : ''}
       ${isMouseDown ? 'card--pressed' : ''}
+      ${color !== undefined ? colorClass : ''}
       `}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}

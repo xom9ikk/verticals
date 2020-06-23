@@ -7,6 +7,7 @@ enum Type {
   UPDATE_DESCRIPTION = 'COLUMNS/UPDATE_DESCRIPTION',
   ADD = 'COLUMNS/ADD',
   UPDATE_POSITION = 'COLUMNS/UPDATE_POSITION',
+  UPDATE_COLOR = 'COLUMNS/UPDATE_COLOR',
 }
 
 const setColumns = createAction(
@@ -38,6 +39,13 @@ const updatePosition = createAction(
   }),
 );
 
+const updateColor = createAction(
+  Type.UPDATE_COLOR,
+  (id: string, color: number) => ({
+    id, color,
+  }),
+);
+
 export const ColumnsActions = {
   Type,
   setColumns,
@@ -45,4 +53,5 @@ export const ColumnsActions = {
   updateDescription,
   add,
   updatePosition,
+  updateColor,
 };

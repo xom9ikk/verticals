@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { ColumnsActions } from '../actions';
-import { IColumn, IColumns } from '../../types';
+import { BoardsActions, ColumnsActions } from '../actions';
+import { IBoard, IColumn, IColumns } from '../../types';
 
 const initialState: IColumns = [
   {
@@ -94,4 +94,11 @@ export const ColumnsReducer = handleActions<IColumns, any>({
           position: index,
         }));
       },
+  [ColumnsActions.Type.UPDATE_COLOR]:
+        (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
+          ? {
+            ...column,
+            color: action.payload.color,
+          }
+          : column))),
 }, initialState);

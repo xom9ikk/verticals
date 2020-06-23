@@ -9,3 +9,11 @@ export interface ITodo {
 }
 
 export type ITodos = Array<ITodo>;
+
+export enum EnumTodoType {
+  Checkboxes,
+  Arrows,
+  Dots,
+  Dashes,
+  Nothing,
+}

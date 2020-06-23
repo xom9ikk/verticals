@@ -23,11 +23,7 @@
       transform: scale(1.02);
       box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
       -10px -10px 30px rgba(210, 227, 253, 0.3);
-
-      #{$block}__title-editable {
-        background: $primary-light;
-      }
-      #{$block}__description-editable {
+      #{$block}__header {
         background: $primary-light;
       }
       .card__textarea {
@@ -54,15 +50,54 @@
     display: flex;
     flex-direction: column;
     padding: 17px 10px 13px;
-    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
     border: none;
     outline: none;
     letter-spacing: 0;
+    transition: background .1s ease-in-out, border .2s ease-in-out;
     &--editable {
       box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
       width: $column-width - 27;
       margin: 3px;
       padding: 14px 9px 10px 7px;
+      border-radius: 6px;
+    }
+    &--red {
+      background: #feeae7;
+      &:hover {
+        background: none;
+      }
+    }
+    &--yellow {
+      background: #fffce6;
+      &:hover {
+        background: none;
+      }
+    }
+    &--green {
+      background: #f1f6e6;
+      &:hover {
+        background: none;
+      }
+    }
+    &--turquoise {
+      background: #e7f9f5;
+      &:hover {
+        background: none;
+      }
+    }
+    &--blue {
+      background: #eaf5fb;
+      &:hover {
+        background: none;
+      }
+    }
+    &--gray {
+      background: #f9f9f9;
+      &:hover {
+        background: none;
+      }
     }
   }
   &__header-container {
@@ -100,7 +135,7 @@
     font-size: 14px;
     color: $text;
     font-family: 'Nunito Regular', sans-serif;
-    background: inherit;
+    background: none;
     max-height: 80px;
     overflow: hidden;
     &--empty {
@@ -115,6 +150,6 @@
     height: 100vh;
     width: $column-width;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
-    z-index: -1;
+    z-index: -2;
   }
 }

@@ -5,9 +5,11 @@ enum Type {
   SET_TODOS = 'TODOS/SET_TODOS',
   UPDATE_TITLE = 'TODOS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'TODOS/UPDATE_DESCRIPTION',
+  UPDATE_IS_DONE = 'TODOS/UPDATE_IS_DONE',
   ADD = 'TODOS/ADD',
   UPDATE_COLUMN = 'TODOS/UPDATE_COLUMN',
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
+  UPDATE_COLOR = 'TODOS/UPDATE_COLOR',
 }
 
 const setTodos = createAction(
@@ -23,6 +25,11 @@ const updateTitle = createAction(
 const updateDescription = createAction(
   Type.UPDATE_DESCRIPTION,
   (id: string, description: string) => ({ id, description }),
+);
+
+const updateIsDone = createAction(
+  Type.UPDATE_IS_DONE,
+  (id: string, isDone: boolean) => ({ id, isDone }),
 );
 
 const add = createAction(
@@ -46,12 +53,21 @@ const updatePosition = createAction(
   }),
 );
 
+const updateColor = createAction(
+  Type.UPDATE_COLOR,
+  (id: string, color: number) => ({
+    id, color,
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
   updateTitle,
   updateDescription,
+  updateIsDone,
   add,
   updateColumn,
   updatePosition,
+  updateColor,
 };

@@ -22,7 +22,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [boards, setBoards] = useState<IBoards>([]);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
-  const { boards: initialBoards } = useSelector((state: IRootState) => state);
+  const { system: { isEditableBoard }, boards: initialBoards } = useSelector((state: IRootState) => state);
 
   useEffect(() => {
     setBoards(initialBoards);
@@ -38,6 +38,8 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const saveBoard = (
     boardId: string, newTitle?: string, newDescription?: string, newColor?: number,
   ) => {
+    console.log('saveBoard', newColor);
+    setIsOpenNewBoard(false);
     if (boardId) {
       if (newTitle) {
         dispatch(BoardsActions.updateTitle(boardId, newTitle));
@@ -45,12 +47,11 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       if (newDescription) {
         dispatch(BoardsActions.updateDescription(boardId, newDescription));
       }
-      if (newColor) {
+      if (newColor !== undefined) {
         dispatch(BoardsActions.updateColor(boardId, newColor));
       }
     } else if (newTitle || newDescription) {
       dispatch(BoardsActions.add(boardId, '/svg/board/item.svg', newTitle, newDescription));
-      setIsOpenNewBoard(false);
     }
   };
 
@@ -115,6 +116,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                           title={title}
                           isActive={activeBoard === id}
                           onClick={() => onChange(id)}
+                          onExitFromEditable={saveBoard}
                         />
                       </div>
                     )}
@@ -177,6 +179,12 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }
     </>
   ), [isHover, isOpenNewBoard]);
+
+  // useEffect(() => {
+  //   if (!isEditableBoard) {
+  //     setIsOpenNewBoard(false);
+  //   }
+  // }, [isEditableBoard]);
 
   return (
     <div

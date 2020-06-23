@@ -34,7 +34,7 @@ export const BoardItem: FC<IBoardItem> = ({
   snapshot,
   id = '',
   icon,
-  color = '',
+  color,
   title: initialTitle = '',
   description: initialDescription,
   isEditableDefault,
@@ -63,15 +63,14 @@ export const BoardItem: FC<IBoardItem> = ({
       : undefined,
   });
 
-  const saveBoard = (color?: number) => {
+  const saveBoard = (newColor?: number) => {
     const { newTitle, newDescription } = getNewData();
-    onExitFromEditable?.(id, newTitle, newDescription, color);
+    onExitFromEditable?.(id, newTitle, newDescription, newColor);
   };
 
-  const colorPickHandler = (color: number) => {
-    dispatch(BoardsActions.updateColor(id, color));
+  const colorPickHandler = (newColor: number) => {
     dispatch(SystemActions.setIsOpenPopup(false));
-    saveBoard(color);
+    saveBoard(newColor);
   };
 
   useEffect(() => {
@@ -231,8 +230,6 @@ export const BoardItem: FC<IBoardItem> = ({
       onMouseLeave={() => setIsHover(false)}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
-        // @ts-ignore
-      // style={color !== undefined ? { background: colors[color]?.replace('0.99', '0.1') } : {}}
     >
       <div className="board-item__content">
         <img

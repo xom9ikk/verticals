@@ -7,6 +7,42 @@
   cursor: grab;
   border-radius: 6px;
   transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
+  &--red {
+    background: rgba(255, 106, 86, 0.3);
+    &:hover {
+      background: rgba(255, 106, 86, 0.15);
+    }
+  }
+  &--yellow {
+    background: rgba(254, 233, 48, 0.3);
+    &:hover {
+      background: rgba(254, 233, 48, 0.15);
+    }
+  }
+  &--green {
+    background: rgba(156, 196, 71, 0.3);
+    &:hover {
+      background: rgba(156, 196, 71, 0.15);
+    }
+  }
+  &--turquoise {
+    background: rgba(50, 218, 188, 0.3);
+    &:hover {
+      background: rgba(50, 218, 188, 0.15);
+    }
+  }
+  &--blue {
+    background: rgba(95, 193, 233, 0.3);
+    &:hover {
+      background: rgba(95, 193, 233, 0.15);
+    }
+  }
+  &--gray {
+    background: rgba(216, 216, 216, 0.3);
+    &:hover {
+      background: rgba(216, 216, 216, 0.15);
+    }
+  }
   &__block-wrapper {
     display: flex;
     flex: 1;
@@ -61,6 +97,11 @@
     &::-ms-input-placeholder {
       color: $text-light;
     }
+  }
+  &__bullet {
+    max-height: 16px;
+    max-width: 16px;
+    align-self: center;
   }
   &:hover {
     background: #f7f7f7;

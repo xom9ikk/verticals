@@ -4,6 +4,7 @@ export interface IColumn {
   title: string;
   position: number;
   description?: string;
+  color?: number;
 }
 
 export type IColumns = Array<IColumn>;

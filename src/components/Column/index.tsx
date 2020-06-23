@@ -11,14 +11,18 @@ import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
-import { ColumnsActions, SystemActions, TodosActions } from '../../store/actions';
-import { ITodos } from '../../types';
+import {
+  ColumnsActions, SystemActions, TodosActions,
+} from '../../store/actions';
+import { EnumColors, ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
+import { ColorPicker } from '../ColorPicker';
 
 interface IColumn {
   index: number;
   columnId?: string;
+  color?: number;
   boardId: string;
   title?: string;
   description?: string;
@@ -29,6 +33,7 @@ interface IColumn {
 export const Column: FC<IColumn> = ({
   index,
   columnId,
+  color,
   boardId,
   title: initialTitle,
   description: initialDescription,
@@ -49,10 +54,11 @@ export const Column: FC<IColumn> = ({
   const descriptionInputRef = useRef<any>(null);
 
   const saveCard = (
+    id?: string,
     newTitle?: string,
     newDescription?: string,
-    isDone?: boolean,
-    id?: string,
+    newIsDone?: boolean,
+    newColor?: number,
   ) => {
     console.log('id', id, '->', newTitle, '->', newDescription);
     if (id) {
@@ -62,8 +68,14 @@ export const Column: FC<IColumn> = ({
       if (newDescription) {
         dispatch(TodosActions.updateDescription(id, newDescription));
       }
+      if (newIsDone !== undefined) {
+        dispatch(TodosActions.updateIsDone(id, newIsDone));
+      }
+      if (newColor !== undefined) {
+        dispatch(TodosActions.updateColor(id, newColor));
+      }
     } else if (newTitle || newDescription) {
-      dispatch(TodosActions.add(columnId || 'todo-this-case', newTitle, newDescription, isDone));
+      dispatch(TodosActions.add(columnId || 'todo-this-case', newTitle, newDescription, newIsDone));
     }
     setIsOpenNewCard(false);
   };
@@ -81,7 +93,7 @@ export const Column: FC<IColumn> = ({
       : undefined,
   });
 
-  const saveColumn = () => {
+  const saveColumn = (newColor?: number) => {
     const { newTitle, newDescription } = getNewData();
     if (columnId) {
       if (newTitle) {
@@ -89,6 +101,9 @@ export const Column: FC<IColumn> = ({
       }
       if (newDescription) {
         dispatch(ColumnsActions.updateDescription(columnId, newDescription));
+      }
+      if (newColor !== undefined) {
+        dispatch(ColumnsActions.updateColor(columnId, newColor));
       }
     } else if (newTitle || newDescription) {
       dispatch(ColumnsActions.add(boardId, newTitle, newDescription));
@@ -119,6 +134,11 @@ export const Column: FC<IColumn> = ({
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
+  };
+
+  const colorPickHandler = (newColor: number) => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    saveColumn(newColor);
   };
 
   useEffect(() => {
@@ -164,8 +184,9 @@ export const Column: FC<IColumn> = ({
   const newCard = useMemo(() => (
     isOpenNewCard && (
       <Card
+        boardId={boardId}
         isEditableDefault
-        onExitFromEditable={(t, d) => saveCard(t, d)}
+        onExitFromEditable={(t, d, isDone) => saveCard(undefined, t, d, isDone)}
       />
     )
   ), [isOpenNewCard]);
@@ -196,16 +217,18 @@ export const Column: FC<IColumn> = ({
                             dragSnapshot: DraggableStateSnapshot,
                           ) => (
                             <Card
+                              boardId={boardId}
                               provided={dragProvided}
                               snapshot={dragSnapshot}
                               key={todo.id}
                               title={todo.title}
                               description={todo.description}
                               isDone={todo.isDone}
+                              color={todo.color}
                               onExitFromEditable={
                                 (newTitle, newDescription,
-                                  isDone) => saveCard(
-                                  newTitle, newDescription, isDone, todo.id,
+                                  isDone, newColor) => saveCard(
+                                  todo.id, newTitle, newDescription, isDone, newColor,
                                 )
                               }
                             />
@@ -233,6 +256,7 @@ export const Column: FC<IColumn> = ({
       isHoverBlock={isHover}
       position="bottom"
     >
+      <ColorPicker onPick={colorPickHandler} />
       <MenuButton
         text="Edit column"
         imageSrc="/svg/menu/edit.svg"
@@ -327,6 +351,9 @@ export const Column: FC<IColumn> = ({
     </div>
   ), [isEditable, titleValue, descriptionValue, todos, contextMenu]);
 
+  // @ts-ignore
+  const colorClass = `column__header--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
+
   const memoColumn = useMemo(() => (
     <Draggable
       draggableId={`${columnId}-${index}` || `new-${index}`}
@@ -348,7 +375,10 @@ export const Column: FC<IColumn> = ({
             `}
           >
             <div
-              className={`column__header ${isEditable ? 'column__header--editable' : ''}`}
+              className={`column__header 
+              ${color !== undefined ? colorClass : ''}
+              ${isEditable ? 'column__header--editable' : ''}
+              `}
               {...provided.dragHandleProps}
               // aria-label={`${titleValue} quote list`}
               onMouseEnter={() => setIsHoverHeader(true)}
@@ -366,7 +396,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, todos, columnId, isHover,
+    index, todos, color, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue,
   ]);

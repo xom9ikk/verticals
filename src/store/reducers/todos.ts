@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { TodosActions } from '../actions';
-import { ITodo, ITodos } from '../../types';
+import { ColumnsActions, TodosActions } from '../actions';
+import { IColumn, ITodo, ITodos } from '../../types';
 
 let count = 0;
 const initialState: ITodos = [
@@ -647,6 +647,13 @@ export const TodosReducer = handleActions<ITodos, any>({
           description: action.payload.description,
         }
         : todo))),
+  [TodosActions.Type.UPDATE_IS_DONE]:
+      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
+        ? {
+          ...todo,
+          isDone: action.payload.isDone,
+        }
+        : todo))),
   [TodosActions.Type.ADD]:
         (state, action) => ([...state, {
           id: Math.random().toString(),
@@ -734,4 +741,11 @@ export const TodosReducer = handleActions<ITodos, any>({
             ...newTargetColumn,
           ];
         },
+  [TodosActions.Type.UPDATE_COLOR]:
+      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
+        ? {
+          ...todo,
+          color: action.payload.color,
+        }
+        : todo))),
 }, initialState);
