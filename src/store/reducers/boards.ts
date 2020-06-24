@@ -91,4 +91,11 @@ export const BoardsReducer = handleActions<IBoards, any>({
             color: action.payload.color,
           }
           : board))),
+  [BoardsActions.Type.UPDATE_CARD_TYPE]:
+        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
+          ? {
+            ...board,
+            cardType: action.payload.cardType,
+          }
+          : board))),
 }, initialState);

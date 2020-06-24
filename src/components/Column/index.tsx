@@ -47,7 +47,7 @@ export const Column: FC<IColumn> = ({
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const { isEditableColumn } = useSelector((state: IRootState) => state.system);
+  const { system: { isEditableColumn }, boards } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
   const titleInputRef = useRef<any>(null);
@@ -184,7 +184,8 @@ export const Column: FC<IColumn> = ({
   const newCard = useMemo(() => (
     isOpenNewCard && (
       <Card
-        boardId={boardId}
+        cardType={boards
+          .filter((board) => board.id === boardId)[0]?.cardType}
         isEditableDefault
         onExitFromEditable={(t, d, isDone) => saveCard(undefined, t, d, isDone)}
       />
@@ -217,7 +218,8 @@ export const Column: FC<IColumn> = ({
                             dragSnapshot: DraggableStateSnapshot,
                           ) => (
                             <Card
-                              boardId={boardId}
+                              cardType={boards
+                                .filter((board) => board.id === boardId)[0]?.cardType}
                               provided={dragProvided}
                               snapshot={dragSnapshot}
                               key={todo.id}
@@ -244,7 +246,7 @@ export const Column: FC<IColumn> = ({
             )
           }
     </Droppable>
-  ), [todos, columnId, isOpenNewCard, isHover]);
+  ), [boards, todos, columnId, isOpenNewCard, isHover]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -256,7 +258,7 @@ export const Column: FC<IColumn> = ({
       isHoverBlock={isHover}
       position="bottom"
     >
-      <ColorPicker onPick={colorPickHandler} />
+      <ColorPicker onPick={colorPickHandler} activeColor={color} />
       <MenuButton
         text="Edit column"
         imageSrc="/svg/menu/edit.svg"
@@ -286,7 +288,7 @@ export const Column: FC<IColumn> = ({
         hintText="⌫"
       />
     </Menu>
-  ), [isHover]);
+  ), [isHover, color]);
 
   const cardToolbar = useMemo(() => (
     <CardToolbar
@@ -349,7 +351,7 @@ export const Column: FC<IColumn> = ({
           )
         }
     </div>
-  ), [isEditable, titleValue, descriptionValue, todos, contextMenu]);
+  ), [isEditable, titleValue, descriptionValue, todos, contextMenu, color]);
 
   // @ts-ignore
   const colorClass = `column__header--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
@@ -396,7 +398,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, todos, color, columnId, isHover,
+    index, boards, todos, color, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue,
   ]);

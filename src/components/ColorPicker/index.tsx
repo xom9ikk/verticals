@@ -6,20 +6,10 @@ import { EnumColors } from '../../types';
 
 interface IColorPicker {
   onPick: (color: number)=>void;
+  activeColor?: number;
 }
 
-export const ColorPicker: FC<IColorPicker> = ({ onPick }) => {
-  // const [colors, setColors] = useState<Array<string>>([]);
-  //
-  // useEffect(() => {
-  //   console.log(Object.entries(EnumColors));
-  //   const enumAll = Object.values(EnumColors);
-  //   // const half = Math.ceil(enumAll.length / 2);
-  //   // @ts-ignore
-  //   // console.log(EnumColors['#9cc447']);
-  //   setColors(enumAll)
-  // }, []);
-
+export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {
   const memoColorPicker = useMemo(() => (
     <div className="color-picker">
       {
@@ -28,12 +18,14 @@ export const ColorPicker: FC<IColorPicker> = ({ onPick }) => {
             <ColorSelector
               key={color[0]}
               color={color[1]}
+              isActive={activeColor === index}
               onClick={() => { onPick(index); }}
             />
           ))
         }
     </div>
-  ), []);
+  ), [activeColor]);
+
   return (
     <>
       { memoColorPicker }

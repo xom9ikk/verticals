@@ -13,7 +13,7 @@ import { BoardsActions, SystemActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
 import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
 import { useFocus } from '../../use/focus';
-import { EnumColors } from '../../types';
+import { EnumColors, EnumTodoType } from '../../types';
 
 interface IBoardItem {
   snapshot?: DraggableStateSnapshot,
@@ -143,6 +143,10 @@ export const BoardItem: FC<IBoardItem> = ({
     }
   }, [isEditableDefault]);
 
+  const cardStyleHandler = (cardType: EnumTodoType) => {
+    dispatch(BoardsActions.updateCardType(id, cardType));
+  };
+
   const memoMenu = useMemo(() => (
     <>
       {
@@ -163,7 +167,7 @@ export const BoardItem: FC<IBoardItem> = ({
             position="right"
             isInvertColor={isActive}
           >
-            <ColorPicker onPick={colorPickHandler} />
+            <ColorPicker onPick={colorPickHandler} activeColor={color} />
             <MenuButton
               text="Edit board"
               imageSrc="/svg/menu/edit.svg"
@@ -177,21 +181,26 @@ export const BoardItem: FC<IBoardItem> = ({
               <MenuButton
                 text="Checkboxes"
                 imageSrc="/svg/menu/square.svg"
+                onClick={() => cardStyleHandler(EnumTodoType.Checkboxes)}
               />
               <MenuButton
                 text="Arrows"
                 imageSrc="/svg/menu/arrow.svg"
+                onClick={() => cardStyleHandler(EnumTodoType.Arrows)}
               />
               <MenuButton
                 text="Dots"
                 imageSrc="/svg/menu/circle.svg"
+                onClick={() => cardStyleHandler(EnumTodoType.Dots)}
               />
               <MenuButton
                 text="Dashes"
                 imageSrc="/svg/menu/dash.svg"
+                onClick={() => cardStyleHandler(EnumTodoType.Dashes)}
               />
               <MenuButton
                 text="Nothing"
+                onClick={() => cardStyleHandler(EnumTodoType.Nothing)}
               />
             </Submenu>
             <MenuButton

@@ -10,5 +10,11 @@
     height: 24px;
     border-radius: 50%;
     transition: opacity .1s ease-in-out, box-shadow .1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 8px;
+    }
   }
 }

@@ -17,7 +17,7 @@ import { useFocus } from '../../use/focus';
 import { EnumColors, EnumTodoType } from '../../types';
 
 interface ICard {
-  boardId: string;
+  cardType: EnumTodoType;
   title?: string;
   description?: string;
   isDone?: boolean;
@@ -33,7 +33,7 @@ interface ICard {
 }
 
 export const Card: FC<ICard> = ({
-  boardId,
+  cardType,
   title: initialTitle = '',
   description: initialDescription = '',
   isDone: initialIsDone = false,
@@ -49,19 +49,12 @@ export const Card: FC<ICard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const { system: { isEditableCard }, boards } = useSelector((state: IRootState) => state);
+  const { system: { isEditableCard } } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const [isDone, setIsDone] = useState<boolean>(initialIsDone);
-  const [cardType, setCardType] = useState<EnumTodoType>();
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
-
-  useEffect(() => {
-    const card = boards
-      .filter((board) => board.id === boardId)[0]?.cardType;
-    setCardType(card);
-  }, [boards]);
 
   const getNewData = () => ({
     newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
@@ -165,7 +158,7 @@ export const Card: FC<ICard> = ({
     position="right"
     style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
   >
-    <ColorPicker onPick={colorPickHandler} />
+    <ColorPicker onPick={colorPickHandler} activeColor={color} />
     <MenuButton
       text="Edit card"
       imageSrc="/svg/menu/edit.svg"
@@ -231,7 +224,7 @@ export const Card: FC<ICard> = ({
 
   const bullets = ['arrow.svg', 'dot.svg', 'dash.svg'];
 
-  const renderBullet = (type: EnumTodoType) => {
+  const renderBullet = (type?: EnumTodoType) => {
     switch (type) {
       case EnumTodoType.Checkboxes:
         return (
@@ -265,7 +258,7 @@ export const Card: FC<ICard> = ({
     `}
     >
       {
-        renderBullet(cardType || EnumTodoType.Checkboxes)
+        renderBullet(cardType)
       }
 
       <div

@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { IBoards } from '../../types';
+import { EnumTodoType, IBoards } from '../../types';
 
 enum Type {
   SET_BOARDS = 'BOARDS/SET_BOARDS',
@@ -8,6 +8,7 @@ enum Type {
   ADD = 'BOARDS/ADD',
   UPDATE_POSITION = 'BOARDS/UPDATE_POSITION',
   UPDATE_COLOR = 'BOARDS/UPDATE_COLOR',
+  UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
 }
 
 const setBoards = createAction(
@@ -46,6 +47,13 @@ const updateColor = createAction(
   }),
 );
 
+const updateCardType = createAction(
+  Type.UPDATE_CARD_TYPE,
+  (id: string, cardType: EnumTodoType) => ({
+    id, cardType,
+  }),
+);
+
 export const BoardsActions = {
   Type,
   setBoards,
@@ -54,4 +62,5 @@ export const BoardsActions = {
   add,
   updatePosition,
   updateColor,
+  updateCardType,
 };

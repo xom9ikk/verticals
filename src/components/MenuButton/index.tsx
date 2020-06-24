@@ -28,12 +28,14 @@ export const MenuButton: FC<IMenuButton> = ({
   >
     <div className="menu-button__block">
       {
-            imageSrc && (
-            <img
-              src={imageSrc}
-              alt="ico"
-              className="menu-button__icon"
-            />
+            imageSrc ? (
+              <img
+                src={imageSrc}
+                alt="ico"
+                className="menu-button__icon"
+              />
+            ) : (
+              <span className="menu-button__icon" />
             )
         }
       {text}
