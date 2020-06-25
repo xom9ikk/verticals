@@ -1,11 +1,17 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Input } from '../Input';
+import { SystemActions } from '../../store/actions';
 
 interface ISearch {
 }
 
 export const Search: FC<ISearch> = () => {
+  const dispatch = useDispatch();
   const [query, setQuery] = useState<string>('');
+  useEffect(() => {
+    dispatch(SystemActions.setQuery(query));
+  }, [query]);
   return (
     <div className="search">
       <Input

@@ -1,4 +1,6 @@
 .board-item {
+  $block: &;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,11 +30,29 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  &__counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $primary-light;
+    border-radius: 20px;
+    padding: 3px 5px 3px 5px;
+    font-size: 14px;
+    img {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      margin-top: -2px;
+    }
+  }
   &:hover {
     background: rgb(255, 255, 255);
   }
   &--active {
     background: $primary-light !important;
+    #{$block}__counter {
+      background: $white;
+    }
   }
   &--editable {
     background: $white !important;
@@ -47,6 +67,9 @@
       &--description {
         font-size: 15px;
       }
+    }
+    #{$block}__counter {
+      display: none;
     }
   }
   &--dragging {

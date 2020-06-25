@@ -7,6 +7,7 @@ const initialState = {
   isEditableCard: false,
   isEditableColumn: false,
   isEditableBoard: false,
+  query: '',
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -18,4 +19,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
         (state, action) => ({ ...state, isEditableColumn: action.payload.isEditableColumn }),
   [SystemActions.Type.SET_IS_EDITABLE_BOARD]:
         (state, action) => ({ ...state, isEditableBoard: action.payload.isEditableBoard }),
+  [SystemActions.Type.SET_QUERY]:
+        (state, action) => ({ ...state, query: action.payload.query }),
 }, initialState);

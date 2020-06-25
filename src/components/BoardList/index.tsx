@@ -10,7 +10,10 @@ import { BoardItem } from '../BoardItem';
 import { Profile } from '../Profile';
 import { IRootState } from '../../store/reducers/state';
 import { BoardsActions, SystemActions } from '../../store/actions';
-import { IBoards } from '../../types';
+import {
+  IBoards, IColumn, ITodo, ITodos,
+} from '../../types';
+import { useFilterTodos } from '../../use/filterTodos';
 
 interface IBoardList {
   activeBoard: string;
@@ -19,10 +22,17 @@ interface IBoardList {
 
 export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const dispatch = useDispatch();
+  const { filterTodos } = useFilterTodos();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [boards, setBoards] = useState<IBoards>([]);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
-  const { system: { isEditableBoard }, boards: initialBoards } = useSelector((state: IRootState) => state);
+
+  const {
+    system: { query },
+    boards: initialBoards,
+    todos,
+    columns,
+  } = useSelector((state: IRootState) => state);
 
   useEffect(() => {
     setBoards(initialBoards);
@@ -99,29 +109,50 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                 .sort((a, b) => a.position - b.position)
                 .map(({
                   id, icon, title, color,
-                }, index) => (
-                  <Draggable key={id} draggableId={id} index={index}>
-                    {(draggableProvided, draggableSnapshot) => (
-                      <div
-                        ref={draggableProvided.innerRef}
-                        {...draggableProvided.draggableProps}
-                        {...draggableProvided.dragHandleProps}
-                      >
-                        <BoardItem
-                          snapshot={draggableSnapshot}
-                          key={id}
-                          id={id}
-                          icon={icon}
-                          color={color}
-                          title={title}
-                          isActive={activeBoard === id}
-                          onClick={() => onChange(id)}
-                          onExitFromEditable={saveBoard}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                }, index) => {
+                  let isContainTodosByQuery = true;
+                  let countTodos = 0;
+                  if (query) {
+                    const needColumn = columns.filter((column: IColumn) => column.boardId === id);
+                    const needTodos: ITodos = [];
+                    needColumn.forEach((column: IColumn) => {
+                      todos.forEach((todo: ITodo) => {
+                        if (todo.columnId === column.id) {
+                          needTodos.push(todo);
+                        }
+                      });
+                    });
+                    countTodos = needTodos.filter(filterTodos).length;
+                    isContainTodosByQuery = countTodos > 0;
+                  }
+                  if (!isContainTodosByQuery) {
+                    return null;
+                  }
+                  return (
+                    <Draggable key={id} draggableId={id} index={index} isDragDisabled={!!query}>
+                      {(draggableProvided, draggableSnapshot) => (
+                        <div
+                          ref={draggableProvided.innerRef}
+                          {...draggableProvided.draggableProps}
+                          {...draggableProvided.dragHandleProps}
+                        >
+                          <BoardItem
+                            snapshot={draggableSnapshot}
+                            key={id}
+                            id={id}
+                            icon={icon}
+                            color={color}
+                            title={title}
+                            countTodos={query ? countTodos : undefined}
+                            isActive={activeBoard === id}
+                            onClick={() => onChange(id)}
+                            onExitFromEditable={saveBoard}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
               {provided.placeholder}
             </div>
           )}
@@ -137,24 +168,20 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       />
     </>
 
-  ), [boards, activeBoard]);
+  ), [boards, activeBoard, query]);
 
   const profile = useMemo(() => (
     <Profile />
   ), []);
 
   const memoNewBoard = useMemo(() => (
-    <>
-      {
-          isOpenNewBoard && (
-            <BoardItem
-              icon="/svg/board/item.svg"
-              isEditableDefault
-              onExitFromEditable={saveBoard}
-            />
-          )
-        }
-    </>
+    isOpenNewBoard && (
+    <BoardItem
+      icon="/svg/board/item.svg"
+      isEditableDefault
+      onExitFromEditable={saveBoard}
+    />
+    )
   ), [isOpenNewBoard]);
 
   const memoMenu = useMemo(() => (

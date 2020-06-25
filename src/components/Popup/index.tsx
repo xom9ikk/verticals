@@ -49,7 +49,9 @@ export const Popup: FC<IPopup> = ({
         onClick={(e) => e.stopPropagation()}
         onDoubleClick={(e) => e.stopPropagation()}
       >
-        {children}
+        <div className={`popup__inner ${isSubMenu ? 'popup__inner--submenu' : ''}`}>
+          {children}
+        </div>
       </div>
     );
   };
@@ -73,7 +75,7 @@ export const Popup: FC<IPopup> = ({
         clientWidth, clientHeight,
       } = observed;
       let { scrollX, scrollY } = window;
-      const { innerHeight, innerWidth } = window;
+      const { innerHeight } = window;
       if (!isAbsolute) {
         scrollY = 0;
         scrollX = 0;
@@ -104,7 +106,7 @@ export const Popup: FC<IPopup> = ({
       if (top - clientHeight < 0 && position !== 'left' && position !== 'right') {
         coordinates.bottom = innerHeight - bottom - clientHeight - margin - scrollY;
       }
-      if (bottom + clientHeight > innerHeight) {
+      if (bottom + clientHeight > innerHeight && position !== 'top') {
         coordinates.bottom = innerHeight - top - height - scrollY;
       }
     }

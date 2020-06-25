@@ -21,6 +21,7 @@ interface IBoardItem {
   icon: string;
   color?: number;
   title?: string;
+  countTodos?: number | undefined;
   isActive?: boolean;
   description?: string;
   isEditableDefault?: boolean;
@@ -44,6 +45,7 @@ export const BoardItem: FC<IBoardItem> = ({
   icon,
   color,
   title: initialTitle = '',
+  countTodos,
   description: initialDescription,
   isEditableDefault,
   onExitFromEditable,
@@ -274,6 +276,13 @@ export const BoardItem: FC<IBoardItem> = ({
     </>
   ), [id, isHover, isActive]);
 
+  const memoCounter = useMemo(() => (
+    <div className="board-item__counter">
+      <img src="/svg/board/search.svg" alt="" />
+      {countTodos}
+    </div>
+  ), [countTodos]);
+
   // @ts-ignore
   const colorClass = `board-item--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
 
@@ -329,9 +338,10 @@ export const BoardItem: FC<IBoardItem> = ({
               )
             }
       </div>
-      { !isEditable && memoMenu }
+      { !isEditable && typeof countTodos !== 'number' && memoMenu }
+      { typeof countTodos === 'number' && memoCounter }
     </div>
-  ), [isActive, isHover, isMenuClick, isEditable, titleValue, descriptionValue, snapshot, color]);
+  ), [isActive, isHover, isMenuClick, isEditable, titleValue, descriptionValue, snapshot, color, countTodos]);
 
   return (
     <>{ boardItem }</>

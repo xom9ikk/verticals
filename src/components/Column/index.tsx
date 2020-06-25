@@ -14,10 +14,11 @@ import { Divider } from '../Divider';
 import {
   ColumnsActions, SystemActions, TodosActions,
 } from '../../store/actions';
-import { EnumColors, ITodos } from '../../types';
+import { EnumColors, ITodo, ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
 import { ColorPicker } from '../ColorPicker';
+import { useFilterTodos } from '../../use/filterTodos';
 
 interface IColumn {
   index: number;
@@ -42,12 +43,16 @@ export const Column: FC<IColumn> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { filterTodos } = useFilterTodos();
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const { system: { isEditableColumn }, boards } = useSelector((state: IRootState) => state);
+  const {
+    system: { isEditableColumn, query },
+    boards,
+  } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
   const titleInputRef = useRef<any>(null);
@@ -207,11 +212,13 @@ export const Column: FC<IColumn> = ({
                   {
                     todos
                       ?.sort((a, b) => a.position - b.position)
+                      ?.filter(filterTodos)
                       ?.map((todo, todoIndex) => (
                         <Draggable
                           key={todo.id}
                           draggableId={todo.id}
                           index={todoIndex}
+                          isDragDisabled={!!query}
                         >
                           {(
                             dragProvided: DraggableProvided,
@@ -246,7 +253,7 @@ export const Column: FC<IColumn> = ({
             )
           }
     </Droppable>
-  ), [boards, todos, columnId, isOpenNewCard, isHover]);
+  ), [boards, todos, columnId, isOpenNewCard, isHover, query]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -360,7 +367,7 @@ export const Column: FC<IColumn> = ({
     <Draggable
       draggableId={`${columnId}-${index}` || `new-${index}`}
       index={index}
-      isDragDisabled={!isDraggable}
+      isDragDisabled={!isDraggable || !!query}
     >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <div
@@ -400,7 +407,7 @@ export const Column: FC<IColumn> = ({
   [
     index, boards, todos, color, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
-    titleValue, descriptionValue,
+    titleValue, descriptionValue, query,
   ]);
 
   return (

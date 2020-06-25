@@ -5,6 +5,7 @@ enum Type {
   SET_IS_EDITABLE_CARD = 'SYSTEM/SET_IS_EDITABLE_CARD',
   SET_IS_EDITABLE_COLUMN = 'SYSTEM/SET_IS_EDITABLE_COLUMN',
   SET_IS_EDITABLE_BOARD = 'SYSTEM/SET_IS_EDITABLE_BOARD',
+  SET_QUERY = 'SYSTEM/SET_QUERY',
 }
 
 const setIsOpenPopup = createAction(
@@ -21,9 +22,15 @@ const setIsEditableColumn = createAction(
   Type.SET_IS_EDITABLE_COLUMN,
   (payload: boolean) => ({ isEditableColumn: payload }),
 );
+
 const setIsEditableBoard = createAction(
   Type.SET_IS_EDITABLE_BOARD,
   (payload: boolean) => ({ isEditableBoard: payload }),
+);
+
+const setQuery = createAction(
+  Type.SET_QUERY,
+  (payload: string) => ({ query: payload }),
 );
 
 export const SystemActions = {
@@ -32,4 +39,5 @@ export const SystemActions = {
   setIsEditableCard,
   setIsEditableColumn,
   setIsEditableBoard,
+  setQuery,
 };

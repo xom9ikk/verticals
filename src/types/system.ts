@@ -3,4 +3,5 @@ export interface ISystem {
   isEditableCard: boolean;
   isEditableColumn: boolean;
   isEditableBoard: boolean;
+  query: string;
 }

@@ -10,6 +10,7 @@ import { Column } from '../Column';
 import { ITodo, ITodos } from '../../types';
 import { ColumnsActions, TodosActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
+import { useFilterTodos } from '../../use/filterTodos';
 
 interface TodoMap {
   [key: string]: {
@@ -32,7 +33,8 @@ type ReorderTodoMapArgs = {
 
 export const Columns: FC<IColumn> = ({ boardId }) => {
   const dispatch = useDispatch();
-  const { columns, todos } = useSelector((state: IRootState) => state);
+  const { filterTodos } = useFilterTodos();
+  const { columns, todos, system: { query } } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<string>>([]);
 
@@ -191,19 +193,29 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   };
 
   const memoColumns = useMemo(() => (
-    orderedId && orderedId.map((key, index) => (
-      <Column
-        index={index}
-        color={preparedData[key].color}
-        columnId={key}
-        boardId={boardId}
-        key={key}
-        title={preparedData[key].title}
-        todos={preparedData[key].todos}
-        description={preparedData[key].description}
-      />
-    ))
-  ), [preparedData, orderedId, boardId]);
+    orderedId && orderedId.map((key, index) => {
+      let isContainTodosByQuery = true;
+      if (query) {
+        isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
+      }
+      console.log(isContainTodosByQuery);
+      if (!isContainTodosByQuery) {
+        return null;
+      }
+      return (
+        <Column
+          index={index}
+          color={preparedData[key].color}
+          columnId={key}
+          boardId={boardId}
+          key={key}
+          title={preparedData[key].title}
+          todos={preparedData[key].todos}
+          description={preparedData[key].description}
+        />
+      );
+    })
+  ), [preparedData, orderedId, boardId, query]);
 
   const memoNewColumn = useMemo(() => (
     <Column

@@ -19,6 +19,7 @@ export const Main: FC = () => {
       case 'Escape': {
         dispatch(SystemActions.setIsOpenPopup(false));
         dispatch(SystemActions.setIsEditableCard(false));
+        dispatch(SystemActions.setIsEditableColumn(false));
         dispatch(SystemActions.setIsEditableBoard(false));
         break;
       }
@@ -26,8 +27,7 @@ export const Main: FC = () => {
     }
   };
 
-  const clickHandler = (event: any) => {
-    console.log('clickHandler document');
+  const clickHandler = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
   };
 
