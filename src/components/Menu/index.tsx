@@ -99,7 +99,6 @@ export const Menu: FC<IMenu> = ({
 
     const clickHandler = (event: any) => {
       event.stopPropagation();
-      console.log('clickHandler menu');
       onClick?.();
       if (isOpenPopup) {
         dispatch(SystemActions.setIsOpenPopup(false));
@@ -111,7 +110,7 @@ export const Menu: FC<IMenu> = ({
         setIsClicked(true);
         setIsOpen(true);
       }
-      setIsOpen((prev) => !prev);
+      // setIsOpen((prev) => !prev);
     };
 
     return (

@@ -8,7 +8,6 @@ interface IProfile {
 
 export const Profile: FC<IProfile> = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  console.log('PROFILE=====');
   return (
     <div
       className="profile"

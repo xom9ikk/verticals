@@ -98,4 +98,6 @@ export const BoardsReducer = handleActions<IBoards, any>({
             cardType: action.payload.cardType,
           }
           : board))),
+  [BoardsActions.Type.REMOVE_BOARD]:
+        (state, action) => state.filter((board: IBoard) => board.id !== action.payload.id),
 }, initialState);

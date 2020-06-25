@@ -30,6 +30,14 @@ interface IBoardItem {
   onClick?: (id: string)=>void;
 }
 
+enum EnumMenuActions {
+  EditBoard,
+  CardStyle,
+  CopyLink,
+  AddBoardBelow,
+  Delete,
+}
+
 export const BoardItem: FC<IBoardItem> = ({
   snapshot,
   id = '',
@@ -143,8 +151,36 @@ export const BoardItem: FC<IBoardItem> = ({
     }
   }, [isEditableDefault]);
 
-  const cardStyleHandler = (cardType: EnumTodoType) => {
-    dispatch(BoardsActions.updateCardType(id, cardType));
+  const hidePopup = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    setIsHover(false);
+  };
+
+  const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
+    switch (action) {
+      case EnumMenuActions.EditBoard: {
+        doubleClickHandler();
+        break;
+      }
+      case EnumMenuActions.CardStyle: {
+        dispatch(BoardsActions.updateCardType(id, payload));
+        break;
+      }
+      case EnumMenuActions.CopyLink: {
+        console.log('copy', `https://${id}`);
+        break;
+      }
+      case EnumMenuActions.AddBoardBelow: {
+        // TODO
+        break;
+      }
+      case EnumMenuActions.Delete: {
+        dispatch(BoardsActions.removeBoard(id));
+        break;
+      }
+      default: break;
+    }
+    hidePopup();
   };
 
   const memoMenu = useMemo(() => (
@@ -172,6 +208,7 @@ export const BoardItem: FC<IBoardItem> = ({
               text="Edit board"
               imageSrc="/svg/menu/edit.svg"
               hintText="E"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.EditBoard)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <Submenu
@@ -181,42 +218,55 @@ export const BoardItem: FC<IBoardItem> = ({
               <MenuButton
                 text="Checkboxes"
                 imageSrc="/svg/menu/square.svg"
-                onClick={() => cardStyleHandler(EnumTodoType.Checkboxes)}
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
+                )}
               />
               <MenuButton
                 text="Arrows"
                 imageSrc="/svg/menu/arrow.svg"
-                onClick={() => cardStyleHandler(EnumTodoType.Arrows)}
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Arrows,
+                )}
               />
               <MenuButton
                 text="Dots"
                 imageSrc="/svg/menu/circle.svg"
-                onClick={() => cardStyleHandler(EnumTodoType.Dots)}
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Dots,
+                )}
               />
               <MenuButton
                 text="Dashes"
                 imageSrc="/svg/menu/dash.svg"
-                onClick={() => cardStyleHandler(EnumTodoType.Dashes)}
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Dashes,
+                )}
               />
               <MenuButton
                 text="Nothing"
-                onClick={() => cardStyleHandler(EnumTodoType.Nothing)}
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Nothing,
+                )}
               />
             </Submenu>
             <MenuButton
               text="Copy link"
               imageSrc="/svg/menu/copy-link.svg"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.CopyLink)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Add board below"
               imageSrc="/svg/menu/add-board.svg"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Delete"
               imageSrc="/svg/menu/delete.svg"
               hintText="⌫"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
             />
           </Menu>
           )

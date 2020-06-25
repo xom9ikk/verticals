@@ -9,6 +9,7 @@ enum Type {
   UPDATE_POSITION = 'BOARDS/UPDATE_POSITION',
   UPDATE_COLOR = 'BOARDS/UPDATE_COLOR',
   UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
+  REMOVE_BOARD = 'BOARDS/REMOVE_BOARD',
 }
 
 const setBoards = createAction(
@@ -54,6 +55,13 @@ const updateCardType = createAction(
   }),
 );
 
+const removeBoard = createAction(
+  Type.REMOVE_BOARD,
+  (id: string) => ({
+    id,
+  }),
+);
+
 export const BoardsActions = {
   Type,
   setBoards,
@@ -63,4 +71,5 @@ export const BoardsActions = {
   updatePosition,
   updateColor,
   updateCardType,
+  removeBoard,
 };
