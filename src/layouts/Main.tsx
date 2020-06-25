@@ -26,10 +26,17 @@ export const Main: FC = () => {
     }
   };
 
+  const clickHandler = (event: any) => {
+    console.log('clickHandler document');
+    dispatch(SystemActions.setIsOpenPopup(false));
+  };
+
   useEffect(() => {
-    document.addEventListener('keydown', keydownHandler);
+    window.addEventListener('keydown', keydownHandler);
+    window.addEventListener('click', clickHandler);
     return () => {
-      document.removeEventListener('keydown', keydownHandler);
+      window.removeEventListener('keydown', keydownHandler);
+      window.removeEventListener('click', clickHandler);
     };
   }, []);
 

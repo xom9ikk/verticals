@@ -30,8 +30,6 @@ export const Popup: FC<IPopup> = ({
   style,
   children,
 }) => {
-  const { isOpenPopup } = useSelector((state:IRootState) => state.system);
-
   const [observed, setObserved] = useState<any>({
     clientWidth: 0,
     clientHeight: 0,
@@ -57,7 +55,7 @@ export const Popup: FC<IPopup> = ({
   };
 
   const memoPopup = useMemo(() => {
-    if (!isOpen && !isOpenPopup) {
+    if (!isOpen) {
       return null;
     }
     if (isOpen && isSubMenu) {
@@ -69,13 +67,13 @@ export const Popup: FC<IPopup> = ({
 
     if (observed) {
       const {
-        top, bottom, left, right, width,
+        top, bottom, left, right, width, height,
       } = sourceRef.current.getBoundingClientRect();
       const {
         clientWidth, clientHeight,
       } = observed;
       let { scrollX, scrollY } = window;
-      const { innerHeight } = window;
+      const { innerHeight, innerWidth } = window;
       if (!isAbsolute) {
         scrollY = 0;
         scrollX = 0;
@@ -103,6 +101,12 @@ export const Popup: FC<IPopup> = ({
         }
         default: break;
       }
+      if (top - clientHeight < 0 && position !== 'left' && position !== 'right') {
+        coordinates.bottom = innerHeight - bottom - clientHeight - margin - scrollY;
+      }
+      if (bottom + clientHeight > innerHeight) {
+        coordinates.bottom = innerHeight - top - height - scrollY;
+      }
     }
 
     const wrapperStyle = {
@@ -120,7 +124,7 @@ export const Popup: FC<IPopup> = ({
     );
     // @ts-ignore
     return createPortal(content, document.querySelector('#menu-root'));
-  }, [isOpen, isOpenPopup]);
+  }, [isOpen, observed]);
 
   return isOpen ? (
     <>{memoPopup}</>
