@@ -8,7 +8,6 @@ interface IColorSelector {
 
 export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) => {
   const [isHover, setIsHover] = useState<boolean>(false);
-  console.log(isActive);
   return (
     <button
       className="color-picker__selector"

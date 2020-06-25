@@ -30,6 +30,7 @@ export const Toolbar: FC<IToolbar> = () => {
           imageSize={24}
           size={30}
           position="top"
+          isAbsolute={false}
         >
           <MenuButton
             text="Hide Sidebar"

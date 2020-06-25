@@ -160,11 +160,11 @@ export const BoardItem: FC<IBoardItem> = ({
             isHoverBlock={isHover}
             onClick={() => {
               setIsMenuClick(true);
-              console.log('open menu');
             }}
             onMouseEnter={() => setIsMenuClick(true)}
             onMouseLeave={() => setIsMenuClick(false)}
             position="right"
+            isAbsolute={false}
             isInvertColor={isActive}
           >
             <ColorPicker onPick={colorPickHandler} activeColor={color} />
@@ -281,7 +281,7 @@ export const BoardItem: FC<IBoardItem> = ({
       </div>
       { !isEditable && memoMenu }
     </div>
-  ), [isActive, isHover, isMenuClick, isEditable, titleValue, descriptionValue, snapshot]);
+  ), [isActive, isHover, isMenuClick, isEditable, titleValue, descriptionValue, snapshot, color]);
 
   return (
     <>{ boardItem }</>

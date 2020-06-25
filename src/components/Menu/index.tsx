@@ -1,10 +1,10 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '../Popup';
-import { IRootState } from '../../store/reducers/state';
 import { SystemActions } from '../../store/actions';
+import { IRootState } from '../../store/reducers/state';
 
 interface IMenu {
   imageSrc: string;
@@ -20,6 +20,7 @@ interface IMenu {
   onMouseEnter?:()=>void;
   onMouseLeave?:()=>void;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
+  isAbsolute?: boolean;
   isInvertColor?: boolean;
   style?: any;
 }
@@ -38,6 +39,7 @@ export const Menu: FC<IMenu> = ({
   onMouseEnter,
   onMouseLeave,
   position,
+  isAbsolute = true,
   isInvertColor,
   style,
   children,
@@ -46,6 +48,7 @@ export const Menu: FC<IMenu> = ({
   const { isOpenPopup } = useSelector((state:IRootState) => state.system);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
+  const sourceRef = useRef<any>(null);
 
   useEffect(() => {
     if (isClicked) {
@@ -63,19 +66,21 @@ export const Menu: FC<IMenu> = ({
     }
   }, [isOpenPopup]);
 
-  // TODO: rerender
-  // console.log('menu rerender');
-
-  const popup = useMemo(() => (
-    isShowPopup && (
-    <Popup
-      isOpen={isOpen}
-      position={position}
-    >
-      {children}
-    </Popup>
-    )
-  ), [isOpen, position]);
+  const popup = useMemo(() =>
+    // console.log('rerender popup', isOpen);
+    (
+      isShowPopup && (
+        <Popup
+          isOpen={isOpen}
+          position={position}
+          sourceRef={sourceRef}
+          isAbsolute={isAbsolute}
+        >
+          {children}
+        </Popup>
+      )
+    ),
+  [isOpen, position, sourceRef]);
 
   const button = useMemo(() => {
     const classes = ['menu'];
@@ -102,14 +107,18 @@ export const Menu: FC<IMenu> = ({
       }
       if (!isOpen) {
         setIsClicked(true);
+        setIsOpen(true);
       }
+      // setIsOpen((prev) => !prev);
     };
 
     return (
       <button
+        ref={sourceRef}
         className={classes.join(' ')}
         style={size ? { ...style, height: size, width: size } : { ...style }}
         onClick={clickHandler}
+        onDoubleClick={(e) => e.stopPropagation()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
@@ -126,13 +135,14 @@ export const Menu: FC<IMenu> = ({
   }, [
     isHide, isHoverBlock, isMaxWidth,
     isInvertColor, size, imageSrc,
-    alt, text, isOpen, isOpenPopup,
+    alt, text, isOpen,
+    isOpenPopup,
   ]);
 
   return (
     <>
-      {popup}
       {button}
+      {popup}
     </>
   );
 };

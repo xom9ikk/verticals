@@ -27,6 +27,7 @@ export const Profile: FC<IProfile> = () => {
         size={24}
         isHoverBlock={isHover}
         position="bottom"
+        isAbsolute={false}
       >
         <MenuButton
           text="My Profile"
