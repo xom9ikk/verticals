@@ -376,6 +376,7 @@ export const Column: FC<IColumn> = ({
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
+          onClick={(e) => isEditable && e.stopPropagation()}
         >
           <div
             className={`column__wrapper

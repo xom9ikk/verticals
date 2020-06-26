@@ -7,7 +7,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '../Column';
-import { ITodo, ITodos } from '../../types';
+import { ITodo } from '../../types';
 import { ColumnsActions, TodosActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
 import { useFilterTodos } from '../../use/filterTodos';
@@ -198,7 +198,6 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       if (query) {
         isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
       }
-      console.log(isContainTodosByQuery);
       if (!isContainTodosByQuery) {
         return null;
       }

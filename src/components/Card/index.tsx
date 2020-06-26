@@ -267,6 +267,7 @@ export const Card: FC<ICard> = ({
         onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
         onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
         onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
+        onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
         onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
       >
         {
@@ -337,6 +338,7 @@ export const Card: FC<ICard> = ({
       `}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
+      onClick={(e) => e.stopPropagation()}
     >
       { card }
       { contextMenu }

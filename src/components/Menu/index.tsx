@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '../Popup';
@@ -97,7 +97,7 @@ export const Menu: FC<IMenu> = ({
       classes.push('menu--invert');
     }
 
-    const clickHandler = (event: any) => {
+    const clickHandler = (event: SyntheticEvent) => {
       event.stopPropagation();
       onClick?.();
       if (isOpenPopup) {

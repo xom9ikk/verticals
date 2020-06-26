@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -29,6 +29,7 @@ interface IBoardItem {
     boardId: string, title?: string, description?: string, color?: number
   ) => void;
   onClick?: (id: string)=>void;
+  onAddBoardBelow?: (id: string)=>void;
 }
 
 enum EnumMenuActions {
@@ -51,6 +52,7 @@ export const BoardItem: FC<IBoardItem> = ({
   onExitFromEditable,
   isActive = false,
   onClick,
+  onAddBoardBelow,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
@@ -145,7 +147,7 @@ export const BoardItem: FC<IBoardItem> = ({
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler);
+  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
 
   useEffect(() => {
     if (isEditableDefault) {
@@ -173,7 +175,7 @@ export const BoardItem: FC<IBoardItem> = ({
         break;
       }
       case EnumMenuActions.AddBoardBelow: {
-        // TODO
+        onAddBoardBelow?.(id);
         break;
       }
       case EnumMenuActions.Delete: {

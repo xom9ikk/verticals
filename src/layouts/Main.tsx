@@ -29,6 +29,9 @@ export const Main: FC = () => {
 
   const clickHandler = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
+    dispatch(SystemActions.setIsEditableCard(false));
+    dispatch(SystemActions.setIsEditableColumn(false));
+    dispatch(SystemActions.setIsEditableBoard(false));
   };
 
   useEffect(() => {

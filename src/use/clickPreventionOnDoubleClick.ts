@@ -1,8 +1,10 @@
+import { SyntheticEvent } from 'react';
 import { useCancellablePromises } from './cancellablePromise';
 
 export const useClickPreventionOnDoubleClick = (
-  onClick: () => void,
-  onDoubleClick: () => void,
+  onClick: (event: SyntheticEvent) => void,
+  onDoubleClick: (event: SyntheticEvent) => void,
+  isStopPropagation?: boolean,
 ) => {
   const {
     appendPendingPromise,
@@ -12,7 +14,10 @@ export const useClickPreventionOnDoubleClick = (
     delay,
   } = useCancellablePromises();
 
-  const handleClick = () => {
+  const handleClick = (event: SyntheticEvent) => {
+    if (isStopPropagation) {
+      event.stopPropagation();
+    }
     clearPendingPromises();
     const waitForClick = cancellablePromise(delay(200));
     appendPendingPromise(waitForClick);
@@ -20,7 +25,7 @@ export const useClickPreventionOnDoubleClick = (
     return waitForClick.promise
       .then(() => {
         removePendingPromise(waitForClick);
-        onClick?.();
+        onClick?.(event);
       })
       .catch((errorInfo: any) => {
         removePendingPromise(waitForClick);
@@ -30,9 +35,12 @@ export const useClickPreventionOnDoubleClick = (
       });
   };
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (event: SyntheticEvent) => {
+    if (isStopPropagation) {
+      event.stopPropagation();
+    }
     clearPendingPromises();
-    onDoubleClick?.();
+    onDoubleClick?.(event);
   };
 
   return { handleClick, handleDoubleClick };

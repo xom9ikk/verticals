@@ -11,7 +11,7 @@ import { Profile } from '../Profile';
 import { IRootState } from '../../store/reducers/state';
 import { BoardsActions, SystemActions } from '../../store/actions';
 import {
-  IBoards, IColumn, ITodo, ITodos,
+  IBoard, IBoards, IColumn, ITodo, ITodos,
 } from '../../types';
 import { useFilterTodos } from '../../use/filterTodos';
 
@@ -65,6 +65,10 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     }
   };
 
+  const addBoardBelow = (id: string) => {
+    console.log('add board below id', id);
+  };
+
   const reorder = (list: IBoards, startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -88,16 +92,67 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     setBoards(items);
   };
 
+  const getCountTodos = (boardId: string) => {
+    // let isContainTodosByQuery = true;
+    const needColumn = columns.filter((column: IColumn) => column.boardId === boardId);
+    const needTodos: ITodos = [];
+    needColumn.forEach((column: IColumn) => {
+      todos.forEach((todo: ITodo) => {
+        if (todo.columnId === column.id) {
+          needTodos.push(todo);
+        }
+      });
+    });
+    // if (query) {
+    //
+    //   // isContainTodosByQuery = countTodos > 0;
+    // }
+    // if (['trash', 'today'].includes(id)) { return null; }
+    // if (!isContainTodosByQuery) { return countTodos; }
+    return needTodos.filter(filterTodos).length;
+  };
+
+  const drawBoard = (board: IBoard) => {
+    console.log('drawBoard', board);
+    if (!board) {
+      return null;
+    }
+    const { id, icon, title } = board;
+    const countTodos = getCountTodos(id);
+    return (
+      <>
+        {
+          ((query && countTodos > 0) || !query) && (
+            <BoardItem
+              key={id}
+              id={id}
+              icon={icon}
+              title={title}
+              countTodos={query ? countTodos : undefined}
+              isActive={activeBoard === id}
+              onClick={() => onChange(id)}
+            />
+          )
+          }
+      </>
+    );
+  };
+
   const boardItems = useMemo(() => (
     <>
-      <BoardItem
-        key="today"
-        id="today"
-        icon="/svg/board/star.svg"
-        title="Today"
-        isActive={activeBoard === 'today'}
-        onClick={() => onChange('today')}
-      />
+      {
+        drawBoard(boards[0])
+        // boards[0] && (
+        // <BoardItem
+        //   key={boards[0].id}
+        //   id={boards[0].id}
+        //   icon={boards[0].icon}
+        //   title={boards[0].title}
+        //   isActive={activeBoard === boards[0].id}
+        //   onClick={() => onChange(boards[0].id)}
+        // />
+        // )
+      }
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
@@ -110,26 +165,33 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                 .map(({
                   id, icon, title, color,
                 }, index) => {
-                  let isContainTodosByQuery = true;
-                  let countTodos = 0;
-                  if (query) {
-                    const needColumn = columns.filter((column: IColumn) => column.boardId === id);
-                    const needTodos: ITodos = [];
-                    needColumn.forEach((column: IColumn) => {
-                      todos.forEach((todo: ITodo) => {
-                        if (todo.columnId === column.id) {
-                          needTodos.push(todo);
-                        }
-                      });
-                    });
-                    countTodos = needTodos.filter(filterTodos).length;
-                    isContainTodosByQuery = countTodos > 0;
-                  }
-                  if (!isContainTodosByQuery) {
-                    return null;
-                  }
+                  const countTodos = getCountTodos(id);
+                  if (query && !countTodos) return null;
+                  // let isContainTodosByQuery = true;
+                  // let countTodos = 0;
+                  // if (query) {
+                  //   const needColumn = columns.filte
+                  //   r((column: IColumn) => column.boardId === id);
+                  //   const needTodos: ITodos = [];
+                  //   needColumn.forEach((column: IColumn) => {
+                  //     todos.forEach((todo: ITodo) => {
+                  //       if (todo.columnId === column.id) {
+                  //         needTodos.push(todo);
+                  //       }
+                  //     });
+                  //   });
+                  //   countTodos = needTodos.filter(filterTodos).length;
+                  //   isContainTodosByQuery = countTodos > 0;
+                  // }
+                  if (['trash', 'today'].includes(id)) { return null; }
+                  // if (!isContainTodosByQuery) { return null; }
                   return (
-                    <Draggable key={id} draggableId={id} index={index} isDragDisabled={!!query}>
+                    <Draggable
+                      key={id}
+                      draggableId={id}
+                      index={index}
+                      isDragDisabled={!!query}
+                    >
                       {(draggableProvided, draggableSnapshot) => (
                         <div
                           ref={draggableProvided.innerRef}
@@ -147,6 +209,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                             isActive={activeBoard === id}
                             onClick={() => onChange(id)}
                             onExitFromEditable={saveBoard}
+                            onAddBoardBelow={addBoardBelow}
                           />
                         </div>
                       )}
@@ -158,14 +221,27 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
           )}
         </Droppable>
       </DragDropContext>
-      <BoardItem
-        key="trash"
-        id="trash"
-        icon="/svg/board/trash.svg"
-        title="Trash"
-        isActive={activeBoard === 'trash'}
-        onClick={() => onChange('trash')}
-      />
+      {
+        drawBoard(boards[boards.length - 1])
+        // boards[boards.length - 1] && (
+        // <BoardItem
+        //   key={boards[boards.length - 1].id}
+        //   id={boards[boards.length - 1].id}
+        //   icon={boards[boards.length - 1].icon}
+        //   title={boards[boards.length - 1].title}
+        //   isActive={activeBoard === boards[boards.length - 1].id}
+        //   onClick={() => onChange(boards[boards.length - 1].id)}
+        // />
+        // )
+      }
+      {/* <BoardItem */}
+      {/*  key="trash" */}
+      {/*  id="trash" */}
+      {/*  icon="/svg/board/trash.svg" */}
+      {/*  title="Trash" */}
+      {/*  isActive={activeBoard === 'trash'} */}
+      {/*  onClick={() => onChange('trash')} */}
+      {/* /> */}
     </>
 
   ), [boards, activeBoard, query]);
