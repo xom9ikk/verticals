@@ -37,7 +37,7 @@
       }
     }
     &--compact {
-      padding: 30px 5px 0 5px;
+      padding-top: 30px;
       display: flex;
       flex-direction: column;
       //align-items: center;
@@ -162,18 +162,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 23px;
-    min-height: 20px;
+    //min-width: 23px;
+    //min-height: 20px;
     border: 1px solid $text-very-light;
     border-radius: 3px;
-    padding: 3px;
-    font-family: "Nunito Medium", sans-serif;
+    padding: 1px 5px;
     margin-left: 10px;
+    #{$block}__compact-text {
+      font-size: 12px;
+      font-family: "Nunito Medium", sans-serif;
+    }
     //transform: rotate(-90deg);
   }
   &__compact-text {
     display: flex;
-    font-size: 13px;
+    font-size: 15px;
     color: $text-very-light;
     //transform: rotate(-90deg);
     flex-shrink:0;
@@ -183,7 +186,7 @@
   }
   &--compact {
     height: 100%;
-    width: 40px;
+    width: 36px;
     overflow: hidden;
     padding: 23px 5px;
   }

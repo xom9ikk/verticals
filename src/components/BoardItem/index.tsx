@@ -180,7 +180,7 @@ export const BoardItem: FC<IBoardItem> = ({
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(BoardsActions.removeBoard(id));
+        dispatch(BoardsActions.remove(id));
         break;
       }
       default: break;
@@ -297,8 +297,8 @@ export const BoardItem: FC<IBoardItem> = ({
        ${color !== undefined ? colorClass : ''} 
        ${snapshot?.isDragging ? 'board-item--dragging' : ''} 
        `}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >

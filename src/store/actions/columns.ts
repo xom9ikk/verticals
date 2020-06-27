@@ -10,6 +10,7 @@ enum Type {
   UPDATE_COLOR = 'COLUMNS/UPDATE_COLOR',
   RESET_COLOR = 'COLUMNS/RESET_COLOR',
   UPDATE_IS_MINIMIZE = 'COLUMNS/UPDATE_IS_MINIMIZE',
+  REMOVE_COLUMN = 'COLUMNS/REMOVE_COLUMN',
 }
 
 const setColumns = createAction(
@@ -62,6 +63,13 @@ const updateIsMinimize = createAction(
   }),
 );
 
+const remove = createAction(
+  Type.REMOVE_COLUMN,
+  (id: string) => ({
+    id,
+  }),
+);
+
 export const ColumnsActions = {
   Type,
   setColumns,
@@ -72,4 +80,5 @@ export const ColumnsActions = {
   updateColor,
   resetColor,
   updateIsMinimize,
+  remove,
 };

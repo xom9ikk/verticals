@@ -71,7 +71,6 @@ export const Card: FC<ICard> = ({
   useEffect(() => {
     if (isDoubleClicked) {
       setIsDoubleClicked(false);
-      console.log('double click setIsEditableCard', true);
       dispatch(SystemActions.setIsEditableCard(true));
       if (!isEditableCard && isDoubleClicked) {
         setIsEditable(true);
@@ -337,8 +336,8 @@ export const Card: FC<ICard> = ({
       ${isMouseDown ? 'card--pressed' : ''}
       ${color !== undefined ? colorClass : ''}
       `}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}
     >
       { card }

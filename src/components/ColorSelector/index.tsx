@@ -17,8 +17,8 @@ export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) 
           ? '#ffffff 0 0 0 2px, + 0 0 0 4px'.replace('+', color).replace('+', color)
           : '',
       }}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
       onClick={() => onClick(color)}
     >
       {

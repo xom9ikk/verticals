@@ -255,8 +255,8 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   return (
     <div
       className="board-list"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
     >
       { profile }
       { boardItems }

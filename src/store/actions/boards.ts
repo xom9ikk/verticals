@@ -63,7 +63,7 @@ const updateCardType = createAction(
   }),
 );
 
-const removeBoard = createAction(
+const remove = createAction(
   Type.REMOVE_BOARD,
   (id: string) => ({
     id,
@@ -80,5 +80,5 @@ export const BoardsActions = {
   updateColor,
   resetColor,
   updateCardType,
-  removeBoard,
+  remove,
 };

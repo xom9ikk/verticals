@@ -23,8 +23,8 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   return (
     <div
       className="toolbar"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
     >
       <div className="toolbar__inner">
         <Menu

@@ -12,9 +12,10 @@ import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 import {
+  BoardsActions,
   ColumnsActions, SystemActions, TodosActions,
 } from '../../store/actions';
-import { EnumColors, ITodos } from '../../types';
+import { EnumColors, EnumTodoType, ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
 import { ColorPicker } from '../ColorPicker';
@@ -31,6 +32,15 @@ interface IColumn {
   description?: string;
   todos?: ITodos;
   isDraggable?: boolean;
+}
+
+enum EnumMenuActions {
+  EditColumn,
+  Duplicate,
+  AddCard,
+  AddHeading,
+  AddColumnAfter,
+  Delete,
 }
 
 export const Column: FC<IColumn> = ({
@@ -177,6 +187,40 @@ export const Column: FC<IColumn> = ({
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
 
+  const hidePopup = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    setIsHoverHeader(false);
+    setIsHover(false);
+  };
+
+  const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
+    switch (action) {
+      case EnumMenuActions.EditColumn: {
+        doubleClickHandler();
+        break;
+      }
+      case EnumMenuActions.Duplicate: {
+        break;
+      }
+      case EnumMenuActions.AddCard: {
+        setIsOpenNewCard(true);
+        break;
+      }
+      case EnumMenuActions.AddHeading: {
+        break;
+      }
+      case EnumMenuActions.AddColumnAfter: {
+        break;
+      }
+      case EnumMenuActions.Delete: {
+        dispatch(ColumnsActions.remove(columnId!));
+        break;
+      }
+      default: break;
+    }
+    hidePopup();
+  };
+
   useEffect(() => {
     if (isDoubleClicked) {
       setIsDoubleClicked(false);
@@ -276,30 +320,36 @@ export const Column: FC<IColumn> = ({
       <MenuButton
         text="Edit column"
         imageSrc="/svg/menu/edit.svg"
+        onClick={() => menuButtonClickHandler(EnumMenuActions.EditColumn)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Duplicate"
         imageSrc="/svg/menu/duplicate.svg"
+        onClick={() => menuButtonClickHandler(EnumMenuActions.Duplicate)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Add card"
         imageSrc="/svg/menu/add-card.svg"
+        onClick={() => menuButtonClickHandler(EnumMenuActions.AddCard)}
       />
       <MenuButton
         text="Add heading"
         imageSrc="/svg/menu/add-heading.svg"
+        onClick={() => menuButtonClickHandler(EnumMenuActions.AddHeading)}
       />
       <MenuButton
         text="Add column after"
         imageSrc="/svg/menu/add-column.svg"
+        onClick={() => menuButtonClickHandler(EnumMenuActions.AddColumnAfter)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Delete"
         imageSrc="/svg/menu/delete.svg"
         hintText="⌫"
+        onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
       />
     </Menu>
   ), [isHover, color]);
@@ -382,6 +432,8 @@ export const Column: FC<IColumn> = ({
               isMinimize ? (
                 <>
                   <div
+                    role="button"
+                    tabIndex={0}
                     className={`column column--compact ${snapshot.isDragging ? 'column--dragging' : ''}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -399,7 +451,11 @@ export const Column: FC<IColumn> = ({
                     >
                       <div className="column__inner">
                         <div className="column__counter">
-                          <div className="column__compact-text">{todos?.length}</div>
+                          <div className="column__compact-text">
+                            {
+                              query ? todos?.filter(filterTodos).length : todos?.length
+                            }
+                          </div>
                         </div>
                         <div className="column__compact-text">{titleValue}</div>
                       </div>
@@ -411,8 +467,8 @@ export const Column: FC<IColumn> = ({
                   className={`column ${snapshot.isDragging ? 'column--dragging' : ''}`}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
-                  onMouseEnter={() => setIsHover(true)}
-                  onMouseLeave={() => setIsHover(false)}
+                  onMouseOver={() => setIsHover(true)}
+                  onMouseOut={() => setIsHover(false)}
                 >
                   <div
                     className={`column__wrapper
@@ -433,6 +489,8 @@ export const Column: FC<IColumn> = ({
                           >
                             <div style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}>
                               <div
+                                role="button"
+                                tabIndex={0}
                                 className={`column__header 
                                 ${color !== undefined ? colorClass : ''}
                                 ${isEditable ? 'column__header--editable' : ''}
@@ -455,21 +513,6 @@ export const Column: FC<IColumn> = ({
                         )
                       }
                     </Droppable>
-                    {/* <div */}
-                    {/*  className={`column__header */}
-                    {/*  ${color !== undefined ? colorClass : ''} */}
-                    {/*  ${isEditable ? 'column__header--editable' : ''} */}
-                    {/*  `} */}
-                    {/*  {...provided.dragHandleProps} */}
-                    {/*  onMouseEnter={() => setIsHoverHeader(true)} */}
-                    {/*  onMouseLeave={() => setIsHoverHeader(false)} */}
-                    {/*  onClick={handleClick} */}
-                    {/*  onDoubleClick={handleDoubleClick} */}
-                    {/* > */}
-                    {/*  { memoTitle } */}
-                    {/*  { memoDescription } */}
-                    {/* </div> */}
-                    {/* { todoCards } */}
                   </div>
                   { cardToolbar }
                 </div>

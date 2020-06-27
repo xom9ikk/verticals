@@ -11,8 +11,8 @@ export const Profile: FC<IProfile> = () => {
   return (
     <div
       className="profile"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
     >
       <img
         src="/avatars/default.jpeg"

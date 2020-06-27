@@ -115,4 +115,6 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             isMinimize: action.payload.isMinimize,
           }
           : column))),
+  [ColumnsActions.Type.REMOVE_COLUMN]:
+        (state, action) => state.filter((column: IColumn) => column.id !== action.payload.id),
 }, initialState);

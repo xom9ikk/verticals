@@ -18,8 +18,8 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
       <div className={`sidebar__overlay ${!isPinnedSidebar && !isHover ? 'sidebar__overlay--unpinned' : ''}`} />
       <aside
         className={`sidebar ${!isPinnedSidebar && !isHover ? 'sidebar--unpinned' : ''}`}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+        onMouseOver={() => setIsHover(true)}
+        onMouseOut={() => setIsHover(false)}
       >
         <div className="sidebar__inner">
           <div className="sidebar__toggle">
