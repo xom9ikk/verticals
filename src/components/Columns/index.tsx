@@ -16,8 +16,9 @@ interface TodoMap {
   [key: string]: {
     todos: ITodo[],
     title: string,
-    color: number,
     description: string,
+    color: number,
+    isMinimize: boolean,
   },
 }
 
@@ -39,6 +40,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   const [orderedId, setOrderedId] = useState<Array<string>>([]);
 
   useEffect(() => {
+    console.log('new columns', columns);
     const data = {};
     columns
         ?.filter((column) => column.boardId === boardId)
@@ -46,9 +48,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         ?.forEach((column) => {
           // @ts-ignore
           data[column.id] = {
-            title: column.title,
-            description: column.description,
-            color: column.color,
+            ...column,
             todos: todos.filter((todo) => todo.columnId === column.id),
           };
         });
@@ -133,17 +133,13 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     source,
     destination,
   }: ReorderTodoMapArgs): TodoMap => {
-    const currentDescription: string = quoteMap[source.droppableId].description;
-    const currentTitle: string = quoteMap[source.droppableId].title;
-    const currentColor: number = quoteMap[source.droppableId].color;
-    const current: ITodo[] = [...quoteMap[source.droppableId].todos];
-    //
-    const nextTitle: string = quoteMap[destination.droppableId].title;
-    const nextDescription: string = quoteMap[destination.droppableId].description;
-    const nextColor: number = quoteMap[destination.droppableId].color;
-    const next: ITodo[] = [...quoteMap[destination.droppableId].todos];
-    //
-    const target: ITodo = current[source.index];
+    const current = quoteMap[source.droppableId];
+    const currentTodos: ITodo[] = [...quoteMap[source.droppableId].todos];
+
+    const next = quoteMap[destination.droppableId];
+    const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
+
+    const target: ITodo = currentTodos[source.index];
 
     // moving to same list
     if (source.droppableId === destination.droppableId) {
@@ -151,10 +147,8 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         target.id, destination.index, destination.droppableId,
       ));
       const reordered = {
-        title: currentTitle,
-        description: currentTitle,
-        color: currentColor,
-        todos: reorder(current, source.index, destination.index, true),
+        ...current,
+        todos: reorder(currentTodos, source.index, destination.index, true),
       };
       return {
         ...quoteMap,
@@ -167,27 +161,23 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       target.id, source.droppableId, destination.droppableId, destination.index,
     ));
     // remove from original
-    current.splice(source.index, 1);
+    currentTodos.splice(source.index, 1);
     // insert into next
-    next.splice(destination.index, 0, target);
+    nextTodos.splice(destination.index, 0, target);
 
     return {
       ...quoteMap,
       [source.droppableId]: {
-        todos: current.map((todo, index) => ({
+        ...current,
+        todos: currentTodos.map((todo, index) => ({
           ...todo, position: index,
         })),
-        color: currentColor,
-        description: currentDescription,
-        title: currentTitle,
       },
       [destination.droppableId]: {
-        todos: next.map((todo, index) => ({
+        ...next,
+        todos: nextTodos.map((todo, index) => ({
           ...todo, position: index,
         })),
-        color: nextColor,
-        description: nextDescription,
-        title: nextTitle,
       },
     };
   };
@@ -205,6 +195,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         <Column
           index={index}
           color={preparedData[key].color}
+          isMinimize={preparedData[key].isMinimize}
           columnId={key}
           boardId={boardId}
           key={key}
@@ -245,11 +236,6 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
           )}
         </Droppable>
       </DragDropContext>
-      {
-        [...new Array(orderedId.length + 1)].map((el, index) => (
-          <div className="column__overlay" style={{ left: 260 + 260 * index }} />
-        ))
-      }
     </>
   );
 };

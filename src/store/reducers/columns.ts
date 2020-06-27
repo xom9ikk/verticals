@@ -101,4 +101,11 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             color: action.payload.color,
           }
           : column))),
+  [ColumnsActions.Type.UPDATE_IS_MINIMIZE]:
+        (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
+          ? {
+            ...column,
+            isMinimize: action.payload.isMinimize,
+          }
+          : column))),
 }, initialState);

@@ -1,14 +1,12 @@
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Sidebar } from '../components/Sidebar';
 import { Columns } from '../components/Columns';
 import { SystemActions } from '../store/actions';
-import { IRootState } from '../store/reducers/state';
 import { Search } from '../components/Search';
 import { BoardList } from '../components/BoardList';
-import { Toolbar } from '../components/Toolbar';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
@@ -50,7 +48,6 @@ export const Main: FC = () => {
         activeBoard={activeBoardId}
         onChange={setActiveBoardId}
       />
-      <Toolbar />
     </Sidebar>
   ), [activeBoardId]);
 

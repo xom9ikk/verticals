@@ -304,7 +304,7 @@ export const BoardItem: FC<IBoardItem> = ({
       <div className="board-item__content">
         <img
           src={`${isActive
-            ? icon.replace('item', 'item--active')
+            ? icon.replace('item', 'item-active')
             : icon}`}
           alt="ico"
           className="board-item__image"

@@ -8,6 +8,7 @@ enum Type {
   ADD = 'COLUMNS/ADD',
   UPDATE_POSITION = 'COLUMNS/UPDATE_POSITION',
   UPDATE_COLOR = 'COLUMNS/UPDATE_COLOR',
+  UPDATE_IS_MINIMIZE = 'COLUMNS/UPDATE_IS_MINIMIZE',
 }
 
 const setColumns = createAction(
@@ -46,6 +47,13 @@ const updateColor = createAction(
   }),
 );
 
+const updateIsMinimize = createAction(
+  Type.UPDATE_IS_MINIMIZE,
+  (id: string, isMinimize: boolean) => ({
+    id, isMinimize,
+  }),
+);
+
 export const ColumnsActions = {
   Type,
   setColumns,
@@ -54,4 +62,5 @@ export const ColumnsActions = {
   add,
   updatePosition,
   updateColor,
+  updateIsMinimize,
 };

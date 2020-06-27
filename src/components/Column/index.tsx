@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import {
@@ -14,16 +14,18 @@ import { Divider } from '../Divider';
 import {
   ColumnsActions, SystemActions, TodosActions,
 } from '../../store/actions';
-import { EnumColors, ITodo, ITodos } from '../../types';
+import { EnumColors, ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
 import { ColorPicker } from '../ColorPicker';
 import { useFilterTodos } from '../../use/filterTodos';
+import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
 
 interface IColumn {
   index: number;
   columnId?: string;
   color?: number;
+  isMinimize?: boolean;
   boardId: string;
   title?: string;
   description?: string;
@@ -35,6 +37,7 @@ export const Column: FC<IColumn> = ({
   index,
   columnId,
   color,
+  isMinimize,
   boardId,
   title: initialTitle,
   description: initialDescription,
@@ -146,6 +149,24 @@ export const Column: FC<IColumn> = ({
     saveColumn(newColor);
   };
 
+  const clickHandler = (event: SyntheticEvent) => {
+    if (isEditable) event.stopPropagation();
+    setIsHoverHeader(false);
+    dispatch(ColumnsActions.updateIsMinimize(columnId!, !isMinimize));
+  };
+
+  const doubleClickHandler = () => {
+    if (isEditableColumn) {
+      dispatch(SystemActions.setIsEditableColumn(false));
+    }
+    setIsDoubleClicked(true);
+  };
+
+  const {
+    handleClick,
+    handleDoubleClick,
+  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
+
   useEffect(() => {
     if (isDoubleClicked) {
       setIsDoubleClicked(false);
@@ -163,13 +184,6 @@ export const Column: FC<IColumn> = ({
       setIsDoubleClicked(undefined);
     }
   }, [isEditableColumn]);
-
-  const doubleClickHandler = () => {
-    if (isEditableColumn) {
-      dispatch(SystemActions.setIsEditableColumn(false));
-    }
-    setIsDoubleClicked(true);
-  };
 
   const addCard = useMemo(() => (
     (!isOpenNewCard && isDraggable) && (
@@ -361,7 +375,7 @@ export const Column: FC<IColumn> = ({
   ), [isEditable, titleValue, descriptionValue, todos, contextMenu, color]);
 
   // @ts-ignore
-  const colorClass = `column__header--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
+  const colorClass = `column__wrapper--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
 
   const memoColumn = useMemo(() => (
     <Draggable
@@ -370,45 +384,77 @@ export const Column: FC<IColumn> = ({
       isDragDisabled={!isDraggable || !!query}
     >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-        <div
-          className="column"
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-          onClick={(e) => isEditable && e.stopPropagation()}
-        >
-          <div
-            className={`column__wrapper
-            ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
-            ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
-            `}
-          >
-            <div
-              className={`column__header 
-              ${color !== undefined ? colorClass : ''}
-              ${isEditable ? 'column__header--editable' : ''}
-              `}
-              {...provided.dragHandleProps}
-              // aria-label={`${titleValue} quote list`}
-              onMouseEnter={() => setIsHoverHeader(true)}
-              onMouseLeave={() => setIsHoverHeader(false)}
-              onDoubleClick={doubleClickHandler}
-            >
-              { memoTitle }
-              { memoDescription }
-            </div>
-            { todoCards }
-          </div>
-          { cardToolbar }
-        </div>
+        <>
+          {
+              isMinimize ? (
+                <>
+                  <div
+                    className={`column column--compact ${snapshot.isDragging ? 'column--dragging' : ''}`}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    onMouseEnter={() => setIsHoverHeader(true)}
+                    onMouseLeave={() => setIsHoverHeader(false)}
+                    onClick={handleClick}
+                  >
+                    <div
+                      className={`column__wrapper column__wrapper--compact
+                    ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
+                    ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
+                    ${color !== undefined ? colorClass : ''}
+                    `}
+                      {...provided.dragHandleProps}
+                    >
+                      <div className="column__inner">
+                        <div className="column__counter">
+                          <div className="column__compact-text">{todos?.length}</div>
+                        </div>
+                        <div className="column__compact-text">{titleValue}</div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div
+                  className={`column ${snapshot.isDragging ? 'column--dragging' : ''}`}
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  onMouseEnter={() => setIsHover(true)}
+                  onMouseLeave={() => setIsHover(false)}
+                >
+                  <div
+                    className={`column__wrapper
+                    ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
+                    ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
+                    `}
+                  >
+                    <div
+                      className={`column__header 
+                      ${color !== undefined ? colorClass : ''}
+                      ${isEditable ? 'column__header--editable' : ''}
+                      `}
+                      {...provided.dragHandleProps}
+                      onMouseEnter={() => setIsHoverHeader(true)}
+                      onMouseLeave={() => setIsHoverHeader(false)}
+                      onClick={handleClick}
+                      onDoubleClick={handleDoubleClick}
+                    >
+                      { memoTitle }
+                      { memoDescription }
+                    </div>
+                    { todoCards }
+                  </div>
+                  { cardToolbar }
+                </div>
+              )
+            }
+        </>
       )}
     </Draggable>
   ),
   [
     index, boards, todos, color, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
-    titleValue, descriptionValue, query,
+    titleValue, descriptionValue, query, isMinimize,
   ]);
 
   return (

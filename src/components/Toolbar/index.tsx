@@ -1,14 +1,24 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Menu } from '../Menu';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 import { Submenu } from '../Submenu';
+import { SystemActions } from '../../store/actions';
 
 interface IToolbar {
+  onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
 }
 
-export const Toolbar: FC<IToolbar> = () => {
+export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
+  const dispatch = useDispatch();
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [isPinSidebar, setIsPinSidebar] = useState<boolean>(true);
+
+  const hidePopup = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    setIsHover(false);
+  };
 
   return (
     <div
@@ -33,8 +43,15 @@ export const Toolbar: FC<IToolbar> = () => {
           isAbsolute={false}
         >
           <MenuButton
-            text="Hide Sidebar"
+            text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
             imageSrc="/svg/menu/hide-sidebar.svg"
+            onClick={() => {
+              setIsPinSidebar((prev) => {
+                hidePopup();
+                onChangeDisplaySidebar(!prev);
+                return !prev;
+              });
+            }}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
 

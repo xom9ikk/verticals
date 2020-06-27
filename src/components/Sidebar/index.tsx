@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Menu } from '../Menu';
+import { Toolbar } from '../Toolbar';
 
 interface ISidebar {
 }
@@ -34,6 +35,7 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
             />
           </div>
           {children}
+          <Toolbar onChangeDisplaySidebar={setIsPinnedSidebar} />
         </div>
       </aside>
     </>
