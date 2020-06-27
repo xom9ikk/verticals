@@ -748,4 +748,11 @@ export const TodosReducer = handleActions<ITodos, any>({
           color: action.payload.color,
         }
         : todo))),
+  [TodosActions.Type.RESET_COLOR]:
+      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
+        ? {
+          ...todo,
+          color: undefined,
+        }
+        : todo))),
 }, initialState);

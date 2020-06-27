@@ -65,6 +65,7 @@ export const Card: FC<ICard> = ({
   const saveTodo = (newColor?: number) => {
     const { newTitle, newDescription, newIsDone } = getNewData();
     onExitFromEditable?.(newTitle, newDescription, newIsDone, newColor);
+    setIsHover(false);
   };
 
   useEffect(() => {
@@ -214,7 +215,7 @@ export const Card: FC<ICard> = ({
       hintText="⌫"
     />
   </Menu>
-  ), [isEditable, isHover]);
+  ), [isEditable, isHover, color]);
 
   useEffect(() => {
     if (!isEditableDefault) {

@@ -80,7 +80,12 @@ export const Column: FC<IColumn> = ({
         dispatch(TodosActions.updateIsDone(id, newIsDone));
       }
       if (newColor !== undefined) {
-        dispatch(TodosActions.updateColor(id, newColor));
+        const todoToChange = todos?.find((todo) => todo.id === id);
+        if (todoToChange?.color === newColor) {
+          dispatch(TodosActions.resetColor(id));
+        } else {
+          dispatch(TodosActions.updateColor(id, newColor));
+        }
       }
     } else if (newTitle || newDescription) {
       dispatch(TodosActions.add(columnId || 'todo-this-case', newTitle, newDescription, newIsDone));
@@ -111,7 +116,11 @@ export const Column: FC<IColumn> = ({
         dispatch(ColumnsActions.updateDescription(columnId, newDescription));
       }
       if (newColor !== undefined) {
-        dispatch(ColumnsActions.updateColor(columnId, newColor));
+        if (color === newColor) {
+          dispatch(ColumnsActions.resetColor(columnId));
+        } else {
+          dispatch(ColumnsActions.updateColor(columnId, newColor));
+        }
       }
     } else if (newTitle || newDescription) {
       dispatch(ColumnsActions.add(boardId, newTitle, newDescription));
@@ -120,6 +129,7 @@ export const Column: FC<IColumn> = ({
         setDescriptionValue('');
       }
     }
+    setIsHover(false);
   };
 
   const keydownHandler = (event: any, isDescription: boolean) => {
@@ -214,100 +224,43 @@ export const Column: FC<IColumn> = ({
   const todoCards = useMemo(() => (
     <>
       {
-            todos
-                ?.sort((a, b) => a.position - b.position)
-                ?.filter(filterTodos)
-                ?.map((todo, todoIndex) => (
-                  <Draggable
+        todos
+            ?.sort((a, b) => a.position - b.position)
+            ?.filter(filterTodos)
+            ?.map((todo, todoIndex) => (
+              <Draggable
+                key={todo.id}
+                draggableId={todo.id}
+                index={todoIndex}
+                isDragDisabled={!!query}
+              >
+                {(
+                  dragProvided: DraggableProvided,
+                  dragSnapshot: DraggableStateSnapshot,
+                ) => (
+                  <Card
+                    cardType={boards
+                      .filter((board) => board.id === boardId)[0]?.cardType}
+                    provided={dragProvided}
+                    snapshot={dragSnapshot}
                     key={todo.id}
-                    draggableId={todo.id}
-                    index={todoIndex}
-                    isDragDisabled={!!query}
-                  >
-                    {(
-                      dragProvided: DraggableProvided,
-                      dragSnapshot: DraggableStateSnapshot,
-                    ) => (
-                      <Card
-                        cardType={boards
-                          .filter((board) => board.id === boardId)[0]?.cardType}
-                        provided={dragProvided}
-                        snapshot={dragSnapshot}
-                        key={todo.id}
-                        title={todo.title}
-                        description={todo.description}
-                        isDone={todo.isDone}
-                        color={todo.color}
-                        onExitFromEditable={
-                                (newTitle, newDescription,
-                                  isDone, newColor) => saveCard(
-                                  todo.id, newTitle, newDescription, isDone, newColor,
-                                )
-                              }
-                      />
-                    )}
-                  </Draggable>
-                ))
+                    title={todo.title}
+                    description={todo.description}
+                    isDone={todo.isDone}
+                    color={todo.color}
+                    onExitFromEditable={
+                            (newTitle, newDescription,
+                              isDone, newColor) => saveCard(
+                              todo.id, newTitle, newDescription, isDone, newColor,
+                            )
+                          }
+                  />
+                )}
+              </Draggable>
+            ))
           }
     </>
   ), [boards, todos, columnId, isOpenNewCard, isHover, query]);
-  // const todoCards2 = useMemo(() => (
-  //   <Droppable
-  //     droppableId={columnId || 'todo-this-case'}
-  //     type="QUOTE"
-  //   >
-  //     {
-  //           (dropProvided, dropSnapshot) => (
-  //             <div
-  //               className="column__container"
-  //               ref={dropProvided.innerRef}
-  //             >
-  //               <div style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}>
-  //                 {
-  //                   todos
-  //                     ?.sort((a, b) => a.position - b.position)
-  //                     ?.filter(filterTodos)
-  //                     ?.map((todo, todoIndex) => (
-  //                       <Draggable
-  //                         key={todo.id}
-  //                         draggableId={todo.id}
-  //                         index={todoIndex}
-  //                         isDragDisabled={!!query}
-  //                       >
-  //                         {(
-  //                           dragProvided: DraggableProvided,
-  //                           dragSnapshot: DraggableStateSnapshot,
-  //                         ) => (
-  //                           <Card
-  //                             cardType={boards
-  //                               .filter((board) => board.id === boardId)[0]?.cardType}
-  //                             provided={dragProvided}
-  //                             snapshot={dragSnapshot}
-  //                             key={todo.id}
-  //                             title={todo.title}
-  //                             description={todo.description}
-  //                             isDone={todo.isDone}
-  //                             color={todo.color}
-  //                             onExitFromEditable={
-  //                               (newTitle, newDescription,
-  //                                 isDone, newColor) => saveCard(
-  //                                 todo.id, newTitle, newDescription, isDone, newColor,
-  //                               )
-  //                             }
-  //                           />
-  //                         )}
-  //                       </Draggable>
-  //                     ))
-  //                 }
-  //               </div>
-  //               { newCard }
-  //               { addCard }
-  //               {dropProvided.placeholder}
-  //             </div>
-  //           )
-  //         }
-  //   </Droppable>
-  // ), [boards, todos, columnId, isOpenNewCard, isHover, query]);
 
   const contextMenu = useMemo(() => (
     <Menu

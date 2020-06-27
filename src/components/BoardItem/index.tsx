@@ -78,6 +78,7 @@ export const BoardItem: FC<IBoardItem> = ({
   const saveBoard = (newColor?: number) => {
     const { newTitle, newDescription } = getNewData();
     onExitFromEditable?.(id, newTitle, newDescription, newColor);
+    hidePopup();
   };
 
   const colorPickHandler = (newColor: number) => {

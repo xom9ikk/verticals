@@ -101,6 +101,13 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             color: action.payload.color,
           }
           : column))),
+  [ColumnsActions.Type.RESET_COLOR]:
+        (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
+          ? {
+            ...column,
+            color: undefined,
+          }
+          : column))),
   [ColumnsActions.Type.UPDATE_IS_MINIMIZE]:
         (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
           ? {

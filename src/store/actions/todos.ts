@@ -10,6 +10,7 @@ enum Type {
   UPDATE_COLUMN = 'TODOS/UPDATE_COLUMN',
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
   UPDATE_COLOR = 'TODOS/UPDATE_COLOR',
+  RESET_COLOR = 'TODOS/RESET_COLOR',
 }
 
 const setTodos = createAction(
@@ -60,6 +61,13 @@ const updateColor = createAction(
   }),
 );
 
+const resetColor = createAction(
+  Type.RESET_COLOR,
+  (id: string) => ({
+    id,
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
@@ -70,4 +78,5 @@ export const TodosActions = {
   updateColumn,
   updatePosition,
   updateColor,
+  resetColor,
 };
