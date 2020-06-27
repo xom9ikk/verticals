@@ -276,7 +276,7 @@ export const BoardItem: FC<IBoardItem> = ({
           )
         }
     </>
-  ), [id, isHover, isActive]);
+  ), [id, isHover, isActive, color]);
 
   const memoCounter = useMemo(() => (
     <div className="board-item__counter">
