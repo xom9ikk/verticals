@@ -11,11 +11,7 @@
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
-    //overflow-y: scroll;
     transition: background .1s ease-in-out, scale .5s ease-in-out;
-    &::-webkit-scrollbar {
-      width: 0;
-    }
     &--dragging {
       background: $primary-light;
       transform: scale(1.02);
@@ -87,6 +83,9 @@
     //height: calc(100vh - 213px);
     height: calc(100vh - 87px);
     overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
   &__header {
     display: flex;

@@ -54,7 +54,7 @@ const initialState: IBoards = [{
 }, {
   id: 'trash',
   icon: '/svg/board/trash.svg',
-  title: 'Today',
+  title: 'Trash',
   position: 8,
   cardType: EnumTodoType.Checkboxes,
 }];
