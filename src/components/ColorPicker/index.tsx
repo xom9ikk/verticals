@@ -24,7 +24,7 @@ export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {
           ))
         }
     </div>
-  ), [activeColor]);
+  ), [activeColor, onPick]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { ColumnsActions, TodosActions } from '../actions';
-import { IColumn, ITodo, ITodos } from '../../types';
+import { TodosActions } from '../actions';
+import { ITodo, ITodos } from '../../types';
 
 let count = 0;
 const initialState: ITodos = [

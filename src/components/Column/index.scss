@@ -11,7 +11,7 @@
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
-    overflow-y: scroll;
+    //overflow-y: scroll;
     transition: background .1s ease-in-out, scale .5s ease-in-out;
     &::-webkit-scrollbar {
       width: 0;
@@ -84,7 +84,9 @@
     }
   }
   &__container {
-    height: calc(100vh - 213px);
+    //height: calc(100vh - 213px);
+    height: calc(100vh - 87px);
+    overflow-y: scroll;
   }
   &__header {
     display: flex;

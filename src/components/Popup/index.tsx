@@ -1,9 +1,7 @@
 import React, {
   FC, MutableRefObject, useMemo, useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import { createPortal } from 'react-dom';
-import { IRootState } from '../../store/reducers/state';
 
 interface IPopup {
   isOpen: boolean
