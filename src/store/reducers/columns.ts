@@ -115,6 +115,22 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             isMinimize: action.payload.isMinimize,
           }
           : column))),
-  [ColumnsActions.Type.REMOVE_COLUMN]:
+  [ColumnsActions.Type.REMOVE]:
         (state, action) => state.filter((column: IColumn) => column.id !== action.payload.id),
+  [ColumnsActions.Type.DUPLICATE]:
+        (state, action) => {
+          const indexToDuplicate = state
+            .findIndex((column: IColumn) => column.id === action.payload.id);
+          const newColumns = [...state];
+          newColumns
+            .splice(indexToDuplicate + 1, 0, {
+              ...state[indexToDuplicate],
+              id: action.payload.newId,
+            })
+            .map((column: IColumn, index) => ({
+              ...column,
+              position: index,
+            }));
+          return newColumns;
+        },
 }, initialState);

@@ -11,6 +11,7 @@ enum Type {
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
   UPDATE_COLOR = 'TODOS/UPDATE_COLOR',
   RESET_COLOR = 'TODOS/RESET_COLOR',
+  DUPLICATE_FOR_COLUMN = 'TODOS/DUPLICATE_FOR_COLUMN',
 }
 
 const setTodos = createAction(
@@ -68,6 +69,14 @@ const resetColor = createAction(
   }),
 );
 
+const duplicateForColumn = createAction(
+  Type.DUPLICATE_FOR_COLUMN,
+  (columnId: string, newColumnId: string) => ({
+    columnId,
+    newColumnId,
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
@@ -79,4 +88,5 @@ export const TodosActions = {
   updatePosition,
   updateColor,
   resetColor,
+  duplicateForColumn,
 };

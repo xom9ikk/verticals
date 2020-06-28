@@ -10,7 +10,8 @@ enum Type {
   UPDATE_COLOR = 'COLUMNS/UPDATE_COLOR',
   RESET_COLOR = 'COLUMNS/RESET_COLOR',
   UPDATE_IS_MINIMIZE = 'COLUMNS/UPDATE_IS_MINIMIZE',
-  REMOVE_COLUMN = 'COLUMNS/REMOVE_COLUMN',
+  REMOVE = 'COLUMNS/REMOVE',
+  DUPLICATE = 'COLUMNS/DUPLICATE',
 }
 
 const setColumns = createAction(
@@ -64,9 +65,16 @@ const updateIsMinimize = createAction(
 );
 
 const remove = createAction(
-  Type.REMOVE_COLUMN,
+  Type.REMOVE,
   (id: string) => ({
     id,
+  }),
+);
+
+const duplicate = createAction(
+  Type.DUPLICATE,
+  (id: string, newId: string) => ({
+    id, newId,
   }),
 );
 
@@ -81,4 +89,5 @@ export const ColumnsActions = {
   resetColor,
   updateIsMinimize,
   remove,
+  duplicate,
 };

@@ -200,6 +200,9 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.Duplicate: {
+        const newColumnId = Math.random().toString();
+        dispatch(ColumnsActions.duplicate(columnId!, newColumnId));
+        dispatch(TodosActions.duplicateForColumn(columnId!, newColumnId));
         break;
       }
       case EnumMenuActions.AddCard: {

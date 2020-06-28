@@ -755,4 +755,15 @@ export const TodosReducer = handleActions<ITodos, any>({
           color: undefined,
         }
         : todo))),
+  [TodosActions.Type.DUPLICATE_FOR_COLUMN]:
+      (state, action) => {
+        const todosToDuplicate = state
+          .filter((todo: ITodo) => todo.columnId === action.payload.columnId)
+          .map((todo: ITodo) => ({
+            ...todo,
+            id: Math.random().toString(),
+            columnId: action.payload.newColumnId,
+          }));
+        return [...state, ...todosToDuplicate];
+      },
 }, initialState);

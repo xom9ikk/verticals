@@ -3,6 +3,18 @@
 @import './base';
 @import '../../index';
 
+body {
+  //&::-webkit-scrollbar {
+  //  width: 0;
+  //}
+  //overflow: hidden;
+  //animation: rainbow 30s ease 1;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+}
+
 #root {
   display: flex;
   flex: 1;
@@ -17,6 +29,7 @@
   &--vertical {
     flex-direction: column;
   }
+  //overflow-y: scroll;
 }
 
 .link {
