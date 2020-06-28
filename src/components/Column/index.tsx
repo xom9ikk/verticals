@@ -200,7 +200,7 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.Duplicate: {
-        const newColumnId = Math.random().toString();
+        const newColumnId = `column-${Math.random().toString()}`;
         dispatch(ColumnsActions.duplicate(columnId!, newColumnId));
         dispatch(TodosActions.duplicateForColumn(columnId!, newColumnId));
         break;
@@ -494,7 +494,7 @@ export const Column: FC<IColumn> = ({
                               <div
                                 role="button"
                                 tabIndex={0}
-                                className={`column__header 
+                                className={`column__header
                                 ${color !== undefined ? colorClass : ''}
                                 ${isEditable ? 'column__header--editable' : ''}
                                 `}

@@ -126,11 +126,11 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             .splice(indexToDuplicate + 1, 0, {
               ...state[indexToDuplicate],
               id: action.payload.newId,
-            })
+            });
+          return newColumns
             .map((column: IColumn, index) => ({
               ...column,
               position: index,
             }));
-          return newColumns;
         },
 }, initialState);
