@@ -12,10 +12,9 @@ import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 import {
-  BoardsActions,
   ColumnsActions, SystemActions, TodosActions,
 } from '../../store/actions';
-import { EnumColors, EnumTodoType, ITodos } from '../../types';
+import { EnumColors, ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
 import { ColorPicker } from '../ColorPicker';
@@ -118,7 +117,7 @@ export const Column: FC<IColumn> = ({
 
   const saveColumn = (newColor?: number) => {
     const { newTitle, newDescription } = getNewData();
-    if (columnId) {
+    if (columnId || columnId === 'new-column') {
       if (newTitle) {
         dispatch(ColumnsActions.updateTitle(columnId, newTitle));
       }
@@ -131,6 +130,11 @@ export const Column: FC<IColumn> = ({
         } else {
           dispatch(ColumnsActions.updateColor(columnId, newColor));
         }
+      }
+      if (columnId === 'new-column' && (newTitle)) {
+        dispatch(ColumnsActions.generateNewId(columnId));
+      } else {
+        dispatch(ColumnsActions.removeNewColumns());
       }
     } else if (newTitle || newDescription) {
       dispatch(ColumnsActions.add(boardId, newTitle, newDescription));
@@ -170,9 +174,12 @@ export const Column: FC<IColumn> = ({
   };
 
   const clickHandler = (event: SyntheticEvent) => {
-    if (isEditable) event.stopPropagation();
-    setIsHoverHeader(false);
-    dispatch(ColumnsActions.updateIsMinimize(columnId!, !isMinimize));
+    if (isEditable) {
+      event.stopPropagation();
+    } else {
+      setIsHoverHeader(false);
+      dispatch(ColumnsActions.updateIsMinimize(columnId!, !isMinimize));
+    }
   };
 
   const doubleClickHandler = () => {
@@ -181,6 +188,12 @@ export const Column: FC<IColumn> = ({
     }
     setIsDoubleClicked(true);
   };
+
+  useEffect(() => {
+    if (columnId === 'new-column') {
+      doubleClickHandler();
+    }
+  }, []);
 
   const {
     handleClick,
@@ -213,6 +226,8 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.AddColumnAfter: {
+        dispatch(ColumnsActions.removeNewColumns());
+        dispatch(ColumnsActions.addColumnAfter(columnId!, boardId));
         break;
       }
       case EnumMenuActions.Delete: {

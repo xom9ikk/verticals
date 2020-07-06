@@ -12,6 +12,9 @@ enum Type {
   UPDATE_IS_MINIMIZE = 'COLUMNS/UPDATE_IS_MINIMIZE',
   REMOVE = 'COLUMNS/REMOVE',
   DUPLICATE = 'COLUMNS/DUPLICATE',
+  ADD_COLUMN_AFTER = 'COLUMNS/ADD_COLUMN_AFTER',
+  GENERATE_NEW_ID = 'COLUMNS/GENERATE_NEW_ID',
+  REMOVE_NEW_COLUMNS = 'COLUMNS/REMOVE_NEW_COLUMNS',
 }
 
 const setColumns = createAction(
@@ -78,6 +81,27 @@ const duplicate = createAction(
   }),
 );
 
+const addColumnAfter = createAction(
+  Type.ADD_COLUMN_AFTER,
+  (id: string, boardId: string) => ({
+    id, boardId,
+  }),
+);
+
+const generateNewId = createAction(
+  Type.GENERATE_NEW_ID,
+  (id: string) => ({
+    id,
+  }),
+);
+
+const removeNewColumns = createAction(
+  Type.REMOVE_NEW_COLUMNS,
+  () => ({
+
+  }),
+);
+
 export const ColumnsActions = {
   Type,
   setColumns,
@@ -90,4 +114,7 @@ export const ColumnsActions = {
   updateIsMinimize,
   remove,
   duplicate,
+  addColumnAfter,
+  generateNewId,
+  removeNewColumns,
 };

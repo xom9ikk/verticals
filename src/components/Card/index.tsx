@@ -192,7 +192,7 @@ export const Card: FC<ICard> = ({
     <MenuButton
       text="Notifications"
       imageSrc="/svg/menu/notifications.svg"
-      hintImageSrc="/svg/menu/tick.svg"
+      hintImageSrc="/svg/menu/tick-active.svg"
     />
     <MenuButton
       text="Copy link"

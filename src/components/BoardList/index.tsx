@@ -38,13 +38,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     setBoards(initialBoards);
   }, [initialBoards]);
 
-  // useEffect(() => {
-  //   if (!isEditableBoard) {
-  //     setIsOpenNewBoard(false);
-  //     // dispatch(SystemActions.setIsEditableBoard(false));
-  //   }
-  // }, [isEditableBoard]);
-
   const saveBoard = (
     boardId: string, newTitle?: string, newDescription?: string, newColor?: number,
   ) => {
@@ -66,7 +59,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
           dispatch(BoardsActions.updateColor(boardId, newColor));
         }
       }
-      if (boardId === 'new-board' && (newTitle || newColor !== undefined)) {
+      if (boardId === 'new-board' && (newTitle)) {
         dispatch(BoardsActions.generateNewId(boardId));
       } else {
         dispatch(BoardsActions.removeNewBoards());
@@ -74,11 +67,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     } else if (newTitle) {
       dispatch(BoardsActions.add('/svg/board/item.svg', newTitle, newDescription));
     }
-  };
-
-  const addBoardBelow = (id: string) => {
-    console.log('add board below id', id);
-    dispatch(BoardsActions.addBoardBelow(id));
   };
 
   const reorder = (list: IBoards, startIndex: number, endIndex: number) => {
@@ -195,7 +183,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                               isActive={activeBoard === id}
                               onClick={() => onChange(id)}
                               onExitFromEditable={saveBoard}
-                              onAddBoardBelow={addBoardBelow}
                             />
                           </div>
                         )}

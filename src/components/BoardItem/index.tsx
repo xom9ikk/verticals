@@ -29,7 +29,6 @@ interface IBoardItem {
     boardId: string, title?: string, description?: string, color?: number
   ) => void;
   onClick?: (id: string)=>void;
-  onAddBoardBelow?: (id: string)=>void;
 }
 
 enum EnumMenuActions {
@@ -52,13 +51,12 @@ export const BoardItem: FC<IBoardItem> = ({
   onExitFromEditable,
   isActive = false,
   onClick,
-  onAddBoardBelow,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
-  const [isEditable, setIsEditable] = useState<boolean>(id === 'new-board');
+  const [isEditable, setIsEditable] = useState<boolean>(false);
   const { isEditableBoard } = useSelector((state: IRootState) => state.system);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
@@ -184,7 +182,8 @@ export const BoardItem: FC<IBoardItem> = ({
         break;
       }
       case EnumMenuActions.AddBoardBelow: {
-        onAddBoardBelow?.(id);
+        dispatch(BoardsActions.removeNewBoards());
+        dispatch(BoardsActions.addBoardBelow(id));
         break;
       }
       case EnumMenuActions.Delete: {

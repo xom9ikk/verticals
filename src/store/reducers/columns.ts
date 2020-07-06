@@ -1,7 +1,9 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { ColumnsActions } from '../actions';
-import { IColumn, IColumns } from '../../types';
+import { BoardsActions, ColumnsActions } from '../actions';
+import {
+  EnumTodoType, IBoard, IColumn, IColumns,
+} from '../../types';
 
 const initialState: IColumns = [
   {
@@ -133,4 +135,29 @@ export const ColumnsReducer = handleActions<IColumns, any>({
               position: index,
             }));
         },
+  [ColumnsActions.Type.ADD_COLUMN_AFTER]:
+        (state, action) => {
+          const { id, boardId } = action.payload;
+          const columns = [...state].sort((a, b) => a.position - b.position);
+          const spliceIndex = columns.findIndex((column: IColumn) => column.id === id);
+          columns.splice(spliceIndex + 1, 0, {
+            id: 'new-column',
+            boardId,
+            position: spliceIndex,
+            title: '',
+          });
+          return columns.map((column: IColumn, index) => ({
+            ...column,
+            position: index,
+          }));
+        },
+  [ColumnsActions.Type.GENERATE_NEW_ID]:
+        (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
+          ? {
+            ...column,
+            id: Math.random().toString(),
+          }
+          : column))),
+  [ColumnsActions.Type.REMOVE_NEW_COLUMNS]:
+        (state, action) => (state.filter((column: IColumn) => column.id !== 'new-column')),
 }, initialState);
