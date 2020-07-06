@@ -50,7 +50,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   ) => {
     console.log('saveBoard', newColor);
     setIsOpenNewBoard(false);
-    if (boardId) {
+    if (boardId || boardId === 'new-board') {
       if (newTitle) {
         dispatch(BoardsActions.updateTitle(boardId, newTitle));
       }
@@ -66,13 +66,19 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
           dispatch(BoardsActions.updateColor(boardId, newColor));
         }
       }
-    } else if (newTitle || newDescription) {
-      dispatch(BoardsActions.add(boardId, '/svg/board/item.svg', newTitle, newDescription));
+      if (boardId === 'new-board' && (newTitle || newColor !== undefined)) {
+        dispatch(BoardsActions.generateNewId(boardId));
+      } else {
+        dispatch(BoardsActions.removeNewBoards());
+      }
+    } else if (newTitle) {
+      dispatch(BoardsActions.add('/svg/board/item.svg', newTitle, newDescription));
     }
   };
 
   const addBoardBelow = (id: string) => {
     console.log('add board below id', id);
+    dispatch(BoardsActions.addBoardBelow(id));
   };
 
   const reorder = (list: IBoards, startIndex: number, endIndex: number) => {
@@ -202,7 +208,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
           </Droppable>
         </DragDropContext>
         {
-          drawBoard(boards[boards.length - 1])
+          drawBoard(boards[1])
         }
       </>
 

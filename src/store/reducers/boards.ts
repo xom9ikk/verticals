@@ -10,51 +10,52 @@ const initialState: IBoards = [{
   cardType: EnumTodoType.Checkboxes,
 },
 {
+  id: 'trash',
+  icon: '/svg/board/trash.svg',
+  title: 'Trash',
+  position: 1,
+  cardType: EnumTodoType.Checkboxes,
+},
+{
   id: 'board-1',
   icon: '/svg/board/item.svg',
   title: 'To reading',
-  position: 1,
+  position: 2,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-2',
   icon: '/svg/board/item.svg',
   title: 'Technologies etc.',
-  position: 2,
+  position: 3,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-3',
   icon: '/svg/board/item.svg',
   title: 'Projects',
-  position: 3,
+  position: 4,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-4',
   icon: '/svg/board/item.svg',
   title: 'Branches',
-  position: 4,
+  position: 5,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-5',
   icon: '/svg/board/item.svg',
   title: 'Films',
-  position: 5,
+  position: 6,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-6',
   icon: '/svg/board/item.svg',
   title: 'Buy',
-  position: 6,
+  position: 7,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-7',
   icon: '/svg/board/item.svg',
   title: 'Books',
-  position: 7,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'trash',
-  icon: '/svg/board/trash.svg',
-  title: 'Trash',
   position: 8,
   cardType: EnumTodoType.Checkboxes,
 }];
@@ -120,4 +121,30 @@ export const BoardsReducer = handleActions<IBoards, any>({
           : board))),
   [BoardsActions.Type.REMOVE_BOARD]:
         (state, action) => state.filter((board: IBoard) => board.id !== action.payload.id),
+  [BoardsActions.Type.ADD_BOARD_BELOW]:
+        (state, action) => {
+          const { id } = action.payload;
+          const boards = [...state].sort((a, b) => a.position - b.position);
+          const spliceIndex = boards.findIndex((board: IBoard) => board.id === id);
+          boards.splice(spliceIndex + 1, 0, {
+            id: 'new-board',
+            position: spliceIndex,
+            title: '',
+            icon: '/svg/board/item.svg',
+            cardType: EnumTodoType.Checkboxes,
+          });
+          return boards.map((board: IBoard, index) => ({
+            ...board,
+            position: index,
+          }));
+        },
+  [BoardsActions.Type.GENERATE_NEW_ID]:
+        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
+          ? {
+            ...board,
+            id: Math.random().toString(),
+          }
+          : board))),
+  [BoardsActions.Type.REMOVE_NEW_BOARDS]:
+        (state, action) => (state.filter((board: IBoard) => board.id !== 'new-board')),
 }, initialState);

@@ -11,6 +11,9 @@ enum Type {
   RESET_COLOR = 'BOARDS/RESET_COLOR',
   UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
   REMOVE_BOARD = 'BOARDS/REMOVE_BOARD',
+  ADD_BOARD_BELOW = 'BOARDS/ADD_BOARD_BELOW',
+  GENERATE_NEW_ID = 'BOARDS/GENERATE_NEW_ID',
+  REMOVE_NEW_BOARDS = 'BOARDS/REMOVE_NEW_BOARDS',
 }
 
 const setBoards = createAction(
@@ -20,18 +23,22 @@ const setBoards = createAction(
 
 const updateTitle = createAction(
   Type.UPDATE_TITLE,
-  (id: string, title: string) => ({ id, title }),
+  (id: string, title: string) => ({
+    id, title,
+  }),
 );
 
 const updateDescription = createAction(
   Type.UPDATE_DESCRIPTION,
-  (id: string, description: string) => ({ id, description }),
+  (id: string, description: string) => ({
+    id, description,
+  }),
 );
 
 const add = createAction(
   Type.ADD,
-  (boardId: string, icon: string, title?: string, description?: string) => ({
-    boardId, icon, title, description,
+  (icon: string, title?: string, description?: string) => ({
+    icon, title, description,
   }),
 );
 
@@ -70,6 +77,27 @@ const remove = createAction(
   }),
 );
 
+const addBoardBelow = createAction(
+  Type.ADD_BOARD_BELOW,
+  (id: string) => ({
+    id,
+  }),
+);
+
+const generateNewId = createAction(
+  Type.GENERATE_NEW_ID,
+  (id: string) => ({
+    id,
+  }),
+);
+
+const removeNewBoards = createAction(
+  Type.REMOVE_NEW_BOARDS,
+  () => ({
+
+  }),
+);
+
 export const BoardsActions = {
   Type,
   setBoards,
@@ -81,4 +109,7 @@ export const BoardsActions = {
   resetColor,
   updateCardType,
   remove,
+  addBoardBelow,
+  generateNewId,
+  removeNewBoards,
 };

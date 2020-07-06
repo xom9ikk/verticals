@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -58,7 +58,7 @@ export const BoardItem: FC<IBoardItem> = ({
   const { focus } = useFocus();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
-  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [isEditable, setIsEditable] = useState<boolean>(id === 'new-board');
   const { isEditableBoard } = useSelector((state: IRootState) => state.system);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
@@ -66,6 +66,7 @@ export const BoardItem: FC<IBoardItem> = ({
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
+  console.log('descriptionValue', descriptionValue);
   const getNewData = () => ({
     newTitle: initialTitle !== titleValue
       ? titleValue.trim()
@@ -131,10 +132,11 @@ export const BoardItem: FC<IBoardItem> = ({
     }
   }, [isEditableBoard]);
 
-  const doubleClickHandler = () => {
-    if (isMenuClick || id === 'trash' || id === 'today') return;
+  const doubleClickHandler = (_?: SyntheticEvent, isMenuClickDefault: boolean = isMenuClick) => {
+    if (isMenuClickDefault || id === 'trash' || id === 'today') return;
     if (isEditableBoard) {
       dispatch(SystemActions.setIsEditableBoard(false));
+      // dispatch(BoardsActions.removeNewBoards());
     }
     setIsDoubleClicked(true);
   };
@@ -156,6 +158,12 @@ export const BoardItem: FC<IBoardItem> = ({
     }
   }, [isEditableDefault]);
 
+  useEffect(() => {
+    if (id === 'new-board') {
+      doubleClickHandler();
+    }
+  }, []);
+
   const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
     setIsHover(false);
@@ -164,7 +172,7 @@ export const BoardItem: FC<IBoardItem> = ({
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
     switch (action) {
       case EnumMenuActions.EditBoard: {
-        doubleClickHandler();
+        doubleClickHandler(undefined, false);
         break;
       }
       case EnumMenuActions.CardStyle: {
