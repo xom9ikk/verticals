@@ -140,7 +140,9 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
 
     const target: ITodo = currentTodos[source.index];
-
+    if (!target) {
+      return quoteMap;
+    }
     // moving to same list
     if (source.droppableId === destination.droppableId) {
       dispatch(TodosActions.updatePosition(

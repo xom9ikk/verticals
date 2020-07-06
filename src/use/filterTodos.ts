@@ -7,7 +7,7 @@ export const useFilterTodos = () => {
 
   const filterTodos = (todo: ITodo) => {
     const lowerCaseQuery = query.toLocaleLowerCase();
-    return todo.title.toLocaleLowerCase().includes(lowerCaseQuery)
+    return todo.title?.toLocaleLowerCase().includes(lowerCaseQuery)
         || todo.description?.toLocaleLowerCase().includes(lowerCaseQuery);
   };
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { ColumnsActions, TodosActions } from '../actions';
+import { TodosActions } from '../actions';
 import {
-  EnumTodoStatus, IColumn, ITodo, ITodos,
+  EnumTodoStatus, ITodo, ITodos,
 } from '../../types';
 
 let count = 0;
@@ -782,6 +782,7 @@ export const TodosReducer = handleActions<ITodos, any>({
             id: Math.random().toString(),
           });
         const sortedTodos = todosInColumn
+          .sort((a, b) => a.position - b.position)
           .map((todo: ITodo, index) => ({
             ...todo,
             position: index,
@@ -793,4 +794,45 @@ export const TodosReducer = handleActions<ITodos, any>({
       },
   [TodosActions.Type.REMOVE]:
       (state, action) => state.filter((todo: ITodo) => todo.id !== action.payload.id),
+  [TodosActions.Type.ADD_TODO_BELOW]:
+      (state, action) => {
+        const { id } = action.payload;
+        const todoIndex = state.findIndex((todo: ITodo) => todo.id === id);
+        const todosInColumn = [...state]
+          .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
+        const otherTodos = [...state]
+          .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
+
+        const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === id);
+        todosInColumn.splice(spliceIndex + 1, 0, {
+          id: 'new-todo',
+          position: spliceIndex + 1,
+          title: '',
+          columnId: state[todoIndex].columnId,
+        });
+        const sortedTodos = todosInColumn
+          .sort((a, b) => a.position - b.position)
+          .map((todo: ITodo, index) => ({
+            ...todo,
+            position: index,
+          }));
+        console.log('state[todoIndex].columnId', state[todoIndex].columnId);
+        console.log('sortedTodos', sortedTodos);
+        const a = [
+          ...sortedTodos,
+          ...otherTodos,
+        ];
+        console.log('a', a);
+        return a;
+      },
+  [TodosActions.Type.GENERATE_NEW_ID]:
+      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
+        ? {
+          ...todo,
+          id: Math.random().toString(),
+        }
+        : todo))),
+  [TodosActions.Type.REMOVE_NEW_TODO]:
+      (state, action) => (state.filter((todo: ITodo) => todo.id !== 'new-todo')),
+
 }, initialState);

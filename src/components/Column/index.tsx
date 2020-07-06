@@ -11,7 +11,9 @@ import { Card } from '../Card';
 import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
-import { ColumnsActions, SystemActions, TodosActions } from '../../store/actions';
+import {
+  BoardsActions, ColumnsActions, SystemActions, TodosActions,
+} from '../../store/actions';
 import { EnumColors, EnumTodoStatus, ITodos } from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
@@ -75,7 +77,7 @@ export const Column: FC<IColumn> = ({
     newStatus?: EnumTodoStatus,
     newColor?: number,
   ) => {
-    // console.log('id', id, '->', newTitle, '->', newDescription);
+    console.log('id', id, '->', newTitle, '->', newDescription);
     if (id) {
       if (newTitle) {
         dispatch(TodosActions.updateTitle(id, newTitle));
@@ -99,6 +101,11 @@ export const Column: FC<IColumn> = ({
         } else {
           dispatch(TodosActions.updateColor(id, newColor));
         }
+      }
+      if (id === 'new-todo' && newTitle) {
+        dispatch(TodosActions.generateNewId(id));
+      } else {
+        dispatch(TodosActions.removeNewTodo());
       }
     } else if (newTitle || newDescription) {
       dispatch(TodosActions.add(columnId || 'todo-this-case', newTitle, newDescription, newStatus));
@@ -227,6 +234,7 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.AddHeading: {
+        // TODO:
         break;
       }
       case EnumMenuActions.AddColumnAfter: {
@@ -298,7 +306,7 @@ export const Column: FC<IColumn> = ({
                     key={todo.id}
                     draggableId={todo.id}
                     index={todoIndex}
-                    isDragDisabled={!!query}
+                    isDragDisabled={!!query || todo.id === 'new-todo'}
                   >
                     {(
                       dragProvided: DraggableProvided,

@@ -14,6 +14,9 @@ enum Type {
   DUPLICATE_FOR_COLUMN = 'TODOS/DUPLICATE_FOR_COLUMN',
   DUPLICATE = 'TODOS/DUPLICATE',
   REMOVE = 'TODOS/REMOVE',
+  ADD_TODO_BELOW = 'TODOS/ADD_TODO_BELOW',
+  GENERATE_NEW_ID = 'TODOS/GENERATE_NEW_ID',
+  REMOVE_NEW_TODO = 'TODOS/REMOVE_NEW_TODO',
 }
 
 const setTodos = createAction(
@@ -93,6 +96,27 @@ const remove = createAction(
   }),
 );
 
+const addTodoBelow = createAction(
+  Type.ADD_TODO_BELOW,
+  (id: string) => ({
+    id,
+  }),
+);
+
+const generateNewId = createAction(
+  Type.GENERATE_NEW_ID,
+  (id: string) => ({
+    id,
+  }),
+);
+
+const removeNewTodo = createAction(
+  Type.REMOVE_NEW_TODO,
+  () => ({
+
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
@@ -107,4 +131,7 @@ export const TodosActions = {
   duplicateForColumn,
   duplicate,
   remove,
+  addTodoBelow,
+  generateNewId,
+  removeNewTodo,
 };

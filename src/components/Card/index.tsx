@@ -77,6 +77,7 @@ export const Card: FC<ICard> = ({
   });
 
   const saveTodo = (newColor?: number) => {
+    console.log('save todo');
     const { newTitle, newDescription, newStatus } = getNewData();
     onExitFromEditable?.(newTitle, newDescription, newStatus, newColor);
     setIsHover(false);
@@ -95,6 +96,7 @@ export const Card: FC<ICard> = ({
   useEffect(() => {
     if (isDoubleClicked === false && !isEditableCard && isEditable) {
       setIsEditable(false);
+      console.log('save todo 1');
       saveTodo();
       setIsDoubleClicked(undefined);
     }
@@ -118,6 +120,12 @@ export const Card: FC<ICard> = ({
   };
 
   useEffect(() => {
+    if (id === 'new-todo') {
+      doubleClickHandler();
+    }
+  }, []);
+
+  useEffect(() => {
     if (isEditableDefault) {
       doubleClickHandler();
     }
@@ -136,7 +144,7 @@ export const Card: FC<ICard> = ({
         setTitleValue(titleValue.trim());
         focus(descriptionInputRef);
       } else {
-        console.log('3');
+        console.log('save todo 2');
         saveTodo();
         setIsEditable(false);
       }
@@ -153,6 +161,7 @@ export const Card: FC<ICard> = ({
 
   const colorPickHandler = (newColor: number) => {
     dispatch(SystemActions.setIsOpenPopup(false));
+    console.log('save todo 3');
     saveTodo(newColor);
   };
 
@@ -173,9 +182,11 @@ export const Card: FC<ICard> = ({
         break;
       }
       case EnumCardActions.AttachFile: {
+        // TODO:
         break;
       }
       case EnumCardActions.AddDate: {
+        // TODO:
         break;
       }
       case EnumCardActions.CompleteStatus: {
@@ -185,6 +196,7 @@ export const Card: FC<ICard> = ({
         break;
       }
       case EnumCardActions.Notifications: {
+        // TODO:
         break;
       }
       case EnumCardActions.CopyLink: {
@@ -192,13 +204,12 @@ export const Card: FC<ICard> = ({
         break;
       }
       case EnumCardActions.Duplicate: {
-        console.log('duplicate id', id, titleValue);
         dispatch(TodosActions.duplicate(id!));
         break;
       }
       case EnumCardActions.AddCardBelow: {
-        // dispatch(TodosActions.removeNewTodo());
-        // dispatch(TodosActions.addTodoBelow(id));
+        dispatch(TodosActions.removeNewTodo());
+        dispatch(TodosActions.addTodoBelow(id!));
         break;
       }
       case EnumCardActions.Delete: {
@@ -291,7 +302,8 @@ export const Card: FC<ICard> = ({
   ), [isEditable, isHover, color]);
 
   useEffect(() => {
-    if (!isEditableDefault) {
+    if (!isEditableDefault && id !== 'new-todo') {
+      console.log('save todo 4');
       saveTodo();
     }
   }, [status]);
