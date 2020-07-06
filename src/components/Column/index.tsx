@@ -14,12 +14,16 @@ import { Divider } from '../Divider';
 import {
   BoardsActions, ColumnsActions, SystemActions, TodosActions,
 } from '../../store/actions';
-import { EnumColors, EnumTodoStatus, ITodos } from '../../types';
+import {
+  EnumColors, EnumTodoStatus, ITodo, ITodos,
+} from '../../types';
 import { useFocus } from '../../use/focus';
 import { IRootState } from '../../store/reducers/state';
 import { ColorPicker } from '../ColorPicker';
 import { useFilterTodos } from '../../use/filterTodos';
 import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
+import { ArchiveContainer } from '../ArchiveContainer';
+import { CardsContainer } from '../CardsContainer';
 
 interface IColumn {
   index: number;
@@ -69,6 +73,7 @@ export const Column: FC<IColumn> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
+  const { cardType } = boards.filter((board) => board.id === boardId)[0];
 
   const saveCard = (
     id?: string,
@@ -77,7 +82,7 @@ export const Column: FC<IColumn> = ({
     newStatus?: EnumTodoStatus,
     newColor?: number,
   ) => {
-    console.log('id', id, '->', newTitle, '->', newDescription);
+    console.log('save card id', id, '->', newTitle, '->', newDescription);
     if (id) {
       if (newTitle) {
         dispatch(TodosActions.updateTitle(id, newTitle));
@@ -87,12 +92,6 @@ export const Column: FC<IColumn> = ({
       }
       if (newStatus !== undefined) {
         dispatch(TodosActions.updateCompleteStatus(id, newStatus));
-
-        // if (newStatus === EnumTodoStatus.Done) {
-        //   dispatch(TodosActions.updateCompleteStatus(id, EnumTodoStatus.Done));
-        // } else {
-        //   dispatch(TodosActions.updateCompleteStatus(id, EnumTodoStatus.Todo));
-        // }
       }
       if (newColor !== undefined) {
         const todoToChange = todos?.find((todo) => todo.id === id);
@@ -287,8 +286,7 @@ export const Column: FC<IColumn> = ({
   const newCard = useMemo(() => (
     isOpenNewCard && (
       <Card
-        cardType={boards
-          .filter((board) => board.id === boardId)[0]?.cardType}
+        cardType={cardType}
         isEditableDefault
         onExitFromEditable={(t, d, isDone) => saveCard(undefined, t, d, isDone)}
       />
@@ -296,46 +294,98 @@ export const Column: FC<IColumn> = ({
   ), [isOpenNewCard]);
 
   const todoCards = useMemo(() => (
-    <>
-      {
-            todos
-                ?.sort((a, b) => a.position - b.position)
-                ?.filter(filterTodos)
-                ?.map((todo, todoIndex) => (
-                  <Draggable
-                    key={todo.id}
-                    draggableId={todo.id}
-                    index={todoIndex}
-                    isDragDisabled={!!query || todo.id === 'new-todo'}
-                  >
-                    {(
-                      dragProvided: DraggableProvided,
-                      dragSnapshot: DraggableStateSnapshot,
-                    ) => (
-                      <Card
-                        cardType={boards
-                          .filter((board) => board.id === boardId)[0]?.cardType}
-                        provided={dragProvided}
-                        snapshot={dragSnapshot}
-                        key={todo.id}
-                        id={todo.id}
-                        title={todo.title}
-                        description={todo.description}
-                        status={todo.status}
-                        color={todo.color}
-                        onExitFromEditable={
-                                (newTitle, newDescription,
-                                  newStatus, newColor) => saveCard(
-                                  todo.id, newTitle, newDescription, newStatus, newColor,
-                                )
-                              }
-                      />
-                    )}
-                  </Draggable>
-                ))
-          }
-    </>
+    <CardsContainer
+      todos={todos
+        ?.sort((a, b) => a.position - b.position)
+        ?.filter((todo: ITodo) => !todo.isArchive)
+        ?.filter(filterTodos)}
+      cardType={cardType}
+      isActiveQuery={!!query}
+      onExitFromEditable={saveCard}
+    >
+      {/* { */}
+      {/*      todos */}
+      {/*          ?.sort((a, b) => a.position - b.position) */}
+      {/*          ?.filter((todo: ITodo) => !todo.isArchive) */}
+      {/*          ?.filter(filterTodos) */}
+      {/*          ?.map((todo, todoIndex) => ( */}
+      {/*            <Draggable */}
+      {/*              key={todo.id} */}
+      {/*              draggableId={todo.id} */}
+      {/*              index={todoIndex} */}
+      {/*              isDragDisabled={!!query || todo.id === 'new-todo'} */}
+      {/*            > */}
+      {/*              {( */}
+      {/*                dragProvided: DraggableProvided, */}
+      {/*                dragSnapshot: DraggableStateSnapshot, */}
+      {/*              ) => ( */}
+      {/*                <Card */}
+      {/*                  cardType={boards */}
+      {/*                    .filter((board) => board.id === boardId)[0]?.cardType} */}
+      {/*                  provided={dragProvided} */}
+      {/*                  snapshot={dragSnapshot} */}
+      {/*                  key={todo.id} */}
+      {/*                  id={todo.id} */}
+      {/*                  title={todo.title} */}
+      {/*                  description={todo.description} */}
+      {/*                  status={todo.status} */}
+      {/*                  color={todo.color} */}
+      {/*                  onExitFromEditable={ */}
+      {/*                          (newTitle, newDescription, */}
+      {/*                            newStatus, newColor) => saveCard( */}
+      {/*                            todo.id, newTitle, newDescription, newStatus, newColor, */}
+      {/*                          ) */}
+      {/*                        } */}
+      {/*                /> */}
+      {/*              )} */}
+      {/*            </Draggable> */}
+      {/*          )) */}
+      {/*    } */}
+    </CardsContainer>
   ), [boards, todos, columnId, isOpenNewCard, query]);
+
+  // const archiveCards = useMemo(() => (
+  //   <>
+  //     {
+  //           todos
+  //               ?.sort((a, b) => a.position - b.position)
+  //               ?.filter((todo: ITodo) => todo.isArchive)
+  //               ?.filter(filterTodos)
+  //               ?.map((todo, todoIndex) => (
+  //                 <Draggable
+  //                   key={todo.id}
+  //                   draggableId={todo.id}
+  //                   index={todoIndex}
+  //                   isDragDisabled={!!query}
+  //                 >
+  //                   {(
+  //                     dragProvided: DraggableProvided,
+  //                     dragSnapshot: DraggableStateSnapshot,
+  //                   ) => (
+  //                     <Card
+  //                       cardType={boards
+  //                         .filter((board) => board.id === boardId)[0]?.cardType}
+  //                       provided={dragProvided}
+  //                       snapshot={dragSnapshot}
+  //                       key={todo.id}
+  //                       id={todo.id}
+  //                       title={todo.title}
+  //                       description={todo.description}
+  //                       status={todo.status}
+  //                       color={todo.color}
+  //                       onExitFromEditable={
+  //                               (newTitle, newDescription,
+  //                                 newStatus, newColor) => saveCard(
+  //                                 todo.id, newTitle, newDescription, newStatus, newColor,
+  //                               )
+  //                             }
+  //                     />
+  //                   )}
+  //                 </Draggable>
+  //               ))
+  //         }
+  //   </>
+  // ), [boards, todos, columnId, isOpenNewCard, query]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -539,6 +589,15 @@ export const Column: FC<IColumn> = ({
                             </div>
                             { newCard }
                             { addCard }
+                            <ArchiveContainer
+                              archivedTodos={todos
+                                    ?.sort((a, b) => a.position - b.position)
+                                    ?.filter((todo: ITodo) => todo.isArchive)
+                                    ?.filter(filterTodos)}
+                              isActiveQuery={!!query}
+                              cardType={cardType}
+                              onExitFromEditable={saveCard}
+                            />
                             {dropProvided.placeholder}
                           </div>
                         )

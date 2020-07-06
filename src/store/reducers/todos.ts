@@ -251,6 +251,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 14,
+    isArchive: true,
   },
   {
     id: '',
@@ -258,6 +259,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 15,
+    isArchive: true,
   },
   {
     id: '',
@@ -265,6 +267,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 16,
+    isArchive: true,
   },
   {
     id: '',
@@ -272,6 +275,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 17,
+    isArchive: true,
   },
   {
     id: '',
@@ -279,6 +283,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 18,
+    isArchive: true,
   },
   {
     id: '',
@@ -286,6 +291,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 19,
+    isArchive: true,
   },
   {
     id: '',
@@ -293,6 +299,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 20,
+    isArchive: true,
   },
   {
     id: '',
@@ -300,6 +307,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 21,
+    isArchive: true,
   },
   {
     id: '',
@@ -307,6 +315,7 @@ const initialState: ITodos = [
     columnId: 'column-2',
     status: EnumTodoStatus.Todo,
     position: 22,
+    isArchive: true,
   },
   {
     id: '',
@@ -834,5 +843,45 @@ export const TodosReducer = handleActions<ITodos, any>({
         : todo))),
   [TodosActions.Type.REMOVE_NEW_TODO]:
       (state, action) => (state.filter((todo: ITodo) => todo.id !== 'new-todo')),
-
+  [TodosActions.Type.UPDATE_IS_ARCHIVE]:
+      (state, action) => {
+        const { id, isArchive } = action.payload;
+        const todoIndex = state.findIndex((todo: ITodo) => todo.id === id);
+        const targetTodo = state[todoIndex];
+        const todosInColumn = [...state]
+          .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
+        const otherTodos = [...state]
+          .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
+        const todoIndexInColumn = todosInColumn.findIndex((todo: ITodo) => todo.id === id);
+        todosInColumn.splice(todoIndexInColumn, 1);
+        let newTodos;
+        if (!isArchive) {
+          const archivedTodosInColumn = todosInColumn.filter((todo: ITodo) => todo.isArchive);
+          const notArchivedTodosInColumn = todosInColumn.filter((todo: ITodo) => !todo.isArchive);
+          notArchivedTodosInColumn.push({
+            ...targetTodo,
+            isArchive,
+            position: notArchivedTodosInColumn.length + 1,
+          });
+          newTodos = [
+            ...notArchivedTodosInColumn,
+            ...archivedTodosInColumn.map((todo: ITodo, index) => ({
+              ...todo,
+              position: notArchivedTodosInColumn.length + index,
+            })),
+          ];
+        } else {
+          newTodos = [
+            ...todosInColumn,
+          ];
+          newTodos.push({
+            ...targetTodo,
+            isArchive,
+            position: todosInColumn.length + 1,
+          });
+        }
+        const sortedTodos = newTodos.sort((a, b) => a.position - b.position);
+        console.log('archived', sortedTodos);
+        return [...sortedTodos, ...otherTodos];
+      },
 }, initialState);

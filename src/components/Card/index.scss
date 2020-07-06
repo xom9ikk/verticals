@@ -114,7 +114,12 @@
     background: $primary;
   }
   &:hover {
-    background: #f7f7f7;
+    background: $hover-color;
+  }
+  &--invert {
+    &:hover {
+      background: $white;
+    }
   }
   &--editable {
     width: $column-width - 27;

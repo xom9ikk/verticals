@@ -17,6 +17,7 @@ enum Type {
   ADD_TODO_BELOW = 'TODOS/ADD_TODO_BELOW',
   GENERATE_NEW_ID = 'TODOS/GENERATE_NEW_ID',
   REMOVE_NEW_TODO = 'TODOS/REMOVE_NEW_TODO',
+  UPDATE_IS_ARCHIVE = 'TODOS/UPDATE_IS_ARCHIVE',
 }
 
 const setTodos = createAction(
@@ -117,6 +118,13 @@ const removeNewTodo = createAction(
   }),
 );
 
+const setIsArchive = createAction(
+  Type.UPDATE_IS_ARCHIVE,
+  (id: string, isArchive: boolean) => ({
+    id, isArchive,
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
@@ -134,4 +142,5 @@ export const TodosActions = {
   addTodoBelow,
   generateNewId,
   removeNewTodo,
+  setIsArchive,
 };

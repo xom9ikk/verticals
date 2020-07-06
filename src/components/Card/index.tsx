@@ -23,6 +23,8 @@ interface ICard {
   description?: string;
   status?: EnumTodoStatus;
   color?: number;
+  isArchive?: boolean;
+  invertColor?: boolean;
   isEditableDefault?: boolean;
   onExitFromEditable?: (
     title?: string,
@@ -42,6 +44,7 @@ enum EnumCardActions {
   CopyLink,
   Duplicate,
   AddCardBelow,
+  Archive,
   Delete,
 }
 
@@ -52,6 +55,8 @@ export const Card: FC<ICard> = ({
   description: initialDescription = '',
   status: initialStatus = EnumTodoStatus.Todo,
   color,
+  isArchive,
+  invertColor,
   isEditableDefault,
   onExitFromEditable,
   provided,
@@ -212,6 +217,10 @@ export const Card: FC<ICard> = ({
         dispatch(TodosActions.addTodoBelow(id!));
         break;
       }
+      case EnumCardActions.Archive: {
+        dispatch(TodosActions.setIsArchive(id!, !isArchive));
+        break;
+      }
       case EnumCardActions.Delete: {
         dispatch(TodosActions.remove(id!));
         break;
@@ -293,6 +302,11 @@ export const Card: FC<ICard> = ({
     />
     <Divider verticalSpacer={7} horizontalSpacer={10} />
     <MenuButton
+      text={isArchive ? 'Unarchive' : 'Archive'}
+      imageSrc="/svg/menu/archive.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.Archive)}
+    />
+    <MenuButton
       text="Delete"
       imageSrc="/svg/menu/delete.svg"
       hintText="⌫"
@@ -352,7 +366,6 @@ export const Card: FC<ICard> = ({
   };
 
   const card = useMemo(() => {
-    console.log('card');
     return (
       <div className={`card__block-wrapper 
     ${isEditable ? 'card__block-wrapper--editable' : ''}
@@ -437,6 +450,7 @@ export const Card: FC<ICard> = ({
       ${isEditable ? 'card--editable' : ''}
       ${isMouseDown ? 'card--pressed' : ''}
       ${color !== undefined ? colorClass : ''}
+      ${invertColor ? 'card--invert' : ''}
       `}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}

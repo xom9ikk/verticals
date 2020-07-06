@@ -28,12 +28,12 @@
       background: $primary-light !important;
     }
     &--hovered {
-      background: #f7f7f7;
+      background: $hover-color
       #{$block}__title-editable {
-        background: #f7f7f7;
+        background: $hover-color
       }
       #{$block}__description-editable {
-        background: #f7f7f7;
+        background: $hover-color
       }
     }
     &--compact {

@@ -1,0 +1,29 @@
+.archive-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  transition: background .1s ease-in-out;
+  cursor: pointer;
+  font-size: 14px;
+  &__title {
+    display: flex;
+    padding: 10px;
+    color: $text-light;
+    img {
+      width: 18px;
+      height: 18px;
+      margin-right: 4px;
+    }
+  }
+  &__inner {
+    hr {
+      margin: 0 10px 5px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    padding: 0 10px 10px;
+  }
+  &:hover {
+    background: $hover-color;
+  }
+
+}

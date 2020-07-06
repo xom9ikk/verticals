@@ -6,6 +6,7 @@ export interface ITodo {
   description?: string;
   status?: EnumTodoStatus;
   color?: number;
+  isArchive?: boolean;
 }
 
 export type ITodos = Array<ITodo>;
