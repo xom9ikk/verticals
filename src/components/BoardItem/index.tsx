@@ -64,7 +64,6 @@ export const BoardItem: FC<IBoardItem> = ({
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
-  console.log('descriptionValue', descriptionValue);
   const getNewData = () => ({
     newTitle: initialTitle !== titleValue
       ? titleValue.trim()

@@ -104,6 +104,15 @@
     align-self: center;
     margin-left: -4px;
   }
+  &__overlay-doing {
+    margin-top: 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    background: $primary;
+  }
   &:hover {
     background: #f7f7f7;
   }

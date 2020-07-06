@@ -10,7 +10,7 @@ enum Type {
   UPDATE_COLOR = 'BOARDS/UPDATE_COLOR',
   RESET_COLOR = 'BOARDS/RESET_COLOR',
   UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
-  REMOVE_BOARD = 'BOARDS/REMOVE_BOARD',
+  REMOVE = 'BOARDS/REMOVE',
   ADD_BOARD_BELOW = 'BOARDS/ADD_BOARD_BELOW',
   GENERATE_NEW_ID = 'BOARDS/GENERATE_NEW_ID',
   REMOVE_NEW_BOARDS = 'BOARDS/REMOVE_NEW_BOARDS',
@@ -71,7 +71,7 @@ const updateCardType = createAction(
 );
 
 const remove = createAction(
-  Type.REMOVE_BOARD,
+  Type.REMOVE,
   (id: string) => ({
     id,
   }),

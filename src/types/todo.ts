@@ -4,7 +4,7 @@ export interface ITodo {
   title: string;
   position: number;
   description?: string;
-  isDone?: boolean;
+  status?: EnumTodoStatus;
   color?: number;
 }
 
@@ -16,4 +16,10 @@ export enum EnumTodoType {
   Dots,
   Dashes,
   Nothing,
+}
+
+export enum EnumTodoStatus {
+  Todo,
+  Doing,
+  Done,
 }

@@ -11,32 +11,46 @@ import { ColorPicker } from '../ColorPicker';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 import { Submenu } from '../Submenu';
-import { SystemActions } from '../../store/actions';
+import { SystemActions, TodosActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
 import { useFocus } from '../../use/focus';
-import { EnumColors, EnumTodoType } from '../../types';
+import { EnumColors, EnumTodoStatus, EnumTodoType } from '../../types';
 
 interface ICard {
   cardType: EnumTodoType;
+  id?: string;
   title?: string;
   description?: string;
-  isDone?: boolean;
+  status?: EnumTodoStatus;
   color?: number;
   isEditableDefault?: boolean;
   onExitFromEditable?: (
     title?: string,
     description?: string,
-    isDone?: boolean,
-    newColor?: number) => void;
+    status?: EnumTodoStatus,
+    color?: number) => void;
   provided?: any;
   snapshot?: any;
 }
 
+enum EnumCardActions {
+  EditCard,
+  AttachFile,
+  AddDate,
+  CompleteStatus,
+  Notifications,
+  CopyLink,
+  Duplicate,
+  AddCardBelow,
+  Delete,
+}
+
 export const Card: FC<ICard> = ({
+  id,
   cardType,
   title: initialTitle = '',
   description: initialDescription = '',
-  isDone: initialIsDone = false,
+  status: initialStatus = EnumTodoStatus.Todo,
   color,
   isEditableDefault,
   onExitFromEditable,
@@ -52,19 +66,19 @@ export const Card: FC<ICard> = ({
   const { system: { isEditableCard } } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
-  const [isDone, setIsDone] = useState<boolean>(initialIsDone);
+  const [status, setStatus] = useState<EnumTodoStatus>(initialStatus);
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
   const getNewData = () => ({
     newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
     newDescription: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
-    newIsDone: initialIsDone !== isDone ? isDone : undefined,
+    newStatus: initialStatus !== status ? status : undefined,
   });
 
   const saveTodo = (newColor?: number) => {
-    const { newTitle, newDescription, newIsDone } = getNewData();
-    onExitFromEditable?.(newTitle, newDescription, newIsDone, newColor);
+    const { newTitle, newDescription, newStatus } = getNewData();
+    onExitFromEditable?.(newTitle, newDescription, newStatus, newColor);
     setIsHover(false);
   };
 
@@ -147,6 +161,55 @@ export const Card: FC<ICard> = ({
     [],
   );
 
+  const hidePopup = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    setIsHover(false);
+  };
+
+  const menuButtonClickHandler = (action: EnumCardActions, payload?: any) => {
+    switch (action) {
+      case EnumCardActions.EditCard: {
+        doubleClickHandler();
+        break;
+      }
+      case EnumCardActions.AttachFile: {
+        break;
+      }
+      case EnumCardActions.AddDate: {
+        break;
+      }
+      case EnumCardActions.CompleteStatus: {
+        console.log('updateCompleteStatus', payload);
+        setStatus(payload);
+        dispatch(TodosActions.updateCompleteStatus(id!, payload));
+        break;
+      }
+      case EnumCardActions.Notifications: {
+        break;
+      }
+      case EnumCardActions.CopyLink: {
+        console.log('copy', `https://${id}`);
+        break;
+      }
+      case EnumCardActions.Duplicate: {
+        console.log('duplicate id', id, titleValue);
+        dispatch(TodosActions.duplicate(id!));
+        break;
+      }
+      case EnumCardActions.AddCardBelow: {
+        // dispatch(TodosActions.removeNewTodo());
+        // dispatch(TodosActions.addTodoBelow(id));
+        break;
+      }
+      case EnumCardActions.Delete: {
+        dispatch(TodosActions.remove(id!));
+        break;
+      }
+      default: break;
+    }
+    hidePopup();
+  };
+
   const contextMenu = useMemo(() => !isEditable && (
   <Menu
     imageSrc="/svg/dots.svg"
@@ -162,14 +225,17 @@ export const Card: FC<ICard> = ({
     <MenuButton
       text="Edit card"
       imageSrc="/svg/menu/edit.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.EditCard)}
     />
     <MenuButton
       text="Attach file"
       imageSrc="/svg/menu/attach.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.AttachFile)}
     />
     <MenuButton
       text="Add date"
       imageSrc="/svg/menu/add-date.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.AddDate)}
     />
     <Submenu
       text="Complete"
@@ -178,14 +244,17 @@ export const Card: FC<ICard> = ({
       <MenuButton
         text="Mark as to do"
         imageSrc="/svg/menu/rounded-square.svg"
+        onClick={() => menuButtonClickHandler(EnumCardActions.CompleteStatus, EnumTodoStatus.Todo)}
       />
       <MenuButton
         text="Mark as doing"
         imageSrc="/svg/menu/rounded-square-half-filled.svg"
+        onClick={() => menuButtonClickHandler(EnumCardActions.CompleteStatus, EnumTodoStatus.Doing)}
       />
       <MenuButton
         text="Mark as done"
         imageSrc="/svg/menu/rounded-square-check.svg"
+        onClick={() => menuButtonClickHandler(EnumCardActions.CompleteStatus, EnumTodoStatus.Done)}
       />
     </Submenu>
     <Divider verticalSpacer={7} horizontalSpacer={10} />
@@ -193,25 +262,30 @@ export const Card: FC<ICard> = ({
       text="Notifications"
       imageSrc="/svg/menu/notifications.svg"
       hintImageSrc="/svg/menu/tick-active.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.Notifications)}
     />
     <MenuButton
       text="Copy link"
       imageSrc="/svg/menu/copy-link.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.CopyLink)}
     />
     <MenuButton
       text="Duplicate"
       imageSrc="/svg/menu/duplicate.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.Duplicate)}
     />
     <Divider verticalSpacer={7} horizontalSpacer={10} />
     <MenuButton
       text="Add card below"
       imageSrc="/svg/menu/add-card.svg"
+      onClick={() => menuButtonClickHandler(EnumCardActions.AddCardBelow)}
     />
     <Divider verticalSpacer={7} horizontalSpacer={10} />
     <MenuButton
       text="Delete"
       imageSrc="/svg/menu/delete.svg"
       hintText="⌫"
+      onClick={() => menuButtonClickHandler(EnumCardActions.Delete)}
     />
   </Menu>
   ), [isEditable, isHover, color]);
@@ -220,7 +294,7 @@ export const Card: FC<ICard> = ({
     if (!isEditableDefault) {
       saveTodo();
     }
-  }, [isDone]);
+  }, [status]);
 
   const bullets = ['arrow.svg', 'dot.svg', 'dash.svg'];
 
@@ -228,13 +302,26 @@ export const Card: FC<ICard> = ({
     switch (type) {
       case EnumTodoType.Checkboxes:
         return (
-          <Checkbox
-            isActive={isDone}
-            onClick={() => {
-              setIsDone((prev) => !prev);
-            }}
-            style={{ marginTop: 10, marginBottom: 10 }}
-          />
+          <>
+            {
+              status === EnumTodoStatus.Doing && (
+              <div className="card__overlay-doing" />
+              )
+            }
+            <Checkbox
+              isActive={status === EnumTodoStatus.Done}
+              onClick={() => {
+                setStatus((prev) => {
+                  if (prev === EnumTodoStatus.Done) {
+                    return EnumTodoStatus.Todo;
+                  }
+                  return EnumTodoStatus.Done;
+                });
+              }}
+              style={{ marginTop: 10, marginBottom: 10 }}
+            />
+          </>
+
         );
       case EnumTodoType.Arrows:
       case EnumTodoType.Dots:
@@ -252,68 +339,71 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  const card = useMemo(() => (
-    <div className={`card__block-wrapper 
+  const card = useMemo(() => {
+    console.log('card');
+    return (
+      <div className={`card__block-wrapper 
     ${isEditable ? 'card__block-wrapper--editable' : ''}
     `}
-    >
-      {
-        renderBullet(cardType)
-      }
-
-      <div
-        className="card__block"
-        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
-        onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
-        onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
-        onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
-        onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
       >
         {
-            isEditable ? (
-              <div
-                className="card__editable-content"
-              >
-                <TextareaAutosize
-                  ref={titleInputRef}
-                  className="card__textarea"
-                  value={titleValue}
-                  placeholder="New Card"
-                  minRows={1}
-                  maxRows={20}
-                  onChange={(event) => changeHandler(event, false)}
-                  onKeyUp={(event) => keydownHandler(event, false)}
-                />
-                <TextareaAutosize
-                  ref={descriptionInputRef}
-                  className="card__textarea card__textarea--description"
-                  value={descriptionValue}
-                  placeholder="Notes"
-                  minRows={1}
-                  maxRows={20}
-                  onChange={(event) => changeHandler(event, true)}
-                  onKeyDownCapture={(event) => keydownHandler(event, true)}
-                />
-              </div>
-            ) : (
-              <div
-                className="card__inner"
-              >
-                <span>
-                  {titleValue}
-                </span>
-              </div>
+          renderBullet(cardType)
+        }
+        <div
+          className="card__block"
+          onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
+          onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+          onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
+          onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
+          onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
+          onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
+        >
+          {
+              isEditable ? (
+                <div
+                  className="card__editable-content"
+                >
+                  <TextareaAutosize
+                    ref={titleInputRef}
+                    className="card__textarea"
+                    value={titleValue}
+                    placeholder="New Card"
+                    minRows={1}
+                    maxRows={20}
+                    onChange={(event) => changeHandler(event, false)}
+                    onKeyUp={(event) => keydownHandler(event, false)}
+                  />
+                  <TextareaAutosize
+                    ref={descriptionInputRef}
+                    className="card__textarea card__textarea--description"
+                    value={descriptionValue}
+                    placeholder="Notes"
+                    minRows={1}
+                    maxRows={20}
+                    onChange={(event) => changeHandler(event, true)}
+                    onKeyDownCapture={(event) => keydownHandler(event, true)}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="card__inner"
+                >
+                  <span>
+                    {titleValue}
+                  </span>
+                </div>
 
-            )
-          }
+              )
+            }
+        </div>
       </div>
-    </div>
-  ), [
-    isDone, isEditable, isEditableCard, isEditableDefault,
+    );
+  }, [
+    status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue,
-    onExitFromEditable, cardType,
+    // onExitFromEditable,
+    cardType,
   ]);
 
   useEffect(() => {

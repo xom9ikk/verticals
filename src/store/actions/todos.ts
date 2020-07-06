@@ -1,17 +1,19 @@
 import { createAction } from 'redux-actions';
-import { ITodos } from '../../types';
+import { EnumTodoStatus, ITodos } from '../../types';
 
 enum Type {
   SET_TODOS = 'TODOS/SET_TODOS',
   UPDATE_TITLE = 'TODOS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'TODOS/UPDATE_DESCRIPTION',
-  UPDATE_IS_DONE = 'TODOS/UPDATE_IS_DONE',
+  UPDATE_COMPLETE_STATUS = 'TODOS/UPDATE_COMPLETE_STATUS',
   ADD = 'TODOS/ADD',
   UPDATE_COLUMN = 'TODOS/UPDATE_COLUMN',
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
   UPDATE_COLOR = 'TODOS/UPDATE_COLOR',
   RESET_COLOR = 'TODOS/RESET_COLOR',
   DUPLICATE_FOR_COLUMN = 'TODOS/DUPLICATE_FOR_COLUMN',
+  DUPLICATE = 'TODOS/DUPLICATE',
+  REMOVE = 'TODOS/REMOVE',
 }
 
 const setTodos = createAction(
@@ -29,15 +31,15 @@ const updateDescription = createAction(
   (id: string, description: string) => ({ id, description }),
 );
 
-const updateIsDone = createAction(
-  Type.UPDATE_IS_DONE,
-  (id: string, isDone: boolean) => ({ id, isDone }),
+const updateCompleteStatus = createAction(
+  Type.UPDATE_COMPLETE_STATUS,
+  (id: string, status: EnumTodoStatus) => ({ id, status }),
 );
 
 const add = createAction(
   Type.ADD,
-  (columnId: string, title?: string, description?: string, isDone?: boolean) => ({
-    columnId, title, description, isDone,
+  (columnId: string, title?: string, description?: string, status?: EnumTodoStatus) => ({
+    columnId, title, description, status,
   }),
 );
 
@@ -77,16 +79,32 @@ const duplicateForColumn = createAction(
   }),
 );
 
+const duplicate = createAction(
+  Type.DUPLICATE,
+  (id: string) => ({
+    id,
+  }),
+);
+
+const remove = createAction(
+  Type.REMOVE,
+  (id: string) => ({
+    id,
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
   updateTitle,
   updateDescription,
-  updateIsDone,
+  updateCompleteStatus,
   add,
   updateColumn,
   updatePosition,
   updateColor,
   resetColor,
   duplicateForColumn,
+  duplicate,
+  remove,
 };
