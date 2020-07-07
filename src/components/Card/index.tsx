@@ -5,16 +5,13 @@ import React, {
 import TextareaAutosize from 'react-textarea-autosize';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { Menu } from '../Menu';
+import { CardContextMenu } from '../CardContextMenu';
 import { Checkbox } from '../Checkbox';
-import { ColorPicker } from '../ColorPicker';
-import { MenuButton } from '../MenuButton';
-import { Divider } from '../Divider';
-import { Submenu } from '../Submenu';
-import { SystemActions, TodosActions } from '../../store/actions';
+import { SystemActions } from '../../store/actions';
 import { IRootState } from '../../store/reducers/state';
 import { useFocus } from '../../use/focus';
 import { EnumColors, EnumTodoStatus, EnumTodoType } from '../../types';
+import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
 
 interface ICard {
   cardType: EnumTodoType;
@@ -32,21 +29,9 @@ interface ICard {
     description?: string,
     status?: EnumTodoStatus,
     color?: number) => void;
+  isActive?: boolean;
   provided?: any;
   snapshot?: any;
-}
-
-enum EnumCardActions {
-  EditCard,
-  AttachFile,
-  AddDate,
-  CompleteStatus,
-  Notifications,
-  CopyLink,
-  Duplicate,
-  AddCardBelow,
-  Archive,
-  Delete,
 }
 
 export const Card: FC<ICard> = ({
@@ -61,6 +46,7 @@ export const Card: FC<ICard> = ({
   invertColor,
   isEditableDefault,
   onExitFromEditable,
+  isActive,
   provided,
   snapshot,
 }) => {
@@ -110,21 +96,27 @@ export const Card: FC<ICard> = ({
   }, [isEditableCard]);
 
   const doubleClickHandler = () => {
-    console.log('double click isEditableCard', isEditableCard);
     if (isEditableCard) {
-      console.log('dispatch setIsEditableCard false');
       dispatch(SystemActions.setIsEditableCard(false));
-      // if (isEditable) {
-      //   setIsEditable(false);
-      //   console.log('2');
-      //   saveTodo();
-      // }
     }
-    // if (!isEditable) {
-    console.log('dispatch setIsDoubleClicked true');
     setIsDoubleClicked(true);
-    // }
   };
+
+  const clickHandler = () => {
+    // console.log('isActive', isActive);
+    // if (isActive) {
+    //   // TODO: isActive false
+    //   // dispatch(SystemActions.setCurrentTodoId(''));
+    // } else if (id) {
+    //   dispatch(SystemActions.setCurrentTodoId(id));
+    // }
+    dispatch(SystemActions.setCurrentTodoId(id!));
+  };
+
+  const {
+    handleClick,
+    handleDoubleClick,
+  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
 
   useEffect(() => {
     if (id === 'new-todo') {
@@ -141,6 +133,18 @@ export const Card: FC<ICard> = ({
   useEffect(() => {
     focus(titleInputRef);
   }, [isEditable]);
+
+  useEffect(() => {
+    setStatus(initialStatus);
+  }, [initialStatus]);
+
+  useEffect(() => {
+    setTitleValue(initialTitle);
+  }, [initialTitle]);
+
+  useEffect(() => {
+    setDescriptionValue(initialDescription);
+  }, [initialDescription]);
 
   const keydownHandler = (event: any, isDescription: boolean) => {
     const {
@@ -167,8 +171,6 @@ export const Card: FC<ICard> = ({
   };
 
   const colorPickHandler = (newColor: number) => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-    console.log('save todo 3');
     saveTodo(newColor);
   };
 
@@ -181,142 +183,6 @@ export const Card: FC<ICard> = ({
     dispatch(SystemActions.setIsOpenPopup(false));
     setIsHover(false);
   };
-
-  const menuButtonClickHandler = (action: EnumCardActions, payload?: any) => {
-    switch (action) {
-      case EnumCardActions.EditCard: {
-        doubleClickHandler();
-        break;
-      }
-      case EnumCardActions.AttachFile: {
-        // TODO:
-        break;
-      }
-      case EnumCardActions.AddDate: {
-        // TODO:
-        break;
-      }
-      case EnumCardActions.CompleteStatus: {
-        console.log('updateCompleteStatus', payload);
-        setStatus(payload);
-        dispatch(TodosActions.updateCompleteStatus(id!, payload));
-        break;
-      }
-      case EnumCardActions.Notifications: {
-        // TODO:
-        dispatch(TodosActions.switchNotificationsEnabled(id!));
-        break;
-      }
-      case EnumCardActions.CopyLink: {
-        console.log('copy', `https://${id}`);
-        break;
-      }
-      case EnumCardActions.Duplicate: {
-        dispatch(TodosActions.duplicate(id!));
-        break;
-      }
-      case EnumCardActions.AddCardBelow: {
-        dispatch(TodosActions.removeNewTodo());
-        dispatch(TodosActions.addTodoBelow(id!));
-        break;
-      }
-      case EnumCardActions.Archive: {
-        dispatch(TodosActions.setIsArchive(id!, !isArchive));
-        break;
-      }
-      case EnumCardActions.Delete: {
-        dispatch(TodosActions.remove(id!));
-        break;
-      }
-      default: break;
-    }
-    hidePopup();
-  };
-
-  const contextMenu = useMemo(() => !isEditable && (
-  <Menu
-    imageSrc="/svg/dots.svg"
-    alt="menu"
-    imageSize={22}
-    size={24}
-    isHide
-    isHoverBlock={isHover}
-    position="right"
-    style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
-  >
-    <ColorPicker onPick={colorPickHandler} activeColor={color} />
-    <MenuButton
-      text="Edit card"
-      imageSrc="/svg/menu/edit.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.EditCard)}
-    />
-    <MenuButton
-      text="Attach file"
-      imageSrc="/svg/menu/attach.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.AttachFile)}
-    />
-    <MenuButton
-      text="Add date"
-      imageSrc="/svg/menu/add-date.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.AddDate)}
-    />
-    <Submenu
-      text="Complete"
-      imageSrc="/svg/menu/complete.svg"
-    >
-      <MenuButton
-        text="Mark as to do"
-        imageSrc="/svg/menu/rounded-square.svg"
-        onClick={() => menuButtonClickHandler(EnumCardActions.CompleteStatus, EnumTodoStatus.Todo)}
-      />
-      <MenuButton
-        text="Mark as doing"
-        imageSrc="/svg/menu/rounded-square-half-filled.svg"
-        onClick={() => menuButtonClickHandler(EnumCardActions.CompleteStatus, EnumTodoStatus.Doing)}
-      />
-      <MenuButton
-        text="Mark as done"
-        imageSrc="/svg/menu/rounded-square-check.svg"
-        onClick={() => menuButtonClickHandler(EnumCardActions.CompleteStatus, EnumTodoStatus.Done)}
-      />
-    </Submenu>
-    <Divider verticalSpacer={7} horizontalSpacer={10} />
-    <MenuButton
-      text="Notifications"
-      imageSrc="/svg/menu/notifications.svg"
-      hintImageSrc={`${isNotificationsEnabled ? '/svg/menu/tick-active.svg' : ''}`}
-      onClick={() => menuButtonClickHandler(EnumCardActions.Notifications)}
-    />
-    <MenuButton
-      text="Copy link"
-      imageSrc="/svg/menu/copy-link.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.CopyLink)}
-    />
-    <MenuButton
-      text="Duplicate"
-      imageSrc="/svg/menu/duplicate.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.Duplicate)}
-    />
-    <Divider verticalSpacer={7} horizontalSpacer={10} />
-    <MenuButton
-      text="Add card below"
-      imageSrc="/svg/menu/add-card.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.AddCardBelow)}
-    />
-    <Divider verticalSpacer={7} horizontalSpacer={10} />
-    <MenuButton
-      text={isArchive ? 'Unarchive' : 'Archive'}
-      imageSrc="/svg/menu/archive.svg"
-      onClick={() => menuButtonClickHandler(EnumCardActions.Archive)}
-    />
-    <MenuButton
-      text="Delete"
-      imageSrc="/svg/menu/delete.svg"
-      hintText="⌫"
-      onClick={() => menuButtonClickHandler(EnumCardActions.Delete)}
-    />
-  </Menu>
-  ), [isEditable, isHover, color]);
 
   useEffect(() => {
     if (!isEditableDefault && id !== 'new-todo') {
@@ -350,7 +216,6 @@ export const Card: FC<ICard> = ({
               style={{ marginTop: 10, marginBottom: 10 }}
             />
           </>
-
         );
       case EnumTodoType.Arrows:
       case EnumTodoType.Dots:
@@ -368,24 +233,28 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  const card = useMemo(() => (
-    <div className={`card__block-wrapper 
-    ${isEditable ? 'card__block-wrapper--editable' : ''}
-    `}
-    >
-      {
-          renderBullet(cardType)
-        }
+  const card = useMemo(() => {
+    console.log('rerender crd', status);
+    return (
       <div
-        className="card__block"
-        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
-        onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
-        onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
-        onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
-        onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
+        className={`card__block-wrapper 
+     ${isEditable ? 'card__block-wrapper--editable' : ''}
+    `}
+        onClick={handleClick}
       >
         {
+          renderBullet(cardType)
+        }
+        <div
+          className="card__block"
+          onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
+          onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+          onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
+          onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
+          onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
+          onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
+        >
+          {
               isEditable ? (
                 <div
                   className="card__editable-content"
@@ -422,14 +291,16 @@ export const Card: FC<ICard> = ({
 
               )
             }
+        </div>
       </div>
-    </div>
-  ), [
+    );
+  }, [
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue,
     // onExitFromEditable,
     cardType,
+    // handleClick,
   ]);
 
   useEffect(() => {
@@ -449,7 +320,7 @@ export const Card: FC<ICard> = ({
       className={`card
       ${snapshot?.isDragging ? 'card--dragging' : ''}
       ${isEditable ? 'card--editable' : ''}
-      ${isMouseDown ? 'card--pressed' : ''}
+      ${isMouseDown || isActive ? 'card--pressed' : ''}
       ${color !== undefined ? colorClass : ''}
       ${invertColor ? 'card--invert' : ''}
       `}
@@ -458,7 +329,22 @@ export const Card: FC<ICard> = ({
       onClick={(e) => e.stopPropagation()}
     >
       { card }
-      { contextMenu }
+      {
+        !isEditable && (
+        <CardContextMenu
+          id={id}
+          isArchive={isArchive}
+          isActive={isActive}
+          isHover={isHover}
+          isNotificationsEnabled={isNotificationsEnabled}
+          color={color}
+          onStartEdit={doubleClickHandler}
+          onChangeColor={colorPickHandler}
+          onHidePopup={hidePopup}
+        />
+        )
+      }
+      {/* { contextMenu } */}
     </div>
   );
 };

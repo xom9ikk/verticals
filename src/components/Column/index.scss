@@ -28,12 +28,12 @@
       background: $primary-light !important;
     }
     &--hovered {
-      background: $hover-color
+      background: $hover-color;
       #{$block}__title-editable {
-        background: $hover-color
+        background: $hover-color;
       }
       #{$block}__description-editable {
-        background: $hover-color
+        background: $hover-color;
       }
     }
     &--compact {
@@ -98,7 +98,7 @@
     letter-spacing: 0;
     transition: background .1s ease-in-out, border .2s ease-in-out;
     &--editable {
-      box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
+      box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
       width: $column-width - 27;
       margin: 3px;
       padding: 14px 9px 10px 7px;

@@ -1,0 +1,87 @@
+.card-popup {
+  width: 0;
+  height: 100%;
+  border-right: 1px solid rgb(242, 242, 242);
+  transition: width .2s ease-in-out;
+  &--opened {
+    width: $card-popup-width;
+    padding: 10px;
+  }
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
+    border-radius: 13px;
+    box-sizing: border-box;
+    border: 3px solid $white;
+    &--red {
+      box-shadow: 3px 3px 7px rgba(255, 106, 86, 0.2), -3px -3px 7px rgba(255, 106, 86, 0.1);
+      border: 3px solid rgba(255, 106, 86, 1);
+    }
+    &--yellow {
+      box-shadow: 3px 3px 7px rgba(254, 233, 48, 0.2), -3px -3px 7px rgba(254, 233, 48, 0.1);
+      border: 3px solid rgba(254, 233, 48, 1);
+    }
+    &--green {
+      box-shadow: 3px 3px 7px rgba(156, 196, 71, 0.2), -3px -3px 7px rgba(156, 196, 71, 0.1);
+      border: 3px solid rgba(156, 196, 71, 1);
+    }
+    &--turquoise {
+      box-shadow: 3px 3px 7px rgba(50, 218, 188, 0.2), -3px -3px 7px rgba(50, 218, 188, 0.1);
+      border: 3px solid rgba(50, 218, 188, 1);
+    }
+    &--blue {
+      box-shadow: 3px 3px 7px rgba(95, 193, 233, 0.2), -3px -3px 7px rgba(95, 193, 233, 0.1);
+      border: 3px solid rgba(95, 193, 233, 1);
+    }
+    &--gray {
+      box-shadow: 3px 3px 7px rgba(216, 216, 216, 0.2), -3px -3px 7px rgba(216, 216, 216, 0.1);
+      border: 3px solid rgba(216, 216, 216, 1);
+    }
+  }
+  &__header {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px 0;
+  }
+  &__input-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+  &__textarea {
+    width: 100%;
+    box-shadow: $white 0 1px 0;
+    transition: box-shadow .3s ease-in-out;
+    margin-bottom: 10px;
+    font-size: 28px;
+    font-family: 'Nunito Extra Bold', sans-serif;
+    &--description {
+      font-size: 14px;
+      font-family: 'Nunito Regular', sans-serif;
+      color: $text;
+    }
+    &-inner {
+      display: flex;
+      flex-direction: column;
+    }
+    //&:hover {
+    //  box-shadow: #f1f1f1 0 1px 0;
+    //}
+    //&:focus {
+    //  box-shadow: #f1f1f1 0 1px 0;
+    //}
+  }
+  &__toolbar {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    div {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

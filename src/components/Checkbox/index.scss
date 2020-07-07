@@ -35,8 +35,10 @@
     }
     img {
       opacity: 0;
-      width: 10px;
-      height: 10px;
+      width: inherit;
+      height: inherit;
+      padding: 1px;
+      margin: -1px;
       transition: opacity .1s ease-in-out;
     }
     &--active {

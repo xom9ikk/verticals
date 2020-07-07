@@ -4,7 +4,7 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { Sidebar } from '../components/Sidebar';
 import { Columns } from '../components/Columns';
-import {BoardsActions, SystemActions} from '../store/actions';
+import { SystemActions } from '../store/actions';
 import { Search } from '../components/Search';
 import { BoardList } from '../components/BoardList';
 
@@ -17,6 +17,7 @@ export const Main: FC = () => {
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
+    dispatch(SystemActions.setCurrentTodoId(''));
     // dispatch(BoardsActions.removeNewBoards());
   };
 

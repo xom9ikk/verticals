@@ -1,0 +1,29 @@
+.loader {
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+
+  .meter {
+    fill: none;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    stroke-dasharray: 360;
+    stroke-dashoffset: 325;
+    stroke: $primary;
+    animation: progress 1s linear infinite;
+  }
+
+  @keyframes progress {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  &--hidden {
+    opacity: 0;
+  }
+}

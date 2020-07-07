@@ -9,6 +9,7 @@ const initialState = {
   isEditableBoard: false,
   query: '',
   language: EnumLanguage.English,
+  currentTodoId: '',
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -24,4 +25,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, query: action.payload.query }),
   [SystemActions.Type.SET_LANGUAGE]:
       (state, action) => ({ ...state, language: action.payload.language }),
+  [SystemActions.Type.SET_CURRENT_TODO_ID]:
+      (state, action) => ({ ...state, currentTodoId: action.payload.currentTodoId }),
 }, initialState);

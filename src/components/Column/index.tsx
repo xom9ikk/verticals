@@ -12,7 +12,7 @@ import { CardToolbar } from '../CardToolbar';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
 import {
-  BoardsActions, ColumnsActions, SystemActions, TodosActions,
+  ColumnsActions, SystemActions, TodosActions,
 } from '../../store/actions';
 import {
   EnumColors, EnumTodoStatus, ITodo, ITodos,
@@ -24,6 +24,7 @@ import { useFilterTodos } from '../../use/filterTodos';
 import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
 import { ArchiveContainer } from '../ArchiveContainer';
 import { CardsContainer } from '../CardsContainer';
+import { CardPopup } from '../CardPopup';
 
 interface IColumn {
   index: number;
@@ -65,6 +66,7 @@ export const Column: FC<IColumn> = ({
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
+  const [currentTodoId, setCurrentTodoId] = useState<string>('');
   const {
     system: { isEditableColumn, query },
     boards,
@@ -302,46 +304,7 @@ export const Column: FC<IColumn> = ({
       cardType={cardType}
       isActiveQuery={!!query}
       onExitFromEditable={saveCard}
-    >
-      {/* { */}
-      {/*      todos */}
-      {/*          ?.sort((a, b) => a.position - b.position) */}
-      {/*          ?.filter((todo: ITodo) => !todo.isArchive) */}
-      {/*          ?.filter(filterTodos) */}
-      {/*          ?.map((todo, todoIndex) => ( */}
-      {/*            <Draggable */}
-      {/*              key={todo.id} */}
-      {/*              draggableId={todo.id} */}
-      {/*              index={todoIndex} */}
-      {/*              isDragDisabled={!!query || todo.id === 'new-todo'} */}
-      {/*            > */}
-      {/*              {( */}
-      {/*                dragProvided: DraggableProvided, */}
-      {/*                dragSnapshot: DraggableStateSnapshot, */}
-      {/*              ) => ( */}
-      {/*                <Card */}
-      {/*                  cardType={boards */}
-      {/*                    .filter((board) => board.id === boardId)[0]?.cardType} */}
-      {/*                  provided={dragProvided} */}
-      {/*                  snapshot={dragSnapshot} */}
-      {/*                  key={todo.id} */}
-      {/*                  id={todo.id} */}
-      {/*                  title={todo.title} */}
-      {/*                  description={todo.description} */}
-      {/*                  status={todo.status} */}
-      {/*                  color={todo.color} */}
-      {/*                  onExitFromEditable={ */}
-      {/*                          (newTitle, newDescription, */}
-      {/*                            newStatus, newColor) => saveCard( */}
-      {/*                            todo.id, newTitle, newDescription, newStatus, newColor, */}
-      {/*                          ) */}
-      {/*                        } */}
-      {/*                /> */}
-      {/*              )} */}
-      {/*            </Draggable> */}
-      {/*          )) */}
-      {/*    } */}
-    </CardsContainer>
+    />
   ), [boards, todos, columnId, isOpenNewCard, query]);
 
   // const archiveCards = useMemo(() => (
@@ -619,6 +582,12 @@ export const Column: FC<IColumn> = ({
   ]);
 
   return (
-    <>{memoColumn}</>
+    <>
+      {memoColumn}
+      {/* ref */}
+      <div>
+        <CardPopup columnId={columnId!} />
+      </div>
+    </>
   );
 };

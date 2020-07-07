@@ -8,6 +8,7 @@ enum Type {
   SET_IS_EDITABLE_BOARD = 'SYSTEM/SET_IS_EDITABLE_BOARD',
   SET_QUERY = 'SYSTEM/SET_QUERY',
   SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
+  SET_CURRENT_TODO_ID = 'SYSTEM/SET_CURRENT_TODO_ID',
 }
 
 const setIsOpenPopup = createAction(
@@ -40,6 +41,11 @@ const setLanguage = createAction(
   (payload: EnumLanguage) => ({ language: payload }),
 );
 
+const setCurrentTodoId = createAction(
+  Type.SET_CURRENT_TODO_ID,
+  (payload: string) => ({ currentTodoId: payload }),
+);
+
 export const SystemActions = {
   Type,
   setIsOpenPopup,
@@ -48,4 +54,5 @@ export const SystemActions = {
   setIsEditableBoard,
   setQuery,
   setLanguage,
+  setCurrentTodoId,
 };
