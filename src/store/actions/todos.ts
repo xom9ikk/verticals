@@ -18,6 +18,7 @@ enum Type {
   GENERATE_NEW_ID = 'TODOS/GENERATE_NEW_ID',
   REMOVE_NEW_TODO = 'TODOS/REMOVE_NEW_TODO',
   UPDATE_IS_ARCHIVE = 'TODOS/UPDATE_IS_ARCHIVE',
+  SWITCH_NOTIFICATION_ENABLED = 'TODOS/SWITCH_NOTIFICATION_ENABLED',
 }
 
 const setTodos = createAction(
@@ -125,6 +126,13 @@ const setIsArchive = createAction(
   }),
 );
 
+const switchNotificationsEnabled = createAction(
+  Type.SWITCH_NOTIFICATION_ENABLED,
+  (id: string) => ({
+    id,
+  }),
+);
+
 export const TodosActions = {
   Type,
   setTodos,
@@ -143,4 +151,5 @@ export const TodosActions = {
   generateNewId,
   removeNewTodo,
   setIsArchive,
+  switchNotificationsEnabled,
 };

@@ -884,4 +884,11 @@ export const TodosReducer = handleActions<ITodos, any>({
         console.log('archived', sortedTodos);
         return [...sortedTodos, ...otherTodos];
       },
+  [TodosActions.Type.SWITCH_NOTIFICATION_ENABLED]:
+      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
+        ? {
+          ...todo,
+          isNotificationsEnabled: !todo.isNotificationsEnabled,
+        }
+        : todo))),
 }, initialState);

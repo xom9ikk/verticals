@@ -7,6 +7,7 @@ export interface ITodo {
   status?: EnumTodoStatus;
   color?: number;
   isArchive?: boolean;
+  isNotificationsEnabled?: boolean;
 }
 
 export type ITodos = Array<ITodo>;

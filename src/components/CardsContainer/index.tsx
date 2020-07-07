@@ -46,6 +46,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                 status={todo.status}
                 color={todo.color}
                 isArchive={todo.isArchive}
+                isNotificationsEnabled={todo.isNotificationsEnabled}
                 onExitFromEditable={
                         (newTitle, newDescription,
                           newStatus, newColor) => onExitFromEditable(

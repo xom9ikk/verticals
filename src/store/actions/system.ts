@@ -1,4 +1,5 @@
 import { createAction } from 'redux-actions';
+import { EnumLanguage } from '../../types';
 
 enum Type {
   SET_IS_OPEN_POPUP = 'SYSTEM/SET_IS_OPEN_POPUP',
@@ -6,6 +7,7 @@ enum Type {
   SET_IS_EDITABLE_COLUMN = 'SYSTEM/SET_IS_EDITABLE_COLUMN',
   SET_IS_EDITABLE_BOARD = 'SYSTEM/SET_IS_EDITABLE_BOARD',
   SET_QUERY = 'SYSTEM/SET_QUERY',
+  SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
 }
 
 const setIsOpenPopup = createAction(
@@ -33,6 +35,11 @@ const setQuery = createAction(
   (payload: string) => ({ query: payload }),
 );
 
+const setLanguage = createAction(
+  Type.SET_LANGUAGE,
+  (payload: EnumLanguage) => ({ language: payload }),
+);
+
 export const SystemActions = {
   Type,
   setIsOpenPopup,
@@ -40,4 +47,5 @@ export const SystemActions = {
   setIsEditableColumn,
   setIsEditableBoard,
   setQuery,
+  setLanguage,
 };

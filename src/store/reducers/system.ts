@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { SystemActions } from '../actions';
-import { ISystem } from '../../types';
+import { EnumLanguage, ISystem } from '../../types';
 
 const initialState = {
   isOpenPopup: false,
@@ -8,6 +8,7 @@ const initialState = {
   isEditableColumn: false,
   isEditableBoard: false,
   query: '',
+  language: EnumLanguage.English,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -20,5 +21,7 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
   [SystemActions.Type.SET_IS_EDITABLE_BOARD]:
         (state, action) => ({ ...state, isEditableBoard: action.payload.isEditableBoard }),
   [SystemActions.Type.SET_QUERY]:
-        (state, action) => ({ ...state, query: action.payload.query }),
+      (state, action) => ({ ...state, query: action.payload.query }),
+  [SystemActions.Type.SET_LANGUAGE]:
+      (state, action) => ({ ...state, language: action.payload.language }),
 }, initialState);

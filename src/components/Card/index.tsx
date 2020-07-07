@@ -24,6 +24,7 @@ interface ICard {
   status?: EnumTodoStatus;
   color?: number;
   isArchive?: boolean;
+  isNotificationsEnabled?: boolean;
   invertColor?: boolean;
   isEditableDefault?: boolean;
   onExitFromEditable?: (
@@ -56,6 +57,7 @@ export const Card: FC<ICard> = ({
   status: initialStatus = EnumTodoStatus.Todo,
   color,
   isArchive,
+  isNotificationsEnabled,
   invertColor,
   isEditableDefault,
   onExitFromEditable,
@@ -202,6 +204,7 @@ export const Card: FC<ICard> = ({
       }
       case EnumCardActions.Notifications: {
         // TODO:
+        dispatch(TodosActions.switchNotificationsEnabled(id!));
         break;
       }
       case EnumCardActions.CopyLink: {
@@ -281,7 +284,7 @@ export const Card: FC<ICard> = ({
     <MenuButton
       text="Notifications"
       imageSrc="/svg/menu/notifications.svg"
-      hintImageSrc="/svg/menu/tick-active.svg"
+      hintImageSrc={`${isNotificationsEnabled ? '/svg/menu/tick-active.svg' : ''}`}
       onClick={() => menuButtonClickHandler(EnumCardActions.Notifications)}
     />
     <MenuButton
@@ -365,25 +368,24 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  const card = useMemo(() => {
-    return (
-      <div className={`card__block-wrapper 
+  const card = useMemo(() => (
+    <div className={`card__block-wrapper 
     ${isEditable ? 'card__block-wrapper--editable' : ''}
     `}
-      >
-        {
+    >
+      {
           renderBullet(cardType)
         }
-        <div
-          className="card__block"
-          onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-          onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
-          onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
-          onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
-          onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
-          onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
-        >
-          {
+      <div
+        className="card__block"
+        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
+        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+        onTouchStart={() => (!isEditable ? debouncePress(true) : null)}
+        onTouchEnd={() => (!isEditable ? debouncePress(false) : null)}
+        onMouseLeave={() => (!isEditable ? debouncePress(false) : null)}
+        onDoubleClick={!isEditableDefault ? doubleClickHandler : () => {}}
+      >
+        {
               isEditable ? (
                 <div
                   className="card__editable-content"
@@ -420,10 +422,9 @@ export const Card: FC<ICard> = ({
 
               )
             }
-        </div>
       </div>
-    );
-  }, [
+    </div>
+  ), [
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue,
