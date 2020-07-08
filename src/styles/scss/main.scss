@@ -10,8 +10,8 @@ body {
   //overflow: hidden;
   //animation: rainbow 30s ease 1;
   &::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
   }
 }
 
@@ -45,4 +45,11 @@ body {
 * {
   outline: none;
   caret-color: $primary;
+}
+
+textarea {
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }

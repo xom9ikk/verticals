@@ -13,6 +13,7 @@ import { Loader } from '../Loader';
 import { CardContextMenu } from '../CardContextMenu';
 import { CommentForm } from '../CommentForm';
 import { CommentList } from '../CommentList';
+import { TextArea } from '../TextArea';
 
 interface ICardPopup {
   columnId: string;
@@ -157,23 +158,40 @@ export const CardPopup: FC<ICardPopup> = ({
               }}
             />
             <div className="card-popup__textarea-inner">
-              <TextareaAutosize
-                ref={titleInputRef}
+              <TextArea
                 className="card__textarea card-popup__textarea"
-                value={titleValue}
                 placeholder="Card Title"
-                minRows={1}
-                maxRows={3}
+                value={titleValue}
                 onChange={(event) => changeHandler(event, false)}
+                min={50}
+                max={200}
               />
-              <TextareaAutosize
+              {/* <TextareaAutosize */}
+              {/*  ref={titleInputRef} */}
+              {/*  className="card__textarea card-popup__textarea" */}
+              {/*  value={titleValue} */}
+              {/*  placeholder="Card Title" */}
+              {/*  minRows={1} */}
+              {/*  maxRows={3} */}
+              {/*  onChange={(event) => changeHandler(event, false)} */}
+              {/* /> */}
+              <TextArea
                 className="card__textarea card-popup__textarea card-popup__textarea--description"
-                value={descriptionValue}
                 placeholder="Notes"
-                minRows={1}
-                maxRows={3}
+                value={descriptionValue}
                 onChange={(event) => changeHandler(event, true)}
+                min={27}
+                max={300}
               />
+              {/* <TextareaAutosize */}
+              {/*  className="car
+              d__textarea card-popup__textarea card-popup__textarea--description" */}
+              {/*  value={descriptionValue} */}
+              {/*  placeholder="Notes" */}
+              {/*  minRows={1} */}
+              {/*  maxRows={3} */}
+              {/*  onChange={(event) => changeHandler(event, true)} */}
+              {/* /> */}
             </div>
           </div>
           <div className="card-popup__toolbar">
@@ -222,7 +240,7 @@ export const CardPopup: FC<ICardPopup> = ({
         </div>
         <div className="card-popup__comments-wrapper">
           <CommentList />
-          <CommentForm />
+          <CommentForm todoId={todo.id} />
         </div>
       </div>
     </div>

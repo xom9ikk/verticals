@@ -66,7 +66,6 @@ export const Column: FC<IColumn> = ({
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const [currentTodoId, setCurrentTodoId] = useState<string>('');
   const {
     system: { isEditableColumn, query },
     boards,
@@ -584,7 +583,7 @@ export const Column: FC<IColumn> = ({
   return (
     <>
       {memoColumn}
-      {/* ref */}
+      {/* TODO: ref or portal */}
       <div>
         <CardPopup columnId={columnId!} />
       </div>

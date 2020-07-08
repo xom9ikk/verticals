@@ -1,4 +1,6 @@
 .comment-form {
+  $block: &;
+
   display: flex;
   &__input-wrapper {
     display: flex;
@@ -8,10 +10,16 @@
     border-radius: 8px;
     padding: 10px 10px 10px 0;
     margin-left: 10px;
+    transition: box-shadow .2s ease-in-out;
+    &:hover, &:focus-within {
+      box-shadow: $primary-light 0 0 0 2px;
+    }
   }
   &__textarea {
     width: 75%;
     min-height: 27px;
+    height: 27px;
+    max-height: 300px;
   }
   &__controls {
     display: flex;
