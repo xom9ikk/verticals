@@ -6,7 +6,7 @@ import { MenuButton } from '../MenuButton';
 import { Submenu } from '../Submenu';
 import { EnumTodoStatus } from '../../types';
 import { Divider } from '../Divider';
-import { TodosActions } from '../../store/actions';
+import { SystemActions, TodosActions } from '../../store/actions';
 
 interface ICardContextMenu {
   id?: string;
@@ -15,15 +15,17 @@ interface ICardContextMenu {
   isHover: boolean;
   isNotificationsEnabled?: boolean;
   color?: number;
+  status?: EnumTodoStatus;
   size?: number;
   imageSize?: number;
   isPrimary?: boolean;
   onStartEdit: () => void;
   onChangeColor: (newColor: number) => void;
-  onHidePopup: () => void;
+  onHidePopup?: () => void;
 }
 
 enum EnumCardActions {
+  ChangeColor,
   EditCard,
   AttachFile,
   AddDate,
@@ -43,6 +45,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   isHover,
   isNotificationsEnabled,
   color,
+  status,
   size,
   imageSize,
   isPrimary,
@@ -54,6 +57,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
 
   const menuButtonClickHandler = (action: EnumCardActions, payload?: any) => {
     switch (action) {
+      case EnumCardActions.ChangeColor: {
+        onChangeColor(payload);
+        break;
+      }
       case EnumCardActions.EditCard: {
         onStartEdit();
         break;
@@ -100,7 +107,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       }
       default: break;
     }
-    onHidePopup();
+    dispatch(SystemActions.setIsOpenPopup(false));
+    onHidePopup?.();
   };
 
   const memoContextMenu = useMemo(() => (
@@ -116,10 +124,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
     >
       <ColorPicker
-        onPick={(newColor: number) => {
-          onHidePopup();
-          onChangeColor(newColor);
-        }}
+        onPick={(newColor) => menuButtonClickHandler(EnumCardActions.ChangeColor, newColor)}
         activeColor={color}
       />
       <MenuButton
@@ -144,6 +149,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         <MenuButton
           text="Mark as to do"
           imageSrc="/svg/menu/rounded-square.svg"
+          hintImageSrc={`${status === EnumTodoStatus.Todo ? '/svg/menu/tick-active.svg' : ''}`}
           onClick={() => menuButtonClickHandler(
             EnumCardActions.CompleteStatus, EnumTodoStatus.Todo,
           )}
@@ -151,6 +157,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         <MenuButton
           text="Mark as doing"
           imageSrc="/svg/menu/rounded-square-half-filled.svg"
+          hintImageSrc={`${status === EnumTodoStatus.Doing ? '/svg/menu/tick-active.svg' : ''}`}
           onClick={() => menuButtonClickHandler(
             EnumCardActions.CompleteStatus, EnumTodoStatus.Doing,
           )}
@@ -158,6 +165,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         <MenuButton
           text="Mark as done"
           imageSrc="/svg/menu/rounded-square-check.svg"
+          hintImageSrc={`${status === EnumTodoStatus.Done ? '/svg/menu/tick-active.svg' : ''}`}
           onClick={() => menuButtonClickHandler(
             EnumCardActions.CompleteStatus, EnumTodoStatus.Done,
           )}
@@ -189,7 +197,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text={isArchive ? 'Unarchive' : 'Archive'}
-        imageSrc="/svg/menu/archive.svg"
+        imageSrc={`/svg/menu/${isArchive ? 'archive' : 'archive-close'}.svg`}
         onClick={() => menuButtonClickHandler(EnumCardActions.Archive)}
       />
       <MenuButton
@@ -199,6 +207,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         onClick={() => menuButtonClickHandler(EnumCardActions.Delete)}
       />
     </Menu>
-  ), [isHover, color]);
+  ), [isHover, color, isNotificationsEnabled, isArchive]);
   return (<>{memoContextMenu}</>);
 };

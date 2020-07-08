@@ -1,0 +1,27 @@
+.comment-form {
+  display: flex;
+  &__input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px 10px 10px 0;
+    margin-left: 10px;
+  }
+  &__textarea {
+    width: 75%;
+    min-height: 27px;
+  }
+  &__controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 25%;
+    height: 30px;
+    button {
+      margin: 0 2px;
+    }
+  }
+}

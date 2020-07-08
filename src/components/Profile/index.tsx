@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Menu } from '../Menu';
 import { MenuButton } from '../MenuButton';
 import { Divider } from '../Divider';
+import { Avatar } from '../Avatar';
 
 interface IProfile {
 }
@@ -14,11 +15,7 @@ export const Profile: FC<IProfile> = () => {
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
     >
-      <img
-        src="/avatars/default.jpeg"
-        alt="avatar"
-        className="profile__avatar"
-      />
+      <Avatar />
       <Menu
         imageSrc="/svg/dots.svg"
         alt="add"

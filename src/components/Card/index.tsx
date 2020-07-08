@@ -179,8 +179,7 @@ export const Card: FC<ICard> = ({
     [],
   );
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
+  const hidePopupHandler = () => {
     setIsHover(false);
   };
 
@@ -338,9 +337,10 @@ export const Card: FC<ICard> = ({
           isHover={isHover}
           isNotificationsEnabled={isNotificationsEnabled}
           color={color}
+          status={status}
           onStartEdit={doubleClickHandler}
           onChangeColor={colorPickHandler}
-          onHidePopup={hidePopup}
+          onHidePopup={hidePopupHandler}
         />
         )
       }

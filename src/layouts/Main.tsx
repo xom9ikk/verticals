@@ -12,7 +12,7 @@ export const Main: FC = () => {
   const dispatch = useDispatch();
   const [activeBoardId, setActiveBoardId] = useState<string>('board-2');
 
-  const closeAllPopup = () => {
+  const closeAllPopups = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
@@ -24,7 +24,7 @@ export const Main: FC = () => {
   const keydownHandler = (event: any) => {
     switch (event.code) {
       case 'Escape': {
-        closeAllPopup();
+        closeAllPopups();
         break;
       }
       default: break;
@@ -32,7 +32,7 @@ export const Main: FC = () => {
   };
 
   const clickHandler = () => {
-    closeAllPopup();
+    closeAllPopups();
   };
 
   useEffect(() => {

@@ -8,9 +8,9 @@
   border: none;
   height: 36px;
   background: none;
-  padding: 8px 10px 8px 10px;
+  padding: 8px 10px;
   border-radius: 6px;
-  transition: background .1s ease-in-out, opacity .1s ease-in-out;
+  transition: background .1s ease-in-out, opacity .1s ease-in-out, width .1s ease-in-out, padding .1s ease-in-out;
 
   span {
     font-size: 15px;
@@ -49,6 +49,16 @@
   &--invert {
     &:hover {
       background: $sidebar-gradient;
+    }
+  }
+
+  &--primary {
+    background: $primary;
+    &:hover {
+      background: rgba(38, 136, 243, 0.8);
+      img {
+        filter: none;
+      }
     }
   }
 }

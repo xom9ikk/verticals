@@ -22,6 +22,7 @@ interface IMenu {
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   isAbsolute?: boolean;
   isInvertColor?: boolean;
+  isPrimary?: boolean;
   style?: any;
 }
 
@@ -41,6 +42,7 @@ export const Menu: FC<IMenu> = ({
   position,
   isAbsolute = true,
   isInvertColor,
+  isPrimary,
   style,
   children,
 }) => {
@@ -87,6 +89,9 @@ export const Menu: FC<IMenu> = ({
     if (isHide && !isHoverBlock) {
       classes.push('menu--invisible');
     }
+    if (isPrimary) {
+      classes.push('menu--primary');
+    }
     if (isHoverBlock) {
       classes.push('menu--hover-block');
     }
@@ -117,27 +122,27 @@ export const Menu: FC<IMenu> = ({
       <button
         ref={sourceRef}
         className={classes.join(' ')}
-        style={size ? { ...style, height: size, width: size } : { ...style }}
         onClick={clickHandler}
         onDoubleClick={(e) => e.stopPropagation()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        style={size ? { height: size, width: size, ...style } : { ...style }}
       >
         <img
           src={imageSrc}
           alt={alt}
-          style={{ width: imageSize, height: imageSize }}
+          style={{ width: style?.width || imageSize, height: imageSize }}
         />
         {
-            text ? (<span>{text}</span>) : null
-          }
+          text ? (<span>{text}</span>) : null
+        }
       </button>
     );
   }, [
     isHide, isHoverBlock, isMaxWidth,
     isInvertColor, size, imageSrc,
     alt, text, isOpen,
-    isOpenPopup,
+    isOpenPopup, style,
   ]);
 
   return (

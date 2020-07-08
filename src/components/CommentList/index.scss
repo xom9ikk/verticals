@@ -1,0 +1,11 @@
+.comment-list {
+  display: flex;
+  height: 100%;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  &--empty {
+    align-items: center;
+    color: $text;
+  }
+}
