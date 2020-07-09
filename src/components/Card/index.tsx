@@ -2,7 +2,6 @@
 import React, {
   FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '../CardContextMenu';
@@ -12,6 +11,7 @@ import { IRootState } from '../../store/reducers/state';
 import { useFocus } from '../../use/focus';
 import { EnumColors, EnumTodoStatus, EnumTodoType } from '../../types';
 import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
+import { TextArea } from '../TextArea';
 
 interface ICard {
   cardType: EnumTodoType;
@@ -184,7 +184,7 @@ export const Card: FC<ICard> = ({
   };
 
   useEffect(() => {
-    if (!isEditableDefault && id !== 'new-todo') {
+    if (!isEditableDefault && id !== 'new-todo' && initialStatus !== status) {
       console.log('save todo 4');
       saveTodo();
     }
@@ -258,25 +258,25 @@ export const Card: FC<ICard> = ({
                 <div
                   className="card__editable-content"
                 >
-                  <TextareaAutosize
+                  <TextArea
                     ref={titleInputRef}
                     className="card__textarea"
                     value={titleValue}
                     placeholder="New Card"
                     minRows={1}
                     maxRows={20}
-                    onChange={(event) => changeHandler(event, false)}
-                    onKeyUp={(event) => keydownHandler(event, false)}
+                    onChange={(event: any) => changeHandler(event, false)}
+                    onKeyUp={(event: any) => keydownHandler(event, false)}
                   />
-                  <TextareaAutosize
+                  <TextArea
                     ref={descriptionInputRef}
                     className="card__textarea card__textarea--description"
                     value={descriptionValue}
                     placeholder="Notes"
                     minRows={1}
                     maxRows={20}
-                    onChange={(event) => changeHandler(event, true)}
-                    onKeyDownCapture={(event) => keydownHandler(event, true)}
+                    onChange={(event: any) => changeHandler(event, true)}
+                    onKeyDownCapture={(event: any) => keydownHandler(event, true)}
                   />
                 </div>
               ) : (

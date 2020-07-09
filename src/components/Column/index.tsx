@@ -1,7 +1,6 @@
 import React, {
   FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
@@ -25,6 +24,7 @@ import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoub
 import { ArchiveContainer } from '../ArchiveContainer';
 import { CardsContainer } from '../CardsContainer';
 import { CardPopup } from '../CardPopup';
+import { TextArea } from '../TextArea';
 
 interface IColumn {
   index: number;
@@ -179,9 +179,15 @@ export const Column: FC<IColumn> = ({
       : setTitleValue(value);
   };
 
-  const colorPickHandler = (newColor: number) => {
+  const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
+    setIsHoverHeader(false);
+    setIsHover(false);
+  };
+
+  const colorPickHandler = (newColor: number) => {
     saveColumn(newColor);
+    hidePopup();
   };
 
   const clickHandler = (event: SyntheticEvent) => {
@@ -210,12 +216,6 @@ export const Column: FC<IColumn> = ({
     handleClick,
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
-
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-    setIsHoverHeader(false);
-    setIsHover(false);
-  };
 
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
     switch (action) {
@@ -409,7 +409,7 @@ export const Column: FC<IColumn> = ({
     <>
       {
           isEditable ? (
-            <TextareaAutosize
+            <TextArea
               ref={descriptionInputRef}
               className="column__description column__description--editable"
               value={descriptionValue}
@@ -436,7 +436,7 @@ export const Column: FC<IColumn> = ({
     >
       {
           isEditable ? (
-            <TextareaAutosize
+            <TextArea
               ref={titleInputRef}
               className="column__title column__title--editable"
               value={titleValue}
@@ -575,7 +575,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, boards, todos, color, columnId, isHover,
+    index, boards, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, query, isMinimize,
   ]);

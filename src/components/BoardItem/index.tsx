@@ -2,7 +2,6 @@ import React, {
   FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TextareaAutosize from 'react-textarea-autosize';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { Menu } from '../Menu';
 import { MenuButton } from '../MenuButton';
@@ -14,6 +13,7 @@ import { IRootState } from '../../store/reducers/state';
 import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
 import { useFocus } from '../../use/focus';
 import { EnumColors, EnumTodoType } from '../../types';
+import { TextArea } from '../TextArea';
 
 interface IBoardItem {
   snapshot?: DraggableStateSnapshot,
@@ -321,25 +321,25 @@ export const BoardItem: FC<IBoardItem> = ({
                 <div
                   className="card__editable-content"
                 >
-                  <TextareaAutosize
+                  <TextArea
                     ref={titleInputRef}
                     className="card__textarea"
                     value={titleValue}
                     placeholder="New Card"
                     minRows={1}
                     maxRows={20}
-                    onChange={(event) => changeHandler(event, false)}
-                    onKeyUp={(event) => keydownHandler(event, false)}
+                    onChange={(event: any) => changeHandler(event, false)}
+                    onKeyUp={(event: any) => keydownHandler(event, false)}
                   />
-                  <TextareaAutosize
+                  <TextArea
                     ref={descriptionInputRef}
                     className="card__textarea card__textarea--description"
                     value={descriptionValue}
                     placeholder="Notes"
                     minRows={1}
                     maxRows={20}
-                    onChange={(event) => changeHandler(event, true)}
-                    onKeyDownCapture={(event) => keydownHandler(event, true)}
+                    onChange={(event: any) => changeHandler(event, true)}
+                    onKeyDownCapture={(event: any) => keydownHandler(event, true)}
                   />
                 </div>
               ) : (

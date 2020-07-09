@@ -207,6 +207,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         onClick={() => menuButtonClickHandler(EnumCardActions.Delete)}
       />
     </Menu>
-  ), [isHover, color, isNotificationsEnabled, isArchive]);
+  ), [isHover, color, isNotificationsEnabled, isArchive, status]);
   return (<>{memoContextMenu}</>);
 };

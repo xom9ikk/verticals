@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useRef,
+  forwardRef, useEffect, useRef,
 } from 'react';
 
 interface ITextArea {
@@ -8,19 +8,21 @@ interface ITextArea {
   placeholder: string;
   onChange: (event:any)=>void;
   onKeyUp?: (event:any)=>void;
-  min: number,
-  max: number;
+  onKeyDownCapture?: (event:any)=>void;
+  minRows: number,
+  maxRows: number;
 }
 
-export const TextArea: FC<ITextArea> = ({
+const TA = ({
   className,
   value,
   placeholder,
   onChange,
   onKeyUp,
-  min,
-  max,
-}) => {
+  onKeyDownCapture,
+  minRows,
+  maxRows,
+}: ITextArea, ref: any) => {
   const textAreaRef = useRef<any>(null);
 
   const resize = () => {
@@ -40,22 +42,48 @@ export const TextArea: FC<ITextArea> = ({
   }, []);
 
   useEffect(() => {
+    const {
+      fontSize, lineHeight, paddingTop, paddingBottom,
+    } = window.getComputedStyle(textAreaRef.current);
+
+    const fz = parseInt(fontSize, 10);
+    const pt = parseInt(paddingTop, 10);
+    const pb = parseInt(paddingBottom, 10);
+    const lh = lineHeight !== 'normal'
+      ? parseInt(lineHeight, 10)
+      : 1.3;
+
+    const rowHeight = (fz) * lh;
+    const min = minRows * rowHeight;
+    const max = maxRows * rowHeight + pt + pb;
+
+    textAreaRef.current.style.minHeight = `${min}px`;
+    textAreaRef.current.style.height = `${min}px`;
+    textAreaRef.current.style.maxHeight = `${max}px`;
+  }, [textAreaRef]);
+
+  useEffect(() => {
     resize();
   }, [value]);
 
+  useEffect(() => {
+    if (ref) {
+      // eslint-disable-next-line no-param-reassign
+      ref.current = textAreaRef.current;
+    }
+  }, [textAreaRef]);
+
   return (
     <textarea
-      style={{
-        minHeight: min,
-        height: min,
-        maxHeight: max,
-      }}
       ref={textAreaRef}
       className={className}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
       onKeyUp={onKeyUp}
+      onKeyDownCapture={onKeyDownCapture}
     />
   );
 };
+
+export const TextArea = forwardRef(TA);

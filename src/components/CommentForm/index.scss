@@ -2,9 +2,14 @@
   $block: &;
 
   display: flex;
+  flex-direction: column;
+  &__wrapper {
+    display: flex;
+  }
   &__input-wrapper {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    //justify-content: center;
     flex: 1;
     background: #f9f9f9;
     border-radius: 8px;
@@ -20,16 +25,42 @@
     min-height: 27px;
     height: 27px;
     max-height: 300px;
+    margin-top: 0;
   }
   &__controls {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-self: flex-end;
     align-items: center;
     width: 25%;
     height: 30px;
     button {
       margin: 0 2px;
+    }
+  }
+  &__helper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    color: $text-light;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    button {
+      outline: none;
+      background: none;
+      border: none;
+      margin-right: 10px;
+      color: $text-light;
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+      transition: opacity .2s ease-in-out;
+      &:hover {
+        opacity: 0.75;
+      }
     }
   }
 }

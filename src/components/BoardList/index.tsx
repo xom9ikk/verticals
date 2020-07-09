@@ -227,7 +227,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
             isHide
             isHoverBlock={isHover}
             isMaxWidth
-            style={{ margin: '0 6px', width: '209px' }}
+            style={{ margin: '0 6px'}}
             isShowPopup={false}
             onClick={() => {
               setIsOpenNewBoard((prev) => !prev);
