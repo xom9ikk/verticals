@@ -1,8 +1,8 @@
 .card-popup {
   width: 0;
-  height: 100%;
   border-right: 1px solid rgb(242, 242, 242);
   transition: width .2s ease-in-out;
+  height: 100vh;
   &--opened {
     width: $card-popup-width;
     padding: 10px;
@@ -103,11 +103,5 @@
   hr {
     margin: 5px 0 5px;
     border: 1px solid rgba(0, 0, 0, 0.06);
-  }
-  &__comments-wrapper {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 20px 20px 0;
   }
 }

@@ -3,7 +3,9 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { EnumColors, EnumTodoStatus, ITodo } from '../../types';
+import {
+  EnumColors, EnumTodoStatus, IComment, IComments, ITodo,
+} from '../../types';
 import { Checkbox } from '../Checkbox';
 import { IRootState } from '../../store/reducers/state';
 import { SystemActions, TodosActions } from '../../store/actions';
@@ -13,6 +15,8 @@ import { CardContextMenu } from '../CardContextMenu';
 import { CommentForm } from '../CommentForm';
 import { CommentList } from '../CommentList';
 import { TextArea } from '../TextArea';
+import { useAutoScroll } from '../../use/autoScroll';
+import { Comments } from '../Comments';
 
 interface ICardPopup {
   columnId: string;
@@ -220,10 +224,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     </div>
                     <hr />
                   </div>
-                  <div className="card-popup__comments-wrapper">
-                    <CommentList />
-                    <CommentForm todoId={todo.id} />
-                  </div>
+                  <Comments todoId={currentTodoId} />
                 </div>
               </div>
             ) : (

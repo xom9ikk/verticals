@@ -10,7 +10,7 @@
   background: none;
   padding: 8px 10px;
   border-radius: 6px;
-  transition: background .1s ease-in-out, opacity .1s ease-in-out, width .1s ease-in-out, padding .1s ease-in-out;
+  transition: background .2s ease-in-out, opacity .2s ease-in-out, width .2s ease-in-out, padding .2s ease-in-out;
 
   span {
     font-size: 15px;
@@ -48,6 +48,7 @@
 
   &--invert {
     &:hover {
+      transition: background .2s ease-in-out, opacity .2s ease-in-out, width .2s ease-in-out, padding .2s ease-in-out;
       background: $sidebar-gradient;
     }
   }

@@ -1,14 +1,21 @@
+export interface IFile {
+  id: string;
+  link: string;
+  type: string;
+  size: string;
+  name: string;
+}
+
+export interface IImage {
+  link: string;
+}
+
 export interface IComment {
   id: string;
+  date: number;
   todoId: string;
-  type: EnumCommentType;
-  content: string;
+  text?: string;
+  attachedFiles?: Array<IFile>
 }
 
 export type IComments = Array<IComment>;
-
-export enum EnumCommentType {
-  Text,
-  Image,
-  File,
-}

@@ -1,0 +1,128 @@
+.comment-file {
+  $block: &;
+
+  position: relative;
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  background: $white;
+  transition: box-shadow .3s ease-in-out;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px;
+  &:hover {
+    box-shadow: $primary-light 0 0 0 2px;
+    #{$block}__overlay {
+      opacity: 1;
+    }
+    #{$block}__size {
+      opacity: 1;
+    }
+  }
+  &__overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.85);
+    transition: opacity .3s ease-in-out;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: inherit;
+    //div {
+    //  z-index: 2;
+    //  display: flex;
+    //  justify-content: center;
+    //  align-items: center;
+    //  width: 50px;
+    //  height: 50px;
+    //  background: rgba(210, 227, 253, 0.5);
+    //  border-radius: 50%;
+    //  left: 50%;
+    //  transition: background .3s ease-in-out;
+    //  &:hover {
+    //    background: rgba(210, 227, 253, 1);
+    //  }
+    //}
+    //img {
+    //  width: 70%;
+    //  height: 70%;
+    //  transform: rotate(90deg);
+    //}
+  }
+  &--image {
+    height: 200px;
+
+    #{$block}__inner {
+      justify-content: flex-end;
+    }
+  }
+  &--compact {
+    flex-basis: 47%;
+    min-height: 100px;
+  }
+  &__image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border-radius: inherit;
+    z-index: 0;
+  }
+  &__inner {
+    display: flex;
+    padding: 12px;
+    flex: 1;
+    height: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 1;
+  }
+  &__info {
+    position: relative;
+    display: flex;
+    font-size: 14px;
+    color: $text-dark;
+    &--text {
+      white-space: nowrap;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    img {
+      width: 20px;
+      height: 24px;
+      margin-right: 10px;
+    }
+    span {
+      position: absolute;
+      font-size: 7px;
+      left: 3px;
+      top: 10px;
+      color: $text-dark;
+    }
+  }
+  &__size {
+    color: $text;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity .3s ease-in-out ;
+    &--image {
+      position: absolute;
+      bottom: 12px;
+      right: 20px;
+    }
+    &--file {
+      position: absolute;
+      bottom: 5px;
+      right: 20px;
+    }
+  }
+}

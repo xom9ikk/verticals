@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, useEffect, useRef,
+  forwardRef, useEffect, useRef, useState,
 } from 'react';
 
 interface ITextArea {
@@ -8,9 +8,11 @@ interface ITextArea {
   placeholder: string;
   onChange: (event:any)=>void;
   onKeyUp?: (event:any)=>void;
+  onKeyDown?: (event:any)=>void;
   onKeyDownCapture?: (event:any)=>void;
   minRows: number,
   maxRows: number;
+  onChangeHeight?: (height: number)=>void;
 }
 
 const TA = ({
@@ -19,15 +21,23 @@ const TA = ({
   placeholder,
   onChange,
   onKeyUp,
+  onKeyDown,
   onKeyDownCapture,
   minRows,
   maxRows,
+  onChangeHeight,
 }: ITextArea, ref: any) => {
   const textAreaRef = useRef<any>(null);
+  const [height, setHeight] = useState<number>(0);
 
   const resize = () => {
     textAreaRef.current.style.height = '0px';
-    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    const { scrollHeight } = textAreaRef.current;
+    setHeight(scrollHeight);
+    textAreaRef.current.style.height = `${scrollHeight}px`;
+    if (height !== scrollHeight) {
+      onChangeHeight?.(height);
+    }
   };
 
   useEffect(() => {
@@ -81,6 +91,7 @@ const TA = ({
       placeholder={placeholder}
       onChange={onChange}
       onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
       onKeyDownCapture={onKeyDownCapture}
     />
   );

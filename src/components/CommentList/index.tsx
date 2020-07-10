@@ -1,20 +1,39 @@
-import React, { FC } from 'react';
+import React, {
+  forwardRef, useEffect, useRef,
+} from 'react';
+import { CommentItem } from '../CommentItem';
+import { IComment, IComments } from '../../types';
 
 interface ICommentList {
-  commentList?: any
+  data?: IComments
 }
 
-export const CommentList: FC<ICommentList> = ({
-  commentList,
-}) => {
-  const a = 1;
+const CL = ({
+  data,
+}: ICommentList, ref: any) => {
+  const listRef = useRef<any>();
+
+  useEffect(() => {
+    if (ref) {
+      // eslint-disable-next-line no-param-reassign
+      ref.current = listRef.current;
+    }
+  }, [listRef]);
+
   return (
     <div
-      className={`comment-list ${!commentList?.length ? 'comment-list--empty' : ''}`}
+      ref={listRef}
+      className={`comment-list ${!data?.length ? 'comment-list--empty' : ''}`}
     >
       {
-        commentList?.length > 0 ? (
-          <div>full</div>
+        data && data.length > 0 ? (
+          <>
+            {
+              data.map((comment: IComment) => (
+                <CommentItem key={comment.id} comment={comment} />
+              ))
+            }
+          </>
         ) : (
           <>
             <img src="/svg/comments-empty.svg" alt="empty" />
@@ -25,3 +44,5 @@ export const CommentList: FC<ICommentList> = ({
     </div>
   );
 };
+
+export const CommentList = forwardRef(CL);

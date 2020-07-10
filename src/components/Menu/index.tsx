@@ -15,7 +15,7 @@ interface IMenu {
   size?: number;
   isHide?: boolean;
   isShowPopup?: boolean;
-  onClick?: ()=>void;
+  onClick?: (event: React.SyntheticEvent)=>void;
   isMaxWidth?:boolean;
   onMouseEnter?:()=>void;
   onMouseLeave?:()=>void;
@@ -104,7 +104,7 @@ export const Menu: FC<IMenu> = ({
 
     const clickHandler = (event: SyntheticEvent) => {
       event.stopPropagation();
-      onClick?.();
+      onClick?.(event);
       if (isOpenPopup) {
         dispatch(SystemActions.setIsOpenPopup(false));
         if (isOpen) {

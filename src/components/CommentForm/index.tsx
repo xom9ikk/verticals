@@ -5,33 +5,47 @@ import { useDispatch } from 'react-redux';
 import { Menu } from '../Menu';
 import { Avatar } from '../Avatar';
 import { CommentsActions } from '../../store/actions';
-import { EnumCommentType } from '../../types';
 import { TextArea } from '../TextArea';
 
 interface ICommentForm {
   todoId: string;
+  onChangeTextAreaHeight?: (height: number)=>void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({
   todoId,
+  onChangeTextAreaHeight,
 }) => {
   const dispatch = useDispatch();
   const [comment, setComment] = useState<string>();
+  const [shiftPressed, setShiftPressed] = useState<boolean>();
 
   const sendCommentHandler = () => {
     if (!comment) return;
     console.log('comment save', comment);
-    dispatch(CommentsActions.add(todoId, EnumCommentType.Text, comment));
+    dispatch(CommentsActions.add(todoId, comment, undefined, undefined));
     setComment('');
   };
 
-  const keydownHandler = (event: any) => {
+  const changeHandler = (event: any) => {
+    if (!shiftPressed) {
+      setComment(event.target.value);
+    }
+  };
+
+  const keyupHandler = (event: any) => {
     const {
       key, shiftKey,
     } = event;
+    setShiftPressed(shiftKey);
     if (key === 'Enter' && shiftKey) {
       sendCommentHandler();
     }
+  };
+
+  const keydownHandler = (event: any) => {
+    const { shiftKey } = event;
+    setShiftPressed(shiftKey);
   };
 
   return (
@@ -43,10 +57,12 @@ export const CommentForm: FC<ICommentForm> = ({
             className="card__textarea comment-form__textarea"
             placeholder="Add comment or note"
             value={comment}
-            onChange={(event: any) => setComment(event.target.value)}
-            onKeyUp={keydownHandler}
+            onChange={changeHandler}
+            onKeyUp={keyupHandler}
+            onKeyDown={keydownHandler}
             minRows={1}
             maxRows={10}
+            onChangeHeight={onChangeTextAreaHeight}
           />
           <div className="comment-form__controls">
             <Menu
@@ -83,7 +99,7 @@ export const CommentForm: FC<ICommentForm> = ({
           </div>
         </div>
       </div>
-      <div className="comment-form__helper">
+      <div className={`comment-form__helper ${comment?.length ? 'comment-form__helper--opened' : ''}`}>
         <button>
           Formatting help
         </button>

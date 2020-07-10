@@ -31,8 +31,9 @@ export const Main: FC = () => {
     }
   };
 
-  const clickHandler = () => {
-    closeAllPopups();
+  const clickHandler = (event: any) => {
+    console.log('event', event);
+    if (event.isTrusted) closeAllPopups();
   };
 
   useEffect(() => {
