@@ -18,7 +18,9 @@ export const useFormatDate = () => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
-    return `${day} ${months[month]}, ${year}`;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours}:${minutes}, ${day} ${months[month]}, ${year}`;
   };
   return {
     formatDate,

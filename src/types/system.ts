@@ -13,4 +13,5 @@ export interface ISystem {
   query: string;
   language: EnumLanguage;
   currentTodoId: string;
+  currentCommentId: string;
 }

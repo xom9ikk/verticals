@@ -1,15 +1,18 @@
 import React, {
-  FC, useState,
+  FC, useEffect, useRef, useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '../Menu';
 import { Avatar } from '../Avatar';
-import { CommentsActions } from '../../store/actions';
+import { CommentsActions, SystemActions } from '../../store/actions';
 import { TextArea } from '../TextArea';
+import { IRootState } from '../../store/reducers/state';
+import { IComment } from '../../types';
+import { useFocus } from '../../use/focus';
 
 interface ICommentForm {
   todoId: string;
-  onChangeTextAreaHeight?: (height: number)=>void;
+  onChangeTextAreaHeight: (height: number)=>void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({
@@ -17,19 +20,33 @@ export const CommentForm: FC<ICommentForm> = ({
   onChangeTextAreaHeight,
 }) => {
   const dispatch = useDispatch();
-  const [comment, setComment] = useState<string>();
+  const { focus } = useFocus();
+  const { system: { currentCommentId }, comments } = useSelector((state: IRootState) => state);
+  const [commentText, setCommentText] = useState<string>();
   const [shiftPressed, setShiftPressed] = useState<boolean>();
+  const commentInputRef = useRef<any>();
+
+  useEffect(() => {
+    const targetComment = comments.find((comment: IComment) => comment.id === currentCommentId);
+    setCommentText(targetComment?.text ?? '');
+    focus(commentInputRef);
+  }, [currentCommentId]);
 
   const sendCommentHandler = () => {
-    if (!comment) return;
-    console.log('comment save', comment);
-    dispatch(CommentsActions.add(todoId, comment, undefined, undefined));
-    setComment('');
+    if (!commentText) return;
+    console.log('comment save', commentText);
+    if (currentCommentId) {
+      dispatch(CommentsActions.updateText(currentCommentId, commentText));
+      dispatch(SystemActions.setCurrentCommentId(''));
+    } else {
+      dispatch(CommentsActions.add(todoId, commentText, undefined, undefined));
+    }
+    setCommentText('');
   };
 
   const changeHandler = (event: any) => {
     if (!shiftPressed) {
-      setComment(event.target.value);
+      setCommentText(event.target.value);
     }
   };
 
@@ -54,9 +71,10 @@ export const CommentForm: FC<ICommentForm> = ({
         <Avatar />
         <div className="comment-form__input-wrapper">
           <TextArea
+            ref={commentInputRef}
             className="card__textarea comment-form__textarea"
             placeholder="Add comment or note"
-            value={comment}
+            value={commentText}
             onChange={changeHandler}
             onKeyUp={keyupHandler}
             onKeyDown={keydownHandler}
@@ -91,15 +109,18 @@ export const CommentForm: FC<ICommentForm> = ({
               isShowPopup={false}
               isPrimary
               style={{
-                width: comment?.length ? 30 : 0,
-                padding: comment?.length ? '8px 10px' : '8px 0',
+                width: commentText?.length ? 30 : 0,
+                padding: commentText?.length ? '8px 10px' : '8px 0',
               }}
               onClick={sendCommentHandler}
             />
           </div>
         </div>
       </div>
-      <div className={`comment-form__helper ${comment?.length ? 'comment-form__helper--opened' : ''}`}>
+      <div className={`comment-form__helper 
+        ${commentText?.length ? 'comment-form__helper--opened' : ''}
+        `}
+      >
         <button>
           Formatting help
         </button>

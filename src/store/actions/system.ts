@@ -9,6 +9,7 @@ enum Type {
   SET_QUERY = 'SYSTEM/SET_QUERY',
   SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
   SET_CURRENT_TODO_ID = 'SYSTEM/SET_CURRENT_TODO_ID',
+  SET_CURRENT_COMMENT_ID = 'SYSTEM/SET_CURRENT_COMMENT_ID',
 }
 
 const setIsOpenPopup = createAction(
@@ -46,6 +47,11 @@ const setCurrentTodoId = createAction(
   (payload: string) => ({ currentTodoId: payload }),
 );
 
+const setCurrentCommentId = createAction(
+  Type.SET_CURRENT_COMMENT_ID,
+  (payload: string) => ({ currentCommentId: payload }),
+);
+
 export const SystemActions = {
   Type,
   setIsOpenPopup,
@@ -55,4 +61,5 @@ export const SystemActions = {
   setQuery,
   setLanguage,
   setCurrentTodoId,
+  setCurrentCommentId,
 };

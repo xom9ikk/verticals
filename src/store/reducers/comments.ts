@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { CommentsActions } from '../actions';
-import { IComments } from '../../types';
+import { IComment, IComments, IFile } from '../../types';
 
 let count = 0;
 const initialState: IComments = [
@@ -121,12 +121,20 @@ const initialState: IComments = [
       id: 'file-1',
       type: 'html',
       size: '376.8kb',
-      name: 'in dex.htm lind ex.htmlind ex.htmlindex.htmlindex.html',
+      name: 'index.html',
       link: 'https://index.html',
-    }, {
+    },
+    {
       id: 'file-2',
       type: 'svg',
       size: '12.8kb',
+      name: 'arrow.svg',
+      link: 'https://arrow.svg',
+    },
+    {
+      id: 'file-3',
+      type: 'svg',
+      size: '543.8mb',
       name: 'arrow.svg',
       link: 'https://arrow.svg',
     }, {
@@ -135,7 +143,8 @@ const initialState: IComments = [
       link: 'https://images.unsplash.com/photo-1593642532871-8b12e02d091c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2600&q=80',
       name: 'Image 0',
       size: '283.89kb',
-    }],
+    },
+    ],
   },
   {
     id: '',
@@ -168,6 +177,48 @@ export const CommentsReducer = handleActions<IComments, any>({
   [CommentsActions.Type.ADD]:
       (state, action) => ([...state, {
         id: Math.random().toString(),
+        date: new Date().getTime(),
         ...action.payload,
       }]),
+  [CommentsActions.Type.REMOVE]:
+      (state, action) => state.filter((comment: IComment) => comment.id !== action.payload.id),
+  [CommentsActions.Type.SWITCH_LIKE]:
+      (state, action) => {
+        const { id, userId } = action.payload;
+        const targetComment = state.find((comment: IComment) => comment.id === id);
+        const isLiked = targetComment?.likes?.includes(userId) ?? false;
+        if (isLiked) {
+          return state.map((comment: IComment) => (comment.id === id
+            ? {
+              ...comment,
+              likes: comment?.likes?.filter((uId) => uId !== userId) ?? [],
+            }
+            : comment));
+        }
+        return state.map((comment: IComment) => (comment.id === id
+          ? {
+            ...comment,
+            likes: [
+              ...comment.likes || [],
+              action.payload.userId,
+            ],
+          }
+          : comment));
+      },
+  [CommentsActions.Type.UPDATE_TEXT]:
+      (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
+        ? {
+          ...comment,
+          text: action.payload.text,
+          isEdited: true,
+        }
+        : comment))),
+  [CommentsActions.Type.REMOVE_FILE]:
+      (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
+        ? {
+          ...comment,
+          attachedFiles: comment.attachedFiles
+              ?.filter((file: IFile) => file.id !== action.payload.fileId) ?? [],
+        }
+        : comment))),
 }, initialState);

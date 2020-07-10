@@ -8,13 +8,13 @@
   background: #f7f7f7;
   border-radius: 6px;
   margin: 2px 0;
-  padding: 15px;
+  padding: 15px 15px 5px;
+  transition: background .2s ease-in-out, box-shadow.2s ease-in-out;
   &:hover {
     #{$block}__date {
       opacity: 1;
     }
   }
-
   &__content {
     display: flex;
     flex-direction: column;
@@ -23,7 +23,6 @@
     display: flex;
     flex-wrap: wrap;
   }
-
   &__header {
     display: flex;
     flex: 1;
@@ -66,8 +65,23 @@
     &--buttons {
       display: flex;
     }
+    &--actions {
+      display: flex;
+      align-items: center;
+      span {
+        color: $text-light;
+        font-size: 10px;
+        margin-right: 5px;
+      }
+    }
     button {
       margin: 0 3px;
     }
+  }
+  &--pressed {
+    background: $primary-light !important;
+  }
+  &--editable {
+    box-shadow: $primary-light 0 0 0 2px inset;
   }
 }

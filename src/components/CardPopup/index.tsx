@@ -12,10 +12,7 @@ import { SystemActions, TodosActions } from '../../store/actions';
 import { Menu } from '../Menu';
 import { Loader } from '../Loader';
 import { CardContextMenu } from '../CardContextMenu';
-import { CommentForm } from '../CommentForm';
-import { CommentList } from '../CommentList';
 import { TextArea } from '../TextArea';
-import { useAutoScroll } from '../../use/autoScroll';
 import { Comments } from '../Comments';
 
 interface ICardPopup {

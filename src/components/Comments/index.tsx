@@ -19,13 +19,25 @@ export const Comments: FC<ICommentsWrapper> = ({
   const [filteredComments, setFilteredComments] = useState<IComments>([]);
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const listRef = useRef<any>(null);
-  useAutoScroll(listRef, [filteredComments, textAreaHeight]);
+  const { scrollToBottom } = useAutoScroll(listRef, [textAreaHeight, comments.length]);
 
   useEffect(() => {
     const data = comments.filter((comment: IComment) => comment.todoId === todoId);
     console.log('filtered comments', data);
     setFilteredComments(data);
   }, [todoId, comments]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      scrollToBottom();
+    }, 200);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [todoId]);
+  useEffect(() => {
+    console.log('change length');
+  }, [comments.length]);
 
   return (
     <div className="comments">

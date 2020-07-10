@@ -8,16 +8,16 @@ interface ICommentFile {
   file: IFile;
   onRemove: (id: string)=>void;
   isCompact: boolean;
+  isImage: boolean;
 }
 
 export const CommentFile: FC<ICommentFile> = ({
   file,
   onRemove,
   isCompact,
+  isImage,
 }) => {
   const [isHover, setIsHover] = useState<boolean>(false);
-
-  const isImage = ['png', 'jpg', 'jpeg'].includes(file.type);
 
   const styleImage = isImage ? {
     backgroundImage: `url('${file.link}')`,
@@ -35,8 +35,8 @@ export const CommentFile: FC<ICommentFile> = ({
       ${isImage ? 'comment-file--image' : ''}
       ${isCompact ? 'comment-file--compact' : ''}
       `}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
       onClick={downloadHandler}
     >
       <div
@@ -71,6 +71,9 @@ export const CommentFile: FC<ICommentFile> = ({
           </div>
           )
         }
+      </div>
+
+      <div className="comment-file__overlay-info">
         <Menu
           imageSrc="/svg/menu/delete.svg"
           alt="delete"

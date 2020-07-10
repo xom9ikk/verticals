@@ -15,7 +15,9 @@ export interface IComment {
   date: number;
   todoId: string;
   text?: string;
-  attachedFiles?: Array<IFile>
+  attachedFiles?: Array<IFile>;
+  likes?: Array<string>;
+  isEdited?: boolean;
 }
 
 export type IComments = Array<IComment>;
