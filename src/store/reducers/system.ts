@@ -10,7 +10,8 @@ const initialState = {
   query: '',
   language: EnumLanguage.English,
   currentTodoId: '',
-  currentCommentId: '',
+  editCommentId: '',
+  replyCommentId: '',
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -28,6 +29,8 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, language: action.payload.language }),
   [SystemActions.Type.SET_CURRENT_TODO_ID]:
       (state, action) => ({ ...state, currentTodoId: action.payload.currentTodoId }),
-  [SystemActions.Type.SET_CURRENT_COMMENT_ID]:
-      (state, action) => ({ ...state, currentCommentId: action.payload.currentCommentId }),
+  [SystemActions.Type.SET_EDIT_COMMENT_ID]:
+      (state, action) => ({ ...state, editCommentId: action.payload.editCommentId }),
+  [SystemActions.Type.SET_REPLY_COMMENT_ID]:
+      (state, action) => ({ ...state, replyCommentId: action.payload.replyCommentId }),
 }, initialState);

@@ -21,25 +21,43 @@ export const CommentForm: FC<ICommentForm> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
-  const { system: { currentCommentId }, comments } = useSelector((state: IRootState) => state);
+  const {
+    system: { editCommentId, replyCommentId }, comments,
+  } = useSelector((state: IRootState) => state);
   const [commentText, setCommentText] = useState<string>();
+  const [replyComment, setReplyComment] = useState<IComment>();
   const [shiftPressed, setShiftPressed] = useState<boolean>();
   const commentInputRef = useRef<any>();
 
+  const getComment = (id: string) => comments.find((comment: IComment) => comment.id === id);
+
   useEffect(() => {
-    const targetComment = comments.find((comment: IComment) => comment.id === currentCommentId);
-    setCommentText(targetComment?.text ?? '');
+    const comment = getComment(editCommentId);
+    setCommentText(comment?.text ?? '');
     focus(commentInputRef);
-  }, [currentCommentId]);
+  }, [editCommentId]);
+
+  useEffect(() => {
+    const comment = getComment(replyCommentId);
+    setReplyComment(comment);
+    focus(commentInputRef);
+  }, [replyCommentId]);
 
   const sendCommentHandler = () => {
     if (!commentText) return;
     console.log('comment save', commentText);
-    if (currentCommentId) {
-      dispatch(CommentsActions.updateText(currentCommentId, commentText));
-      dispatch(SystemActions.setCurrentCommentId(''));
+    if (editCommentId) {
+      dispatch(CommentsActions.updateText(editCommentId, commentText));
+      dispatch(SystemActions.setEditCommentId(''));
     } else {
-      dispatch(CommentsActions.add(todoId, commentText, undefined, undefined));
+      dispatch(CommentsActions.add(
+        todoId,
+        {
+          text: commentText,
+          replyCommentId,
+        },
+      ));
+      dispatch(SystemActions.setReplyCommentId(''));
     }
     setCommentText('');
   };
@@ -65,55 +83,83 @@ export const CommentForm: FC<ICommentForm> = ({
     setShiftPressed(shiftKey);
   };
 
+  const removeReplyHandler = () => {
+    dispatch(SystemActions.setReplyCommentId(''));
+  };
+
   return (
     <div className="comment-form">
       <div className="comment-form__wrapper">
         <Avatar />
         <div className="comment-form__input-wrapper">
-          <TextArea
-            ref={commentInputRef}
-            className="card__textarea comment-form__textarea"
-            placeholder="Add comment or note"
-            value={commentText}
-            onChange={changeHandler}
-            onKeyUp={keyupHandler}
-            onKeyDown={keydownHandler}
-            minRows={1}
-            maxRows={10}
-            onChangeHeight={onChangeTextAreaHeight}
-          />
-          <div className="comment-form__controls">
+          <div
+            className={`comment-form__reply 
+            ${replyCommentId ? 'comment-form__reply--opened' : ''}
+            `}
+          >
             <Menu
-              imageSrc="/svg/gallery.svg"
-              alt="image"
+              imageSrc="/svg/close.svg"
+              alt="remove"
               imageSize={24}
               size={26}
               isShowPopup={false}
-              onClick={() => {
-              }}
+              onClick={removeReplyHandler}
+              style={{ marginRight: 10 }}
             />
-            <Menu
-              imageSrc="/svg/attach.svg"
-              alt="file"
-              imageSize={24}
-              size={26}
-              isShowPopup={false}
-              onClick={() => {
-              }}
+            <div className="comment-form__reply--divider" />
+            <div className="comment-form__reply--name">
+              Max Romanyuta
+              <span className="comment-form__reply--text">
+                {replyComment?.text}
+              </span>
+            </div>
+          </div>
+          <div className="comment-form__input-inner">
+            <TextArea
+              ref={commentInputRef}
+              className="card__textarea comment-form__textarea"
+              placeholder="Add comment or note"
+              value={commentText}
+              onChange={changeHandler}
+              onKeyUp={keyupHandler}
+              onKeyDown={keydownHandler}
+              minRows={1}
+              maxRows={10}
+              onChangeHeight={onChangeTextAreaHeight}
             />
-            <Menu
-              imageSrc="/svg/arrow-up.svg"
-              alt="date"
-              imageSize={24}
-              size={30}
-              isShowPopup={false}
-              isPrimary
-              style={{
-                width: commentText?.length ? 30 : 0,
-                padding: commentText?.length ? '8px 10px' : '8px 0',
-              }}
-              onClick={sendCommentHandler}
-            />
+            <div className="comment-form__controls">
+              <Menu
+                imageSrc="/svg/gallery.svg"
+                alt="image"
+                imageSize={24}
+                size={26}
+                isShowPopup={false}
+                onClick={() => {
+                }}
+              />
+              <Menu
+                imageSrc="/svg/attach.svg"
+                alt="file"
+                imageSize={24}
+                size={26}
+                isShowPopup={false}
+                onClick={() => {
+                }}
+              />
+              <Menu
+                imageSrc="/svg/arrow-up.svg"
+                alt="date"
+                imageSize={24}
+                size={30}
+                isShowPopup={false}
+                isPrimary
+                style={{
+                  width: commentText?.length ? 30 : 0,
+                  padding: commentText?.length ? '8px 10px' : '8px 0',
+                }}
+                onClick={sendCommentHandler}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -29,18 +29,24 @@ export const CommentItem: FC<ICommentItem> = ({
   comment,
 }) => {
   const {
-    text, attachedFiles, date, isEdited,
+    text, attachedFiles, date, isEdited, replyCommentId,
   } = comment;
   const { formatDate } = useFormatDate();
   const dispatch = useDispatch();
-  const { currentCommentId } = useSelector((state: IRootState) => state.system);
+  const { system: { editCommentId }, comments } = useSelector((state: IRootState) => state);
   const [images, setImages] = useState<Array<IFile>>([]);
   const [files, setFiles] = useState<Array<IFile>>([]);
   const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [replyComment, setReplyComment] = useState<IComment>();
 
   const isImage = (file: IFile) => ['png', 'jpg', 'jpeg'].includes(file.type);
+
+  useEffect(() => {
+    const targetComment = comments.find((c: IComment) => c.id === replyCommentId);
+    setReplyComment(targetComment);
+  }, [replyCommentId]);
 
   useEffect(() => {
     setImages(attachedFiles?.filter((file) => isImage(file)) ?? []);
@@ -54,12 +60,12 @@ export const CommentItem: FC<ICommentItem> = ({
   }, [comment]);
 
   useEffect(() => {
-    if (currentCommentId === comment.id) {
+    if (editCommentId === comment.id) {
       setIsEditable(true);
     } else {
       setIsEditable(false);
     }
-  }, [currentCommentId]);
+  }, [editCommentId]);
 
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
     console.log('menuButtonClickHandler', action);
@@ -70,10 +76,11 @@ export const CommentItem: FC<ICommentItem> = ({
         break;
       }
       case EnumMenuActions.Reply: {
+        dispatch(SystemActions.setReplyCommentId(comment.id));
         break;
       }
       case EnumMenuActions.Edit: {
-        dispatch(SystemActions.setCurrentCommentId(comment.id));
+        dispatch(SystemActions.setEditCommentId(comment.id));
         break;
       }
       case EnumMenuActions.Delete: {
@@ -110,23 +117,23 @@ export const CommentItem: FC<ICommentItem> = ({
   const drawList = (list: Array<IFile>) => (
     <div className="comment__attachments">
       {
-                list && list?.length > 0 && list
-                  .map((file, index) => {
-                    let isCompact = list.length > 1;
-                    if (index === list.length - 1) {
-                      isCompact = index % 2 !== 0;
-                    }
-                    return (
-                      <CommentFile
-                        key={file.id}
-                        file={file}
-                        onRemove={removeHandler}
-                        isCompact={isCompact}
-                        isImage={isImage(file)}
-                      />
-                    );
-                  })
+        list && list?.length > 0 && list
+          .map((file, index) => {
+            let isCompact = list.length > 1;
+            if (index === list.length - 1) {
+              isCompact = index % 2 !== 0;
             }
+            return (
+              <CommentFile
+                key={file.id}
+                file={file}
+                onRemove={removeHandler}
+                isCompact={isCompact}
+                isImage={isImage(file)}
+              />
+            );
+          })
+    }
     </div>
   );
 
@@ -134,12 +141,29 @@ export const CommentItem: FC<ICommentItem> = ({
     <div
       className="comment__content"
     >
-      <div className="comment__header">
+      <div
+        className={`comment__header ${replyCommentId ? 'comment__header--replied' : ''}`}
+      >
         {
-                    text && (<span className="comment__text">{text}</span>)
-                }
-        <span className="comment__date">{formatDate(new Date(date))}</span>
+          replyCommentId && (
+          <>
+            <div
+              className="comment-form__reply--divider"
+            />
+            <div className="comment-form__reply--name">
+              Max Romanyuta
+              <span className="comment-form__reply--text">
+                {replyComment?.text}
+              </span>
+            </div>
+          </>
+          )
+        }
+        <div className="comment__date">{formatDate(new Date(date))}</div>
       </div>
+      {
+        text && (<div className="comment__text">{text}</div>)
+      }
       {drawList(files)}
       {drawList(images)}
     </div>

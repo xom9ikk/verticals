@@ -1,27 +1,70 @@
 .comment-form {
   $block: &;
 
-  //position: relative;
   display: flex;
   flex-direction: column;
   padding: 5px 0;
+
   &__wrapper {
     display: flex;
   }
-  &__input-wrapper {
+
+  &__reply {
     display: flex;
+    padding-left: 10px;
     align-items: center;
-    //justify-content: center;
-    flex: 1;
-    background: #f9f9f9;
-    border-radius: 8px;
-    padding: 10px 10px 10px 0;
-    margin-left: 10px;
-    transition: box-shadow .2s ease-in-out;
-    &:hover, &:focus-within {
-      box-shadow: $primary-light 0 0 0 2px;
+    max-height: 40px;
+    opacity: 0;
+    height: 5px;
+    overflow: hidden;
+    transition: height .1s ease-in-out;
+    &--opened {
+      height: 40px;
+      opacity: 1;
+    }
+    &--divider {
+      width: 2px;
+      background: $primary;
+      border-radius: 3px;
+      height: 25px;
+    }
+    &--name {
+      font-size: 15px;
+      color: $black;
+      font-family: 'Nunito Extra Bold', sans-serif;
+      max-height: 40px;
+      padding-left: 10px;
+      margin-left: 5px;
+      overflow: hidden;
+    }
+    &--text {
+      font-size: 15px;
+      color: $text-light;
+      padding-left: 10px;
+      overflow: hidden;
     }
   }
+
+  &__input {
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 10px 10px 10px 0;
+      margin-left: 10px;
+      transition: box-shadow .2s ease-in-out;
+
+      &:hover, &:focus-within {
+        box-shadow: $primary-light 0 0 0 2px;
+      }
+    }
+    &-inner {
+      display: flex;
+    }
+  }
+
   &__textarea {
     width: 75%;
     min-height: 27px;
@@ -29,6 +72,7 @@
     max-height: 300px;
     margin-top: 0;
   }
+
   &__controls {
     display: flex;
     flex-direction: row;
@@ -37,10 +81,12 @@
     align-items: center;
     width: 25%;
     height: 30px;
+
     button {
       margin: 0 2px;
     }
   }
+
   &__helper {
     position: absolute;
     bottom: -10px;
@@ -54,10 +100,12 @@
     margin-top: 10px;
     margin-bottom: 10px;
     transition: bottom .2s ease-in-out, opacity .2s ease-in-out;
+
     &--opened {
       opacity: 1;
       bottom: -7px;
     }
+
     button {
       outline: none;
       background: none;
@@ -69,6 +117,7 @@
       cursor: pointer;
       padding: 0;
       transition: opacity .2s ease-in-out;
+
       &:hover {
         opacity: 0.75;
       }

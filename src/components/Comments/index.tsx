@@ -35,6 +35,7 @@ export const Comments: FC<ICommentsWrapper> = ({
       clearTimeout(timeout);
     };
   }, [todoId]);
+
   useEffect(() => {
     console.log('change length');
   }, [comments.length]);

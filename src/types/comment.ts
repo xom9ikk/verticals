@@ -18,6 +18,7 @@ export interface IComment {
   attachedFiles?: Array<IFile>;
   likes?: Array<string>;
   isEdited?: boolean;
+  replyCommentId?: string;
 }
 
 export type IComments = Array<IComment>;

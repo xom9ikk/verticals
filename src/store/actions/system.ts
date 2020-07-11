@@ -9,47 +9,53 @@ enum Type {
   SET_QUERY = 'SYSTEM/SET_QUERY',
   SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
   SET_CURRENT_TODO_ID = 'SYSTEM/SET_CURRENT_TODO_ID',
-  SET_CURRENT_COMMENT_ID = 'SYSTEM/SET_CURRENT_COMMENT_ID',
+  SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
+  SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
 }
 
 const setIsOpenPopup = createAction(
   Type.SET_IS_OPEN_POPUP,
-  (payload: boolean) => ({ isOpenPopup: payload }),
+  (isOpenPopup: boolean) => ({ isOpenPopup }),
 );
 
 const setIsEditableCard = createAction(
   Type.SET_IS_EDITABLE_CARD,
-  (payload: boolean) => ({ isEditableCard: payload }),
+  (isEditableCard: boolean) => ({ isEditableCard }),
 );
 
 const setIsEditableColumn = createAction(
   Type.SET_IS_EDITABLE_COLUMN,
-  (payload: boolean) => ({ isEditableColumn: payload }),
+  (isEditableColumn: boolean) => ({ isEditableColumn }),
 );
 
 const setIsEditableBoard = createAction(
   Type.SET_IS_EDITABLE_BOARD,
-  (payload: boolean) => ({ isEditableBoard: payload }),
+  (isEditableBoard: boolean) => ({ isEditableBoard }),
 );
 
 const setQuery = createAction(
   Type.SET_QUERY,
-  (payload: string) => ({ query: payload }),
+  (query: string) => ({ query }),
 );
 
 const setLanguage = createAction(
   Type.SET_LANGUAGE,
-  (payload: EnumLanguage) => ({ language: payload }),
+  (language: EnumLanguage) => ({ language }),
 );
 
 const setCurrentTodoId = createAction(
   Type.SET_CURRENT_TODO_ID,
-  (payload: string) => ({ currentTodoId: payload }),
+  (currentTodoId: string) => ({ currentTodoId }),
 );
 
-const setCurrentCommentId = createAction(
-  Type.SET_CURRENT_COMMENT_ID,
-  (payload: string) => ({ currentCommentId: payload }),
+const setEditCommentId = createAction(
+  Type.SET_EDIT_COMMENT_ID,
+  (editCommentId: string) => ({ editCommentId }),
+);
+
+const setReplyCommentId = createAction(
+  Type.SET_REPLY_COMMENT_ID,
+  (replyCommentId: string) => ({ replyCommentId }),
 );
 
 export const SystemActions = {
@@ -61,5 +67,6 @@ export const SystemActions = {
   setQuery,
   setLanguage,
   setCurrentTodoId,
-  setCurrentCommentId,
+  setEditCommentId,
+  setReplyCommentId,
 };
