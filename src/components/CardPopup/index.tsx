@@ -4,7 +4,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
-  EnumColors, EnumTodoStatus, IComment, IComments, ITodo,
+  EnumColors, EnumTodoStatus, EnumTodoType, IComment, IComments, ITodo,
 } from '../../types';
 import { Checkbox } from '../Checkbox';
 import { IRootState } from '../../store/reducers/state';
@@ -17,10 +17,12 @@ import { Comments } from '../Comments';
 
 interface ICardPopup {
   columnId: string;
+  cardType: EnumTodoType;
 }
 
 export const CardPopup: FC<ICardPopup> = ({
   columnId,
+  cardType,
 }) => {
   const dispatch = useDispatch();
   const { system: { currentTodoId } } = useSelector((state: IRootState) => state);
@@ -141,22 +143,26 @@ export const CardPopup: FC<ICardPopup> = ({
                           />
                           )
                         }
-                      <Checkbox
-                        isActive={todo.status === EnumTodoStatus.Done}
-                        onClick={() => {
-                          dispatch(TodosActions.updateCompleteStatus(
-                            todo.id,
-                            todo.status === EnumTodoStatus.Done
-                              ? EnumTodoStatus.Todo
-                              : EnumTodoStatus.Done,
-                          ));
-                        }}
-                        style={{
-                          marginTop: 6,
-                          width: 18,
-                          height: 18,
-                        }}
-                      />
+                      {
+                        cardType === EnumTodoType.Checkboxes && (
+                        <Checkbox
+                          isActive={todo.status === EnumTodoStatus.Done}
+                          onClick={() => {
+                            dispatch(TodosActions.updateCompleteStatus(
+                              todo.id,
+                              todo.status === EnumTodoStatus.Done
+                                ? EnumTodoStatus.Todo
+                                : EnumTodoStatus.Done,
+                            ));
+                          }}
+                          style={{
+                            marginTop: 6,
+                            width: 18,
+                            height: 18,
+                          }}
+                        />
+                        )
+                      }
                       <div className="card-popup__textarea-inner">
                         <TextArea
                           ref={titleInputRef}

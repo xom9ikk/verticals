@@ -583,10 +583,10 @@ export const Column: FC<IColumn> = ({
   return (
     <>
       {memoColumn}
-      {/* TODO: ref or portal */}
-      <div>
-        <CardPopup columnId={columnId!} />
-      </div>
+      <CardPopup
+        columnId={columnId!}
+        cardType={cardType}
+      />
     </>
   );
 };
