@@ -30,7 +30,7 @@ interface IColumn {
   index: number;
   columnId?: string;
   color?: number;
-  isMinimize?: boolean;
+  isCollapsed?: boolean;
   boardId: string;
   title?: string;
   description?: string;
@@ -51,7 +51,7 @@ export const Column: FC<IColumn> = ({
   index,
   columnId,
   color,
-  isMinimize,
+  isCollapsed,
   boardId,
   title: initialTitle,
   description: initialDescription,
@@ -195,7 +195,7 @@ export const Column: FC<IColumn> = ({
       event.stopPropagation();
     } else {
       setIsHoverHeader(false);
-      dispatch(ColumnsActions.updateIsMinimize(columnId!, !isMinimize));
+      dispatch(ColumnsActions.updateIsCollapsed(columnId!, !isCollapsed));
     }
   };
 
@@ -472,7 +472,7 @@ export const Column: FC<IColumn> = ({
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <>
           {
-              isMinimize ? (
+              isCollapsed ? (
                 <>
                   <div
                     role="button"
@@ -577,7 +577,7 @@ export const Column: FC<IColumn> = ({
   [
     index, boards, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
-    titleValue, descriptionValue, query, isMinimize,
+    titleValue, descriptionValue, query, isCollapsed,
   ]);
 
   return (

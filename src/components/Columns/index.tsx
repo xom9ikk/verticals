@@ -18,7 +18,7 @@ interface TodoMap {
     title: string,
     description: string,
     color: number,
-    isMinimize: boolean,
+    isCollapsed: boolean,
   },
 }
 
@@ -197,7 +197,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         <Column
           index={index}
           color={preparedData[key].color}
-          isMinimize={preparedData[key].isMinimize}
+          isCollapsed={preparedData[key].isCollapsed}
           columnId={key}
           boardId={boardId}
           key={key}

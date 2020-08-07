@@ -1,8 +1,8 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { BoardsActions, ColumnsActions } from '../actions';
+import { ColumnsActions } from '../actions';
 import {
-  EnumTodoType, IBoard, IColumn, IColumns,
+  IColumn, IColumns,
 } from '../../types';
 
 const initialState: IColumns = [
@@ -110,11 +110,11 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             color: undefined,
           }
           : column))),
-  [ColumnsActions.Type.UPDATE_IS_MINIMIZE]:
+  [ColumnsActions.Type.UPDATE_IS_COLLAPSED]:
         (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
           ? {
             ...column,
-            isMinimize: action.payload.isMinimize,
+            isCollapsed: action.payload.isCollapsed,
           }
           : column))),
   [ColumnsActions.Type.REMOVE]:

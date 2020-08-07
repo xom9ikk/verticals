@@ -5,7 +5,7 @@ export interface IColumn {
   position: number;
   description?: string;
   color?: number;
-  isMinimize?: boolean;
+  isCollapsed?: boolean;
 }
 
 export type IColumns = Array<IColumn>;

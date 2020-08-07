@@ -3,13 +3,13 @@ import { IColumns } from '../../types';
 
 enum Type {
   SET_COLUMNS = 'COLUMNS/SET_COLUMNS',
+  ADD = 'COLUMNS/ADD',
   UPDATE_TITLE = 'COLUMNS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'COLUMNS/UPDATE_DESCRIPTION',
-  ADD = 'COLUMNS/ADD',
   UPDATE_POSITION = 'COLUMNS/UPDATE_POSITION',
   UPDATE_COLOR = 'COLUMNS/UPDATE_COLOR',
   RESET_COLOR = 'COLUMNS/RESET_COLOR',
-  UPDATE_IS_MINIMIZE = 'COLUMNS/UPDATE_IS_MINIMIZE',
+  UPDATE_IS_COLLAPSED = 'COLUMNS/UPDATE_IS_COLLAPSED',
   REMOVE = 'COLUMNS/REMOVE',
   DUPLICATE = 'COLUMNS/DUPLICATE',
   ADD_COLUMN_AFTER = 'COLUMNS/ADD_COLUMN_AFTER',
@@ -22,6 +22,13 @@ const setColumns = createAction(
   (payload: IColumns) => (payload),
 );
 
+const add = createAction(
+  Type.ADD,
+  (boardId: string, title?: string, description?: string) => ({
+    boardId, title, description,
+  }),
+);
+
 const updateTitle = createAction(
   Type.UPDATE_TITLE,
   (id: string, title: string) => ({ id, title }),
@@ -30,13 +37,6 @@ const updateTitle = createAction(
 const updateDescription = createAction(
   Type.UPDATE_DESCRIPTION,
   (id: string, description: string) => ({ id, description }),
-);
-
-const add = createAction(
-  Type.ADD,
-  (boardId: string, title?: string, description?: string) => ({
-    boardId, title, description,
-  }),
 );
 
 const updatePosition = createAction(
@@ -60,10 +60,10 @@ const resetColor = createAction(
   }),
 );
 
-const updateIsMinimize = createAction(
-  Type.UPDATE_IS_MINIMIZE,
-  (id: string, isMinimize: boolean) => ({
-    id, isMinimize,
+const updateIsCollapsed = createAction(
+  Type.UPDATE_IS_COLLAPSED,
+  (id: string, isCollapsed: boolean) => ({
+    id, isCollapsed,
   }),
 );
 
@@ -111,7 +111,7 @@ export const ColumnsActions = {
   updatePosition,
   updateColor,
   resetColor,
-  updateIsMinimize,
+  updateIsCollapsed,
   remove,
   duplicate,
   addColumnAfter,

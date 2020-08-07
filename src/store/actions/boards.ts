@@ -3,9 +3,9 @@ import { EnumTodoType, IBoards } from '../../types';
 
 enum Type {
   SET_BOARDS = 'BOARDS/SET_BOARDS',
+  ADD = 'BOARDS/ADD',
   UPDATE_TITLE = 'BOARDS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'BOARDS/UPDATE_DESCRIPTION',
-  ADD = 'BOARDS/ADD',
   UPDATE_POSITION = 'BOARDS/UPDATE_POSITION',
   UPDATE_COLOR = 'BOARDS/UPDATE_COLOR',
   RESET_COLOR = 'BOARDS/RESET_COLOR',
@@ -21,6 +21,13 @@ const setBoards = createAction(
   (payload: IBoards) => (payload),
 );
 
+const add = createAction(
+  Type.ADD,
+  (icon: string, title?: string, description?: string) => ({
+    icon, title, description,
+  }),
+);
+
 const updateTitle = createAction(
   Type.UPDATE_TITLE,
   (id: string, title: string) => ({
@@ -32,13 +39,6 @@ const updateDescription = createAction(
   Type.UPDATE_DESCRIPTION,
   (id: string, description: string) => ({
     id, description,
-  }),
-);
-
-const add = createAction(
-  Type.ADD,
-  (icon: string, title?: string, description?: string) => ({
-    icon, title, description,
   }),
 );
 

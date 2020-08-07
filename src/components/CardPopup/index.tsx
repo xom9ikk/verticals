@@ -236,7 +236,7 @@ export const CardPopup: FC<ICardPopup> = ({
           }
       </>
     );
-  }, [todo, titleValue, descriptionValue, isProgress]);
+  }, [todo, titleValue, descriptionValue, isProgress, cardType]);
 
   return (
     <>

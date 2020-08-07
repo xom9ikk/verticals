@@ -1,7 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { EnumTodoStatus, EnumTodoType, ITodos } from '../../types';
-import { CardsContainer } from '../CardsContainer';
 import { Card } from '../Card';
 
 interface IArchiveContainer {
@@ -19,7 +17,6 @@ interface IArchiveContainer {
 export const ArchiveContainer: FC<IArchiveContainer> = ({
   archivedTodos,
   cardType,
-  isActiveQuery,
   onExitFromEditable,
 }) => {
   const [isOpenArchived, setIsOpenArchived] = useState<boolean>(false);
