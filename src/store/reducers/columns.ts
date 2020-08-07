@@ -159,5 +159,5 @@ export const ColumnsReducer = handleActions<IColumns, any>({
           }
           : column))),
   [ColumnsActions.Type.REMOVE_NEW_COLUMNS]:
-        (state, action) => (state.filter((column: IColumn) => column.id !== 'new-column')),
+        (state) => (state.filter((column: IColumn) => column.id !== 'new-column')),
 }, initialState);

@@ -4,7 +4,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, IComment, IComments, ITodo,
+  EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
 } from '../../types';
 import { Checkbox } from '../Checkbox';
 import { IRootState } from '../../store/reducers/state';

@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { IComment, IFile, IImage } from '../../types';
+import { IFile, IImage } from '../../types';
 
 enum Type {
   ADD = 'COMMENTS/ADD',

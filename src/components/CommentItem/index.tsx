@@ -67,8 +67,12 @@ export const CommentItem: FC<ICommentItem> = ({
     }
   }, [editCommentId]);
 
+  const hidePopup = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+  };
+
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
-    console.log('menuButtonClickHandler', action);
+    console.log('menuButtonClickHandler', action, payload);
     switch (action) {
       case EnumMenuActions.Like: {
         console.log('add like');
@@ -108,10 +112,6 @@ export const CommentItem: FC<ICommentItem> = ({
   const removeHandler = (id: string) => {
     dispatch(CommentsActions.removeFile(comment.id, id));
     console.log('remove attached fileId', id);
-  };
-
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
   };
 
   const drawList = (list: Array<IFile>) => (

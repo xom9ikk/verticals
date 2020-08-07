@@ -1,4 +1,6 @@
-const fetchCustom = () => async (dispatch: Function) => {
+const fetchCustom = () => async (
+// dispatch: Function
+) => {
   try {
     // await
     // dispatch(CustomActions.setCustom({field: 'customValue'}));

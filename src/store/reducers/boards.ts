@@ -146,5 +146,5 @@ export const BoardsReducer = handleActions<IBoards, any>({
           }
           : board))),
   [BoardsActions.Type.REMOVE_NEW_BOARDS]:
-        (state, action) => (state.filter((board: IBoard) => board.id !== 'new-board')),
+        (state) => (state.filter((board: IBoard) => board.id !== 'new-board')),
 }, initialState);

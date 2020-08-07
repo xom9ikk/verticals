@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { FC, useState } from 'react';
-import { Header } from '../components/Header';
+import React, { FC } from 'react';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { Form } from '../components/Form';
@@ -17,8 +16,6 @@ const initialState = {
 };
 
 export const Reset: FC = () => {
-  const [isSend, setIsSend] = useState<boolean>(false);
-
   const handlerSubmit = async () => {
     console.log('submit', values);
     await reset(values);

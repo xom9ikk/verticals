@@ -73,6 +73,11 @@ export const BoardItem: FC<IBoardItem> = ({
       : undefined,
   });
 
+  const hidePopup = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    setIsHover(false);
+  };
+
   const saveBoard = (newColor?: number) => {
     const { newTitle, newDescription } = getNewData();
     onExitFromEditable?.(id, newTitle, newDescription, newColor);
@@ -160,11 +165,6 @@ export const BoardItem: FC<IBoardItem> = ({
       doubleClickHandler();
     }
   }, []);
-
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-    setIsHover(false);
-  };
 
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
     switch (action) {
@@ -350,7 +350,11 @@ export const BoardItem: FC<IBoardItem> = ({
       { !isEditable && typeof countTodos !== 'number' && memoMenu }
       { typeof countTodos === 'number' && memoCounter }
     </div>
-  ), [isActive, isHover, isMenuClick, isEditable, titleValue, descriptionValue, snapshot, color, countTodos]);
+  ), [
+    isActive, isHover, isMenuClick,
+    isEditable, titleValue, descriptionValue,
+    snapshot, color, countTodos,
+  ]);
 
   return (
     <>{ boardItem }</>

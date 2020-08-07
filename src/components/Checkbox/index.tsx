@@ -16,8 +16,7 @@ export const Checkbox: FC<ICheckbox> = ({ isActive, onClick, style }) => (
       type="checkbox"
       className="checkbox__input"
       defaultChecked={isActive}
-      onChange={(event) => {
-        console.log('change');
+      onChange={() => {
         onClick();
       }}
     />

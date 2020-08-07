@@ -4,6 +4,7 @@ export const useLogin = () => {
   // const { show, TYPES } = useAlert();
 
   const login = async ({ email, password }: any) => {
+    console.log(email, password);
     try {
       // await AuthService.signInUser(email, password);
     } catch (e) {

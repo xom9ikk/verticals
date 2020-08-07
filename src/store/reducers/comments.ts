@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import { handleActions } from 'redux-actions';
 import { CommentsActions } from '../actions';
 import { IComment, IComments, IFile } from '../../types';

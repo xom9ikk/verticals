@@ -218,6 +218,7 @@ export const Column: FC<IColumn> = ({
   } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
 
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
+    console.log(payload);
     switch (action) {
       case EnumMenuActions.EditColumn: {
         doubleClickHandler();

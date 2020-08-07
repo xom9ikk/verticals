@@ -1,7 +1,5 @@
 export const useCustomHook = () => {
-  const custom = () => {
-    return 'custom hook';
-  };
+  const custom = () => 'custom hook';
   return {
     custom,
   };

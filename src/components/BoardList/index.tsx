@@ -146,7 +146,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
+            {(provided) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
@@ -227,7 +227,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
             isHide
             isHoverBlock={isHover}
             isMaxWidth
-            style={{ margin: '0 6px'}}
+            style={{ margin: '0 6px' }}
             isShowPopup={false}
             onClick={() => {
               setIsOpenNewBoard((prev) => !prev);

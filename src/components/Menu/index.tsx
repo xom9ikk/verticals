@@ -68,20 +68,18 @@ export const Menu: FC<IMenu> = ({
     }
   }, [isOpenPopup]);
 
-  const popup = useMemo(() =>
-    // console.log('rerender popup', isOpen);
-    (
-      isShowPopup && (
-        <Popup
-          isOpen={isOpen}
-          position={position}
-          sourceRef={sourceRef}
-          isAbsolute={isAbsolute}
-        >
-          {children}
-        </Popup>
-      )
-    ),
+  const popup = useMemo(() => (
+    isShowPopup && (
+    <Popup
+      isOpen={isOpen}
+      position={position}
+      sourceRef={sourceRef}
+      isAbsolute={isAbsolute}
+    >
+      {children}
+    </Popup>
+    )
+  ),
   [isOpen, position, sourceRef]);
 
   const button = useMemo(() => {

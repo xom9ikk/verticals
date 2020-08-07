@@ -1,4 +1,4 @@
-/* eslint-disable no-plusplus */
+/* eslint-disable no-return-assign,no-plusplus */
 import { handleActions } from 'redux-actions';
 import { TodosActions } from '../actions';
 import {
@@ -842,7 +842,7 @@ export const TodosReducer = handleActions<ITodos, any>({
         }
         : todo))),
   [TodosActions.Type.REMOVE_NEW_TODO]:
-      (state, action) => (state.filter((todo: ITodo) => todo.id !== 'new-todo')),
+      (state) => (state.filter((todo: ITodo) => todo.id !== 'new-todo')),
   [TodosActions.Type.UPDATE_IS_ARCHIVE]:
       (state, action) => {
         const { id, isArchive } = action.payload;
@@ -881,7 +881,6 @@ export const TodosReducer = handleActions<ITodos, any>({
           });
         }
         const sortedTodos = newTodos.sort((a, b) => a.position - b.position);
-        console.log('archived', sortedTodos);
         return [...sortedTodos, ...otherTodos];
       },
   [TodosActions.Type.SWITCH_NOTIFICATION_ENABLED]:
