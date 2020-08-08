@@ -8,8 +8,8 @@ enum Type {
 }
 
 const setAuthInfo = createAction<IAuth>(Type.SET_AUTH);
-const signIn = createAction<ISignIn>(Type.SIGN_IN);
 const signUp = createAction<ISignUp>(Type.SIGN_UP);
+const signIn = createAction<ISignIn>(Type.SIGN_IN);
 
 export const AuthActions = {
   Type,

@@ -1,14 +1,14 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
-import { AxiosInstance, AxiosResponse } from 'axios';
 import { TYPES } from '../inversify.types';
+import { IHttpClient } from '../plugins/httpClient';
 
 export interface IServerResponse<T = {}> {
   message: string
   data: T
 }
 
-export interface IRegisterRequest {
+export interface ISignUpRequest {
   email: string;
   password: string;
   name: string;
@@ -16,28 +16,40 @@ export interface IRegisterRequest {
   username: string;
 }
 
-export type IRegisterResponse = IServerResponse<{
+export type ISignUpResponse = IServerResponse<{
+  token: string;
+  refreshToken: string;
+}>;
+
+export type ISignInRequest = {
+  password: string;
+} & ({ username: string } | { email: string });
+
+export type ISignInResponse = IServerResponse<{
   token: string;
   refreshToken: string;
 }>;
 
 export interface IAuthService {
-  signUp(body: IRegisterRequest): Promise<AxiosResponse<IRegisterResponse>>;
+  signUp(body: ISignUpRequest): Promise<ISignUpResponse>;
+  signIn(body: ISignInRequest): Promise<ISignInResponse>;
 }
 
 @injectable()
 export class AuthService implements IAuthService {
-  client: AxiosInstance;
+  httpClient: IHttpClient;
 
   constructor(
-  @inject(TYPES.HttpClient) client: AxiosInstance,
+  @inject(TYPES.HttpClient) httpClient: IHttpClient,
   ) {
-    this.client = client;
-    console.log('services AuthService', this);
+    this.httpClient = httpClient;
   }
 
-  signUp(body: IRegisterRequest) {
-    console.log('services signUp', body, this);
-    return this.client.post<IRegisterResponse>('/auth/register', body);
+  signUp(body: ISignUpRequest) {
+    return this.httpClient.post<ISignUpResponse>('/auth/register', body);
+  }
+
+  signIn(body: ISignInRequest) {
+    return this.httpClient.post<ISignInResponse>('/auth/login', body);
   }
 }

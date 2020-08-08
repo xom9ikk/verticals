@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { Input } from '../../components/Input';
@@ -9,12 +10,12 @@ import { Divider } from '../../components/Divider';
 import { AuthActions } from '../../store/actions';
 
 const initialState = {
-  firstName: {
+  name: {
     defaultValue: '',
     error: 'Can\'t be blank',
     isValid: false,
   },
-  lastName: {
+  surname: {
     defaultValue: '',
     error: 'Can\'t be blank',
     isValid: false,
@@ -22,6 +23,11 @@ const initialState = {
   email: {
     defaultValue: '',
     error: 'Invalid email address',
+    isValid: false,
+  },
+  username: {
+    defaultValue: '',
+    error: 'Can\'t be blank',
     isValid: false,
   },
   password: {
@@ -33,9 +39,15 @@ const initialState = {
 
 export const Register: FC = () => {
   const dispatch = useDispatch();
+
   const handlerSubmit = async () => {
-    console.log('submit', values);
-    dispatch(AuthActions.signUp(values));
+    dispatch(AuthActions.signUp({
+      name: values.name,
+      surname: values.surname,
+      email: values.email,
+      username: values.username,
+      password: values.password,
+    }));
   };
 
   const {
@@ -51,20 +63,20 @@ export const Register: FC = () => {
       <Input
         type="text"
         placeholder="First name"
-        touched={touched.firstName}
-        error={errors.firstName.error}
-        name="firstName"
-        value={values.firstName}
+        touched={touched.name}
+        error={errors.name.error}
+        name="name"
+        value={values.name}
         onChange={handleChange}
         onBlur={handleBlur}
       />
       <Input
         type="text"
         placeholder="Last name"
-        touched={touched.lastName}
-        error={errors.lastName.error}
-        name="lastName"
-        value={values.lastName}
+        touched={touched.surname}
+        error={errors.surname.error}
+        name="surname"
+        value={values.surname}
         onChange={handleChange}
         onBlur={handleBlur}
       />
@@ -75,6 +87,16 @@ export const Register: FC = () => {
         error={errors.email.error}
         name="email"
         value={values.email}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+      <Input
+        type="text"
+        placeholder="Username"
+        touched={touched.username}
+        error={errors.username.error}
+        name="username"
+        value={values.username}
         onChange={handleChange}
         onBlur={handleBlur}
       />

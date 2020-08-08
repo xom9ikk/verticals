@@ -3,15 +3,14 @@ export interface IAuth {
   refreshToken: string;
 }
 
-export interface ISignIn {
+export interface ISignUp {
   email: string;
   password: string;
+  name: string;
+  surname: string;
+  username: string;
 }
 
-export interface ISignUp {
-  firstName: string;
-  lastName: string;
-  gender: string;
-  email: string;
+export type ISignIn = {
   password: string;
-}
+} & ({ username: string } | { email: string });

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { Form } from '../../components/Form';
-import { useLogin } from '../../use/login';
 import { useForm } from '../../use/form';
 import { validatorLoginForm } from '../../helpers/validatorLoginForm';
+import { AuthActions } from '../../store/actions';
 
 const initialState = {
   email: {
@@ -22,11 +23,16 @@ const initialState = {
 };
 
 export const Login: FC = () => {
+  const dispatch = useDispatch();
+
   const handlerSubmit = async () => {
     console.log('submit', values);
-    await login(values);
+    dispatch(AuthActions.signIn({
+      email: values.email,
+      password: values.password,
+    }));
   };
-  const { login } = useLogin();
+
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touched,
   } = useForm(initialState, handlerSubmit, validatorLoginForm);

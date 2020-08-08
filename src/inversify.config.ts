@@ -1,20 +1,24 @@
 import { Container } from 'inversify';
-import { AxiosInstance } from 'axios';
 import { TYPES } from './inversify.types';
-import { AuthService, IAuthService } from './services';
+import { Services, IServices } from './services';
+import { HttpClient, IHttpClient } from './plugins/httpClient';
+import { AuthService, IAuthService } from './services/auth';
 
-import { Api } from './plugins/api';
+const container = new Container();
 
-const { client } = new Api();
-const myContainer = new Container();
+container
+  .bind<IHttpClient>(TYPES.HttpClient)
+  .to(HttpClient)
+  .inSingletonScope();
 
-myContainer
+container
   .bind<IAuthService>(TYPES.AuthService)
   .to(AuthService)
   .inSingletonScope();
 
-myContainer
-  .bind<AxiosInstance>(TYPES.HttpClient)
-  .toConstantValue(client);
+container
+  .bind<IServices>(TYPES.Services)
+  .to(Services)
+  .inSingletonScope();
 
-export { myContainer };
+export { container };

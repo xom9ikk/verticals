@@ -1,5 +1,4 @@
 import { IColumns } from '../column';
-import { EnumTodoType } from '../todo';
 
 export type ISetColumns = IColumns;
 

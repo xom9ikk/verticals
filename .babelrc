@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator"
+  ],
+  "presets": [
+    "react-app",
+    [
+      "@babel/preset-typescript",
+      {
+        "onlyRemoveTypeImports": false
+      }
+    ]
+  ]
+}
