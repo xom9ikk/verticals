@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "es6"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -17,7 +18,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["reflect-metadata"]
   },
   "include": [
     "src"

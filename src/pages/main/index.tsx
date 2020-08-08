@@ -2,11 +2,11 @@ import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { Sidebar } from '../components/Sidebar';
-import { Columns } from '../components/Columns';
-import { SystemActions } from '../store/actions';
-import { Search } from '../components/Search';
-import { BoardList } from '../components/BoardList';
+import { Sidebar } from '../../components/Sidebar';
+import { Columns } from '../../components/Columns';
+import { SystemActions } from '../../store/actions';
+import { Search } from '../../components/Search';
+import { BoardList } from '../../components/BoardList';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
@@ -62,9 +62,9 @@ export const Main: FC = () => {
   ), [activeBoardId]);
 
   return (
-    <div className="container container--horizontal">
+    <>
       { memoSidebar }
       { memoColumns }
-    </div>
+    </>
   );
 };

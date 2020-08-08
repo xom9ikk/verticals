@@ -1,5 +1,21 @@
+/* eslint-disable max-len */
 import { createAction } from 'redux-actions';
-import { EnumTodoStatus, ITodos } from '../../types';
+import {
+  IAddTodo,
+  IAddTodoBelow,
+  IDuplicateTodo,
+  IDuplicateTodoForColumn,
+  IGenerateNewTodoId,
+  IRemoveTodo,
+  IResetTodoColor,
+  ISetTodos,
+  ISwitchTodoNotificationsEnabled,
+  IUpdateIsArchive, IUpdateTodoColor,
+  IUpdateTodoColumnId,
+  IUpdateTodoCompleteStatus,
+  IUpdateTodoDescription, IUpdateTodoPosition,
+  IUpdateTodoTitle,
+} from '../../types';
 
 enum Type {
   SET_TODOS = 'TODOS/SET_TODOS',
@@ -21,117 +37,23 @@ enum Type {
   SWITCH_NOTIFICATION_ENABLED = 'TODOS/SWITCH_NOTIFICATION_ENABLED',
 }
 
-const setTodos = createAction(
-  Type.SET_TODOS,
-  (payload: ITodos) => (payload),
-);
-
-const updateTitle = createAction(
-  Type.UPDATE_TITLE,
-  (id: string, title: string) => ({ id, title }),
-);
-
-const updateDescription = createAction(
-  Type.UPDATE_DESCRIPTION,
-  (id: string, description: string) => ({ id, description }),
-);
-
-const updateCompleteStatus = createAction(
-  Type.UPDATE_COMPLETE_STATUS,
-  (id: string, status: EnumTodoStatus) => ({ id, status }),
-);
-
-const add = createAction(
-  Type.ADD,
-  (columnId: string, title?: string, description?: string, status?: EnumTodoStatus) => ({
-    columnId, title, description, status,
-  }),
-);
-
-const updateColumn = createAction(
-  Type.UPDATE_COLUMN,
-  (id: string, sourceColumnId: string, targetColumnId: string, position: number) => ({
-    id, sourceColumnId, targetColumnId, position,
-  }),
-);
-
-const updatePosition = createAction(
-  Type.UPDATE_POSITION,
-  (id: string, position: number, columnId: string) => ({
-    id, position, columnId,
-  }),
-);
-
-const updateColor = createAction(
-  Type.UPDATE_COLOR,
-  (id: string, color: number) => ({
-    id, color,
-  }),
-);
-
-const resetColor = createAction(
-  Type.RESET_COLOR,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const duplicateForColumn = createAction(
-  Type.DUPLICATE_FOR_COLUMN,
-  (columnId: string, newColumnId: string) => ({
-    columnId,
-    newColumnId,
-  }),
-);
-
-const duplicate = createAction(
-  Type.DUPLICATE,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const remove = createAction(
-  Type.REMOVE,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const addTodoBelow = createAction(
-  Type.ADD_TODO_BELOW,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const generateNewId = createAction(
-  Type.GENERATE_NEW_ID,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const removeNewTodo = createAction(
-  Type.REMOVE_NEW_TODO,
-  () => ({
-
-  }),
-);
-
-const setIsArchive = createAction(
-  Type.UPDATE_IS_ARCHIVE,
-  (id: string, isArchive: boolean) => ({
-    id, isArchive,
-  }),
-);
-
-const switchNotificationsEnabled = createAction(
-  Type.SWITCH_NOTIFICATION_ENABLED,
-  (id: string) => ({
-    id,
-  }),
-);
+const setTodos = createAction<ISetTodos>(Type.SET_TODOS);
+const updateTitle = createAction<IUpdateTodoTitle>(Type.UPDATE_TITLE);
+const updateDescription = createAction<IUpdateTodoDescription>(Type.UPDATE_DESCRIPTION);
+const updateCompleteStatus = createAction<IUpdateTodoCompleteStatus>(Type.UPDATE_COMPLETE_STATUS);
+const add = createAction<IAddTodo>(Type.ADD);
+const updateColumn = createAction<IUpdateTodoColumnId>(Type.UPDATE_COLUMN);
+const updatePosition = createAction<IUpdateTodoPosition>(Type.UPDATE_POSITION);
+const updateColor = createAction<IUpdateTodoColor>(Type.UPDATE_COLOR);
+const resetColor = createAction<IResetTodoColor>(Type.RESET_COLOR);
+const duplicateForColumn = createAction<IDuplicateTodoForColumn>(Type.DUPLICATE_FOR_COLUMN);
+const duplicate = createAction<IDuplicateTodo>(Type.DUPLICATE);
+const remove = createAction<IRemoveTodo>(Type.REMOVE);
+const addTodoBelow = createAction<IAddTodoBelow>(Type.ADD_TODO_BELOW);
+const generateNewId = createAction<IGenerateNewTodoId>(Type.GENERATE_NEW_ID);
+const removeNewTodo = createAction(Type.REMOVE_NEW_TODO);
+const updateIsArchive = createAction<IUpdateIsArchive>(Type.UPDATE_IS_ARCHIVE);
+const switchNotificationsEnabled = createAction<ISwitchTodoNotificationsEnabled>(Type.SWITCH_NOTIFICATION_ENABLED);
 
 export const TodosActions = {
   Type,
@@ -150,6 +72,6 @@ export const TodosActions = {
   addTodoBelow,
   generateNewId,
   removeNewTodo,
-  setIsArchive,
+  updateIsArchive,
   switchNotificationsEnabled,
 };

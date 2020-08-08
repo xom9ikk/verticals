@@ -76,12 +76,15 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       case EnumCardActions.CompleteStatus: {
         console.log('updateCompleteStatus', payload);
         // setStatus(payload);
-        dispatch(TodosActions.updateCompleteStatus(id!, payload));
+        dispatch(TodosActions.updateCompleteStatus({
+          id: id!,
+          status: payload,
+        }));
         break;
       }
       case EnumCardActions.Notifications: {
         // TODO:
-        dispatch(TodosActions.switchNotificationsEnabled(id!));
+        dispatch(TodosActions.switchNotificationsEnabled({ id: id! }));
         break;
       }
       case EnumCardActions.CopyLink: {
@@ -89,20 +92,23 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Duplicate: {
-        dispatch(TodosActions.duplicate(id!));
+        dispatch(TodosActions.duplicate({ id: id! }));
         break;
       }
       case EnumCardActions.AddCardBelow: {
         dispatch(TodosActions.removeNewTodo());
-        dispatch(TodosActions.addTodoBelow(id!));
+        dispatch(TodosActions.addTodoBelow({ id: id! }));
         break;
       }
       case EnumCardActions.Archive: {
-        dispatch(TodosActions.setIsArchive(id!, !isArchive));
+        dispatch(TodosActions.updateIsArchive({
+          id: id!,
+          isArchive: !isArchive,
+        }));
         break;
       }
       case EnumCardActions.Delete: {
-        dispatch(TodosActions.remove(id!));
+        dispatch(TodosActions.remove({ id: id! }));
         break;
       }
       default: break;

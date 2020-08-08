@@ -1,5 +1,16 @@
 import { createAction } from 'redux-actions';
-import { EnumTodoType, IBoards } from '../../types';
+import {
+  IAddBoard,
+  IAddBoardBelow, IGenerateNewBoardId,
+  IRemoveBoard,
+  IResetBoardColor,
+  ISetBoards,
+  IUpdateBoardCardType,
+  IUpdateBoardColor,
+  IUpdateBoardDescription,
+  IUpdateBoardPosition,
+  IUpdateBoardTitle,
+} from '../../types';
 
 enum Type {
   SET_BOARDS = 'BOARDS/SET_BOARDS',
@@ -16,87 +27,18 @@ enum Type {
   REMOVE_NEW_BOARDS = 'BOARDS/REMOVE_NEW_BOARDS',
 }
 
-const setBoards = createAction(
-  Type.SET_BOARDS,
-  (payload: IBoards) => (payload),
-);
-
-const add = createAction(
-  Type.ADD,
-  (icon: string, title?: string, description?: string) => ({
-    icon, title, description,
-  }),
-);
-
-const updateTitle = createAction(
-  Type.UPDATE_TITLE,
-  (id: string, title: string) => ({
-    id, title,
-  }),
-);
-
-const updateDescription = createAction(
-  Type.UPDATE_DESCRIPTION,
-  (id: string, description: string) => ({
-    id, description,
-  }),
-);
-
-const updatePosition = createAction(
-  Type.UPDATE_POSITION,
-  (sourcePosition: number, destinationPosition: number) => ({
-    sourcePosition, destinationPosition,
-  }),
-);
-
-const updateColor = createAction(
-  Type.UPDATE_COLOR,
-  (id: string, color: number) => ({
-    id, color,
-  }),
-);
-
-const resetColor = createAction(
-  Type.RESET_COLOR,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const updateCardType = createAction(
-  Type.UPDATE_CARD_TYPE,
-  (id: string, cardType: EnumTodoType) => ({
-    id, cardType,
-  }),
-);
-
-const remove = createAction(
-  Type.REMOVE,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const addBoardBelow = createAction(
-  Type.ADD_BOARD_BELOW,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const generateNewId = createAction(
-  Type.GENERATE_NEW_ID,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const removeNewBoards = createAction(
-  Type.REMOVE_NEW_BOARDS,
-  () => ({
-
-  }),
-);
+const setBoards = createAction<ISetBoards>(Type.SET_BOARDS);
+const add = createAction<IAddBoard>(Type.ADD);
+const updateTitle = createAction<IUpdateBoardTitle>(Type.UPDATE_TITLE);
+const updateDescription = createAction<IUpdateBoardDescription>(Type.UPDATE_DESCRIPTION);
+const updatePosition = createAction<IUpdateBoardPosition>(Type.UPDATE_POSITION);
+const updateColor = createAction<IUpdateBoardColor>(Type.UPDATE_COLOR);
+const resetColor = createAction<IResetBoardColor>(Type.RESET_COLOR);
+const updateCardType = createAction<IUpdateBoardCardType>(Type.UPDATE_CARD_TYPE);
+const remove = createAction<IRemoveBoard>(Type.REMOVE);
+const addBoardBelow = createAction<IAddBoardBelow>(Type.ADD_BOARD_BELOW);
+const generateNewId = createAction<IGenerateNewBoardId>(Type.GENERATE_NEW_ID);
+const removeNewBoards = createAction(Type.REMOVE_NEW_BOARDS);
 
 export const BoardsActions = {
   Type,

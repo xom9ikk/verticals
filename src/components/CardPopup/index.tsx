@@ -47,10 +47,16 @@ export const CardPopup: FC<ICardPopup> = ({
       console.log('debounce save', id, newTitle, newDescription);
       setIsProgress(true);
       if (newTitle) {
-        dispatch(TodosActions.updateTitle(id, newTitle));
+        dispatch(TodosActions.updateTitle({
+          id,
+          title: newTitle,
+        }));
       }
       if (newDescription) {
-        dispatch(TodosActions.updateDescription(id, newDescription));
+        dispatch(TodosActions.updateDescription({
+          id,
+          description: newDescription,
+        }));
       }
     }, 500),
     [],
@@ -148,12 +154,13 @@ export const CardPopup: FC<ICardPopup> = ({
                         <Checkbox
                           isActive={todo.status === EnumTodoStatus.Done}
                           onClick={() => {
-                            dispatch(TodosActions.updateCompleteStatus(
-                              todo.id,
-                              todo.status === EnumTodoStatus.Done
-                                ? EnumTodoStatus.Todo
-                                : EnumTodoStatus.Done,
-                            ));
+                            const newStatus = todo.status === EnumTodoStatus.Done
+                              ? EnumTodoStatus.Todo
+                              : EnumTodoStatus.Done;
+                            dispatch(TodosActions.updateCompleteStatus({
+                              id: todo.id,
+                              status: newStatus,
+                            }));
                           }}
                           style={{
                             marginTop: 6,
@@ -207,7 +214,10 @@ export const CardPopup: FC<ICardPopup> = ({
                                 titleInputRef.current?.focus();
                           }}
                           onChangeColor={(newColor) => {
-                            dispatch(TodosActions.updateColor(todo.id, newColor));
+                            dispatch(TodosActions.updateColor({
+                              id: todo.id,
+                              color: newColor,
+                            }));
                           }}
                         />
                       </div>
@@ -221,7 +231,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           justifySelf: 'flex-end',
                         }}
                         onClick={() => {
-                          dispatch(TodosActions.switchNotificationsEnabled(todo.id));
+                          dispatch(TodosActions.switchNotificationsEnabled({ id: todo.id }));
                         }}
                       />
                     </div>

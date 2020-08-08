@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Input } from '../components/Input';
-import { Button } from '../components/Button';
-import { Form } from '../components/Form';
-import { useLogin } from '../use/login';
-import { useForm } from '../use/form';
-import { validatorLoginForm } from '../helpers/validatorLoginForm';
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
+import { Form } from '../../components/Form';
+import { useLogin } from '../../use/login';
+import { useForm } from '../../use/form';
+import { validatorLoginForm } from '../../helpers/validatorLoginForm';
 
 const initialState = {
   email: {

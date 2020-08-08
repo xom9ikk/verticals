@@ -10,11 +10,12 @@ interface IInput {
   onBlur?: any,
   value: string,
   placeholder?: string,
+  style?: Object,
 }
 
 export const Input: FC<IInput> = ({
   type, name, width, touched, error,
-  onChange, onBlur, value, placeholder, children, ...attrs
+  onChange, onBlur, value, placeholder, style, children, ...attrs
 }) => {
   const isError = (touched && !!error);
   const isSuccess = !error;
@@ -46,7 +47,7 @@ export const Input: FC<IInput> = ({
             placeholder={placeholder}
             onChange={onChange}
             onBlur={onBlur}
-            style={{ height: children ? 33 : 44, paddingLeft: children ? 33 : 44 }}
+            style={style}
           />
         </div>
       </div>

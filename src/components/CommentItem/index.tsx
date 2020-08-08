@@ -76,7 +76,10 @@ export const CommentItem: FC<ICommentItem> = ({
     switch (action) {
       case EnumMenuActions.Like: {
         console.log('add like');
-        dispatch(CommentsActions.switchLike(comment.id, 'user-id'));
+        dispatch(CommentsActions.switchLike({
+          id: comment.id,
+          userId: 'user-id',
+        }));
         break;
       }
       case EnumMenuActions.Reply: {
@@ -88,7 +91,7 @@ export const CommentItem: FC<ICommentItem> = ({
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(CommentsActions.remove(comment.id));
+        dispatch(CommentsActions.remove({ id: comment.id }));
         break;
       }
       default:
@@ -110,7 +113,10 @@ export const CommentItem: FC<ICommentItem> = ({
   }, [isDoubleClick]);
 
   const removeHandler = (id: string) => {
-    dispatch(CommentsActions.removeFile(comment.id, id));
+    dispatch(CommentsActions.removeFile({
+      id: comment.id,
+      fileId: id,
+    }));
     console.log('remove attached fileId', id);
   };
 

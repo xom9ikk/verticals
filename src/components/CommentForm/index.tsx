@@ -47,16 +47,17 @@ export const CommentForm: FC<ICommentForm> = ({
     if (!commentText) return;
     console.log('comment save', commentText);
     if (editCommentId) {
-      dispatch(CommentsActions.updateText(editCommentId, commentText));
+      dispatch(CommentsActions.updateText({
+        id: editCommentId,
+        text: commentText,
+      }));
       dispatch(SystemActions.setEditCommentId(''));
     } else {
-      dispatch(CommentsActions.add(
+      dispatch(CommentsActions.add({
         todoId,
-        {
-          text: commentText,
-          replyCommentId,
-        },
-      ));
+        text: commentText,
+        replyCommentId,
+      }));
       dispatch(SystemActions.setReplyCommentId(''));
     }
     setCommentText('');

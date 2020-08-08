@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
-import { Input } from '../components/Input';
-import { Button } from '../components/Button';
-import { Form } from '../components/Form';
-import { useRegister } from '../use/register';
-import { useForm } from '../use/form';
-import { validatorRegisterForm } from '../helpers/validatorRegisterForm';
-import { Divider } from '../components/Divider';
+import { useDispatch } from 'react-redux';
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
+import { Form } from '../../components/Form';
+import { useForm } from '../../use/form';
+import { validatorRegisterForm } from '../../helpers/validatorRegisterForm';
+import { Divider } from '../../components/Divider';
+import { AuthActions } from '../../store/actions';
 
 const initialState = {
   firstName: {
@@ -32,11 +32,12 @@ const initialState = {
 };
 
 export const Register: FC = () => {
+  const dispatch = useDispatch();
   const handlerSubmit = async () => {
     console.log('submit', values);
-    await register(values);
+    dispatch(AuthActions.signUp(values));
   };
-  const { register } = useRegister();
+
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touched,
   } = useForm(initialState, handlerSubmit, validatorRegisterForm);

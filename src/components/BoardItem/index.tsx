@@ -173,7 +173,7 @@ export const BoardItem: FC<IBoardItem> = ({
         break;
       }
       case EnumMenuActions.CardStyle: {
-        dispatch(BoardsActions.updateCardType(id, payload));
+        dispatch(BoardsActions.updateCardType({ id, cardType: payload }));
         break;
       }
       case EnumMenuActions.CopyLink: {
@@ -182,11 +182,11 @@ export const BoardItem: FC<IBoardItem> = ({
       }
       case EnumMenuActions.AddBoardBelow: {
         dispatch(BoardsActions.removeNewBoards());
-        dispatch(BoardsActions.addBoardBelow(id));
+        dispatch(BoardsActions.addBoardBelow({ id }));
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(BoardsActions.remove(id));
+        dispatch(BoardsActions.remove({ id }));
         break;
       }
       default: break;

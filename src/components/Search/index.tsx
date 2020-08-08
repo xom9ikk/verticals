@@ -20,6 +20,7 @@ export const Search: FC<ISearch> = () => {
         name="search"
         value={query}
         onChange={(e: any) => setQuery(e.target.value)}
+        style={{ height: 33, paddingLeft: 33 }}
       >
         <img src="/svg/search.svg" alt="search" />
       </Input>

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
-import { Input } from '../components/Input';
-import { Button } from '../components/Button';
-import { Form } from '../components/Form';
-import { useReset } from '../use/reset';
-import { useForm } from '../use/form';
-import { validatorResetForm } from '../helpers/validatorResetForm';
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
+import { Form } from '../../components/Form';
+import { useReset } from '../../use/reset';
+import { useForm } from '../../use/form';
+import { validatorResetForm } from '../../helpers/validatorResetForm';
 
 const initialState = {
   email: {

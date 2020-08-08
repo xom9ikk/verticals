@@ -45,27 +45,40 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     setIsOpenNewBoard(false);
     if (boardId || boardId === 'new-board') {
       if (newTitle) {
-        dispatch(BoardsActions.updateTitle(boardId, newTitle));
+        dispatch(BoardsActions.updateTitle({
+          id: boardId,
+          title: newTitle,
+        }));
       }
       if (newDescription) {
-        dispatch(BoardsActions.updateDescription(boardId, newDescription));
+        dispatch(BoardsActions.updateDescription({
+          id: boardId,
+          description: newDescription,
+        }));
       }
       if (newColor !== undefined) {
         const boardToChange = boards.find((board) => board.id === boardId);
         console.log('boardToChange?.color', boardToChange?.color, 'newColor', newColor);
         if (boardToChange?.color === newColor) {
-          dispatch(BoardsActions.resetColor(boardId));
+          dispatch(BoardsActions.resetColor({ id: boardId }));
         } else {
-          dispatch(BoardsActions.updateColor(boardId, newColor));
+          dispatch(BoardsActions.updateColor({
+            id: boardId,
+            color: newColor,
+          }));
         }
       }
       if (boardId === 'new-board' && (newTitle)) {
-        dispatch(BoardsActions.generateNewId(boardId));
+        dispatch(BoardsActions.generateNewId({ id: boardId }));
       } else {
         dispatch(BoardsActions.removeNewBoards());
       }
     } else if (newTitle) {
-      dispatch(BoardsActions.add('/svg/board/item.svg', newTitle, newDescription));
+      dispatch(BoardsActions.add({
+        icon: '/svg/board/item.svg',
+        title: newTitle,
+        description: newDescription,
+      }));
     }
   };
 
@@ -82,7 +95,10 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     }
     const { source, destination } = result;
     dispatch(BoardsActions.updatePosition(
-      source.index, destination.index,
+      {
+        sourcePosition: source.index,
+        destinationPosition: destination.index,
+      },
     ));
     const items = reorder(
       boards,
