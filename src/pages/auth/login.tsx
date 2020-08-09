@@ -26,7 +26,6 @@ export const Login: FC = () => {
   const dispatch = useDispatch();
 
   const handlerSubmit = async () => {
-    console.log('submit', values);
     dispatch(AuthActions.signIn({
       email: values.email,
       password: values.password,
@@ -79,7 +78,7 @@ export const Login: FC = () => {
         Sign in with Google
       </Button>
       <Link
-        to="/reset"
+        to="/auth/reset"
         className="link"
       >
         Forgot your password?
@@ -87,7 +86,7 @@ export const Login: FC = () => {
       <div>
         <span className="text">New to Verticals?&nbsp;</span>
         <Link
-          to="/register"
+          to="/auth/register"
           className="link"
         >
           Create an account.

@@ -1,5 +1,5 @@
-export interface IAuth {
-  accessToken: string;
+export interface ISetAuthInfo {
+  token: string;
   refreshToken: string;
 }
 

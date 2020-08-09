@@ -1,13 +1,15 @@
 import { createAction } from 'redux-actions';
-import { IAuth, ISignIn, ISignUp } from '../../types';
+import {
+  ISetAuthInfo, ISignIn, ISignUp,
+} from '../../types';
 
 enum Type {
   SIGN_IN = 'AUTH/SIGN_IN',
-  SET_AUTH = 'AUTH/SET_AUTH',
+  SET_AUTH_INFO = 'AUTH/SET_AUTH_INFO',
   SIGN_UP = 'AUTH/SIGN_UP',
 }
 
-const setAuthInfo = createAction<IAuth>(Type.SET_AUTH);
+const setAuthInfo = createAction<ISetAuthInfo>(Type.SET_AUTH_INFO);
 const signUp = createAction<ISignUp>(Type.SIGN_UP);
 const signIn = createAction<ISignIn>(Type.SIGN_IN);
 

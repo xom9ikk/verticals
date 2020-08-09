@@ -1,39 +1,12 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '../inversify.types';
-import { IHttpClient } from '../plugins/httpClient';
-
-export interface IServerResponse<T = {}> {
-  message: string
-  data: T
-}
-
-export interface ISignUpRequest {
-  email: string;
-  password: string;
-  name: string;
-  surname: string;
-  username: string;
-}
-
-export type ISignUpResponse = IServerResponse<{
-  token: string;
-  refreshToken: string;
-}>;
-
-export type ISignInRequest = {
-  password: string;
-} & ({ username: string } | { email: string });
-
-export type ISignInResponse = IServerResponse<{
-  token: string;
-  refreshToken: string;
-}>;
-
-export interface IAuthService {
-  signUp(body: ISignUpRequest): Promise<ISignUpResponse>;
-  signIn(body: ISignInRequest): Promise<ISignInResponse>;
-}
+import {
+  IMeResponse,
+  ISignInRequest, ISignInResponse,
+  ISignUpRequest, ISignUpResponse,
+} from '../types/api';
+import { IAuthService, IHttpClient } from '../inversify.interfaces';
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -51,5 +24,9 @@ export class AuthService implements IAuthService {
 
   signIn(body: ISignInRequest) {
     return this.httpClient.post<ISignInResponse>('/auth/login', body);
+  }
+
+  me() {
+    return this.httpClient.get<IMeResponse>('/auth/me');
   }
 }

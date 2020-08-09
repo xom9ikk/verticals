@@ -1,11 +1,7 @@
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
-import { IAuthService } from './auth';
 import { TYPES } from '../inversify.types';
-
-export interface IServices {
-  auth: IAuthService
-}
+import { IAuthService, IServices } from '../inversify.interfaces';
 
 @injectable()
 export class Services implements IServices {

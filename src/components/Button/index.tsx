@@ -29,11 +29,11 @@ export const Button: FC<IButton> = ({
       onClick={onClick}
       style={style}
     >
-      <div
+      <span
         className="button__content"
       >
         {children}
-      </div>
+      </span>
     </button>
   );
 };
