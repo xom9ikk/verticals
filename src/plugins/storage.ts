@@ -28,7 +28,11 @@ class Storage implements IStorage {
   }
 
   private static get(key: string) {
-    return window.localStorage.getItem(key);
+    const value = window.localStorage.getItem(key);
+    if (value === null) {
+      return value;
+    }
+    return JSON.parse(value);
   }
 
   private static remove(key: string) {
