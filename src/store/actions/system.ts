@@ -24,7 +24,7 @@ enum Type {
 }
 
 const setIsOpenPopup = createAction(Type.SET_IS_OPEN_POPUP,
-  (isEditableCard: ISetSystemIsOpenPopup) => ({ isEditableCard }));
+  (isOpenPopup: ISetSystemIsOpenPopup) => ({ isOpenPopup }));
 
 const setIsEditableCard = createAction(
   Type.SET_IS_EDITABLE_CARD,

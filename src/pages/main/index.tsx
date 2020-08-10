@@ -37,9 +37,11 @@ export const Main: FC = () => {
   };
 
   useEffect(() => {
+    console.log('set handlers');
     window.addEventListener('keydown', keydownHandler);
     window.addEventListener('click', clickHandler);
     return () => {
+      console.log('remove handlers');
       window.removeEventListener('keydown', keydownHandler);
       window.removeEventListener('click', clickHandler);
     };
