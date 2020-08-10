@@ -3,17 +3,18 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { Menu } from '../Menu';
-import { MenuButton } from '../MenuButton';
-import { Divider } from '../Divider';
-import { ColorPicker } from '../ColorPicker';
-import { Submenu } from '../Submenu';
-import { BoardsActions, SystemActions } from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
-import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
-import { useFocus } from '../../use/focus';
-import { EnumColors, EnumTodoType } from '../../types';
-import { TextArea } from '../TextArea';
+import { icons } from '@/icons';
+import { Menu } from '@comp/Menu';
+import { MenuButton } from '@comp/MenuButton';
+import { Divider } from '@comp/Divider';
+import { ColorPicker } from '@comp/ColorPicker';
+import { Submenu } from '@comp/Submenu';
+import { BoardsActions, SystemActions } from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
+import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+import { useFocus } from '@/use/focus';
+import { EnumColors, EnumTodoType } from '@/types';
+import { TextArea } from '@comp/TextArea';
 
 interface IBoardItem {
   snapshot?: DraggableStateSnapshot,
@@ -199,7 +200,7 @@ export const BoardItem: FC<IBoardItem> = ({
       {
           id !== 'trash' && id !== 'today' && (
           <Menu
-            imageSrc="/svg/dots.svg"
+            imageSrc={icons.dots}
             alt="menu"
             imageSize={22}
             size={24}
@@ -217,39 +218,39 @@ export const BoardItem: FC<IBoardItem> = ({
             <ColorPicker onPick={colorPickHandler} activeColor={color} />
             <MenuButton
               text="Edit board"
-              imageSrc="/svg/menu/edit.svg"
+              imageSrc={icons.menu.edit}
               hintText="E"
               onClick={() => menuButtonClickHandler(EnumMenuActions.EditBoard)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <Submenu
               text="Card style"
-              imageSrc="/svg/menu/rect.svg"
+              imageSrc={icons.menu.rect}
             >
               <MenuButton
                 text="Checkboxes"
-                imageSrc="/svg/menu/square.svg"
+                imageSrc={icons.menu.square}
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
                 )}
               />
               <MenuButton
                 text="Arrows"
-                imageSrc="/svg/menu/arrow.svg"
+                imageSrc={icons.menu.arrow}
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Arrows,
                 )}
               />
               <MenuButton
                 text="Dots"
-                imageSrc="/svg/menu/circle.svg"
+                imageSrc={icons.menu.circle}
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Dots,
                 )}
               />
               <MenuButton
                 text="Dashes"
-                imageSrc="/svg/menu/dash.svg"
+                imageSrc={icons.menu.dash}
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Dashes,
                 )}
@@ -263,19 +264,19 @@ export const BoardItem: FC<IBoardItem> = ({
             </Submenu>
             <MenuButton
               text="Copy link"
-              imageSrc="/svg/menu/copy-link.svg"
+              imageSrc={icons.menu.copyLink}
               onClick={() => menuButtonClickHandler(EnumMenuActions.CopyLink)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Add board below"
-              imageSrc="/svg/menu/add-board.svg"
+              imageSrc={icons.menu.addBoard}
               onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Delete"
-              imageSrc="/svg/menu/delete.svg"
+              imageSrc={icons.menu.remove}
               hintText="⌫"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
             />
@@ -287,7 +288,7 @@ export const BoardItem: FC<IBoardItem> = ({
 
   const memoCounter = useMemo(() => (
     <div className="board-item__counter">
-      <img src="/svg/board/search.svg" alt="" />
+      <img src={icons.board.search} alt="" />
       {countTodos}
     </div>
   ), [countTodos]);

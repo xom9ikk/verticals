@@ -2,9 +2,9 @@ import React, {
   FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Popup } from '../Popup';
-import { SystemActions } from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
+import { Popup } from '@comp/Popup';
+import { SystemActions } from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
 
 interface IMenu {
   imageSrc: string;

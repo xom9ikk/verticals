@@ -2,11 +2,11 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import { useSelector } from 'react-redux';
-import { CommentList } from '../CommentList';
-import { CommentForm } from '../CommentForm';
-import { IRootState } from '../../store/reducers/state';
-import { useAutoScroll } from '../../use/autoScroll';
-import { IComment, IComments } from '../../types';
+import { CommentList } from '@comp/CommentList';
+import { CommentForm } from '@comp/CommentForm';
+import { IRootState } from '@/store/reducers/state';
+import { useAutoScroll } from '@/use/autoScroll';
+import { IComment, IComments } from '@/types';
 
 interface ICommentsWrapper {
   todoId: string;

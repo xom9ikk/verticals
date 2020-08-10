@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
-import { EnumTodoStatus, EnumTodoType, ITodos } from '../../types';
-import { Card } from '../Card';
+import { icons } from '@/icons';
+import { EnumTodoStatus, EnumTodoType, ITodos } from '@/types';
+import { Card } from '@comp/Card';
 
 interface IArchiveContainer {
   archivedTodos?: ITodos;
@@ -31,7 +32,7 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
                 className="archive-container__title"
                 onClick={() => setIsOpenArchived((prev) => !prev)}
               >
-                <img src={`/svg/menu/${isOpenArchived ? 'archive' : 'archive-close'}.svg`} alt="archive" />
+                <img src={isOpenArchived ? icons.menu.archive : icons.menu.archiveClose} alt="archive" />
                 {archivedTodos.length}
                 {' '}
                 cards archived

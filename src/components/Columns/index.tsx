@@ -6,11 +6,11 @@ import {
   DragDropContext, DraggableLocation, Droppable, DroppableProvided, DropResult,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Column } from '../Column';
-import { ITodo } from '../../types';
-import { ColumnsActions, TodosActions } from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
-import { useFilterTodos } from '../../use/filterTodos';
+import { Column } from '@comp/Column';
+import { ITodo } from '@/types';
+import { ColumnsActions, TodosActions } from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
+import { useFilterTodos } from '@/use/filterTodos';
 
 interface TodoMap {
   [key: string]: {

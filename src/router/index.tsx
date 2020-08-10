@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import {
   Router, Switch,
 } from 'react-router-dom';
-import { AuthLayout } from '../layouts/auth';
-import { Register } from '../pages/auth/register';
-import { Login } from '../pages/auth/login';
-import { Reset } from '../pages/auth/reset';
-import { MainLayout } from '../layouts/main';
-import { history } from './history';
-import { RouteWrapper } from './router';
-import { NotFound } from '../pages/404';
+import { AuthLayout } from '@/layouts/auth';
+import { Register } from '@/pages/auth/register';
+import { Login } from '@/pages/auth/login';
+import { Reset } from '@/pages/auth/reset';
+import { MainLayout } from '@/layouts/main';
+import { history } from '@/router/history';
+import { RouteWrapper } from '@/router/router';
+import { NotFound } from '@/pages/404';
 
 export const MainRouter: FC = () => (
   <Router history={history}>

@@ -2,13 +2,14 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '../Menu';
-import { Avatar } from '../Avatar';
-import { CommentsActions, SystemActions } from '../../store/actions';
-import { TextArea } from '../TextArea';
-import { IRootState } from '../../store/reducers/state';
-import { IComment } from '../../types';
-import { useFocus } from '../../use/focus';
+import { icons } from '@/icons';
+import { Menu } from '@comp/Menu';
+import { Avatar } from '@comp/Avatar';
+import { CommentsActions, SystemActions } from '@/store/actions';
+import { TextArea } from '@comp/TextArea';
+import { IRootState } from '@/store/reducers/state';
+import { IComment } from '@/types';
+import { useFocus } from '@/use/focus';
 
 interface ICommentForm {
   todoId: string;
@@ -99,7 +100,7 @@ export const CommentForm: FC<ICommentForm> = ({
             `}
           >
             <Menu
-              imageSrc="/svg/close.svg"
+              imageSrc={icons.close}
               alt="remove"
               imageSize={24}
               size={26}
@@ -130,7 +131,7 @@ export const CommentForm: FC<ICommentForm> = ({
             />
             <div className="comment-form__controls">
               <Menu
-                imageSrc="/svg/gallery.svg"
+                imageSrc={icons.gallery}
                 alt="image"
                 imageSize={24}
                 size={26}
@@ -139,7 +140,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 }}
               />
               <Menu
-                imageSrc="/svg/attach.svg"
+                imageSrc={icons.attach}
                 alt="file"
                 imageSize={24}
                 size={26}
@@ -148,7 +149,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 }}
               />
               <Menu
-                imageSrc="/svg/arrow-up.svg"
+                imageSrc={icons.arrowUp}
                 alt="date"
                 imageSize={24}
                 size={30}

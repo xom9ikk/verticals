@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { icons } from '@/icons';
 
 interface IColorSelector {
   color: string;
@@ -22,7 +23,7 @@ export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) 
       onClick={() => onClick(color)}
     >
       {
-        isActive && isHover && <img src="/svg/menu/cross.svg" alt="cross" />
+        isActive && isHover && <img src={icons.menu.cross} alt="cross" />
       }
     </button>
   );

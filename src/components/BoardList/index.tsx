@@ -5,15 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
-import { Menu } from '../Menu';
-import { BoardItem } from '../BoardItem';
-import { Profile } from '../Profile';
-import { IRootState } from '../../store/reducers/state';
-import { BoardsActions, SystemActions } from '../../store/actions';
+import { icons } from '@/icons';
+import { Menu } from '@comp/Menu';
+import { BoardItem } from '@comp/BoardItem';
+import { Profile } from '@comp/Profile';
+import { IRootState } from '@/store/reducers/state';
+import { BoardsActions, SystemActions } from '@/store/actions';
 import {
   IBoard, IBoards, IColumn, ITodo, ITodos,
-} from '../../types';
-import { useFilterTodos } from '../../use/filterTodos';
+} from '@/types';
+import { useFilterTodos } from '@/use/filterTodos';
 
 interface IBoardList {
   activeBoard: string;
@@ -75,7 +76,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       }
     } else if (newTitle) {
       dispatch(BoardsActions.add({
-        icon: '/svg/board/item.svg',
+        icon: icons.board.item,
         title: newTitle,
         description: newDescription,
       }));
@@ -225,7 +226,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const memoNewBoard = useMemo(() => (
     isOpenNewBoard && (
     <BoardItem
-      icon="/svg/board/item.svg"
+      icon={icons.board.item}
       isEditableDefault
       onExitFromEditable={saveBoard}
     />
@@ -237,7 +238,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       {
           !isOpenNewBoard && (
           <Menu
-            imageSrc="/svg/add.svg"
+            imageSrc={icons.add}
             alt="add"
             text="Add board"
             isHide

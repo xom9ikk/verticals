@@ -4,14 +4,15 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { CardContextMenu } from '../CardContextMenu';
-import { Checkbox } from '../Checkbox';
-import { SystemActions } from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
-import { useFocus } from '../../use/focus';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '../../types';
-import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
-import { TextArea } from '../TextArea';
+import { icons } from '@/icons';
+import { CardContextMenu } from '@comp/CardContextMenu';
+import { Checkbox } from '@comp/Checkbox';
+import { SystemActions } from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
+import { useFocus } from '@/use/focus';
+import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types';
+import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+import { TextArea } from '@comp/TextArea';
 
 interface ICard {
   cardType: EnumTodoType;
@@ -190,7 +191,7 @@ export const Card: FC<ICard> = ({
     }
   }, [status]);
 
-  const bullets = ['arrow.svg', 'dot.svg', 'dash.svg'];
+  const bullets = ['arrow', 'dot', 'dash'];
 
   const renderBullet = (type?: EnumTodoType) => {
     switch (type) {
@@ -220,7 +221,12 @@ export const Card: FC<ICard> = ({
       case EnumTodoType.Dots:
       case EnumTodoType.Dashes:
         return (
-          <img className="card__bullet" src={`/svg/card/${bullets[type - 1]}`} alt="bullet" />
+          <img
+            className="card__bullet"
+            // @ts-ignore
+            src={icons.card[bullets[type - 1]]}
+            alt="bullet"
+          />
         );
       case EnumTodoType.Nothing:
         return (

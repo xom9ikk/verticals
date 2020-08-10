@@ -5,26 +5,27 @@ import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '../Menu';
-import { Card } from '../Card';
-import { CardToolbar } from '../CardToolbar';
-import { MenuButton } from '../MenuButton';
-import { Divider } from '../Divider';
+import { icons } from '@/icons';
+import { Menu } from '@comp/Menu';
+import { Card } from '@comp/Card';
+import { CardToolbar } from '@comp/CardToolbar';
+import { MenuButton } from '@comp/MenuButton';
+import { Divider } from '@comp/Divider';
 import {
   ColumnsActions, SystemActions, TodosActions,
-} from '../../store/actions';
+} from '@/store/actions';
 import {
   EnumColors, EnumTodoStatus, ITodo, ITodos,
-} from '../../types';
-import { useFocus } from '../../use/focus';
-import { IRootState } from '../../store/reducers/state';
-import { ColorPicker } from '../ColorPicker';
-import { useFilterTodos } from '../../use/filterTodos';
-import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
-import { ArchiveContainer } from '../ArchiveContainer';
-import { CardsContainer } from '../CardsContainer';
-import { CardPopup } from '../CardPopup';
-import { TextArea } from '../TextArea';
+} from '@/types';
+import { useFocus } from '@/use/focus';
+import { IRootState } from '@/store/reducers/state';
+import { ColorPicker } from '@comp/ColorPicker';
+import { useFilterTodos } from '@/use/filterTodos';
+import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+import { ArchiveContainer } from '@comp/ArchiveContainer';
+import { CardsContainer } from '@comp/CardsContainer';
+import { CardPopup } from '@comp/CardPopup';
+import { TextArea } from '@comp/TextArea';
 
 interface IColumn {
   index: number;
@@ -317,7 +318,7 @@ export const Column: FC<IColumn> = ({
   const addCard = useMemo(() => (
     (!isOpenNewCard && isDraggable) && (
       <Menu
-        imageSrc="/svg/add.svg"
+        imageSrc={icons.add}
         alt="add"
         text="Add card"
         isHide
@@ -396,7 +397,7 @@ export const Column: FC<IColumn> = ({
 
   const contextMenu = useMemo(() => (
     <Menu
-      imageSrc="/svg/dots.svg"
+      imageSrc={icons.dots}
       alt="menu"
       imageSize={22}
       size={24}
@@ -407,35 +408,35 @@ export const Column: FC<IColumn> = ({
       <ColorPicker onPick={colorPickHandler} activeColor={color} />
       <MenuButton
         text="Edit column"
-        imageSrc="/svg/menu/edit.svg"
+        imageSrc={icons.menu.edit}
         onClick={() => menuButtonClickHandler(EnumMenuActions.EditColumn)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Duplicate"
-        imageSrc="/svg/menu/duplicate.svg"
+        imageSrc={icons.menu.duplicate}
         onClick={() => menuButtonClickHandler(EnumMenuActions.Duplicate)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Add card"
-        imageSrc="/svg/menu/add-card.svg"
+        imageSrc={icons.menu.addCard}
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddCard)}
       />
       <MenuButton
         text="Add heading"
-        imageSrc="/svg/menu/add-heading.svg"
+        imageSrc={icons.menu.addHeading}
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddHeading)}
       />
       <MenuButton
         text="Add column after"
-        imageSrc="/svg/menu/add-column.svg"
+        imageSrc={icons.menu.addColumn}
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddColumnAfter)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Delete"
-        imageSrc="/svg/menu/delete.svg"
+        imageSrc={icons.menu.remove}
         hintText="⌫"
         onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
       />

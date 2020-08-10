@@ -2,17 +2,18 @@ import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IComment, IFile } from '../../types';
-import { MenuButton } from '../MenuButton';
-import { Menu } from '../Menu';
-import { Divider } from '../Divider';
-import { CommentFile } from '../CommentFile';
-import { useFormatDate } from '../../use/formatDate';
-import { Avatar } from '../Avatar';
+import { icons } from '@/icons';
+import { IComment, IFile } from '@/types';
+import { MenuButton } from '@comp/MenuButton';
+import { Menu } from '@comp/Menu';
+import { Divider } from '@comp/Divider';
+import { CommentFile } from '@comp/CommentFile';
+import { useFormatDate } from '@/use/formatDate';
+import { Avatar } from '@comp/Avatar';
 import {
   CommentsActions, SystemActions,
-} from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
+} from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
 
 interface ICommentItem {
   comment: IComment
@@ -187,7 +188,7 @@ export const CommentItem: FC<ICommentItem> = ({
       <div className="comment__controls">
         <div className="comment__controls--buttons">
           <Menu
-            imageSrc={`/svg/like${isLikeByMe ? '-active' : ''}.svg`}
+            imageSrc={isLikeByMe ? icons.likeActive : icons.like}
             alt="like"
             imageSize={16}
             size={22}
@@ -195,7 +196,7 @@ export const CommentItem: FC<ICommentItem> = ({
             onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
           />
           <Menu
-            imageSrc="/svg/reply.svg"
+            imageSrc={icons.reply}
             alt="reply"
             imageSize={16}
             size={22}
@@ -211,7 +212,7 @@ export const CommentItem: FC<ICommentItem> = ({
           }
           <Avatar size={20} />
           <Menu
-            imageSrc="/svg/dots.svg"
+            imageSrc={icons.dots}
             alt="menu"
             imageSize={16}
             size={22}
@@ -219,23 +220,23 @@ export const CommentItem: FC<ICommentItem> = ({
           >
             <MenuButton
               text="Like"
-              imageSrc="/svg/like.svg"
+              imageSrc={icons.like}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
             />
             <MenuButton
               text="Reply"
-              imageSrc="/svg/reply.svg"
+              imageSrc={icons.reply}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
             />
             <MenuButton
               text="Edit"
-              imageSrc="/svg/menu/edit.svg"
+              imageSrc={icons.menu.edit}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Delete"
-              imageSrc="/svg/menu/delete.svg"
+              imageSrc={icons.menu.remove}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
             />
           </Menu>

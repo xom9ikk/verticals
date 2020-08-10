@@ -1,6 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
-import { Popup } from '../Popup';
-import { MenuButton } from '../MenuButton';
+import { icons } from '@/icons';
+import { Popup } from '@comp/Popup';
+import { MenuButton } from '@comp/MenuButton';
 
 interface ISubmenu {
   text: string;
@@ -32,7 +33,7 @@ export const Submenu: FC<ISubmenu> = ({
       <MenuButton
         text={text}
         imageSrc={imageSrc}
-        hintImageSrc="/svg/menu/right-chevron.svg"
+        hintImageSrc={icons.menu.rightChevron}
       />
     </span>
   );

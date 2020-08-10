@@ -2,11 +2,11 @@ import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { Sidebar } from '../../components/Sidebar';
-import { Columns } from '../../components/Columns';
-import { SystemActions } from '../../store/actions';
-import { Search } from '../../components/Search';
-import { BoardList } from '../../components/BoardList';
+import { Sidebar } from '@comp/Sidebar';
+import { Columns } from '@comp/Columns';
+import { SystemActions } from '@/store/actions';
+import { Search } from '@comp/Search';
+import { BoardList } from '@comp/BoardList';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();

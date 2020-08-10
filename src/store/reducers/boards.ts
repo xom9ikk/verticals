@@ -1,60 +1,61 @@
 import { handleActions } from 'redux-actions';
+import { icons } from '@/icons';
 import { BoardsActions } from '../actions';
 import { EnumTodoType, IBoard, IBoards } from '../../types';
 
 const initialState: IBoards = [{
   id: 'today',
-  icon: '/svg/board/star.svg',
+  icon: icons.board.star,
   title: 'Today',
   position: 0,
   cardType: EnumTodoType.Checkboxes,
 },
 {
   id: 'trash',
-  icon: '/svg/board/trash.svg',
+  icon: icons.board.trash,
   title: 'Trash',
   position: 1,
   cardType: EnumTodoType.Checkboxes,
 },
 {
   id: 'board-1',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'To reading',
   position: 2,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-2',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'Technologies etc.',
   position: 3,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-3',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'Projects',
   position: 4,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-4',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'Branches',
   position: 5,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-5',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'Films',
   position: 6,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-6',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'Buy',
   position: 7,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-7',
-  icon: '/svg/board/item.svg',
+  icon: icons.board.item,
   title: 'Books',
   position: 8,
   cardType: EnumTodoType.Checkboxes,
@@ -130,7 +131,7 @@ export const BoardsReducer = handleActions<IBoards, any>({
             id: 'new-board',
             position: spliceIndex,
             title: '',
-            icon: '/svg/board/item.svg',
+            icon: icons.board.item,
             cardType: EnumTodoType.Checkboxes,
           });
           return boards.map((board: IBoard, index) => ({

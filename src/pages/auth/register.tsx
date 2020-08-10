@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { Input } from '../../components/Input';
-import { Button } from '../../components/Button';
-import { Form } from '../../components/Form';
-import { useForm } from '../../use/form';
-import { validatorRegisterForm } from '../../helpers/validatorRegisterForm';
-import { Divider } from '../../components/Divider';
-import { AuthActions } from '../../store/actions';
+import { icons } from '@/icons';
+import { Input } from '@comp/Input';
+import { Button } from '@comp/Button';
+import { Form } from '@comp/Form';
+import { useForm } from '@/use/form';
+import { validatorRegisterForm } from '@/helpers/validatorRegisterForm';
+import { Divider } from '@comp/Divider';
+import { AuthActions } from '@/store/actions';
 
 const initialState = {
   name: {
@@ -122,7 +123,7 @@ export const Register: FC = () => {
         type="submit"
         isMaxWidth
       >
-        <img src="/svg/google.svg" alt="google" />
+        <img src={icons.google} alt="google" />
         &nbsp;
         Sign in with Google
       </Button>

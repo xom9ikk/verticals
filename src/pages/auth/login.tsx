@@ -2,12 +2,13 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Input } from '../../components/Input';
-import { Button } from '../../components/Button';
-import { Form } from '../../components/Form';
-import { useForm } from '../../use/form';
-import { validatorLoginForm } from '../../helpers/validatorLoginForm';
-import { AuthActions } from '../../store/actions';
+import { icons } from '@/icons';
+import { Input } from '@comp/Input';
+import { Button } from '@comp/Button';
+import { Form } from '@comp/Form';
+import { useForm } from '@/use/form';
+import { validatorLoginForm } from '@/helpers/validatorLoginForm';
+import { AuthActions } from '@/store/actions';
 
 const initialState = {
   email: {
@@ -73,7 +74,7 @@ export const Login: FC = () => {
         type="submit"
         isMaxWidth
       >
-        <img src="/svg/google.svg" alt="google" />
+        <img src={icons.google} alt="google" />
         &nbsp;
         Sign in with Google
       </Button>

@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Input } from '../Input';
-import { SystemActions } from '../../store/actions';
+import { icons } from '@/icons';
+import { Input } from '@comp/Input';
+import { SystemActions } from '@/store/actions';
 
 interface ISearch {
 }
@@ -22,7 +23,7 @@ export const Search: FC<ISearch> = () => {
         onChange={(e: any) => setQuery(e.target.value)}
         style={{ height: 33, paddingLeft: 33 }}
       >
-        <img src="/svg/search.svg" alt="search" />
+        <img src={icons.search} alt="search" />
       </Input>
     </div>
   );
