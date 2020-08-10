@@ -1,0 +1,4189 @@
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+/*!
+ * is.js 0.8.0
+ * Author: Aras Atasaygin
+ */
+
+/*! *****************************************************************************
+Copyright (C) Microsoft. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+
+/*! ../../inversify.config */
+
+/*! ../../inversify.types */
+
+/*! ../../modules/_core */
+
+/*! ../../modules/_wks-ext */
+
+/*! ../../modules/es6.promise */
+
+/*! ../../modules/es7.array.flat-map */
+
+/*! ../../modules/es7.array.includes */
+
+/*! ../../modules/es7.object.entries */
+
+/*! ../../modules/es7.object.get-own-property-descriptors */
+
+/*! ../../modules/es7.object.values */
+
+/*! ../../modules/es7.promise.finally */
+
+/*! ../../modules/es7.string.pad-end */
+
+/*! ../../modules/es7.string.pad-start */
+
+/*! ../../modules/es7.string.trim-left */
+
+/*! ../../modules/es7.string.trim-right */
+
+/*! ../../modules/es7.symbol.async-iterator */
+
+/*! ../../plugins/storage */
+
+/*! ../../router/history */
+
+/*! ../../types */
+
+/*! ../actions */
+
+/*! ../annotation/inject */
+
+/*! ../bindings/binding */
+
+/*! ../bindings/binding_count */
+
+/*! ../cancel/isCancel */
+
+/*! ../components/Context */
+
+/*! ../components/connectAdvanced */
+
+/*! ../constants */
+
+/*! ../constants/error_msgs */
+
+/*! ../constants/literal_types */
+
+/*! ../constants/metadata_keys */
+
+/*! ../core/buildFullPath */
+
+/*! ../core/createError */
+
+/*! ../defaults */
+
+/*! ../helpers/buildURL */
+
+/*! ../helpers/combineURLs */
+
+/*! ../helpers/isAbsoluteURL */
+
+/*! ../inversify.types */
+
+/*! ../modules/_core */
+
+/*! ../modules/es6.array.copy-within */
+
+/*! ../modules/es6.array.every */
+
+/*! ../modules/es6.array.fill */
+
+/*! ../modules/es6.array.filter */
+
+/*! ../modules/es6.array.find */
+
+/*! ../modules/es6.array.find-index */
+
+/*! ../modules/es6.array.for-each */
+
+/*! ../modules/es6.array.from */
+
+/*! ../modules/es6.array.index-of */
+
+/*! ../modules/es6.array.is-array */
+
+/*! ../modules/es6.array.iterator */
+
+/*! ../modules/es6.array.join */
+
+/*! ../modules/es6.array.last-index-of */
+
+/*! ../modules/es6.array.map */
+
+/*! ../modules/es6.array.of */
+
+/*! ../modules/es6.array.reduce */
+
+/*! ../modules/es6.array.reduce-right */
+
+/*! ../modules/es6.array.slice */
+
+/*! ../modules/es6.array.some */
+
+/*! ../modules/es6.array.sort */
+
+/*! ../modules/es6.array.species */
+
+/*! ../modules/es6.date.now */
+
+/*! ../modules/es6.date.to-iso-string */
+
+/*! ../modules/es6.date.to-json */
+
+/*! ../modules/es6.date.to-primitive */
+
+/*! ../modules/es6.date.to-string */
+
+/*! ../modules/es6.function.bind */
+
+/*! ../modules/es6.function.has-instance */
+
+/*! ../modules/es6.function.name */
+
+/*! ../modules/es6.map */
+
+/*! ../modules/es6.math.acosh */
+
+/*! ../modules/es6.math.asinh */
+
+/*! ../modules/es6.math.atanh */
+
+/*! ../modules/es6.math.cbrt */
+
+/*! ../modules/es6.math.clz32 */
+
+/*! ../modules/es6.math.cosh */
+
+/*! ../modules/es6.math.expm1 */
+
+/*! ../modules/es6.math.fround */
+
+/*! ../modules/es6.math.hypot */
+
+/*! ../modules/es6.math.imul */
+
+/*! ../modules/es6.math.log10 */
+
+/*! ../modules/es6.math.log1p */
+
+/*! ../modules/es6.math.log2 */
+
+/*! ../modules/es6.math.sign */
+
+/*! ../modules/es6.math.sinh */
+
+/*! ../modules/es6.math.tanh */
+
+/*! ../modules/es6.math.trunc */
+
+/*! ../modules/es6.number.constructor */
+
+/*! ../modules/es6.number.epsilon */
+
+/*! ../modules/es6.number.is-finite */
+
+/*! ../modules/es6.number.is-integer */
+
+/*! ../modules/es6.number.is-nan */
+
+/*! ../modules/es6.number.is-safe-integer */
+
+/*! ../modules/es6.number.max-safe-integer */
+
+/*! ../modules/es6.number.min-safe-integer */
+
+/*! ../modules/es6.number.parse-float */
+
+/*! ../modules/es6.number.parse-int */
+
+/*! ../modules/es6.number.to-fixed */
+
+/*! ../modules/es6.number.to-precision */
+
+/*! ../modules/es6.object.assign */
+
+/*! ../modules/es6.object.create */
+
+/*! ../modules/es6.object.define-properties */
+
+/*! ../modules/es6.object.define-property */
+
+/*! ../modules/es6.object.freeze */
+
+/*! ../modules/es6.object.get-own-property-descriptor */
+
+/*! ../modules/es6.object.get-own-property-names */
+
+/*! ../modules/es6.object.get-prototype-of */
+
+/*! ../modules/es6.object.is */
+
+/*! ../modules/es6.object.is-extensible */
+
+/*! ../modules/es6.object.is-frozen */
+
+/*! ../modules/es6.object.is-sealed */
+
+/*! ../modules/es6.object.keys */
+
+/*! ../modules/es6.object.prevent-extensions */
+
+/*! ../modules/es6.object.seal */
+
+/*! ../modules/es6.object.set-prototype-of */
+
+/*! ../modules/es6.object.to-string */
+
+/*! ../modules/es6.parse-float */
+
+/*! ../modules/es6.parse-int */
+
+/*! ../modules/es6.promise */
+
+/*! ../modules/es6.reflect.apply */
+
+/*! ../modules/es6.reflect.construct */
+
+/*! ../modules/es6.reflect.define-property */
+
+/*! ../modules/es6.reflect.delete-property */
+
+/*! ../modules/es6.reflect.enumerate */
+
+/*! ../modules/es6.reflect.get */
+
+/*! ../modules/es6.reflect.get-own-property-descriptor */
+
+/*! ../modules/es6.reflect.get-prototype-of */
+
+/*! ../modules/es6.reflect.has */
+
+/*! ../modules/es6.reflect.is-extensible */
+
+/*! ../modules/es6.reflect.own-keys */
+
+/*! ../modules/es6.reflect.prevent-extensions */
+
+/*! ../modules/es6.reflect.set */
+
+/*! ../modules/es6.reflect.set-prototype-of */
+
+/*! ../modules/es6.regexp.constructor */
+
+/*! ../modules/es6.regexp.exec */
+
+/*! ../modules/es6.regexp.flags */
+
+/*! ../modules/es6.regexp.match */
+
+/*! ../modules/es6.regexp.replace */
+
+/*! ../modules/es6.regexp.search */
+
+/*! ../modules/es6.regexp.split */
+
+/*! ../modules/es6.regexp.to-string */
+
+/*! ../modules/es6.set */
+
+/*! ../modules/es6.string.anchor */
+
+/*! ../modules/es6.string.big */
+
+/*! ../modules/es6.string.blink */
+
+/*! ../modules/es6.string.bold */
+
+/*! ../modules/es6.string.code-point-at */
+
+/*! ../modules/es6.string.ends-with */
+
+/*! ../modules/es6.string.fixed */
+
+/*! ../modules/es6.string.fontcolor */
+
+/*! ../modules/es6.string.fontsize */
+
+/*! ../modules/es6.string.from-code-point */
+
+/*! ../modules/es6.string.includes */
+
+/*! ../modules/es6.string.italics */
+
+/*! ../modules/es6.string.iterator */
+
+/*! ../modules/es6.string.link */
+
+/*! ../modules/es6.string.raw */
+
+/*! ../modules/es6.string.repeat */
+
+/*! ../modules/es6.string.small */
+
+/*! ../modules/es6.string.starts-with */
+
+/*! ../modules/es6.string.strike */
+
+/*! ../modules/es6.string.sub */
+
+/*! ../modules/es6.string.sup */
+
+/*! ../modules/es6.string.trim */
+
+/*! ../modules/es6.symbol */
+
+/*! ../modules/es6.typed.array-buffer */
+
+/*! ../modules/es6.typed.data-view */
+
+/*! ../modules/es6.typed.float32-array */
+
+/*! ../modules/es6.typed.float64-array */
+
+/*! ../modules/es6.typed.int16-array */
+
+/*! ../modules/es6.typed.int32-array */
+
+/*! ../modules/es6.typed.int8-array */
+
+/*! ../modules/es6.typed.uint16-array */
+
+/*! ../modules/es6.typed.uint32-array */
+
+/*! ../modules/es6.typed.uint8-array */
+
+/*! ../modules/es6.typed.uint8-clamped-array */
+
+/*! ../modules/es6.weak-map */
+
+/*! ../modules/es6.weak-set */
+
+/*! ../modules/es7.global */
+
+/*! ../modules/web.dom.iterable */
+
+/*! ../modules/web.immediate */
+
+/*! ../modules/web.timers */
+
+/*! ../planning/metadata */
+
+/*! ../planning/metadata_reader */
+
+/*! ../planning/planner */
+
+/*! ../plugins/storage */
+
+/*! ../resolution/resolver */
+
+/*! ../syntax/binding_to_syntax */
+
+/*! ../utils */
+
+/*! ../utils/Subscription */
+
+/*! ../utils/exceptions */
+
+/*! ../utils/id */
+
+/*! ../utils/serialization */
+
+/*! ../utils/shallowEqual */
+
+/*! ../utils/useIsomorphicLayoutEffect */
+
+/*! ../utils/verifyPlainObject */
+
+/*! ../utils/warning */
+
+/*! ./../../../webpack/buildin/global.js */
+
+/*! ./../../process/browser.js */
+
+/*! ./../../webpack/buildin/global.js */
+
+/*! ./../../webpack/buildin/harmony-module.js */
+
+/*! ./../core/settle */
+
+/*! ./../helpers/buildURL */
+
+/*! ./../helpers/cookies */
+
+/*! ./../helpers/isURLSameOrigin */
+
+/*! ./../helpers/parseHeaders */
+
+/*! ./../process/browser.js */
+
+/*! ./../utils */
+
+/*! ./../webpack/buildin/global.js */
+
+/*! ./Cancel */
+
+/*! ./Context */
+
+/*! ./InterceptorManager */
+
+/*! ./_a-function */
+
+/*! ./_a-number-value */
+
+/*! ./_add-to-unscopables */
+
+/*! ./_advance-string-index */
+
+/*! ./_an-instance */
+
+/*! ./_an-object */
+
+/*! ./_array-copy-within */
+
+/*! ./_array-fill */
+
+/*! ./_array-includes */
+
+/*! ./_array-methods */
+
+/*! ./_array-reduce */
+
+/*! ./_array-species-constructor */
+
+/*! ./_array-species-create */
+
+/*! ./_bind */
+
+/*! ./_classof */
+
+/*! ./_cof */
+
+/*! ./_collection */
+
+/*! ./_collection-strong */
+
+/*! ./_collection-weak */
+
+/*! ./_core */
+
+/*! ./_create-property */
+
+/*! ./_ctx */
+
+/*! ./_date-to-iso-string */
+
+/*! ./_date-to-primitive */
+
+/*! ./_defined */
+
+/*! ./_descriptors */
+
+/*! ./_dom-create */
+
+/*! ./_enum-bug-keys */
+
+/*! ./_enum-keys */
+
+/*! ./_export */
+
+/*! ./_fails */
+
+/*! ./_fails-is-regexp */
+
+/*! ./_fix-re-wks */
+
+/*! ./_flags */
+
+/*! ./_flatten-into-array */
+
+/*! ./_for-of */
+
+/*! ./_function-to-string */
+
+/*! ./_global */
+
+/*! ./_has */
+
+/*! ./_hide */
+
+/*! ./_html */
+
+/*! ./_ie8-dom-define */
+
+/*! ./_inherit-if-required */
+
+/*! ./_invoke */
+
+/*! ./_iobject */
+
+/*! ./_is-array */
+
+/*! ./_is-array-iter */
+
+/*! ./_is-integer */
+
+/*! ./_is-object */
+
+/*! ./_is-regexp */
+
+/*! ./_iter-call */
+
+/*! ./_iter-create */
+
+/*! ./_iter-define */
+
+/*! ./_iter-detect */
+
+/*! ./_iter-step */
+
+/*! ./_iterators */
+
+/*! ./_library */
+
+/*! ./_math-expm1 */
+
+/*! ./_math-fround */
+
+/*! ./_math-log1p */
+
+/*! ./_math-sign */
+
+/*! ./_meta */
+
+/*! ./_microtask */
+
+/*! ./_new-promise-capability */
+
+/*! ./_object-assign */
+
+/*! ./_object-create */
+
+/*! ./_object-dp */
+
+/*! ./_object-dps */
+
+/*! ./_object-gopd */
+
+/*! ./_object-gopn */
+
+/*! ./_object-gopn-ext */
+
+/*! ./_object-gops */
+
+/*! ./_object-gpo */
+
+/*! ./_object-keys */
+
+/*! ./_object-keys-internal */
+
+/*! ./_object-pie */
+
+/*! ./_object-sap */
+
+/*! ./_object-to-array */
+
+/*! ./_own-keys */
+
+/*! ./_parse-float */
+
+/*! ./_parse-int */
+
+/*! ./_perform */
+
+/*! ./_promise-resolve */
+
+/*! ./_property-desc */
+
+/*! ./_redefine */
+
+/*! ./_redefine-all */
+
+/*! ./_regexp-exec */
+
+/*! ./_regexp-exec-abstract */
+
+/*! ./_same-value */
+
+/*! ./_set-proto */
+
+/*! ./_set-species */
+
+/*! ./_set-to-string-tag */
+
+/*! ./_shared */
+
+/*! ./_shared-key */
+
+/*! ./_species-constructor */
+
+/*! ./_strict-method */
+
+/*! ./_string-at */
+
+/*! ./_string-context */
+
+/*! ./_string-html */
+
+/*! ./_string-pad */
+
+/*! ./_string-repeat */
+
+/*! ./_string-trim */
+
+/*! ./_string-ws */
+
+/*! ./_task */
+
+/*! ./_to-absolute-index */
+
+/*! ./_to-index */
+
+/*! ./_to-integer */
+
+/*! ./_to-iobject */
+
+/*! ./_to-length */
+
+/*! ./_to-object */
+
+/*! ./_to-primitive */
+
+/*! ./_typed */
+
+/*! ./_typed-array */
+
+/*! ./_typed-buffer */
+
+/*! ./_uid */
+
+/*! ./_user-agent */
+
+/*! ./_validate-collection */
+
+/*! ./_wks */
+
+/*! ./_wks-define */
+
+/*! ./_wks-ext */
+
+/*! ./actions */
+
+/*! ./adapters/xhr */
+
+/*! ./annotation/decorator_utils */
+
+/*! ./annotation/inject */
+
+/*! ./annotation/injectable */
+
+/*! ./annotation/multi_inject */
+
+/*! ./annotation/named */
+
+/*! ./annotation/optional */
+
+/*! ./annotation/post_construct */
+
+/*! ./annotation/tagged */
+
+/*! ./annotation/target_name */
+
+/*! ./annotation/unmanaged */
+
+/*! ./auth */
+
+/*! ./batch */
+
+/*! ./binding_in_syntax */
+
+/*! ./binding_in_when_on_syntax */
+
+/*! ./binding_on_syntax */
+
+/*! ./binding_when_on_syntax */
+
+/*! ./binding_when_syntax */
+
+/*! ./board */
+
+/*! ./boards */
+
+/*! ./camelCase */
+
+/*! ./cancel/Cancel */
+
+/*! ./cancel/CancelToken */
+
+/*! ./cancel/isCancel */
+
+/*! ./cancellablePromise */
+
+/*! ./cjs/react-dom.production.min.js */
+
+/*! ./cjs/react-is.production.min.js */
+
+/*! ./cjs/react.production.min.js */
+
+/*! ./cjs/scheduler.production.min.js */
+
+/*! ./colors */
+
+/*! ./column */
+
+/*! ./columns */
+
+/*! ./combineActions */
+
+/*! ./comment */
+
+/*! ./comments */
+
+/*! ./components/Context */
+
+/*! ./components/Provider */
+
+/*! ./components/connectAdvanced */
+
+/*! ./connect/connect */
+
+/*! ./constants */
+
+/*! ./constants/literal_types */
+
+/*! ./constants/metadata_keys */
+
+/*! ./constraint_helpers */
+
+/*! ./container/container */
+
+/*! ./container/container_module */
+
+/*! ./container_snapshot */
+
+/*! ./context */
+
+/*! ./core.get-iterator-method */
+
+/*! ./core/Axios */
+
+/*! ./core/mergeConfig */
+
+/*! ./createAction */
+
+/*! ./createActions */
+
+/*! ./createCurriedAction */
+
+/*! ./createError */
+
+/*! ./decorator_utils */
+
+/*! ./defaults */
+
+/*! ./dispatchRequest */
+
+/*! ./enhanceError */
+
+/*! ./es6.array.iterator */
+
+/*! ./es6.regexp.exec */
+
+/*! ./es6.regexp.flags */
+
+/*! ./factoryWithThrowingShims */
+
+/*! ./flattenWhenNode */
+
+/*! ./get */
+
+/*! ./handleAction */
+
+/*! ./handleActions */
+
+/*! ./hasGeneratorInterface */
+
+/*! ./helpers/bind */
+
+/*! ./helpers/normalizeHeaderName */
+
+/*! ./helpers/spread */
+
+/*! ./hooks/useDispatch */
+
+/*! ./hooks/useSelector */
+
+/*! ./hooks/useStore */
+
+/*! ./index.tsx */
+
+/*! ./instantiation */
+
+/*! ./inversify.types */
+
+/*! ./io-6de156f3.js */
+
+/*! ./isEmpty */
+
+/*! ./isMap */
+
+/*! ./isPlainObject */
+
+/*! ./lib/ReactPropTypesSecret */
+
+/*! ./lib/axios */
+
+/*! ./lookup */
+
+/*! ./mapDispatchToProps */
+
+/*! ./mapStateToProps */
+
+/*! ./mergeConfig */
+
+/*! ./mergeProps */
+
+/*! ./metadata */
+
+/*! ./noConflict */
+
+/*! ./ownKeys */
+
+/*! ./plan */
+
+/*! ./planning/metadata_reader */
+
+/*! ./plugins/httpClient */
+
+/*! ./ponyfill.js */
+
+/*! ./queryable_string */
+
+/*! ./reducers */
+
+/*! ./reflection_utils */
+
+/*! ./request */
+
+/*! ./router */
+
+/*! ./sagas */
+
+/*! ./selectorFactory */
+
+/*! ./services */
+
+/*! ./services/auth */
+
+/*! ./storage */
+
+/*! ./store/configureStore */
+
+/*! ./styles/scss/main.scss */
+
+/*! ./syntax/constraint_helpers */
+
+/*! ./system */
+
+/*! ./target */
+
+/*! ./todo */
+
+/*! ./todos */
+
+/*! ./transformData */
+
+/*! ./useReduxContext */
+
+/*! ./useStore */
+
+/*! ./utils */
+
+/*! ./utils/arrayToObject */
+
+/*! ./utils/batch */
+
+/*! ./utils/binding_utils */
+
+/*! ./utils/camelCase */
+
+/*! ./utils/flattenActionMap */
+
+/*! ./utils/flattenReducerMap */
+
+/*! ./utils/get */
+
+/*! ./utils/getLastElement */
+
+/*! ./utils/id */
+
+/*! ./utils/identity */
+
+/*! ./utils/isArray */
+
+/*! ./utils/isEmpty */
+
+/*! ./utils/isFunction */
+
+/*! ./utils/isMap */
+
+/*! ./utils/isNil */
+
+/*! ./utils/isNull */
+
+/*! ./utils/isPlainObject */
+
+/*! ./utils/isString */
+
+/*! ./utils/isSymbol */
+
+/*! ./utils/isUndefined */
+
+/*! ./utils/ownKeys */
+
+/*! ./utils/reactBatchedUpdates */
+
+/*! ./utils/serialization */
+
+/*! ./utils/shallowEqual */
+
+/*! ./utils/toString */
+
+/*! ./utils/unflattenActionCreators */
+
+/*! ./validator */
+
+/*! ./verifySubselectors */
+
+/*! ./warning */
+
+/*! ./wrapMapToProps */
+
+/*! @/assets/avatars/default.jpeg */
+
+/*! @/helpers/validatorLoginForm */
+
+/*! @/helpers/validatorRegisterForm */
+
+/*! @/helpers/validatorResetForm */
+
+/*! @/icons */
+
+/*! @/layouts/auth */
+
+/*! @/layouts/main */
+
+/*! @/pages/404 */
+
+/*! @/pages/auth/login */
+
+/*! @/pages/auth/register */
+
+/*! @/pages/auth/reset */
+
+/*! @/pages/main */
+
+/*! @/router/history */
+
+/*! @/router/router */
+
+/*! @/store/actions */
+
+/*! @/types */
+
+/*! @/use/autoScroll */
+
+/*! @/use/clickPreventionOnDoubleClick */
+
+/*! @/use/filterTodos */
+
+/*! @/use/focus */
+
+/*! @/use/form */
+
+/*! @/use/formatDate */
+
+/*! @babel/polyfill */
+
+/*! @babel/runtime/helpers/esm/extends */
+
+/*! @babel/runtime/helpers/esm/inheritsLoose */
+
+/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */
+
+/*! @comp/ArchiveContainer */
+
+/*! @comp/Avatar */
+
+/*! @comp/BoardItem */
+
+/*! @comp/BoardList */
+
+/*! @comp/Button */
+
+/*! @comp/Card */
+
+/*! @comp/CardContextMenu */
+
+/*! @comp/CardPopup */
+
+/*! @comp/CardToolbar */
+
+/*! @comp/CardsContainer */
+
+/*! @comp/Checkbox */
+
+/*! @comp/ColorPicker */
+
+/*! @comp/ColorSelector */
+
+/*! @comp/Column */
+
+/*! @comp/Columns */
+
+/*! @comp/CommentFile */
+
+/*! @comp/CommentForm */
+
+/*! @comp/CommentItem */
+
+/*! @comp/CommentList */
+
+/*! @comp/Comments */
+
+/*! @comp/Divider */
+
+/*! @comp/Form */
+
+/*! @comp/Header */
+
+/*! @comp/Input */
+
+/*! @comp/Loader */
+
+/*! @comp/Menu */
+
+/*! @comp/MenuButton */
+
+/*! @comp/Popup */
+
+/*! @comp/Profile */
+
+/*! @comp/Search */
+
+/*! @comp/Sidebar */
+
+/*! @comp/Submenu */
+
+/*! @comp/TextArea */
+
+/*! @comp/Toolbar */
+
+/*! @redux-saga/core */
+
+/*! @redux-saga/core/effects */
+
+/*! @redux-saga/deferred */
+
+/*! @redux-saga/delay-p */
+
+/*! @redux-saga/is */
+
+/*! @redux-saga/symbols */
+
+/*! @svg/add-head.svg */
+
+/*! @svg/add.svg */
+
+/*! @svg/arrow-up.svg */
+
+/*! @svg/attach.svg */
+
+/*! @svg/bell-active.svg */
+
+/*! @svg/bell.svg */
+
+/*! @svg/board/item-active.svg */
+
+/*! @svg/board/item.svg */
+
+/*! @svg/board/search.svg */
+
+/*! @svg/board/star.svg */
+
+/*! @svg/board/trash.svg */
+
+/*! @svg/calendar.svg */
+
+/*! @svg/card/arrow.svg */
+
+/*! @svg/card/dash.svg */
+
+/*! @svg/card/dot.svg */
+
+/*! @svg/close.svg */
+
+/*! @svg/comments-empty.svg */
+
+/*! @svg/dots-primary.svg */
+
+/*! @svg/dots.svg */
+
+/*! @svg/download.svg */
+
+/*! @svg/extension.svg */
+
+/*! @svg/filter.svg */
+
+/*! @svg/gallery.svg */
+
+/*! @svg/google.svg */
+
+/*! @svg/hide-sidebar.svg */
+
+/*! @svg/like-active.svg */
+
+/*! @svg/like.svg */
+
+/*! @svg/logo.svg */
+
+/*! @svg/menu/add-board.svg */
+
+/*! @svg/menu/add-card.svg */
+
+/*! @svg/menu/add-column.svg */
+
+/*! @svg/menu/add-date.svg */
+
+/*! @svg/menu/add-heading.svg */
+
+/*! @svg/menu/archive-close.svg */
+
+/*! @svg/menu/archive.svg */
+
+/*! @svg/menu/arrow.svg */
+
+/*! @svg/menu/attach.svg */
+
+/*! @svg/menu/circle.svg */
+
+/*! @svg/menu/complete.svg */
+
+/*! @svg/menu/copy-link.svg */
+
+/*! @svg/menu/cross.svg */
+
+/*! @svg/menu/dash.svg */
+
+/*! @svg/menu/duplicate.svg */
+
+/*! @svg/menu/edit.svg */
+
+/*! @svg/menu/hide-sidebar.svg */
+
+/*! @svg/menu/language.svg */
+
+/*! @svg/menu/logout.svg */
+
+/*! @svg/menu/my-profile.svg */
+
+/*! @svg/menu/notifications.svg */
+
+/*! @svg/menu/rect.svg */
+
+/*! @svg/menu/remove.svg */
+
+/*! @svg/menu/right-chevron.svg */
+
+/*! @svg/menu/rounded-square-check.svg */
+
+/*! @svg/menu/rounded-square-half-filled.svg */
+
+/*! @svg/menu/rounded-square.svg */
+
+/*! @svg/menu/square.svg */
+
+/*! @svg/menu/tick-active.svg */
+
+/*! @svg/menu/tick.svg */
+
+/*! @svg/reply.svg */
+
+/*! @svg/search.svg */
+
+/*! @svg/show-sidebar.svg */
+
+/*! @svg/tick.svg */
+
+/*! axios */
+
+/*! core-js/es6 */
+
+/*! core-js/fn/array/flat-map */
+
+/*! core-js/fn/array/includes */
+
+/*! core-js/fn/object/entries */
+
+/*! core-js/fn/object/get-own-property-descriptors */
+
+/*! core-js/fn/object/values */
+
+/*! core-js/fn/promise/finally */
+
+/*! core-js/fn/string/pad-end */
+
+/*! core-js/fn/string/pad-start */
+
+/*! core-js/fn/string/trim-end */
+
+/*! core-js/fn/string/trim-start */
+
+/*! core-js/fn/symbol/async-iterator */
+
+/*! core-js/library/fn/global */
+
+/*! core-js/web */
+
+/*! css-box-model */
+
+/*! downloadjs */
+
+/*! exports provided: $, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, _, a, a0, a1, a2, a3, a4, a5, a6, a7, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z */
+
+/*! exports provided: ArchiveContainer */
+
+/*! exports provided: AuthActions */
+
+/*! exports provided: AuthLayout */
+
+/*! exports provided: AuthService */
+
+/*! exports provided: Avatar */
+
+/*! exports provided: BoardItem */
+
+/*! exports provided: BoardList */
+
+/*! exports provided: BoardsActions */
+
+/*! exports provided: BoardsReducer */
+
+/*! exports provided: Button */
+
+/*! exports provided: CANCEL, CHANNEL_END_TYPE, IO, MATCH, MULTICAST, SAGA_ACTION, SAGA_LOCATION, SELF_CANCELLATION, TASK, TASK_CANCEL, TERMINATE */
+
+/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel, default */
+
+/*! exports provided: CANCEL, SAGA_LOCATION, buffers, detach, default, END, channel, eventChannel, isEnd, multicastChannel, runSaga, stdChannel */
+
+/*! exports provided: Card */
+
+/*! exports provided: CardContextMenu */
+
+/*! exports provided: CardPopup */
+
+/*! exports provided: CardToolbar */
+
+/*! exports provided: CardsContainer */
+
+/*! exports provided: Checkbox */
+
+/*! exports provided: ColorPicker */
+
+/*! exports provided: ColorSelector */
+
+/*! exports provided: Column */
+
+/*! exports provided: Columns */
+
+/*! exports provided: ColumnsActions */
+
+/*! exports provided: ColumnsReducer */
+
+/*! exports provided: CommentFile */
+
+/*! exports provided: CommentForm */
+
+/*! exports provided: CommentItem */
+
+/*! exports provided: CommentList */
+
+/*! exports provided: Comments */
+
+/*! exports provided: CommentsActions */
+
+/*! exports provided: CommentsReducer */
+
+/*! exports provided: DEFAULT_NAMESPACE, ACTION_TYPE_DELIMITER */
+
+/*! exports provided: Divider */
+
+/*! exports provided: DragDropContext, Draggable, Droppable, resetServerContext */
+
+/*! exports provided: EnumColors */
+
+/*! exports provided: EnumLanguage */
+
+/*! exports provided: EnumTodoType, EnumTodoStatus */
+
+/*! exports provided: Form */
+
+/*! exports provided: Header */
+
+/*! exports provided: HttpClient */
+
+/*! exports provided: Input */
+
+/*! exports provided: Loader */
+
+/*! exports provided: Login */
+
+/*! exports provided: Main */
+
+/*! exports provided: MainLayout */
+
+/*! exports provided: MainRouter */
+
+/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, __HistoryContext, __RouterContext, generatePath, matchPath, useHistory, useLocation, useParams, useRouteMatch, withRouter */
+
+/*! exports provided: MemoryRouter, Prompt, Redirect, Route, Router, StaticRouter, Switch, generatePath, matchPath, useHistory, useLocation, useParams, useRouteMatch, withRouter, BrowserRouter, HashRouter, Link, NavLink */
+
+/*! exports provided: Menu */
+
+/*! exports provided: MenuButton */
+
+/*! exports provided: NotFound */
+
+/*! exports provided: Popup */
+
+/*! exports provided: Profile */
+
+/*! exports provided: Provider, connectAdvanced, ReactReduxContext, connect, batch, useDispatch, createDispatchHook, useSelector, createSelectorHook, useStore, createStoreHook, shallowEqual */
+
+/*! exports provided: ReactReduxContext, default */
+
+/*! exports provided: Register */
+
+/*! exports provided: Reset */
+
+/*! exports provided: RouteWrapper */
+
+/*! exports provided: Search */
+
+/*! exports provided: Services */
+
+/*! exports provided: Sidebar */
+
+/*! exports provided: Submenu */
+
+/*! exports provided: SystemActions */
+
+/*! exports provided: SystemActions, BoardsActions, ColumnsActions, TodosActions, CommentsActions, AuthActions */
+
+/*! exports provided: SystemReducer */
+
+/*! exports provided: TYPES */
+
+/*! exports provided: TextArea */
+
+/*! exports provided: TodosActions */
+
+/*! exports provided: TodosReducer */
+
+/*! exports provided: Toolbar */
+
+/*! exports provided: __DO_NOT_USE__ActionTypes, applyMiddleware, bindActionCreators, combineReducers, compose, createStore */
+
+/*! exports provided: actionChannel, all, apply, call, cancel, cancelled, cps, debounce, delay, flush, fork, getContext, join, put, putResolve, race, retry, select, setContext, spawn, take, takeEvery, takeLatest, takeLeading, takeMaybe, throttle */
+
+/*! exports provided: actionChannel, all, apply, call, cancel, cancelled, cps, delay, effectTypes, flush, fork, getContext, join, put, putResolve, race, select, setContext, spawn, take, takeMaybe, debounce, retry, takeEvery, takeLatest, takeLeading, throttle */
+
+/*! exports provided: array, buffer, channel, effect, func, iterable, iterator, multicast, notUndef, number, object, observable, pattern, promise, sagaAction, string, stringableFunc, symbol, task, undef */
+
+/*! exports provided: calculateBox, createBox, expand, getBox, getRect, offset, shrink, withScroll */
+
+/*! exports provided: combineActions, createAction, createActions, createCurriedAction, handleAction, handleActions */
+
+/*! exports provided: configureStore */
+
+/*! exports provided: container */
+
+/*! exports provided: createBrowserHistory, createHashHistory, createMemoryHistory, createLocation, locationsAreEqual, parsePath, createPath */
+
+/*! exports provided: createConnect, default */
+
+/*! exports provided: createDispatchHook, useDispatch */
+
+/*! exports provided: createSelectorHook, useSelector */
+
+/*! exports provided: createStoreHook, useStore */
+
+/*! exports provided: default */
+
+/*! exports provided: default, arrayOfDeferred */
+
+/*! exports provided: defaultMergeProps, wrapMergePropsFunc, whenMergePropsIsFunction, whenMergePropsIsOmitted, default */
+
+/*! exports provided: history, forwardTo */
+
+/*! exports provided: icons */
+
+/*! exports provided: impureFinalPropsSelectorFactory, pureFinalPropsSelectorFactory, default */
+
+/*! exports provided: rootReducer */
+
+/*! exports provided: rootSaga */
+
+/*! exports provided: setBatch, getBatch */
+
+/*! exports provided: storage */
+
+/*! exports provided: unstable_batchedUpdates */
+
+/*! exports provided: useAutoScroll */
+
+/*! exports provided: useCallback, useCallbackOne, useMemo, useMemoOne */
+
+/*! exports provided: useCancellablePromises */
+
+/*! exports provided: useClickPreventionOnDoubleClick */
+
+/*! exports provided: useFilterTodos */
+
+/*! exports provided: useFocus */
+
+/*! exports provided: useForm */
+
+/*! exports provided: useFormatDate */
+
+/*! exports provided: useIsomorphicLayoutEffect */
+
+/*! exports provided: useReduxContext */
+
+/*! exports provided: validatorLoginForm */
+
+/*! exports provided: validatorRegisterForm */
+
+/*! exports provided: validatorResetForm */
+
+/*! exports provided: watchAuth */
+
+/*! exports provided: whenMapDispatchToPropsIsFunction, whenMapDispatchToPropsIsMissing, whenMapDispatchToPropsIsObject, default */
+
+/*! exports provided: whenMapStateToPropsIsFunction, whenMapStateToPropsIsMissing, default */
+
+/*! exports provided: wrapMapToPropsConstant, getDependsOnOwnProps, wrapMapToPropsFunc */
+
+/*! history */
+
+/*! hoist-non-react-statics */
+
+/*! invariant */
+
+/*! inversify */
+
+/*! is_js */
+
+/*! isarray */
+
+/*! just-curry-it */
+
+/*! lodash.debounce */
+
+/*! memoize-one */
+
+/*! mini-create-react-context */
+
+/*! no exports provided */
+
+/*! no static exports found */
+
+/*! object-assign */
+
+/*! path-to-regexp */
+
+/*! prop-types */
+
+/*! raf-schd */
+
+/*! react */
+
+/*! react-beautiful-dnd */
+
+/*! react-dom */
+
+/*! react-is */
+
+/*! react-redux */
+
+/*! react-router */
+
+/*! react-router-dom */
+
+/*! reduce-reducers */
+
+/*! redux */
+
+/*! redux-actions */
+
+/*! redux-devtools-extension */
+
+/*! redux-saga */
+
+/*! redux-saga/effects */
+
+/*! reflect-metadata */
+
+/*! regenerator-runtime/runtime */
+
+/*! resolve-pathname */
+
+/*! scheduler */
+
+/*! symbol-observable */
+
+/*! tiny-invariant */
+
+/*! tiny-warning */
+
+/*! to-camel-case */
+
+/*! to-no-case */
+
+/*! to-space-case */
+
+/*! typed-redux-saga */
+
+/*! use-memo-one */
+
+/*! value-equal */
+
+/*!******************!*\
+  !*** ./icons.ts ***!
+  \******************/
+
+/*!*******************!*\
+  !*** ./index.tsx ***!
+  \*******************/
+
+/*!*********************!*\
+  !*** ./use/form.ts ***!
+  \*********************/
+
+/*!**********************!*\
+  !*** ./use/focus.ts ***!
+  \**********************/
+
+/*!***********************!*\
+  !*** ./pages/404.tsx ***!
+  \***********************/
+
+/*!***********************!*\
+  !*** ./types/todo.ts ***!
+  \***********************/
+
+/*!************************!*\
+  !*** ./types/board.ts ***!
+  \************************/
+
+/*!************************!*\
+  !*** ./types/index.ts ***!
+  \************************/
+
+/*!*************************!*\
+  !*** ./types/colors.ts ***!
+  \*************************/
+
+/*!*************************!*\
+  !*** ./types/column.ts ***!
+  \*************************/
+
+/*!*************************!*\
+  !*** ./types/system.ts ***!
+  \*************************/
+
+/*!**************************!*\
+  !*** ./layouts/auth.tsx ***!
+  \**************************/
+
+/*!**************************!*\
+  !*** ./layouts/main.tsx ***!
+  \**************************/
+
+/*!**************************!*\
+  !*** ./router/index.tsx ***!
+  \**************************/
+
+/*!**************************!*\
+  !*** ./services/auth.ts ***!
+  \**************************/
+
+/*!**************************!*\
+  !*** ./types/comment.ts ***!
+  \**************************/
+
+/*!***************************!*\
+  !*** ./router/history.ts ***!
+  \***************************/
+
+/*!***************************!*\
+  !*** ./router/router.tsx ***!
+  \***************************/
+
+/*!***************************!*\
+  !*** ./services/index.ts ***!
+  \***************************/
+
+/*!***************************!*\
+  !*** ./use/autoScroll.ts ***!
+  \***************************/
+
+/*!***************************!*\
+  !*** ./use/formatDate.ts ***!
+  \***************************/
+
+/*!****************************!*\
+  !*** ./assets/svg/add.svg ***!
+  \****************************/
+
+/*!****************************!*\
+  !*** ./inversify.types.ts ***!
+  \****************************/
+
+/*!****************************!*\
+  !*** ./plugins/storage.ts ***!
+  \****************************/
+
+/*!****************************!*\
+  !*** ./use/filterTodos.ts ***!
+  \****************************/
+
+/*!*****************************!*\
+  !*** ./assets/svg/bell.svg ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./assets/svg/dots.svg ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./assets/svg/like.svg ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./assets/svg/logo.svg ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./assets/svg/tick.svg ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./inversify.config.ts ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./store/sagas/auth.ts ***!
+  \*****************************/
+
+/*!******************************!*\
+  !*** ./assets/svg/close.svg ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./assets/svg/reply.svg ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./helpers/validator.ts ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./pages/auth/login.tsx ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./pages/auth/reset.tsx ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./pages/main/index.tsx ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./store/sagas/index.ts ***!
+  \******************************/
+
+/*!*******************************!*\
+  !*** ./assets/svg/attach.svg ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./assets/svg/filter.svg ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./assets/svg/google.svg ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./assets/svg/search.svg ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./plugins/httpClient.ts ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./store/actions/auth.ts ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./styles/scss/main.scss ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./types/actions/auth.ts ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./types/actions/todo.ts ***!
+  \*******************************/
+
+/*!********************************!*\
+  !*** ./assets/svg/gallery.svg ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./store/actions/index.ts ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./store/actions/todos.ts ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./types/actions/board.ts ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./types/actions/index.ts ***!
+  \********************************/
+
+/*!*********************************!*\
+  !*** ./assets/svg/add-head.svg ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./assets/svg/arrow-up.svg ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./assets/svg/calendar.svg ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./assets/svg/card/dot.svg ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./assets/svg/download.svg ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./pages/auth/register.tsx ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./store/actions/boards.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./store/actions/system.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./store/configureStore.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./store/reducers/index.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./store/reducers/todos.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./types/actions/column.ts ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./types/actions/system.ts ***!
+  \*********************************/
+
+/*!**********************************!*\
+  !*** ./assets/svg/card/dash.svg ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./assets/svg/extension.svg ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./assets/svg/menu/dash.svg ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./assets/svg/menu/edit.svg ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./assets/svg/menu/rect.svg ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./assets/svg/menu/tick.svg ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./store/actions/columns.ts ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./store/reducers/boards.ts ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./store/reducers/system.ts ***!
+  \**********************************/
+
+/*!**********************************!*\
+  !*** ./types/actions/comment.ts ***!
+  \**********************************/
+
+/*!***********************************!*\
+  !*** ../node_modules/is_js/is.js ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./assets/svg/board/item.svg ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./assets/svg/board/star.svg ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./assets/svg/card/arrow.svg ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./assets/svg/menu/arrow.svg ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./assets/svg/menu/cross.svg ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./components/Card/index.tsx ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./components/Form/index.tsx ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./components/Menu/index.tsx ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./store/actions/comments.ts ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./store/reducers/columns.ts ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./use/cancellablePromise.ts ***!
+  \***********************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/bell-active.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/board/trash.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/like-active.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/menu/attach.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/menu/circle.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/menu/logout.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/menu/remove.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./assets/svg/menu/square.svg ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./components/Input/index.tsx ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./components/Popup/index.tsx ***!
+  \************************************/
+
+/*!************************************!*\
+  !*** ./store/reducers/comments.ts ***!
+  \************************************/
+
+/*!*************************************!*\
+  !*** ./assets/avatars/default.jpeg ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./assets/svg/board/search.svg ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./assets/svg/dots-primary.svg ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./assets/svg/hide-sidebar.svg ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./assets/svg/menu/archive.svg ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./assets/svg/show-sidebar.svg ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./components/Avatar/index.tsx ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./components/Button/index.tsx ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./components/Column/index.tsx ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./components/Header/index.tsx ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./components/Loader/index.tsx ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./components/Search/index.tsx ***!
+  \*************************************/
+
+/*!**************************************!*\
+  !*** ../node_modules/axios/index.js ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ../node_modules/react/index.js ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./assets/svg/menu/add-card.svg ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./assets/svg/menu/add-date.svg ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./assets/svg/menu/complete.svg ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./assets/svg/menu/language.svg ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./components/Columns/index.tsx ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./components/Divider/index.tsx ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./components/Profile/index.tsx ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./components/Sidebar/index.tsx ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./components/Submenu/index.tsx ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./components/Toolbar/index.tsx ***!
+  \**************************************/
+
+/*!***************************************!*\
+  !*** ./assets/svg/comments-empty.svg ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./assets/svg/menu/add-board.svg ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./assets/svg/menu/copy-link.svg ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./assets/svg/menu/duplicate.svg ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./components/Checkbox/index.tsx ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./components/Comments/index.tsx ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./components/TextArea/index.tsx ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./helpers/validatorLoginForm.ts ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./helpers/validatorResetForm.ts ***!
+  \***************************************/
+
+/*!****************************************!*\
+  !*** ./assets/svg/menu/add-column.svg ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./assets/svg/menu/my-profile.svg ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./components/BoardItem/index.tsx ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./components/BoardList/index.tsx ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./components/CardPopup/index.tsx ***!
+  \****************************************/
+
+/*!*****************************************!*\
+  !*** ../node_modules/react-is/index.js ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ../node_modules/redux/es/redux.js ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./assets/svg/menu/add-heading.svg ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./assets/svg/menu/tick-active.svg ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./components/MenuButton/index.tsx ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** multi @babel/polyfill ./index.tsx ***!
+  \*****************************************/
+
+/*!******************************************!*\
+  !*** ../node_modules/axios/lib/axios.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ../node_modules/axios/lib/utils.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ../node_modules/process/browser.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ../node_modules/react-dom/index.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ../node_modules/scheduler/index.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./assets/svg/board/item-active.svg ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./assets/svg/menu/hide-sidebar.svg ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./components/CardToolbar/index.tsx ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./components/ColorPicker/index.tsx ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./components/CommentFile/index.tsx ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./components/CommentForm/index.tsx ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./components/CommentItem/index.tsx ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./components/CommentList/index.tsx ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./helpers/validatorRegisterForm.ts ***!
+  \******************************************/
+
+/*!*******************************************!*\
+  !*** ../node_modules/prop-types/index.js ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ../node_modules/to-no-case/index.js ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ./assets/svg/menu/archive-close.svg ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ./assets/svg/menu/notifications.svg ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ./assets/svg/menu/right-chevron.svg ***!
+  \*******************************************/
+
+/*!********************************************!*\
+  !*** ../node_modules/core-js/es6/index.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ../node_modules/core-js/web/index.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ../node_modules/invariant/browser.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./assets/svg/menu/rounded-square.svg ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./components/ColorSelector/index.tsx ***!
+  \********************************************/
+
+/*!*********************************************!*\
+  !*** ../node_modules/axios/lib/defaults.js ***!
+  \*********************************************/
+
+/*!*********************************************!*\
+  !*** ./components/CardsContainer/index.tsx ***!
+  \*********************************************/
+
+/*!*********************************************!*\
+  !*** ./use/clickPreventionOnDoubleClick.ts ***!
+  \*********************************************/
+
+/*!**********************************************!*\
+  !*** ../node_modules/downloadjs/download.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ../node_modules/history/esm/history.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ../node_modules/just-curry-it/index.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ../node_modules/object-assign/index.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ../node_modules/to-camel-case/index.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ../node_modules/to-space-case/index.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ./components/CardContextMenu/index.tsx ***!
+  \**********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/axios/lib/core/Axios.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/core-js/modules/_cof.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/core-js/modules/_ctx.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/core-js/modules/_has.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/core-js/modules/_uid.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/core-js/modules/_wks.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/path-to-regexp/index.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ../node_modules/react-redux/es/index.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ./components/ArchiveContainer/index.tsx ***!
+  \***********************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/axios/lib/core/settle.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/core-js/modules/_bind.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/core-js/modules/_core.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/core-js/modules/_hide.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/core-js/modules/_html.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/core-js/modules/_meta.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/core-js/modules/_task.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ../node_modules/lodash.debounce/index.js ***!
+  \************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/axios/lib/adapters/xhr.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/bind.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/core-js/modules/_fails.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/core-js/modules/_flags.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/core-js/modules/_typed.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/inversify/lib/utils/id.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/redux-actions/es/index.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ../node_modules/webpack/buildin/global.js ***!
+  \*************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/axios/lib/cancel/Cancel.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/_export.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/_for-of.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/_global.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/_invoke.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/_shared.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.map.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.set.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ../node_modules/inversify/lib/inversify.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ./assets/svg/menu/rounded-square-check.svg ***!
+  \**************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/spread.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/fn/object/values.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/modules/_classof.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/modules/_defined.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/modules/_iobject.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/modules/_library.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/modules/_perform.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/core-js/modules/_wks-ext.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/reduce-reducers/es/index.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ../node_modules/reflect-metadata/Reflect.js ***!
+  \***************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/@babel/polyfill/lib/index.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/axios/lib/cancel/isCancel.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/cookies.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/fn/array/flat-map.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/fn/array/includes.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/fn/object/entries.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/fn/string/pad-end.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/library/fn/global.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/modules/_is-array.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/modules/_own-keys.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/modules/_redefine.js ***!
+  \****************************************************/
+
+/*!****************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-index.js ***!
+  \****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/axios/lib/core/createError.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/axios/lib/core/mergeConfig.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/buildURL.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/fn/promise/finally.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/fn/string/trim-end.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_an-object.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_enum-keys.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_is-object.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_is-regexp.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_iter-call.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_iter-step.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_iterators.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_math-sign.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_microtask.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-dp.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_parse-int.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_set-proto.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-at.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-ws.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-length.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-object.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.symbol.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/core-js/modules/web.timers.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/raf-schd/dist/raf-schd.esm.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/batch.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/redux-actions/es/constants.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/get.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ../node_modules/symbol-observable/es/index.js ***!
+  \*****************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/axios/lib/core/enhanceError.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/fn/string/pad-start.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_a-function.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-fill.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_collection.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_dom-create.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_fix-re-wks.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_is-integer.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_math-expm1.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_math-log1p.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-dps.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-gpo.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-pie.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-sap.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_same-value.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_shared-key.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-pad.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-integer.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-iobject.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_user-agent.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/_wks-define.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.promise.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/plan.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/regenerator-runtime/runtime.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ../node_modules/value-equal/esm/value-equal.js ***!
+  \******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/axios/lib/cancel/CancelToken.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/axios/lib/core/buildFullPath.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/axios/lib/core/transformData.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/fn/string/trim-start.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_ctx.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_has.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_an-instance.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_descriptors.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_iter-create.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_iter-define.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_iter-detect.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_math-fround.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-gopd.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-gopn.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-gops.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-keys.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_parse-float.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_regexp-exec.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_set-species.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-html.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-trim.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/_typed-array.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.of.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.date.now.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.weak-map.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.weak-set.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/warning.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isMap.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isNil.js ***!
+  \*******************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/combineURLs.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_core.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_hide.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-reduce.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/_redefine-all.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-primitive.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/_typed-buffer.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.map.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.cbrt.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.cosh.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.imul.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.log2.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.sign.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.sinh.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.tanh.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.is.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.parse-int.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/core-js/modules/web.immediate.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/target.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/react-redux/es/hooks/useStore.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/react-router/esm/react-router.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/redux-actions/es/createAction.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/redux-actions/es/handleAction.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isNull.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ../node_modules/symbol-observable/es/ponyfill.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ./assets/svg/menu/rounded-square-half-filled.svg ***!
+  \********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/@babel/polyfill/lib/noConflict.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/axios/lib/core/dispatchRequest.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/parseHeaders.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_fails.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-methods.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_enum-bug-keys.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_is-array-iter.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-assign.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-create.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_property-desc.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_strict-method.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-repeat.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.fill.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.find.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.from.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.join.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.some.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.sort.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.acosh.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.asinh.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.atanh.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.clz32.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.expm1.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.hypot.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.log10.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.log1p.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.trunc.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.big.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.raw.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.sub.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.sup.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/named.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/bindings/binding.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/container/lookup.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/context.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/planner.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/request.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/inversify/lib/utils/exceptions.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/connect.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/react/cjs/react.production.min.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/redux-actions/es/createActions.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/redux-actions/es/handleActions.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isArray.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isEmpty.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/ownKeys.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/redux-devtools-extension/index.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/typed-redux-saga/dist/index.es.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ../node_modules/webpack/buildin/harmony-module.js ***!
+  \*********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_export.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_global.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/_a-number-value.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-includes.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/_ie8-dom-define.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/_string-context.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.every.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.slice.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.math.fround.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.keys.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.seal.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.parse-float.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.get.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.has.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.set.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.exec.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.bold.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.link.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.trim.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/inject.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/tagged.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/metadata.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/redux-actions/es/combineActions.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/identity.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isString.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isSymbol.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/toString.js ***!
+  \**********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/fn/symbol/async-iterator.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/_collection-weak.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/_create-property.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/_fails-is-regexp.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-gopn-ext.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-to-array.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/_promise-resolve.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.filter.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.reduce.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.date.to-json.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.flags.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.match.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.split.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.blink.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.fixed.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.small.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/core-js/modules/web.dom.iterable.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/memoize-one/dist/memoize-one.esm.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/react-redux/es/hooks/useDispatch.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/react-redux/es/hooks/useSelector.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/camelCase.js ***!
+  \***********************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/@redux-saga/core/dist/io-6de156f3.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/axios/lib/core/InterceptorManager.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.species.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.function.bind.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.function.name.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.is-nan.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.assign.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.create.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.freeze.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.apply.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.search.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.anchor.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.repeat.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.strike.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.object.values.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/optional.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/inversify/lib/container/container.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/inversify/lib/resolution/resolver.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/inversify/lib/utils/binding_utils.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/inversify/lib/utils/serialization.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/react-redux/es/components/Context.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/mergeProps.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/Subscription.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/shallowEqual.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isFunction.js ***!
+  \************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_an-object.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_is-object.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_object-dp.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/es7.global.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-copy-within.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/_collection-strong.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/_date-to-primitive.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/_set-to-string-tag.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/_to-absolute-index.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.for-each.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.index-of.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.is-array.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.iterator.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.date.to-string.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.epsilon.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.replace.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.italics.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.array.flat-map.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.array.includes.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.object.entries.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.string.pad-end.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/unmanaged.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/inversify/lib/constants/error_msgs.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/react-redux/es/components/Provider.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/isPlainObject.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isUndefined.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/tiny-warning/dist/tiny-warning.esm.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ../node_modules/use-memo-one/dist/use-memo-one.esm.js ***!
+  \*************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_a-function.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_dom-create.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/_add-to-unscopables.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/_date-to-iso-string.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/_flatten-into-array.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/_function-to-string.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.to-fixed.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.fontsize.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.includes.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.iterator.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.data-view.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.promise.finally.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/injectable.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/prop-types/factoryWithThrowingShims.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ../node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \**************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_descriptors.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/_inherit-if-required.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/_species-constructor.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/_validate-collection.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.find-index.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.is-finite.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.parse-int.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.is-frozen.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.is-sealed.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.to-string.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.own-keys.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.to-string.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.ends-with.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.fontcolor.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.int8-array.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.string.pad-start.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.string.trim-left.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/css-box-model/dist/css-box-model.esm.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/target_name.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/inversify/lib/bindings/binding_count.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/react-is/cjs/react-is.production.min.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/react-redux/es/hooks/useReduxContext.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/redux-actions/es/createCurriedAction.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/arrayToObject.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/isPlainObject.js ***!
+  \***************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/@redux-saga/is/dist/redux-saga-is.esm.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_to-primitive.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/_advance-string-index.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-species-create.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/_object-keys-internal.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/_regexp-exec-abstract.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.copy-within.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.date.to-primitive.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.is-integer.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.construct.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.enumerate.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.int16-array.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.int32-array.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.uint8-array.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.string.trim-right.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/multi_inject.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/inversify/lib/constants/literal_types.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/inversify/lib/constants/metadata_keys.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/wrapMapToProps.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/react-router-dom/esm/react-router-dom.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/getLastElement.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/resolve-pathname/esm/resolve-pathname.js ***!
+  \****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_property-desc.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.reduce-right.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.date.to-iso-string.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.constructor.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.parse-float.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.regexp.constructor.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.starts-with.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.array-buffer.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.uint16-array.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.uint32-array.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/metadata_reader.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/inversify/lib/resolution/instantiation.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/binding_in_syntax.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/binding_on_syntax.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/binding_to_syntax.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/react-dom/cjs/react-dom.production.min.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/mapStateToProps.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/selectorFactory.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/verifyPlainObject.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/flattenWhenNode.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/scheduler/cjs/scheduler.production.min.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ../node_modules/tiny-invariant/dist/tiny-invariant.esm.js ***!
+  \*****************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/core-js/library/modules/_ie8-dom-define.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/core-js/modules/_new-promise-capability.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.array.last-index-of.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.to-precision.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.float32-array.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.float64-array.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/post_construct.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/queryable_string.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/inversify/lib/planning/reflection_utils.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/constraint_helpers.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/flattenActionMap.js ***!
+  \******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/core-js/modules/core.get-iterator-method.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.is-extensible.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.code-point-at.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/inversify/lib/annotation/decorator_utils.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/inversify/lib/container/container_module.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/binding_when_syntax.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/mini-create-react-context/dist/esm/index.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/reactBatchedUpdates.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/flattenReducerMap.js ***!
+  \*******************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/@redux-saga/core/dist/redux-saga-core.esm.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.function.has-instance.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.is-extensible.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.symbol.async-iterator.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/path-to-regexp/node_modules/isarray/index.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/react-redux/es/components/connectAdvanced.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/mapDispatchToProps.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ../node_modules/react-redux/es/connect/verifySubselectors.js ***!
+  \********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ../node_modules/core-js/modules/_array-species-constructor.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.is-safe-integer.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.define-property.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.string.from-code-point.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ../node_modules/inversify/lib/container/container_snapshot.js ***!
+  \*********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.max-safe-integer.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.number.min-safe-integer.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.get-prototype-of.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.set-prototype-of.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.define-property.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.delete-property.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/binding_when_on_syntax.js ***!
+  \**********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ../node_modules/@redux-saga/core/dist/redux-saga-effects.esm.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.define-properties.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.get-prototype-of.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.set-prototype-of.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/hasGeneratorInterface.js ***!
+  \***********************************************************************/
+
+/*!************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.prevent-extensions.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ../node_modules/redux-saga/dist/redux-saga-core-npm-proxy.esm.js ***!
+  \************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ../node_modules/core-js/fn/object/get-own-property-descriptors.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.prevent-extensions.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ../node_modules/inversify/lib/syntax/binding_in_when_on_syntax.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ../node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ../node_modules/redux-actions/es/utils/unflattenActionCreators.js ***!
+  \*************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ../node_modules/@redux-saga/delay-p/dist/redux-saga-delay-p.esm.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ../node_modules/@redux-saga/symbols/dist/redux-saga-symbols.esm.js ***!
+  \**************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ../node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ../node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js ***!
+  \***************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ../node_modules/@redux-saga/deferred/dist/redux-saga-deferred.esm.js ***!
+  \****************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.get-own-property-names.js ***!
+  \****************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js ***!
+  \*********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
+  \**********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js ***!
+  \**********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js ***!
+  \**********************************************************************************/
+
+/*!***********************************************************************************!*\
+  !*** ../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
+  \***********************************************************************************/
+
+/** @license React v0.19.1
+ * scheduler.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v16.13.1
+ * react-dom.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v16.13.1
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v16.13.1
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
