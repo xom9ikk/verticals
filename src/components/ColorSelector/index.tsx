@@ -22,7 +22,7 @@ export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) 
       onClick={() => onClick(color)}
     >
       {
-        isActive && isHover && <img src="/svg/menu/cross.svg" alt="cross" />
+        isActive && isHover && <img src="/assets/svg/menu/cross.svg" alt="cross" />
       }
     </button>
   );

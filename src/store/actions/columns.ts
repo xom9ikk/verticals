@@ -1,5 +1,17 @@
 import { createAction } from 'redux-actions';
-import { IColumns } from '../../types';
+import {
+  IAddColumn,
+  IAddColumnAfter,
+  IDuplicateColumn,
+  IGenerateNewColumnId,
+  IRemoveColumn,
+  IResetColumnColor,
+  ISetColumns,
+  IUpdateColumnColor,
+  IUpdateColumnDescription, IUpdateColumnIsCollapsed,
+  IUpdateColumnPosition,
+  IUpdateColumnTitle,
+} from '../../types/actions';
 
 enum Type {
   SET_COLUMNS = 'COLUMNS/SET_COLUMNS',
@@ -17,90 +29,19 @@ enum Type {
   REMOVE_NEW_COLUMNS = 'COLUMNS/REMOVE_NEW_COLUMNS',
 }
 
-const setColumns = createAction(
-  Type.SET_COLUMNS,
-  (payload: IColumns) => (payload),
-);
-
-const add = createAction(
-  Type.ADD,
-  (boardId: string, title?: string, description?: string) => ({
-    boardId, title, description,
-  }),
-);
-
-const updateTitle = createAction(
-  Type.UPDATE_TITLE,
-  (id: string, title: string) => ({ id, title }),
-);
-
-const updateDescription = createAction(
-  Type.UPDATE_DESCRIPTION,
-  (id: string, description: string) => ({ id, description }),
-);
-
-const updatePosition = createAction(
-  Type.UPDATE_POSITION,
-  (sourcePosition: number, destinationPosition: number, boardId: string) => ({
-    sourcePosition, destinationPosition, boardId,
-  }),
-);
-
-const updateColor = createAction(
-  Type.UPDATE_COLOR,
-  (id: string, color: number) => ({
-    id, color,
-  }),
-);
-
-const resetColor = createAction(
-  Type.RESET_COLOR,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const updateIsCollapsed = createAction(
-  Type.UPDATE_IS_COLLAPSED,
-  (id: string, isCollapsed: boolean) => ({
-    id, isCollapsed,
-  }),
-);
-
-const remove = createAction(
-  Type.REMOVE,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const duplicate = createAction(
-  Type.DUPLICATE,
-  (id: string, newId: string) => ({
-    id, newId,
-  }),
-);
-
-const addColumnAfter = createAction(
-  Type.ADD_COLUMN_AFTER,
-  (id: string, boardId: string) => ({
-    id, boardId,
-  }),
-);
-
-const generateNewId = createAction(
-  Type.GENERATE_NEW_ID,
-  (id: string) => ({
-    id,
-  }),
-);
-
-const removeNewColumns = createAction(
-  Type.REMOVE_NEW_COLUMNS,
-  () => ({
-
-  }),
-);
+const setColumns = createAction<ISetColumns>(Type.SET_COLUMNS);
+const add = createAction<IAddColumn>(Type.ADD);
+const updateTitle = createAction<IUpdateColumnTitle>(Type.UPDATE_TITLE);
+const updateDescription = createAction<IUpdateColumnDescription>(Type.UPDATE_DESCRIPTION);
+const updatePosition = createAction<IUpdateColumnPosition>(Type.UPDATE_POSITION);
+const updateColor = createAction<IUpdateColumnColor>(Type.UPDATE_COLOR);
+const resetColor = createAction<IResetColumnColor>(Type.RESET_COLOR);
+const updateIsCollapsed = createAction<IUpdateColumnIsCollapsed>(Type.UPDATE_IS_COLLAPSED);
+const remove = createAction<IRemoveColumn>(Type.REMOVE);
+const duplicate = createAction<IDuplicateColumn>(Type.DUPLICATE);
+const addColumnAfter = createAction<IAddColumnAfter>(Type.ADD_COLUMN_AFTER);
+const generateNewId = createAction<IGenerateNewColumnId>(Type.GENERATE_NEW_ID);
+const removeNewColumns = createAction(Type.REMOVE_NEW_COLUMNS);
 
 export const ColumnsActions = {
   Type,

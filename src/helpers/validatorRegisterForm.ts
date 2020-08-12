@@ -1,17 +1,19 @@
 import validator from './validator';
 
 interface IValidatorRegisterForm {
-  firstName: string,
-  lastName: string,
+  name: string,
+  surname: string,
   email: string,
+  username: string,
   password: string,
 }
 
 export const validatorRegisterForm = ({
-  firstName, lastName, email, password,
+  name, surname, email, username, password,
 }: IValidatorRegisterForm) => ({
-  firstName: validator.text(firstName, 5, 'First name'),
-  lastName: validator.text(lastName, 5, 'Last name'),
+  name: validator.text(name, 2, 'First name'),
+  surname: validator.text(surname, 2, 'Last name'),
   email: validator.email(email),
-  password: validator.password(password, 5),
+  username: validator.text(username, 2, 'Username'),
+  password: validator.password(password, 6),
 });

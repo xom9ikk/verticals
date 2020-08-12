@@ -6,11 +6,11 @@ import {
   DragDropContext, DraggableLocation, Droppable, DroppableProvided, DropResult,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Column } from '../Column';
-import { ITodo } from '../../types';
-import { ColumnsActions, TodosActions } from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
-import { useFilterTodos } from '../../use/filterTodos';
+import { Column } from '@comp/Column';
+import { ITodo } from '@/types';
+import { ColumnsActions, TodosActions } from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
+import { useFilterTodos } from '@/use/filterTodos';
 
 interface TodoMap {
   [key: string]: {
@@ -97,9 +97,11 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
 
     // reordering column
     if (result.type === 'COLUMN') {
-      dispatch(ColumnsActions.updatePosition(
-        source.index, destination.index, source.droppableId,
-      ));
+      dispatch(ColumnsActions.updatePosition({
+        sourcePosition: source.index,
+        destinationPosition: destination.index,
+        boardId: source.droppableId,
+      }));
       const _orderedId: string[] = reorder(
         orderedId,
         source.index,
@@ -145,9 +147,11 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     }
     // moving to same list
     if (source.droppableId === destination.droppableId) {
-      dispatch(TodosActions.updatePosition(
-        target.id, destination.index, destination.droppableId,
-      ));
+      dispatch(TodosActions.updatePosition({
+        id: target.id,
+        position: destination.index,
+        columnId: destination.droppableId,
+      }));
       const reordered = {
         ...current,
         todos: reorder(currentTodos, source.index, destination.index, true),
@@ -159,9 +163,12 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     }
 
     // moving to different list
-    dispatch(TodosActions.updateColumn(
-      target.id, source.droppableId, destination.droppableId, destination.index,
-    ));
+    dispatch(TodosActions.updateColumn({
+      id: target.id,
+      sourceColumnId: source.droppableId,
+      targetColumnId: destination.droppableId,
+      position: destination.index,
+    }));
     // remove from original
     currentTodos.splice(source.index, 1);
     // insert into next

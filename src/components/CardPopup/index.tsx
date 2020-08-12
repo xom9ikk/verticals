@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
-} from '../../types';
-import { Checkbox } from '../Checkbox';
-import { IRootState } from '../../store/reducers/state';
-import { SystemActions, TodosActions } from '../../store/actions';
-import { Menu } from '../Menu';
-import { Loader } from '../Loader';
-import { CardContextMenu } from '../CardContextMenu';
-import { TextArea } from '../TextArea';
-import { Comments } from '../Comments';
+} from '@/types';
+import { Checkbox } from '@comp/Checkbox';
+import { IRootState } from '@/store/reducers/state';
+import { SystemActions, TodosActions } from '@/store/actions';
+import { Menu } from '@comp/Menu';
+import { Loader } from '@comp/Loader';
+import { CardContextMenu } from '@comp/CardContextMenu';
+import { TextArea } from '@comp/TextArea';
+import { Comments } from '@comp/Comments';
 
 interface ICardPopup {
   columnId: string;
@@ -47,10 +47,16 @@ export const CardPopup: FC<ICardPopup> = ({
       console.log('debounce save', id, newTitle, newDescription);
       setIsProgress(true);
       if (newTitle) {
-        dispatch(TodosActions.updateTitle(id, newTitle));
+        dispatch(TodosActions.updateTitle({
+          id,
+          title: newTitle,
+        }));
       }
       if (newDescription) {
-        dispatch(TodosActions.updateDescription(id, newDescription));
+        dispatch(TodosActions.updateDescription({
+          id,
+          description: newDescription,
+        }));
       }
     }, 500),
     [],
@@ -117,7 +123,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     }}
                   />
                   <Menu
-                    imageSrc="/svg/close.svg"
+                    imageSrc="/assets/svg/close.svg"
                     alt="close"
                     imageSize={24}
                     size={30}
@@ -148,12 +154,13 @@ export const CardPopup: FC<ICardPopup> = ({
                         <Checkbox
                           isActive={todo.status === EnumTodoStatus.Done}
                           onClick={() => {
-                            dispatch(TodosActions.updateCompleteStatus(
-                              todo.id,
-                              todo.status === EnumTodoStatus.Done
-                                ? EnumTodoStatus.Todo
-                                : EnumTodoStatus.Done,
-                            ));
+                            const newStatus = todo.status === EnumTodoStatus.Done
+                              ? EnumTodoStatus.Todo
+                              : EnumTodoStatus.Done;
+                            dispatch(TodosActions.updateCompleteStatus({
+                              id: todo.id,
+                              status: newStatus,
+                            }));
                           }}
                           style={{
                             marginTop: 6,
@@ -186,7 +193,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     <div className="card-popup__toolbar">
                       <div>
                         <Menu
-                          imageSrc="/svg/calendar.svg"
+                          imageSrc="/assets/svg/calendar.svg"
                           alt="date"
                           imageSize={24}
                           size={36}
@@ -207,12 +214,15 @@ export const CardPopup: FC<ICardPopup> = ({
                                 titleInputRef.current?.focus();
                           }}
                           onChangeColor={(newColor) => {
-                            dispatch(TodosActions.updateColor(todo.id, newColor));
+                            dispatch(TodosActions.updateColor({
+                              id: todo.id,
+                              color: newColor,
+                            }));
                           }}
                         />
                       </div>
                       <Menu
-                        imageSrc={`/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
+                        imageSrc={`/assets/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
                         alt="date"
                         imageSize={24}
                         size={36}
@@ -221,7 +231,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           justifySelf: 'flex-end',
                         }}
                         onClick={() => {
-                          dispatch(TodosActions.switchNotificationsEnabled(todo.id));
+                          dispatch(TodosActions.switchNotificationsEnabled({ id: todo.id }));
                         }}
                       />
                     </div>

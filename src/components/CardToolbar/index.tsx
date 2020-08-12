@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Menu } from '../Menu';
+import { Menu } from '@comp/Menu';
 
 interface ICardToolbar {
   isHoverBlock: boolean;
@@ -17,7 +17,7 @@ export const CardToolbar: FC<ICardToolbar> = ({
   >
     <div className="card-toolbar__inner">
       <Menu
-        imageSrc="/svg/add.svg"
+        imageSrc="/assets/svg/add.svg"
         text="Add card"
         alt="add"
         isHoverBlock={isHoverBlock}
@@ -27,7 +27,7 @@ export const CardToolbar: FC<ICardToolbar> = ({
         onClick={onClickCard}
       />
       <Menu
-        imageSrc="/svg/add-head.svg"
+        imageSrc="/assets/svg/add-head.svg"
         alt="add"
         isHoverBlock={isHoverBlock}
         imageSize={24}

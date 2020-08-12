@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '../Menu';
-import { MenuButton } from '../MenuButton';
-import { Divider } from '../Divider';
-import { Submenu } from '../Submenu';
-import { SystemActions } from '../../store/actions';
-import { IRootState } from '../../store/reducers/state';
-import { EnumLanguage } from '../../types';
+import { Menu } from '@comp/Menu';
+import { MenuButton } from '@comp/MenuButton';
+import { Divider } from '@comp/Divider';
+import { Submenu } from '@comp/Submenu';
+import { SystemActions } from '@/store/actions';
+import { IRootState } from '@/store/reducers/state';
+import { EnumLanguage } from '@/types';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -33,7 +33,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
     setIsHover(false);
   };
 
-  const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/svg/menu/tick-active.svg' : '');
+  const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick-active.svg' : '');
 
   const menuButtonClickHandler = (action: EnumToolbarActions, payload?: any) => {
     switch (action) {
@@ -81,14 +81,14 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
     >
       <div className="toolbar__inner">
         <Menu
-          imageSrc="/svg/add.svg"
+          imageSrc="/assets/svg/add.svg"
           text="New workspace"
           alt="add"
           isHoverBlock={isHover}
           onClick={() => menuButtonClickHandler(EnumToolbarActions.NewWorkspace)}
         />
         <Menu
-          imageSrc="/svg/filter.svg"
+          imageSrc="/assets/svg/filter.svg"
           alt="preferences"
           isHoverBlock={isHover}
           imageSize={24}
@@ -98,7 +98,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         >
           <MenuButton
             text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
-            imageSrc="/svg/menu/hide-sidebar.svg"
+            imageSrc="/assets/svg/menu/hide-sidebar.svg"
             onClick={() => menuButtonClickHandler(EnumToolbarActions.SwitchSidebar)}
             // onClick={() => {
             //   setIsPinSidebar((prev) => {
@@ -112,7 +112,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
 
           <Submenu
             text="Language: English"
-            imageSrc="/svg/menu/language.svg"
+            imageSrc="/assets/svg/menu/language.svg"
           >
             <MenuButton
               text="English"
@@ -145,7 +145,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           </Submenu>
           <Submenu
             text="More"
-            imageSrc="/svg/dots.svg"
+            imageSrc="/assets/svg/dots.svg"
           >
             <MenuButton
               text="Write to developer"
@@ -163,7 +163,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuButton
             text="Log out"
-            imageSrc="/svg/menu/logout.svg"
+            imageSrc="/assets/svg/menu/logout.svg"
             onClick={() => menuButtonClickHandler(EnumToolbarActions.Logout)}
           />
         </Menu>

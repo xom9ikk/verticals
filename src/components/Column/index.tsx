@@ -5,26 +5,26 @@ import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '../Menu';
-import { Card } from '../Card';
-import { CardToolbar } from '../CardToolbar';
-import { MenuButton } from '../MenuButton';
-import { Divider } from '../Divider';
+import { Menu } from '@comp/Menu';
+import { Card } from '@comp/Card';
+import { CardToolbar } from '@comp/CardToolbar';
+import { MenuButton } from '@comp/MenuButton';
+import { Divider } from '@comp/Divider';
 import {
   ColumnsActions, SystemActions, TodosActions,
-} from '../../store/actions';
+} from '@/store/actions';
 import {
   EnumColors, EnumTodoStatus, ITodo, ITodos,
-} from '../../types';
-import { useFocus } from '../../use/focus';
-import { IRootState } from '../../store/reducers/state';
-import { ColorPicker } from '../ColorPicker';
-import { useFilterTodos } from '../../use/filterTodos';
-import { useClickPreventionOnDoubleClick } from '../../use/clickPreventionOnDoubleClick';
-import { ArchiveContainer } from '../ArchiveContainer';
-import { CardsContainer } from '../CardsContainer';
-import { CardPopup } from '../CardPopup';
-import { TextArea } from '../TextArea';
+} from '@/types';
+import { useFocus } from '@/use/focus';
+import { IRootState } from '@/store/reducers/state';
+import { ColorPicker } from '@comp/ColorPicker';
+import { useFilterTodos } from '@/use/filterTodos';
+import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+import { ArchiveContainer } from '@comp/ArchiveContainer';
+import { CardsContainer } from '@comp/CardsContainer';
+import { CardPopup } from '@comp/CardPopup';
+import { TextArea } from '@comp/TextArea';
 
 interface IColumn {
   index: number;
@@ -86,29 +86,48 @@ export const Column: FC<IColumn> = ({
     console.log('save card id', id, '->', newTitle, '->', newDescription);
     if (id) {
       if (newTitle) {
-        dispatch(TodosActions.updateTitle(id, newTitle));
+        dispatch(TodosActions.updateTitle({
+          id,
+          title: newTitle,
+        }));
       }
       if (newDescription) {
-        dispatch(TodosActions.updateDescription(id, newDescription));
+        dispatch(TodosActions.updateDescription({
+          id,
+          description: newDescription,
+        }));
       }
       if (newStatus !== undefined) {
-        dispatch(TodosActions.updateCompleteStatus(id, newStatus));
+        dispatch(TodosActions.updateCompleteStatus({
+          id,
+          status: newStatus,
+        }));
       }
       if (newColor !== undefined) {
         const todoToChange = todos?.find((todo) => todo.id === id);
         if (todoToChange?.color === newColor) {
-          dispatch(TodosActions.resetColor(id));
+          dispatch(TodosActions.resetColor({ id }));
         } else {
-          dispatch(TodosActions.updateColor(id, newColor));
+          dispatch(TodosActions.updateColor({
+            id,
+            color: newColor,
+          }));
         }
       }
       if (id === 'new-todo' && newTitle) {
-        dispatch(TodosActions.generateNewId(id));
+        dispatch(TodosActions.generateNewId({ id }));
       } else {
         dispatch(TodosActions.removeNewTodo());
       }
     } else if (newTitle || newDescription) {
-      dispatch(TodosActions.add(columnId || 'todo-this-case', newTitle, newDescription, newStatus));
+      dispatch(TodosActions.add(
+        {
+          columnId: columnId || 'todo-this-case',
+          title: newTitle,
+          description: newDescription,
+          status: newStatus,
+        },
+      ));
     }
     setIsOpenNewCard(false);
   };
@@ -130,25 +149,38 @@ export const Column: FC<IColumn> = ({
     const { newTitle, newDescription } = getNewData();
     if (columnId || columnId === 'new-column') {
       if (newTitle) {
-        dispatch(ColumnsActions.updateTitle(columnId, newTitle));
+        dispatch(ColumnsActions.updateTitle({
+          id: columnId,
+          title: newTitle,
+        }));
       }
       if (newDescription) {
-        dispatch(ColumnsActions.updateDescription(columnId, newDescription));
+        dispatch(ColumnsActions.updateDescription({
+          id: columnId,
+          description: newDescription,
+        }));
       }
       if (newColor !== undefined) {
         if (color === newColor) {
-          dispatch(ColumnsActions.resetColor(columnId));
+          dispatch(ColumnsActions.resetColor({ id: columnId }));
         } else {
-          dispatch(ColumnsActions.updateColor(columnId, newColor));
+          dispatch(ColumnsActions.updateColor({
+            id: columnId,
+            color: newColor,
+          }));
         }
       }
       if (columnId === 'new-column' && (newTitle)) {
-        dispatch(ColumnsActions.generateNewId(columnId));
+        dispatch(ColumnsActions.generateNewId({ id: columnId }));
       } else {
         dispatch(ColumnsActions.removeNewColumns());
       }
     } else if (newTitle || newDescription) {
-      dispatch(ColumnsActions.add(boardId, newTitle, newDescription));
+      dispatch(ColumnsActions.add({
+        boardId,
+        title: newTitle,
+        description: newDescription,
+      }));
       if (!isDraggable) {
         setTitleValue('');
         setDescriptionValue('');
@@ -195,7 +227,10 @@ export const Column: FC<IColumn> = ({
       event.stopPropagation();
     } else {
       setIsHoverHeader(false);
-      dispatch(ColumnsActions.updateIsCollapsed(columnId!, !isCollapsed));
+      dispatch(ColumnsActions.updateIsCollapsed({
+        id: columnId!,
+        isCollapsed: !isCollapsed,
+      }));
     }
   };
 
@@ -226,8 +261,14 @@ export const Column: FC<IColumn> = ({
       }
       case EnumMenuActions.Duplicate: {
         const newColumnId = `column-${Math.random().toString()}`;
-        dispatch(ColumnsActions.duplicate(columnId!, newColumnId));
-        dispatch(TodosActions.duplicateForColumn(columnId!, newColumnId));
+        dispatch(ColumnsActions.duplicate({
+          id: columnId!,
+          newId: newColumnId,
+        }));
+        dispatch(TodosActions.duplicateForColumn({
+          columnId: columnId!,
+          newColumnId,
+        }));
         break;
       }
       case EnumMenuActions.AddCard: {
@@ -240,11 +281,14 @@ export const Column: FC<IColumn> = ({
       }
       case EnumMenuActions.AddColumnAfter: {
         dispatch(ColumnsActions.removeNewColumns());
-        dispatch(ColumnsActions.addColumnAfter(columnId!, boardId));
+        dispatch(ColumnsActions.addColumnAfter({
+          id: columnId!,
+          boardId,
+        }));
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(ColumnsActions.remove(columnId!));
+        dispatch(ColumnsActions.remove({ id: columnId! }));
         break;
       }
       default: break;
@@ -273,7 +317,7 @@ export const Column: FC<IColumn> = ({
   const addCard = useMemo(() => (
     (!isOpenNewCard && isDraggable) && (
       <Menu
-        imageSrc="/svg/add.svg"
+        imageSrc="/assets/svg/add.svg"
         alt="add"
         text="Add card"
         isHide
@@ -352,7 +396,7 @@ export const Column: FC<IColumn> = ({
 
   const contextMenu = useMemo(() => (
     <Menu
-      imageSrc="/svg/dots.svg"
+      imageSrc="/assets/svg/dots.svg"
       alt="menu"
       imageSize={22}
       size={24}
@@ -363,35 +407,35 @@ export const Column: FC<IColumn> = ({
       <ColorPicker onPick={colorPickHandler} activeColor={color} />
       <MenuButton
         text="Edit column"
-        imageSrc="/svg/menu/edit.svg"
+        imageSrc="/assets/svg/menu/edit.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.EditColumn)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Duplicate"
-        imageSrc="/svg/menu/duplicate.svg"
+        imageSrc="/assets/svg/menu/duplicate.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.Duplicate)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Add card"
-        imageSrc="/svg/menu/add-card.svg"
+        imageSrc="/assets/svg/menu/add-card.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddCard)}
       />
       <MenuButton
         text="Add heading"
-        imageSrc="/svg/menu/add-heading.svg"
+        imageSrc="/assets/svg/menu/add-heading.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddHeading)}
       />
       <MenuButton
         text="Add column after"
-        imageSrc="/svg/menu/add-column.svg"
+        imageSrc="/assets/svg/menu/add-column.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddColumnAfter)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Delete"
-        imageSrc="/svg/menu/delete.svg"
+        imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
         onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
       />

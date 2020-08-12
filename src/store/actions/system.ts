@@ -1,5 +1,15 @@
 import { createAction } from 'redux-actions';
-import { EnumLanguage } from '../../types';
+import {
+  ISetSystemCurrentTodoId,
+  ISetSystemEditCommentId,
+  ISetSystemIsEditableBoard,
+  ISetSystemIsEditableCard,
+  ISetSystemIsEditableColumn,
+  ISetSystemIsOpenPopup,
+  ISetSystemLanguage,
+  ISetSystemQuery,
+  ISetSystemReplyCommentId,
+} from '../../types/actions';
 
 enum Type {
   SET_IS_OPEN_POPUP = 'SYSTEM/SET_IS_OPEN_POPUP',
@@ -13,49 +23,47 @@ enum Type {
   SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
 }
 
-const setIsOpenPopup = createAction(
-  Type.SET_IS_OPEN_POPUP,
-  (isOpenPopup: boolean) => ({ isOpenPopup }),
-);
+const setIsOpenPopup = createAction(Type.SET_IS_OPEN_POPUP,
+  (isOpenPopup: ISetSystemIsOpenPopup) => ({ isOpenPopup }));
 
 const setIsEditableCard = createAction(
   Type.SET_IS_EDITABLE_CARD,
-  (isEditableCard: boolean) => ({ isEditableCard }),
+  (isEditableCard: ISetSystemIsEditableCard) => ({ isEditableCard }),
 );
 
 const setIsEditableColumn = createAction(
   Type.SET_IS_EDITABLE_COLUMN,
-  (isEditableColumn: boolean) => ({ isEditableColumn }),
+  (isEditableColumn: ISetSystemIsEditableColumn) => ({ isEditableColumn }),
 );
 
 const setIsEditableBoard = createAction(
   Type.SET_IS_EDITABLE_BOARD,
-  (isEditableBoard: boolean) => ({ isEditableBoard }),
+  (isEditableBoard: ISetSystemIsEditableBoard) => ({ isEditableBoard }),
 );
 
 const setQuery = createAction(
   Type.SET_QUERY,
-  (query: string) => ({ query }),
+  (query: ISetSystemQuery) => ({ query }),
 );
 
 const setLanguage = createAction(
   Type.SET_LANGUAGE,
-  (language: EnumLanguage) => ({ language }),
+  (language: ISetSystemLanguage) => ({ language }),
 );
 
 const setCurrentTodoId = createAction(
   Type.SET_CURRENT_TODO_ID,
-  (currentTodoId: string) => ({ currentTodoId }),
+  (currentTodoId: ISetSystemCurrentTodoId) => ({ currentTodoId }),
 );
 
 const setEditCommentId = createAction(
   Type.SET_EDIT_COMMENT_ID,
-  (editCommentId: string) => ({ editCommentId }),
+  (editCommentId: ISetSystemEditCommentId) => ({ editCommentId }),
 );
 
 const setReplyCommentId = createAction(
   Type.SET_REPLY_COMMENT_ID,
-  (replyCommentId: string) => ({ replyCommentId }),
+  (replyCommentId: ISetSystemReplyCommentId) => ({ replyCommentId }),
 );
 
 export const SystemActions = {

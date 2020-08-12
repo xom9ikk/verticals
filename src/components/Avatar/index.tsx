@@ -7,7 +7,7 @@ interface IAvatar {
 
 export const Avatar: FC<IAvatar> = ({
   size = 44,
-  imageSrc = '/avatars/default.jpeg',
+  imageSrc = '/assets/images/avatars/default.jpeg',
 }) => (
   <img
     src={imageSrc}

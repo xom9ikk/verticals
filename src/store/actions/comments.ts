@@ -1,5 +1,7 @@
 import { createAction } from 'redux-actions';
-import { IFile, IImage } from '../../types';
+import {
+  IAddComment, IRemoveComment, IRemoveCommentFile, ISwitchCommentLike, IUpdateCommentText,
+} from '../../types';
 
 enum Type {
   ADD = 'COMMENTS/ADD',
@@ -9,62 +11,11 @@ enum Type {
   REMOVE_FILE = 'COMMENTS/REMOVE_FILE',
 }
 
-const add = createAction(
-  Type.ADD,
-  (
-    todoId: string,
-    comment: {
-      text: string,
-      replyCommentId: string,
-      attachedFiles?: Array<IFile>,
-      attachedImages?: Array<IImage>,
-    },
-  ) => ({
-    todoId,
-    ...comment,
-  }),
-);
-
-const remove = createAction(
-  Type.REMOVE,
-  (
-    id: string,
-  ) => ({
-    id,
-  }),
-);
-
-const switchLike = createAction(
-  Type.SWITCH_LIKE,
-  (
-    id: string,
-    userId: string,
-  ) => ({
-    id,
-    userId,
-  }),
-);
-
-const updateText = createAction(
-  Type.UPDATE_TEXT,
-  (
-    id: string,
-    text: string,
-  ) => ({
-    id,
-    text,
-  }),
-);
-const removeFile = createAction(
-  Type.REMOVE_FILE,
-  (
-    id: string,
-    fileId: string,
-  ) => ({
-    id,
-    fileId,
-  }),
-);
+const add = createAction<IAddComment>(Type.ADD);
+const remove = createAction<IRemoveComment>(Type.REMOVE);
+const switchLike = createAction<ISwitchCommentLike>(Type.SWITCH_LIKE);
+const updateText = createAction<IUpdateCommentText>(Type.UPDATE_TEXT);
+const removeFile = createAction<IRemoveCommentFile>(Type.REMOVE_FILE);
 
 export const CommentsActions = {
   Type,

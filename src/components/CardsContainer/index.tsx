@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { EnumTodoStatus, EnumTodoType, ITodos } from '../../types';
-import { Card } from '../Card';
-import { IRootState } from '../../store/reducers/state';
+import { EnumTodoStatus, EnumTodoType, ITodos } from '@/types';
+import { Card } from '@comp/Card';
+import { IRootState } from '@/store/reducers/state';
 
 interface ICardsContainer {
   todos?: ITodos;
