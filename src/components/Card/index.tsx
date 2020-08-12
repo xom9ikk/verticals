@@ -4,7 +4,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { icons } from '@/icons';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { Checkbox } from '@comp/Checkbox';
 import { SystemActions } from '@/store/actions';
@@ -224,7 +223,7 @@ export const Card: FC<ICard> = ({
           <img
             className="card__bullet"
             // @ts-ignore
-            src={icons.card[bullets[type - 1]]}
+            src={`/assets/svg/card/${bullets[type - 1]}.svg`}
             alt="bullet"
           />
         );

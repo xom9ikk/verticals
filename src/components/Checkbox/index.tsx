@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { icons } from '@/icons';
 
 interface ICheckbox {
   isActive: boolean;
@@ -22,7 +21,7 @@ export const Checkbox: FC<ICheckbox> = ({ isActive, onClick, style }) => (
       }}
     />
     <div className={`checkbox__imitator ${isActive ? 'checkbox__imitator--active' : ''}`}>
-      <img src={icons.tick} alt="tick" />
+      <img src="/assets/svg/tick.svg" alt="tick" />
     </div>
   </div>
 );

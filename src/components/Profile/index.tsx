@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { MenuButton } from '@comp/MenuButton';
 import { Divider } from '@comp/Divider';
@@ -18,7 +17,7 @@ export const Profile: FC<IProfile> = () => {
     >
       <Avatar />
       <Menu
-        imageSrc={icons.dots}
+        imageSrc="/assets/svg/dots.svg"
         alt="add"
         imageSize={22}
         size={24}
@@ -28,17 +27,17 @@ export const Profile: FC<IProfile> = () => {
       >
         <MenuButton
           text="My Profile"
-          imageSrc={icons.menu.myProfile}
+          imageSrc="/assets/svg/menu/my-profile.svg"
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuButton
           text="Add board"
-          imageSrc={icons.menu.addBoard}
+          imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
         />
         <MenuButton
           text="Copy link"
-          imageSrc={icons.menu.copyLink}
+          imageSrc="/assets/svg/menu/copy-link.svg"
         />
       </Menu>
     </div>

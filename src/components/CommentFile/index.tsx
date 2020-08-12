@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 // @ts-ignore
 import downloadjs from 'downloadjs';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { IFile } from '@/types';
 
@@ -48,7 +47,7 @@ export const CommentFile: FC<ICommentFile> = ({
         className="comment-file__overlay"
       >
         <Menu
-          imageSrc={icons.download}
+          imageSrc="/assets/svg/download.svg"
           alt="download"
           imageSize={isImage ? 40 : 20}
           size={isImage ? 60 : 30}
@@ -62,7 +61,7 @@ export const CommentFile: FC<ICommentFile> = ({
         {
           !isImage && (
           <div className="comment-file__info">
-            <img src={icons.extension} alt="extension" />
+            <img src="/assets/svg/menu/extension.svg" alt="extension" />
             <span>
               {file.type.substring(0, 3)}
             </span>
@@ -76,7 +75,7 @@ export const CommentFile: FC<ICommentFile> = ({
 
       <div className="comment-file__overlay-info">
         <Menu
-          imageSrc={icons.menu.remove}
+          imageSrc="/assets/svg/menu/remove.svg"
           alt="delete"
           imageSize={22}
           size={24}

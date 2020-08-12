@@ -64,8 +64,7 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@comp/*": ["src/components/*"],
-      "@svg/*": ["src/assets/svg/*"]
+      "@comp/*": ["src/components/*"]
     }
   }
 }

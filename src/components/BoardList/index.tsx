@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { BoardItem } from '@comp/BoardItem';
 import { Profile } from '@comp/Profile';
@@ -76,7 +75,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       }
     } else if (newTitle) {
       dispatch(BoardsActions.add({
-        icon: icons.board.item,
+        icon: '/assets/svg/board/item.svg',
         title: newTitle,
         description: newDescription,
       }));
@@ -226,7 +225,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const memoNewBoard = useMemo(() => (
     isOpenNewBoard && (
     <BoardItem
-      icon={icons.board.item}
+      icon="/assets/svg/board/item.svg"
       isEditableDefault
       onExitFromEditable={saveBoard}
     />
@@ -238,7 +237,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       {
           !isOpenNewBoard && (
           <Menu
-            imageSrc={icons.add}
+            imageSrc="/assets/svg/add.svg"
             alt="add"
             text="Add board"
             isHide

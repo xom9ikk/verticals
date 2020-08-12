@@ -5,7 +5,6 @@ import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { Card } from '@comp/Card';
 import { CardToolbar } from '@comp/CardToolbar';
@@ -318,7 +317,7 @@ export const Column: FC<IColumn> = ({
   const addCard = useMemo(() => (
     (!isOpenNewCard && isDraggable) && (
       <Menu
-        imageSrc={icons.add}
+        imageSrc="/assets/svg/add.svg"
         alt="add"
         text="Add card"
         isHide
@@ -397,7 +396,7 @@ export const Column: FC<IColumn> = ({
 
   const contextMenu = useMemo(() => (
     <Menu
-      imageSrc={icons.dots}
+      imageSrc="/assets/svg/dots.svg"
       alt="menu"
       imageSize={22}
       size={24}
@@ -408,35 +407,35 @@ export const Column: FC<IColumn> = ({
       <ColorPicker onPick={colorPickHandler} activeColor={color} />
       <MenuButton
         text="Edit column"
-        imageSrc={icons.menu.edit}
+        imageSrc="/assets/svg/menu/edit.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.EditColumn)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Duplicate"
-        imageSrc={icons.menu.duplicate}
+        imageSrc="/assets/svg/menu/duplicate.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.Duplicate)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Add card"
-        imageSrc={icons.menu.addCard}
+        imageSrc="/assets/svg/menu/add-card.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddCard)}
       />
       <MenuButton
         text="Add heading"
-        imageSrc={icons.menu.addHeading}
+        imageSrc="/assets/svg/menu/add-heading.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddHeading)}
       />
       <MenuButton
         text="Add column after"
-        imageSrc={icons.menu.addColumn}
+        imageSrc="/assets/svg/menu/add-column.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddColumnAfter)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Delete"
-        imageSrc={icons.menu.remove}
+        imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
         onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
       />

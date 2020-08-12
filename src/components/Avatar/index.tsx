@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import defaultAvatar from '@/assets/avatars/default.jpeg';
 
 interface IAvatar {
   size?: number;
@@ -8,7 +7,7 @@ interface IAvatar {
 
 export const Avatar: FC<IAvatar> = ({
   size = 44,
-  imageSrc = defaultAvatar,
+  imageSrc = '/assets/images/avatars/default.jpeg',
 }) => (
   <img
     src={imageSrc}

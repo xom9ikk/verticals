@@ -1,7 +1,6 @@
 import React, {
   forwardRef, useEffect, useRef,
 } from 'react';
-import { icons } from '@/icons';
 import { CommentItem } from '@comp/CommentItem';
 import { IComment, IComments } from '@/types';
 
@@ -37,7 +36,7 @@ const CL = ({
           </>
         ) : (
           <>
-            <img src={icons.commentsEmpty} alt="empty" />
+            <img src="/assets/svg/comments-empty.svg" alt="empty" />
             <div>Drop files here</div>
           </>
         )

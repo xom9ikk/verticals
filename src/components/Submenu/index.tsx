@@ -1,5 +1,4 @@
 import React, { FC, useRef, useState } from 'react';
-import { icons } from '@/icons';
 import { Popup } from '@comp/Popup';
 import { MenuButton } from '@comp/MenuButton';
 
@@ -33,7 +32,7 @@ export const Submenu: FC<ISubmenu> = ({
       <MenuButton
         text={text}
         imageSrc={imageSrc}
-        hintImageSrc={icons.menu.rightChevron}
+        hintImageSrc="/assets/svg/menu/right-chevron.svg"
       />
     </span>
   );

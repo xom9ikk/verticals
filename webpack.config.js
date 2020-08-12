@@ -1,9 +1,11 @@
+/* eslint-disable no-useless-escape,no-template-curly-in-string */
 const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const autoprefixer = require('autoprefixer');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -26,6 +28,7 @@ const tsLoaders = () => {
           '@babel/preset-react',
         ],
         plugins: [
+          '@babel/plugin-transform-runtime',
           ['@babel/plugin-proposal-decorators', { legacy: true }],
           'react-hot-loader/babel',
           'babel-plugin-parameter-decorator',
@@ -65,8 +68,49 @@ module.exports = {
     hot: isDev,
     historyApiFallback: true,
     publicPath: '/',
+    overlay: true,
   },
   optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: 'vendors',
+          test: /node_modules/,
+          chunks: 'all',
+          enforce: true,
+        },
+        auth: {
+          name: 'auth.page',
+          test: /pages\/auth/,
+          chunks: 'all',
+          enforce: true,
+        },
+        board: {
+          name: 'board',
+          test: /pages\/main/,
+          chunks: 'all',
+          enforce: true,
+        },
+        components: {
+          name: 'components',
+          test: /components/,
+          chunks: 'all',
+          enforce: true,
+        },
+        store: {
+          name: 'store',
+          test: /store/,
+          chunks: 'all',
+          enforce: true,
+        },
+        assets: {
+          name: 'assets',
+          test: /assets/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
@@ -109,6 +153,12 @@ module.exports = {
             loader: 'css-loader',
             options: {
               sourceMap: isDev,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer],
             },
           },
           {

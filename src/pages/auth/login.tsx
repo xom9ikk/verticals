@@ -2,7 +2,6 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { icons } from '@/icons';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
@@ -74,7 +73,7 @@ export const Login: FC = () => {
         type="submit"
         isMaxWidth
       >
-        <img src={icons.google} alt="google" />
+        <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
         Sign in with Google
       </Button>

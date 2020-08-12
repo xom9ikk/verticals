@@ -2,7 +2,6 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
 import { CommentsActions, SystemActions } from '@/store/actions';
@@ -100,7 +99,7 @@ export const CommentForm: FC<ICommentForm> = ({
             `}
           >
             <Menu
-              imageSrc={icons.close}
+              imageSrc="/assets/svg/close.svg"
               alt="remove"
               imageSize={24}
               size={26}
@@ -131,7 +130,7 @@ export const CommentForm: FC<ICommentForm> = ({
             />
             <div className="comment-form__controls">
               <Menu
-                imageSrc={icons.gallery}
+                imageSrc="/assets/svg/gallery.svg"
                 alt="image"
                 imageSize={24}
                 size={26}
@@ -140,7 +139,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 }}
               />
               <Menu
-                imageSrc={icons.attach}
+                imageSrc="/assets/svg/attach.svg"
                 alt="file"
                 imageSize={24}
                 size={26}
@@ -149,7 +148,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 }}
               />
               <Menu
-                imageSrc={icons.arrowUp}
+                imageSrc="/assets/svg/arrow-up.svg"
                 alt="date"
                 imageSize={24}
                 size={30}

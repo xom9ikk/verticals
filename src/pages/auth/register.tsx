@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { icons } from '@/icons';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
@@ -123,7 +122,7 @@ export const Register: FC = () => {
         type="submit"
         isMaxWidth
       >
-        <img src={icons.google} alt="google" />
+        <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
         Sign in with Google
       </Button>

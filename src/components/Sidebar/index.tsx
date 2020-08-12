@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { Toolbar } from '@comp/Toolbar';
 
@@ -25,7 +24,7 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
         <div className="sidebar__inner">
           <div className="sidebar__toggle">
             <Menu
-              imageSrc={isPinnedSidebar ? icons.hideSidebar : icons.showSidebar}
+              imageSrc={`/assets/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
               alt="add"
               imageSize={16}
               size={20}

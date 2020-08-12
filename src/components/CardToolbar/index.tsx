@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 
 interface ICardToolbar {
@@ -18,7 +17,7 @@ export const CardToolbar: FC<ICardToolbar> = ({
   >
     <div className="card-toolbar__inner">
       <Menu
-        imageSrc={icons.add}
+        imageSrc="/assets/svg/add.svg"
         text="Add card"
         alt="add"
         isHoverBlock={isHoverBlock}
@@ -28,7 +27,7 @@ export const CardToolbar: FC<ICardToolbar> = ({
         onClick={onClickCard}
       />
       <Menu
-        imageSrc={icons.addHead}
+        imageSrc="/assets/svg/add-head.svg"
         alt="add"
         isHoverBlock={isHoverBlock}
         imageSize={24}

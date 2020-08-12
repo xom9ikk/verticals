@@ -2,7 +2,6 @@ import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { icons } from '@/icons';
 import { IComment, IFile } from '@/types';
 import { MenuButton } from '@comp/MenuButton';
 import { Menu } from '@comp/Menu';
@@ -188,7 +187,7 @@ export const CommentItem: FC<ICommentItem> = ({
       <div className="comment__controls">
         <div className="comment__controls--buttons">
           <Menu
-            imageSrc={isLikeByMe ? icons.likeActive : icons.like}
+            imageSrc={`"/assets/svg/like${isLikeByMe ? '-active' : ''}.svg"`}
             alt="like"
             imageSize={16}
             size={22}
@@ -196,7 +195,7 @@ export const CommentItem: FC<ICommentItem> = ({
             onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
           />
           <Menu
-            imageSrc={icons.reply}
+            imageSrc="/assets/svg/reply.svg"
             alt="reply"
             imageSize={16}
             size={22}
@@ -212,7 +211,7 @@ export const CommentItem: FC<ICommentItem> = ({
           }
           <Avatar size={20} />
           <Menu
-            imageSrc={icons.dots}
+            imageSrc="/assets/svg/dots.svg"
             alt="menu"
             imageSize={16}
             size={22}
@@ -220,23 +219,23 @@ export const CommentItem: FC<ICommentItem> = ({
           >
             <MenuButton
               text="Like"
-              imageSrc={icons.like}
+              imageSrc="/assets/svg/like.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
             />
             <MenuButton
               text="Reply"
-              imageSrc={icons.reply}
+              imageSrc="/assets/svg/reply.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
             />
             <MenuButton
               text="Edit"
-              imageSrc={icons.menu.edit}
+              imageSrc="/assets/svg/menu/edit.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Delete"
-              imageSrc={icons.menu.remove}
+              imageSrc="/assets/svg/menu/remove.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
             />
           </Menu>

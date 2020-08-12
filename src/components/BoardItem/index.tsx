@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { icons } from '@/icons';
 import { Menu } from '@comp/Menu';
 import { MenuButton } from '@comp/MenuButton';
 import { Divider } from '@comp/Divider';
@@ -200,7 +199,7 @@ export const BoardItem: FC<IBoardItem> = ({
       {
           id !== 'trash' && id !== 'today' && (
           <Menu
-            imageSrc={icons.dots}
+            imageSrc="/assets/svg/dots.svg"
             alt="menu"
             imageSize={22}
             size={24}
@@ -218,39 +217,39 @@ export const BoardItem: FC<IBoardItem> = ({
             <ColorPicker onPick={colorPickHandler} activeColor={color} />
             <MenuButton
               text="Edit board"
-              imageSrc={icons.menu.edit}
+              imageSrc="/assets/svg/menu/edit.svg"
               hintText="E"
               onClick={() => menuButtonClickHandler(EnumMenuActions.EditBoard)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <Submenu
               text="Card style"
-              imageSrc={icons.menu.rect}
+              imageSrc="/assets/svg/menu/rect.svg"
             >
               <MenuButton
                 text="Checkboxes"
-                imageSrc={icons.menu.square}
+                imageSrc="/assets/svg/menu/square.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
                 )}
               />
               <MenuButton
                 text="Arrows"
-                imageSrc={icons.menu.arrow}
+                imageSrc="/assets/svg/menu/arrow.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Arrows,
                 )}
               />
               <MenuButton
                 text="Dots"
-                imageSrc={icons.menu.circle}
+                imageSrc="/assets/svg/menu/circle.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Dots,
                 )}
               />
               <MenuButton
                 text="Dashes"
-                imageSrc={icons.menu.dash}
+                imageSrc="/assets/svg/menu/dash.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Dashes,
                 )}
@@ -264,19 +263,19 @@ export const BoardItem: FC<IBoardItem> = ({
             </Submenu>
             <MenuButton
               text="Copy link"
-              imageSrc={icons.menu.copyLink}
+              imageSrc="/assets/svg/menu/copy-link.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.CopyLink)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Add board below"
-              imageSrc={icons.menu.addBoard}
+              imageSrc="/assets/svg/menu/add-board.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuButton
               text="Delete"
-              imageSrc={icons.menu.remove}
+              imageSrc="/assets/svg/menu/remove.svg"
               hintText="⌫"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
             />
@@ -288,7 +287,7 @@ export const BoardItem: FC<IBoardItem> = ({
 
   const memoCounter = useMemo(() => (
     <div className="board-item__counter">
-      <img src={icons.board.search} alt="" />
+      <img src="/assets/svg/board/search.svg" alt="" />
       {countTodos}
     </div>
   ), [countTodos]);

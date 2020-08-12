@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
-import { icons } from '@/icons';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
 } from '@/types';
@@ -124,7 +123,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     }}
                   />
                   <Menu
-                    imageSrc={icons.close}
+                    imageSrc="/assets/svg/close.svg"
                     alt="close"
                     imageSize={24}
                     size={30}
@@ -194,7 +193,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     <div className="card-popup__toolbar">
                       <div>
                         <Menu
-                          imageSrc={icons.calendar}
+                          imageSrc="/assets/svg/calendar.svg"
                           alt="date"
                           imageSize={24}
                           size={36}
@@ -223,7 +222,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         />
                       </div>
                       <Menu
-                        imageSrc={todo.isNotificationsEnabled ? icons.bellActive : icons.bell}
+                        imageSrc={`/assets/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
                         alt="date"
                         imageSize={24}
                         size={36}

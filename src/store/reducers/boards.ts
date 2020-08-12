@@ -1,61 +1,60 @@
 import { handleActions } from 'redux-actions';
-import { icons } from '@/icons';
 import { BoardsActions } from '../actions';
 import { EnumTodoType, IBoard, IBoards } from '../../types';
 
 const initialState: IBoards = [{
   id: 'today',
-  icon: icons.board.star,
+  icon: '/assets/svg/board/star.svg',
   title: 'Today',
   position: 0,
   cardType: EnumTodoType.Checkboxes,
 },
 {
   id: 'trash',
-  icon: icons.board.trash,
+  icon: '/assets/svg/board/trash.svg',
   title: 'Trash',
   position: 1,
   cardType: EnumTodoType.Checkboxes,
 },
 {
   id: 'board-1',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'To reading',
   position: 2,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-2',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'Technologies etc.',
   position: 3,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-3',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'Projects',
   position: 4,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-4',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'Branches',
   position: 5,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-5',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'Films',
   position: 6,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-6',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'Buy',
   position: 7,
   cardType: EnumTodoType.Checkboxes,
 }, {
   id: 'board-7',
-  icon: icons.board.item,
+  icon: '/assets/svg/board/item.svg',
   title: 'Books',
   position: 8,
   cardType: EnumTodoType.Checkboxes,
@@ -131,7 +130,7 @@ export const BoardsReducer = handleActions<IBoards, any>({
             id: 'new-board',
             position: spliceIndex,
             title: '',
-            icon: icons.board.item,
+            icon: '/assets/svg/board/item.svg',
             cardType: EnumTodoType.Checkboxes,
           });
           return boards.map((board: IBoard, index) => ({

@@ -19,6 +19,7 @@ module.exports = {
     "react/jsx-filename-extension": "off",
     "react/button-has-type": "off",
     "react/no-array-index-key": "off",
+    "react/require-default-props": "off",
     "import/prefer-default-export": "off",
     "consistent-return": "off",
     "jsx-a11y/control-has-associated-label": "off",
