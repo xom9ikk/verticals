@@ -21,7 +21,7 @@ export const Checkbox: FC<ICheckbox> = ({ isActive, onClick, style }) => (
       }}
     />
     <div className={`checkbox__imitator ${isActive ? 'checkbox__imitator--active' : ''}`}>
-      <img src="/svg/tick.svg" alt="tick" />
+      <img src="/assets/svg/tick.svg" alt="tick" />
     </div>
   </div>
 );

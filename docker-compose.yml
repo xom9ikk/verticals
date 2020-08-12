@@ -7,7 +7,8 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "172.50.13.1:8080:80"
+#      - "172.50.13.1:8080:80"
+      - "0.0.0.0:8080:80"
     networks:
       verticals-prod_net:
         ipv4_address: 172.50.13.11

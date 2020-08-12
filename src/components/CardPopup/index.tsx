@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
-} from '../../types';
-import { Checkbox } from '../Checkbox';
-import { IRootState } from '../../store/reducers/state';
-import { SystemActions, TodosActions } from '../../store/actions';
-import { Menu } from '../Menu';
-import { Loader } from '../Loader';
-import { CardContextMenu } from '../CardContextMenu';
-import { TextArea } from '../TextArea';
-import { Comments } from '../Comments';
+} from '@/types';
+import { Checkbox } from '@comp/Checkbox';
+import { IRootState } from '@/store/reducers/state';
+import { SystemActions, TodosActions } from '@/store/actions';
+import { Menu } from '@comp/Menu';
+import { Loader } from '@comp/Loader';
+import { CardContextMenu } from '@comp/CardContextMenu';
+import { TextArea } from '@comp/TextArea';
+import { Comments } from '@comp/Comments';
 
 interface ICardPopup {
   columnId: string;
@@ -123,7 +123,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     }}
                   />
                   <Menu
-                    imageSrc="/svg/close.svg"
+                    imageSrc="/assets/svg/close.svg"
                     alt="close"
                     imageSize={24}
                     size={30}
@@ -193,7 +193,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     <div className="card-popup__toolbar">
                       <div>
                         <Menu
-                          imageSrc="/svg/calendar.svg"
+                          imageSrc="/assets/svg/calendar.svg"
                           alt="date"
                           imageSize={24}
                           size={36}
@@ -222,7 +222,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         />
                       </div>
                       <Menu
-                        imageSrc={`/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
+                        imageSrc={`/assets/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
                         alt="date"
                         imageSize={24}
                         size={36}

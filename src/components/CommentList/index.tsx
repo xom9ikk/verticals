@@ -1,8 +1,8 @@
 import React, {
   forwardRef, useEffect, useRef,
 } from 'react';
-import { CommentItem } from '../CommentItem';
-import { IComment, IComments } from '../../types';
+import { CommentItem } from '@comp/CommentItem';
+import { IComment, IComments } from '@/types';
 
 interface ICommentList {
   data?: IComments
@@ -36,7 +36,7 @@ const CL = ({
           </>
         ) : (
           <>
-            <img src="/svg/comments-empty.svg" alt="empty" />
+            <img src="/assets/svg/comments-empty.svg" alt="empty" />
             <div>Drop files here</div>
           </>
         )

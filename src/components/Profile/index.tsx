@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
-import { Menu } from '../Menu';
-import { MenuButton } from '../MenuButton';
-import { Divider } from '../Divider';
-import { Avatar } from '../Avatar';
+import { Menu } from '@comp/Menu';
+import { MenuButton } from '@comp/MenuButton';
+import { Divider } from '@comp/Divider';
+import { Avatar } from '@comp/Avatar';
 
 interface IProfile {
 }
@@ -17,7 +17,7 @@ export const Profile: FC<IProfile> = () => {
     >
       <Avatar />
       <Menu
-        imageSrc="/svg/dots.svg"
+        imageSrc="/assets/svg/dots.svg"
         alt="add"
         imageSize={22}
         size={24}
@@ -27,17 +27,17 @@ export const Profile: FC<IProfile> = () => {
       >
         <MenuButton
           text="My Profile"
-          imageSrc="/svg/menu/my-profile.svg"
+          imageSrc="/assets/svg/menu/my-profile.svg"
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuButton
           text="Add board"
-          imageSrc="/svg/menu/add-board.svg"
+          imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
         />
         <MenuButton
           text="Copy link"
-          imageSrc="/svg/menu/copy-link.svg"
+          imageSrc="/assets/svg/menu/copy-link.svg"
         />
       </Menu>
     </div>
