@@ -56,7 +56,7 @@ export const MainRouter: FC = () => (
       />
       <RouteWrapper
         path="/"
-        layout={() => <SuspenseWrapper component={MainLayout} fallback={() => <></>} />}
+        layout={() => <SuspenseWrapper component={MainLayout} />}
         exact
         isPrivate
       />

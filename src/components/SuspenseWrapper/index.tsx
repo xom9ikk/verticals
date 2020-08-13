@@ -1,5 +1,4 @@
 import React, { FC, Suspense } from 'react';
-import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface ISuspenseWrapper {
   component: FC
@@ -8,7 +7,7 @@ interface ISuspenseWrapper {
 
 export const SuspenseWrapper: FC<ISuspenseWrapper> = ({
   component: Component,
-  fallback: Fallback = FallbackLoader,
+  fallback: Fallback = () => <></>,
 }) => (
   <Suspense fallback={<Fallback />}>
     <Component />

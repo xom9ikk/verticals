@@ -2,16 +2,18 @@ import {
   apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
-import { container } from '../../inversify.config';
-import { TYPES } from '../../inversify.types';
-import { IServices } from '../../inversify.interfaces';
+import { useAlert } from '@/use/alert';
+import { container } from '@/inversify.config';
+import { TYPES } from '@/inversify.types';
+import { IServices } from '@/inversify.interfaces';
+import { storage } from '@/plugins/storage';
+import { forwardTo } from '@/router/history';
+import { ISignInRequest, ISignUpRequest } from '@/types/api';
+import { ISetAuthInfo } from '@/types/actions';
 import { AuthActions } from '../actions';
-import { storage } from '../../plugins/storage';
-import { forwardTo } from '../../router/history';
-import { ISignInRequest, ISignUpRequest } from '../../types/api';
-import { ISetAuthInfo } from '../../types/actions';
 
 const { auth } = container.get<IServices>(TYPES.Services);
+const { show, ALERT_TYPES } = useAlert();
 
 function* signUpWorker(action: Action<ISignUpRequest>) {
   try {
@@ -22,8 +24,10 @@ function* signUpWorker(action: Action<ISignUpRequest>) {
       refreshToken,
     }));
     yield call(forwardTo, '/');
+    yield call(show, 'Success', 'Registration completed successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     console.error('signUpWorker', error);
+    yield call(show, 'Internal Error', 'Registration Error', ALERT_TYPES.DANGER);
   }
 }
 
@@ -35,8 +39,10 @@ function* signInWorker(action: Action<ISignInRequest>) {
       token,
       refreshToken,
     }));
+    yield call(show, 'Success', 'Successful login ', ALERT_TYPES.SUCCESS);
   } catch (error) {
     console.error('signInWorker', error);
+    yield call(show, 'Internal Error', 'Login Error', ALERT_TYPES.DANGER);
   }
 }
 
@@ -47,6 +53,7 @@ function* setAuthInfoWorker(action: Action<ISetAuthInfo>) {
     yield* call(storage.setRefreshToken, refreshToken);
   } catch (error) {
     console.error('setAuthInfoWorker', error);
+    show('Internal Error', '', ALERT_TYPES.DANGER);
   }
 }
 

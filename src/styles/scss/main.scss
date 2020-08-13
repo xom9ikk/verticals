@@ -53,3 +53,24 @@ textarea {
     height: 0;
   }
 }
+
+.notification {
+  &-item {
+    border-radius: 8px !important;
+    box-shadow: 3px 8px 18px rgba(0,0,0,.22) !important;
+  }
+  &-danger {
+    border-left: 8px solid darken($danger, 7) !important;
+    background-color: $danger !important;
+    & .timer {
+      background-color: lighten($danger, 15) !important;
+    }
+  }
+  &-success {
+    border-left: 8px solid darken($primary, 7) !important;
+    background-color: $primary !important;
+    & .timer {
+      background-color: lighten($primary, 15) !important;
+    }
+  }
+}
