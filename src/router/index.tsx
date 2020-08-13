@@ -1,4 +1,4 @@
-import React, { FC, Suspense } from 'react';
+import React, { FC } from 'react';
 import {
   Router, Switch,
 } from 'react-router-dom';
@@ -6,31 +6,32 @@ import { history } from '@/router/history';
 import { RouteWrapper } from '@/router/router';
 import { NotFound } from '@/pages/404';
 import { AuthLayout } from '@/layouts/auth';
-import { FallbackLoader } from '@comp/FallbackLoader';
+import { SuspenseWrapper } from '@comp/SuspenseWrapper';
 
-const MainLayout = React.lazy(() => import(/* webpackChunkName: "main" */'@/layouts/main').then(
-  (module) => ({
-    default: module.MainLayout,
-  }),
-));
+const getDefault = (module: any) => (module?.default);
 
-const Register = React.lazy(() => import(/* webpackChunkName: "auth.register" */'@/pages/auth/register').then(
-  (module) => ({
-    default: module.Register,
-  }),
-));
+interface ILazy {
+  (
+    importFunc: () => Promise<any>,
+    resolveComponent: (module: any) => any,
+    delay?: number
+  ): FC
+}
 
-const Login = React.lazy(() => import(/* webpackChunkName: "auth.login" */'@/pages/auth/login').then(
-  (module) => ({
-    default: module.Login,
-  }),
-));
+const lazy: ILazy = (importFunc, resolveComponent = getDefault, delay = 0) => React.lazy(
+  () => importFunc()
+    .then((module: any) => new Promise((resolve) => setTimeout(() => resolve(module), delay)))
+    .then(
+      (module:any) => ({
+        default: resolveComponent(module),
+      }),
+    ),
+);
 
-const Reset = React.lazy(() => import(/* webpackChunkName: "auth.reset" */'@/pages/auth/reset').then(
-  (module) => ({
-    default: module.Reset,
-  }),
-));
+export const MainLayout = lazy(() => import('@/layouts/main'), (module) => module.MainLayout);
+export const Register = lazy(() => import('@/pages/auth/register'), (module) => module.Register);
+export const Login = lazy(() => import('@/pages/auth/login'), (module) => module.Login);
+export const Reset = lazy(() => import('@/pages/auth/reset'), (module) => module.Reset);
 
 export const MainRouter: FC = () => (
   <Router history={history}>
@@ -38,40 +39,24 @@ export const MainRouter: FC = () => (
       <RouteWrapper
         path="/auth/register"
         layout={AuthLayout}
-        component={() => (
-          <Suspense fallback={<FallbackLoader />}>
-            <Register />
-          </Suspense>
-        )}
+        component={() => <SuspenseWrapper component={Register} />}
         exact
       />
       <RouteWrapper
         path="/auth/login"
         layout={AuthLayout}
-        component={() => (
-          <Suspense fallback={<FallbackLoader />}>
-            <Login />
-          </Suspense>
-        )}
+        component={() => <SuspenseWrapper component={Login} />}
         exact
       />
       <RouteWrapper
         path="/auth/reset"
         layout={AuthLayout}
-        component={() => (
-          <Suspense fallback={<FallbackLoader />}>
-            <Reset />
-          </Suspense>
-        )}
+        component={() => <SuspenseWrapper component={Reset} />}
         exact
       />
       <RouteWrapper
         path="/"
-        layout={() => (
-          <Suspense fallback={<FallbackLoader />}>
-            <MainLayout />
-          </Suspense>
-        )}
+        layout={() => <SuspenseWrapper component={MainLayout} fallback={() => <></>} />}
         exact
         isPrivate
       />

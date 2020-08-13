@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --open --config ./build/webpack.dev.config.js",
+    "start": "webpack-dev-server --config ./build/webpack.dev.config.js --open",
     "build": "webpack --config ./build/webpack.build.config.js",
     "analyze": "node ./build/analyze.js",
     "test": "node scripts/test.js",

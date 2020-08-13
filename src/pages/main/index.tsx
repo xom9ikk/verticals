@@ -7,10 +7,18 @@ import { Columns } from '@comp/Columns';
 import { SystemActions } from '@/store/actions';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
   const [activeBoardId, setActiveBoardId] = useState<string>('board-2');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   const closeAllPopups = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
@@ -67,6 +75,7 @@ export const Main: FC = () => {
     <>
       { memoSidebar }
       { memoColumns }
+      <FallbackLoader isFixed isLoading={isLoading} />
     </>
   );
 };
