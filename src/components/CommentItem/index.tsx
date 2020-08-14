@@ -187,7 +187,7 @@ export const CommentItem: FC<ICommentItem> = ({
       <div className="comment__controls">
         <div className="comment__controls--buttons">
           <Menu
-            imageSrc={`"/assets/svg/like${isLikeByMe ? '-active' : ''}.svg"`}
+            imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg"`}
             alt="like"
             imageSize={16}
             size={22}

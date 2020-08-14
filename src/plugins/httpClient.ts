@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle,class-methods-use-this */
 import { injectable } from 'inversify';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { IHttpClient } from '@/inversify.interfaces';
+import { IRefreshResponse } from '@/types/api';
 import { storage } from './storage';
-import { IHttpClient } from '../inversify.interfaces';
-import { IRefreshResponse } from '../types/api';
 
-const baseURL = 'http://0.0.0.0:3000/api/v1';
+const baseURL = process.env.API_URL;
 
 const AUTH_PREFIX = 'Bearer ';
 const DEFAULT_CONTENT_TYPE = 'application/json; charset=utf-8';
@@ -78,22 +78,27 @@ export class HttpClient implements IHttpClient {
   }
 
   private async responseInterceptor(error: any) {
-    if (HttpClient.shouldRetry(error)) {
-      return this.retryRequest(error);
-    }
-
-    if (!HttpClient.shouldRefresh(error)) {
-      return Promise.reject(error);
-    }
-
     try {
-      const pairTokens = await this.getNewPairTokens();
-      HttpClient.setTokenData(pairTokens);
-      return this.retryRequest(error);
+      if (HttpClient.shouldRetry(error)) {
+        return this.retryRequest(error);
+      }
+
+      if (!HttpClient.shouldRefresh(error)) {
+        throw new Error();
+      }
+
+      try {
+        const pairTokens = await this.getNewPairTokens();
+        HttpClient.setTokenData(pairTokens);
+        return this.retryRequest(error);
+      } catch (e) {
+        throw new Error();
+      } finally {
+        delete this.refreshRequest;
+      }
     } catch (e) {
-      return Promise.reject(e);
-    } finally {
-      delete this.refreshRequest;
+      const eee = error?.response?.data?.message || 'Internal error';
+      return Promise.reject(eee);
     }
   }
 
@@ -118,7 +123,10 @@ export class HttpClient implements IHttpClient {
 
   private static shouldRetry(error: any) {
     const token = storage.getToken();
-    const rejectedToken = error.response.config.headers.Authorization.replace(AUTH_PREFIX, '');
+    if (!token) {
+      return false;
+    }
+    const rejectedToken = error?.response?.config?.headers?.Authorization?.replace(AUTH_PREFIX, '');
     return rejectedToken !== token;
   }
 

@@ -15,7 +15,7 @@ import {
   IUpdateTodoCompleteStatus,
   IUpdateTodoDescription, IUpdateTodoPosition,
   IUpdateTodoTitle,
-} from '../../types';
+} from '@/types';
 
 enum Type {
   SET_TODOS = 'TODOS/SET_TODOS',

@@ -1,17 +1,19 @@
 import {
-  apply, call, put, takeLatest,
+  all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
-import { container } from '../../inversify.config';
-import { TYPES } from '../../inversify.types';
-import { IServices } from '../../inversify.interfaces';
+import { useAlert } from '@/use/alert';
+import { container } from '@/inversify.config';
+import { TYPES } from '@/inversify.types';
+import { IServices } from '@/inversify.interfaces';
+import { storage } from '@/plugins/storage';
+import { forwardTo } from '@/router/history';
+import { ISignInRequest, ISignUpRequest } from '@/types/api';
+import { IResetPassword, ISetAuthInfo } from '@/types/actions';
 import { AuthActions } from '../actions';
-import { storage } from '../../plugins/storage';
-import { forwardTo } from '../../router/history';
-import { ISignInRequest, ISignUpRequest } from '../../types/api';
-import { ISetAuthInfo } from '../../types/actions';
 
 const { auth } = container.get<IServices>(TYPES.Services);
+const { show, ALERT_TYPES } = useAlert();
 
 function* signUpWorker(action: Action<ISignUpRequest>) {
   try {
@@ -22,8 +24,9 @@ function* signUpWorker(action: Action<ISignUpRequest>) {
       refreshToken,
     }));
     yield call(forwardTo, '/');
+    yield call(show, 'Success', 'Registration completed successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
-    console.error('signUpWorker', error);
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -35,23 +38,53 @@ function* signInWorker(action: Action<ISignInRequest>) {
       token,
       refreshToken,
     }));
+    yield call(show, 'Success', 'Successful login', ALERT_TYPES.SUCCESS);
+    yield call(forwardTo, '/');
   } catch (error) {
-    console.error('signInWorker', error);
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
 function* setAuthInfoWorker(action: Action<ISetAuthInfo>) {
   try {
     const { token, refreshToken } = action.payload;
-    yield* call(storage.setToken, token);
-    yield* call(storage.setRefreshToken, refreshToken);
+    yield call(storage.setToken, token);
+    yield call(storage.setRefreshToken, refreshToken);
   } catch (error) {
-    console.error('setAuthInfoWorker', error);
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* logoutWorker() {
+  try {
+    yield* apply(auth, auth.logout, []);
+    yield put(AuthActions.setAuthInfo({
+      token: '',
+      refreshToken: '',
+    }));
+    yield call(show, 'Success', 'Successful logout', ALERT_TYPES.SUCCESS);
+    yield call(forwardTo, '/');
+  } catch (error) {
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* resetPasswordWorker(action: Action<IResetPassword>) {
+  try {
+    yield* apply(auth, auth.reset, [action.payload]);
+    yield call(show, 'Success', 'Successful reset password', ALERT_TYPES.SUCCESS);
+    yield call(forwardTo, '/auth/login');
+  } catch (error) {
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
 export function* watchAuth() {
-  yield* takeLatest(AuthActions.Type.SIGN_UP, signUpWorker);
-  yield* takeLatest(AuthActions.Type.SIGN_IN, signInWorker);
-  yield* takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker);
+  yield* all([
+    takeLatest(AuthActions.Type.SIGN_UP, signUpWorker),
+    takeLatest(AuthActions.Type.SIGN_IN, signInWorker),
+    takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker),
+    takeLatest(AuthActions.Type.LOGOUT, logoutWorker),
+    takeLatest(AuthActions.Type.RESET, resetPasswordWorker),
+  ]);
 }

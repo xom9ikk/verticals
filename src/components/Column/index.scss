@@ -3,10 +3,12 @@
 
   display: flex;
   flex-direction: column;
-  width: $column-width;
+  max-width: $column-width;
+  min-width: $column-width;
   height: 100vh;
   padding: 23px 10px;
   &__wrapper {
+    //position: relative;
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
@@ -79,8 +81,8 @@
     }
   }
   &__container {
-    //height: calc(100vh - 213px);
-    height: calc(100vh - 87px);
+    height: 100vh;
+    padding-bottom: 102px;
     overflow-y: scroll;
     &::-webkit-scrollbar {
       width: 0;
@@ -98,7 +100,8 @@
     transition: background .1s ease-in-out, border .2s ease-in-out;
     &--editable {
       box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
-      width: $column-width - 27;
+      min-width: $column-width - 27;
+      max-width: $column-width - 27;
       margin: 3px;
       padding: 14px 9px 10px 7px;
       border-radius: 6px;
@@ -185,7 +188,8 @@
   }
   &--compact {
     height: 100%;
-    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
     overflow: hidden;
     padding: 23px 5px;
   }

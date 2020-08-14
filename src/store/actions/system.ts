@@ -9,7 +9,7 @@ import {
   ISetSystemLanguage,
   ISetSystemQuery,
   ISetSystemReplyCommentId,
-} from '../../types/actions';
+} from '@/types/actions';
 
 enum Type {
   SET_IS_OPEN_POPUP = 'SYSTEM/SET_IS_OPEN_POPUP',

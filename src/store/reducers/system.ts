@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
+import { EnumLanguage, ISystem } from '@/types';
 import { SystemActions } from '../actions';
-import { EnumLanguage, ISystem } from '../../types';
 
 const initialState = {
   isOpenPopup: false,

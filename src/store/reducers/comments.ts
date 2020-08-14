@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign */
 import { handleActions } from 'redux-actions';
+import { IComment, IComments, IFile } from '@/types';
 import { CommentsActions } from '../actions';
-import { IComment, IComments, IFile } from '../../types';
 
 let count = 0;
 const initialState: IComments = [

@@ -11,7 +11,7 @@ import {
   IUpdateColumnDescription, IUpdateColumnIsCollapsed,
   IUpdateColumnPosition,
   IUpdateColumnTitle,
-} from '../../types/actions';
+} from '@/types/actions';
 
 enum Type {
   SET_COLUMNS = 'COLUMNS/SET_COLUMNS',

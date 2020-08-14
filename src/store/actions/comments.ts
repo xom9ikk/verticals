@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
 import {
   IAddComment, IRemoveComment, IRemoveCommentFile, ISwitchCommentLike, IUpdateCommentText,
-} from '../../types';
+} from '@/types';
 
 enum Type {
   ADD = 'COMMENTS/ADD',

@@ -1,9 +1,9 @@
 /* eslint-disable no-return-assign,no-plusplus */
 import { handleActions } from 'redux-actions';
-import { TodosActions } from '../actions';
 import {
   EnumTodoStatus, ITodo, ITodos,
-} from '../../types';
+} from '@/types';
+import { TodosActions } from '../actions';
 
 let count = 0;
 const initialState: ITodos = [
