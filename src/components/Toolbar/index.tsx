@@ -4,7 +4,7 @@ import { Menu } from '@comp/Menu';
 import { MenuButton } from '@comp/MenuButton';
 import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
-import { SystemActions } from '@/store/actions';
+import { AuthActions, SystemActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { EnumLanguage } from '@/types';
 
@@ -16,7 +16,7 @@ enum EnumToolbarActions {
   NewWorkspace,
   SwitchSidebar,
   ChangeLanguage,
-  WriteToDevelop,
+  WriteToDeveloper,
   TermsOfService,
   PrivacyPolicy,
   Logout,
@@ -52,7 +52,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         dispatch(SystemActions.setLanguage(payload));
         break;
       }
-      case EnumToolbarActions.WriteToDevelop: {
+      case EnumToolbarActions.WriteToDeveloper: {
         window.open('https://t.me/xom9ik', '_blank');
         break;
       }
@@ -65,7 +65,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.Logout: {
-        // TODO:
+        dispatch(AuthActions.logout());
         break;
       }
       default: break;
@@ -149,7 +149,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           >
             <MenuButton
               text="Write to developer"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.WriteToDevelop)}
+              onClick={() => menuButtonClickHandler(EnumToolbarActions.WriteToDeveloper)}
             />
             <MenuButton
               text="Terms of Service"

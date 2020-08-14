@@ -1,12 +1,13 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
-import { TYPES } from '../inversify.types';
+import { TYPES } from '@/inversify.types';
+import { IAuthService, IHttpClient } from '@/inversify.interfaces';
 import {
+  ILogoutResponse,
   IMeResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
 } from '../types/api';
-import { IAuthService, IHttpClient } from '../inversify.interfaces';
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -28,5 +29,9 @@ export class AuthService implements IAuthService {
 
   me() {
     return this.httpClient.get<IMeResponse>('/auth/me');
+  }
+
+  logout() {
+    return this.httpClient.post<ILogoutResponse>('/auth/logout');
   }
 }

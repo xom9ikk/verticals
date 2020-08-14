@@ -37,3 +37,5 @@ export type IMeResponse = IServerResponse<{
   surname: string;
   username: string;
 }>;
+
+export type ILogoutResponse = IServerResponse<{}>;

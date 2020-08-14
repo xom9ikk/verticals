@@ -1,5 +1,5 @@
 import {
-  apply, call, put, takeLatest,
+  all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
@@ -26,8 +26,7 @@ function* signUpWorker(action: Action<ISignUpRequest>) {
     yield call(forwardTo, '/');
     yield call(show, 'Success', 'Registration completed successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
-    console.error('signUpWorker', error);
-    yield call(show, 'Internal Error', 'Registration Error', ALERT_TYPES.DANGER);
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -39,26 +38,46 @@ function* signInWorker(action: Action<ISignInRequest>) {
       token,
       refreshToken,
     }));
-    yield call(show, 'Success', 'Successful login ', ALERT_TYPES.SUCCESS);
+    yield call(show, 'Success', 'Successful login', ALERT_TYPES.SUCCESS);
+    yield call(forwardTo, '/');
   } catch (error) {
-    console.error('signInWorker', error);
-    yield call(show, 'Internal Error', 'Login Error', ALERT_TYPES.DANGER);
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
 function* setAuthInfoWorker(action: Action<ISetAuthInfo>) {
   try {
     const { token, refreshToken } = action.payload;
-    yield* call(storage.setToken, token);
-    yield* call(storage.setRefreshToken, refreshToken);
+    yield call(storage.setToken, token);
+    yield call(storage.setRefreshToken, refreshToken);
   } catch (error) {
-    console.error('setAuthInfoWorker', error);
-    show('Internal Error', '', ALERT_TYPES.DANGER);
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* logoutWorker() {
+  try {
+    yield* apply(auth, auth.logout, []);
+    yield put(AuthActions.setAuthInfo({
+      token: '',
+      refreshToken: '',
+    }));
+    yield call(show, 'Success', 'Successful logout', ALERT_TYPES.SUCCESS);
+    yield call(forwardTo, '/');
+  } catch (error) {
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
 export function* watchAuth() {
-  yield* takeLatest(AuthActions.Type.SIGN_UP, signUpWorker);
-  yield* takeLatest(AuthActions.Type.SIGN_IN, signInWorker);
-  yield* takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker);
+  yield* all([
+    takeLatest(AuthActions.Type.SIGN_UP, signUpWorker),
+    takeLatest(AuthActions.Type.SIGN_IN, signInWorker),
+    takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker),
+    takeLatest(AuthActions.Type.LOGOUT, logoutWorker),
+  ]);
+  // yield* takeLatest(AuthActions.Type.SIGN_UP, signUpWorker);
+  // yield* takeLatest(AuthActions.Type.SIGN_IN, signInWorker);
+  // yield* takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker);
+  // yield* takeLatest(AuthActions.Type.LOGOUT, logoutWorker);
 }

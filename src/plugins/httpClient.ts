@@ -78,22 +78,27 @@ export class HttpClient implements IHttpClient {
   }
 
   private async responseInterceptor(error: any) {
-    if (HttpClient.shouldRetry(error)) {
-      return this.retryRequest(error);
-    }
-
-    if (!HttpClient.shouldRefresh(error)) {
-      return Promise.reject(error);
-    }
-
     try {
-      const pairTokens = await this.getNewPairTokens();
-      HttpClient.setTokenData(pairTokens);
-      return this.retryRequest(error);
+      if (HttpClient.shouldRetry(error)) {
+        return this.retryRequest(error);
+      }
+
+      if (!HttpClient.shouldRefresh(error)) {
+        throw new Error();
+      }
+
+      try {
+        const pairTokens = await this.getNewPairTokens();
+        HttpClient.setTokenData(pairTokens);
+        return this.retryRequest(error);
+      } catch (e) {
+        throw new Error();
+      } finally {
+        delete this.refreshRequest;
+      }
     } catch (e) {
-      return Promise.reject(e);
-    } finally {
-      delete this.refreshRequest;
+      const eee = error?.response?.data?.message || 'Internal error';
+      return Promise.reject(eee);
     }
   }
 
@@ -118,7 +123,10 @@ export class HttpClient implements IHttpClient {
 
   private static shouldRetry(error: any) {
     const token = storage.getToken();
-    const rejectedToken = error.response.config.headers.Authorization.replace(AUTH_PREFIX, '');
+    if (!token) {
+      return false;
+    }
+    const rejectedToken = error?.response?.config?.headers?.Authorization?.replace(AUTH_PREFIX, '');
     return rejectedToken !== token;
   }
 
