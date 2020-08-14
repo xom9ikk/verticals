@@ -10,7 +10,7 @@ import {
   IUpdateBoardDescription,
   IUpdateBoardPosition,
   IUpdateBoardTitle,
-} from '../../types';
+} from '@/types';
 
 enum Type {
   SET_BOARDS = 'BOARDS/SET_BOARDS',

@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 import {
   IResetPassword,
   ISetAuthInfo, ISignIn, ISignUp,
-} from '../../types';
+} from '@/types';
 
 enum Type {
   SIGN_IN = 'AUTH/SIGN_IN',

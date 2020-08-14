@@ -1,6 +1,6 @@
 import {
   ISystem, IBoards, IColumns, ITodos, IComments,
-} from '../../types';
+} from '@/types';
 
 export interface IRootState {
   system: ISystem;

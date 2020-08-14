@@ -1,9 +1,9 @@
 /* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
-import { ColumnsActions } from '../actions';
 import {
   IColumn, IColumns,
-} from '../../types';
+} from '@/types';
+import { ColumnsActions } from '../actions';
 
 const initialState: IColumns = [
   {

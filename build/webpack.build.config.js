@@ -1,11 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const baseWebpackConfig = require('./webpack.base.config');
 
 const buildWebpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
-  plugins: [],
+  plugins: [
+    new Dotenv({
+      path: path.resolve('.env.production'),
+    }),
+  ],
   optimization: {
     splitChunks: {},
     // splitChunks: {
