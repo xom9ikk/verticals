@@ -6,7 +6,6 @@ import 'react-notifications-component/dist/theme.css';
 import ReactNotification from 'react-notifications-component';
 
 import './styles/scss/main.scss';
-
 import { configureStore } from './store/configureStore';
 import { MainRouter } from './router';
 

@@ -13,23 +13,49 @@ body {
     width: 0;
     height: 0;
   }
+  //overflow: hidden !important;
+  //overflow-x: auto;
+
+  //&::-webkit-resizer,
+  //&::-webkit-scrollbar-button,
+  //&::-webkit-scrollbar-corner { display: none !important; }
+  //&::-webkit-scrollbar {
+  //  height: 15px;
+  //}
+  //
+  //&::-webkit-scrollbar-thumb {
+  //  //background: red !important;
+  //  background: lighten($text-very-light, 10) !important;
+  //  border: 5px solid #fff !important;
+  //  border-radius: 10px !important;
+  //  transition: background .5s ease-in-out !important;
+  //  &:hover {
+  //    background: $primary !important;
+  //  }
+  //}
+  //
+  //&::-webkit-scrollbar-track {
+  //  background: red;
+  //  margin-left: $sidebar-width;
+  //}
 }
 
 #root {
   display: flex;
   flex: 1;
+  overflow: hidden !important;
 }
 
 .container {
   display: flex;
   flex: 1;
+  overflow: hidden !important;
   &--horizontal {
     flex-direction: row;
   }
   &--vertical {
     flex-direction: column;
   }
-  //overflow-y: scroll;
 }
 
 .link {

@@ -1,6 +1,6 @@
 import {
   ILogoutResponse,
-  IMeResponse,
+  IMeResponse, IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
 } from './types/api';
@@ -22,4 +22,5 @@ export interface IAuthService {
   signIn(body: ISignInRequest): Promise<ISignInResponse>;
   me(): Promise<IMeResponse>;
   logout(): Promise<ILogoutResponse>;
+  reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
 }

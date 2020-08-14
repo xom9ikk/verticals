@@ -4,7 +4,7 @@
   transition: width .2s ease-in-out;
   height: 100vh;
   &--opened {
-    width: $card-popup-width;
+    min-width: $card-popup-width;
     padding: 10px;
     position: relative;
     &::before {

@@ -611,7 +611,9 @@ export const Column: FC<IColumn> = ({
                       }
                     </Droppable>
                   </div>
+                  {/* <div className="column__absolute"> */}
                   { cardToolbar }
+                  {/* </div> */}
                 </div>
               )
             }

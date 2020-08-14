@@ -4,7 +4,7 @@ import { TYPES } from '@/inversify.types';
 import { IAuthService, IHttpClient } from '@/inversify.interfaces';
 import {
   ILogoutResponse,
-  IMeResponse,
+  IMeResponse, IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
 } from '../types/api';
@@ -33,5 +33,9 @@ export class AuthService implements IAuthService {
 
   logout() {
     return this.httpClient.post<ILogoutResponse>('/auth/logout');
+  }
+
+  reset(body: IResetPasswordRequest) {
+    return this.httpClient.post<IResetPasswordResponse>('/auth/reset', body);
   }
 }

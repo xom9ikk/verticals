@@ -14,3 +14,7 @@ export interface ISignUp {
 export type ISignIn = {
   password: string;
 } & ({ username: string } | { email: string });
+
+export interface IResetPassword {
+  email: string;
+}

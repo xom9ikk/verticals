@@ -5,6 +5,8 @@ import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
 import { useForm } from '@/use/form';
 import { validatorResetForm } from '@/helpers/validatorResetForm';
+import { AuthActions } from '@/store/actions';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
   email: {
@@ -15,8 +17,12 @@ const initialState = {
 };
 
 export const Reset: FC = () => {
+  const dispatch = useDispatch();
+
   const handlerSubmit = async () => {
-    console.log('submit', values);
+    dispatch(AuthActions.reset({
+      email: values.email,
+    }));
   };
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touched,

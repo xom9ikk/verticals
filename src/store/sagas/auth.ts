@@ -9,7 +9,7 @@ import { IServices } from '@/inversify.interfaces';
 import { storage } from '@/plugins/storage';
 import { forwardTo } from '@/router/history';
 import { ISignInRequest, ISignUpRequest } from '@/types/api';
-import { ISetAuthInfo } from '@/types/actions';
+import { IResetPassword, ISetAuthInfo } from '@/types/actions';
 import { AuthActions } from '../actions';
 
 const { auth } = container.get<IServices>(TYPES.Services);
@@ -69,15 +69,22 @@ function* logoutWorker() {
   }
 }
 
+function* resetPasswordWorker(action: Action<IResetPassword>) {
+  try {
+    yield* apply(auth, auth.reset, [action.payload]);
+    yield call(show, 'Success', 'Successful reset password', ALERT_TYPES.SUCCESS);
+    yield call(forwardTo, '/auth/login');
+  } catch (error) {
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+  }
+}
+
 export function* watchAuth() {
   yield* all([
     takeLatest(AuthActions.Type.SIGN_UP, signUpWorker),
     takeLatest(AuthActions.Type.SIGN_IN, signInWorker),
     takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker),
     takeLatest(AuthActions.Type.LOGOUT, logoutWorker),
+    takeLatest(AuthActions.Type.RESET, resetPasswordWorker),
   ]);
-  // yield* takeLatest(AuthActions.Type.SIGN_UP, signUpWorker);
-  // yield* takeLatest(AuthActions.Type.SIGN_IN, signInWorker);
-  // yield* takeLatest(AuthActions.Type.SET_AUTH_INFO, setAuthInfoWorker);
-  // yield* takeLatest(AuthActions.Type.LOGOUT, logoutWorker);
 }

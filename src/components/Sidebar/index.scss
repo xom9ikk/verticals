@@ -41,7 +41,7 @@
 
   &__overlay {
     max-height: 100%;
-    width: $column-width+1;
+    width: $sidebar-width+1;
     transition: width .1s ease-out;
     &--unpinned {
       width: 20px;

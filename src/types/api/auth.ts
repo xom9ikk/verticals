@@ -22,10 +22,6 @@ export type ISignInResponse = IServerResponse<{
   refreshToken: string;
 }>;
 
-export interface IRefreshRequest {
-  refreshToken: string;
-}
-
 export type IRefreshResponse = IServerResponse<{
   token: string;
   refreshToken: string;
@@ -38,4 +34,10 @@ export type IMeResponse = IServerResponse<{
   username: string;
 }>;
 
-export type ILogoutResponse = IServerResponse<{}>;
+export type ILogoutResponse = IServerResponse;
+
+export interface IResetPasswordRequest {
+  email: string;
+}
+
+export type IResetPasswordResponse = IServerResponse<{}>;
