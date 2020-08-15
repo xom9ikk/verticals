@@ -19,13 +19,12 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    //background: red !important;
     background: lighten($text-very-light, 10) !important;
     border: 5px solid #fff !important;
     border-radius: 10px !important;
     transition: background .5s ease-in-out !important;
     &:hover {
-      background: $primary !important;
+      background: darken($text-very-light, 20) !important;
     }
   }
 

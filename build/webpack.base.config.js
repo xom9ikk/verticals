@@ -103,9 +103,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: path.join('css', '[name].[hash].css'),
-    }),
     new CopyWebpackPlugin({
       patterns: [
         {

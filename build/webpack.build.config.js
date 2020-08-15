@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -10,6 +11,9 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new Dotenv({
       path: path.resolve('.env.production'),
+    }),
+    new MiniCssExtractPlugin({
+      filename: path.join('css', '[name].[hash].css'),
     }),
   ],
   optimization: {

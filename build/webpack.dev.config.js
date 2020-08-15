@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config');
@@ -24,6 +25,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }),
     new Dotenv({
       path: path.resolve('.env.development'),
+    }),
+    new MiniCssExtractPlugin({
+      filename: path.join('css', '[name].css'),
     }),
   ],
   module: {
