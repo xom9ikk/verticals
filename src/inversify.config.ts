@@ -1,9 +1,12 @@
 import { Container } from 'inversify';
+import { BoardService } from '@/services/board';
 import { TYPES } from './inversify.types';
 import { Services } from './services';
 import { HttpClient } from './plugins/httpClient';
 import { AuthService } from './services/auth';
-import { IAuthService, IHttpClient, IServices } from './inversify.interfaces';
+import {
+  IAuthService, IBoardService, IHttpClient, IServices,
+} from './inversify.interfaces';
 
 const container = new Container();
 
@@ -20,6 +23,11 @@ container
 container
   .bind<IAuthService>(TYPES.AuthService)
   .to(AuthService)
+  .inSingletonScope();
+
+container
+  .bind<IBoardService>(TYPES.BoardService)
+  .to(BoardService)
   .inSingletonScope();
 
 export { container };

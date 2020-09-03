@@ -8,6 +8,7 @@ export interface IBoard {
   cardType: EnumTodoType;
   description?: string;
   color?: number;
+  belowId?: string;
 }
 
 export type IBoards = Array<IBoard>;

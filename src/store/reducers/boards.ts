@@ -2,63 +2,7 @@ import { handleActions } from 'redux-actions';
 import { EnumTodoType, IBoard, IBoards } from '@/types';
 import { BoardsActions } from '../actions';
 
-const initialState: IBoards = [{
-  id: 'today',
-  icon: '/assets/svg/board/star.svg',
-  title: 'Today',
-  position: 0,
-  cardType: EnumTodoType.Checkboxes,
-},
-{
-  id: 'trash',
-  icon: '/assets/svg/board/trash.svg',
-  title: 'Trash',
-  position: 1,
-  cardType: EnumTodoType.Checkboxes,
-},
-{
-  id: 'board-1',
-  icon: '/assets/svg/board/item.svg',
-  title: 'To reading',
-  position: 2,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'board-2',
-  icon: '/assets/svg/board/item.svg',
-  title: 'Technologies etc.',
-  position: 3,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'board-3',
-  icon: '/assets/svg/board/item.svg',
-  title: 'Projects',
-  position: 4,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'board-4',
-  icon: '/assets/svg/board/item.svg',
-  title: 'Branches',
-  position: 5,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'board-5',
-  icon: '/assets/svg/board/item.svg',
-  title: 'Films',
-  position: 6,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'board-6',
-  icon: '/assets/svg/board/item.svg',
-  title: 'Buy',
-  position: 7,
-  cardType: EnumTodoType.Checkboxes,
-}, {
-  id: 'board-7',
-  icon: '/assets/svg/board/item.svg',
-  title: 'Books',
-  position: 8,
-  cardType: EnumTodoType.Checkboxes,
-}];
+const initialState: IBoards = [];
 
 export const BoardsReducer = handleActions<IBoards, any>({
   [BoardsActions.Type.SET_BOARDS]:
@@ -83,6 +27,18 @@ export const BoardsReducer = handleActions<IBoards, any>({
         position: state.length,
         ...action.payload,
       }]),
+  [BoardsActions.Type.ADD_BELOW]:
+      (state, action) => {
+        const { position } = action.payload;
+        const boards = [...state].sort((a, b) => a.position - b.position);
+        const spliceIndex = boards.findIndex((board: IBoard) => board.position === position);
+        const normalizedSpliceIndex = spliceIndex === -1 ? boards.length : spliceIndex;
+        boards.splice(normalizedSpliceIndex, 0, action.payload);
+        return boards.map((board: IBoard, index) => ({
+          ...board,
+          position: index,
+        }));
+      },
   [BoardsActions.Type.UPDATE_POSITION]:
         (state, action) => {
           const { sourcePosition, destinationPosition } = action.payload;
@@ -121,13 +77,14 @@ export const BoardsReducer = handleActions<IBoards, any>({
           : board))),
   [BoardsActions.Type.REMOVE]:
         (state, action) => state.filter((board: IBoard) => board.id !== action.payload.id),
-  [BoardsActions.Type.ADD_BOARD_BELOW]:
+  [BoardsActions.Type.DRAW_BOARD_BELOW]:
         (state, action) => {
           const { id } = action.payload;
           const boards = [...state].sort((a, b) => a.position - b.position);
           const spliceIndex = boards.findIndex((board: IBoard) => board.id === id);
           boards.splice(spliceIndex + 1, 0, {
             id: 'new-board',
+            belowId: id,
             position: spliceIndex,
             title: '',
             icon: '/assets/svg/board/item.svg',
@@ -138,13 +95,11 @@ export const BoardsReducer = handleActions<IBoards, any>({
             position: index,
           }));
         },
-  [BoardsActions.Type.GENERATE_NEW_ID]:
-        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
-          ? {
-            ...board,
-            id: Math.random().toString(),
-          }
-          : board))),
   [BoardsActions.Type.REMOVE_NEW_BOARDS]:
-        (state) => (state.filter((board: IBoard) => board.id !== 'new-board')),
+        (state) => (state
+          .filter((board: IBoard) => board.id !== 'new-board')
+          .map((board: IBoard, index) => ({
+            ...board,
+            position: index,
+          }))),
 }, initialState);

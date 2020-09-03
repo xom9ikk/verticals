@@ -15,9 +15,18 @@ import { useFocus } from '@/use/focus';
 import { EnumColors, EnumTodoType } from '@/types';
 import { TextArea } from '@comp/TextArea';
 
+export interface IExitFromEditable {
+  boardId: string,
+  title?: string,
+  description?: string,
+  color?: number,
+  belowId?: string,
+}
+
 interface IBoardItem {
   snapshot?: DraggableStateSnapshot,
   id?: string;
+  belowId?: string;
   icon: string;
   color?: number;
   title?: string;
@@ -25,9 +34,13 @@ interface IBoardItem {
   isActive?: boolean;
   description?: string;
   isEditableDefault?: boolean;
-  onExitFromEditable?: (
-    boardId: string, title?: string, description?: string, color?: number
-  ) => void;
+  onExitFromEditable?: ({
+    boardId,
+    title,
+    description,
+    color,
+    belowId,
+  }: IExitFromEditable) => void;
   onClick?: (id: string)=>void;
 }
 
@@ -42,6 +55,7 @@ enum EnumMenuActions {
 export const BoardItem: FC<IBoardItem> = ({
   snapshot,
   id = '',
+  belowId,
   icon,
   color,
   title: initialTitle = '',
@@ -80,7 +94,13 @@ export const BoardItem: FC<IBoardItem> = ({
 
   const saveBoard = (newColor?: number) => {
     const { newTitle, newDescription } = getNewData();
-    onExitFromEditable?.(id, newTitle, newDescription, newColor);
+    onExitFromEditable?.({
+      boardId: id,
+      title: newTitle,
+      description: newDescription,
+      color: newColor,
+      belowId,
+    });
     hidePopup();
   };
 
@@ -182,7 +202,7 @@ export const BoardItem: FC<IBoardItem> = ({
       }
       case EnumMenuActions.AddBoardBelow: {
         dispatch(BoardsActions.removeNewBoards());
-        dispatch(BoardsActions.addBoardBelow({ id }));
+        dispatch(BoardsActions.drawBoardBelow({ id }));
         break;
       }
       case EnumMenuActions.Delete: {

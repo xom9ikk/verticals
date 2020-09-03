@@ -14,7 +14,7 @@ import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';
 import {
-  EnumColors, EnumTodoStatus, ITodo, ITodos,
+  EnumColors, EnumTodoStatus, EnumTodoType, ITodo, ITodos,
 } from '@/types';
 import { useFocus } from '@/use/focus';
 import { IRootState } from '@/store/reducers/state';
@@ -74,7 +74,7 @@ export const Column: FC<IColumn> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
-  const { cardType } = boards.filter((board) => board.id === boardId)[0];
+  const { cardType } = boards.filter((board) => board.id === boardId)[0] || EnumTodoType.Checkboxes;
 
   const saveCard = (
     id?: string,

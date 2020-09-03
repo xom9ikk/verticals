@@ -4,7 +4,7 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { Sidebar } from '@comp/Sidebar';
 import { Columns } from '@comp/Columns';
-import { SystemActions } from '@/store/actions';
+import { BoardsActions, SystemActions } from '@/store/actions';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { FallbackLoader } from '@comp/FallbackLoader';
@@ -18,6 +18,7 @@ export const Main: FC = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    dispatch(BoardsActions.fetchBoards());
   }, []);
 
   const closeAllPopups = () => {

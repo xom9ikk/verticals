@@ -1,15 +1,19 @@
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@/inversify.types';
-import { IAuthService, IServices } from '@/inversify.interfaces';
+import { IServices, IAuthService, IBoardService } from '@/inversify.interfaces';
 
 @injectable()
 export class Services implements IServices {
-  auth: IAuthService;
+  authService: IAuthService;
+
+  boardService: IBoardService;
 
   constructor(
-  @inject(TYPES.AuthService) auth: IAuthService,
+  @inject(TYPES.AuthService) authService: IAuthService,
+    @inject(TYPES.BoardService) boardService: IBoardService,
   ) {
-    this.auth = auth;
+    this.authService = authService;
+    this.boardService = boardService;
   }
 }

@@ -1,8 +1,13 @@
 import {
   ILogoutResponse,
-  IMeResponse, IResetPasswordRequest, IResetPasswordResponse,
+  IMeResponse,
+  IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
+  ICreateBoardRequest, ICreateBoardResponse,
+  IRemoveBoardRequest, IRemoveBoardResponse,
+  IUpdateBoardRequest, IUpdateBoardResponse,
+  IUpdateBoardPositionRequest, IUpdateBoardPositionResponse, IGetAllBoardsResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -14,7 +19,8 @@ export interface IHttpClient {
 }
 
 export interface IServices {
-  auth: IAuthService
+  authService: IAuthService;
+  boardService: IBoardService;
 }
 
 export interface IAuthService {
@@ -23,4 +29,12 @@ export interface IAuthService {
   me(): Promise<IMeResponse>;
   logout(): Promise<ILogoutResponse>;
   reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
+}
+
+export interface IBoardService {
+  getAll(): Promise<IGetAllBoardsResponse>;
+  create(body: ICreateBoardRequest): Promise<ICreateBoardResponse>;
+  remove(body: IRemoveBoardRequest): Promise<IRemoveBoardResponse>;
+  update(body: IUpdateBoardRequest): Promise<IUpdateBoardResponse>;
+  updatePosition(body: IUpdateBoardPositionRequest): Promise<IUpdateBoardPositionResponse>;
 }
