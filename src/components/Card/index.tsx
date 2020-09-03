@@ -314,42 +314,46 @@ export const Card: FC<ICard> = ({
   }, [snapshot?.isDragging]);
 
   // @ts-ignore
-  const colorClass = `card--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
+  const colorClass = `card__wrapper--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
 
   return (
     <div
       ref={provided?.innerRef}
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
-      className={`card
-      ${snapshot?.isDragging ? 'card--dragging' : ''}
-      ${isEditable ? 'card--editable' : ''}
-      ${isMouseDown || isActive ? 'card--pressed' : ''}
-      ${color !== undefined ? colorClass : ''}
-      ${invertColor ? 'card--invert' : ''}
-      `}
+      className="card"
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}
     >
-      { card }
-      {
-        !isEditable && (
-        <CardContextMenu
-          id={id}
-          isArchive={isArchive}
-          isActive={isActive}
-          isHover={isHover}
-          isNotificationsEnabled={isNotificationsEnabled}
-          color={color}
-          status={status}
-          onStartEdit={doubleClickHandler}
-          onChangeColor={colorPickHandler}
-          onHidePopup={hidePopupHandler}
-        />
-        )
-      }
-      {/* { contextMenu } */}
+      <div
+        className={`card__wrapper
+        ${snapshot?.isDragging ? 'card__wrapper--dragging' : ''}
+        ${isEditable ? 'card__wrapper--editable' : ''}
+        ${isMouseDown || isActive ? 'card__wrapper--pressed' : ''}
+        ${color !== undefined ? colorClass : ''}
+        ${invertColor ? 'card__wrapper--invert' : ''}
+        `}
+      >
+        { card }
+        {
+          !isEditable && (
+          <CardContextMenu
+            id={id}
+            isArchive={isArchive}
+            isActive={isActive}
+            isHover={isHover}
+            isNotificationsEnabled={isNotificationsEnabled}
+            color={color}
+            status={status}
+            onStartEdit={doubleClickHandler}
+            onChangeColor={colorPickHandler}
+            onHidePopup={hidePopupHandler}
+          />
+          )
+        }
+        {/* { contextMenu } */}
+      </div>
     </div>
   );
 };

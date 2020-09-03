@@ -2,7 +2,7 @@
   width: 0;
   border-right: 1px solid rgb(242, 242, 242);
   transition: width .2s ease-in-out;
-  height: 100vh;
+  height: calc(100vh - 15px);
   &--opened {
     min-width: $card-popup-width;
     padding: 10px;
