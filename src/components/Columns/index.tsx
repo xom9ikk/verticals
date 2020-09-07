@@ -19,11 +19,12 @@ interface TodoMap {
     description: string,
     color: number,
     isCollapsed: boolean,
+    belowId?: number,
   },
 }
 
 interface IColumn {
-  boardId: string;
+  boardId: number;
 }
 
 type ReorderTodoMapArgs = {
@@ -37,7 +38,11 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   const { filterTodos } = useFilterTodos();
   const { columns, todos, system: { query } } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
-  const [orderedId, setOrderedId] = useState<Array<string>>([]);
+  const [orderedId, setOrderedId] = useState<Array<number>>([]);
+
+  useEffect(() => {
+    dispatch(ColumnsActions.fetchByBoardId({ boardId }));
+  }, [boardId]);
 
   useEffect(() => {
     console.log('new columns', columns);
@@ -46,15 +51,17 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         ?.filter((column) => column.boardId === boardId)
         ?.sort((a, b) => a.position - b.position)
         ?.forEach((column) => {
+          console.log('prepare column', column);
           // @ts-ignore
-          data[column.id] = {
+          data[`column-${column.id}`] = {
             ...column,
             todos: todos.filter((todo) => todo.columnId === column.id),
           };
         });
+    console.log('===columns', columns);
+    console.log('===prep', data);
     setPreparedData(data);
-    console.log(preparedData);
-    setOrderedId(Object.keys(data));
+    setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
   }, [boardId, columns, todos]);
 
   const onDragEnd = (result: DropResult) => {
@@ -96,13 +103,17 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     }
 
     // reordering column
+    console.log('result', result);
+    console.log('source.droppableId', source.droppableId);
+    console.log('source.index', source.index);
+    console.log('destination.index', destination.index);
     if (result.type === 'COLUMN') {
       dispatch(ColumnsActions.updatePosition({
         sourcePosition: source.index,
         destinationPosition: destination.index,
-        boardId: source.droppableId,
+        boardId: Number(source.droppableId.split('board-')[1]),
       }));
-      const _orderedId: string[] = reorder(
+      const _orderedId: number[] = reorder(
         orderedId,
         source.index,
         destination.index,
@@ -126,7 +137,6 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       return result;
     }
     result = result.map((todo, index) => ({ ...todo, position: index }));
-    console.log('result reorder', result);
     return result;
   };
 
@@ -192,7 +202,10 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   };
 
   const memoColumns = useMemo(() => (
-    orderedId && orderedId.map((key, index) => {
+    orderedId && orderedId.map((_key, index) => {
+      const key = `column-${_key}`;
+      console.log('preparedData', preparedData);
+      console.log('key', key);
       let isContainTodosByQuery = true;
       if (query) {
         isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
@@ -200,13 +213,15 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       if (!isContainTodosByQuery) {
         return null;
       }
+      console.log('draw prepared', key, preparedData);
       return (
         <Column
           index={index}
           color={preparedData[key].color}
           isCollapsed={preparedData[key].isCollapsed}
-          columnId={key}
+          columnId={_key}
           boardId={boardId}
+          belowId={preparedData[key]?.belowId}
           key={key}
           title={preparedData[key].title}
           todos={preparedData[key].todos}
@@ -228,7 +243,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
-          droppableId={boardId}
+          droppableId={`board-${boardId}`}
           type="COLUMN"
           direction="horizontal"
         >

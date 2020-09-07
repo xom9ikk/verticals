@@ -11,14 +11,14 @@ import { FallbackLoader } from '@comp/FallbackLoader';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
-  const [activeBoardId, setActiveBoardId] = useState<string>('board-2');
+  const [activeBoardId, setActiveBoardId] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    dispatch(BoardsActions.fetchBoards());
+    dispatch(BoardsActions.fetchAll());
   }, []);
 
   const closeAllPopups = () => {
@@ -27,7 +27,7 @@ export const Main: FC = () => {
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
     dispatch(SystemActions.setCurrentTodoId(''));
-    // dispatch(BoardsActions.removeNewBoards());
+    // dispatch(BoardsActions.removeTemp());
   };
 
   const keydownHandler = (event: any) => {

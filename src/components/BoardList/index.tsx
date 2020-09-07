@@ -6,7 +6,7 @@ import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
 import { Menu } from '@comp/Menu';
-import { BoardItem, IExitFromEditable } from '@comp/BoardItem';
+import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
 import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
@@ -16,8 +16,8 @@ import {
 import { useFilterTodos } from '@/use/filterTodos';
 
 interface IBoardList {
-  activeBoard: string;
-  onChange: (boardId: string) => void;
+  activeBoard: number;
+  onChange: (boardId: number) => void;
 }
 
 export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
@@ -66,7 +66,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       }
     } else if (title) {
       if (belowId) {
-        dispatch(BoardsActions.removeNewBoards());
+        dispatch(BoardsActions.removeTemp());
       }
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
@@ -109,7 +109,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     setBoards(items);
   };
 
-  const getCountTodos = (boardId: string) => {
+  const getCountTodos = (boardId: number) => {
     // let isContainTodosByQuery = true;
     const needColumn = columns.filter((column: IColumn) => column.boardId === boardId);
     const needTodos: ITodos = [];
@@ -139,7 +139,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       <>
         {
           ((query && countTodos > 0) || !query) && (
-            <BoardItem
+            <Board
               key={id}
               id={id}
               icon={icon}
@@ -173,7 +173,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                     const countTodos = getCountTodos(id);
                     if (query && !countTodos) return null;
                     console.log('id', id);
-                    if (['trash', 'today'].includes(id)) { return null; }
+                    // if (['trash', 'today'].includes(id)) { return null; }
                     return (
                       <Draggable
                         key={`board-${id}`}
@@ -187,7 +187,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                             {...draggableProvided.draggableProps}
                             {...draggableProvided.dragHandleProps}
                           >
-                            <BoardItem
+                            <Board
                               snapshot={draggableSnapshot}
                               key={id}
                               id={id}
@@ -212,7 +212,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         </DragDropContext>
         {
           drawBoard({
-            id: 'trash',
+            id: -1,
             icon: '/assets/svg/board/trash.svg',
             title: 'Trash',
             position: 4,
@@ -230,7 +230,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
 
   const memoNewBoard = useMemo(() => (
     isOpenNewBoard && (
-    <BoardItem
+    <Board
       icon="/assets/svg/board/item.svg"
       isEditableDefault
       onExitFromEditable={saveBoard}

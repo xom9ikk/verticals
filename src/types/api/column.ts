@@ -5,6 +5,14 @@ export type IGetAllColumnsResponse = IServerResponse<{
   columns: IColumns;
 }>;
 
+export interface IGetColumnsByBoardIdRequest {
+  boardId: number;
+}
+
+export type IGetColumnsByBoardIdResponse = IServerResponse<{
+  columns: IColumns;
+}>;
+
 export interface ICreateColumnRequest {
   boardId: number;
   title: string;

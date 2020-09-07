@@ -103,13 +103,6 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             color: action.payload.color,
           }
           : column))),
-  [ColumnsActions.Type.RESET_COLOR]:
-        (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
-          ? {
-            ...column,
-            color: undefined,
-          }
-          : column))),
   [ColumnsActions.Type.UPDATE_IS_COLLAPSED]:
         (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
           ? {
@@ -135,14 +128,15 @@ export const ColumnsReducer = handleActions<IColumns, any>({
               position: index,
             }));
         },
-  [ColumnsActions.Type.ADD_COLUMN_AFTER]:
+  [ColumnsActions.Type.DRAW_BELOW]:
         (state, action) => {
-          const { id, boardId } = action.payload;
+          const { belowId, boardId } = action.payload;
           const columns = [...state].sort((a, b) => a.position - b.position);
-          const spliceIndex = columns.findIndex((column: IColumn) => column.id === id);
+          const spliceIndex = columns.findIndex((column: IColumn) => column.id === belowId);
           columns.splice(spliceIndex + 1, 0, {
-            id: 'new-column',
+            id: 0,
             boardId,
+            belowId,
             position: spliceIndex,
             title: '',
           });
@@ -151,13 +145,6 @@ export const ColumnsReducer = handleActions<IColumns, any>({
             position: index,
           }));
         },
-  [ColumnsActions.Type.GENERATE_NEW_ID]:
-        (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
-          ? {
-            ...column,
-            id: Math.random().toString(),
-          }
-          : column))),
-  [ColumnsActions.Type.REMOVE_NEW_COLUMNS]:
-        (state) => (state.filter((column: IColumn) => column.id !== 'new-column')),
+  [ColumnsActions.Type.REMOVE_TEMP]:
+        (state) => (state.filter((column: IColumn) => column.belowId === undefined)),
 }, initialState);

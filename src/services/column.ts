@@ -6,7 +6,9 @@ import {
   ICreateColumnRequest, ICreateColumnResponse,
   IRemoveColumnRequest, IRemoveColumnResponse,
   IUpdateColumnRequest, IUpdateColumnResponse,
-  IUpdateColumnPositionRequest, IUpdateColumnPositionResponse, IGetAllColumnsResponse,
+  IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
+  IGetAllColumnsResponse,
+  IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
 } from '@/types/api';
 
 @injectable()
@@ -21,6 +23,12 @@ export class ColumnService implements IColumnService {
 
   getAll() {
     return this.httpClient.get<IGetAllColumnsResponse>('/column');
+  }
+
+  getByBoardId(body: IGetColumnsByBoardIdRequest) {
+    return this.httpClient.get<IGetColumnsByBoardIdResponse>('/column', {
+      params: body,
+    });
   }
 
   create(body: ICreateColumnRequest) {

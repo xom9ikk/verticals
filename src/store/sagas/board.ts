@@ -20,7 +20,7 @@ function* fetchWorker() {
   try {
     const response = yield* apply(boardService, boardService.getAll, []);
     const { boards } = response.data;
-    yield put(BoardsActions.setBoards(boards));
+    yield put(BoardsActions.setAll(boards));
   } catch (error) {
     yield call(show, 'Board', error, ALERT_TYPES.DANGER);
   }
@@ -29,11 +29,10 @@ function* fetchWorker() {
 function* createWorker(action: Action<ICreateBoardRequest>) {
   try {
     const { belowId } = action.payload;
-    console.log('action', action.payload);
     const response = yield* apply(boardService, boardService.create, [action.payload]);
     const { boardId, position } = response.data;
     if (belowId) {
-      yield put(BoardsActions.addBelow({
+      yield put(BoardsActions.insertInPosition({
         ...action.payload,
         id: boardId,
         position,
@@ -80,7 +79,7 @@ function* updatePositionWorker(action: Action<IUpdateBoardPositionRequest>) {
 
 export function* watchBoard() {
   yield* all([
-    takeLatest(BoardsActions.Type.FETCH_BOARDS, fetchWorker),
+    takeLatest(BoardsActions.Type.FETCH_ALL, fetchWorker),
     takeLatest(BoardsActions.Type.CREATE, createWorker),
     takeLatest(BoardsActions.Type.REMOVE, removeWorker),
     takeLatest(BoardsActions.Type.UPDATE_TITLE, updateWorker),

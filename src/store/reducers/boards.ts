@@ -5,7 +5,7 @@ import { BoardsActions } from '../actions';
 const initialState: IBoards = [];
 
 export const BoardsReducer = handleActions<IBoards, any>({
-  [BoardsActions.Type.SET_BOARDS]:
+  [BoardsActions.Type.SET_ALL]:
         (state, action) => ([...action.payload]),
   [BoardsActions.Type.UPDATE_TITLE]:
       (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
@@ -27,7 +27,7 @@ export const BoardsReducer = handleActions<IBoards, any>({
         position: state.length,
         ...action.payload,
       }]),
-  [BoardsActions.Type.ADD_BELOW]:
+  [BoardsActions.Type.INSERT_IN_POSITION]:
       (state, action) => {
         const { position } = action.payload;
         const boards = [...state].sort((a, b) => a.position - b.position);
@@ -77,14 +77,14 @@ export const BoardsReducer = handleActions<IBoards, any>({
           : board))),
   [BoardsActions.Type.REMOVE]:
         (state, action) => state.filter((board: IBoard) => board.id !== action.payload.id),
-  [BoardsActions.Type.DRAW_BOARD_BELOW]:
+  [BoardsActions.Type.DRAW_BELOW]:
         (state, action) => {
-          const { id } = action.payload;
+          const { belowId } = action.payload;
           const boards = [...state].sort((a, b) => a.position - b.position);
-          const spliceIndex = boards.findIndex((board: IBoard) => board.id === id);
+          const spliceIndex = boards.findIndex((board: IBoard) => board.id === belowId);
           boards.splice(spliceIndex + 1, 0, {
-            id: 'new-board',
-            belowId: id,
+            id: 0,
+            belowId,
             position: spliceIndex,
             title: '',
             icon: '/assets/svg/board/item.svg',
@@ -95,9 +95,9 @@ export const BoardsReducer = handleActions<IBoards, any>({
             position: index,
           }));
         },
-  [BoardsActions.Type.REMOVE_NEW_BOARDS]:
+  [BoardsActions.Type.REMOVE_TEMP]:
         (state) => (state
-          .filter((board: IBoard) => board.id !== 'new-board')
+          .filter((board: IBoard) => board.id !== 0)
           .map((board: IBoard, index) => ({
             ...board,
             position: index,

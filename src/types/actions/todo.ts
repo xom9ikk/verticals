@@ -17,7 +17,7 @@ export interface IUpdateTodoCompleteStatus {
 }
 
 export interface IAddTodo {
-  columnId: string;
+  columnId: number;
   title?: string;
   description?: string;
   status?: EnumTodoStatus;

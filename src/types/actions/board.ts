@@ -1,31 +1,33 @@
-import { EnumTodoType, IBoards } from '@/types';
+import { EnumColors, EnumTodoType, IBoards } from '@/types';
 
 export type ISetBoards = IBoards;
 
 export interface ICreateBoard {
-  title: string;
   icon: string;
+  title: string;
   cardType: EnumTodoType;
   description?: string;
-  belowId?: string;
+  color?: EnumColors;
+  belowId?: number;
 }
 
 export interface IAddBoard {
   id: number;
-  icon: string;
   position: number;
+  icon: string;
   cardType: EnumTodoType;
   title?: string;
   description?: string;
+  color?: EnumColors;
 }
 
 export interface IUpdateBoardTitle {
-  id: string;
+  id: number;
   title: string;
 }
 
 export interface IUpdateBoardDescription {
-  id: string;
+  id: number;
   description: string;
 }
 
@@ -35,23 +37,19 @@ export interface IUpdateBoardPosition {
 }
 
 export interface IUpdateBoardColor {
-  id: string;
+  id: number;
   color: number | null;
 }
 
 export interface IUpdateBoardCardType {
-  id: string;
+  id: number;
   cardType: EnumTodoType;
 }
 
 export interface IRemoveBoard {
-  id: string;
+  id: number;
 }
 
 export interface IDrawBoardBelow {
-  id: string;
-}
-
-export interface IGenerateNewBoardId {
-  id: string;
+  belowId: number;
 }

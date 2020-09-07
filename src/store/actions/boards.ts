@@ -13,11 +13,11 @@ import {
 } from '@/types';
 
 enum Type {
-  FETCH_BOARDS = 'BOARDS/FETCH_BOARDS',
-  SET_BOARDS = 'BOARDS/SET_BOARDS',
+  FETCH_ALL = 'BOARDS/FETCH_BOARDS',
+  SET_ALL = 'BOARDS/SET_ALL',
   CREATE = 'BOARDS/CREATE',
   ADD = 'BOARDS/ADD',
-  ADD_BELOW = 'BOARDS/ADD_BELOW',
+  INSERT_IN_POSITION = 'BOARDS/INSERT_IN_POSITION',
   UPDATE_TITLE = 'BOARDS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'BOARDS/UPDATE_DESCRIPTION',
   UPDATE_POSITION = 'BOARDS/UPDATE_POSITION',
@@ -25,37 +25,37 @@ enum Type {
   RESET_COLOR = 'BOARDS/RESET_COLOR',
   UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
   REMOVE = 'BOARDS/REMOVE',
-  DRAW_BOARD_BELOW = 'BOARDS/DRAW_BOARD_BELOW',
-  REMOVE_NEW_BOARDS = 'BOARDS/REMOVE_NEW_BOARDS',
+  DRAW_BELOW = 'BOARDS/DRAW_BELOW',
+  REMOVE_TEMP = 'BOARDS/REMOVE_TEMP',
 }
 
-const fetchBoards = createAction(Type.FETCH_BOARDS);
-const setBoards = createAction<ISetBoards>(Type.SET_BOARDS);
+const fetchAll = createAction(Type.FETCH_ALL);
+const setAll = createAction<ISetBoards>(Type.SET_ALL);
 const create = createAction<ICreateBoard>(Type.CREATE);
 const add = createAction<IAddBoard>(Type.ADD);
-const addBelow = createAction<IAddBoard>(Type.ADD_BELOW);
+const insertInPosition = createAction<IAddBoard>(Type.INSERT_IN_POSITION);
 const updateTitle = createAction<IUpdateBoardTitle>(Type.UPDATE_TITLE);
 const updateDescription = createAction<IUpdateBoardDescription>(Type.UPDATE_DESCRIPTION);
 const updatePosition = createAction<IUpdateBoardPosition>(Type.UPDATE_POSITION);
 const updateColor = createAction<IUpdateBoardColor>(Type.UPDATE_COLOR);
 const updateCardType = createAction<IUpdateBoardCardType>(Type.UPDATE_CARD_TYPE);
 const remove = createAction<IRemoveBoard>(Type.REMOVE);
-const drawBoardBelow = createAction<IDrawBoardBelow>(Type.DRAW_BOARD_BELOW);
-const removeNewBoards = createAction(Type.REMOVE_NEW_BOARDS);
+const drawBelow = createAction<IDrawBoardBelow>(Type.DRAW_BELOW);
+const removeTemp = createAction(Type.REMOVE_TEMP);
 
 export const BoardsActions = {
   Type,
-  fetchBoards,
-  setBoards,
-  updateTitle,
-  updateDescription,
+  fetchAll,
+  setAll,
   create,
   add,
-  addBelow,
+  insertInPosition,
+  updateTitle,
+  updateDescription,
   updatePosition,
   updateColor,
   updateCardType,
   remove,
-  drawBoardBelow,
-  removeNewBoards,
+  drawBelow,
+  removeTemp,
 };

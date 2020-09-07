@@ -19,7 +19,7 @@ export class Services implements IServices {
   constructor(
   @inject(TYPES.AuthService) authService: IAuthService,
     @inject(TYPES.BoardService) boardService: IBoardService,
-    @inject(TYPES.BoardService) columnService: IColumnService,
+    @inject(TYPES.ColumnService) columnService: IColumnService,
   ) {
     this.authService = authService;
     this.boardService = boardService;

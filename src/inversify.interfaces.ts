@@ -14,6 +14,7 @@ import {
   IUpdateColumnRequest, IUpdateColumnResponse,
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
   IGetAllColumnsResponse,
+  IGetColumnsByBoardIdResponse, IGetColumnsByBoardIdRequest,
 } from './types/api';
 
 export interface IHttpClient {
@@ -48,6 +49,7 @@ export interface IBoardService {
 
 export interface IColumnService {
   getAll(): Promise<IGetAllColumnsResponse>;
+  getByBoardId(body: IGetColumnsByBoardIdRequest): Promise<IGetColumnsByBoardIdResponse>;
   create(body: ICreateColumnRequest): Promise<ICreateColumnResponse>;
   remove(body: IRemoveColumnRequest): Promise<IRemoveColumnResponse>;
   update(body: IUpdateColumnRequest): Promise<IUpdateColumnResponse>;
