@@ -158,15 +158,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     console.log('boards redraw');
     return (
       <>
-        {
-          drawBoard({
-            id: 'today',
-            icon: '/assets/svg/board/star.svg',
-            title: 'Today',
-            position: 0,
-            cardType: EnumTodoType.Checkboxes,
-          })
-        }
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (

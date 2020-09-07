@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle,class-methods-use-this */
 import { injectable } from 'inversify';
+import 'reflect-metadata';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { IHttpClient } from '@/inversify.interfaces';
 import { IRefreshResponse } from '@/types/api';
@@ -123,7 +124,6 @@ export class HttpClient implements IHttpClient {
 
   private static shouldRetry(error: any) {
     const token = storage.getToken();
-    console.log(token);
     if (!token) {
       return false;
     }

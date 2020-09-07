@@ -28,7 +28,6 @@ export interface IUpdateBoardRequest {
   id: string;
   icon?: string;
   title?: string;
-  // position?: number;
   cardType?: EnumTodoType;
   description?: string;
   color?: EnumColors;

@@ -7,7 +7,13 @@ import {
   ICreateBoardRequest, ICreateBoardResponse,
   IRemoveBoardRequest, IRemoveBoardResponse,
   IUpdateBoardRequest, IUpdateBoardResponse,
-  IUpdateBoardPositionRequest, IUpdateBoardPositionResponse, IGetAllBoardsResponse,
+  IUpdateBoardPositionRequest, IUpdateBoardPositionResponse,
+  IGetAllBoardsResponse,
+  ICreateColumnRequest, ICreateColumnResponse,
+  IRemoveColumnRequest, IRemoveColumnResponse,
+  IUpdateColumnRequest, IUpdateColumnResponse,
+  IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
+  IGetAllColumnsResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -21,6 +27,7 @@ export interface IHttpClient {
 export interface IServices {
   authService: IAuthService;
   boardService: IBoardService;
+  columnService: IColumnService;
 }
 
 export interface IAuthService {
@@ -37,4 +44,12 @@ export interface IBoardService {
   remove(body: IRemoveBoardRequest): Promise<IRemoveBoardResponse>;
   update(body: IUpdateBoardRequest): Promise<IUpdateBoardResponse>;
   updatePosition(body: IUpdateBoardPositionRequest): Promise<IUpdateBoardPositionResponse>;
+}
+
+export interface IColumnService {
+  getAll(): Promise<IGetAllColumnsResponse>;
+  create(body: ICreateColumnRequest): Promise<ICreateColumnResponse>;
+  remove(body: IRemoveColumnRequest): Promise<IRemoveColumnResponse>;
+  update(body: IUpdateColumnRequest): Promise<IUpdateColumnResponse>;
+  updatePosition(body: IUpdateColumnPositionRequest): Promise<IUpdateColumnPositionResponse>;
 }
