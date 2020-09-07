@@ -10,14 +10,14 @@ import { storage } from '@/plugins/storage';
 import { forwardTo } from '@/router/history';
 import { ISignInRequest, ISignUpRequest } from '@/types/api';
 import { IResetPassword, ISetAuthInfo } from '@/types/actions';
-import { AuthActions } from '../actions';
+import { AuthActions } from '@/store/actions';
 
-const { auth } = container.get<IServices>(TYPES.Services);
+const { authService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
 function* signUpWorker(action: Action<ISignUpRequest>) {
   try {
-    const response = yield* apply(auth, auth.signUp, [action.payload]);
+    const response = yield* apply(authService, authService.signUp, [action.payload]);
     const { token, refreshToken } = response.data;
     yield put(AuthActions.setAuthInfo({
       token,
@@ -32,7 +32,7 @@ function* signUpWorker(action: Action<ISignUpRequest>) {
 
 function* signInWorker(action: Action<ISignInRequest>) {
   try {
-    const response = yield* apply(auth, auth.signIn, [action.payload]);
+    const response = yield* apply(authService, authService.signIn, [action.payload]);
     const { token, refreshToken } = response.data;
     yield put(AuthActions.setAuthInfo({
       token,
@@ -57,21 +57,22 @@ function* setAuthInfoWorker(action: Action<ISetAuthInfo>) {
 
 function* logoutWorker() {
   try {
-    yield* apply(auth, auth.logout, []);
+    yield* apply(authService, authService.logout, []);
+    yield call(show, 'Success', 'Successful logout', ALERT_TYPES.SUCCESS);
+  } catch (error) {
+    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+  } finally {
     yield put(AuthActions.setAuthInfo({
       token: '',
       refreshToken: '',
     }));
-    yield call(show, 'Success', 'Successful logout', ALERT_TYPES.SUCCESS);
     yield call(forwardTo, '/');
-  } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
 }
 
 function* resetPasswordWorker(action: Action<IResetPassword>) {
   try {
-    yield* apply(auth, auth.reset, [action.payload]);
+    yield* apply(authService, authService.reset, [action.payload]);
     yield call(show, 'Success', 'Successful reset password', ALERT_TYPES.SUCCESS);
     yield call(forwardTo, '/auth/login');
   } catch (error) {

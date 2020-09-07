@@ -9,35 +9,31 @@ body {
   //}
   //overflow: hidden;
   //animation: rainbow 30s ease 1;
-  &::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     width: 0;
     height: 0;
   }
-  //overflow: hidden !important;
-  //overflow-x: auto;
+  ::-webkit-resizer,
+  ::-webkit-scrollbar-button,
+  ::-webkit-scrollbar-corner { display: none !important; }
+  ::-webkit-scrollbar {
+    height: 15px;
+    width: 15px;
+  }
 
-  //&::-webkit-resizer,
-  //&::-webkit-scrollbar-button,
-  //&::-webkit-scrollbar-corner { display: none !important; }
-  //&::-webkit-scrollbar {
-  //  height: 15px;
-  //}
-  //
-  //&::-webkit-scrollbar-thumb {
-  //  //background: red !important;
-  //  background: lighten($text-very-light, 10) !important;
-  //  border: 5px solid #fff !important;
-  //  border-radius: 10px !important;
-  //  transition: background .5s ease-in-out !important;
-  //  &:hover {
-  //    background: $primary !important;
-  //  }
-  //}
-  //
-  //&::-webkit-scrollbar-track {
-  //  background: red;
-  //  margin-left: $sidebar-width;
-  //}
+  ::-webkit-scrollbar-thumb {
+    background: lighten($text-very-light, 10) !important;
+    border: 5px solid #ffffff !important;
+    border-radius: 10px !important;
+    transition: background .5s ease-in-out !important;
+    &:hover {
+      background: darken($text-very-light, 10) !important;
+    }
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background: transparent !important;
+  }
 }
 
 #root {

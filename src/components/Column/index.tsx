@@ -14,7 +14,7 @@ import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';
 import {
-  EnumColors, EnumTodoStatus, ITodo, ITodos,
+  EnumColors, EnumTodoStatus, EnumTodoType, ITodo, ITodos,
 } from '@/types';
 import { useFocus } from '@/use/focus';
 import { IRootState } from '@/store/reducers/state';
@@ -28,10 +28,11 @@ import { TextArea } from '@comp/TextArea';
 
 interface IColumn {
   index: number;
-  columnId?: string;
+  columnId?: number;
+  belowId?: number;
   color?: number;
   isCollapsed?: boolean;
-  boardId: string;
+  boardId: number;
   title?: string;
   description?: string;
   todos?: ITodos;
@@ -50,6 +51,7 @@ enum EnumMenuActions {
 export const Column: FC<IColumn> = ({
   index,
   columnId,
+  belowId,
   color,
   isCollapsed,
   boardId,
@@ -63,6 +65,8 @@ export const Column: FC<IColumn> = ({
   const { filterTodos } = useFilterTodos();
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [isTopHover, setIsTopHover] = useState<boolean>(false);
+  const [isDraggingCard, setIsDraggingCard] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
@@ -74,7 +78,7 @@ export const Column: FC<IColumn> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
-  const { cardType } = boards.filter((board) => board.id === boardId)[0];
+  const { cardType } = boards.filter((board) => board.id === boardId)[0] || EnumTodoType.Checkboxes;
 
   const saveCard = (
     id?: string,
@@ -122,7 +126,7 @@ export const Column: FC<IColumn> = ({
     } else if (newTitle || newDescription) {
       dispatch(TodosActions.add(
         {
-          columnId: columnId || 'todo-this-case',
+          columnId: columnId!,
           title: newTitle,
           description: newDescription,
           status: newStatus,
@@ -137,49 +141,44 @@ export const Column: FC<IColumn> = ({
   }, [isEditable]);
 
   const getNewData = () => ({
-    newTitle: initialTitle !== titleValue
+    title: initialTitle !== titleValue
       ? titleValue.trim()
       : undefined,
-    newDescription: initialDescription !== descriptionValue
+    description: initialDescription !== descriptionValue
       ? descriptionValue.trim()
       : undefined,
   });
 
   const saveColumn = (newColor?: number) => {
-    const { newTitle, newDescription } = getNewData();
-    if (columnId || columnId === 'new-column') {
-      if (newTitle) {
+    const { title, description } = getNewData();
+    if (columnId && !belowId) {
+      if (title) {
         dispatch(ColumnsActions.updateTitle({
           id: columnId,
-          title: newTitle,
+          title,
         }));
       }
-      if (newDescription) {
+      if (description) {
         dispatch(ColumnsActions.updateDescription({
           id: columnId,
-          description: newDescription,
+          description,
         }));
       }
       if (newColor !== undefined) {
-        if (color === newColor) {
-          dispatch(ColumnsActions.resetColor({ id: columnId }));
-        } else {
-          dispatch(ColumnsActions.updateColor({
-            id: columnId,
-            color: newColor,
-          }));
-        }
+        dispatch(ColumnsActions.updateColor({
+          id: columnId,
+          color: color !== newColor ? newColor : null,
+        }));
       }
-      if (columnId === 'new-column' && (newTitle)) {
-        dispatch(ColumnsActions.generateNewId({ id: columnId }));
-      } else {
-        dispatch(ColumnsActions.removeNewColumns());
+    } else if (title) {
+      if (belowId) {
+        dispatch(ColumnsActions.removeTemp());
       }
-    } else if (newTitle || newDescription) {
-      dispatch(ColumnsActions.add({
+      dispatch(ColumnsActions.create({
         boardId,
-        title: newTitle,
-        description: newDescription,
+        title,
+        description: description || undefined,
+        belowId,
       }));
       if (!isDraggable) {
         setTitleValue('');
@@ -242,7 +241,8 @@ export const Column: FC<IColumn> = ({
   };
 
   useEffect(() => {
-    if (columnId === 'new-column') {
+    console.log('=========================belowId', belowId);
+    if (belowId) {
       doubleClickHandler();
     }
   }, []);
@@ -260,15 +260,16 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.Duplicate: {
-        const newColumnId = `column-${Math.random().toString()}`;
-        dispatch(ColumnsActions.duplicate({
-          id: columnId!,
-          newId: newColumnId,
-        }));
-        dispatch(TodosActions.duplicateForColumn({
-          columnId: columnId!,
-          newColumnId,
-        }));
+        // TODO
+        // const newColumnId = `column-${Math.random().toString()}`;
+        // dispatch(ColumnsActions.duplicate({
+        //   id: columnId!,
+        //   newId: newColumnId,
+        // }));
+        // dispatch(TodosActions.duplicateForColumn({
+        //   columnId: columnId!,
+        //   newColumnId,
+        // }));
         break;
       }
       case EnumMenuActions.AddCard: {
@@ -280,9 +281,9 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.AddColumnAfter: {
-        dispatch(ColumnsActions.removeNewColumns());
-        dispatch(ColumnsActions.addColumnAfter({
-          id: columnId!,
+        dispatch(ColumnsActions.removeTemp());
+        dispatch(ColumnsActions.drawBelow({
+          belowId: columnId!,
           boardId,
         }));
         break;
@@ -316,18 +317,21 @@ export const Column: FC<IColumn> = ({
 
   const addCard = useMemo(() => (
     (!isOpenNewCard && isDraggable) && (
+    <>
+      {JSON.stringify({ isDraggingCard })}
       <Menu
         imageSrc="/assets/svg/add.svg"
         alt="add"
         text="Add card"
         isHide
-        isHoverBlock={isHover}
+        isHoverBlock={(isTopHover && !isDraggingCard) || todos?.length === 0}
         isMaxWidth
         isShowPopup={false}
         onClick={() => setIsOpenNewCard(true)}
       />
+    </>
     )
-  ), [isHover, isOpenNewCard, isDraggable]);
+  ), [isTopHover, isDraggingCard, todos, isOpenNewCard, isDraggable]);
 
   const newCard = useMemo(() => (
     isOpenNewCard && (
@@ -444,11 +448,11 @@ export const Column: FC<IColumn> = ({
 
   const cardToolbar = useMemo(() => (
     <CardToolbar
-      isHoverBlock={isHover}
+      isHoverBlock={isHover && !isHoverHeader}
       onClickCard={() => setIsOpenNewCard(true)}
       onClickHeading={() => console.log('open heading')}
     />
-  ), [isHover]);
+  ), [isHover, isHoverHeader]);
 
   const memoDescription = useMemo(() => (
     <>
@@ -510,7 +514,8 @@ export const Column: FC<IColumn> = ({
 
   const memoColumn = useMemo(() => (
     <Draggable
-      draggableId={`${columnId || 'new'}-${index}`}
+      draggableId={`column-${columnId}`}
+      // draggableId={`${columnId || 'new'}-${index}`}
       index={index}
       isDragDisabled={!isDraggable || !!query}
     >
@@ -533,7 +538,7 @@ export const Column: FC<IColumn> = ({
                       className={`column__wrapper column__wrapper--compact
                     ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
                     ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
-                    ${color !== undefined ? colorClass : ''}
+                    ${color !== null ? colorClass : ''}
                     `}
                       {...provided.dragHandleProps}
                     >
@@ -565,49 +570,55 @@ export const Column: FC<IColumn> = ({
                     `}
                   >
                     <Droppable
-                      droppableId={columnId || 'todo-this-case'}
+                      droppableId={`column-${columnId?.toString() || 'todo-this-case'}`}
                       type="QUOTE"
                     >
-
                       {
-                        (dropProvided, dropSnapshot) => (
-                          <div
-                            className="column__container"
-                            ref={dropProvided.innerRef}
-                          >
-                            <div style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}>
+                        (dropProvided, dropSnapshot) => {
+                          setIsDraggingCard(dropSnapshot.isDraggingOver);
+                          return (
+                            <div
+                              className="column__container"
+                              ref={dropProvided.innerRef}
+                            >
                               <div
-                                role="button"
-                                tabIndex={0}
-                                className={`column__header
-                                ${color !== undefined ? colorClass : ''}
+                                style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}
+                                onMouseEnter={() => setIsTopHover(true)}
+                                onMouseLeave={() => setIsTopHover(false)}
+                              >
+                                <div
+                                  role="button"
+                                  tabIndex={0}
+                                  className={`column__header
+                                ${color !== null ? colorClass : ''}
                                 ${isEditable ? 'column__header--editable' : ''}
                                 `}
-                                {...provided.dragHandleProps}
-                                onMouseEnter={() => setIsHoverHeader(true)}
-                                onMouseLeave={() => setIsHoverHeader(false)}
-                                onClick={handleClick}
-                                onDoubleClick={handleDoubleClick}
-                              >
-                                { memoTitle }
-                                { memoDescription }
+                                  {...provided.dragHandleProps}
+                                  onMouseEnter={() => setIsHoverHeader(true)}
+                                  onMouseLeave={() => setIsHoverHeader(false)}
+                                  onClick={handleClick}
+                                  onDoubleClick={handleDoubleClick}
+                                >
+                                  { memoTitle }
+                                  { memoDescription }
+                                </div>
+                                { todoCards }
+                                { newCard }
+                                { addCard }
                               </div>
-                              { todoCards }
+                              <ArchiveContainer
+                                archivedTodos={todos
+                                        ?.sort((a, b) => a.position - b.position)
+                                        ?.filter((todo: ITodo) => todo.isArchive)
+                                        ?.filter(filterTodos)}
+                                isActiveQuery={!!query}
+                                cardType={cardType}
+                                onExitFromEditable={saveCard}
+                              />
+                              {dropProvided.placeholder}
                             </div>
-                            { newCard }
-                            { addCard }
-                            <ArchiveContainer
-                              archivedTodos={todos
-                                    ?.sort((a, b) => a.position - b.position)
-                                    ?.filter((todo: ITodo) => todo.isArchive)
-                                    ?.filter(filterTodos)}
-                              isActiveQuery={!!query}
-                              cardType={cardType}
-                              onExitFromEditable={saveCard}
-                            />
-                            {dropProvided.placeholder}
-                          </div>
-                        )
+                          );
+                        }
                       }
                     </Droppable>
                   </div>

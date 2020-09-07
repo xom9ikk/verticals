@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle,class-methods-use-this */
 import { injectable } from 'inversify';
+import 'reflect-metadata';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { IHttpClient } from '@/inversify.interfaces';
 import { IRefreshResponse } from '@/types/api';

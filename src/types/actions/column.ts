@@ -1,57 +1,70 @@
-import { IColumns } from '../column';
+import { EnumColors, IColumns } from '@/types';
+
+export interface IFetchColumnsByBoardId {
+  boardId: number;
+}
 
 export type ISetColumns = IColumns;
 
-export interface IAddColumn {
-  boardId: string;
-  title?: string;
+export interface ICreateColumn {
+  boardId: number;
+  title: string;
   description?: string;
+  color?: EnumColors;
+  isCollapsed?: boolean;
+  belowId?: number;
+}
+
+export interface IAddColumn {
+  id: number;
+  position: number;
+  boardId: number;
+  title: string;
+  description?: string;
+  color?: EnumColors;
+  isCollapsed?: boolean;
 }
 
 export interface IUpdateColumnTitle {
-  id: string;
+  id: number;
   title: string;
 }
 
 export interface IUpdateColumnDescription {
-  id: string;
+  id: number;
   description: string;
 }
 
 export interface IUpdateColumnPosition {
   sourcePosition: number;
   destinationPosition: number;
-  boardId: string;
+  boardId: number;
 }
 
 export interface IUpdateColumnColor {
-  id: string;
-  color: number;
+  id: number;
+  color: number | null;
 }
 
 export interface IResetColumnColor {
-  id: string;
+  id: number;
 }
 
 export interface IUpdateColumnIsCollapsed {
-  id: string;
+  id: number;
   isCollapsed: boolean;
 }
 
 export interface IRemoveColumn {
-  id: string;
+  id: number;
 }
 
 export interface IDuplicateColumn {
-  id: string;
+  id: number;
   newId: string;
 }
 
-export interface IAddColumnAfter {
-  id: string;
-  boardId: string;
-}
-
-export interface IGenerateNewColumnId {
-  id: string;
+export interface IAddColumnBelow {
+  boardId: number;
+  belowId: number;
 }

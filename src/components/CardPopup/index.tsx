@@ -16,7 +16,7 @@ import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
 
 interface ICardPopup {
-  columnId: string;
+  columnId: number;
   cardType: EnumTodoType;
 }
 

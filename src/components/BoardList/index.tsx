@@ -6,18 +6,18 @@ import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
 import { Menu } from '@comp/Menu';
-import { BoardItem } from '@comp/BoardItem';
+import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
 import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
-  IBoard, IBoards, IColumn, ITodo, ITodos,
+  EnumTodoType, IBoard, IBoards, IColumn, ITodo, ITodos,
 } from '@/types';
 import { useFilterTodos } from '@/use/filterTodos';
 
 interface IBoardList {
-  activeBoard: string;
-  onChange: (boardId: string) => void;
+  activeBoard: number;
+  onChange: (boardId: number) => void;
 }
 
 export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
@@ -39,45 +39,41 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   }, [initialBoards]);
 
   const saveBoard = (
-    boardId: string, newTitle?: string, newDescription?: string, newColor?: number,
+    {
+      boardId, title, description, color, belowId,
+    }: IExitFromEditable,
   ) => {
-    console.log('saveBoard', newColor);
     setIsOpenNewBoard(false);
-    if (boardId || boardId === 'new-board') {
-      if (newTitle) {
+    if (boardId && !belowId) {
+      if (title) {
         dispatch(BoardsActions.updateTitle({
           id: boardId,
-          title: newTitle,
+          title,
         }));
       }
-      if (newDescription) {
+      if (description) {
         dispatch(BoardsActions.updateDescription({
           id: boardId,
-          description: newDescription,
+          description,
         }));
       }
-      if (newColor !== undefined) {
+      if (color !== undefined) {
         const boardToChange = boards.find((board) => board.id === boardId);
-        console.log('boardToChange?.color', boardToChange?.color, 'newColor', newColor);
-        if (boardToChange?.color === newColor) {
-          dispatch(BoardsActions.resetColor({ id: boardId }));
-        } else {
-          dispatch(BoardsActions.updateColor({
-            id: boardId,
-            color: newColor,
-          }));
-        }
+        dispatch(BoardsActions.updateColor({
+          id: boardId,
+          color: boardToChange?.color !== color ? color : null,
+        }));
       }
-      if (boardId === 'new-board' && (newTitle)) {
-        dispatch(BoardsActions.generateNewId({ id: boardId }));
-      } else {
-        dispatch(BoardsActions.removeNewBoards());
+    } else if (title) {
+      if (belowId) {
+        dispatch(BoardsActions.removeTemp());
       }
-    } else if (newTitle) {
-      dispatch(BoardsActions.add({
+      dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
-        title: newTitle,
-        description: newDescription,
+        title,
+        description: description || undefined,
+        cardType: EnumTodoType.Checkboxes,
+        belowId,
       }));
     }
   };
@@ -94,10 +90,15 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       return;
     }
     const { source, destination } = result;
+    const sourcePosition = source.index;
+    const destinationPosition = destination.index;
+    if (sourcePosition === destinationPosition) {
+      return;
+    }
     dispatch(BoardsActions.updatePosition(
       {
-        sourcePosition: source.index,
-        destinationPosition: destination.index,
+        sourcePosition,
+        destinationPosition,
       },
     ));
     const items = reorder(
@@ -108,7 +109,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     setBoards(items);
   };
 
-  const getCountTodos = (boardId: string) => {
+  const getCountTodos = (boardId: number) => {
     // let isContainTodosByQuery = true;
     const needColumn = columns.filter((column: IColumn) => column.boardId === boardId);
     const needTodos: ITodos = [];
@@ -121,7 +122,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     });
     // if (query) {
     //
-    //   // isContainTodosByQuery = countTodos > 0;
+    //    // isContainTodosByQuery = countTodos > 0;
     // }
     // if (['trash', 'today'].includes(id)) { return null; }
     // if (!isContainTodosByQuery) { return countTodos; }
@@ -138,7 +139,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       <>
         {
           ((query && countTodos > 0) || !query) && (
-            <BoardItem
+            <Board
               key={id}
               id={id}
               icon={icon}
@@ -148,7 +149,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
               onClick={() => onChange(id)}
             />
           )
-          }
+        }
       </>
     );
   };
@@ -157,9 +158,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     console.log('boards redraw');
     return (
       <>
-        {
-          drawBoard(boards[0])
-        }
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -170,15 +168,16 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                 {boards
                   .sort((a, b) => a.position - b.position)
                   .map(({
-                    id, icon, title, color,
+                    id, icon, title, color, belowId,
                   }, index) => {
                     const countTodos = getCountTodos(id);
                     if (query && !countTodos) return null;
-                    if (['trash', 'today'].includes(id)) { return null; }
+                    console.log('id', id);
+                    // if (['trash', 'today'].includes(id)) { return null; }
                     return (
                       <Draggable
-                        key={id}
-                        draggableId={id}
+                        key={`board-${id}`}
+                        draggableId={`board-${id}`}
                         index={index}
                         isDragDisabled={!!query}
                       >
@@ -188,10 +187,11 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                             {...draggableProvided.draggableProps}
                             {...draggableProvided.dragHandleProps}
                           >
-                            <BoardItem
+                            <Board
                               snapshot={draggableSnapshot}
                               key={id}
                               id={id}
+                              belowId={belowId}
                               icon={icon}
                               color={color}
                               title={title}
@@ -211,7 +211,13 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
           </Droppable>
         </DragDropContext>
         {
-          drawBoard(boards[1])
+          drawBoard({
+            id: -1,
+            icon: '/assets/svg/board/trash.svg',
+            title: 'Trash',
+            position: 4,
+            cardType: EnumTodoType.Checkboxes,
+          })
         }
       </>
 
@@ -224,7 +230,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
 
   const memoNewBoard = useMemo(() => (
     isOpenNewBoard && (
-    <BoardItem
+    <Board
       icon="/assets/svg/board/item.svg"
       isEditableDefault
       onExitFromEditable={saveBoard}

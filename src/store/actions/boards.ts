@@ -1,9 +1,9 @@
 import { createAction } from 'redux-actions';
 import {
   IAddBoard,
-  IAddBoardBelow, IGenerateNewBoardId,
+  ICreateBoard,
+  IDrawBoardBelow,
   IRemoveBoard,
-  IResetBoardColor,
   ISetBoards,
   IUpdateBoardCardType,
   IUpdateBoardColor,
@@ -13,8 +13,11 @@ import {
 } from '@/types';
 
 enum Type {
-  SET_BOARDS = 'BOARDS/SET_BOARDS',
+  FETCH_ALL = 'BOARDS/FETCH_BOARDS',
+  SET_ALL = 'BOARDS/SET_ALL',
+  CREATE = 'BOARDS/CREATE',
   ADD = 'BOARDS/ADD',
+  INSERT_IN_POSITION = 'BOARDS/INSERT_IN_POSITION',
   UPDATE_TITLE = 'BOARDS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'BOARDS/UPDATE_DESCRIPTION',
   UPDATE_POSITION = 'BOARDS/UPDATE_POSITION',
@@ -22,36 +25,37 @@ enum Type {
   RESET_COLOR = 'BOARDS/RESET_COLOR',
   UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
   REMOVE = 'BOARDS/REMOVE',
-  ADD_BOARD_BELOW = 'BOARDS/ADD_BOARD_BELOW',
-  GENERATE_NEW_ID = 'BOARDS/GENERATE_NEW_ID',
-  REMOVE_NEW_BOARDS = 'BOARDS/REMOVE_NEW_BOARDS',
+  DRAW_BELOW = 'BOARDS/DRAW_BELOW',
+  REMOVE_TEMP = 'BOARDS/REMOVE_TEMP',
 }
 
-const setBoards = createAction<ISetBoards>(Type.SET_BOARDS);
+const fetchAll = createAction(Type.FETCH_ALL);
+const setAll = createAction<ISetBoards>(Type.SET_ALL);
+const create = createAction<ICreateBoard>(Type.CREATE);
 const add = createAction<IAddBoard>(Type.ADD);
+const insertInPosition = createAction<IAddBoard>(Type.INSERT_IN_POSITION);
 const updateTitle = createAction<IUpdateBoardTitle>(Type.UPDATE_TITLE);
 const updateDescription = createAction<IUpdateBoardDescription>(Type.UPDATE_DESCRIPTION);
 const updatePosition = createAction<IUpdateBoardPosition>(Type.UPDATE_POSITION);
 const updateColor = createAction<IUpdateBoardColor>(Type.UPDATE_COLOR);
-const resetColor = createAction<IResetBoardColor>(Type.RESET_COLOR);
 const updateCardType = createAction<IUpdateBoardCardType>(Type.UPDATE_CARD_TYPE);
 const remove = createAction<IRemoveBoard>(Type.REMOVE);
-const addBoardBelow = createAction<IAddBoardBelow>(Type.ADD_BOARD_BELOW);
-const generateNewId = createAction<IGenerateNewBoardId>(Type.GENERATE_NEW_ID);
-const removeNewBoards = createAction(Type.REMOVE_NEW_BOARDS);
+const drawBelow = createAction<IDrawBoardBelow>(Type.DRAW_BELOW);
+const removeTemp = createAction(Type.REMOVE_TEMP);
 
 export const BoardsActions = {
   Type,
-  setBoards,
+  fetchAll,
+  setAll,
+  create,
+  add,
+  insertInPosition,
   updateTitle,
   updateDescription,
-  add,
   updatePosition,
   updateColor,
-  resetColor,
   updateCardType,
   remove,
-  addBoardBelow,
-  generateNewId,
-  removeNewBoards,
+  drawBelow,
+  removeTemp,
 };

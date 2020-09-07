@@ -61,7 +61,7 @@ export const CommentFile: FC<ICommentFile> = ({
         {
           !isImage && (
           <div className="comment-file__info">
-            <img src="/assets/svg/menu/extension.svg" alt="extension" />
+            <img src="/assets/svg/extension.svg" alt="extension" />
             <span>
               {file.type.substring(0, 3)}
             </span>

@@ -4,20 +4,21 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { Sidebar } from '@comp/Sidebar';
 import { Columns } from '@comp/Columns';
-import { SystemActions } from '@/store/actions';
+import { BoardsActions, SystemActions } from '@/store/actions';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { FallbackLoader } from '@comp/FallbackLoader';
 
 export const Main: FC = () => {
   const dispatch = useDispatch();
-  const [activeBoardId, setActiveBoardId] = useState<string>('board-2');
+  const [activeBoardId, setActiveBoardId] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    dispatch(BoardsActions.fetchAll());
   }, []);
 
   const closeAllPopups = () => {
@@ -26,7 +27,7 @@ export const Main: FC = () => {
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
     dispatch(SystemActions.setCurrentTodoId(''));
-    // dispatch(BoardsActions.removeNewBoards());
+    // dispatch(BoardsActions.removeTemp());
   };
 
   const keydownHandler = (event: any) => {

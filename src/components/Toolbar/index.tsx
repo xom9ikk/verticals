@@ -84,6 +84,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           imageSrc="/assets/svg/add.svg"
           text="New workspace"
           alt="add"
+          isMaxWidth
           isHoverBlock={isHover}
           onClick={() => menuButtonClickHandler(EnumToolbarActions.NewWorkspace)}
         />
@@ -92,7 +93,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           alt="preferences"
           isHoverBlock={isHover}
           imageSize={24}
-          size={30}
+          size={36}
           position="top"
           isAbsolute={false}
         >

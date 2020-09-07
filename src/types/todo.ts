@@ -1,6 +1,6 @@
 export interface ITodo {
   id: string;
-  columnId: string;
+  columnId: number;
   title: string;
   position: number;
   description?: string;

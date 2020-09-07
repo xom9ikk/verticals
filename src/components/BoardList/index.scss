@@ -1,5 +1,10 @@
 .board-list {
-  max-height: 100vh;
-  margin: 75px 10px 75px;
-  padding-top: 17px;
+  max-height: calc(100vh - 140px);
+  margin-top: 90px;
+  padding: 0 20px 0 10px;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar-thumb {
+    border: 5px solid #f9fafa !important;
+  }
 }

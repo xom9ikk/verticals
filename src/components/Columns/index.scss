@@ -10,26 +10,4 @@
   overflow-y: hidden; // broke dnd
   position: relative;
   overflow-x: scroll;
-
-  &::-webkit-resizer,
-  &::-webkit-scrollbar-button,
-  &::-webkit-scrollbar-corner { display: none !important; }
-  &::-webkit-scrollbar {
-    height: 15px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    //background: red !important;
-    background: lighten($text-very-light, 10) !important;
-    border: 5px solid #fff !important;
-    border-radius: 10px !important;
-    transition: background .5s ease-in-out !important;
-    &:hover {
-      background: $primary !important;
-    }
-  }
-
-  &::-webkit-scrollbar-track-piece {
-    background: transparent !important;
-  }
 }

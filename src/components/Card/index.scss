@@ -5,44 +5,77 @@
   justify-content: space-between;
   align-items: flex-start;
   cursor: grab;
-  border-radius: 6px;
-  transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
-  &--red {
-    background: rgba(255, 106, 86, 0.3);
+  padding: 1px 0;
+  &__wrapper {
+    display: flex;
+    flex: 1;
+    padding: 1px 0;
+    transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
+    border-radius: 6px;
+    &--red {
+      background: rgba(255, 106, 86, 0.3);
+      &:hover {
+        background: rgba(255, 106, 86, 0.15);
+      }
+    }
+    &--yellow {
+      background: rgba(254, 233, 48, 0.3);
+      &:hover {
+        background: rgba(254, 233, 48, 0.15);
+      }
+    }
+    &--green {
+      background: rgba(156, 196, 71, 0.3);
+      &:hover {
+        background: rgba(156, 196, 71, 0.15);
+      }
+    }
+    &--turquoise {
+      background: rgba(50, 218, 188, 0.3);
+      &:hover {
+        background: rgba(50, 218, 188, 0.15);
+      }
+    }
+    &--blue {
+      background: rgba(95, 193, 233, 0.3);
+      &:hover {
+        background: rgba(95, 193, 233, 0.15);
+      }
+    }
+    &--gray {
+      background: rgba(216, 216, 216, 0.3);
+      &:hover {
+        background: rgba(216, 216, 216, 0.15);
+      }
+    }
+
     &:hover {
-      background: rgba(255, 106, 86, 0.15);
+      background: $hover-color;
+    }
+    &--invert {
+      &:hover {
+        background: $white;
+      }
+    }
+    &--editable {
+      //width: $column-width - 27;
+      margin: 3px 3px;
+      padding: 7px;
+      box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
+      &:hover {
+        background: $white;
+      }
+    }
+    &--pressed {
+      background: $primary-light !important;
+    }
+    &--dragging {
+      background: $primary-light;
+      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.5),
+      -10px -10px 30px rgba(210, 227, 253, 0.3);
     }
   }
-  &--yellow {
-    background: rgba(254, 233, 48, 0.3);
-    &:hover {
-      background: rgba(254, 233, 48, 0.15);
-    }
-  }
-  &--green {
-    background: rgba(156, 196, 71, 0.3);
-    &:hover {
-      background: rgba(156, 196, 71, 0.15);
-    }
-  }
-  &--turquoise {
-    background: rgba(50, 218, 188, 0.3);
-    &:hover {
-      background: rgba(50, 218, 188, 0.15);
-    }
-  }
-  &--blue {
-    background: rgba(95, 193, 233, 0.3);
-    &:hover {
-      background: rgba(95, 193, 233, 0.15);
-    }
-  }
-  &--gray {
-    background: rgba(216, 216, 216, 0.3);
-    &:hover {
-      background: rgba(216, 216, 216, 0.15);
-    }
-  }
+
   &__block-wrapper {
     display: flex;
     flex: 1;
@@ -112,30 +145,5 @@
     width: 6px;
     height: 12px;
     background: $primary;
-  }
-  &:hover {
-    background: $hover-color;
-  }
-  &--invert {
-    &:hover {
-      background: $white;
-    }
-  }
-  &--editable {
-    //width: $column-width - 27;
-    margin: 3px 3px;
-    padding: 7px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
-    &:hover {
-      background: $white;
-    }
-  }
-  &--pressed {
-    background: $primary-light !important;
-  }
-  &--dragging {
-    background: $primary-light;
-    box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.5),
-    -10px -10px 30px rgba(210, 227, 253, 0.3);
   }
 }

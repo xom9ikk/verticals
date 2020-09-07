@@ -156,6 +156,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 isPrimary
                 style={{
                   width: commentText?.length ? 30 : 0,
+                  opacity: commentText?.length ? 1 : 0,
                   padding: commentText?.length ? '8px 10px' : '8px 0',
                 }}
                 onClick={sendCommentHandler}
