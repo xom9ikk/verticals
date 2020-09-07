@@ -123,6 +123,7 @@ export class HttpClient implements IHttpClient {
 
   private static shouldRetry(error: any) {
     const token = storage.getToken();
+    console.log(token);
     if (!token) {
       return false;
     }
