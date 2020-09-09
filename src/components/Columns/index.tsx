@@ -51,7 +51,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         ?.filter((column) => column.boardId === boardId)
         ?.sort((a, b) => a.position - b.position)
         ?.forEach((column) => {
-          console.log('prepare column', column);
+          // console.log('prepare column', column);
           // @ts-ignore
           data[`column-${column.id}`] = {
             ...column,
@@ -204,8 +204,8 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   const memoColumns = useMemo(() => (
     orderedId && orderedId.map((_key, index) => {
       const key = `column-${_key}`;
-      console.log('preparedData', preparedData);
-      console.log('key', key);
+      // console.log('preparedData', preparedData);
+      // console.log('key', key);
       let isContainTodosByQuery = true;
       if (query) {
         isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
@@ -213,7 +213,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       if (!isContainTodosByQuery) {
         return null;
       }
-      console.log('draw prepared', key, preparedData);
+      // console.log('draw prepared', key, preparedData);
       return (
         <Column
           index={index}

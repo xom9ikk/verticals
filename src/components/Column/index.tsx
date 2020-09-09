@@ -171,9 +171,9 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
-      if (belowId) {
-        dispatch(ColumnsActions.removeTemp());
-      }
+      // if (belowId) {
+      //   dispatch(ColumnsActions.removeTemp());
+      // }
       dispatch(ColumnsActions.create({
         boardId,
         title,
@@ -260,12 +260,9 @@ export const Column: FC<IColumn> = ({
         break;
       }
       case EnumMenuActions.Duplicate: {
-        // TODO
-        // const newColumnId = `column-${Math.random().toString()}`;
-        // dispatch(ColumnsActions.duplicate({
-        //   id: columnId!,
-        //   newId: newColumnId,
-        // }));
+        dispatch(ColumnsActions.duplicate({
+          columnId: columnId!,
+        }));
         // dispatch(TodosActions.duplicateForColumn({
         //   columnId: columnId!,
         //   newColumnId,
@@ -318,7 +315,6 @@ export const Column: FC<IColumn> = ({
   const addCard = useMemo(() => (
     (!isOpenNewCard && isDraggable) && (
     <>
-      {JSON.stringify({ isDraggingCard })}
       <Menu
         imageSrc="/assets/svg/add.svg"
         alt="add"
@@ -590,8 +586,8 @@ export const Column: FC<IColumn> = ({
                                   role="button"
                                   tabIndex={0}
                                   className={`column__header
-                                ${color !== null ? colorClass : ''}
-                                ${isEditable ? 'column__header--editable' : ''}
+                                  ${color !== null ? colorClass : ''}
+                                  ${isEditable ? 'column__header--editable' : ''}
                                 `}
                                   {...provided.dragHandleProps}
                                   onMouseEnter={() => setIsHoverHeader(true)}
@@ -636,6 +632,7 @@ export const Column: FC<IColumn> = ({
     index, boards, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, query, isCollapsed,
+    isTopHover, isDraggingCard,
   ]);
 
   return (

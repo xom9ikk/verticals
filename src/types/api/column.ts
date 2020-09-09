@@ -50,3 +50,18 @@ export interface IUpdateColumnPositionRequest {
 }
 
 export type IUpdateColumnPositionResponse = IServerResponse;
+
+export interface IDuplicateColumnRequest {
+  columnId: number;
+}
+
+export type IDuplicateColumnResponse = IServerResponse<{
+  columnId: number;
+  position: number;
+  boardId: number;
+  title: string;
+  description?: string;
+  color?: EnumColors;
+  isCollapsed?: boolean;
+  belowId?: string;
+}>;

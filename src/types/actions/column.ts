@@ -60,8 +60,7 @@ export interface IRemoveColumn {
 }
 
 export interface IDuplicateColumn {
-  id: number;
-  newId: string;
+  columnId: number;
 }
 
 export interface IAddColumnBelow {

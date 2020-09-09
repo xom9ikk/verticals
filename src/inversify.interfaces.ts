@@ -15,6 +15,7 @@ import {
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
   IGetAllColumnsResponse,
   IGetColumnsByBoardIdResponse, IGetColumnsByBoardIdRequest,
+  IDuplicateColumnRequest, IDuplicateColumnResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -54,4 +55,5 @@ export interface IColumnService {
   remove(body: IRemoveColumnRequest): Promise<IRemoveColumnResponse>;
   update(body: IUpdateColumnRequest): Promise<IUpdateColumnResponse>;
   updatePosition(body: IUpdateColumnPositionRequest): Promise<IUpdateColumnPositionResponse>;
+  duplicate(body: IDuplicateColumnRequest): Promise<IDuplicateColumnResponse>;
 }

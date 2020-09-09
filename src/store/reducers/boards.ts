@@ -33,7 +33,8 @@ export const BoardsReducer = handleActions<IBoards, any>({
         const boards = [...state].sort((a, b) => a.position - b.position);
         const spliceIndex = boards.findIndex((board: IBoard) => board.position === position);
         const normalizedSpliceIndex = spliceIndex === -1 ? boards.length : spliceIndex;
-        boards.splice(normalizedSpliceIndex, 0, action.payload);
+        const { belowId, ...newBoard } = action.payload;
+        boards.splice(normalizedSpliceIndex, 0, newBoard);
         return boards.map((board: IBoard, index) => ({
           ...board,
           position: index,
@@ -76,7 +77,12 @@ export const BoardsReducer = handleActions<IBoards, any>({
           }
           : board))),
   [BoardsActions.Type.REMOVE]:
-        (state, action) => state.filter((board: IBoard) => board.id !== action.payload.id),
+        (state, action) => state
+          .filter((board: IBoard) => board.id !== action.payload.id)
+          .map((board: IBoard, index) => ({
+            ...board,
+            position: index,
+          })),
   [BoardsActions.Type.DRAW_BELOW]:
         (state, action) => {
           const { belowId } = action.payload;
