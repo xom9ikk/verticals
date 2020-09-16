@@ -1,6 +1,8 @@
 import {
   ILogoutResponse,
   IMeResponse,
+  IGetAllColumnsResponse,
+  IGetAllBoardsResponse,
   IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
@@ -8,12 +10,10 @@ import {
   IRemoveBoardRequest, IRemoveBoardResponse,
   IUpdateBoardRequest, IUpdateBoardResponse,
   IUpdateBoardPositionRequest, IUpdateBoardPositionResponse,
-  IGetAllBoardsResponse,
   ICreateColumnRequest, ICreateColumnResponse,
   IRemoveColumnRequest, IRemoveColumnResponse,
   IUpdateColumnRequest, IUpdateColumnResponse,
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
-  IGetAllColumnsResponse,
   IGetColumnsByBoardIdResponse, IGetColumnsByBoardIdRequest,
   IDuplicateColumnRequest, IDuplicateColumnResponse,
 } from './types/api';

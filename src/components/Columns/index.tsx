@@ -235,7 +235,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     <Column
       boardId={boardId}
       index={orderedId.length}
-      isDraggable={false}
+      isNew
     />
   ), [boardId, orderedId]);
 

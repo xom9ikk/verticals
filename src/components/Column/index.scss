@@ -8,6 +8,29 @@
   height: 100vh;
   padding: 23px 10px;
   border-right: 1px solid rgb(242, 242, 242);
+  &__new-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 38px;
+    left:0;
+    right: 0;
+    border-radius: 6px;
+    transition: background .1s ease-in-out;
+    &:hover {
+      background: $primary-light;
+      img {
+        filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg);
+      }
+    }
+    img {
+      height: 12px;
+      width: 12px;
+    }
+  }
   &__wrapper {
     //position: relative;
     height: 100%;
@@ -82,6 +105,7 @@
     }
   }
   &__container {
+    position: relative;
     height: 100vh;
     padding-bottom: 102px;
     overflow-y: scroll;

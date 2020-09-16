@@ -36,7 +36,7 @@ interface IColumn {
   title?: string;
   description?: string;
   todos?: ITodos;
-  isDraggable?: boolean;
+  isNew?: boolean;
 }
 
 enum EnumMenuActions {
@@ -58,7 +58,7 @@ export const Column: FC<IColumn> = ({
   title: initialTitle,
   description: initialDescription,
   todos,
-  isDraggable = true,
+  isNew,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
@@ -180,7 +180,7 @@ export const Column: FC<IColumn> = ({
         description: description || undefined,
         belowId,
       }));
-      if (!isDraggable) {
+      if (isNew) {
         setTitleValue('');
         setDescriptionValue('');
       }
@@ -221,23 +221,25 @@ export const Column: FC<IColumn> = ({
     hidePopup();
   };
 
-  const clickHandler = (event: SyntheticEvent) => {
-    if (isEditable) {
-      event.stopPropagation();
-    } else {
-      setIsHoverHeader(false);
-      dispatch(ColumnsActions.updateIsCollapsed({
-        id: columnId!,
-        isCollapsed: !isCollapsed,
-      }));
-    }
-  };
-
   const doubleClickHandler = () => {
     if (isEditableColumn) {
       dispatch(SystemActions.setIsEditableColumn(false));
     }
     setIsDoubleClicked(true);
+  };
+
+  const clickHandler = (event: SyntheticEvent) => {
+    if (isEditable) {
+      event.stopPropagation();
+    } else if (!isNew) {
+      setIsHoverHeader(false);
+      dispatch(ColumnsActions.updateIsCollapsed({
+        id: columnId!,
+        isCollapsed: !isCollapsed,
+      }));
+    } else {
+      doubleClickHandler();
+    }
   };
 
   useEffect(() => {
@@ -313,7 +315,7 @@ export const Column: FC<IColumn> = ({
   }, [isEditableColumn]);
 
   const addCard = useMemo(() => (
-    (!isOpenNewCard && isDraggable) && (
+    (!isOpenNewCard && !isNew) && (
     <>
       <Menu
         imageSrc="/assets/svg/add.svg"
@@ -327,7 +329,7 @@ export const Column: FC<IColumn> = ({
       />
     </>
     )
-  ), [isTopHover, isDraggingCard, todos, isOpenNewCard, isDraggable]);
+  ), [isTopHover, isDraggingCard, todos, isOpenNewCard, isNew]);
 
   const newCard = useMemo(() => (
     isOpenNewCard && (
@@ -453,6 +455,7 @@ export const Column: FC<IColumn> = ({
   const memoDescription = useMemo(() => (
     <>
       {
+        (!isNew || isEditable) && (
           isEditable ? (
             <TextArea
               ref={descriptionInputRef}
@@ -471,49 +474,57 @@ export const Column: FC<IColumn> = ({
               {descriptionValue || 'Notes'}
             </span>
           )
-        }
+        )
+      }
     </>
   ), [isEditable, descriptionValue]);
 
   const memoTitle = useMemo(() => (
-    <div
-      className="column__header-container"
-    >
+    <>
       {
-          isEditable ? (
-            <TextArea
-              ref={titleInputRef}
-              className="column__title column__title--editable"
-              value={titleValue}
-              placeholder="New column"
-              minRows={1}
-              maxRows={4}
-              onChange={(event) => changeHandler(event, false)}
-              onKeyUp={(event) => keydownHandler(event, false)}
-            />
-          ) : (
-            <>
-              <span
-                className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
-              >
-                {titleValue || 'New column'}
-              </span>
-              { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
-            </>
+          (!isNew || isEditable) && (
+            <div
+              className="column__header-container"
+            >
+              {
+              isEditable ? (
+                <TextArea
+                  ref={titleInputRef}
+                  className="column__title column__title--editable"
+                  value={titleValue}
+                  placeholder="New column"
+                  minRows={1}
+                  maxRows={4}
+                  onChange={(event) => changeHandler(event, false)}
+                  onKeyUp={(event) => keydownHandler(event, false)}
+                />
+              ) : (
+                <>
+                  <span
+                    className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
+                  >
+                    {titleValue || 'New column'}
+                  </span>
+                  { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
+                </>
+              )
+            }
+            </div>
           )
         }
-    </div>
+    </>
   ), [isEditable, titleValue, descriptionValue, todos, contextMenu, color]);
 
   // @ts-ignore
-  const colorClass = `column__wrapper--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
+  const colorKey = Object.keys(EnumColors)[color]?.toLowerCase();
+  const colorClass = colorKey ? `column__wrapper--${colorKey}` : '';
 
   const memoColumn = useMemo(() => (
     <Draggable
       draggableId={`column-${columnId}`}
       // draggableId={`${columnId || 'new'}-${index}`}
       index={index}
-      isDragDisabled={!isDraggable || !!query}
+      isDragDisabled={isNew || !!query}
     >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <>
@@ -523,7 +534,9 @@ export const Column: FC<IColumn> = ({
                   <div
                     role="button"
                     tabIndex={0}
-                    className={`column column--compact ${snapshot.isDragging ? 'column--dragging' : ''}`}
+                    className={`column column--compact 
+                    ${snapshot.isDragging ? 'column--dragging' : ''}
+                    `}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     onMouseEnter={() => setIsHoverHeader(true)}
@@ -558,6 +571,7 @@ export const Column: FC<IColumn> = ({
                   {...provided.draggableProps}
                   onMouseOver={() => setIsHover(true)}
                   onMouseOut={() => setIsHover(false)}
+                  onClick={handleClick}
                 >
                   <div
                     className={`column__wrapper
@@ -598,6 +612,13 @@ export const Column: FC<IColumn> = ({
                                   { memoTitle }
                                   { memoDescription }
                                 </div>
+                                { isNew && !isEditable && (
+                                <span
+                                  className="column__new-overlay"
+                                >
+                                  <img src="/assets/svg/add.svg" alt="add" />
+                                </span>
+                                ) }
                                 { todoCards }
                                 { newCard }
                                 { addCard }
@@ -618,9 +639,7 @@ export const Column: FC<IColumn> = ({
                       }
                     </Droppable>
                   </div>
-                  {/* <div className="column__absolute"> */}
-                  { cardToolbar }
-                  {/* </div> */}
+                  { !isNew && cardToolbar }
                 </div>
               )
             }
@@ -632,7 +651,7 @@ export const Column: FC<IColumn> = ({
     index, boards, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, query, isCollapsed,
-    isTopHover, isDraggingCard,
+    isTopHover, isDraggingCard, isNew,
   ]);
 
   return (
