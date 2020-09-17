@@ -36,7 +36,10 @@
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
-    transition: background .1s ease-in-out, scale .5s ease-in-out;
+    transition: background .1s ease-in-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
+    &--editable {
+      box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
+    }
     &--dragging {
       background: $primary-light;
       transform: scale(1.02);
@@ -65,7 +68,7 @@
       padding-top: 30px;
       display: flex;
       flex-direction: column;
-      //align-items: center;
+      margin-bottom: 0px;
     }
     &--red {
       background: #feeae7;
@@ -124,7 +127,7 @@
     letter-spacing: 0;
     transition: background .1s ease-in-out, border .2s ease-in-out;
     &--editable {
-      box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
+      //box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
       min-width: $column-width - 27;
       max-width: $column-width - 27;
       margin: 3px;
@@ -216,6 +219,6 @@
     min-width: 36px;
     max-width: 36px;
     overflow: hidden;
-    padding: 23px 5px;
+    padding: 23px 5px 10px;
   }
 }

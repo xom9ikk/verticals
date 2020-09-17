@@ -592,6 +592,7 @@ export const Column: FC<IColumn> = ({
                     className={`column__wrapper
                     ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
                     ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
+                    ${isEditable ? 'column__wrapper--editable' : ''}
                     `}
                   >
                     <Droppable
