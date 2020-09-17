@@ -3,7 +3,6 @@ import {
   IFetchColumnsByBoardId,
   IAddColumn,
   ICreateColumn,
-  IAddColumnBelow,
   IDuplicateColumn,
   IRemoveColumn,
   ISetColumns,
@@ -12,6 +11,7 @@ import {
   IUpdateColumnIsCollapsed,
   IUpdateColumnPosition,
   IUpdateColumnTitle,
+  IDrawColumnBelow,
 } from '@/types/actions';
 
 enum Type {
@@ -43,7 +43,7 @@ const updateColor = createAction<IUpdateColumnColor>(Type.UPDATE_COLOR);
 const updateIsCollapsed = createAction<IUpdateColumnIsCollapsed>(Type.UPDATE_IS_COLLAPSED);
 const remove = createAction<IRemoveColumn>(Type.REMOVE);
 const duplicate = createAction<IDuplicateColumn>(Type.DUPLICATE);
-const drawBelow = createAction<IAddColumnBelow>(Type.DRAW_BELOW);
+const drawBelow = createAction<IDrawColumnBelow>(Type.DRAW_BELOW);
 const removeTemp = createAction(Type.REMOVE_TEMP);
 
 export const ColumnsActions = {

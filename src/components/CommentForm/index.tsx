@@ -11,7 +11,7 @@ import { IComment } from '@/types';
 import { useFocus } from '@/use/focus';
 
 interface ICommentForm {
-  todoId: string;
+  todoId: number;
   onChangeTextAreaHeight: (height: number)=>void;
 }
 

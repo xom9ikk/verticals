@@ -9,7 +9,8 @@ import { Divider } from '@comp/Divider';
 import { SystemActions, TodosActions } from '@/store/actions';
 
 interface ICardContextMenu {
-  id?: string;
+  id?: number;
+  columnId?: number;
   isArchive?: boolean;
   isActive?: boolean;
   isHover: boolean;
@@ -40,6 +41,7 @@ enum EnumCardActions {
 
 export const CardContextMenu: FC<ICardContextMenu> = ({
   id,
+  columnId,
   isArchive,
   isActive,
   isHover,
@@ -96,8 +98,11 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.AddCardBelow: {
-        dispatch(TodosActions.removeNewTodo());
-        dispatch(TodosActions.addTodoBelow({ id: id! }));
+        dispatch(TodosActions.removeTemp());
+        dispatch(TodosActions.drawBelow({
+          belowId: id!,
+          columnId: columnId!,
+        }));
         break;
       }
       case EnumCardActions.Archive: {

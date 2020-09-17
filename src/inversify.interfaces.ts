@@ -3,6 +3,7 @@ import {
   IMeResponse,
   IGetAllColumnsResponse,
   IGetAllBoardsResponse,
+  IGetAllTodosResponse,
   IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
@@ -14,8 +15,14 @@ import {
   IRemoveColumnRequest, IRemoveColumnResponse,
   IUpdateColumnRequest, IUpdateColumnResponse,
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
-  IGetColumnsByBoardIdResponse, IGetColumnsByBoardIdRequest,
+  IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
   IDuplicateColumnRequest, IDuplicateColumnResponse,
+  IGetTodosByBoardIdRequest, IGetTodosByBoardIdResponse,
+  ICreateTodoRequest, ICreateTodoResponse,
+  IRemoveTodoRequest, IRemoveTodoResponse,
+  IUpdateTodoRequest, IUpdateTodoResponse,
+  IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
+  IDuplicateTodoRequest, IDuplicateTodoResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -30,6 +37,7 @@ export interface IServices {
   authService: IAuthService;
   boardService: IBoardService;
   columnService: IColumnService;
+  todoService: ITodoService;
 }
 
 export interface IAuthService {
@@ -56,4 +64,14 @@ export interface IColumnService {
   update(body: IUpdateColumnRequest): Promise<IUpdateColumnResponse>;
   updatePosition(body: IUpdateColumnPositionRequest): Promise<IUpdateColumnPositionResponse>;
   duplicate(body: IDuplicateColumnRequest): Promise<IDuplicateColumnResponse>;
+}
+
+export interface ITodoService {
+  getAll(): Promise<IGetAllTodosResponse>;
+  getByBoardId(body: IGetTodosByBoardIdRequest): Promise<IGetTodosByBoardIdResponse>;
+  create(body: ICreateTodoRequest): Promise<ICreateTodoResponse>;
+  remove(body: IRemoveTodoRequest): Promise<IRemoveTodoResponse>;
+  update(body: IUpdateTodoRequest): Promise<IUpdateTodoResponse>;
+  updatePosition(body: IUpdateTodoPositionRequest): Promise<IUpdateTodoPositionResponse>;
+  duplicate(body: IDuplicateTodoRequest): Promise<IDuplicateTodoResponse>;
 }

@@ -81,58 +81,73 @@ export const Column: FC<IColumn> = ({
   const { cardType } = boards.filter((board) => board.id === boardId)[0] || EnumTodoType.Checkboxes;
 
   const saveCard = (
-    id?: string,
-    newTitle?: string,
-    newDescription?: string,
-    newStatus?: EnumTodoStatus,
+    id?: number,
+    title?: string,
+    description?: string,
+    status?: EnumTodoStatus,
     newColor?: number,
   ) => {
-    console.log('save card id', id, '->', newTitle, '->', newDescription);
+    console.log('save card id', id, '->', title, '->', description);
     if (id) {
-      if (newTitle) {
+      if (title) {
         dispatch(TodosActions.updateTitle({
           id,
-          title: newTitle,
+          title,
         }));
       }
-      if (newDescription) {
+      if (description) {
         dispatch(TodosActions.updateDescription({
           id,
-          description: newDescription,
+          description,
         }));
       }
-      if (newStatus !== undefined) {
+      if (status !== undefined) {
         dispatch(TodosActions.updateCompleteStatus({
           id,
-          status: newStatus,
+          status,
         }));
       }
       if (newColor !== undefined) {
         const todoToChange = todos?.find((todo) => todo.id === id);
-        if (todoToChange?.color === newColor) {
-          dispatch(TodosActions.resetColor({ id }));
-        } else {
-          dispatch(TodosActions.updateColor({
-            id,
-            color: newColor,
-          }));
-        }
+        dispatch(ColumnsActions.updateColor({
+          id,
+          color: todoToChange?.color === newColor ? newColor : null,
+        }));
+        // if (todoToChange?.color === newColor) {
+        //   dispatch(TodosActions.resetColor({ id }));
+        // } else {
+        //   dispatch(TodosActions.updateColor({
+        //     id,
+        //     color: newColor,
+        //   }));
+        // }
       }
-      if (id === 'new-todo' && newTitle) {
-        dispatch(TodosActions.generateNewId({ id }));
-      } else {
-        dispatch(TodosActions.removeNewTodo());
-      }
-    } else if (newTitle || newDescription) {
-      dispatch(TodosActions.add(
-        {
-          columnId: columnId!,
-          title: newTitle,
-          description: newDescription,
-          status: newStatus,
-        },
-      ));
+      // if (id === 'new-todo' && newTitle) {
+      //   dispatch(TodosActions.generateNewId({ id }));
+      // } else {
+      //   dispatch(TodosActions.removeNewTodo());
+      // }
+    } else if (title) {
+      // if (belowId) {
+      //   dispatch(ColumnsActions.removeTemp());
+      // }
+      dispatch(TodosActions.create({
+        columnId: columnId!,
+        title,
+        description: description || undefined,
+        status,
+      }));
     }
+    // else if (newTitle || newDescription) {
+    //   dispatch(TodosActions.add(
+    //     {
+    //       columnId: columnId!,
+    //       title: newTitle,
+    //       description: newDescription,
+    //       status: newStatus,
+    //     },
+    //   ));
+    // }
     setIsOpenNewCard(false);
   };
 

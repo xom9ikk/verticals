@@ -10,7 +10,7 @@ interface ICardsContainer {
   isActiveQuery: boolean;
   cardType: EnumTodoType;
   onExitFromEditable: (
-    id: string,
+    id: number,
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
@@ -32,9 +32,9 @@ export const CardsContainer: FC<ICardsContainer> = ({
             ?.map((todo, todoIndex) => (
               <Draggable
                 key={todo.id}
-                draggableId={todo.id}
+                draggableId={`todo-${todo.id}`}
                 index={todoIndex}
-                isDragDisabled={isActiveQuery || todo.id === 'new-todo'}
+                isDragDisabled={isActiveQuery || todo.belowId !== undefined}
               >
                 {(
                   dragProvided: DraggableProvided,

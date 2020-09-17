@@ -15,7 +15,8 @@ import { TextArea } from '@comp/TextArea';
 
 interface ICard {
   cardType: EnumTodoType;
-  id?: string;
+  id?: number;
+  belowId?: number;
   title?: string;
   description?: string;
   status?: EnumTodoStatus;
@@ -36,6 +37,7 @@ interface ICard {
 
 export const Card: FC<ICard> = ({
   id,
+  belowId,
   cardType,
   title: initialTitle = '',
   description: initialDescription = '',
@@ -119,7 +121,7 @@ export const Card: FC<ICard> = ({
   } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
 
   useEffect(() => {
-    if (id === 'new-todo') {
+    if (belowId) {
       doubleClickHandler();
     }
   }, []);
@@ -184,7 +186,7 @@ export const Card: FC<ICard> = ({
   };
 
   useEffect(() => {
-    if (!isEditableDefault && id !== 'new-todo' && initialStatus !== status) {
+    if (!isEditableDefault && belowId && initialStatus !== status) {
       console.log('save todo 4');
       saveTodo();
     }

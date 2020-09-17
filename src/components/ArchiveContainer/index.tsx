@@ -7,7 +7,7 @@ interface IArchiveContainer {
   cardType: EnumTodoType;
   isActiveQuery: boolean;
   onExitFromEditable: (
-    id: string,
+    id: number,
     title?: string,
     description?: string,
     status?: EnumTodoStatus,

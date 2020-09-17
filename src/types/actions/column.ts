@@ -46,10 +46,6 @@ export interface IUpdateColumnColor {
   color: number | null;
 }
 
-export interface IResetColumnColor {
-  id: number;
-}
-
 export interface IUpdateColumnIsCollapsed {
   id: number;
   isCollapsed: boolean;
@@ -63,7 +59,7 @@ export interface IDuplicateColumn {
   columnId: number;
 }
 
-export interface IAddColumnBelow {
+export interface IDrawColumnBelow {
   boardId: number;
   belowId: number;
 }

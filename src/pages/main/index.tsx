@@ -26,7 +26,7 @@ export const Main: FC = () => {
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
-    dispatch(SystemActions.setCurrentTodoId(''));
+    dispatch(SystemActions.setCurrentTodoId(null));
     // dispatch(BoardsActions.removeTemp());
   };
 

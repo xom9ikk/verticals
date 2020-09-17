@@ -43,7 +43,7 @@ export const CardPopup: FC<ICardPopup> = ({
   }, [todo]);
 
   const debounceSave = useCallback(
-    debounce((id: string, { newTitle, newDescription } : any) => {
+    debounce((id: number, { newTitle, newDescription } : any) => {
       console.log('debounce save', id, newTitle, newDescription);
       setIsProgress(true);
       if (newTitle) {
@@ -133,7 +133,7 @@ export const CardPopup: FC<ICardPopup> = ({
                       right: 10,
                       top: 10,
                     }}
-                    onClick={() => dispatch(SystemActions.setCurrentTodoId(''))}
+                    onClick={() => dispatch(SystemActions.setCurrentTodoId(null))}
                   />
                   <div className="card-popup__header">
                     <div className="card-popup__input-container">
@@ -237,7 +237,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     </div>
                     <hr />
                   </div>
-                  <Comments todoId={currentTodoId} />
+                  <Comments todoId={currentTodoId!} />
                 </div>
               </div>
             ) : (

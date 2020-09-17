@@ -9,7 +9,7 @@ const initialState = {
   isEditableBoard: false,
   query: '',
   language: EnumLanguage.English,
-  currentTodoId: '',
+  currentTodoId: null,
   editCommentId: '',
   replyCommentId: '',
 };

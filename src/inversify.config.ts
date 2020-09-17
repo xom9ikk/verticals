@@ -5,6 +5,7 @@ import { Services } from '@/services';
 import { AuthService } from '@/services/auth';
 import { BoardService } from '@/services/board';
 import { ColumnService } from '@/services/column';
+import { TodoService } from '@/services/todo';
 
 import {
   IHttpClient,
@@ -12,6 +13,7 @@ import {
   IAuthService,
   IBoardService,
   IColumnService,
+  ITodoService,
 } from './inversify.interfaces';
 
 const container = new Container();
@@ -39,6 +41,11 @@ container
 container
   .bind<IColumnService>(TYPES.ColumnService)
   .to(ColumnService)
+  .inSingletonScope();
+
+container
+  .bind<ITodoService>(TYPES.TodoService)
+  .to(TodoService)
   .inSingletonScope();
 
 export { container };
