@@ -586,7 +586,7 @@ export const Column: FC<IColumn> = ({
                   {...provided.draggableProps}
                   onMouseOver={() => setIsHover(true)}
                   onMouseOut={() => setIsHover(false)}
-                  onClick={handleClick}
+                  onClick={isNew ? handleClick : () => {}}
                 >
                   <div
                     className={`column__wrapper
