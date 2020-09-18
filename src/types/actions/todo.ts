@@ -37,7 +37,7 @@ export interface IAddTodo {
   title?: string;
   description?: string;
   status?: EnumTodoStatus;
-  isArchive?: boolean;
+  isArchived?: boolean;
 }
 
 export interface IUpdateTodoColumnId {
@@ -73,7 +73,7 @@ export interface IDrawTodoBelow {
 
 export interface IUpdateIsArchive {
   id: number;
-  isArchive: boolean;
+  isArchived: boolean;
 }
 
 export interface ISwitchTodoNotificationsEnabled {

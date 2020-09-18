@@ -320,7 +320,7 @@ export const Column: FC<IColumn> = ({
     <CardsContainer
       todos={todos
         ?.sort((a, b) => a.position - b.position)
-        ?.filter((todo: ITodo) => !todo.isArchive)
+        ?.filter((todo: ITodo) => !todo.isArchived)
         ?.filter(filterTodos)}
       cardType={cardType}
       isActiveQuery={!!query}
@@ -557,7 +557,7 @@ export const Column: FC<IColumn> = ({
                             <ArchiveContainer
                               archivedTodos={todos
                                       ?.sort((a, b) => a.position - b.position)
-                                      ?.filter((todo: ITodo) => todo.isArchive)
+                                      ?.filter((todo: ITodo) => todo.isArchived)
                                       ?.filter(filterTodos)}
                               isActiveQuery={!!query}
                               cardType={cardType}

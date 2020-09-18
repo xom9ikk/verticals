@@ -52,7 +52,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   description={todo.description}
                   status={todo.status}
                   color={todo.color}
-                  isArchive={todo.isArchive}
+                  isArchived={todo.isArchived}
                   isNotificationsEnabled={todo.isNotificationsEnabled}
                   onExitFromEditable={(...rest) => onExitFromEditable(todo.id, ...rest)}
                   isActive={currentTodoId === todo.id}

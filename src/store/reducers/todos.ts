@@ -797,7 +797,7 @@ export const TodosReducer = handleActions<ITodos, any>({
         }))),
   [TodosActions.Type.UPDATE_IS_ARCHIVE]:
       (state, action) => {
-        const { id, isArchive } = action.payload;
+        const { id, isArchived } = action.payload;
         const todoIndex = state.findIndex((todo: ITodo) => todo.id === id);
         const targetTodo = state[todoIndex];
         const todosInColumn = [...state]
@@ -807,12 +807,12 @@ export const TodosReducer = handleActions<ITodos, any>({
         const todoIndexInColumn = todosInColumn.findIndex((todo: ITodo) => todo.id === id);
         todosInColumn.splice(todoIndexInColumn, 1);
         let newTodos;
-        if (!isArchive) {
-          const archivedTodosInColumn = todosInColumn.filter((todo: ITodo) => todo.isArchive);
-          const notArchivedTodosInColumn = todosInColumn.filter((todo: ITodo) => !todo.isArchive);
+        if (!isArchived) {
+          const archivedTodosInColumn = todosInColumn.filter((todo: ITodo) => todo.isArchived);
+          const notArchivedTodosInColumn = todosInColumn.filter((todo: ITodo) => !todo.isArchived);
           notArchivedTodosInColumn.push({
             ...targetTodo,
-            isArchive,
+            isArchived,
             position: notArchivedTodosInColumn.length + 1,
           });
           newTodos = [
@@ -828,7 +828,7 @@ export const TodosReducer = handleActions<ITodos, any>({
           ];
           newTodos.push({
             ...targetTodo,
-            isArchive,
+            isArchived,
             position: todosInColumn.length + 1,
           });
         }

@@ -26,7 +26,7 @@ interface ICard {
   description?: string;
   status?: EnumTodoStatus;
   color?: EnumColors;
-  isArchive?: boolean;
+  isArchived?: boolean;
   isNotificationsEnabled?: boolean;
   invertColor?: boolean;
   isEditableDefault?: boolean;
@@ -48,7 +48,7 @@ export const Card: FC<ICard> = ({
   description: initialDescription = '',
   status = EnumTodoStatus.Todo,
   color,
-  isArchive,
+  isArchived,
   isNotificationsEnabled,
   invertColor,
   isEditableDefault,
@@ -282,7 +282,7 @@ export const Card: FC<ICard> = ({
             !isEditable && (
             <CardContextMenu
               id={id}
-              isArchive={isArchive}
+              isArchived={isArchived}
               isActive={isActive}
               isHover={isHover}
               isNotificationsEnabled={isNotificationsEnabled}

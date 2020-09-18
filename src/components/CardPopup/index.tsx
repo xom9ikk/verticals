@@ -204,7 +204,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         />
                         <CardContextMenu
                           id={todo.id}
-                          isArchive={todo.isArchive}
+                          isArchived={todo.isArchived}
                           isActive={false}
                           isHover
                           isNotificationsEnabled={todo.isNotificationsEnabled}
