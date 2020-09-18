@@ -4,7 +4,7 @@ import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
 import { MenuButton } from '@comp/MenuButton';
 import { Submenu } from '@comp/Submenu';
-import { EnumTodoStatus } from '@/types';
+import { EnumColors, EnumTodoStatus } from '@/types';
 import { Divider } from '@comp/Divider';
 import { SystemActions, TodosActions } from '@/store/actions';
 
@@ -15,13 +15,13 @@ interface ICardContextMenu {
   isActive?: boolean;
   isHover: boolean;
   isNotificationsEnabled?: boolean;
-  color?: number;
+  color?: EnumColors;
   status?: EnumTodoStatus;
   size?: number;
   imageSize?: number;
   isPrimary?: boolean;
   onStartEdit: () => void;
-  onChangeColor: (newColor: number) => void;
+  onChangeColor: (newColor: EnumColors) => void;
   onHidePopup?: () => void;
 }
 
@@ -76,8 +76,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.CompleteStatus: {
-        console.log('updateCompleteStatus', payload);
-        // setStatus(payload);
         dispatch(TodosActions.updateCompleteStatus({
           id: id!,
           status: payload,
@@ -85,11 +83,11 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Notifications: {
-        // TODO:
         dispatch(TodosActions.switchNotificationsEnabled({ id: id! }));
         break;
       }
       case EnumCardActions.CopyLink: {
+        // TODO:
         console.log('copy', `https://${id}`);
         break;
       }
@@ -122,7 +120,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
     onHidePopup?.();
   };
 
-  const memoContextMenu = useMemo(() => (
+  return useMemo(() => (
     <Menu
       imageSrc={`/assets/svg/dots${isPrimary ? '-primary' : ''}.svg`}
       alt="menu"
@@ -219,5 +217,4 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       />
     </Menu>
   ), [isHover, color, isNotificationsEnabled, isArchive, status]);
-  return (<>{memoContextMenu}</>);
 };

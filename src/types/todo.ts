@@ -1,3 +1,5 @@
+import { EnumColors } from '@/types/colors';
+
 export interface ITodo {
   id: number;
   columnId: number;
@@ -5,7 +7,7 @@ export interface ITodo {
   position: number;
   description?: string;
   status?: EnumTodoStatus;
-  color?: number;
+  color?: EnumColors;
   isArchive?: boolean;
   isNotificationsEnabled?: boolean;
   belowId?: number;

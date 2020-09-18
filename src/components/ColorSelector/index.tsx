@@ -14,16 +14,14 @@ export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) 
       style={{
         background: color,
         boxShadow: isHover || isActive
-          ? '#ffffff 0 0 0 2px, + 0 0 0 4px'.replace('+', color).replace('+', color)
+          ? '#ffffff 0 0 0 2px, $ 0 0 0 4px'.replace('$', color)
           : '',
       }}
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
       onClick={() => onClick(color)}
     >
-      {
-        isActive && isHover && <img src="/assets/svg/menu/cross.svg" alt="cross" />
-      }
+      { isActive && isHover && <img src="/assets/svg/menu/cross.svg" alt="cross" /> }
     </button>
   );
 };

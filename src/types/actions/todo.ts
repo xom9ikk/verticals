@@ -48,14 +48,14 @@ export interface IUpdateTodoColumnId {
 }
 
 export interface IUpdateTodoPosition {
-  id: number;
-  position: number;
-  columnId: string;
+  sourcePosition: number;
+  destinationPosition: number;
+  columnId: number;
 }
 
 export interface IUpdateTodoColor {
   id: number;
-  color: number;
+  color: EnumColors | null;
 }
 
 export interface IDuplicateTodo {

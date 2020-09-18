@@ -728,20 +728,19 @@ export const TodosReducer = handleActions<ITodos, any>({
   [TodosActions.Type.UPDATE_POSITION]:
         (state, action) => {
           const {
-            id, position, columnId,
+            columnId, sourcePosition, destinationPosition,
           } = action.payload;
           const targetColumn = state
             .filter((todo: ITodo) => todo.columnId === columnId)
             .sort((a, b) => a.position - b.position);
-          const targetTodo = targetColumn
-            .filter((todo: ITodo) => todo.id === id)[0];
           const targetTodoIndex = targetColumn
-            .findIndex((todo: ITodo) => todo.id === id);
+            .findIndex((todo: ITodo) => todo.position === sourcePosition);
+          const targetTodo = targetColumn[targetTodoIndex];
           const otherColumns = state
             .filter((todo: ITodo) => todo.columnId !== columnId);
           targetColumn.splice(targetTodoIndex, 1);
-          targetColumn.splice(position, 0, {
-            ...targetTodo, position,
+          targetColumn.splice(destinationPosition, 0, {
+            ...targetTodo, position: destinationPosition,
           });
           const newTargetColumn = targetColumn.map((todo, index) => ({
             ...todo,
@@ -764,13 +763,11 @@ export const TodosReducer = handleActions<ITodos, any>({
   [TodosActions.Type.DRAW_BELOW]:
       (state, action) => {
         const { belowId, columnId } = action.payload;
-        // const { id } = action.payload;
         const todoIndex = state.findIndex((todo: ITodo) => todo.id === belowId);
         const todosInColumn = [...state]
           .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
         const otherTodos = [...state]
           .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
-
         const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === belowId);
         todosInColumn.splice(spliceIndex + 1, 0, {
           id: 0,
@@ -785,13 +782,10 @@ export const TodosReducer = handleActions<ITodos, any>({
             ...todo,
             position: index,
           }));
-        console.log('state[todoIndex].columnId', state[todoIndex].columnId);
-        console.log('sortedTodos', sortedTodos);
         const a = [
           ...sortedTodos,
           ...otherTodos,
         ];
-        console.log('a', a);
         return a;
       },
   [TodosActions.Type.REMOVE_TEMP]:

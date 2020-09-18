@@ -15,7 +15,7 @@
     cursor: pointer;
     position: absolute;
     top: 0;
-    bottom: 38px;
+    bottom: 46px;
     left:0;
     right: 0;
     border-radius: 6px;
@@ -43,8 +43,8 @@
     &--dragging {
       background: $primary-light;
       transform: scale(1.02);
-      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
-      -10px -10px 30px rgba(210, 227, 253, 0.3);
+      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.4),
+      -10px -10px 30px rgba(210, 227, 253, 0.4);
       #{$block}__header {
         background: $primary-light;
       }
@@ -109,7 +109,7 @@
   }
   &__container {
     position: relative;
-    height: 100vh;
+    height: 100vh; // Break draggable
     padding-bottom: 102px;
     overflow-y: scroll;
     &::-webkit-scrollbar {
@@ -219,6 +219,6 @@
     min-width: 36px;
     max-width: 36px;
     overflow: hidden;
-    padding: 23px 5px 10px;
+    padding: 23px 5px 8px;
   }
 }

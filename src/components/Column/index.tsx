@@ -30,7 +30,7 @@ interface IColumn {
   index: number;
   columnId?: number;
   belowId?: number;
-  color?: number;
+  color?: EnumColors;
   isCollapsed?: boolean;
   boardId: number;
   title?: string;
@@ -61,8 +61,15 @@ export const Column: FC<IColumn> = ({
   isNew,
 }) => {
   const dispatch = useDispatch();
+
   const { focus } = useFocus();
   const { filterTodos } = useFilterTodos();
+
+  const {
+    system: { isEditableColumn, query },
+    boards,
+  } = useSelector((state: IRootState) => state);
+
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isTopHover, setIsTopHover] = useState<boolean>(false);
@@ -70,14 +77,12 @@ export const Column: FC<IColumn> = ({
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const {
-    system: { isEditableColumn, query },
-    boards,
-  } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
+
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
+
   const { cardType } = boards.filter((board) => board.id === boardId)[0] || EnumTodoType.Checkboxes;
 
   const saveCard = (
@@ -85,52 +90,26 @@ export const Column: FC<IColumn> = ({
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    newColor?: number,
+    newColor?: EnumColors,
   ) => {
-    console.log('save card id', id, '->', title, '->', description);
     if (id) {
       if (title) {
-        dispatch(TodosActions.updateTitle({
-          id,
-          title,
-        }));
+        dispatch(TodosActions.updateTitle({ id, title }));
       }
       if (description) {
-        dispatch(TodosActions.updateDescription({
-          id,
-          description,
-        }));
+        dispatch(TodosActions.updateDescription({ id, description }));
       }
       if (status !== undefined) {
-        dispatch(TodosActions.updateCompleteStatus({
-          id,
-          status,
-        }));
+        dispatch(TodosActions.updateCompleteStatus({ id, status }));
       }
       if (newColor !== undefined) {
         const todoToChange = todos?.find((todo) => todo.id === id);
-        dispatch(ColumnsActions.updateColor({
+        dispatch(TodosActions.updateColor({
           id,
-          color: todoToChange?.color === newColor ? newColor : null,
+          color: todoToChange?.color !== newColor ? newColor : null,
         }));
-        // if (todoToChange?.color === newColor) {
-        //   dispatch(TodosActions.resetColor({ id }));
-        // } else {
-        //   dispatch(TodosActions.updateColor({
-        //     id,
-        //     color: newColor,
-        //   }));
-        // }
       }
-      // if (id === 'new-todo' && newTitle) {
-      //   dispatch(TodosActions.generateNewId({ id }));
-      // } else {
-      //   dispatch(TodosActions.removeNewTodo());
-      // }
     } else if (title) {
-      // if (belowId) {
-      //   dispatch(ColumnsActions.removeTemp());
-      // }
       dispatch(TodosActions.create({
         columnId: columnId!,
         title,
@@ -138,22 +117,8 @@ export const Column: FC<IColumn> = ({
         status,
       }));
     }
-    // else if (newTitle || newDescription) {
-    //   dispatch(TodosActions.add(
-    //     {
-    //       columnId: columnId!,
-    //       title: newTitle,
-    //       description: newDescription,
-    //       status: newStatus,
-    //     },
-    //   ));
-    // }
     setIsOpenNewCard(false);
   };
-
-  useEffect(() => {
-    focus(titleInputRef);
-  }, [isEditable]);
 
   const getNewData = () => ({
     title: initialTitle !== titleValue
@@ -164,7 +129,7 @@ export const Column: FC<IColumn> = ({
       : undefined,
   });
 
-  const saveColumn = (newColor?: number) => {
+  const saveColumn = (newColor?: EnumColors) => {
     const { title, description } = getNewData();
     if (columnId && !belowId) {
       if (title) {
@@ -186,9 +151,6 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
-      // if (belowId) {
-      //   dispatch(ColumnsActions.removeTemp());
-      // }
       dispatch(ColumnsActions.create({
         boardId,
         title,
@@ -231,7 +193,7 @@ export const Column: FC<IColumn> = ({
     setIsHover(false);
   };
 
-  const colorPickHandler = (newColor: number) => {
+  const colorPickHandler = (newColor: EnumColors) => {
     saveColumn(newColor);
     hidePopup();
   };
@@ -257,20 +219,12 @@ export const Column: FC<IColumn> = ({
     }
   };
 
-  useEffect(() => {
-    console.log('=========================belowId', belowId);
-    if (belowId) {
-      doubleClickHandler();
-    }
-  }, []);
-
   const {
     handleClick,
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
 
-  const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
-    console.log(payload);
+  const menuButtonClickHandler = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.EditColumn: {
         doubleClickHandler();
@@ -280,10 +234,6 @@ export const Column: FC<IColumn> = ({
         dispatch(ColumnsActions.duplicate({
           columnId: columnId!,
         }));
-        // dispatch(TodosActions.duplicateForColumn({
-        //   columnId: columnId!,
-        //   newColumnId,
-        // }));
         break;
       }
       case EnumMenuActions.AddCard: {
@@ -310,6 +260,16 @@ export const Column: FC<IColumn> = ({
     }
     hidePopup();
   };
+
+  useEffect(() => {
+    focus(titleInputRef);
+  }, [isEditable]);
+
+  useEffect(() => {
+    if (belowId) {
+      doubleClickHandler();
+    }
+  }, []);
 
   useEffect(() => {
     if (isDoubleClicked) {
@@ -367,49 +327,6 @@ export const Column: FC<IColumn> = ({
       onExitFromEditable={saveCard}
     />
   ), [boards, todos, columnId, isOpenNewCard, query]);
-
-  // const archiveCards = useMemo(() => (
-  //   <>
-  //     {
-  //           todos
-  //               ?.sort((a, b) => a.position - b.position)
-  //               ?.filter((todo: ITodo) => todo.isArchive)
-  //               ?.filter(filterTodos)
-  //               ?.map((todo, todoIndex) => (
-  //                 <Draggable
-  //                   key={todo.id}
-  //                   draggableId={todo.id}
-  //                   index={todoIndex}
-  //                   isDragDisabled={!!query}
-  //                 >
-  //                   {(
-  //                     dragProvided: DraggableProvided,
-  //                     dragSnapshot: DraggableStateSnapshot,
-  //                   ) => (
-  //                     <Card
-  //                       cardType={boards
-  //                         .filter((board) => board.id === boardId)[0]?.cardType}
-  //                       provided={dragProvided}
-  //                       snapshot={dragSnapshot}
-  //                       key={todo.id}
-  //                       id={todo.id}
-  //                       title={todo.title}
-  //                       description={todo.description}
-  //                       status={todo.status}
-  //                       color={todo.color}
-  //                       onExitFromEditable={
-  //                               (newTitle, newDescription,
-  //                                 newStatus, newColor) => saveCard(
-  //                                 todo.id, newTitle, newDescription, newStatus, newColor,
-  //                               )
-  //                             }
-  //                     />
-  //                   )}
-  //                 </Draggable>
-  //               ))
-  //         }
-  //   </>
-  // ), [boards, todos, columnId, isOpenNewCard, query]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -497,167 +414,165 @@ export const Column: FC<IColumn> = ({
   const memoTitle = useMemo(() => (
     <>
       {
-          (!isNew || isEditable) && (
-            <div
-              className="column__header-container"
-            >
-              {
-              isEditable ? (
-                <TextArea
-                  ref={titleInputRef}
-                  className="column__title column__title--editable"
-                  value={titleValue}
-                  placeholder="New column"
-                  minRows={1}
-                  maxRows={4}
-                  onChange={(event) => changeHandler(event, false)}
-                  onKeyUp={(event) => keydownHandler(event, false)}
-                />
-              ) : (
-                <>
-                  <span
-                    className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
-                  >
-                    {titleValue || 'New column'}
-                  </span>
-                  { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
-                </>
-              )
-            }
-            </div>
-          )
+        (!isNew || isEditable) && (
+          <div
+            className="column__header-container"
+          >
+            {
+            isEditable ? (
+              <TextArea
+                ref={titleInputRef}
+                className="column__title column__title--editable"
+                value={titleValue}
+                placeholder="New column"
+                minRows={1}
+                maxRows={4}
+                onChange={(event) => changeHandler(event, false)}
+                onKeyUp={(event) => keydownHandler(event, false)}
+              />
+            ) : (
+              <>
+                <span
+                  className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
+                >
+                  {titleValue || 'New column'}
+                </span>
+                { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
+              </>
+            )
+          }
+          </div>
+        )
         }
     </>
   ), [isEditable, titleValue, descriptionValue, todos, contextMenu, color]);
 
   // @ts-ignore
-  const colorKey = Object.keys(EnumColors)[color]?.toLowerCase();
-  const colorClass = colorKey ? `column__wrapper--${colorKey}` : '';
+  const colorClass = color !== undefined ? `column__wrapper--${Object.values(EnumColors)[color]?.toLowerCase()}` : '';
 
   const memoColumn = useMemo(() => (
     <Draggable
       draggableId={`column-${columnId}`}
-      // draggableId={`${columnId || 'new'}-${index}`}
       index={index}
       isDragDisabled={isNew || !!query}
     >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <>
           {
-              isCollapsed ? (
-                <>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    className={`column column--compact 
-                    ${snapshot.isDragging ? 'column--dragging' : ''}
-                    `}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    onMouseEnter={() => setIsHoverHeader(true)}
-                    onMouseLeave={() => setIsHoverHeader(false)}
-                    onClick={handleClick}
-                  >
-                    <div
-                      className={`column__wrapper column__wrapper--compact
-                    ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
-                    ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
-                    ${color !== null ? colorClass : ''}
-                    `}
-                      {...provided.dragHandleProps}
-                    >
-                      <div className="column__inner">
-                        <div className="column__counter">
-                          <div className="column__compact-text">
-                            {
-                              query ? todos?.filter(filterTodos).length : todos?.length
-                            }
-                          </div>
-                        </div>
-                        <div className="column__compact-text">{titleValue}</div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
+            isCollapsed ? (
+              <>
                 <div
-                  className={`column ${snapshot.isDragging ? 'column--dragging' : ''}`}
+                  role="button"
+                  tabIndex={0}
+                  className={`column column--compact 
+                  ${snapshot.isDragging ? 'column--dragging' : ''}
+                  `}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
-                  onMouseOver={() => setIsHover(true)}
-                  onMouseOut={() => setIsHover(false)}
-                  onClick={isNew ? handleClick : () => {}}
+                  onMouseEnter={() => setIsHoverHeader(true)}
+                  onMouseLeave={() => setIsHoverHeader(false)}
+                  onClick={handleClick}
                 >
                   <div
-                    className={`column__wrapper
+                    className={`column__wrapper column__wrapper--compact
+                  ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
+                  ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
+                  ${color !== null ? colorClass : ''}
+                  `}
+                    {...provided.dragHandleProps}
+                  >
+                    <div className="column__inner">
+                      <div className="column__counter">
+                        <div className="column__compact-text">
+                          {
+                            query ? todos?.filter(filterTodos).length : todos?.length
+                          }
+                        </div>
+                      </div>
+                      <div className="column__compact-text">{titleValue}</div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div
+                className={`column ${snapshot.isDragging ? 'column--dragging' : ''}`}
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                onMouseOver={() => setIsHover(true)}
+                onMouseOut={() => setIsHover(false)}
+                onClick={isNew ? handleClick : () => {}}
+              >
+                <div
+                  className={`column__wrapper
                     ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
                     ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
                     ${isEditable ? 'column__wrapper--editable' : ''}
                     `}
+                >
+                  <Droppable
+                    droppableId={`column-${columnId?.toString() || 'todo-this-case'}`}
+                    type="QUOTE"
                   >
-                    <Droppable
-                      droppableId={`column-${columnId?.toString() || 'todo-this-case'}`}
-                      type="QUOTE"
-                    >
-                      {
-                        (dropProvided, dropSnapshot) => {
-                          setIsDraggingCard(dropSnapshot.isDraggingOver);
-                          return (
+                    {
+                      (dropProvided, dropSnapshot) => {
+                        setIsDraggingCard(dropSnapshot.isDraggingOver);
+                        return (
+                          <div
+                            className="column__container"
+                            ref={dropProvided.innerRef}
+                          >
                             <div
-                              className="column__container"
-                              ref={dropProvided.innerRef}
+                              style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}
+                              onMouseEnter={() => setIsTopHover(true)}
+                              onMouseLeave={() => setIsTopHover(false)}
                             >
                               <div
-                                style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}
-                                onMouseEnter={() => setIsTopHover(true)}
-                                onMouseLeave={() => setIsTopHover(false)}
+                                role="button"
+                                tabIndex={0}
+                                className={`column__header
+                                ${color !== null ? colorClass : ''}
+                                ${isEditable ? 'column__header--editable' : ''}
+                              `}
+                                {...provided.dragHandleProps}
+                                onMouseEnter={() => setIsHoverHeader(true)}
+                                onMouseLeave={() => setIsHoverHeader(false)}
+                                onClick={handleClick}
+                                onDoubleClick={handleDoubleClick}
                               >
-                                <div
-                                  role="button"
-                                  tabIndex={0}
-                                  className={`column__header
-                                  ${color !== null ? colorClass : ''}
-                                  ${isEditable ? 'column__header--editable' : ''}
-                                `}
-                                  {...provided.dragHandleProps}
-                                  onMouseEnter={() => setIsHoverHeader(true)}
-                                  onMouseLeave={() => setIsHoverHeader(false)}
-                                  onClick={handleClick}
-                                  onDoubleClick={handleDoubleClick}
-                                >
-                                  { memoTitle }
-                                  { memoDescription }
-                                </div>
-                                { isNew && !isEditable && (
-                                <span
-                                  className="column__new-overlay"
-                                >
-                                  <img src="/assets/svg/add.svg" alt="add" />
-                                </span>
-                                ) }
-                                { todoCards }
-                                { newCard }
-                                { addCard }
+                                { memoTitle }
+                                { memoDescription }
                               </div>
-                              <ArchiveContainer
-                                archivedTodos={todos
-                                        ?.sort((a, b) => a.position - b.position)
-                                        ?.filter((todo: ITodo) => todo.isArchive)
-                                        ?.filter(filterTodos)}
-                                isActiveQuery={!!query}
-                                cardType={cardType}
-                                onExitFromEditable={saveCard}
-                              />
-                              {dropProvided.placeholder}
+                              { isNew && !isEditable && (
+                              <span
+                                className="column__new-overlay"
+                              >
+                                <img src="/assets/svg/add.svg" alt="add" />
+                              </span>
+                              ) }
+                              { todoCards }
+                              { newCard }
+                              { addCard }
                             </div>
-                          );
-                        }
+                            <ArchiveContainer
+                              archivedTodos={todos
+                                      ?.sort((a, b) => a.position - b.position)
+                                      ?.filter((todo: ITodo) => todo.isArchive)
+                                      ?.filter(filterTodos)}
+                              isActiveQuery={!!query}
+                              cardType={cardType}
+                              onExitFromEditable={saveCard}
+                            />
+                            {dropProvided.placeholder}
+                          </div>
+                        );
                       }
-                    </Droppable>
-                  </div>
-                  { !isNew && cardToolbar }
+                      }
+                  </Droppable>
                 </div>
-              )
+                { !isNew && cardToolbar }
+              </div>
+            )
             }
         </>
       )}

@@ -43,7 +43,7 @@ export interface IUpdateColumnPosition {
 
 export interface IUpdateColumnColor {
   id: number;
-  color: number | null;
+  color: EnumColors | null;
 }
 
 export interface IUpdateColumnIsCollapsed {

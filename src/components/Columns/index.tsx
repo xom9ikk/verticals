@@ -7,7 +7,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
-import { ITodo } from '@/types';
+import { EnumColors, ITodo } from '@/types';
 import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
@@ -17,7 +17,7 @@ interface TodoMap {
     todos: ITodo[],
     title: string,
     description: string,
-    color: number,
+    color: EnumColors,
     isCollapsed: boolean,
     belowId?: number,
   },
@@ -42,6 +42,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
 
   useEffect(() => {
     dispatch(ColumnsActions.fetchByBoardId({ boardId }));
+    dispatch(TodosActions.fetchByBoardId({ boardId }));
   }, [boardId]);
 
   useEffect(() => {
@@ -158,9 +159,9 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     // moving to same list
     if (source.droppableId === destination.droppableId) {
       dispatch(TodosActions.updatePosition({
-        id: target.id,
-        position: destination.index,
-        columnId: destination.droppableId,
+        sourcePosition: source.index,
+        destinationPosition: destination.index,
+        columnId: Number(destination.droppableId.split('column-')[1]),
       }));
       const reordered = {
         ...current,

@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react';
-import { EnumTodoStatus, EnumTodoType, ITodos } from '@/types';
+import {
+  EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
+} from '@/types';
 import { Card } from '@comp/Card';
 
 interface IArchiveContainer {
@@ -11,7 +13,7 @@ interface IArchiveContainer {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: number) => void;
+    color?: EnumColors) => void;
 }
 
 export const ArchiveContainer: FC<IArchiveContainer> = ({
@@ -23,52 +25,52 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
   return (
     <>
       {
-          archivedTodos && archivedTodos?.length > 0 && (
+        archivedTodos && archivedTodos?.length > 0 && (
+          <div
+            className="archive-container"
+          >
             <div
-              className="archive-container"
+              className="archive-container__title"
+              onClick={() => setIsOpenArchived((prev) => !prev)}
             >
-              <div
-                className="archive-container__title"
-                onClick={() => setIsOpenArchived((prev) => !prev)}
-              >
-                <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
-                {archivedTodos.length}
-                {' '}
-                cards archived
-              </div>
-              {
-                isOpenArchived && (
-                  <div className="archive-container__inner">
-                    <hr />
-                    {
-                      archivedTodos
-                          ?.map((todo) => (
-                            <Card
-                              cardType={cardType}
-                              key={todo.id}
-                              id={todo.id}
-                              title={todo.title}
-                              description={todo.description}
-                              status={todo.status}
-                              color={todo.color}
-                              isArchive={todo.isArchive}
-                              invertColor
-                              onExitFromEditable={
-                                    (newTitle, newDescription,
-                                      newStatus, newColor) => onExitFromEditable(
-                                      todo.id, newTitle, newDescription, newStatus, newColor,
-                                    )
-                                  }
-                            />
-                          ))
-                    }
-                  </div>
-                )
-              }
+              <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
+              {archivedTodos.length}
+              {' '}
+              cards archived
             </div>
-          )
-        }
+            {
+              isOpenArchived && (
+              <div className="archive-container__inner">
+                <hr />
+                {
+                  archivedTodos
+                    ?.map((todo) => (
+                      <Card
+                        cardType={cardType}
+                        key={todo.id}
+                        id={todo.id}
+                        title={todo.title}
+                        description={todo.description}
+                        status={todo.status}
+                        color={todo.color}
+                        isArchive={todo.isArchive}
+                        invertColor
+                        onExitFromEditable={
+                          (newTitle, newDescription,
+                            newStatus, newColor) => onExitFromEditable(
+                            todo.id, newTitle, newDescription, newStatus, newColor,
+                          )
+                        }
+                      />
+                    )
+                  )
+                }
+              </div>
+              )
+            }
+          </div>
+        )
+      }
     </>
-
   );
 };
