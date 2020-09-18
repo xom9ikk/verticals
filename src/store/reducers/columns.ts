@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 import { handleActions } from 'redux-actions';
 import {
   IColumn, IColumns,
@@ -96,6 +95,21 @@ export const ColumnsReducer = handleActions<IColumns, any>({
           position: index,
         }));
       },
+  [ColumnsActions.Type.INSERT_IN_POSITION]:
+        (state, action) => {
+          const { position } = action.payload;
+          const columns = [...state].sort((a, b) => a.position - b.position);
+          console.log('INSERT_IN_POSITION position', position);
+          console.log('INSERT_IN_POSITION columns', columns);
+          const spliceIndex = columns.findIndex((column: IColumn) => column.position === position);
+          const normalizedSpliceIndex = spliceIndex === -1 ? columns.length : spliceIndex;
+          const { belowId, ...newColumn } = action.payload;
+          columns.splice(normalizedSpliceIndex, 0, newColumn);
+          return columns.map((column: IColumn, index) => ({
+            ...column,
+            position: index,
+          }));
+        },
   [ColumnsActions.Type.UPDATE_COLOR]:
         (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
           ? {
@@ -111,23 +125,12 @@ export const ColumnsReducer = handleActions<IColumns, any>({
           }
           : column))),
   [ColumnsActions.Type.REMOVE]:
-        (state, action) => state.filter((column: IColumn) => column.id !== action.payload.id),
-  [ColumnsActions.Type.DUPLICATE]:
-        (state, action) => {
-          const indexToDuplicate = state
-            .findIndex((column: IColumn) => column.id === action.payload.id);
-          const newColumns = [...state];
-          newColumns
-            .splice(indexToDuplicate + 1, 0, {
-              ...state[indexToDuplicate],
-              id: action.payload.newId,
-            });
-          return newColumns
-            .map((column: IColumn, index) => ({
-              ...column,
-              position: index,
-            }));
-        },
+        (state, action) => state
+          .filter((column: IColumn) => column.id !== action.payload.id)
+          .map((column: IColumn, index) => ({
+            ...column,
+            position: index,
+          })),
   [ColumnsActions.Type.DRAW_BELOW]:
         (state, action) => {
           const { belowId, boardId } = action.payload;
@@ -146,5 +149,10 @@ export const ColumnsReducer = handleActions<IColumns, any>({
           }));
         },
   [ColumnsActions.Type.REMOVE_TEMP]:
-        (state) => (state.filter((column: IColumn) => column.belowId === undefined)),
+        (state) => (state
+          .filter((column: IColumn) => column.belowId === undefined)
+          .map((column: IColumn, index) => ({
+            ...column,
+            position: index,
+          }))),
 }, initialState);

@@ -38,7 +38,7 @@ export interface IUpdateBoardPosition {
 
 export interface IUpdateBoardColor {
   id: number;
-  color: number | null;
+  color: EnumColors | null;
 }
 
 export interface IUpdateBoardCardType {

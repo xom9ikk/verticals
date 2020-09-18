@@ -1,4 +1,5 @@
-import { EnumTodoType } from './todo';
+import { EnumColors } from '@/types/colors';
+import { EnumTodoType } from '@/types/todo';
 
 export interface IBoard {
   id: number;
@@ -7,7 +8,7 @@ export interface IBoard {
   position: number;
   cardType: EnumTodoType;
   description?: string;
-  color?: number;
+  color?: EnumColors;
   belowId?: number;
 }
 

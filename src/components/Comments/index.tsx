@@ -9,7 +9,7 @@ import { useAutoScroll } from '@/use/autoScroll';
 import { IComment, IComments } from '@/types';
 
 interface ICommentsWrapper {
-  todoId: string;
+  todoId: number;
 }
 
 export const Comments: FC<ICommentsWrapper> = ({

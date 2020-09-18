@@ -13,7 +13,7 @@ export interface IImage {
 export interface IComment {
   id: string;
   date: number;
-  todoId: string;
+  todoId: number;
   text?: string;
   attachedFiles?: Array<IFile>;
   likes?: Array<string>;

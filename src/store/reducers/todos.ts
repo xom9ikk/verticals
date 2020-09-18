@@ -728,20 +728,19 @@ export const TodosReducer = handleActions<ITodos, any>({
   [TodosActions.Type.UPDATE_POSITION]:
         (state, action) => {
           const {
-            id, position, columnId,
+            columnId, sourcePosition, destinationPosition,
           } = action.payload;
           const targetColumn = state
             .filter((todo: ITodo) => todo.columnId === columnId)
             .sort((a, b) => a.position - b.position);
-          const targetTodo = targetColumn
-            .filter((todo: ITodo) => todo.id === id)[0];
           const targetTodoIndex = targetColumn
-            .findIndex((todo: ITodo) => todo.id === id);
+            .findIndex((todo: ITodo) => todo.position === sourcePosition);
+          const targetTodo = targetColumn[targetTodoIndex];
           const otherColumns = state
             .filter((todo: ITodo) => todo.columnId !== columnId);
           targetColumn.splice(targetTodoIndex, 1);
-          targetColumn.splice(position, 0, {
-            ...targetTodo, position,
+          targetColumn.splice(destinationPosition, 0, {
+            ...targetTodo, position: destinationPosition,
           });
           const newTargetColumn = targetColumn.map((todo, index) => ({
             ...todo,
@@ -759,65 +758,23 @@ export const TodosReducer = handleActions<ITodos, any>({
           color: action.payload.color,
         }
         : todo))),
-  [TodosActions.Type.RESET_COLOR]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
-          ...todo,
-          color: undefined,
-        }
-        : todo))),
-  [TodosActions.Type.DUPLICATE_FOR_COLUMN]:
-      (state, action) => {
-        const todosToDuplicate = state
-          .filter((todo: ITodo) => todo.columnId === action.payload.columnId)
-          .map((todo: ITodo) => ({
-            ...todo,
-            id: Math.random().toString(),
-            columnId: action.payload.newColumnId,
-          }));
-        return [...state, ...todosToDuplicate];
-      },
-  [TodosActions.Type.DUPLICATE]:
-      (state, action) => {
-        const indexToDuplicate = state
-          .findIndex((todo: ITodo) => todo.id === action.payload.id);
-        const todosInColumn = [...state]
-          .filter((todo: ITodo) => todo.columnId === state[indexToDuplicate].columnId);
-        const otherTodos = [...state]
-          .filter((todo: ITodo) => todo.columnId !== state[indexToDuplicate].columnId);
-        todosInColumn
-          .splice(indexToDuplicate + 1, 0, {
-            ...state[indexToDuplicate],
-            id: Math.random().toString(),
-          });
-        const sortedTodos = todosInColumn
-          .sort((a, b) => a.position - b.position)
-          .map((todo: ITodo, index) => ({
-            ...todo,
-            position: index,
-          }));
-        return [
-          ...sortedTodos,
-          ...otherTodos,
-        ];
-      },
   [TodosActions.Type.REMOVE]:
       (state, action) => state.filter((todo: ITodo) => todo.id !== action.payload.id),
-  [TodosActions.Type.ADD_TODO_BELOW]:
+  [TodosActions.Type.DRAW_BELOW]:
       (state, action) => {
-        const { id } = action.payload;
-        const todoIndex = state.findIndex((todo: ITodo) => todo.id === id);
+        const { belowId, columnId } = action.payload;
+        const todoIndex = state.findIndex((todo: ITodo) => todo.id === belowId);
         const todosInColumn = [...state]
           .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
         const otherTodos = [...state]
           .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
-
-        const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === id);
+        const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === belowId);
         todosInColumn.splice(spliceIndex + 1, 0, {
-          id: 'new-todo',
+          id: 0,
+          columnId,
+          belowId,
           position: spliceIndex + 1,
           title: '',
-          columnId: state[todoIndex].columnId,
         });
         const sortedTodos = todosInColumn
           .sort((a, b) => a.position - b.position)
@@ -825,24 +782,19 @@ export const TodosReducer = handleActions<ITodos, any>({
             ...todo,
             position: index,
           }));
-        console.log('state[todoIndex].columnId', state[todoIndex].columnId);
-        console.log('sortedTodos', sortedTodos);
         const a = [
           ...sortedTodos,
           ...otherTodos,
         ];
-        console.log('a', a);
         return a;
       },
-  [TodosActions.Type.GENERATE_NEW_ID]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
+  [TodosActions.Type.REMOVE_TEMP]:
+      (state) => (state
+        .filter((todo: ITodo) => todo.belowId === undefined)
+        .map((todo: ITodo, index) => ({
           ...todo,
-          id: Math.random().toString(),
-        }
-        : todo))),
-  [TodosActions.Type.REMOVE_NEW_TODO]:
-      (state) => (state.filter((todo: ITodo) => todo.id !== 'new-todo')),
+          position: index,
+        }))),
   [TodosActions.Type.UPDATE_IS_ARCHIVE]:
       (state, action) => {
         const { id, isArchive } = action.payload;

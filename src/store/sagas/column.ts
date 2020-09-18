@@ -13,6 +13,7 @@ import {
   IUpdateColumnRequest,
   IUpdateColumnPositionRequest,
   IGetColumnsByBoardIdRequest,
+  IDuplicateColumnRequest,
 } from '@/types/api';
 
 const { columnService } = container.get<IServices>(TYPES.Services);
@@ -31,10 +32,10 @@ function* fetchByBoardIdWorker(action: Action<IGetColumnsByBoardIdRequest>) {
 function* createWorker(action: Action<ICreateColumnRequest>) {
   try {
     const { belowId } = action.payload;
-    console.log('===createWorker');
     const response = yield* apply(columnService, columnService.create, [action.payload]);
     const { columnId, position } = response.data;
     if (belowId) {
+      yield put(ColumnsActions.removeTemp());
       yield put(ColumnsActions.insertInPosition({
         ...action.payload,
         id: columnId,
@@ -80,6 +81,20 @@ function* updatePositionWorker(action: Action<IUpdateColumnPositionRequest>) {
   }
 }
 
+function* duplicateWorker(action: Action<IDuplicateColumnRequest>) {
+  try {
+    const response = yield* apply(columnService, columnService.duplicate, [action.payload]);
+    const { columnId, ...column } = response.data;
+    yield put(ColumnsActions.insertInPosition({
+      id: columnId,
+      ...column,
+    }));
+    yield call(show, 'Column', 'Column duplicated successfully', ALERT_TYPES.SUCCESS);
+  } catch (error) {
+    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+  }
+}
+
 export function* watchColumn() {
   yield* all([
     takeLatest(ColumnsActions.Type.FETCH_BY_BOARD_ID, fetchByBoardIdWorker),
@@ -90,5 +105,6 @@ export function* watchColumn() {
     takeLatest(ColumnsActions.Type.UPDATE_COLOR, updateWorker),
     takeLatest(ColumnsActions.Type.UPDATE_IS_COLLAPSED, updateWorker),
     takeLatest(ColumnsActions.Type.UPDATE_POSITION, updatePositionWorker),
+    takeLatest(ColumnsActions.Type.DUPLICATE, duplicateWorker),
   ]);
 }

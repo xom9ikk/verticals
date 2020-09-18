@@ -7,7 +7,7 @@
   min-width: calc(100vw - 261px);
   height: 100vh;
   max-height: 100vh;
-  overflow-y: hidden; // broke dnd
+  overflow-y: hidden !important; // broke dnd
   position: relative;
   overflow-x: scroll;
 }

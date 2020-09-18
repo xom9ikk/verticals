@@ -9,6 +9,7 @@ import {
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
   IGetAllColumnsResponse,
   IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
+  IDuplicateColumnRequest, IDuplicateColumnResponse,
 } from '@/types/api';
 
 @injectable()
@@ -47,5 +48,9 @@ export class ColumnService implements IColumnService {
 
   updatePosition(body: IUpdateColumnPositionRequest) {
     return this.httpClient.patch<IUpdateColumnPositionResponse>('/column/position', body);
+  }
+
+  duplicate(body: IDuplicateColumnRequest) {
+    return this.httpClient.post<IDuplicateColumnResponse>('/column/duplicate', body);
   }
 }

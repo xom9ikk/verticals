@@ -7,7 +7,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
-import { ITodo } from '@/types';
+import { EnumColors, ITodo } from '@/types';
 import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
@@ -17,7 +17,7 @@ interface TodoMap {
     todos: ITodo[],
     title: string,
     description: string,
-    color: number,
+    color: EnumColors,
     isCollapsed: boolean,
     belowId?: number,
   },
@@ -42,6 +42,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
 
   useEffect(() => {
     dispatch(ColumnsActions.fetchByBoardId({ boardId }));
+    dispatch(TodosActions.fetchByBoardId({ boardId }));
   }, [boardId]);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         ?.filter((column) => column.boardId === boardId)
         ?.sort((a, b) => a.position - b.position)
         ?.forEach((column) => {
-          console.log('prepare column', column);
+          // console.log('prepare column', column);
           // @ts-ignore
           data[`column-${column.id}`] = {
             ...column,
@@ -158,9 +159,9 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     // moving to same list
     if (source.droppableId === destination.droppableId) {
       dispatch(TodosActions.updatePosition({
-        id: target.id,
-        position: destination.index,
-        columnId: destination.droppableId,
+        sourcePosition: source.index,
+        destinationPosition: destination.index,
+        columnId: Number(destination.droppableId.split('column-')[1]),
       }));
       const reordered = {
         ...current,
@@ -204,8 +205,8 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   const memoColumns = useMemo(() => (
     orderedId && orderedId.map((_key, index) => {
       const key = `column-${_key}`;
-      console.log('preparedData', preparedData);
-      console.log('key', key);
+      // console.log('preparedData', preparedData);
+      // console.log('key', key);
       let isContainTodosByQuery = true;
       if (query) {
         isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
@@ -213,7 +214,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       if (!isContainTodosByQuery) {
         return null;
       }
-      console.log('draw prepared', key, preparedData);
+      // console.log('draw prepared', key, preparedData);
       return (
         <Column
           index={index}
@@ -235,7 +236,7 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     <Column
       boardId={boardId}
       index={orderedId.length}
-      isDraggable={false}
+      isNew
     />
   ), [boardId, orderedId]);
 

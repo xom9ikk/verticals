@@ -1,23 +1,22 @@
-import React, {
-  FC, useMemo,
-} from 'react';
+import React, { FC, useMemo } from 'react';
 import { ColorSelector } from '@comp/ColorSelector';
-import { EnumColors } from '@/types';
+import { colors, EnumColors } from '@/types';
 
 interface IColorPicker {
-  onPick: (color: number)=>void;
-  activeColor?: number;
+  onPick: (color: EnumColors)=>void;
+  activeColor?: EnumColors;
 }
 
 export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {
   const memoColorPicker = useMemo(() => (
     <div className="color-picker">
       {
-        Object.entries(EnumColors)
+        Object.values(EnumColors)
+          .filter((v) => Number.isFinite(v))
           .map((color, index) => (
             <ColorSelector
-              key={color[0]}
-              color={color[1]}
+              key={colors[Number(color)]}
+              color={colors[Number(color)]}
               isActive={activeColor === index}
               onClick={() => { onPick(index); }}
             />

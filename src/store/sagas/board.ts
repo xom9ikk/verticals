@@ -32,6 +32,7 @@ function* createWorker(action: Action<ICreateBoardRequest>) {
     const response = yield* apply(boardService, boardService.create, [action.payload]);
     const { boardId, position } = response.data;
     if (belowId) {
+      yield put(BoardsActions.removeTemp());
       yield put(BoardsActions.insertInPosition({
         ...action.payload,
         id: boardId,

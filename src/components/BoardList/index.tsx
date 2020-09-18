@@ -65,9 +65,9 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }));
       }
     } else if (title) {
-      if (belowId) {
-        dispatch(BoardsActions.removeTemp());
-      }
+      // if (belowId) {
+      //   dispatch(BoardsActions.removeTemp());
+      // }
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
         title,

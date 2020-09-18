@@ -6,6 +6,6 @@ export type ISetSystemIsEditableColumn = boolean;
 export type ISetSystemIsEditableBoard = boolean;
 export type ISetSystemQuery = string;
 export type ISetSystemLanguage = EnumLanguage;
-export type ISetSystemCurrentTodoId = string;
+export type ISetSystemCurrentTodoId = number | null;
 export type ISetSystemEditCommentId = string;
 export type ISetSystemReplyCommentId = string;

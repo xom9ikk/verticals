@@ -25,26 +25,19 @@ export const CardPopup: FC<ICardPopup> = ({
   cardType,
 }) => {
   const dispatch = useDispatch();
+
   const { system: { currentTodoId } } = useSelector((state: IRootState) => state);
   const { todos } = useSelector((state: IRootState) => state);
+
   const [todo, setTodo] = useState<ITodo>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useState<string | undefined>(todo?.title);
   const [descriptionValue, setDescriptionValue] = useState<string | undefined>(todo?.description);
+
   const titleInputRef = useRef<any>(null);
 
-  useEffect(() => {
-    setTodo(todos.find((t: ITodo) => t.id === currentTodoId && t.columnId === columnId));
-  }, [currentTodoId, todos]);
-
-  useEffect(() => {
-    setTitleValue(todo?.title);
-    setDescriptionValue(todo?.description);
-  }, [todo]);
-
   const debounceSave = useCallback(
-    debounce((id: string, { newTitle, newDescription } : any) => {
-      console.log('debounce save', id, newTitle, newDescription);
+    debounce((id: number, { newTitle, newDescription } : any) => {
       setIsProgress(true);
       if (newTitle) {
         dispatch(TodosActions.updateTitle({
@@ -61,6 +54,34 @@ export const CardPopup: FC<ICardPopup> = ({
     }, 500),
     [],
   );
+
+  const changeTextHandler = (event: any, isDescription: boolean) => {
+    const { value } = event.target;
+    return isDescription
+      ? setDescriptionValue(value)
+      : setTitleValue(value);
+  };
+
+  const closeHandler = () => dispatch(SystemActions.setCurrentTodoId(null));
+
+  const changeStatusHandler = () => {
+    const newStatus = todo!.status === EnumTodoStatus.Done
+      ? EnumTodoStatus.Todo
+      : EnumTodoStatus.Done;
+    dispatch(TodosActions.updateCompleteStatus({
+      id: todo!.id,
+      status: newStatus,
+    }));
+  };
+
+  useEffect(() => {
+    setTodo(todos.find((t: ITodo) => t.id === currentTodoId && t.columnId === columnId));
+  }, [currentTodoId, todos]);
+
+  useEffect(() => {
+    setTitleValue(todo?.title);
+    setDescriptionValue(todo?.description);
+  }, [todo]);
 
   useEffect(() => {
     if (isProgress) {
@@ -87,18 +108,8 @@ export const CardPopup: FC<ICardPopup> = ({
     });
   }, [descriptionValue]);
 
-  const colorClass = todo?.color !== undefined ? `card-popup__inner--${Object.keys(EnumColors)[todo.color]?.toLowerCase()}` : '';
-
-  const changeHandler = (event: any, isDescription: boolean) => {
-    const { value } = event.target;
-    return isDescription
-      ? setDescriptionValue(value)
-      : setTitleValue(value);
-  };
-
-  useEffect(() => {
-    console.log('new todo', todo);
-  }, [todo]);
+  // @ts-ignore
+  const colorClass = todo?.color !== undefined ? `card-popup__inner--${Object.values(EnumColors)[todo.color]?.toLowerCase()}` : '';
 
   const memoCardPopup = useMemo(() => {
     console.log('todo', todo);
@@ -133,35 +144,27 @@ export const CardPopup: FC<ICardPopup> = ({
                       right: 10,
                       top: 10,
                     }}
-                    onClick={() => dispatch(SystemActions.setCurrentTodoId(''))}
+                    onClick={closeHandler}
                   />
                   <div className="card-popup__header">
                     <div className="card-popup__input-container">
                       {
-                          todo.status === EnumTodoStatus.Doing && (
-                          <div
-                            className="card__overlay-doing"
-                            style={{
-                              marginTop: 6,
-                              width: 9,
-                              height: 18,
-                            }}
-                          />
-                          )
-                        }
+                        todo.status === EnumTodoStatus.Doing && (
+                        <div
+                          className="card__overlay-doing"
+                          style={{
+                            marginTop: 6,
+                            width: 9,
+                            height: 18,
+                          }}
+                        />
+                        )
+                      }
                       {
                         cardType === EnumTodoType.Checkboxes && (
                         <Checkbox
                           isActive={todo.status === EnumTodoStatus.Done}
-                          onClick={() => {
-                            const newStatus = todo.status === EnumTodoStatus.Done
-                              ? EnumTodoStatus.Todo
-                              : EnumTodoStatus.Done;
-                            dispatch(TodosActions.updateCompleteStatus({
-                              id: todo.id,
-                              status: newStatus,
-                            }));
-                          }}
+                          onClick={changeStatusHandler}
                           style={{
                             marginTop: 6,
                             width: 18,
@@ -176,7 +179,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           className="card__textarea card-popup__textarea"
                           placeholder="Card Title"
                           value={titleValue}
-                          onChange={(event: any) => changeHandler(event, false)}
+                          onChange={(event: any) => changeTextHandler(event, false)}
                           minRows={1}
                           maxRows={5}
                         />
@@ -184,7 +187,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           className="card__textarea card-popup__textarea card-popup__textarea--description"
                           placeholder="Notes"
                           value={descriptionValue}
-                          onChange={(event: any) => changeHandler(event, true)}
+                          onChange={(event: any) => changeTextHandler(event, true)}
                           minRows={1}
                           maxRows={5}
                         />
@@ -237,7 +240,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     </div>
                     <hr />
                   </div>
-                  <Comments todoId={currentTodoId} />
+                  <Comments todoId={currentTodoId!} />
                 </div>
               </div>
             ) : (

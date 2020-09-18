@@ -12,7 +12,7 @@ export interface ISystem {
   isEditableBoard: boolean;
   query: string;
   language: EnumLanguage;
-  currentTodoId: string;
+  currentTodoId: number | null;
   editCommentId: string;
   replyCommentId: string;
 }

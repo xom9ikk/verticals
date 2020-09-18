@@ -8,17 +8,43 @@
   height: 100vh;
   padding: 23px 10px;
   border-right: 1px solid rgb(242, 242, 242);
+  &__new-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 46px;
+    left:0;
+    right: 0;
+    border-radius: 6px;
+    transition: background .1s ease-in-out;
+    &:hover {
+      background: $primary-light;
+      img {
+        filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg);
+      }
+    }
+    img {
+      height: 12px;
+      width: 12px;
+    }
+  }
   &__wrapper {
     //position: relative;
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
-    transition: background .1s ease-in-out, scale .5s ease-in-out;
+    transition: background .1s ease-in-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
+    &--editable {
+      box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
+    }
     &--dragging {
       background: $primary-light;
       transform: scale(1.02);
-      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.3),
-      -10px -10px 30px rgba(210, 227, 253, 0.3);
+      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.4),
+      -10px -10px 30px rgba(210, 227, 253, 0.4);
       #{$block}__header {
         background: $primary-light;
       }
@@ -42,7 +68,7 @@
       padding-top: 30px;
       display: flex;
       flex-direction: column;
-      //align-items: center;
+      margin-bottom: 0px;
     }
     &--red {
       background: #feeae7;
@@ -82,7 +108,8 @@
     }
   }
   &__container {
-    height: 100vh;
+    position: relative;
+    height: 100vh; // Break draggable
     padding-bottom: 102px;
     overflow-y: scroll;
     &::-webkit-scrollbar {
@@ -100,7 +127,7 @@
     letter-spacing: 0;
     transition: background .1s ease-in-out, border .2s ease-in-out;
     &--editable {
-      box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
+      //box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
       min-width: $column-width - 27;
       max-width: $column-width - 27;
       margin: 3px;
@@ -192,6 +219,6 @@
     min-width: 36px;
     max-width: 36px;
     overflow: hidden;
-    padding: 23px 5px;
+    padding: 23px 5px 8px;
   }
 }

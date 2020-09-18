@@ -1,7 +1,7 @@
 import { IFile, IImage } from '../comment';
 
 export interface IAddComment {
-  todoId: string;
+  todoId: number;
   text: string;
   replyCommentId: string;
   attachedFiles?: Array<IFile>;

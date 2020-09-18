@@ -43,11 +43,7 @@ export interface IUpdateColumnPosition {
 
 export interface IUpdateColumnColor {
   id: number;
-  color: number | null;
-}
-
-export interface IResetColumnColor {
-  id: number;
+  color: EnumColors | null;
 }
 
 export interface IUpdateColumnIsCollapsed {
@@ -60,11 +56,10 @@ export interface IRemoveColumn {
 }
 
 export interface IDuplicateColumn {
-  id: number;
-  newId: string;
+  columnId: number;
 }
 
-export interface IAddColumnBelow {
+export interface IDrawColumnBelow {
   boardId: number;
   belowId: number;
 }

@@ -19,7 +19,7 @@ export interface IExitFromEditable {
   boardId: number,
   title?: string,
   description?: string,
-  color?: number,
+  color?: EnumColors,
   belowId?: number,
 }
 
@@ -28,7 +28,7 @@ interface IBoard {
   id?: number;
   belowId?: number;
   icon: string;
-  color?: number;
+  color?: EnumColors;
   title?: string;
   countTodos?: number | undefined;
   isActive?: boolean;
@@ -92,7 +92,7 @@ export const Board: FC<IBoard> = ({
     setIsHover(false);
   };
 
-  const saveBoard = (newColor?: number) => {
+  const saveBoard = (newColor?: EnumColors) => {
     const { newTitle, newDescription } = getNewData();
     onExitFromEditable?.({
       boardId: id,
@@ -104,7 +104,7 @@ export const Board: FC<IBoard> = ({
     hidePopup();
   };
 
-  const colorPickHandler = (newColor: number) => {
+  const colorPickHandler = (newColor: EnumColors) => {
     dispatch(SystemActions.setIsOpenPopup(false));
     saveBoard(newColor);
   };
@@ -154,9 +154,7 @@ export const Board: FC<IBoard> = ({
     }
   }, [isEditableBoard]);
 
-  // const doubleClickHandler = (_?: SyntheticEvent, isMenuClickDefault: boolean = isMenuClick) => {
   const doubleClickHandler = () => {
-    // if (isMenuClickDefault || id === 'trash' || id === 'today') return;
     if (isEditableBoard) {
       dispatch(SystemActions.setIsEditableBoard(false));
       // dispatch(BoardsActions.removeTemp());
@@ -190,7 +188,6 @@ export const Board: FC<IBoard> = ({
   const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
     switch (action) {
       case EnumMenuActions.EditBoard: {
-        // doubleClickHandler(undefined, false);
         doubleClickHandler();
         break;
       }
@@ -311,7 +308,7 @@ export const Board: FC<IBoard> = ({
   ), [countTodos]);
 
   // @ts-ignore
-  const colorClass = `board-item--${Object.keys(EnumColors)[color]?.toLowerCase()}`;
+  const colorClass = `board-item--${Object.values(EnumColors)[color]?.toLowerCase()}`;
 
   const boardItem = useMemo(() => (
     <div

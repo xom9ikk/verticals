@@ -1,76 +1,81 @@
+import { EnumColors } from '@/types';
 import { EnumTodoStatus, ITodos } from '../todo';
+
+export interface IFetchTodosByBoardId {
+  boardId: number;
+}
 
 export type ISetTodos = ITodos;
 
+export interface ICreateTodo {
+  columnId: number;
+  title: string;
+  description?: string;
+  color?: EnumColors;
+  status?: EnumTodoStatus;
+  belowId?: number;
+}
+
 export interface IUpdateTodoTitle {
-  id: string;
+  id: number;
   title: string;
 }
 
 export interface IUpdateTodoDescription {
-  id: string;
+  id: number;
   description: string;
 }
 export interface IUpdateTodoCompleteStatus {
-  id: string;
+  id: number;
   status: EnumTodoStatus;
 }
 
 export interface IAddTodo {
+  id: number;
+  position: number;
   columnId: number;
   title?: string;
   description?: string;
   status?: EnumTodoStatus;
+  isArchive?: boolean;
 }
 
 export interface IUpdateTodoColumnId {
-  id: string;
+  id: number;
   sourceColumnId: string;
   targetColumnId: string;
   position: number;
 }
 
 export interface IUpdateTodoPosition {
-  id: string;
-  position: number;
-  columnId: string;
+  sourcePosition: number;
+  destinationPosition: number;
+  columnId: number;
 }
 
 export interface IUpdateTodoColor {
-  id: string;
-  color: number;
-}
-
-export interface IResetTodoColor {
-  id: string;
-}
-
-export interface IDuplicateTodoForColumn {
-  columnId: string;
-  newColumnId: string;
+  id: number;
+  color: EnumColors | null;
 }
 
 export interface IDuplicateTodo {
-  id: string;
+  id: number;
 }
 
 export interface IRemoveTodo {
-  id: string;
+  id: number;
 }
 
-export interface IAddTodoBelow {
-  id: string;
-}
-
-export interface IGenerateNewTodoId {
-  id: string;
+export interface IDrawTodoBelow {
+  columnId: number;
+  belowId: number;
 }
 
 export interface IUpdateIsArchive {
-  id: string;
+  id: number;
   isArchive: boolean;
 }
 
 export interface ISwitchTodoNotificationsEnabled {
-  id: string;
+  id: number;
 }
