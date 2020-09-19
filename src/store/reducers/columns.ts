@@ -99,8 +99,6 @@ export const ColumnsReducer = handleActions<IColumns, any>({
         (state, action) => {
           const { position } = action.payload;
           const columns = [...state].sort((a, b) => a.position - b.position);
-          console.log('INSERT_IN_POSITION position', position);
-          console.log('INSERT_IN_POSITION columns', columns);
           const spliceIndex = columns.findIndex((column: IColumn) => column.position === position);
           const normalizedSpliceIndex = spliceIndex === -1 ? columns.length : spliceIndex;
           const { belowId, ...newColumn } = action.payload;

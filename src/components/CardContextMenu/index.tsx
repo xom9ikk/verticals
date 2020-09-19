@@ -92,7 +92,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Duplicate: {
-        dispatch(TodosActions.duplicate({ id: id! }));
+        dispatch(TodosActions.duplicate({ todoId: id! }));
         break;
       }
       case EnumCardActions.AddCardBelow: {

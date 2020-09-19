@@ -59,7 +59,7 @@ export interface IUpdateTodoColor {
 }
 
 export interface IDuplicateTodo {
-  id: number;
+  todoId: number;
 }
 
 export interface IRemoveTodo {

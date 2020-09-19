@@ -157,6 +157,8 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       return quoteMap;
     }
     // moving to same list
+    console.log('source', source);
+    console.log('destination', destination);
     if (source.droppableId === destination.droppableId) {
       dispatch(TodosActions.updatePosition({
         sourcePosition: source.index,
@@ -205,16 +207,12 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
   const memoColumns = useMemo(() => (
     orderedId && orderedId.map((_key, index) => {
       const key = `column-${_key}`;
-      // console.log('preparedData', preparedData);
-      // console.log('key', key);
-      let isContainTodosByQuery = true;
       if (query) {
-        isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
+        const isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
+        if (!isContainTodosByQuery) {
+          return null;
+        }
       }
-      if (!isContainTodosByQuery) {
-        return null;
-      }
-      // console.log('draw prepared', key, preparedData);
       return (
         <Column
           index={index}
