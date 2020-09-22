@@ -671,60 +671,60 @@ export const TodosReducer = handleActions<ITodos, any>({
           position: state.length,
           ...action.payload,
         }]),
-  [TodosActions.Type.UPDATE_COLUMN]:
-        (state, action) => {
-          const {
-            id, sourceColumnId, targetColumnId, position,
-          } = action.payload;
-          const targetColumn = state
-            .filter((todo: ITodo) => todo.columnId === targetColumnId)
-            .sort((a, b) => a.position - b.position);
-          const sourceColumn = state
-            .filter((todo: ITodo) => todo.columnId === sourceColumnId
-                && todo.id !== id)
-            .sort((a, b) => a.position - b.position);
-          const otherColumns = state
-            .filter((todo: ITodo) => todo.columnId !== targetColumnId
-                && todo.columnId !== sourceColumnId);
-          const targetTodo = {
-            ...state.filter((todo: ITodo) => todo.id === id)[0],
-            columnId: targetColumnId,
-            position,
-          };
-
-          targetColumn.splice(position, 0, targetTodo);
-
-          let positionCounter: number = position + 1;
-          let isInsert = false;
-
-          const newTargetColumn = targetColumn.map((todo: ITodo) => {
-            if (todo.id === id) {
-              isInsert = true;
-              return {
-                ...todo,
-                columnId: targetColumnId,
-                position,
-              };
-            }
-            if (isInsert) {
-              return {
-                ...todo,
-                position: positionCounter++,
-              };
-            }
-            return todo;
-          });
-
-          const newSourceColumn = sourceColumn.map((todo: ITodo, index) => ({
-            ...todo,
-            position: index,
-          }));
-          return [
-            ...otherColumns,
-            ...newTargetColumn,
-            ...newSourceColumn,
-          ];
-        },
+  // [TodosActions.Type.UPDATE_COLUMN]:
+  //       (state, action) => {
+  //         const {
+  //           id, sourceColumnId, targetColumnId, destinationPosition,
+  //         } = action.payload;
+  //         const targetColumn = state
+  //           .filter((todo: ITodo) => todo.columnId === targetColumnId)
+  //           .sort((a, b) => a.position - b.position);
+  //         const sourceColumn = state
+  //           .filter((todo: ITodo) => todo.columnId === sourceColumnId
+  //               && todo.id !== id)
+  //           .sort((a, b) => a.position - b.position);
+  //         const otherColumns = state
+  //           .filter((todo: ITodo) => todo.columnId !== targetColumnId
+  //               && todo.columnId !== sourceColumnId);
+  //         const targetTodo = {
+  //           ...state.filter((todo: ITodo) => todo.id === id)[0],
+  //           columnId: targetColumnId,
+  //           position: destinationPosition,
+  //         };
+  //
+  //         targetColumn.splice(destinationPosition, 0, targetTodo);
+  //
+  //         let positionCounter: number = destinationPosition + 1;
+  //         let isInsert = false;
+  //
+  //         const newTargetColumn = targetColumn.map((todo: ITodo) => {
+  //           if (todo.id === id) {
+  //             isInsert = true;
+  //             return {
+  //               ...todo,
+  //               columnId: targetColumnId,
+  //               position: destinationPosition,
+  //             };
+  //           }
+  //           if (isInsert) {
+  //             return {
+  //               ...todo,
+  //               position: positionCounter++,
+  //             };
+  //           }
+  //           return todo;
+  //         });
+  //
+  //         const newSourceColumn = sourceColumn.map((todo: ITodo, index) => ({
+  //           ...todo,
+  //           position: index,
+  //         }));
+  //         return [
+  //           ...otherColumns,
+  //           ...newTargetColumn,
+  //           ...newSourceColumn,
+  //         ];
+  //       },
   [TodosActions.Type.UPDATE_POSITION]:
         (state, action) => {
           const {

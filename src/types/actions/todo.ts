@@ -40,17 +40,11 @@ export interface IAddTodo {
   isArchived?: boolean;
 }
 
-export interface IUpdateTodoColumnId {
-  id: number;
-  sourceColumnId: string;
-  targetColumnId: string;
-  position: number;
-}
-
 export interface IUpdateTodoPosition {
   sourcePosition: number;
   destinationPosition: number;
   columnId: number;
+  targetColumnId?: number;
 }
 
 export interface IUpdateTodoColor {

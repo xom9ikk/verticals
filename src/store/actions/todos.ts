@@ -11,7 +11,6 @@ import {
   ISwitchTodoNotificationsEnabled,
   IUpdateIsArchive,
   IUpdateTodoColor,
-  IUpdateTodoColumnId,
   IUpdateTodoCompleteStatus,
   IUpdateTodoDescription,
   IUpdateTodoPosition,
@@ -27,7 +26,6 @@ enum Type {
   UPDATE_TITLE = 'TODOS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'TODOS/UPDATE_DESCRIPTION',
   UPDATE_COMPLETE_STATUS = 'TODOS/UPDATE_COMPLETE_STATUS',
-  UPDATE_COLUMN = 'TODOS/UPDATE_COLUMN',
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
   UPDATE_COLOR = 'TODOS/UPDATE_COLOR',
   UPDATE_IS_ARCHIVE = 'TODOS/UPDATE_IS_ARCHIVE',
@@ -46,7 +44,6 @@ const insertInPosition = createAction<IAddTodo>(Type.INSERT_IN_POSITION);
 const updateTitle = createAction<IUpdateTodoTitle>(Type.UPDATE_TITLE);
 const updateDescription = createAction<IUpdateTodoDescription>(Type.UPDATE_DESCRIPTION);
 const updateCompleteStatus = createAction<IUpdateTodoCompleteStatus>(Type.UPDATE_COMPLETE_STATUS);
-const updateColumn = createAction<IUpdateTodoColumnId>(Type.UPDATE_COLUMN);
 const updatePosition = createAction<IUpdateTodoPosition>(Type.UPDATE_POSITION);
 const updateColor = createAction<IUpdateTodoColor>(Type.UPDATE_COLOR);
 const updateIsArchive = createAction<IUpdateIsArchive>(Type.UPDATE_IS_ARCHIVE);
@@ -69,7 +66,6 @@ export const TodosActions = {
   updateTitle,
   updateDescription,
   updateCompleteStatus,
-  updateColumn,
   updatePosition,
   updateColor,
   updateIsArchive,

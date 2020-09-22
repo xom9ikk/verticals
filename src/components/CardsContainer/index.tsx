@@ -31,11 +31,11 @@ export const CardsContainer: FC<ICardsContainer> = ({
     <>
       {
         todos
-          ?.map((todo, todoIndex) => (
+          ?.map((todo) => (
             <Draggable
               key={todo.id}
               draggableId={`todo-${todo.id}`}
-              index={todoIndex}
+              index={todo.position}
               isDragDisabled={isActiveQuery || todo.belowId !== undefined}
             >
               {(
@@ -48,7 +48,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   snapshot={dragSnapshot}
                   key={todo.id}
                   id={todo.id}
-                  title={`${todo.title}--->${todo.id}-${todo.position}`}
+                  title={`${todo.title}`}
                   description={todo.description}
                   status={todo.status}
                   color={todo.color}

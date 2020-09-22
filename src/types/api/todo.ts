@@ -47,6 +47,7 @@ export type IUpdateTodoResponse = IServerResponse;
 export interface IUpdateTodoPositionRequest {
   sourcePosition: number;
   destinationPosition: number;
+  columnId: number;
 }
 
 export type IUpdateTodoPositionResponse = IServerResponse;

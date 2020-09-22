@@ -157,17 +157,19 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       return quoteMap;
     }
     // moving to same list
-    console.log('source', source);
-    console.log('destination', destination);
+    const sourcePosition = source.index;
+    const destinationPosition = destination.index;
+    const targetColumnId = Number(destination.droppableId.split('column-')[1]);
+
     if (source.droppableId === destination.droppableId) {
       dispatch(TodosActions.updatePosition({
-        sourcePosition: source.index,
-        destinationPosition: destination.index,
-        columnId: Number(destination.droppableId.split('column-')[1]),
+        sourcePosition,
+        destinationPosition,
+        columnId: targetColumnId,
       }));
       const reordered = {
         ...current,
-        todos: reorder(currentTodos, source.index, destination.index, true),
+        todos: reorder(currentTodos, sourcePosition, destinationPosition, true),
       };
       return {
         ...quoteMap,
@@ -176,12 +178,15 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     }
 
     // moving to different list
-    dispatch(TodosActions.updateColumn({
-      id: target.id,
-      sourceColumnId: source.droppableId,
-      targetColumnId: destination.droppableId,
-      position: destination.index,
+    const sourceColumnId = Number(source.droppableId.split('column-')[1]);
+    dispatch(TodosActions.updatePosition({
+      columnId: sourceColumnId,
+      targetColumnId,
+      sourcePosition,
+      destinationPosition,
     }));
+
+    // TODO delete this code
     // remove from original
     currentTodos.splice(source.index, 1);
     // insert into next
