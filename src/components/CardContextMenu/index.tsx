@@ -97,6 +97,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       }
       case EnumCardActions.AddCardBelow: {
         dispatch(TodosActions.removeTemp());
+        console.log('add below', columnId);
         dispatch(TodosActions.drawBelow({
           belowId: id!,
           columnId: columnId!,

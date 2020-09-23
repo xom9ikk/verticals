@@ -6,7 +6,7 @@ import { useAlert } from '@/use/alert';
 import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
-import { ColumnsActions } from '@/store/actions';
+import { ColumnsActions, TodosActions } from '@/store/actions';
 import {
   ICreateColumnRequest,
   IRemoveColumnRequest,
@@ -15,6 +15,7 @@ import {
   IGetColumnsByBoardIdRequest,
   IDuplicateColumnRequest,
 } from '@/types/api';
+import { ITodo } from '@/types';
 
 const { columnService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -84,11 +85,12 @@ function* updatePositionWorker(action: Action<IUpdateColumnPositionRequest>) {
 function* duplicateWorker(action: Action<IDuplicateColumnRequest>) {
   try {
     const response = yield* apply(columnService, columnService.duplicate, [action.payload]);
-    const { columnId, ...column } = response.data;
+    const { columnId, todos, ...column } = response.data;
     yield put(ColumnsActions.insertInPosition({
       id: columnId,
       ...column,
     }));
+    yield all(todos.map((todo: ITodo) => put(TodosActions.add(todo))));
     yield call(show, 'Column', 'Column duplicated successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'Column', error, ALERT_TYPES.DANGER);

@@ -728,50 +728,73 @@ export const TodosReducer = handleActions<ITodos, any>({
   [TodosActions.Type.UPDATE_POSITION]:
         (state, action) => {
           const {
-            columnId, sourcePosition, destinationPosition,
+            columnId, sourcePosition, destinationPosition, targetColumnId,
           } = action.payload;
-          const targetColumn = state
+          const sourceColumn = state
             .filter((todo: ITodo) => todo.columnId === columnId)
             .sort((a, b) => a.position - b.position);
-          const otherColumns = state
-            .filter((todo: ITodo) => todo.columnId !== columnId);
-          const targetTodoIndex = targetColumn
+          const targetColumn = state
+            .filter((todo: ITodo) => todo.columnId === targetColumnId)
+            .sort((a, b) => a.position - b.position);
+          const filterOtherColumn = targetColumnId
+            ? (todo: ITodo) => todo.columnId !== columnId && todo.columnId !== targetColumnId
+            : (todo: ITodo) => todo.columnId !== columnId;
+          const otherColumns = state.filter(filterOtherColumn);
+          const targetTodoIndex = sourceColumn
             .findIndex((todo: ITodo) => todo.position === sourcePosition);
-          const targetTodo = targetColumn[targetTodoIndex];
-          targetColumn.splice(targetTodoIndex, 1);
-          targetColumn.splice(destinationPosition, 0, {
-            ...targetTodo, position: destinationPosition,
-          });
-          const newTargetColumn = targetColumn.map((todo, index) => ({
+          const targetTodo = sourceColumn[targetTodoIndex];
+          sourceColumn.splice(targetTodoIndex, 1);
+
+          if (targetColumnId) {
+            targetColumn.splice(destinationPosition, 0, {
+              ...targetTodo,
+              position: destinationPosition,
+              columnId: targetColumnId,
+            });
+          } else {
+            sourceColumn.splice(destinationPosition, 0, {
+              ...targetTodo,
+              position: destinationPosition,
+            });
+          }
+
+          const newSourceColumn = sourceColumn.map((todo, index) => ({
             ...todo,
             position: index,
           }));
+
+          if (targetColumnId) {
+            const newTargetColumn = targetColumn.map((todo, index) => ({
+              ...todo,
+              position: index,
+            }));
+            return [
+              ...otherColumns,
+              ...newSourceColumn,
+              ...newTargetColumn,
+            ];
+          }
           return [
             ...otherColumns,
-            ...newTargetColumn,
+            ...newSourceColumn,
           ];
         },
   [TodosActions.Type.INSERT_IN_POSITION]:
         (state, action) => {
-          console.log('action.payload', action.payload);
           const { position, columnId } = action.payload;
           const targetColumn = state
             .filter((todo: ITodo) => todo.columnId === columnId)
             .sort((a, b) => a.position - b.position);
-          console.log('targetColumn', targetColumn);
           const otherColumns = state
             .filter((todo: ITodo) => todo.columnId !== columnId);
           const spliceIndex = targetColumn.findIndex((todo: ITodo) => todo.position === position);
-          console.log('spliceIndex', spliceIndex);
           const normalizedSpliceIndex = spliceIndex === -1 ? targetColumn.length : spliceIndex;
-          console.log('normalizedSpliceIndex', normalizedSpliceIndex);
           const { belowId, ...newTodo } = action.payload;
           targetColumn.splice(normalizedSpliceIndex, 0, newTodo);
           const newTargetColumn = targetColumn.map((todo: ITodo, index) => ({
             ...todo,
             position: index,
           }));
-          console.log('newTargetColumn', newTargetColumn);
           return [
             ...otherColumns,
             ...newTargetColumn,
@@ -812,6 +835,7 @@ export const TodosReducer = handleActions<ITodos, any>({
           ...sortedTodos,
           ...otherTodos,
         ];
+        console.log('todos draw', a);
         return a;
       },
   [TodosActions.Type.REMOVE_TEMP]:

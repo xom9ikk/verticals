@@ -23,7 +23,7 @@ interface TodoMap {
   },
 }
 
-interface IColumn {
+interface IColumns {
   boardId: number;
 }
 
@@ -33,7 +33,7 @@ type ReorderTodoMapArgs = {
   destination: DraggableLocation,
 };
 
-export const Columns: FC<IColumn> = ({ boardId }) => {
+export const Columns: FC<IColumns> = ({ boardId }) => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
   const { columns, todos, system: { query } } = useSelector((state: IRootState) => state);
@@ -146,11 +146,11 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     source,
     destination,
   }: ReorderTodoMapArgs): TodoMap => {
-    const current = quoteMap[source.droppableId];
+    // const current = quoteMap[source.droppableId];
     const currentTodos: ITodo[] = [...quoteMap[source.droppableId].todos];
 
-    const next = quoteMap[destination.droppableId];
-    const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
+    // const next = quoteMap[destination.droppableId];
+    // const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
 
     const target: ITodo = currentTodos[source.index];
     if (!target) {
@@ -167,14 +167,15 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         destinationPosition,
         columnId: targetColumnId,
       }));
-      const reordered = {
-        ...current,
-        todos: reorder(currentTodos, sourcePosition, destinationPosition, true),
-      };
-      return {
-        ...quoteMap,
-        [source.droppableId]: reordered,
-      };
+      return quoteMap;
+      // const reordered = {
+      //   ...current,
+      //   todos: reorder(currentTodos, sourcePosition, destinationPosition, true),
+      // };
+      // return {
+      //   ...quoteMap,
+      //   [source.droppableId]: reordered,
+      // };
     }
 
     // moving to different list
@@ -186,27 +187,29 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
       destinationPosition,
     }));
 
-    // TODO delete this code
-    // remove from original
-    currentTodos.splice(source.index, 1);
-    // insert into next
-    nextTodos.splice(destination.index, 0, target);
+    return quoteMap;
 
-    return {
-      ...quoteMap,
-      [source.droppableId]: {
-        ...current,
-        todos: currentTodos.map((todo, index) => ({
-          ...todo, position: index,
-        })),
-      },
-      [destination.droppableId]: {
-        ...next,
-        todos: nextTodos.map((todo, index) => ({
-          ...todo, position: index,
-        })),
-      },
-    };
+    // // TODO delete this code
+    // // remove from original
+    // currentTodos.splice(source.index, 1);
+    // // insert into next
+    // nextTodos.splice(destination.index, 0, target);
+    //
+    // return {
+    //   ...quoteMap,
+    //   [source.droppableId]: {
+    //     ...current,
+    //     todos: currentTodos.map((todo, index) => ({
+    //       ...todo, position: index,
+    //     })),
+    //   },
+    //   [destination.droppableId]: {
+    //     ...next,
+    //     todos: nextTodos.map((todo, index) => ({
+    //       ...todo, position: index,
+    //     })),
+    //   },
+    // };
   };
 
   const memoColumns = useMemo(() => (

@@ -91,6 +91,7 @@ export const Column: FC<IColumn> = ({
     description?: string,
     status?: EnumTodoStatus,
     newColor?: EnumColors,
+    todoBelowId?: EnumColors,
   ) => {
     if (id) {
       if (title) {
@@ -115,6 +116,7 @@ export const Column: FC<IColumn> = ({
         title,
         description: description || undefined,
         status,
+        belowId: todoBelowId,
       }));
     }
     setIsOpenNewCard(false);

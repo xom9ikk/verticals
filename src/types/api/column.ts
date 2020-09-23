@@ -1,4 +1,4 @@
-import { EnumColors, IColumns } from '@/types';
+import { EnumColors, IColumns, ITodos } from '@/types';
 import { IServerResponse } from './response';
 
 export type IGetAllColumnsResponse = IServerResponse<{
@@ -64,4 +64,5 @@ export type IDuplicateColumnResponse = IServerResponse<{
   color?: EnumColors;
   isCollapsed?: boolean;
   belowId?: string;
+  todos: ITodos;
 }>;

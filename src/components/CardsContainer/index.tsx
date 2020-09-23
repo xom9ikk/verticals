@@ -16,7 +16,9 @@ interface ICardsContainer {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: EnumColors) => void;
+    color?: EnumColors,
+    belowId?: number,
+  ) => void;
 }
 
 export const CardsContainer: FC<ICardsContainer> = ({
@@ -27,6 +29,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
 }) => {
   const { currentTodoId } = useSelector((state: IRootState) => state.system);
 
+  console.log('todos', todos);
   return (
     <>
       {
@@ -48,7 +51,9 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   snapshot={dragSnapshot}
                   key={todo.id}
                   id={todo.id}
-                  title={`${todo.title}`}
+                  columnId={todo.columnId}
+                  belowId={todo.belowId}
+                  title={todo.title}
                   description={todo.description}
                   status={todo.status}
                   color={todo.color}

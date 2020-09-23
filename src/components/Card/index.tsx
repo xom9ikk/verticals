@@ -21,6 +21,7 @@ interface ISaveTodo {
 interface ICard {
   cardType: EnumTodoType;
   id?: number;
+  columnId?: number;
   belowId?: number;
   title?: string;
   description?: string;
@@ -34,7 +35,9 @@ interface ICard {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: EnumColors) => void;
+    color?: EnumColors,
+    belowId?: number,
+  ) => void;
   isActive?: boolean;
   provided?: any;
   snapshot?: any;
@@ -42,6 +45,7 @@ interface ICard {
 
 export const Card: FC<ICard> = ({
   id,
+  columnId,
   belowId,
   cardType,
   title: initialTitle = '',
@@ -78,7 +82,7 @@ export const Card: FC<ICard> = ({
     console.log('save todo');
     const { newStatus, newColor } = data || {};
     const { newTitle, newDescription } = getNewData();
-    onExitFromEditable?.(newTitle, newDescription, newStatus, newColor);
+    onExitFromEditable?.(newTitle, newDescription, newStatus, newColor, belowId);
     setIsHover(false);
   };
 
@@ -282,6 +286,7 @@ export const Card: FC<ICard> = ({
             !isEditable && (
             <CardContextMenu
               id={id}
+              columnId={columnId}
               isArchived={isArchived}
               isActive={isActive}
               isHover={isHover}
