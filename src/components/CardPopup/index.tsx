@@ -204,6 +204,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         />
                         <CardContextMenu
                           id={todo.id}
+                          columnId={todo.columnId}
                           isArchived={todo.isArchived}
                           isActive={false}
                           isHover
@@ -234,7 +235,10 @@ export const CardPopup: FC<ICardPopup> = ({
                           justifySelf: 'flex-end',
                         }}
                         onClick={() => {
-                          dispatch(TodosActions.switchNotificationsEnabled({ id: todo.id }));
+                          dispatch(TodosActions.updateNotificationEnabled({
+                            id: todo.id,
+                            isNotificationsEnabled: !todo.isNotificationsEnabled,
+                          }));
                         }}
                       />
                     </div>

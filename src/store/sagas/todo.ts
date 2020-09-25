@@ -106,6 +106,7 @@ export function* watchTodo() {
     takeLatest(TodosActions.Type.UPDATE_COLOR, updateWorker),
     takeLatest(TodosActions.Type.UPDATE_COMPLETE_STATUS, updateWorker),
     takeLatest(TodosActions.Type.UPDATE_IS_ARCHIVE, updateWorker),
+    takeLatest(TodosActions.Type.UPDATE_NOTIFICATION_ENABLED, updateWorker),
     takeLatest(TodosActions.Type.UPDATE_POSITION, updatePositionWorker),
     takeLatest(TodosActions.Type.DUPLICATE, duplicateWorker),
   ]);

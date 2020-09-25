@@ -83,7 +83,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Notifications: {
-        dispatch(TodosActions.switchNotificationsEnabled({ id: id! }));
+        dispatch(TodosActions.updateNotificationEnabled({
+          id: id!,
+          isNotificationsEnabled: !isNotificationsEnabled,
+        }));
         break;
       }
       case EnumCardActions.CopyLink: {
@@ -97,7 +100,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       }
       case EnumCardActions.AddCardBelow: {
         dispatch(TodosActions.removeTemp());
-        console.log('add below', columnId);
+        console.log('add below', columnId, id);
         dispatch(TodosActions.drawBelow({
           belowId: id!,
           columnId: columnId!,

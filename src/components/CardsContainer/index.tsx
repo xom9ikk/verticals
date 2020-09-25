@@ -29,7 +29,6 @@ export const CardsContainer: FC<ICardsContainer> = ({
 }) => {
   const { currentTodoId } = useSelector((state: IRootState) => state.system);
 
-  console.log('todos', todos);
   return (
     <>
       {
@@ -53,7 +52,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   id={todo.id}
                   columnId={todo.columnId}
                   belowId={todo.belowId}
-                  title={todo.title}
+                  title={`${todo.title}-${todo.position}-${todo.id}`}
                   description={todo.description}
                   status={todo.status}
                   color={todo.color}

@@ -340,7 +340,7 @@ export const Board: FC<IBoard> = ({
                     ref={titleInputRef}
                     className="card__textarea"
                     value={titleValue}
-                    placeholder="New Card"
+                    placeholder="New Board"
                     minRows={1}
                     maxRows={20}
                     onChange={(event: any) => changeHandler(event, false)}

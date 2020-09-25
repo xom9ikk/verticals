@@ -5,7 +5,7 @@
   height: calc(100vh - 15px);
   &--opened {
     min-width: $card-popup-width;
-    padding: 10px;
+    padding: 23px 10px 10px;
     position: relative;
     &::before {
       content: "";

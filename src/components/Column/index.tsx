@@ -380,11 +380,11 @@ export const Column: FC<IColumn> = ({
 
   const cardToolbar = useMemo(() => (
     <CardToolbar
-      isHoverBlock={isHover && !isHoverHeader}
+      isHoverBlock={isHover && !isHoverHeader && !isEditable}
       onClickCard={() => setIsOpenNewCard(true)}
       onClickHeading={() => console.log('open heading')}
     />
-  ), [isHover, isHoverHeader]);
+  ), [isHover, isHoverHeader, isEditable]);
 
   const memoDescription = useMemo(() => (
     <>

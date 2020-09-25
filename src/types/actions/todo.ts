@@ -70,6 +70,7 @@ export interface IUpdateIsArchive {
   isArchived: boolean;
 }
 
-export interface ISwitchTodoNotificationsEnabled {
+export interface IUpdateTodoNotificationsEnabled {
   id: number;
+  isNotificationsEnabled: boolean;
 }

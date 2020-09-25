@@ -667,8 +667,6 @@ export const TodosReducer = handleActions<ITodos, any>({
         : todo))),
   [TodosActions.Type.ADD]:
         (state, action) => ([...state, {
-          id: Math.random().toString(),
-          position: state.length,
           ...action.payload,
         }]),
   // [TodosActions.Type.UPDATE_COLUMN]:
@@ -807,13 +805,39 @@ export const TodosReducer = handleActions<ITodos, any>({
           color: action.payload.color,
         }
         : todo))),
-  [TodosActions.Type.REMOVE]:
-      (state, action) => state.filter((todo: ITodo) => todo.id !== action.payload.id),
+  [TodosActions.Type.REMOVE]: // todo recalculate positions
+      (state, action) => {
+        let columnId: number | null = null;
+        const todosAfterDelete = state.filter((todo: ITodo) => {
+          if (todo.id !== action.payload.id) {
+            return true;
+          }
+          columnId = todo.columnId;
+          return false;
+        });
+        if (columnId) {
+          const todosInColumn = todosAfterDelete
+            .filter((todo: ITodo) => todo.columnId === columnId)
+            .sort((a, b) => a.position - b.position)
+            .map((todo: ITodo, index) => ({
+              ...todo,
+              position: index,
+            }));
+          const otherTodos = [...todosAfterDelete]
+            .filter((todo: ITodo) => todo.columnId !== columnId);
+          return [
+            ...todosInColumn,
+            ...otherTodos,
+          ];
+        }
+        return state;
+      },
   [TodosActions.Type.DRAW_BELOW]:
       (state, action) => {
         const { belowId, columnId } = action.payload;
         const todoIndex = state.findIndex((todo: ITodo) => todo.id === belowId);
         const todosInColumn = [...state]
+          .sort((a, b) => a.position - b.position)
           .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
         const otherTodos = [...state]
           .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
@@ -826,7 +850,6 @@ export const TodosReducer = handleActions<ITodos, any>({
           title: '',
         });
         const sortedTodos = todosInColumn
-          .sort((a, b) => a.position - b.position)
           .map((todo: ITodo, index) => ({
             ...todo,
             position: index,
@@ -835,16 +858,26 @@ export const TodosReducer = handleActions<ITodos, any>({
           ...sortedTodos,
           ...otherTodos,
         ];
-        console.log('todos draw', a);
         return a;
       },
   [TodosActions.Type.REMOVE_TEMP]:
-      (state) => (state
-        .filter((todo: ITodo) => todo.belowId === undefined)
-        .map((todo: ITodo, index) => ({
-          ...todo,
-          position: index,
-        }))),
+      (state) => {
+        const columnIds = new Set();
+        state.forEach((todo: ITodo) => columnIds.add(todo.columnId));
+        let todos: ITodos = [];
+        columnIds.forEach((columnId) => {
+          const todosInColumn = state
+            .filter((todo: ITodo) => todo.columnId === columnId)
+            .filter((todo: ITodo) => todo.belowId === undefined)
+            .sort((a: ITodo, b: ITodo) => a.position - b.position)
+            .map((todo: ITodo, index) => ({
+              ...todo,
+              position: index,
+            }));
+          todos = [...todos, ...todosInColumn];
+        });
+        return todos;
+      },
   [TodosActions.Type.UPDATE_IS_ARCHIVE]:
       (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
         ? {
@@ -891,11 +924,11 @@ export const TodosReducer = handleActions<ITodos, any>({
   //   const sortedTodos = newTodos.sort((a, b) => a.position - b.position);
   //   return [...sortedTodos, ...otherTodos];
   // },
-  [TodosActions.Type.SWITCH_NOTIFICATION_ENABLED]:
+  [TodosActions.Type.UPDATE_NOTIFICATION_ENABLED]:
       (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
         ? {
           ...todo,
-          isNotificationsEnabled: !todo.isNotificationsEnabled,
+          isNotificationsEnabled: action.payload.isNotificationsEnabled,
         }
         : todo))),
 }, initialState);

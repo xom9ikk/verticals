@@ -4,7 +4,9 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { Sidebar } from '@comp/Sidebar';
 import { Columns } from '@comp/Columns';
-import { BoardsActions, SystemActions } from '@/store/actions';
+import {
+  BoardsActions, SystemActions, TodosActions,
+} from '@/store/actions';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { FallbackLoader } from '@comp/FallbackLoader';
@@ -28,6 +30,8 @@ export const Main: FC = () => {
     dispatch(SystemActions.setIsEditableBoard(false));
     dispatch(SystemActions.setCurrentTodoId(null));
     // dispatch(BoardsActions.removeTemp());
+    // dispatch(ColumnsActions.removeTemp());
+    dispatch(TodosActions.removeTemp());
   };
 
   const keydownHandler = (event: any) => {
