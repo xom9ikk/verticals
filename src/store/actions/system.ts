@@ -1,5 +1,8 @@
 import { createAction } from 'redux-actions';
 import {
+  ISetSystemIsLoadedBoards,
+  ISetSystemIsLoadedColumns,
+  ISetSystemIsLoadedTodos,
   ISetSystemCurrentTodoId,
   ISetSystemEditCommentId,
   ISetSystemIsEditableBoard,
@@ -12,6 +15,9 @@ import {
 } from '@/types/actions';
 
 enum Type {
+  SET_IS_LOADED_BOARDS = 'SYSTEM/SET_IS_LOADED_BOARDS',
+  SET_IS_LOADED_COLUMNS = 'SYSTEM/SET_IS_LOADED_COLUMNS',
+  SET_IS_LOADED_TODOS = 'SYSTEM/SET_IS_LOADED_TODOS',
   SET_IS_OPEN_POPUP = 'SYSTEM/SET_IS_OPEN_POPUP',
   SET_IS_EDITABLE_CARD = 'SYSTEM/SET_IS_EDITABLE_CARD',
   SET_IS_EDITABLE_COLUMN = 'SYSTEM/SET_IS_EDITABLE_COLUMN',
@@ -22,6 +28,15 @@ enum Type {
   SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
   SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
 }
+
+const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
+  (isLoadedBoards: ISetSystemIsLoadedBoards) => ({ isLoadedBoards }));
+
+const setIsLoadedColumns = createAction(Type.SET_IS_LOADED_COLUMNS,
+  (isLoadedColumns: ISetSystemIsLoadedColumns) => ({ isLoadedColumns }));
+
+const setIsLoadedTodos = createAction(Type.SET_IS_LOADED_TODOS,
+  (isLoadedTodos: ISetSystemIsLoadedTodos) => ({ isLoadedTodos }));
 
 const setIsOpenPopup = createAction(Type.SET_IS_OPEN_POPUP,
   (isOpenPopup: ISetSystemIsOpenPopup) => ({ isOpenPopup }));
@@ -68,6 +83,9 @@ const setReplyCommentId = createAction(
 
 export const SystemActions = {
   Type,
+  setIsLoadedBoards,
+  setIsLoadedColumns,
+  setIsLoadedTodos,
   setIsOpenPopup,
   setIsEditableCard,
   setIsEditableColumn,

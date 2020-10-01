@@ -131,6 +131,7 @@ export const CommentForm: FC<ICommentForm> = ({
             <div className="comment-form__controls">
               <Menu
                 imageSrc="/assets/svg/gallery.svg"
+                tooltip="Add an image"
                 alt="image"
                 imageSize={24}
                 size={26}
@@ -140,6 +141,7 @@ export const CommentForm: FC<ICommentForm> = ({
               />
               <Menu
                 imageSrc="/assets/svg/attach.svg"
+                tooltip="Attach a file"
                 alt="file"
                 imageSize={24}
                 size={26}
@@ -149,8 +151,9 @@ export const CommentForm: FC<ICommentForm> = ({
               />
               <Menu
                 imageSrc="/assets/svg/arrow-up.svg"
-                alt="date"
-                imageSize={24}
+                tooltip={`${commentText?.length ? 'Add comment' : ''}`}
+                alt="send"
+                imageSize={commentText?.length ? 24 : 0}
                 size={30}
                 isShowPopup={false}
                 isPrimary
@@ -165,7 +168,7 @@ export const CommentForm: FC<ICommentForm> = ({
           </div>
         </div>
       </div>
-      <div className={`comment-form__helper 
+      <div className={`comment-form__helper
         ${commentText?.length ? 'comment-form__helper--opened' : ''}
         `}
       >

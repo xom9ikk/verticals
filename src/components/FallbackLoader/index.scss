@@ -3,21 +3,21 @@
   flex: 1;
   justify-content: center;
   align-items: center;
-  background: $white;
   transition: .5s opacity ease-in-out;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   &--fixed {
     position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+  }
+  &--absolute {
+    position: absolute;
   }
   &--hide {
     opacity: 0;
   }
   &__wrapper {
     display: flex;
-    width: 100px;
-    height: 100px;
   }
 }

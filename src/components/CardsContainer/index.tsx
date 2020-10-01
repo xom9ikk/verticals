@@ -6,6 +6,7 @@ import {
 } from '@/types';
 import { Card } from '@comp/Card';
 import { IRootState } from '@/store/reducers/state';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface ICardsContainer {
   todos?: ITodos;
@@ -27,7 +28,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
   cardType,
   onExitFromEditable,
 }) => {
-  const { currentTodoId } = useSelector((state: IRootState) => state.system);
+  const { currentTodoId, isLoadedTodos } = useSelector((state: IRootState) => state.system);
 
   return (
     <>
@@ -52,7 +53,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   id={todo.id}
                   columnId={todo.columnId}
                   belowId={todo.belowId}
-                  title={`${todo.title}-${todo.position}-${todo.id}`}
+                  title={todo.title}
                   description={todo.description}
                   status={todo.status}
                   color={todo.color}
@@ -65,6 +66,11 @@ export const CardsContainer: FC<ICardsContainer> = ({
             </Draggable>
           ))
         }
+      <FallbackLoader
+        isAbsolute
+        size="small"
+        isLoading={!isLoadedTodos}
+      />
     </>
   );
 };

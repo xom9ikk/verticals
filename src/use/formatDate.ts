@@ -1,26 +1,27 @@
 const months = [
-  'January',
-  'February',
-  'March',
-  'April',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
   'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 export const useFormatDate = () => {
+  const n = (v: number) => (v < 10 ? `0${v}` : v);
+
   const formatDate = (date: Date) => {
-    const year = date.getFullYear();
     const month = date.getMonth();
     const day = date.getDate();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    return `${hours}:${minutes}, ${day} ${months[month]}, ${year}`;
+    return `${day} ${months[month]}, ${n(hours)}:${n(minutes)}`;
   };
   return {
     formatDate,

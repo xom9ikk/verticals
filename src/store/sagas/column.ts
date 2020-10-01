@@ -6,7 +6,7 @@ import { useAlert } from '@/use/alert';
 import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
-import { ColumnsActions, TodosActions } from '@/store/actions';
+import { ColumnsActions, SystemActions, TodosActions } from '@/store/actions';
 import {
   ICreateColumnRequest,
   IRemoveColumnRequest,
@@ -25,6 +25,7 @@ function* fetchByBoardIdWorker(action: Action<IGetColumnsByBoardIdRequest>) {
     const response = yield* apply(columnService, columnService.getByBoardId, [action.payload]);
     const { columns } = response.data;
     yield put(ColumnsActions.setAll(columns));
+    yield put(SystemActions.setIsLoadedColumns(true));
   } catch (error) {
     yield call(show, 'Column', error, ALERT_TYPES.DANGER);
   }

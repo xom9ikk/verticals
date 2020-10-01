@@ -29,7 +29,7 @@
     flex: 1;
     //justify-content: space-between;
     align-items: center;
-    padding: 5px 5px 0;
+    padding: 0 5px 0;
     &--replied {
       padding-top: 8px;
     }
@@ -37,16 +37,14 @@
   &__text {
     color: #222;
     font-size: 16px;
-    padding: 5px 5px 0;
+    padding: 0 5px 0;
   }
   &__date {
-    position: absolute;
     color: $text-light;
     font-size: 12px;
     opacity: 0;
     transition: opacity .2s ease-in-out;
-    right: 20px;
-    top: 10px;
+    margin-right: 5px;
   }
   //&__content {
   //  display: flex;
@@ -71,6 +69,7 @@
     display: flex;
     flex: 1;
     justify-content: space-between;
+    align-items: center;
     &--buttons {
       display: flex;
     }

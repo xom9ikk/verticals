@@ -10,6 +10,7 @@ interface IMenu {
   imageSrc: string;
   text?: string;
   alt: string;
+  tooltip?: string;
   isHoverBlock?: boolean;
   imageSize?: number;
   size?: number;
@@ -30,6 +31,7 @@ export const Menu: FC<IMenu> = ({
   imageSrc,
   text,
   alt,
+  tooltip,
   isHoverBlock = false,
   imageSize = 12,
   size,
@@ -125,6 +127,8 @@ export const Menu: FC<IMenu> = ({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={size ? { height: size, width: size, ...style } : { ...style }}
+        data-for="tooltip"
+        data-tip={tooltip}
       >
         <img
           src={imageSrc}

@@ -48,12 +48,9 @@ const updatePosition = createAction<IUpdateTodoPosition>(Type.UPDATE_POSITION);
 const updateColor = createAction<IUpdateTodoColor>(Type.UPDATE_COLOR);
 const updateIsArchive = createAction<IUpdateIsArchive>(Type.UPDATE_IS_ARCHIVE);
 const updateNotificationEnabled = createAction<IUpdateTodoNotificationsEnabled>(Type.UPDATE_NOTIFICATION_ENABLED);
-// const resetColor = createAction<IResetTodoColor>(Type.RESET_COLOR);
-// const duplicateForColumn = createAction<IDuplicateTodoForColumn>(Type.DUPLICATE_FOR_COLUMN);
 const remove = createAction<IRemoveTodo>(Type.REMOVE);
 const duplicate = createAction<IDuplicateTodo>(Type.DUPLICATE);
 const drawBelow = createAction<IDrawTodoBelow>(Type.DRAW_BELOW);
-// const generateNewId = createAction<IGenerateNewTodoId>(Type.GENERATE_NEW_ID);
 const removeTemp = createAction(Type.REMOVE_TEMP);
 
 export const TodosActions = {

@@ -11,6 +11,7 @@ import { EnumColors, ITodo } from '@/types';
 import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface TodoMap {
   [key: string]: {
@@ -24,7 +25,7 @@ interface TodoMap {
 }
 
 interface IColumns {
-  boardId: number;
+  boardId?: number;
 }
 
 type ReorderTodoMapArgs = {
@@ -36,33 +37,36 @@ type ReorderTodoMapArgs = {
 export const Columns: FC<IColumns> = ({ boardId }) => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
-  const { columns, todos, system: { query } } = useSelector((state: IRootState) => state);
+  const {
+    columns, todos, system:
+      { query, isLoadedBoards, isLoadedColumns },
+  } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<number>>([]);
 
   useEffect(() => {
-    dispatch(ColumnsActions.fetchByBoardId({ boardId }));
-    dispatch(TodosActions.fetchByBoardId({ boardId }));
+    if (boardId !== undefined) {
+      dispatch(ColumnsActions.fetchByBoardId({ boardId }));
+      dispatch(TodosActions.fetchByBoardId({ boardId }));
+    }
   }, [boardId]);
 
   useEffect(() => {
-    console.log('new columns', columns);
     const data = {};
-    columns
-        ?.filter((column) => column.boardId === boardId)
-        ?.sort((a, b) => a.position - b.position)
-        ?.forEach((column) => {
-          // console.log('prepare column', column);
-          // @ts-ignore
-          data[`column-${column.id}`] = {
-            ...column,
-            todos: todos.filter((todo) => todo.columnId === column.id),
-          };
-        });
-    console.log('===columns', columns);
-    console.log('===prep', data);
-    setPreparedData(data);
-    setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
+      columns
+          ?.filter((column) => column.boardId === boardId)
+          ?.sort((a, b) => a.position - b.position)
+          ?.forEach((column) => {
+            // console.log('prepare column', column);
+            // @ts-ignore
+            data[`column-${column.id}`] = {
+              ...column,
+              todos: todos.filter((todo) => todo.columnId === column.id),
+            };
+          });
+      // console.log('===prep', data);
+      setPreparedData(data);
+      setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
   }, [boardId, columns, todos]);
 
   const onDragEnd = (result: DropResult) => {
@@ -246,6 +250,18 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
     />
   ), [boardId, orderedId]);
 
+  const memoDeletedCardsColumn = useMemo(() => (
+    <Column
+      index={0}
+      boardId={boardId}
+      key="column-deleted"
+      title="Deleted cards"
+      // todos={preparedData[key].todos}
+      description="Restore deleted cards"
+      isDeleted
+    />
+  ), [boardId]);
+
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -260,9 +276,25 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              { memoColumns }
-              { memoNewColumn }
+              {
+                boardId === -1 ? memoDeletedCardsColumn : (
+                  <>
+                    { memoColumns }
+                    { memoNewColumn }
+                  </>
+                )
+              }
               {provided.placeholder}
+              <FallbackLoader
+                backgroundColor="#ffffff"
+                isAbsolute
+                size="medium"
+                isLoading={
+                  !isLoadedBoards
+                  || !isLoadedColumns
+                  || Object.keys(preparedData).length === 0
+                }
+              />
             </div>
           )}
         </Droppable>

@@ -17,5 +17,7 @@ export const Avatar: FC<IAvatar> = ({
       height: size,
       width: size,
     }}
+    data-for="tooltip"
+    data-tip="Max Romanyuta"
   />
 );

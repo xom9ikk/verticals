@@ -669,60 +669,6 @@ export const TodosReducer = handleActions<ITodos, any>({
         (state, action) => ([...state, {
           ...action.payload,
         }]),
-  // [TodosActions.Type.UPDATE_COLUMN]:
-  //       (state, action) => {
-  //         const {
-  //           id, sourceColumnId, targetColumnId, destinationPosition,
-  //         } = action.payload;
-  //         const targetColumn = state
-  //           .filter((todo: ITodo) => todo.columnId === targetColumnId)
-  //           .sort((a, b) => a.position - b.position);
-  //         const sourceColumn = state
-  //           .filter((todo: ITodo) => todo.columnId === sourceColumnId
-  //               && todo.id !== id)
-  //           .sort((a, b) => a.position - b.position);
-  //         const otherColumns = state
-  //           .filter((todo: ITodo) => todo.columnId !== targetColumnId
-  //               && todo.columnId !== sourceColumnId);
-  //         const targetTodo = {
-  //           ...state.filter((todo: ITodo) => todo.id === id)[0],
-  //           columnId: targetColumnId,
-  //           position: destinationPosition,
-  //         };
-  //
-  //         targetColumn.splice(destinationPosition, 0, targetTodo);
-  //
-  //         let positionCounter: number = destinationPosition + 1;
-  //         let isInsert = false;
-  //
-  //         const newTargetColumn = targetColumn.map((todo: ITodo) => {
-  //           if (todo.id === id) {
-  //             isInsert = true;
-  //             return {
-  //               ...todo,
-  //               columnId: targetColumnId,
-  //               position: destinationPosition,
-  //             };
-  //           }
-  //           if (isInsert) {
-  //             return {
-  //               ...todo,
-  //               position: positionCounter++,
-  //             };
-  //           }
-  //           return todo;
-  //         });
-  //
-  //         const newSourceColumn = sourceColumn.map((todo: ITodo, index) => ({
-  //           ...todo,
-  //           position: index,
-  //         }));
-  //         return [
-  //           ...otherColumns,
-  //           ...newTargetColumn,
-  //           ...newSourceColumn,
-  //         ];
-  //       },
   [TodosActions.Type.UPDATE_POSITION]:
         (state, action) => {
           const {
@@ -805,7 +751,7 @@ export const TodosReducer = handleActions<ITodos, any>({
           color: action.payload.color,
         }
         : todo))),
-  [TodosActions.Type.REMOVE]: // todo recalculate positions
+  [TodosActions.Type.REMOVE]:
       (state, action) => {
         let columnId: number | null = null;
         const todosAfterDelete = state.filter((todo: ITodo) => {
@@ -835,12 +781,11 @@ export const TodosReducer = handleActions<ITodos, any>({
   [TodosActions.Type.DRAW_BELOW]:
       (state, action) => {
         const { belowId, columnId } = action.payload;
-        const todoIndex = state.findIndex((todo: ITodo) => todo.id === belowId);
         const todosInColumn = [...state]
           .sort((a, b) => a.position - b.position)
-          .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
+          .filter((todo: ITodo) => todo.columnId === columnId);
         const otherTodos = [...state]
-          .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
+          .filter((todo: ITodo) => todo.columnId !== columnId);
         const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === belowId);
         todosInColumn.splice(spliceIndex + 1, 0, {
           id: 0,
@@ -854,11 +799,10 @@ export const TodosReducer = handleActions<ITodos, any>({
             ...todo,
             position: index,
           }));
-        const a = [
+        return [
           ...sortedTodos,
           ...otherTodos,
         ];
-        return a;
       },
   [TodosActions.Type.REMOVE_TEMP]:
       (state) => {
@@ -885,45 +829,6 @@ export const TodosReducer = handleActions<ITodos, any>({
           isArchived: action.payload.isArchived,
         }
         : todo))),
-  // (state, action) => {
-  //   const { id, isArchived } = action.payload;
-  //   const todoIndex = state.findIndex((todo: ITodo) => todo.id === id);
-  //   const targetTodo = state[todoIndex];
-  //   const todosInColumn = [...state]
-  //     .filter((todo: ITodo) => todo.columnId === state[todoIndex].columnId);
-  //   const otherTodos = [...state]
-  //     .filter((todo: ITodo) => todo.columnId !== state[todoIndex].columnId);
-  //   const todoIndexInColumn = todosInColumn.findIndex((todo: ITodo) => todo.id === id);
-  //   todosInColumn.splice(todoIndexInColumn, 1);
-  //   let newTodos;
-  //   if (!isArchived) {
-  //     const archivedTodosInColumn = todosInColumn.filter((todo: ITodo) => todo.isArchived);
-  //     const notArchivedTodosInColumn = todosInColumn.filter((todo: ITodo) => !todo.isArchived);
-  //     notArchivedTodosInColumn.push({
-  //       ...targetTodo,
-  //       isArchived,
-  //       position: notArchivedTodosInColumn.length + 1,
-  //     });
-  //     newTodos = [
-  //       ...notArchivedTodosInColumn,
-  //       ...archivedTodosInColumn.map((todo: ITodo, index) => ({
-  //         ...todo,
-  //         position: notArchivedTodosInColumn.length + index,
-  //       })),
-  //     ];
-  //   } else {
-  //     newTodos = [
-  //       ...todosInColumn,
-  //     ];
-  //     newTodos.push({
-  //       ...targetTodo,
-  //       isArchived,
-  //       position: todosInColumn.length + 1,
-  //     });
-  //   }
-  //   const sortedTodos = newTodos.sort((a, b) => a.position - b.position);
-  //   return [...sortedTodos, ...otherTodos];
-  // },
   [TodosActions.Type.UPDATE_NOTIFICATION_ENABLED]:
       (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
         ? {

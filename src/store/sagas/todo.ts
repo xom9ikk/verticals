@@ -6,7 +6,7 @@ import { useAlert } from '@/use/alert';
 import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
-import { TodosActions } from '@/store/actions';
+import { SystemActions, TodosActions } from '@/store/actions';
 import {
   ICreateTodoRequest,
   IRemoveTodoRequest,
@@ -24,6 +24,7 @@ function* fetchByBoardIdWorker(action: Action<IGetTodosByBoardIdRequest>) {
     const response = yield* apply(todoService, todoService.getByBoardId, [action.payload]);
     const { todos } = response.data;
     yield put(TodosActions.setAll(todos));
+    yield put(SystemActions.setIsLoadedTodos(true));
   } catch (error) {
     yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
   }

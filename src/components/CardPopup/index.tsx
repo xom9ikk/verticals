@@ -197,6 +197,7 @@ export const CardPopup: FC<ICardPopup> = ({
                       <div>
                         <Menu
                           imageSrc="/assets/svg/calendar.svg"
+                          tooltip="Date"
                           alt="date"
                           imageSize={24}
                           size={36}
@@ -227,7 +228,8 @@ export const CardPopup: FC<ICardPopup> = ({
                       </div>
                       <Menu
                         imageSrc={`/assets/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
-                        alt="date"
+                        tooltip={`Turn ${todo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
+                        alt="notification"
                         imageSize={24}
                         size={36}
                         isShowPopup={false}

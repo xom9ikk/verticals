@@ -25,6 +25,7 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
           <div className="sidebar__toggle">
             <Menu
               imageSrc={`/assets/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
+              tooltip={`${isPinnedSidebar ? 'Hide sidebar' : 'Show sidebar'}`}
               alt="add"
               imageSize={16}
               size={20}

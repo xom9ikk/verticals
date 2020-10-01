@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,12 +11,13 @@ import { Profile } from '@comp/Profile';
 import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
-  EnumTodoType, IBoard, IBoards, IColumn, ITodo, ITodos,
+  EnumTodoType, IBoard, IColumn, ITodo, ITodos,
 } from '@/types';
 import { useFilterTodos } from '@/use/filterTodos';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface IBoardList {
-  activeBoard: number;
+  activeBoard?: number;
   onChange: (boardId: number) => void;
 }
 
@@ -24,19 +25,14 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [boards, setBoards] = useState<IBoards>([]);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
   const {
-    system: { query },
-    boards: initialBoards,
+    system: { query, isLoadedBoards },
+    boards,
     todos,
     columns,
   } = useSelector((state: IRootState) => state);
-
-  useEffect(() => {
-    setBoards(initialBoards);
-  }, [initialBoards]);
 
   const saveBoard = (
     {
@@ -78,13 +74,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     }
   };
 
-  const reorder = (list: IBoards, startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result.map((board, index) => ({ ...board, position: index }));
-  };
-
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -101,16 +90,9 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         destinationPosition,
       },
     ));
-    const items = reorder(
-      boards,
-      source.index,
-      destination.index,
-    );
-    setBoards(items);
   };
 
   const getCountTodos = (boardId: number) => {
-    // let isContainTodosByQuery = true;
     const needColumn = columns.filter((column: IColumn) => column.boardId === boardId);
     const needTodos: ITodos = [];
     needColumn.forEach((column: IColumn) => {
@@ -120,12 +102,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }
       });
     });
-    // if (query) {
-    //
-    //    // isContainTodosByQuery = countTodos > 0;
-    // }
-    // if (['trash', 'today'].includes(id)) { return null; }
-    // if (!isContainTodosByQuery) { return countTodos; }
     return needTodos.filter(filterTodos).length;
   };
 
@@ -215,7 +191,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
             id: -1,
             icon: '/assets/svg/board/trash.svg',
             title: 'Trash',
-            position: 4,
+            position: boards.length,
             cardType: EnumTodoType.Checkboxes,
           })
         }
@@ -261,12 +237,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     </>
   ), [isHover, isOpenNewBoard]);
 
-  // useEffect(() => {
-  //   if (!isEditableBoard) {
-  //     setIsOpenNewBoard(false);
-  //   }
-  // }, [isEditableBoard]);
-
   return (
     <div
       className="board-list"
@@ -277,6 +247,12 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       { boardItems }
       { memoMenu }
       { memoNewBoard }
+      <FallbackLoader
+        backgroundColor="#fafafa"
+        isAbsolute
+        size="medium"
+        isLoading={!isLoadedBoards}
+      />
     </div>
   );
 };

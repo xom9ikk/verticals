@@ -165,7 +165,6 @@ export const CommentItem: FC<ICommentItem> = ({
           </>
           )
         }
-        <div className="comment__date">{formatDate(new Date(date))}</div>
       </div>
       {
         text && (<div className="comment__text">{text}</div>)
@@ -188,6 +187,7 @@ export const CommentItem: FC<ICommentItem> = ({
         <div className="comment__controls--buttons">
           <Menu
             imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg`}
+            tooltip={`${isLikeByMe ? 'Unlike' : 'Like'}`}
             alt="like"
             imageSize={16}
             size={22}
@@ -196,6 +196,7 @@ export const CommentItem: FC<ICommentItem> = ({
           />
           <Menu
             imageSrc="/assets/svg/reply.svg"
+            tooltip="Reply"
             alt="reply"
             imageSize={16}
             size={22}
@@ -209,16 +210,18 @@ export const CommentItem: FC<ICommentItem> = ({
             <span>Edited</span>
             )
           }
+          <div className="comment__date">{formatDate(new Date(date))}</div>
           <Avatar size={20} />
           <Menu
             imageSrc="/assets/svg/dots.svg"
+            tooltip="More"
             alt="menu"
             imageSize={16}
             size={22}
             position="right"
           >
             <MenuButton
-              text="Like"
+              text={`${isLikeByMe ? 'Unlike' : 'Like'}`}
               imageSrc="/assets/svg/like.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
             />

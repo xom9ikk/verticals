@@ -1,5 +1,8 @@
-import { EnumLanguage } from '../system';
+import { EnumLanguage } from '@/types';
 
+export type ISetSystemIsLoadedBoards = boolean;
+export type ISetSystemIsLoadedColumns = boolean;
+export type ISetSystemIsLoadedTodos = boolean;
 export type ISetSystemIsOpenPopup = boolean;
 export type ISetSystemIsEditableCard = boolean;
 export type ISetSystemIsEditableColumn = boolean;

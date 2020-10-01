@@ -75,11 +75,9 @@ export const ColumnsReducer = handleActions<IColumns, any>({
         : column))),
   [ColumnsActions.Type.ADD]:
       (state, action) => ([...state, {
-        id: Math.random().toString(),
-        position: state.length,
         ...action.payload,
       }]),
-  [ColumnsActions.Type.UPDATE_POSITION]:
+  [ColumnsActions.Type.UPDATE_POSITION]: // copy logic from todo
       (state, action) => {
         const { sourcePosition, destinationPosition, boardId } = action.payload;
         const columns = [...state];
@@ -90,24 +88,33 @@ export const ColumnsReducer = handleActions<IColumns, any>({
         columns.splice(destinationPosition, 0, {
           ...sourceColumn, position: destinationPosition,
         });
-        return columns.map((column, index) => ({
+        return columns.map((column, index) => ({ // remap all columns
           ...column,
           position: index,
         }));
       },
   [ColumnsActions.Type.INSERT_IN_POSITION]:
-        (state, action) => {
-          const { position } = action.payload;
-          const columns = [...state].sort((a, b) => a.position - b.position);
-          const spliceIndex = columns.findIndex((column: IColumn) => column.position === position);
-          const normalizedSpliceIndex = spliceIndex === -1 ? columns.length : spliceIndex;
-          const { belowId, ...newColumn } = action.payload;
-          columns.splice(normalizedSpliceIndex, 0, newColumn);
-          return columns.map((column: IColumn, index) => ({
-            ...column,
-            position: index,
-          }));
-        },
+      (state, action) => {
+        const { position, boardId } = action.payload;
+        const targetBoard = state
+          .filter((column: IColumn) => column.boardId === boardId)
+          .sort((a, b) => a.position - b.position);
+        const otherBoards = state
+          .filter((column: IColumn) => column.boardId !== boardId);
+        const spliceIndex = targetBoard
+          .findIndex((column: IColumn) => column.position === position);
+        const normalizedSpliceIndex = spliceIndex === -1 ? targetBoard.length : spliceIndex;
+        const { belowId, ...newColumn } = action.payload;
+        targetBoard.splice(normalizedSpliceIndex, 0, newColumn);
+        const newTargetColumn = targetBoard.map((column: IColumn, index) => ({
+          ...column,
+          position: index,
+        }));
+        return [
+          ...otherBoards,
+          ...newTargetColumn,
+        ];
+      },
   [ColumnsActions.Type.UPDATE_COLOR]:
         (state, action) => (state.map((column: IColumn) => (column.id === action.payload.id
           ? {
@@ -123,34 +130,74 @@ export const ColumnsReducer = handleActions<IColumns, any>({
           }
           : column))),
   [ColumnsActions.Type.REMOVE]:
-        (state, action) => state
-          .filter((column: IColumn) => column.id !== action.payload.id)
-          .map((column: IColumn, index) => ({
-            ...column,
-            position: index,
-          })),
+      (state, action) => {
+        let boardId: number | null = null;
+        const columnsAfterDelete = state.filter((column: IColumn) => {
+          if (column.id !== action.payload.id) {
+            return true;
+          }
+          boardId = column.boardId;
+          return false;
+        });
+        if (boardId) {
+          const columnsInBoard = columnsAfterDelete
+            .filter((column: IColumn) => column.boardId === boardId)
+            .sort((a, b) => a.position - b.position)
+            .map((column: IColumn, index) => ({
+              ...column,
+              position: index,
+            }));
+          const otherColumns = [...columnsAfterDelete]
+            .filter((column: IColumn) => column.boardId !== boardId);
+          return [
+            ...columnsInBoard,
+            ...otherColumns,
+          ];
+        }
+        return state;
+      },
   [ColumnsActions.Type.DRAW_BELOW]:
-        (state, action) => {
-          const { belowId, boardId } = action.payload;
-          const columns = [...state].sort((a, b) => a.position - b.position);
-          const spliceIndex = columns.findIndex((column: IColumn) => column.id === belowId);
-          columns.splice(spliceIndex + 1, 0, {
-            id: 0,
-            boardId,
-            belowId,
-            position: spliceIndex,
-            title: '',
-          });
-          return columns.map((column: IColumn, index) => ({
+      (state, action) => {
+        const { belowId, boardId } = action.payload;
+        const columnsInBoard = [...state]
+          .sort((a, b) => a.position - b.position)
+          .filter((column: IColumn) => column.boardId === boardId);
+        const otherColumn = [...state]
+          .filter((column: IColumn) => column.boardId !== boardId);
+        const spliceIndex = columnsInBoard.findIndex((column: IColumn) => column.id === belowId);
+        columnsInBoard.splice(spliceIndex + 1, 0, {
+          id: 0,
+          boardId,
+          belowId,
+          position: spliceIndex,
+          title: '',
+        });
+        const sortedColumns = columnsInBoard
+          .map((column: IColumn, index) => ({
             ...column,
             position: index,
           }));
-        },
+        return [
+          ...sortedColumns,
+          ...otherColumn,
+        ];
+      },
   [ColumnsActions.Type.REMOVE_TEMP]:
-        (state) => (state
-          .filter((column: IColumn) => column.belowId === undefined)
-          .map((column: IColumn, index) => ({
-            ...column,
-            position: index,
-          }))),
+      (state) => {
+        const boardIds = new Set();
+        state.forEach((column: IColumn) => boardIds.add(column.boardId));
+        let columns: IColumns = [];
+        boardIds.forEach((boardId) => {
+          const columnsInBoard = state
+            .filter((column: IColumn) => column.boardId === boardId)
+            .filter((column: IColumn) => column.belowId === undefined)
+            .sort((a: IColumn, b: IColumn) => a.position - b.position)
+            .map((column: IColumn, index) => ({
+              ...column,
+              position: index,
+            }));
+          columns = [...columns, ...columnsInBoard];
+        });
+        return columns;
+      },
 }, initialState);

@@ -6,6 +6,9 @@ export enum EnumLanguage {
 }
 
 export interface ISystem {
+  isLoadedBoards: boolean;
+  isLoadedColumns: boolean;
+  isLoadedTodos: boolean;
   isOpenPopup: boolean;
   isEditableCard: boolean;
   isEditableColumn: boolean;
