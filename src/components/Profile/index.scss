@@ -3,4 +3,25 @@
   justify-content: space-between;
   align-items: center;
   padding: 6px 10px 6px 6px;
+  &__popup {
+    position: fixed;
+    right: 10px;
+    top: 23px;
+    bottom: 25px;
+    padding: 60px 30px;
+    background: $white;
+    box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
+    border-radius: 13px;
+    &-title {
+      font-family: "Nunito Extra Bold", sans-serif;
+      font-size: 34px;
+      margin: 0;
+    }
+    &-subtitle {
+      font-family: "Nunito Light", sans-serif;
+      font-size: 14px;
+      color: $text-light;
+      margin: 0;
+    }
+  }
 }

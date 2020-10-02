@@ -12,3 +12,4 @@ export type ISetSystemLanguage = EnumLanguage;
 export type ISetSystemCurrentTodoId = number | null;
 export type ISetSystemEditCommentId = string;
 export type ISetSystemReplyCommentId = string;
+export type ISetIsOpenProfile = boolean;

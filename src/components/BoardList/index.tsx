@@ -105,6 +105,11 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     return needTodos.filter(filterTodos).length;
   };
 
+  const addNewBoard = () => {
+    setIsOpenNewBoard((prev) => !prev);
+    dispatch(SystemActions.setIsEditableBoard(true));
+  };
+
   const drawBoard = (board: IBoard) => {
     if (!board) {
       return null;
@@ -201,7 +206,9 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
   }, [boards, activeBoard, query]);
 
   const profile = useMemo(() => (
-    <Profile />
+    <Profile
+      onAddNewBoard={addNewBoard}
+    />
   ), []);
 
   const memoNewBoard = useMemo(() => (
@@ -227,10 +234,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
             isMaxWidth
             style={{ margin: '0 6px' }}
             isShowPopup={false}
-            onClick={() => {
-              setIsOpenNewBoard((prev) => !prev);
-              dispatch(SystemActions.setIsEditableBoard(true));
-            }}
+            onClick={addNewBoard}
           />
           )
         }

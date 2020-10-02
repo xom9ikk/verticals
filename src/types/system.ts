@@ -18,4 +18,5 @@ export interface ISystem {
   currentTodoId: number | null;
   editCommentId: string;
   replyCommentId: string;
+  isOpenProfile: boolean;
 }

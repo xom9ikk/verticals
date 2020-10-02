@@ -15,6 +15,7 @@ const initialState = {
   currentTodoId: null,
   editCommentId: '',
   replyCommentId: '',
+  isOpenProfile: false,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -42,4 +43,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, editCommentId: action.payload.editCommentId }),
   [SystemActions.Type.SET_REPLY_COMMENT_ID]:
       (state, action) => ({ ...state, replyCommentId: action.payload.replyCommentId }),
+  [SystemActions.Type.SET_IS_OPEN_PROFILE]:
+      (state, action) => ({ ...state, isOpenProfile: action.payload.isOpenProfile }),
 }, initialState);

@@ -12,6 +12,7 @@ import {
   ISetSystemLanguage,
   ISetSystemQuery,
   ISetSystemReplyCommentId,
+  ISetIsOpenProfile,
 } from '@/types/actions';
 
 enum Type {
@@ -27,6 +28,7 @@ enum Type {
   SET_CURRENT_TODO_ID = 'SYSTEM/SET_CURRENT_TODO_ID',
   SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
   SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
+  SET_IS_OPEN_PROFILE = 'SYSTEM/SET_IS_OPEN_PROFILE',
 }
 
 const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
@@ -81,6 +83,11 @@ const setReplyCommentId = createAction(
   (replyCommentId: ISetSystemReplyCommentId) => ({ replyCommentId }),
 );
 
+const setIsOpenProfile = createAction(
+  Type.SET_IS_OPEN_PROFILE,
+  (isOpenProfile: ISetIsOpenProfile) => ({ isOpenProfile }),
+);
+
 export const SystemActions = {
   Type,
   setIsLoadedBoards,
@@ -95,4 +102,5 @@ export const SystemActions = {
   setCurrentTodoId,
   setEditCommentId,
   setReplyCommentId,
+  setIsOpenProfile,
 };
