@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { FC } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store/reducers/state';
 import { Input } from '@comp/Input';
@@ -8,6 +8,7 @@ import { Form } from '@comp/Form';
 import { useForm } from '@/use/form';
 import { validatorProfileForm } from '@/helpers/validatorProfileForm';
 import { LockedInput } from '@comp/LockedInput';
+import { RoundedButton } from '@comp/RoundedButton';
 
 interface ISettings {
 }
@@ -35,8 +36,14 @@ const initialState = {
   },
 };
 
+enum EnumMenu {
+  Account,
+  Profile,
+}
+
 export const Settings: FC<ISettings> = () => {
   const { isOpenSettings } = useSelector((state: IRootState) => state.system);
+  const [currentMenu, setCurrentMenu] = useState<EnumMenu>(EnumMenu.Account);
 
   const handlerSubmit = async () => {
     console.log('submit', values);
@@ -46,9 +53,33 @@ export const Settings: FC<ISettings> = () => {
     // }));
   };
 
+  const handleClick = (menu: EnumMenu) => {
+    setCurrentMenu(menu);
+  };
+
+  const menuItems = [{
+    icon: '/assets/svg/account.svg',
+    text: 'Account',
+    type: EnumMenu.Account,
+  }, {
+    icon: '/assets/svg/profile.svg',
+    text: 'Profile',
+    type: EnumMenu.Profile,
+  }];
+
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touched,
   } = useForm(initialState, handlerSubmit, validatorProfileForm);
+
+  const drawMenu = useMemo(() => menuItems.map((menuItem) => (
+    <RoundedButton
+      key={menuItem.type}
+      icon={menuItem.icon}
+      text={menuItem.text}
+      isActive={currentMenu === menuItem.type}
+      onClick={() => handleClick(menuItem.type)}
+    />
+  )), [currentMenu]);
 
   return (
     <>
@@ -56,6 +87,9 @@ export const Settings: FC<ISettings> = () => {
       <div className="settings">
         <div className="settings__sidebar">
           <h1 className="settings__title">Settings</h1>
+          <div>
+            { drawMenu }
+          </div>
         </div>
         <div className="settings__content">
           <div className="settings__content-inner">

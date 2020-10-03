@@ -24,8 +24,8 @@ export interface IExitFromEditable {
 }
 
 interface IBoard {
-  snapshot?: DraggableStateSnapshot,
   id?: number;
+  snapshot?: DraggableStateSnapshot,
   belowId?: number;
   icon: string;
   color?: EnumColors;
@@ -53,8 +53,8 @@ enum EnumMenuActions {
 }
 
 export const Board: FC<IBoard> = ({
-  snapshot,
   id = 0,
+  snapshot,
   belowId,
   icon,
   color,

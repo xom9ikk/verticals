@@ -9,8 +9,8 @@ interface IForm {
 }
 
 export const Form: FC<IForm> = ({
-  title,
-  subtitle,
+  title = '',
+  subtitle = '',
   alignItems = 'center',
   isMaxWidth,
   handleSubmit,
@@ -22,8 +22,8 @@ export const Form: FC<IForm> = ({
     noValidate
   >
     <div className={`form__inner ${isMaxWidth ? 'form__inner--max-width' : ''}`}>
-      <div className="form__title">{title}</div>
-      <div className="form__subtitle">{subtitle}</div>
+      {title?.length > 0 && <div className="form__title">{title}</div>}
+      {subtitle?.length > 0 && <div className="form__subtitle">{subtitle}</div>}
       {children}
     </div>
   </form>
