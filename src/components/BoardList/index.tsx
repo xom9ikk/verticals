@@ -153,7 +153,7 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                   }, index) => {
                     const countTodos = getCountTodos(id);
                     if (query && !countTodos) return null;
-                    console.log('id', id);
+                    // console.log('id', id);
                     // if (['trash', 'today'].includes(id)) { return null; }
                     return (
                       <Draggable

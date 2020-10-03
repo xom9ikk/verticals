@@ -19,4 +19,5 @@ export interface ISystem {
   editCommentId: string;
   replyCommentId: string;
   isOpenProfile: boolean;
+  isOpenSettings: boolean;
 }

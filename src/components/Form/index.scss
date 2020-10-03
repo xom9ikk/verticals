@@ -1,14 +1,25 @@
 .form {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex: 1;
+  &--center {
+    justify-content: center;
+  }
+  &--right {
+    justify-content: right;
+  }
+  &--left {
+    justify-content: left;
+  }
   &__inner {
     width: 280px;
     padding-bottom: 30px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    &--max-width {
+      width: 100%;
+    }
   }
   &__title {
     color: $black;

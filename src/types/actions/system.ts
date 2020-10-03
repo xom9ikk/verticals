@@ -13,3 +13,4 @@ export type ISetSystemCurrentTodoId = number | null;
 export type ISetSystemEditCommentId = string;
 export type ISetSystemReplyCommentId = string;
 export type ISetIsOpenProfile = boolean;
+export type ISetIsOpenSettings = boolean;

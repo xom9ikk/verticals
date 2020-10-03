@@ -77,7 +77,7 @@ export const ColumnsReducer = handleActions<IColumns, any>({
       (state, action) => ([...state, {
         ...action.payload,
       }]),
-  [ColumnsActions.Type.UPDATE_POSITION]: // copy logic from todo
+  [ColumnsActions.Type.UPDATE_POSITION]: // TODO: copy logic from todo
       (state, action) => {
         const { sourcePosition, destinationPosition, boardId } = action.payload;
         const columns = [...state];

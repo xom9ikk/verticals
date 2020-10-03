@@ -56,7 +56,7 @@ export const useForm = (initialState: any, callback: any, validator: any) => {
     setTouched(newValue);
   };
 
-  const handleChange = (event: React.BaseSyntheticEvent, selectName: string) => {
+  const handleChange = (event: React.BaseSyntheticEvent, selectName?: string) => {
     const { target } = event;
     const name = target ? event.target.name : selectName;
     const value = target ? event.target.value : event;
@@ -74,7 +74,7 @@ export const useForm = (initialState: any, callback: any, validator: any) => {
     }
   };
 
-  const handleBlur = (event: React.BaseSyntheticEvent, selectName: string) => {
+  const handleBlur = (event: React.BaseSyntheticEvent, selectName?: string) => {
     const { target } = event;
     const name = target && target.name ? target.name : selectName;
     setTouched({

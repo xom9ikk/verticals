@@ -87,6 +87,10 @@ textarea {
   }
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
 .notification {
   &-item {
     border-radius: 8px !important;
@@ -131,16 +135,19 @@ textarea {
       margin-top: -5px !important;
     }
   }
+
   &.place-left {
     &.show {
       margin-left: -5px !important;
     }
   }
+
   &.place-right {
     &.show {
       margin-left: 5px !important;
     }
   }
+
   &.place-bottom {
     &.show {
       margin-top: 5px !important;

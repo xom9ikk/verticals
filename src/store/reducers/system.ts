@@ -16,6 +16,7 @@ const initialState = {
   editCommentId: '',
   replyCommentId: '',
   isOpenProfile: false,
+  isOpenSettings: true,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -45,4 +46,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, replyCommentId: action.payload.replyCommentId }),
   [SystemActions.Type.SET_IS_OPEN_PROFILE]:
       (state, action) => ({ ...state, isOpenProfile: action.payload.isOpenProfile }),
+  [SystemActions.Type.SET_IS_OPEN_SETTINGS]:
+      (state, action) => ({ ...state, isOpenSettings: action.payload.isOpenSettings }),
 }, initialState);

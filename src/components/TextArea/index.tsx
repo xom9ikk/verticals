@@ -4,28 +4,35 @@ import React, {
 
 interface ITextArea {
   className: string;
+  name?: string,
   value?: string;
-  placeholder: string;
+  placeholder?: string;
   onChange: (event:any)=>void;
+  onBlur?: (event:any)=>void;
   onKeyUp?: (event:any)=>void;
   onKeyDown?: (event:any)=>void;
   onKeyDownCapture?: (event:any)=>void;
   minRows: number,
   maxRows: number;
   onChangeHeight?: (height: number)=>void;
+  style?: any;
 }
 
-const TA = ({
+const TextAreaComponent = ({
   className,
+  name,
   value,
   placeholder,
   onChange,
+  onBlur,
   onKeyUp,
   onKeyDown,
   onKeyDownCapture,
   minRows,
   maxRows,
   onChangeHeight,
+  style,
+  ...attrs
 }: ITextArea, ref: any) => {
   const textAreaRef = useRef<any>(null);
   const [height, setHeight] = useState<number>(0);
@@ -85,16 +92,20 @@ const TA = ({
 
   return (
     <textarea
+      {...attrs}
       ref={textAreaRef}
+      name={name}
       className={className}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
+      onBlur={onBlur}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       onKeyDownCapture={onKeyDownCapture}
+      style={style}
     />
   );
 };
 
-export const TextArea = forwardRef(TA);
+export const TextArea = forwardRef(TextAreaComponent);
