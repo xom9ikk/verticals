@@ -6,6 +6,7 @@ import { Avatar } from '@comp/Avatar';
 import { SystemActions } from '@/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '@/store/reducers/state';
+import { forwardTo } from '@/router/history';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -22,7 +23,7 @@ export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
   const dispatch = useDispatch();
-  const { system: { isOpenProfile, isOpenSettings } } = useSelector((state: IRootState) => state);
+  const { system: { isOpenProfile } } = useSelector((state: IRootState) => state);
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -41,7 +42,7 @@ export const Profile: FC<IProfile> = ({
         break;
       }
       case EnumMenuActions.OpenSettings: {
-        dispatch(SystemActions.setIsOpenSettings(!isOpenSettings));
+        forwardTo('/settings/account');
         break;
       }
       case EnumMenuActions.AddBoard: {

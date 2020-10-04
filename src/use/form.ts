@@ -36,6 +36,7 @@ export const useForm = (initialState: any, callback: any, validator: any) => {
 
   useEffect(() => {
     setValues(getInitialStateForValues(initialState));
+    setErrors(validator(initialState));
     setTouched(getInitialStateForTouched(initialState, false));
   }, []);
 

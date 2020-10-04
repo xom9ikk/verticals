@@ -1,5 +1,5 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,28 +11,39 @@ import { Profile } from '@comp/Profile';
 import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
-  EnumTodoType, IBoard, IColumn, ITodo, ITodos,
+  EnumTodoType, IColumn, ITodo, ITodos,
 } from '@/types';
 import { useFilterTodos } from '@/use/filterTodos';
 import { FallbackLoader } from '@comp/FallbackLoader';
+import { useReadableId } from '@/use/readableId';
+import { forwardTo } from '@/router/history';
+import { Link } from 'react-router-dom';
 
-interface IBoardList {
-  activeBoard?: number;
-  onChange: (boardId: number) => void;
-}
+interface IBoardList {}
 
-export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
+export const BoardList: FC<IBoardList> = () => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
+  const { toReadableId } = useReadableId();
 
   const {
-    system: { query, isLoadedBoards },
+    system: { query, isLoadedBoards, activeBoardId },
     boards,
     todos,
     columns,
   } = useSelector((state: IRootState) => state);
+
+  useEffect(() => {
+    if (boards.length) {
+      console.log('boards change');
+      if (activeBoardId === null) {
+        const { id, title } = boards[0];
+        forwardTo(`/userId/${toReadableId(title, id)}`);
+      }
+    }
+  }, [boards]);
 
   const saveBoard = (
     {
@@ -61,9 +72,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }));
       }
     } else if (title) {
-      // if (belowId) {
-      //   dispatch(BoardsActions.removeTemp());
-      // }
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
         title,
@@ -110,29 +118,35 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     dispatch(SystemActions.setIsEditableBoard(true));
   };
 
-  const drawBoard = (board: IBoard) => {
-    if (!board) {
-      return null;
-    }
-    const { id, icon, title } = board;
-    const countTodos = getCountTodos(id);
-    return (
-      <>
-        {
-          ((query && countTodos > 0) || !query) && (
-            <Board
-              key={id}
-              id={id}
-              icon={icon}
-              title={title}
-              countTodos={query ? countTodos : undefined}
-              isActive={activeBoard === id}
-              onClick={() => onChange(id)}
-            />
-          )
-        }
-      </>
-    );
+  // const drawBoard = (board: IBoard) => {
+  //   if (!board) {
+  //     return null;
+  //   }
+  //   const { id, icon, title } = board;
+  //   const countTodos = getCountTodos(id);
+  //   return (
+  //     <>
+  //       {
+  //         ((query && countTodos > 0) || !query) && (
+  //         <NavLink to={toReadableId(title, id)}>
+  //           <Board
+  //             key={id}
+  //             id={id}
+  //             icon={icon}
+  //             title={title}
+  //             countTodos={query ? getCountTodos(id) : undefined}
+  //             isActive={activeBoardId === id}
+  //             // onClick={handleClick}
+  //           />
+  //         </NavLink>
+  //         )
+  //       }
+  //     </>
+  //   );
+  // };
+
+  const handleClick = (title: string, id: number) => {
+    forwardTo(`/userId/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {
@@ -153,8 +167,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                   }, index) => {
                     const countTodos = getCountTodos(id);
                     if (query && !countTodos) return null;
-                    // console.log('id', id);
-                    // if (['trash', 'today'].includes(id)) { return null; }
                     return (
                       <Draggable
                         key={`board-${id}`}
@@ -177,9 +189,9 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                               color={color}
                               title={title}
                               countTodos={query ? countTodos : undefined}
-                              isActive={activeBoard === id}
-                              onClick={() => onChange(id)}
+                              isActive={activeBoardId === id}
                               onExitFromEditable={saveBoard}
+                              onClick={handleClick}
                             />
                           </div>
                         )}
@@ -191,19 +203,18 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
             )}
           </Droppable>
         </DragDropContext>
-        {
-          drawBoard({
-            id: -1,
-            icon: '/assets/svg/board/trash.svg',
-            title: 'Trash',
-            position: boards.length,
-            cardType: EnumTodoType.Checkboxes,
-          })
-        }
+        <Link to="/userId/trash">
+          <Board
+            key={-1}
+            id={-1}
+            icon="/assets/svg/board/trash.svg"
+            title="Trash"
+            isActive={activeBoardId === -1}
+          />
+        </Link>
       </>
-
     );
-  }, [boards, activeBoard, query]);
+  }, [boards, activeBoardId, query]);
 
   const profile = useMemo(() => (
     <Profile
@@ -221,25 +232,19 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     )
   ), [isOpenNewBoard]);
 
-  const memoMenu = useMemo(() => (
-    <>
-      {
-          !isOpenNewBoard && (
-          <Menu
-            imageSrc="/assets/svg/add.svg"
-            alt="add"
-            text="Add board"
-            isHide
-            isHoverBlock={isHover}
-            isMaxWidth
-            style={{ margin: '0 6px' }}
-            isShowPopup={false}
-            onClick={addNewBoard}
-          />
-          )
-        }
-    </>
-  ), [isHover, isOpenNewBoard]);
+  const memoMenu = useMemo(() => !isOpenNewBoard && (
+    <Menu
+      imageSrc="/assets/svg/add.svg"
+      alt="add"
+      text="Add board"
+      isHide
+      isHoverBlock={isHover}
+      isMaxWidth
+      isShowPopup={false}
+      onClick={addNewBoard}
+    />
+  ),
+  [isHover, isOpenNewBoard]);
 
   return (
     <div

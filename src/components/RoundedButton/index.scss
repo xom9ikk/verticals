@@ -10,8 +10,8 @@
   cursor: pointer;
   border-radius: 6px;
   border: none;
-  margin: 0 0 0 6px;
   transition: background .1s ease-in-out;
+  margin: 1px 0;
   &__content {
     display: flex;
     flex: 1;
@@ -19,9 +19,11 @@
   &__image {
     max-height: 22px;
     max-width: 22px;
-    filter: grayscale(100%);
-    opacity: 0.7;
-    transition: filter .1s ease-in-out, opacity .1s ease-in-out;
+    filter: grayscale(1) brightness(1.4);
+    transition: filter .2s ease-in-out;
+    &--always-colored {
+      filter: none;
+    }
   }
   &__text {
     font-family: 'Nunito Regular', sans-serif;
@@ -29,6 +31,7 @@
     margin-left: 10px;
     color: rgba(0,0,0,0.8);
     line-height: 24px;
+    letter-spacing: 0px;
     white-space: nowrap;
     max-width: $column-width - 120;
     overflow: hidden;
@@ -41,7 +44,6 @@
     background: $primary-light !important;
     #{$block}__image {
       filter: none;
-      opacity: 1;
     }
   }
   &--red {

@@ -6,20 +6,27 @@ import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleCl
 
 interface IRoundedButton {
   icon: string;
+  isSpecialIcon?: boolean;
   color?: EnumColors;
   text?: string;
   isActive?: boolean;
   onClick?: (e: React.SyntheticEvent)=>void;
   onDoubleClick?: (e: React.SyntheticEvent)=>void;
+  onMouseOver?: (e: React.SyntheticEvent)=>void;
+  onMouseOut?: (e: React.SyntheticEvent)=>void;
 }
 
 export const RoundedButton: FC<IRoundedButton> = ({
   icon,
+  isSpecialIcon,
   color,
   text,
   isActive = false,
   onClick = () => {},
   onDoubleClick = () => {},
+  onMouseOver,
+  onMouseOut,
+  children,
 }) => {
   // @ts-ignore
   const colorClass = `rounded-button--${Object.values(EnumColors)[color]?.toLowerCase()}`;
@@ -27,7 +34,7 @@ export const RoundedButton: FC<IRoundedButton> = ({
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(onClick, onDoubleClick, true);
+  } = useClickPreventionOnDoubleClick(onClick, onDoubleClick, false);
 
   const roundedButton = useMemo(() => (
     <div
@@ -35,26 +42,28 @@ export const RoundedButton: FC<IRoundedButton> = ({
        ${isActive ? 'rounded-button--active' : ''} 
        ${color !== undefined ? colorClass : ''} 
        `}
-      // onMouseOver={() => setIsHover(true)}
-      // onMouseOut={() => setIsHover(false)}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >
       <div className="rounded-button__content">
         <img
-          src={`${isActive
-            ? icon.replace('item', 'item-active')
-            : icon}`}
+          src={icon}
           alt="ico"
-          className="rounded-button__image"
+          className={`rounded-button__image 
+          ${isSpecialIcon ? 'rounded-button__image--always-colored' : ''}
+          `}
         />
         <span className="rounded-button__text">{text}</span>
+        {children}
       </div>
     </div>
   ), [
     isActive,
     text,
     color,
+    children,
   ]);
 
   return (

@@ -28,7 +28,7 @@
     font-size: 14px;
     height: 0;
     padding-top: 6px;
-    transition: height .2s ease-in-out, opacity .2s ease-in-out;
+    transition: height .2s ease-in, opacity .2s ease-in;
     opacity: 0;
     &--open {
       height: 20px;

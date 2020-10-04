@@ -32,7 +32,7 @@ interface IColumn {
   belowId?: number;
   color?: EnumColors;
   isCollapsed?: boolean;
-  boardId?: number;
+  boardId?: number | null;
   title?: string;
   description?: string;
   todos?: ITodos;

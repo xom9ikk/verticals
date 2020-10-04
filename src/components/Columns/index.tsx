@@ -25,7 +25,7 @@ interface TodoMap {
 }
 
 interface IColumns {
-  boardId?: number;
+  // boardId?: number;
 }
 
 type ReorderTodoMapArgs = {
@@ -34,27 +34,29 @@ type ReorderTodoMapArgs = {
   destination: DraggableLocation,
 };
 
-export const Columns: FC<IColumns> = ({ boardId }) => {
+export const Columns: FC<IColumns> = () => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
   const {
     columns, todos, system:
-      { query, isLoadedBoards, isLoadedColumns },
+      {
+        query, isLoadedBoards, isLoadedColumns, activeBoardId,
+      },
   } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<number>>([]);
 
   useEffect(() => {
-    if (boardId !== undefined) {
-      dispatch(ColumnsActions.fetchByBoardId({ boardId }));
-      dispatch(TodosActions.fetchByBoardId({ boardId }));
+    if (activeBoardId !== null) {
+      dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
+      dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
     }
-  }, [boardId]);
+  }, [activeBoardId]);
 
   useEffect(() => {
     const data = {};
       columns
-          ?.filter((column) => column.boardId === boardId)
+          ?.filter((column) => column.boardId === activeBoardId)
           ?.sort((a, b) => a.position - b.position)
           ?.forEach((column) => {
             // console.log('prepare column', column);
@@ -67,7 +69,7 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
       // console.log('===prep', data);
       setPreparedData(data);
       setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
-  }, [boardId, columns, todos]);
+  }, [activeBoardId, columns, todos]);
 
   const onDragEnd = (result: DropResult) => {
     // if (result.combine) {
@@ -231,7 +233,7 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
           color={preparedData[key].color}
           isCollapsed={preparedData[key].isCollapsed}
           columnId={_key}
-          boardId={boardId}
+          boardId={activeBoardId}
           belowId={preparedData[key]?.belowId}
           key={key}
           title={preparedData[key].title}
@@ -240,33 +242,33 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
         />
       );
     })
-  ), [preparedData, orderedId, boardId, query]);
+  ), [preparedData, orderedId, activeBoardId, query]);
 
   const memoNewColumn = useMemo(() => (
     <Column
-      boardId={boardId}
+      boardId={activeBoardId}
       index={orderedId.length}
       isNew
     />
-  ), [boardId, orderedId]);
+  ), [activeBoardId, orderedId]);
 
   const memoDeletedCardsColumn = useMemo(() => (
     <Column
       index={0}
-      boardId={boardId}
+      boardId={activeBoardId}
       key="column-deleted"
       title="Deleted cards"
       // todos={preparedData[key].todos}
       description="Restore deleted cards"
       isDeleted
     />
-  ), [boardId]);
+  ), [activeBoardId]);
 
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
-          droppableId={`board-${boardId}`}
+          droppableId={`board-${activeBoardId}`}
           type="COLUMN"
           direction="horizontal"
         >
@@ -277,7 +279,7 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
               {...provided.droppableProps}
             >
               {
-                boardId === -1 ? memoDeletedCardsColumn : (
+                activeBoardId === -1 ? memoDeletedCardsColumn : (
                   <>
                     { memoColumns }
                     { memoNewColumn }
@@ -292,7 +294,7 @@ export const Columns: FC<IColumns> = ({ boardId }) => {
                 isLoading={
                   !isLoadedBoards
                   || !isLoadedColumns
-                  || Object.keys(preparedData).length === 0
+                  // || Object.keys(preparedData).length === 0
                 }
               />
             </div>
