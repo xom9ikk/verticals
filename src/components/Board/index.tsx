@@ -172,7 +172,7 @@ export const Board: FC<IBoard> = ({
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
+  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, false);
 
   useEffect(() => {
     if (isEditableDefault) {

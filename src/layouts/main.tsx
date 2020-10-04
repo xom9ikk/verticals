@@ -5,7 +5,7 @@ import React, {
 import { RouteWrapper } from '@/router/router';
 import { SettingsLayout } from '@/layouts/Settings';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
 import { useDispatch } from 'react-redux';
@@ -78,7 +78,7 @@ export const MainLayout: FC = ({ match }) => {
   ), [numericBoardId]);
 
   const memoRouter = useMemo(() => (
-    <>
+    <Switch>
       <RouteWrapper
         path="/settings/account"
         layout={SettingsLayout}
@@ -99,7 +99,7 @@ export const MainLayout: FC = ({ match }) => {
         path="/"
         component={() => <Columns />}
       />
-    </>
+    </Switch>
   ), []);
 
   return (

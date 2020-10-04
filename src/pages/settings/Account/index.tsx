@@ -1,31 +1,15 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
-import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
 import { useForm } from '@/use/form';
-import { validatorProfileForm } from '@/helpers/validatorProfileForm';
+import { validatorAccountForm } from '@/helpers/validatorAccountForm';
 import { LockedInput } from '@comp/LockedInput';
 
 const initialState = {
-  username: {
-    defaultValue: 'xom9ik',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  name: {
-    defaultValue: 'Max',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  surname: {
-    defaultValue: 'Romanyuta',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  bio: {
-    defaultValue: 'About me bio lorem ipsum sit dolor amet',
-    error: 'Can’t be blank',
+  email: {
+    defaultValue: 'xom9ik.code@gmail.com',
+    error: 'Invalid email address',
     isValid: false,
   },
 };
@@ -45,7 +29,7 @@ export const Account: FC<IAccount> = () => {
 
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touched,
-  } = useForm(initialState, handlerSubmit, validatorProfileForm);
+  } = useForm(initialState, handlerSubmit, validatorAccountForm);
 
   return (
     <>
@@ -57,59 +41,33 @@ export const Account: FC<IAccount> = () => {
           isMaxWidth
         >
           <LockedInput
-            type="text"
-            label="Username"
-            touched={touched.username}
-            error={errors.username.error}
-            name="username"
-            value={values.username}
+            type="email"
+            label="Email"
+            touched={touched.email}
+            error={errors.email.error}
+            name="email"
+            value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
             isLight
           />
-          <Input
-            type="text"
-            label="First name"
-            touched={touched.name}
-            error={errors.name.error}
-            name="name"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isLight
-          />
-          <Input
-            type="text"
-            label="Last name"
-            touched={touched.surname}
-            error={errors.surname.error}
-            name="surname"
-            value={values.surname}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isLight
-          />
-          <Input
-            type="text"
-            label="Bio"
-            touched={touched.bio}
-            error={errors.bio.error}
-            name="bio"
-            value={values.bio}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isMultiline
-            isLight
-          />
-          <div className="settings__controls">
-            <Button
-              type="submit"
-              modificator="primary"
-              isMaxWidth
-            >
-              Save changes
-            </Button>
+
+          <div className="input">
+            <div className="input__wrapper">
+              <div className="input__inner">
+                <span className="input__label">Password</span>
+                <div className="input__holder">
+                  <Button
+                    type="submit"
+                    isMaxWidth
+                  >
+                    Change password
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
+
         </Form>
       </div>
     </>

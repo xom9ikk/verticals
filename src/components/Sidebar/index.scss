@@ -8,7 +8,7 @@
   width: $sidebar-width+1;
   background: $sidebar-gradient;
   border-right: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all .1s ease-out;
+  //transition: all .1s ease-out;
   z-index: 2;
   &__inner {
     max-height: 100vh;
