@@ -15,9 +15,10 @@ export interface ISystem {
   isEditableBoard: boolean;
   query: string;
   language: EnumLanguage;
-  currentTodoId: number | null;
+  activeTodoId: number | null;
   editCommentId: string;
   replyCommentId: string;
   isOpenProfile: boolean;
   activeBoardId: number | null;
+  activeBoardReadableId: string | null;
 }

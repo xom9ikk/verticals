@@ -28,7 +28,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
   cardType,
   onExitFromEditable,
 }) => {
-  const { currentTodoId, isLoadedTodos } = useSelector((state: IRootState) => state.system);
+  const { activeTodoId, isLoadedTodos } = useSelector((state: IRootState) => state.system);
 
   return (
     <>
@@ -60,7 +60,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   isArchived={todo.isArchived}
                   isNotificationsEnabled={todo.isNotificationsEnabled}
                   onExitFromEditable={(...rest) => onExitFromEditable(todo.id, ...rest)}
-                  isActive={currentTodoId === todo.id}
+                  isActive={activeTodoId === todo.id}
                 />
               )}
             </Draggable>

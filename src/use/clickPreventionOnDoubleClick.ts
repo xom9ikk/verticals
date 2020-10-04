@@ -16,6 +16,7 @@ export const useClickPreventionOnDoubleClick = (
 
   const handleClick = (event: SyntheticEvent) => {
     if (isStopPropagation) {
+      console.log('====stop propagation');
       event.stopPropagation();
     }
     clearPendingPromises();

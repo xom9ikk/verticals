@@ -14,6 +14,7 @@ import { Loader } from '@comp/Loader';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
+import { forwardTo } from '@/router/history';
 
 interface ICardPopup {
   columnId: number;
@@ -26,8 +27,10 @@ export const CardPopup: FC<ICardPopup> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { system: { currentTodoId } } = useSelector((state: IRootState) => state);
-  const { todos } = useSelector((state: IRootState) => state);
+  const {
+    todos,
+    system: { activeTodoId, activeBoardReadableId },
+  } = useSelector((state: IRootState) => state);
 
   const [todo, setTodo] = useState<ITodo>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
@@ -62,7 +65,7 @@ export const CardPopup: FC<ICardPopup> = ({
       : setTitleValue(value);
   };
 
-  const closeHandler = () => dispatch(SystemActions.setCurrentTodoId(null));
+  const closeHandler = () => forwardTo(`/userId/${activeBoardReadableId}`);
 
   const changeStatusHandler = () => {
     const newStatus = todo!.status === EnumTodoStatus.Done
@@ -75,8 +78,8 @@ export const CardPopup: FC<ICardPopup> = ({
   };
 
   useEffect(() => {
-    setTodo(todos.find((t: ITodo) => t.id === currentTodoId && t.columnId === columnId));
-  }, [currentTodoId, todos]);
+    setTodo(todos.find((t: ITodo) => t.id === activeTodoId && t.columnId === columnId));
+  }, [activeTodoId, todos]);
 
   useEffect(() => {
     setTitleValue(todo?.title);
@@ -246,7 +249,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     </div>
                     <hr />
                   </div>
-                  <Comments todoId={currentTodoId!} />
+                  <Comments todoId={activeTodoId!} />
                 </div>
               </div>
             ) : (

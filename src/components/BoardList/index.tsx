@@ -152,7 +152,7 @@ export const BoardList: FC<IBoardList> = () => {
   const boardItems = useMemo(() => {
     console.log('boards redraw');
     return (
-      <>
+      <div onClick={(e) => e.stopPropagation()}>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -212,7 +212,7 @@ export const BoardList: FC<IBoardList> = () => {
             isActive={activeBoardId === -1}
           />
         </Link>
-      </>
+      </div>
     );
   }, [boards, activeBoardId, query]);
 

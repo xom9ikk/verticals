@@ -12,11 +12,12 @@ const initialState = {
   isEditableBoard: false,
   query: '',
   language: EnumLanguage.English,
-  currentTodoId: null,
+  activeTodoId: null,
   editCommentId: '',
   replyCommentId: '',
   isOpenProfile: false,
   activeBoardId: null,
+  activeBoardReadableId: null,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -38,8 +39,8 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, query: action.payload.query }),
   [SystemActions.Type.SET_LANGUAGE]:
       (state, action) => ({ ...state, language: action.payload.language }),
-  [SystemActions.Type.SET_CURRENT_TODO_ID]:
-      (state, action) => ({ ...state, currentTodoId: action.payload.currentTodoId }),
+  [SystemActions.Type.SET_ACTIVE_TODO_ID]:
+      (state, action) => ({ ...state, activeTodoId: action.payload.activeTodoId }),
   [SystemActions.Type.SET_EDIT_COMMENT_ID]:
       (state, action) => ({ ...state, editCommentId: action.payload.editCommentId }),
   [SystemActions.Type.SET_REPLY_COMMENT_ID]:
@@ -48,4 +49,9 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, isOpenProfile: action.payload.isOpenProfile }),
   [SystemActions.Type.SET_ACTIVE_BOARD_ID]:
       (state, action) => ({ ...state, activeBoardId: action.payload.activeBoardId }),
+  [SystemActions.Type.SET_ACTIVE_BOARD_READABLE_ID]:
+      (state, action) => ({
+        ...state,
+        activeBoardReadableId: action.payload.activeBoardReadableId,
+      }),
 }, initialState);

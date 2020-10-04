@@ -12,6 +12,8 @@ import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
+import { forwardTo } from '@/router/history';
+import { useReadableId } from '@/use/readableId';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -67,7 +69,9 @@ export const Card: FC<ICard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const { system: { isEditableCard } } = useSelector((state: IRootState) => state);
+  const {
+    system: { isEditableCard, activeBoardReadableId },
+  } = useSelector((state: IRootState) => state);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const titleInputRef = useRef<any>(null);
@@ -131,8 +135,10 @@ export const Card: FC<ICard> = ({
     setIsDoubleClicked(true);
   };
 
+  const { toReadableId } = useReadableId();
+
   const clickHandler = () => {
-    dispatch(SystemActions.setCurrentTodoId(id!));
+    forwardTo(`/userId/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
   };
 
   const {

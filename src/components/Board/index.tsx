@@ -172,7 +172,7 @@ export const Board: FC<IBoard> = ({
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, false);
+  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
 
   useEffect(() => {
     if (isEditableDefault) {
@@ -388,7 +388,7 @@ export const Board: FC<IBoard> = ({
     isEditable, titleValue, descriptionValue,
     snapshot, color, countTodos,
   ]);
-  console.log('ishover', isHover);
+  // console.log('ishover', isHover);
 
   return (
     <>{ boardItem }</>

@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useEffect, useMemo,
+  FC, Ref, useEffect, useMemo, useRef,
 } from 'react';
 import { RouteWrapper } from '@/router/router';
 import { SettingsLayout } from '@/layouts/Settings';
@@ -17,31 +17,45 @@ import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@/use/readableId';
+import { forwardTo } from '@/router/history';
 
 const { toNumericId } = useReadableId();
 
 // @ts-ignore
 export const MainLayout: FC = ({ match }) => {
   const dispatch = useDispatch();
+  const refBoardId = useRef<Ref<string>>();
 
-  const { boardId } = match.params;
+  const { boardId, todoId } = match.params;
+
+  console.log('math', match.params);
   const numericBoardId = boardId === 'trash'
     ? -1
     : boardId !== undefined
+      && !['account', 'profile'].includes(boardId)
       ? toNumericId(boardId)
       : null;
+  console.log('numericBoardId', numericBoardId);
+
+  const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
+  refBoardId.current = boardId;
+
+  dispatch(SystemActions.setActiveBoardReadableId(boardId));
   dispatch(SystemActions.setActiveBoardId(numericBoardId));
+  dispatch(SystemActions.setActiveTodoId(numericTodoId));
 
   useEffect(() => {
     dispatch(BoardsActions.fetchAll());
   }, []);
 
   const closeAllPopups = () => {
+    // TODO: refactor this. useOutsideClick
+    console.log('closeAllPopups');
     dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
-    dispatch(SystemActions.setCurrentTodoId(null));
+    forwardTo(`/userId/${refBoardId.current}`);
     dispatch(BoardsActions.removeTemp());
     dispatch(ColumnsActions.removeTemp());
     dispatch(TodosActions.removeTemp());
@@ -58,6 +72,7 @@ export const MainLayout: FC = ({ match }) => {
   };
 
   const clickHandler = (event: any) => {
+    console.log('clickHandler', event);
     if (event.isTrusted) closeAllPopups();
   };
 

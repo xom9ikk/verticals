@@ -51,7 +51,6 @@ export const Account: FC<IAccount> = () => {
             onBlur={handleBlur}
             isLight
           />
-
           <div className="input">
             <div className="input__wrapper">
               <div className="input__inner">
