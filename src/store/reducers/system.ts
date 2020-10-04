@@ -3,6 +3,9 @@ import { EnumLanguage, ISystem } from '@/types';
 import { SystemActions } from '../actions';
 
 const initialState = {
+  isLoadedBoards: false,
+  isLoadedColumns: false,
+  isLoadedTodos: false,
   isOpenPopup: false,
   isEditableCard: false,
   isEditableColumn: false,
@@ -12,9 +15,17 @@ const initialState = {
   currentTodoId: null,
   editCommentId: '',
   replyCommentId: '',
+  isOpenProfile: false,
+  activeBoardId: null,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
+  [SystemActions.Type.SET_IS_LOADED_BOARDS]:
+        (state, action) => ({ ...state, isLoadedBoards: action.payload.isLoadedBoards }),
+  [SystemActions.Type.SET_IS_LOADED_COLUMNS]:
+        (state, action) => ({ ...state, isLoadedColumns: action.payload.isLoadedColumns }),
+  [SystemActions.Type.SET_IS_LOADED_TODOS]:
+        (state, action) => ({ ...state, isLoadedTodos: action.payload.isLoadedTodos }),
   [SystemActions.Type.SET_IS_OPEN_POPUP]:
         (state, action) => ({ ...state, isOpenPopup: action.payload.isOpenPopup }),
   [SystemActions.Type.SET_IS_EDITABLE_CARD]:
@@ -33,4 +44,8 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, editCommentId: action.payload.editCommentId }),
   [SystemActions.Type.SET_REPLY_COMMENT_ID]:
       (state, action) => ({ ...state, replyCommentId: action.payload.replyCommentId }),
+  [SystemActions.Type.SET_IS_OPEN_PROFILE]:
+      (state, action) => ({ ...state, isOpenProfile: action.payload.isOpenProfile }),
+  [SystemActions.Type.SET_ACTIVE_BOARD_ID]:
+      (state, action) => ({ ...state, activeBoardId: action.payload.activeBoardId }),
 }, initialState);

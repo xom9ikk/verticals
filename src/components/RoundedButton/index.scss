@@ -1,0 +1,85 @@
+.rounded-button {
+  $block: &;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  width: 100%;
+  padding: 6px 10px 6px 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  transition: background .1s ease-in-out;
+  margin: 1px 0;
+  &__content {
+    display: flex;
+    flex: 1;
+  }
+  &__image {
+    max-height: 22px;
+    max-width: 22px;
+    filter: grayscale(1) brightness(1.4);
+    transition: filter .2s ease-in-out;
+    &--always-colored {
+      filter: none;
+    }
+  }
+  &__text {
+    font-family: 'Nunito Regular', sans-serif;
+    font-size: 16px;
+    margin-left: 10px;
+    color: rgba(0,0,0,0.8);
+    line-height: 24px;
+    letter-spacing: 0px;
+    white-space: nowrap;
+    max-width: $column-width - 120;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &:hover {
+    background: rgb(255, 255, 255);
+  }
+  &--active {
+    background: $primary-light !important;
+    #{$block}__image {
+      filter: none;
+    }
+  }
+  &--red {
+    background: rgba(255, 106, 86, 0.3);
+    &:hover {
+      background: rgba(255, 106, 86, 0.15);
+    }
+  }
+  &--yellow {
+    background: rgba(254, 233, 48, 0.3);
+    &:hover {
+      background: rgba(254, 233, 48, 0.15);
+    }
+  }
+  &--green {
+    background: rgba(156, 196, 71, 0.3);
+    &:hover {
+      background: rgba(156, 196, 71, 0.15);
+    }
+  }
+  &--turquoise {
+    background: rgba(50, 218, 188, 0.3);
+    &:hover {
+      background: rgba(50, 218, 188, 0.15);
+    }
+  }
+  &--blue {
+    background: rgba(95, 193, 233, 0.3);
+    &:hover {
+      background: rgba(95, 193, 233, 0.15);
+    }
+  }
+  &--gray {
+    background: rgba(216, 216, 216, 0.3);
+    &:hover {
+      background: rgba(216, 216, 216, 0.15);
+    }
+  }
+}

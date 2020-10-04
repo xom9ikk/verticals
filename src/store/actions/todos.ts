@@ -8,10 +8,9 @@ import {
   IFetchTodosByBoardId,
   IRemoveTodo,
   ISetTodos,
-  ISwitchTodoNotificationsEnabled,
+  IUpdateTodoNotificationsEnabled,
   IUpdateIsArchive,
   IUpdateTodoColor,
-  IUpdateTodoColumnId,
   IUpdateTodoCompleteStatus,
   IUpdateTodoDescription,
   IUpdateTodoPosition,
@@ -27,7 +26,6 @@ enum Type {
   UPDATE_TITLE = 'TODOS/UPDATE_TITLE',
   UPDATE_DESCRIPTION = 'TODOS/UPDATE_DESCRIPTION',
   UPDATE_COMPLETE_STATUS = 'TODOS/UPDATE_COMPLETE_STATUS',
-  UPDATE_COLUMN = 'TODOS/UPDATE_COLUMN',
   UPDATE_POSITION = 'TODOS/UPDATE_POSITION',
   UPDATE_COLOR = 'TODOS/UPDATE_COLOR',
   UPDATE_IS_ARCHIVE = 'TODOS/UPDATE_IS_ARCHIVE',
@@ -35,7 +33,7 @@ enum Type {
   DUPLICATE = 'TODOS/DUPLICATE',
   DRAW_BELOW = 'TODOS/DRAW_BELOW',
   REMOVE_TEMP = 'TODOS/REMOVE_TEMP',
-  SWITCH_NOTIFICATION_ENABLED = 'TODOS/SWITCH_NOTIFICATION_ENABLED',
+  UPDATE_NOTIFICATION_ENABLED = 'TODOS/UPDATE_NOTIFICATION_ENABLED',
 }
 
 const fetchByBoardId = createAction<IFetchTodosByBoardId>(Type.FETCH_BY_BOARD_ID);
@@ -46,18 +44,14 @@ const insertInPosition = createAction<IAddTodo>(Type.INSERT_IN_POSITION);
 const updateTitle = createAction<IUpdateTodoTitle>(Type.UPDATE_TITLE);
 const updateDescription = createAction<IUpdateTodoDescription>(Type.UPDATE_DESCRIPTION);
 const updateCompleteStatus = createAction<IUpdateTodoCompleteStatus>(Type.UPDATE_COMPLETE_STATUS);
-const updateColumn = createAction<IUpdateTodoColumnId>(Type.UPDATE_COLUMN);
 const updatePosition = createAction<IUpdateTodoPosition>(Type.UPDATE_POSITION);
 const updateColor = createAction<IUpdateTodoColor>(Type.UPDATE_COLOR);
 const updateIsArchive = createAction<IUpdateIsArchive>(Type.UPDATE_IS_ARCHIVE);
-// const resetColor = createAction<IResetTodoColor>(Type.RESET_COLOR);
-// const duplicateForColumn = createAction<IDuplicateTodoForColumn>(Type.DUPLICATE_FOR_COLUMN);
+const updateNotificationEnabled = createAction<IUpdateTodoNotificationsEnabled>(Type.UPDATE_NOTIFICATION_ENABLED);
 const remove = createAction<IRemoveTodo>(Type.REMOVE);
 const duplicate = createAction<IDuplicateTodo>(Type.DUPLICATE);
 const drawBelow = createAction<IDrawTodoBelow>(Type.DRAW_BELOW);
-// const generateNewId = createAction<IGenerateNewTodoId>(Type.GENERATE_NEW_ID);
 const removeTemp = createAction(Type.REMOVE_TEMP);
-const switchNotificationsEnabled = createAction<ISwitchTodoNotificationsEnabled>(Type.SWITCH_NOTIFICATION_ENABLED);
 
 export const TodosActions = {
   Type,
@@ -69,7 +63,6 @@ export const TodosActions = {
   updateTitle,
   updateDescription,
   updateCompleteStatus,
-  updateColumn,
   updatePosition,
   updateColor,
   updateIsArchive,
@@ -77,5 +70,5 @@ export const TodosActions = {
   duplicate,
   drawBelow,
   removeTemp,
-  switchNotificationsEnabled,
+  updateNotificationEnabled,
 };

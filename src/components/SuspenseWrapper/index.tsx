@@ -8,8 +8,16 @@ interface ISuspenseWrapper {
 export const SuspenseWrapper: FC<ISuspenseWrapper> = ({
   component: Component,
   fallback: Fallback = () => <></>,
+  ...rest
 }) => (
   <Suspense fallback={<Fallback />}>
-    <Component />
+    <Component {...rest} />
   </Suspense>
+);
+
+export const suspense = (Component: any) => (props: any) => (
+  <SuspenseWrapper
+    {...props}
+    component={Component}
+  />
 );

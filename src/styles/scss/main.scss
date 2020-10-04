@@ -9,13 +9,21 @@ body {
   //}
   //overflow: hidden;
   //animation: rainbow 30s ease 1;
+  ::selection {
+    background: $primary-light;
+  }
+
   ::-webkit-scrollbar {
     width: 0;
     height: 0;
   }
+
   ::-webkit-resizer,
   ::-webkit-scrollbar-button,
-  ::-webkit-scrollbar-corner { display: none !important; }
+  ::-webkit-scrollbar-corner {
+    display: none !important;
+  }
+
   ::-webkit-scrollbar {
     height: 15px;
     width: 15px;
@@ -26,6 +34,7 @@ body {
     border: 5px solid #ffffff !important;
     border-radius: 10px !important;
     transition: background .5s ease-in-out !important;
+
     &:hover {
       background: darken($text-very-light, 10) !important;
     }
@@ -46,9 +55,11 @@ body {
   display: flex;
   flex: 1;
   overflow: hidden !important;
+
   &--horizontal {
     flex-direction: row;
   }
+
   &--vertical {
     flex-direction: column;
   }
@@ -76,23 +87,75 @@ textarea {
   }
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
 .notification {
   &-item {
     border-radius: 8px !important;
-    box-shadow: 3px 8px 18px rgba(0,0,0,.22) !important;
+    box-shadow: 3px 8px 18px rgba(0, 0, 0, .22) !important;
   }
+
   &-danger {
     border-left: 8px solid darken($danger, 7) !important;
     background-color: $danger !important;
+
     & .timer {
       background-color: lighten($danger, 15) !important;
     }
   }
+
   &-success {
     border-left: 8px solid darken($primary, 7) !important;
     background-color: $primary !important;
+
     & .timer {
       background-color: lighten($primary, 15) !important;
+    }
+  }
+}
+
+#tooltip {
+  border-radius: 18px !important;
+  padding: 5px 12px !important;
+  font-size: 12px !important;
+  background: #222222 !important;
+  font-family: 'Nunito Light', sans-serif;
+  transition: all .1s ease-in,
+  top .0s,
+  left .0s,
+  border-radius .0s,
+  padding .0s,
+  font-size .0s !important;
+  margin: 0 !important;
+
+  &.place-top {
+    &.show {
+      margin-top: -5px !important;
+    }
+  }
+
+  &.place-left {
+    &.show {
+      margin-left: -5px !important;
+    }
+  }
+
+  &.place-right {
+    &.show {
+      margin-left: 5px !important;
+    }
+  }
+
+  &.place-bottom {
+    &.show {
+      margin-top: 5px !important;
     }
   }
 }

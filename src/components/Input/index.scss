@@ -1,12 +1,20 @@
 .input {
   width: 100%;
-  &__inner {
+  &__wrapper {
     display: flex;
     flex-direction: column;
+  }
+  &__inner {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   &__holder {
     width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
     img {
       width: 20px;
       height: 20px;
@@ -18,9 +26,9 @@
   &__error {
     color: $danger;
     font-size: 14px;
-    height: 0px;
+    height: 0;
     padding-top: 6px;
-    transition: height .2s ease-in-out, opacity .2s ease-in-out;
+    transition: height .2s ease-in, opacity .2s ease-in;
     opacity: 0;
     &--open {
       height: 20px;
@@ -32,20 +40,18 @@
     padding: 10px;
     outline: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 15px;
+    font-family: 'Nunito Regular', sans-serif;
     color: $black;
     border: none;
-    box-shadow: rgb(218, 218, 218) 0px 0px 0px 1px;
+    box-shadow: rgb(218, 218, 218) 0 0 0 1px;
     caret-color: rgb(35, 135, 251);
     transition: box-shadow 0.2s ease 0s;
     &--light-border {
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 2px;
-    }
-    &:hover {
-      border-color: #9490b5;
+      box-shadow: rgba(33, 33, 33, 0.2) 0 0 2px;
     }
     &:focus {
-      box-shadow: $primary-light 0px 0px 0px 2px;
+      box-shadow: $primary-light 0 0 0 2px;
     }
     &--invalid {
       border-color: $danger !important;
@@ -53,14 +59,32 @@
     &--valid {
       border-color: #ef0ef6 !important;
     }
+    &--disabled {
+      background: rgb(247, 247, 247);
+      box-shadow: none;
+      color: $text-light;
+      &:focus {
+        box-shadow: none;
+      }
+    }
     &::placeholder {
       color: $text-light;
     }
-    &:-ms-input-placeholder {
-      color: $text-light;
-    }
-    &::-ms-input-placeholder {
-      color: $text-light;
-    }
+    // test without it
+    //&:-ms-input-placeholder {
+    //  color: $text-light;
+    //}
+    //&::-ms-input-placeholder {
+    //  color: $text-light;
+    //}
+  }
+  &__label {
+    padding-top: 10px;
+    font-size: 16px;
+    color: $black;
+    font-family: 'Nunito Bold', sans-serif;
+    width: 150px;
+    min-width: 150px;
+    //flex-basis: 30%;
   }
 }

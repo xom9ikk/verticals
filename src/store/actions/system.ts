@@ -1,5 +1,8 @@
 import { createAction } from 'redux-actions';
 import {
+  ISetSystemIsLoadedBoards,
+  ISetSystemIsLoadedColumns,
+  ISetSystemIsLoadedTodos,
   ISetSystemCurrentTodoId,
   ISetSystemEditCommentId,
   ISetSystemIsEditableBoard,
@@ -9,9 +12,14 @@ import {
   ISetSystemLanguage,
   ISetSystemQuery,
   ISetSystemReplyCommentId,
+  ISetIsOpenProfile,
+  ISetActiveBoardId,
 } from '@/types/actions';
 
 enum Type {
+  SET_IS_LOADED_BOARDS = 'SYSTEM/SET_IS_LOADED_BOARDS',
+  SET_IS_LOADED_COLUMNS = 'SYSTEM/SET_IS_LOADED_COLUMNS',
+  SET_IS_LOADED_TODOS = 'SYSTEM/SET_IS_LOADED_TODOS',
   SET_IS_OPEN_POPUP = 'SYSTEM/SET_IS_OPEN_POPUP',
   SET_IS_EDITABLE_CARD = 'SYSTEM/SET_IS_EDITABLE_CARD',
   SET_IS_EDITABLE_COLUMN = 'SYSTEM/SET_IS_EDITABLE_COLUMN',
@@ -21,7 +29,18 @@ enum Type {
   SET_CURRENT_TODO_ID = 'SYSTEM/SET_CURRENT_TODO_ID',
   SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
   SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
+  SET_IS_OPEN_PROFILE = 'SYSTEM/SET_IS_OPEN_PROFILE',
+  SET_ACTIVE_BOARD_ID = 'SYSTEM/SET_ACTIVE_BOARD_ID',
 }
+
+const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
+  (isLoadedBoards: ISetSystemIsLoadedBoards) => ({ isLoadedBoards }));
+
+const setIsLoadedColumns = createAction(Type.SET_IS_LOADED_COLUMNS,
+  (isLoadedColumns: ISetSystemIsLoadedColumns) => ({ isLoadedColumns }));
+
+const setIsLoadedTodos = createAction(Type.SET_IS_LOADED_TODOS,
+  (isLoadedTodos: ISetSystemIsLoadedTodos) => ({ isLoadedTodos }));
 
 const setIsOpenPopup = createAction(Type.SET_IS_OPEN_POPUP,
   (isOpenPopup: ISetSystemIsOpenPopup) => ({ isOpenPopup }));
@@ -66,8 +85,21 @@ const setReplyCommentId = createAction(
   (replyCommentId: ISetSystemReplyCommentId) => ({ replyCommentId }),
 );
 
+const setIsOpenProfile = createAction(
+  Type.SET_IS_OPEN_PROFILE,
+  (isOpenProfile: ISetIsOpenProfile) => ({ isOpenProfile }),
+);
+
+const setActiveBoardId = createAction(
+  Type.SET_ACTIVE_BOARD_ID,
+  (activeBoardId: ISetActiveBoardId) => ({ activeBoardId }),
+);
+
 export const SystemActions = {
   Type,
+  setIsLoadedBoards,
+  setIsLoadedColumns,
+  setIsLoadedTodos,
   setIsOpenPopup,
   setIsEditableCard,
   setIsEditableColumn,
@@ -77,4 +109,6 @@ export const SystemActions = {
   setCurrentTodoId,
   setEditCommentId,
   setReplyCommentId,
+  setIsOpenProfile,
+  setActiveBoardId,
 };

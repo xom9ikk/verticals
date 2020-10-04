@@ -1,7 +1,7 @@
 .board-list {
   max-height: calc(100vh - 140px);
   margin-top: 90px;
-  padding: 0 20px 0 10px;
+  padding: 0 20px 0 12px;
   overflow-x: scroll;
 
   &::-webkit-scrollbar-thumb {

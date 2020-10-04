@@ -197,6 +197,7 @@ export const CardPopup: FC<ICardPopup> = ({
                       <div>
                         <Menu
                           imageSrc="/assets/svg/calendar.svg"
+                          tooltip="Date"
                           alt="date"
                           imageSize={24}
                           size={36}
@@ -204,7 +205,8 @@ export const CardPopup: FC<ICardPopup> = ({
                         />
                         <CardContextMenu
                           id={todo.id}
-                          isArchive={todo.isArchive}
+                          columnId={todo.columnId}
+                          isArchived={todo.isArchived}
                           isActive={false}
                           isHover
                           isNotificationsEnabled={todo.isNotificationsEnabled}
@@ -226,7 +228,8 @@ export const CardPopup: FC<ICardPopup> = ({
                       </div>
                       <Menu
                         imageSrc={`/assets/svg/bell${todo.isNotificationsEnabled ? '-active' : ''}.svg`}
-                        alt="date"
+                        tooltip={`Turn ${todo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
+                        alt="notification"
                         imageSize={24}
                         size={36}
                         isShowPopup={false}
@@ -234,7 +237,10 @@ export const CardPopup: FC<ICardPopup> = ({
                           justifySelf: 'flex-end',
                         }}
                         onClick={() => {
-                          dispatch(TodosActions.switchNotificationsEnabled({ id: todo.id }));
+                          dispatch(TodosActions.updateNotificationEnabled({
+                            id: todo.id,
+                            isNotificationsEnabled: !todo.isNotificationsEnabled,
+                          }));
                         }}
                       />
                     </div>

@@ -32,11 +32,12 @@ interface IColumn {
   belowId?: number;
   color?: EnumColors;
   isCollapsed?: boolean;
-  boardId: number;
+  boardId?: number | null;
   title?: string;
   description?: string;
   todos?: ITodos;
   isNew?: boolean;
+  isDeleted?: boolean;
 }
 
 enum EnumMenuActions {
@@ -59,6 +60,7 @@ export const Column: FC<IColumn> = ({
   description: initialDescription,
   todos,
   isNew,
+  isDeleted,
 }) => {
   const dispatch = useDispatch();
 
@@ -91,6 +93,7 @@ export const Column: FC<IColumn> = ({
     description?: string,
     status?: EnumTodoStatus,
     newColor?: EnumColors,
+    todoBelowId?: EnumColors,
   ) => {
     if (id) {
       if (title) {
@@ -115,6 +118,7 @@ export const Column: FC<IColumn> = ({
         title,
         description: description || undefined,
         status,
+        belowId: todoBelowId,
       }));
     }
     setIsOpenNewCard(false);
@@ -152,7 +156,7 @@ export const Column: FC<IColumn> = ({
       }
     } else if (title) {
       dispatch(ColumnsActions.create({
-        boardId,
+        boardId: boardId!,
         title,
         description: description || undefined,
         belowId,
@@ -199,6 +203,7 @@ export const Column: FC<IColumn> = ({
   };
 
   const doubleClickHandler = () => {
+    if (isDeleted) return;
     if (isEditableColumn) {
       dispatch(SystemActions.setIsEditableColumn(false));
     }
@@ -206,6 +211,7 @@ export const Column: FC<IColumn> = ({
   };
 
   const clickHandler = (event: SyntheticEvent) => {
+    if (isDeleted) return;
     if (isEditable) {
       event.stopPropagation();
     } else if (!isNew) {
@@ -248,7 +254,7 @@ export const Column: FC<IColumn> = ({
         dispatch(ColumnsActions.removeTemp());
         dispatch(ColumnsActions.drawBelow({
           belowId: columnId!,
-          boardId,
+          boardId: boardId!,
         }));
         break;
       }
@@ -320,7 +326,7 @@ export const Column: FC<IColumn> = ({
     <CardsContainer
       todos={todos
         ?.sort((a, b) => a.position - b.position)
-        ?.filter((todo: ITodo) => !todo.isArchive)
+        ?.filter((todo: ITodo) => !todo.isArchived)
         ?.filter(filterTodos)}
       cardType={cardType}
       isActiveQuery={!!query}
@@ -378,11 +384,11 @@ export const Column: FC<IColumn> = ({
 
   const cardToolbar = useMemo(() => (
     <CardToolbar
-      isHoverBlock={isHover && !isHoverHeader}
+      isHoverBlock={isHover && !isHoverHeader && !isEditable}
       onClickCard={() => setIsOpenNewCard(true)}
       onClickHeading={() => console.log('open heading')}
     />
-  ), [isHover, isHoverHeader]);
+  ), [isHover, isHoverHeader, isEditable]);
 
   const memoDescription = useMemo(() => (
     <>
@@ -437,7 +443,11 @@ export const Column: FC<IColumn> = ({
                 >
                   {titleValue || 'New column'}
                 </span>
-                { (titleValue || descriptionValue || todos?.length) ? contextMenu : null }
+                {
+                  ((titleValue || descriptionValue || todos?.length) && !isDeleted)
+                    ? contextMenu
+                    : null
+                }
               </>
             )
           }
@@ -454,7 +464,7 @@ export const Column: FC<IColumn> = ({
     <Draggable
       draggableId={`column-${columnId}`}
       index={index}
-      isDragDisabled={isNew || !!query}
+      isDragDisabled={isNew || isDeleted || !!query}
     >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <>
@@ -550,14 +560,24 @@ export const Column: FC<IColumn> = ({
                                 <img src="/assets/svg/add.svg" alt="add" />
                               </span>
                               ) }
-                              { todoCards }
-                              { newCard }
-                              { addCard }
+                              { !isNew && (
+                              <>
+                                { todoCards }
+                                {
+                                  !isDeleted && (
+                                  <>
+                                    { newCard }
+                                    { addCard }
+                                  </>
+                                  )
+                                }
+                              </>
+                              ) }
                             </div>
                             <ArchiveContainer
                               archivedTodos={todos
                                       ?.sort((a, b) => a.position - b.position)
-                                      ?.filter((todo: ITodo) => todo.isArchive)
+                                      ?.filter((todo: ITodo) => todo.isArchived)
                                       ?.filter(filterTodos)}
                               isActiveQuery={!!query}
                               cardType={cardType}

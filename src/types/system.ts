@@ -6,6 +6,9 @@ export enum EnumLanguage {
 }
 
 export interface ISystem {
+  isLoadedBoards: boolean;
+  isLoadedColumns: boolean;
+  isLoadedTodos: boolean;
   isOpenPopup: boolean;
   isEditableCard: boolean;
   isEditableColumn: boolean;
@@ -15,4 +18,6 @@ export interface ISystem {
   currentTodoId: number | null;
   editCommentId: string;
   replyCommentId: string;
+  isOpenProfile: boolean;
+  activeBoardId: number | null;
 }

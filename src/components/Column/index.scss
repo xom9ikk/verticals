@@ -8,6 +8,7 @@
   height: 100vh;
   padding: 23px 10px;
   border-right: 1px solid rgb(242, 242, 242);
+
   &__new-overlay {
     display: flex;
     justify-content: center;
@@ -16,106 +17,134 @@
     position: absolute;
     top: 0;
     bottom: 46px;
-    left:0;
+    left: 0;
     right: 0;
     border-radius: 6px;
     transition: background .1s ease-in-out;
+
     &:hover {
       background: $primary-light;
+
       img {
         filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg);
       }
     }
+
     img {
       height: 12px;
       width: 12px;
     }
   }
+
   &__wrapper {
     //position: relative;
     height: 100%;
     border-radius: 6px;
     margin-bottom: 50px;
     transition: background .1s ease-in-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
+
     &--editable {
       box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
     }
+
     &--dragging {
       background: $primary-light;
       transform: scale(1.02);
-      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.4),
+      box-shadow: 10px 10px 30px rgba(210, 227, 253, 0.4),
       -10px -10px 30px rgba(210, 227, 253, 0.4);
+
       #{$block}__header {
         background: $primary-light;
       }
+
       .card__textarea {
         background: $primary-light !important;
       }
     }
+
     &--pressed {
       background: $primary-light !important;
     }
+
     &--hovered {
       background: $hover-color;
+
       #{$block}__title-editable {
         background: $hover-color;
       }
+
       #{$block}__description-editable {
         background: $hover-color;
       }
     }
+
     &--compact {
       padding-top: 30px;
       display: flex;
       flex-direction: column;
       margin-bottom: 0px;
     }
+
     &--red {
       background: #feeae7;
+
       &:hover {
         background: none;
       }
     }
+
     &--yellow {
       background: #fffce6;
+
       &:hover {
         background: none;
       }
     }
+
     &--green {
       background: #f1f6e6;
+
       &:hover {
         background: none;
       }
     }
+
     &--turquoise {
       background: #e7f9f5;
+
       &:hover {
         background: none;
       }
     }
+
     &--blue {
       background: #eaf5fb;
+
       &:hover {
         background: none;
       }
     }
+
     &--gray {
       background: #f9f9f9;
+
       &:hover {
         background: none;
       }
     }
   }
+
   &__container {
     position: relative;
     height: 100vh; // Break draggable
     padding-bottom: 102px;
     overflow-y: scroll;
+
     &::-webkit-scrollbar {
       width: 0;
     }
   }
+
   &__header {
     display: flex;
     flex-direction: column;
@@ -126,6 +155,7 @@
     outline: none;
     letter-spacing: 0;
     transition: background .1s ease-in-out, border .2s ease-in-out;
+
     &--editable {
       //box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
       min-width: $column-width - 27;
@@ -135,12 +165,14 @@
       border-radius: 6px;
     }
   }
+
   &__header-container {
     display: flex;
     margin-bottom: 10px;
     justify-content: space-between;
     align-items: center;
   }
+
   &__title {
     padding: 0;
     margin: 0;
@@ -153,13 +185,16 @@
     background: inherit;
     max-height: 70px;
     overflow: hidden;
+
     &--empty {
       color: $text-light;
     }
+
     &--editable {
       overflow: scroll;
     }
   }
+
   &__description {
     padding: 0;
     margin: 0;
@@ -173,19 +208,23 @@
     background: none;
     max-height: 80px;
     overflow: hidden;
+
     &--empty {
       color: $text-light;
     }
+
     &--editable {
       overflow: scroll;
     }
   }
+
   &__inner {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     transform: rotate(-90deg);
   }
+
   &__counter {
     //font-size: 14px;
     //color: $text-light;
@@ -198,22 +237,27 @@
     border-radius: 3px;
     padding: 1px 5px;
     margin-left: 10px;
+
     #{$block}__compact-text {
       font-size: 12px;
       font-family: "Nunito Medium", sans-serif;
     }
+
     //transform: rotate(-90deg);
   }
+
   &__compact-text {
     display: flex;
     font-size: 15px;
     color: $text-very-light;
     //transform: rotate(-90deg);
-    flex-shrink:0;
+    flex-shrink: 0;
   }
+
   &--dragging {
     border-right: none;
   }
+
   &--compact {
     height: 100%;
     min-width: 36px;

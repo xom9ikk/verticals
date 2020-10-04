@@ -11,6 +11,7 @@ import { EnumColors, ITodo } from '@/types';
 import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface TodoMap {
   [key: string]: {
@@ -23,8 +24,8 @@ interface TodoMap {
   },
 }
 
-interface IColumn {
-  boardId: number;
+interface IColumns {
+  // boardId?: number;
 }
 
 type ReorderTodoMapArgs = {
@@ -33,37 +34,42 @@ type ReorderTodoMapArgs = {
   destination: DraggableLocation,
 };
 
-export const Columns: FC<IColumn> = ({ boardId }) => {
+export const Columns: FC<IColumns> = () => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
-  const { columns, todos, system: { query } } = useSelector((state: IRootState) => state);
+  const {
+    columns, todos, system:
+      {
+        query, isLoadedBoards, isLoadedColumns, activeBoardId,
+      },
+  } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<number>>([]);
 
   useEffect(() => {
-    dispatch(ColumnsActions.fetchByBoardId({ boardId }));
-    dispatch(TodosActions.fetchByBoardId({ boardId }));
-  }, [boardId]);
+    if (activeBoardId !== null) {
+      dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
+      dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
+    }
+  }, [activeBoardId]);
 
   useEffect(() => {
-    console.log('new columns', columns);
     const data = {};
-    columns
-        ?.filter((column) => column.boardId === boardId)
-        ?.sort((a, b) => a.position - b.position)
-        ?.forEach((column) => {
-          // console.log('prepare column', column);
-          // @ts-ignore
-          data[`column-${column.id}`] = {
-            ...column,
-            todos: todos.filter((todo) => todo.columnId === column.id),
-          };
-        });
-    console.log('===columns', columns);
-    console.log('===prep', data);
-    setPreparedData(data);
-    setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
-  }, [boardId, columns, todos]);
+      columns
+          ?.filter((column) => column.boardId === activeBoardId)
+          ?.sort((a, b) => a.position - b.position)
+          ?.forEach((column) => {
+            // console.log('prepare column', column);
+            // @ts-ignore
+            data[`column-${column.id}`] = {
+              ...column,
+              todos: todos.filter((todo) => todo.columnId === column.id),
+            };
+          });
+      // console.log('===prep', data);
+      setPreparedData(data);
+      setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
+  }, [activeBoardId, columns, todos]);
 
   const onDragEnd = (result: DropResult) => {
     // if (result.combine) {
@@ -146,82 +152,88 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
     source,
     destination,
   }: ReorderTodoMapArgs): TodoMap => {
-    const current = quoteMap[source.droppableId];
+    // const current = quoteMap[source.droppableId];
     const currentTodos: ITodo[] = [...quoteMap[source.droppableId].todos];
 
-    const next = quoteMap[destination.droppableId];
-    const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
+    // const next = quoteMap[destination.droppableId];
+    // const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
 
     const target: ITodo = currentTodos[source.index];
     if (!target) {
       return quoteMap;
     }
     // moving to same list
+    const sourcePosition = source.index;
+    const destinationPosition = destination.index;
+    const targetColumnId = Number(destination.droppableId.split('column-')[1]);
+
     if (source.droppableId === destination.droppableId) {
       dispatch(TodosActions.updatePosition({
-        sourcePosition: source.index,
-        destinationPosition: destination.index,
-        columnId: Number(destination.droppableId.split('column-')[1]),
+        sourcePosition,
+        destinationPosition,
+        columnId: targetColumnId,
       }));
-      const reordered = {
-        ...current,
-        todos: reorder(currentTodos, source.index, destination.index, true),
-      };
-      return {
-        ...quoteMap,
-        [source.droppableId]: reordered,
-      };
+      return quoteMap;
+      // const reordered = {
+      //   ...current,
+      //   todos: reorder(currentTodos, sourcePosition, destinationPosition, true),
+      // };
+      // return {
+      //   ...quoteMap,
+      //   [source.droppableId]: reordered,
+      // };
     }
 
     // moving to different list
-    dispatch(TodosActions.updateColumn({
-      id: target.id,
-      sourceColumnId: source.droppableId,
-      targetColumnId: destination.droppableId,
-      position: destination.index,
+    const sourceColumnId = Number(source.droppableId.split('column-')[1]);
+    dispatch(TodosActions.updatePosition({
+      columnId: sourceColumnId,
+      targetColumnId,
+      sourcePosition,
+      destinationPosition,
     }));
-    // remove from original
-    currentTodos.splice(source.index, 1);
-    // insert into next
-    nextTodos.splice(destination.index, 0, target);
 
-    return {
-      ...quoteMap,
-      [source.droppableId]: {
-        ...current,
-        todos: currentTodos.map((todo, index) => ({
-          ...todo, position: index,
-        })),
-      },
-      [destination.droppableId]: {
-        ...next,
-        todos: nextTodos.map((todo, index) => ({
-          ...todo, position: index,
-        })),
-      },
-    };
+    return quoteMap;
+
+    // // TODO delete this code
+    // // remove from original
+    // currentTodos.splice(source.index, 1);
+    // // insert into next
+    // nextTodos.splice(destination.index, 0, target);
+    //
+    // return {
+    //   ...quoteMap,
+    //   [source.droppableId]: {
+    //     ...current,
+    //     todos: currentTodos.map((todo, index) => ({
+    //       ...todo, position: index,
+    //     })),
+    //   },
+    //   [destination.droppableId]: {
+    //     ...next,
+    //     todos: nextTodos.map((todo, index) => ({
+    //       ...todo, position: index,
+    //     })),
+    //   },
+    // };
   };
 
   const memoColumns = useMemo(() => (
     orderedId && orderedId.map((_key, index) => {
       const key = `column-${_key}`;
-      // console.log('preparedData', preparedData);
-      // console.log('key', key);
-      let isContainTodosByQuery = true;
       if (query) {
-        isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
+        const isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
+        if (!isContainTodosByQuery) {
+          return null;
+        }
       }
-      if (!isContainTodosByQuery) {
-        return null;
-      }
-      // console.log('draw prepared', key, preparedData);
       return (
         <Column
           index={index}
           color={preparedData[key].color}
           isCollapsed={preparedData[key].isCollapsed}
           columnId={_key}
-          boardId={boardId}
+          boardId={activeBoardId}
           belowId={preparedData[key]?.belowId}
           key={key}
           title={preparedData[key].title}
@@ -230,21 +242,33 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
         />
       );
     })
-  ), [preparedData, orderedId, boardId, query]);
+  ), [preparedData, orderedId, activeBoardId, query]);
 
   const memoNewColumn = useMemo(() => (
     <Column
-      boardId={boardId}
+      boardId={activeBoardId}
       index={orderedId.length}
       isNew
     />
-  ), [boardId, orderedId]);
+  ), [activeBoardId, orderedId]);
+
+  const memoDeletedCardsColumn = useMemo(() => (
+    <Column
+      index={0}
+      boardId={activeBoardId}
+      key="column-deleted"
+      title="Deleted cards"
+      // todos={preparedData[key].todos}
+      description="Restore deleted cards"
+      isDeleted
+    />
+  ), [activeBoardId]);
 
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
-          droppableId={`board-${boardId}`}
+          droppableId={`board-${activeBoardId}`}
           type="COLUMN"
           direction="horizontal"
         >
@@ -254,9 +278,25 @@ export const Columns: FC<IColumn> = ({ boardId }) => {
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              { memoColumns }
-              { memoNewColumn }
+              {
+                activeBoardId === -1 ? memoDeletedCardsColumn : (
+                  <>
+                    { memoColumns }
+                    { memoNewColumn }
+                  </>
+                )
+              }
               {provided.placeholder}
+              <FallbackLoader
+                backgroundColor="#ffffff"
+                isAbsolute
+                size="medium"
+                isLoading={
+                  !isLoadedBoards
+                  || !isLoadedColumns
+                  // || Object.keys(preparedData).length === 0
+                }
+              />
             </div>
           )}
         </Droppable>

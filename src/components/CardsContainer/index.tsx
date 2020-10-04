@@ -6,6 +6,7 @@ import {
 } from '@/types';
 import { Card } from '@comp/Card';
 import { IRootState } from '@/store/reducers/state';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface ICardsContainer {
   todos?: ITodos;
@@ -16,7 +17,9 @@ interface ICardsContainer {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: EnumColors) => void;
+    color?: EnumColors,
+    belowId?: number,
+  ) => void;
 }
 
 export const CardsContainer: FC<ICardsContainer> = ({
@@ -25,17 +28,17 @@ export const CardsContainer: FC<ICardsContainer> = ({
   cardType,
   onExitFromEditable,
 }) => {
-  const { currentTodoId } = useSelector((state: IRootState) => state.system);
+  const { currentTodoId, isLoadedTodos } = useSelector((state: IRootState) => state.system);
 
   return (
     <>
       {
         todos
-          ?.map((todo, todoIndex) => (
+          ?.map((todo) => (
             <Draggable
               key={todo.id}
               draggableId={`todo-${todo.id}`}
-              index={todoIndex}
+              index={todo.position}
               isDragDisabled={isActiveQuery || todo.belowId !== undefined}
             >
               {(
@@ -48,11 +51,13 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   snapshot={dragSnapshot}
                   key={todo.id}
                   id={todo.id}
+                  columnId={todo.columnId}
+                  belowId={todo.belowId}
                   title={todo.title}
                   description={todo.description}
                   status={todo.status}
                   color={todo.color}
-                  isArchive={todo.isArchive}
+                  isArchived={todo.isArchived}
                   isNotificationsEnabled={todo.isNotificationsEnabled}
                   onExitFromEditable={(...rest) => onExitFromEditable(todo.id, ...rest)}
                   isActive={currentTodoId === todo.id}
@@ -61,6 +66,11 @@ export const CardsContainer: FC<ICardsContainer> = ({
             </Draggable>
           ))
         }
+      <FallbackLoader
+        isAbsolute
+        size="small"
+        isLoading={!isLoadedTodos}
+      />
     </>
   );
 };

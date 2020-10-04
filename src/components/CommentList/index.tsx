@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, useEffect, useRef,
+  forwardRef,
 } from 'react';
 import { CommentItem } from '@comp/CommentItem';
 import { IComment, IComments } from '@/types';
@@ -8,24 +8,14 @@ interface ICommentList {
   data?: IComments
 }
 
-const CL = ({
+const CommentListComponent = ({
   data,
-}: ICommentList, ref: any) => {
-  const listRef = useRef<any>();
-
-  useEffect(() => {
-    if (ref) {
-      // eslint-disable-next-line no-param-reassign
-      ref.current = listRef.current;
-    }
-  }, [listRef]);
-
-  return (
-    <div
-      ref={listRef}
-      className={`comment-list ${!data?.length ? 'comment-list--empty' : ''}`}
-    >
-      {
+}: ICommentList, ref: any) => (
+  <div
+    ref={ref}
+    className={`comment-list ${!data?.length ? 'comment-list--empty' : ''}`}
+  >
+    {
         data && data.length > 0 ? (
           <>
             {
@@ -41,8 +31,6 @@ const CL = ({
           </>
         )
       }
-    </div>
-  );
-};
-
-export const CommentList = forwardRef(CL);
+  </div>
+);
+export const CommentList = forwardRef(CommentListComponent);

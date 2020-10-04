@@ -1,6 +1,7 @@
 .loader {
   transition: opacity 0.2s ease-in-out;
   opacity: 1;
+  display: flex;
 
   .meter {
     fill: none;

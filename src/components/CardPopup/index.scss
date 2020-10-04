@@ -5,7 +5,7 @@
   height: calc(100vh - 15px);
   &--opened {
     min-width: $card-popup-width;
-    padding: 10px;
+    padding: 23px 10px 10px;
     position: relative;
     &::before {
       content: "";
@@ -15,7 +15,7 @@
       width: 1px;
       height: 100%;
       background-color: rgb(255, 255, 255);
-      background-image: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.05) 50%);
+      background-image: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.1) 50%);
       background-size: 100% 15px;
       z-index: 1;
       background-repeat: repeat-y;

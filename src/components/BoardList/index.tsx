@@ -11,32 +11,39 @@ import { Profile } from '@comp/Profile';
 import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
-  EnumTodoType, IBoard, IBoards, IColumn, ITodo, ITodos,
+  EnumTodoType, IColumn, ITodo, ITodos,
 } from '@/types';
 import { useFilterTodos } from '@/use/filterTodos';
+import { FallbackLoader } from '@comp/FallbackLoader';
+import { useReadableId } from '@/use/readableId';
+import { forwardTo } from '@/router/history';
+import { Link } from 'react-router-dom';
 
-interface IBoardList {
-  activeBoard: number;
-  onChange: (boardId: number) => void;
-}
+interface IBoardList {}
 
-export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
+export const BoardList: FC<IBoardList> = () => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [boards, setBoards] = useState<IBoards>([]);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
+  const { toReadableId } = useReadableId();
 
   const {
-    system: { query },
-    boards: initialBoards,
+    system: { query, isLoadedBoards, activeBoardId },
+    boards,
     todos,
     columns,
   } = useSelector((state: IRootState) => state);
 
   useEffect(() => {
-    setBoards(initialBoards);
-  }, [initialBoards]);
+    if (boards.length) {
+      console.log('boards change');
+      if (activeBoardId === null) {
+        const { id, title } = boards[0];
+        forwardTo(`/userId/${toReadableId(title, id)}`);
+      }
+    }
+  }, [boards]);
 
   const saveBoard = (
     {
@@ -65,9 +72,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }));
       }
     } else if (title) {
-      // if (belowId) {
-      //   dispatch(BoardsActions.removeTemp());
-      // }
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
         title,
@@ -76,13 +80,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         belowId,
       }));
     }
-  };
-
-  const reorder = (list: IBoards, startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result.map((board, index) => ({ ...board, position: index }));
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -101,16 +98,9 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         destinationPosition,
       },
     ));
-    const items = reorder(
-      boards,
-      source.index,
-      destination.index,
-    );
-    setBoards(items);
   };
 
   const getCountTodos = (boardId: number) => {
-    // let isContainTodosByQuery = true;
     const needColumn = columns.filter((column: IColumn) => column.boardId === boardId);
     const needTodos: ITodos = [];
     needColumn.forEach((column: IColumn) => {
@@ -120,38 +110,43 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
         }
       });
     });
-    // if (query) {
-    //
-    //    // isContainTodosByQuery = countTodos > 0;
-    // }
-    // if (['trash', 'today'].includes(id)) { return null; }
-    // if (!isContainTodosByQuery) { return countTodos; }
     return needTodos.filter(filterTodos).length;
   };
 
-  const drawBoard = (board: IBoard) => {
-    if (!board) {
-      return null;
-    }
-    const { id, icon, title } = board;
-    const countTodos = getCountTodos(id);
-    return (
-      <>
-        {
-          ((query && countTodos > 0) || !query) && (
-            <Board
-              key={id}
-              id={id}
-              icon={icon}
-              title={title}
-              countTodos={query ? countTodos : undefined}
-              isActive={activeBoard === id}
-              onClick={() => onChange(id)}
-            />
-          )
-        }
-      </>
-    );
+  const addNewBoard = () => {
+    setIsOpenNewBoard((prev) => !prev);
+    dispatch(SystemActions.setIsEditableBoard(true));
+  };
+
+  // const drawBoard = (board: IBoard) => {
+  //   if (!board) {
+  //     return null;
+  //   }
+  //   const { id, icon, title } = board;
+  //   const countTodos = getCountTodos(id);
+  //   return (
+  //     <>
+  //       {
+  //         ((query && countTodos > 0) || !query) && (
+  //         <NavLink to={toReadableId(title, id)}>
+  //           <Board
+  //             key={id}
+  //             id={id}
+  //             icon={icon}
+  //             title={title}
+  //             countTodos={query ? getCountTodos(id) : undefined}
+  //             isActive={activeBoardId === id}
+  //             // onClick={handleClick}
+  //           />
+  //         </NavLink>
+  //         )
+  //       }
+  //     </>
+  //   );
+  // };
+
+  const handleClick = (title: string, id: number) => {
+    forwardTo(`/userId/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {
@@ -172,8 +167,6 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                   }, index) => {
                     const countTodos = getCountTodos(id);
                     if (query && !countTodos) return null;
-                    console.log('id', id);
-                    // if (['trash', 'today'].includes(id)) { return null; }
                     return (
                       <Draggable
                         key={`board-${id}`}
@@ -196,9 +189,9 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
                               color={color}
                               title={title}
                               countTodos={query ? countTodos : undefined}
-                              isActive={activeBoard === id}
-                              onClick={() => onChange(id)}
+                              isActive={activeBoardId === id}
                               onExitFromEditable={saveBoard}
+                              onClick={handleClick}
                             />
                           </div>
                         )}
@@ -210,22 +203,23 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
             )}
           </Droppable>
         </DragDropContext>
-        {
-          drawBoard({
-            id: -1,
-            icon: '/assets/svg/board/trash.svg',
-            title: 'Trash',
-            position: 4,
-            cardType: EnumTodoType.Checkboxes,
-          })
-        }
+        <Link to="/userId/trash">
+          <Board
+            key={-1}
+            id={-1}
+            icon="/assets/svg/board/trash.svg"
+            title="Trash"
+            isActive={activeBoardId === -1}
+          />
+        </Link>
       </>
-
     );
-  }, [boards, activeBoard, query]);
+  }, [boards, activeBoardId, query]);
 
   const profile = useMemo(() => (
-    <Profile />
+    <Profile
+      onAddNewBoard={addNewBoard}
+    />
   ), []);
 
   const memoNewBoard = useMemo(() => (
@@ -238,34 +232,19 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
     )
   ), [isOpenNewBoard]);
 
-  const memoMenu = useMemo(() => (
-    <>
-      {
-          !isOpenNewBoard && (
-          <Menu
-            imageSrc="/assets/svg/add.svg"
-            alt="add"
-            text="Add board"
-            isHide
-            isHoverBlock={isHover}
-            isMaxWidth
-            style={{ margin: '0 6px' }}
-            isShowPopup={false}
-            onClick={() => {
-              setIsOpenNewBoard((prev) => !prev);
-              dispatch(SystemActions.setIsEditableBoard(true));
-            }}
-          />
-          )
-        }
-    </>
-  ), [isHover, isOpenNewBoard]);
-
-  // useEffect(() => {
-  //   if (!isEditableBoard) {
-  //     setIsOpenNewBoard(false);
-  //   }
-  // }, [isEditableBoard]);
+  const memoMenu = useMemo(() => !isOpenNewBoard && (
+    <Menu
+      imageSrc="/assets/svg/add.svg"
+      alt="add"
+      text="Add board"
+      isHide
+      isHoverBlock={isHover}
+      isMaxWidth
+      isShowPopup={false}
+      onClick={addNewBoard}
+    />
+  ),
+  [isHover, isOpenNewBoard]);
 
   return (
     <div
@@ -277,6 +256,12 @@ export const BoardList: FC<IBoardList> = ({ activeBoard, onChange }) => {
       { boardItems }
       { memoMenu }
       { memoNewBoard }
+      <FallbackLoader
+        backgroundColor="#fafafa"
+        isAbsolute
+        size="medium"
+        isLoading={!isLoadedBoards}
+      />
     </div>
   );
 };

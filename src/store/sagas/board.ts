@@ -6,7 +6,7 @@ import { useAlert } from '@/use/alert';
 import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
-import { BoardsActions } from '@/store/actions';
+import { BoardsActions, SystemActions } from '@/store/actions';
 import {
   ICreateBoardRequest, IRemoveBoardRequest,
   IUpdateBoardRequest,
@@ -21,6 +21,7 @@ function* fetchWorker() {
     const response = yield* apply(boardService, boardService.getAll, []);
     const { boards } = response.data;
     yield put(BoardsActions.setAll(boards));
+    yield put(SystemActions.setIsLoadedBoards(true));
   } catch (error) {
     yield call(show, 'Board', error, ALERT_TYPES.DANGER);
   }

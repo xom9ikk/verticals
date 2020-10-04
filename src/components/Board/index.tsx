@@ -14,6 +14,7 @@ import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleCl
 import { useFocus } from '@/use/focus';
 import { EnumColors, EnumTodoType } from '@/types';
 import { TextArea } from '@comp/TextArea';
+import { RoundedButton } from '@comp/RoundedButton';
 
 export interface IExitFromEditable {
   boardId: number,
@@ -24,8 +25,8 @@ export interface IExitFromEditable {
 }
 
 interface IBoard {
-  snapshot?: DraggableStateSnapshot,
   id?: number;
+  snapshot?: DraggableStateSnapshot,
   belowId?: number;
   icon: string;
   color?: EnumColors;
@@ -41,7 +42,7 @@ interface IBoard {
     color,
     belowId,
   }: IExitFromEditable) => void;
-  onClick?: (id: number)=>void;
+  onClick?: (title: string, id: number) => void;
 }
 
 enum EnumMenuActions {
@@ -53,8 +54,8 @@ enum EnumMenuActions {
 }
 
 export const Board: FC<IBoard> = ({
-  snapshot,
   id = 0,
+  snapshot,
   belowId,
   icon,
   color,
@@ -164,7 +165,7 @@ export const Board: FC<IBoard> = ({
 
   const clickHandler = () => {
     if (!isEditable && !isMenuClick) {
-      onClick?.(id);
+      onClick?.(initialTitle, id);
     }
   };
 
@@ -214,7 +215,8 @@ export const Board: FC<IBoard> = ({
   };
 
   const memoMenu = useMemo(() => (
-    <>
+    <div className="board-item__menu">
+      {/* {JSON.stringify({ isHover })} */}
       <Menu
         imageSrc="/assets/svg/dots.svg"
         alt="menu"
@@ -297,7 +299,7 @@ export const Board: FC<IBoard> = ({
           onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
         />
       </Menu>
-    </>
+    </div>
   ), [id, isHover, isActive, color]);
 
   const memoCounter = useMemo(() => (
@@ -308,68 +310,85 @@ export const Board: FC<IBoard> = ({
   ), [countTodos]);
 
   // @ts-ignore
-  const colorClass = `board-item--${Object.values(EnumColors)[color]?.toLowerCase()}`;
+  // const colorClass = `board-item--${Object.values(EnumColors)[color]?.toLowerCase()}`;
 
   const boardItem = useMemo(() => (
     <div
       className={`board-item 
-       ${isActive ? 'board-item--active' : ''} 
        ${isEditable ? 'board-item--editable' : ''} 
-       ${color !== undefined ? colorClass : ''} 
        ${snapshot?.isDragging ? 'board-item--dragging' : ''} 
        `}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
-      onClick={handleClick}
-      onDoubleClick={handleDoubleClick}
+      // onMouseOver={() => setIsHover(true)}
+      // onMouseOut={() => setIsHover(false)}
+      // onClick={handleClick}
+      // onDoubleClick={handleDoubleClick}
     >
-      <div className="board-item__content">
-        <img
-          src={`${isActive
-            ? icon.replace('item', 'item-active')
-            : icon}`}
-          alt="ico"
-          className="board-item__image"
-        />
-        {
+
+      {/* <div className="board-item__content"> */}
+      {/*  <img */}
+      {/*    src={`${isActive */}
+      {/*      ? icon.replace('item', 'item-active') */}
+      {/*      : icon}`} */}
+      {/*    alt="ico" */}
+      {/*    className="board-item__image" */}
+      {/*  /> */}
+      {
               isEditable ? (
                 <div
-                  className="card__editable-content"
+                  className="card__block-wrapper card__block-wrapper--editable"
                 >
-                  <TextArea
-                    ref={titleInputRef}
-                    className="card__textarea"
-                    value={titleValue}
-                    placeholder="New Card"
-                    minRows={1}
-                    maxRows={20}
-                    onChange={(event: any) => changeHandler(event, false)}
-                    onKeyUp={(event: any) => keydownHandler(event, false)}
+                  <img
+                    src={icon}
+                    alt="ico"
                   />
-                  <TextArea
-                    ref={descriptionInputRef}
-                    className="card__textarea card__textarea--description"
-                    value={descriptionValue}
-                    placeholder="Notes"
-                    minRows={1}
-                    maxRows={20}
-                    onChange={(event: any) => changeHandler(event, true)}
-                    onKeyDownCapture={(event: any) => keydownHandler(event, true)}
-                  />
+                  <div className="card__editable-content">
+                    <TextArea
+                      ref={titleInputRef}
+                      className="card__textarea"
+                      value={titleValue}
+                      placeholder="New Board"
+                      minRows={1}
+                      maxRows={20}
+                      onChange={(event: any) => changeHandler(event, false)}
+                      onKeyUp={(event: any) => keydownHandler(event, false)}
+                    />
+                    <TextArea
+                      ref={descriptionInputRef}
+                      className="card__textarea card__textarea--description"
+                      value={descriptionValue}
+                      placeholder="Notes"
+                      minRows={1}
+                      maxRows={20}
+                      onChange={(event: any) => changeHandler(event, true)}
+                      onKeyDownCapture={(event: any) => keydownHandler(event, true)}
+                    />
+                  </div>
                 </div>
               ) : (
-                <span className="board-item__text">{titleValue}</span>
+                <RoundedButton
+                  icon={icon}
+                  isSpecialIcon={icon.includes('trash') || icon.includes('star')}
+                  text={titleValue}
+                  color={color}
+                  isActive={isActive || snapshot?.isDragging}
+                  onClick={handleClick}
+                  onDoubleClick={handleDoubleClick}
+                >
+                  { typeof countTodos === 'number' ? memoCounter : memoMenu }
+                </RoundedButton>
               )
             }
-      </div>
-      { !isEditable && typeof countTodos !== 'number' && memoMenu }
-      { typeof countTodos === 'number' && memoCounter }
+      {/* </div> */}
+      {/* { !isEditable && typeof countTodos !== 'number' && memoMenu } */}
     </div>
   ), [
-    isActive, isHover, isMenuClick,
+    isHover, isActive, isMenuClick,
     isEditable, titleValue, descriptionValue,
     snapshot, color, countTodos,
   ]);
+  console.log('ishover', isHover);
 
   return (
     <>{ boardItem }</>

@@ -11,7 +11,7 @@ import { SystemActions, TodosActions } from '@/store/actions';
 interface ICardContextMenu {
   id?: number;
   columnId?: number;
-  isArchive?: boolean;
+  isArchived?: boolean;
   isActive?: boolean;
   isHover: boolean;
   isNotificationsEnabled?: boolean;
@@ -42,7 +42,7 @@ enum EnumCardActions {
 export const CardContextMenu: FC<ICardContextMenu> = ({
   id,
   columnId,
-  isArchive,
+  isArchived,
   isActive,
   isHover,
   isNotificationsEnabled,
@@ -83,7 +83,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Notifications: {
-        dispatch(TodosActions.switchNotificationsEnabled({ id: id! }));
+        dispatch(TodosActions.updateNotificationEnabled({
+          id: id!,
+          isNotificationsEnabled: !isNotificationsEnabled,
+        }));
         break;
       }
       case EnumCardActions.CopyLink: {
@@ -92,11 +95,12 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Duplicate: {
-        dispatch(TodosActions.duplicate({ id: id! }));
+        dispatch(TodosActions.duplicate({ todoId: id! }));
         break;
       }
       case EnumCardActions.AddCardBelow: {
         dispatch(TodosActions.removeTemp());
+        console.log('add below', columnId, id);
         dispatch(TodosActions.drawBelow({
           belowId: id!,
           columnId: columnId!,
@@ -106,7 +110,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       case EnumCardActions.Archive: {
         dispatch(TodosActions.updateIsArchive({
           id: id!,
-          isArchive: !isArchive,
+          isArchived: !isArchived,
         }));
         break;
       }
@@ -205,8 +209,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
-        text={isArchive ? 'Unarchive' : 'Archive'}
-        imageSrc={`/assets/svg/menu/archive${isArchive ? '' : '-close'}.svg`}
+        text={isArchived ? 'Unarchive' : 'Archive'}
+        imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
         onClick={() => menuButtonClickHandler(EnumCardActions.Archive)}
       />
       <MenuButton
@@ -216,5 +220,5 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         onClick={() => menuButtonClickHandler(EnumCardActions.Delete)}
       />
     </Menu>
-  ), [isHover, color, isNotificationsEnabled, isArchive, status]);
+  ), [isHover, color, isNotificationsEnabled, isArchived, status]);
 };

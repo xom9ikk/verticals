@@ -37,20 +37,14 @@ export interface IAddTodo {
   title?: string;
   description?: string;
   status?: EnumTodoStatus;
-  isArchive?: boolean;
-}
-
-export interface IUpdateTodoColumnId {
-  id: number;
-  sourceColumnId: string;
-  targetColumnId: string;
-  position: number;
+  isArchived?: boolean;
 }
 
 export interface IUpdateTodoPosition {
   sourcePosition: number;
   destinationPosition: number;
   columnId: number;
+  targetColumnId?: number;
 }
 
 export interface IUpdateTodoColor {
@@ -59,7 +53,7 @@ export interface IUpdateTodoColor {
 }
 
 export interface IDuplicateTodo {
-  id: number;
+  todoId: number;
 }
 
 export interface IRemoveTodo {
@@ -73,9 +67,10 @@ export interface IDrawTodoBelow {
 
 export interface IUpdateIsArchive {
   id: number;
-  isArchive: boolean;
+  isArchived: boolean;
 }
 
-export interface ISwitchTodoNotificationsEnabled {
+export interface IUpdateTodoNotificationsEnabled {
   id: number;
+  isNotificationsEnabled: boolean;
 }

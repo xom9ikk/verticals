@@ -91,6 +91,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         <Menu
           imageSrc="/assets/svg/filter.svg"
           alt="preferences"
+          tooltip="Preferences"
           isHoverBlock={isHover}
           imageSize={24}
           size={36}

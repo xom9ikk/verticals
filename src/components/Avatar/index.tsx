@@ -2,12 +2,14 @@ import React, { FC } from 'react';
 
 interface IAvatar {
   size?: number;
-  imageSrc?: string,
+  imageSrc?: string;
+  onClick?: () => void;
 }
 
 export const Avatar: FC<IAvatar> = ({
   size = 44,
   imageSrc = '/assets/images/avatars/default.jpeg',
+  onClick,
 }) => (
   <img
     src={imageSrc}
@@ -17,5 +19,8 @@ export const Avatar: FC<IAvatar> = ({
       height: size,
       width: size,
     }}
+    onClick={onClick}
+    data-for="tooltip"
+    data-tip="Max Romanyuta"
   />
 );
