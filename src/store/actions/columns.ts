@@ -12,6 +12,7 @@ import {
   IUpdateColumnPosition,
   IUpdateColumnTitle,
   IDrawColumnBelow,
+  IReverseColumnOrder,
 } from '@/types/actions';
 
 enum Type {
@@ -29,6 +30,7 @@ enum Type {
   DUPLICATE = 'COLUMNS/DUPLICATE',
   DRAW_BELOW = 'COLUMNS/DRAW_BELOW',
   REMOVE_TEMP = 'COLUMNS/REMOVE_TEMP',
+  REVERSE_ORDER = 'COLUMNS/REVERSE_ORDER',
 }
 
 const fetchByBoardId = createAction<IFetchColumnsByBoardId>(Type.FETCH_BY_BOARD_ID);
@@ -45,6 +47,7 @@ const remove = createAction<IRemoveColumn>(Type.REMOVE);
 const duplicate = createAction<IDuplicateColumn>(Type.DUPLICATE);
 const drawBelow = createAction<IDrawColumnBelow>(Type.DRAW_BELOW);
 const removeTemp = createAction(Type.REMOVE_TEMP);
+const reverseOrder = createAction<IReverseColumnOrder>(Type.REVERSE_ORDER);
 
 export const ColumnsActions = {
   Type,
@@ -62,4 +65,5 @@ export const ColumnsActions = {
   duplicate,
   drawBelow,
   removeTemp,
+  reverseOrder,
 };

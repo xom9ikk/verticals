@@ -6,14 +6,16 @@ import { useAlert } from '@/use/alert';
 import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
-import { ColumnsActions, SystemActions, TodosActions } from '@/store/actions';
+import {
+  ColumnsActions, SystemActions, TodosActions,
+} from '@/store/actions';
 import {
   ICreateColumnRequest,
   IRemoveColumnRequest,
   IUpdateColumnRequest,
   IUpdateColumnPositionRequest,
   IGetColumnsByBoardIdRequest,
-  IDuplicateColumnRequest,
+  IDuplicateColumnRequest, IReverseColumnOrderRequest,
 } from '@/types/api';
 import { ITodo } from '@/types';
 
@@ -98,6 +100,15 @@ function* duplicateWorker(action: Action<IDuplicateColumnRequest>) {
   }
 }
 
+function* reverseOrderWorker(action: Action<IReverseColumnOrderRequest>) {
+  try {
+    yield* apply(columnService, columnService.reverseOrder, [action.payload]);
+    yield call(show, 'Column', 'Reverse successfully', ALERT_TYPES.SUCCESS);
+  } catch (error) {
+    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+  }
+}
+
 export function* watchColumn() {
   yield* all([
     takeLatest(ColumnsActions.Type.FETCH_BY_BOARD_ID, fetchByBoardIdWorker),
@@ -109,5 +120,6 @@ export function* watchColumn() {
     takeLatest(ColumnsActions.Type.UPDATE_IS_COLLAPSED, updateWorker),
     takeLatest(ColumnsActions.Type.UPDATE_POSITION, updatePositionWorker),
     takeLatest(ColumnsActions.Type.DUPLICATE, duplicateWorker),
+    takeLatest(ColumnsActions.Type.REVERSE_ORDER, reverseOrderWorker),
   ]);
 }

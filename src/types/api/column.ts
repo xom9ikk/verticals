@@ -66,3 +66,9 @@ export type IDuplicateColumnResponse = IServerResponse<{
   belowId?: string;
   todos: ITodos;
 }>;
+
+export interface IReverseColumnOrderRequest {
+  boardId: number;
+}
+
+export type IReverseColumnOrderResponse = IServerResponse;

@@ -63,3 +63,7 @@ export interface IDrawColumnBelow {
   boardId: number;
   belowId: number;
 }
+
+export interface IReverseColumnOrder {
+  boardId: number;
+}

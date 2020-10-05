@@ -8,7 +8,8 @@ import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
-  ICreateBoardRequest, IRemoveBoardRequest,
+  ICreateBoardRequest,
+  IRemoveBoardRequest,
   IUpdateBoardRequest,
   IUpdateBoardPositionRequest,
 } from '@/types/api';

@@ -10,6 +10,7 @@ import {
   IGetAllColumnsResponse,
   IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
   IDuplicateColumnRequest, IDuplicateColumnResponse,
+  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
 } from '@/types/api';
 
 @injectable()
@@ -52,5 +53,9 @@ export class ColumnService implements IColumnService {
 
   duplicate(body: IDuplicateColumnRequest) {
     return this.httpClient.post<IDuplicateColumnResponse>('/column/duplicate', body);
+  }
+
+  reverseOrder(body: IReverseColumnOrderRequest) {
+    return this.httpClient.post<IReverseColumnOrderResponse>('/column/reverse', body);
   }
 }

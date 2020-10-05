@@ -23,6 +23,7 @@ import {
   IUpdateTodoRequest, IUpdateTodoResponse,
   IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
   IDuplicateTodoRequest, IDuplicateTodoResponse,
+  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -64,6 +65,7 @@ export interface IColumnService {
   update(body: IUpdateColumnRequest): Promise<IUpdateColumnResponse>;
   updatePosition(body: IUpdateColumnPositionRequest): Promise<IUpdateColumnPositionResponse>;
   duplicate(body: IDuplicateColumnRequest): Promise<IDuplicateColumnResponse>;
+  reverseOrder(body: IReverseColumnOrderRequest): Promise<IReverseColumnOrderResponse>;
 }
 
 export interface ITodoService {

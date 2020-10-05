@@ -10,7 +10,7 @@ import { ColorPicker } from '@comp/ColorPicker';
 import { Submenu } from '@comp/Submenu';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
-import { BoardsActions, SystemActions } from '@/store/actions';
+import { BoardsActions, ColumnsActions, SystemActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { useFocus } from '@/use/focus';
@@ -209,6 +209,7 @@ export const Board: FC<IBoard> = ({
       }
       case EnumMenuActions.ReverseColumnOrder: {
         // TODO
+        dispatch(ColumnsActions.reverseOrder({ boardId: id }));
         break;
       }
       case EnumMenuActions.CopyLink: {

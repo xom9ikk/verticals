@@ -3,10 +3,15 @@ import 'reflect-metadata';
 import { TYPES } from '@/inversify.types';
 import { IBoardService, IHttpClient } from '@/inversify.interfaces';
 import {
-  ICreateBoardRequest, ICreateBoardResponse,
-  IRemoveBoardRequest, IRemoveBoardResponse,
-  IUpdateBoardRequest, IUpdateBoardResponse,
-  IUpdateBoardPositionRequest, IUpdateBoardPositionResponse, IGetAllBoardsResponse,
+  ICreateBoardRequest,
+  ICreateBoardResponse,
+  IRemoveBoardRequest,
+  IRemoveBoardResponse,
+  IUpdateBoardRequest,
+  IUpdateBoardResponse,
+  IUpdateBoardPositionRequest,
+  IUpdateBoardPositionResponse,
+  IGetAllBoardsResponse,
 } from '@/types/api';
 
 @injectable()
