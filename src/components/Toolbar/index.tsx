@@ -7,6 +7,7 @@ import { Submenu } from '@comp/Submenu';
 import { AuthActions, SystemActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { EnumLanguage } from '@/types';
+import { forwardTo } from '@/router/history';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -15,6 +16,7 @@ interface IToolbar {
 enum EnumToolbarActions {
   NewWorkspace,
   SwitchSidebar,
+  AccountSettings,
   ChangeLanguage,
   WriteToDeveloper,
   TermsOfService,
@@ -46,6 +48,10 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           onChangeDisplaySidebar(!prev);
           return !prev;
         });
+        break;
+      }
+      case EnumToolbarActions.AccountSettings: {
+        forwardTo('/settings/account');
         break;
       }
       case EnumToolbarActions.ChangeLanguage: {
@@ -102,13 +108,11 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
             imageSrc="/assets/svg/menu/hide-sidebar.svg"
             onClick={() => menuButtonClickHandler(EnumToolbarActions.SwitchSidebar)}
-            // onClick={() => {
-            //   setIsPinSidebar((prev) => {
-            //     hidePopup();
-            //     onChangeDisplaySidebar(!prev);
-            //     return !prev;
-            //   });
-            // }}
+          />
+          <MenuButton
+            text="Account settings"
+            imageSrc="/assets/svg/menu/profile-settings.svg"
+            onClick={() => menuButtonClickHandler(EnumToolbarActions.AccountSettings)}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
 

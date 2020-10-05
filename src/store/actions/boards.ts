@@ -6,6 +6,7 @@ import {
   IRemoveBoard,
   ISetBoards,
   IUpdateBoardCardType,
+  IUpdateBoardIcon,
   IUpdateBoardColor,
   IUpdateBoardDescription,
   IUpdateBoardPosition,
@@ -22,8 +23,9 @@ enum Type {
   UPDATE_DESCRIPTION = 'BOARDS/UPDATE_DESCRIPTION',
   UPDATE_POSITION = 'BOARDS/UPDATE_POSITION',
   UPDATE_COLOR = 'BOARDS/UPDATE_COLOR',
-  RESET_COLOR = 'BOARDS/RESET_COLOR',
+  RESET_COLOR = 'BOARDS/RESET_COLOR', // TODO: delete
   UPDATE_CARD_TYPE = 'BOARDS/UPDATE_CARD_TYPE',
+  UPDATE_ICON = 'BOARDS/UPDATE_ICON',
   REMOVE = 'BOARDS/REMOVE',
   DRAW_BELOW = 'BOARDS/DRAW_BELOW',
   REMOVE_TEMP = 'BOARDS/REMOVE_TEMP',
@@ -39,6 +41,7 @@ const updateDescription = createAction<IUpdateBoardDescription>(Type.UPDATE_DESC
 const updatePosition = createAction<IUpdateBoardPosition>(Type.UPDATE_POSITION);
 const updateColor = createAction<IUpdateBoardColor>(Type.UPDATE_COLOR);
 const updateCardType = createAction<IUpdateBoardCardType>(Type.UPDATE_CARD_TYPE);
+const updateIcon = createAction<IUpdateBoardIcon>(Type.UPDATE_ICON);
 const remove = createAction<IRemoveBoard>(Type.REMOVE);
 const drawBelow = createAction<IDrawBoardBelow>(Type.DRAW_BELOW);
 const removeTemp = createAction(Type.REMOVE_TEMP);
@@ -55,6 +58,7 @@ export const BoardsActions = {
   updatePosition,
   updateColor,
   updateCardType,
+  updateIcon,
   remove,
   drawBelow,
   removeTemp,

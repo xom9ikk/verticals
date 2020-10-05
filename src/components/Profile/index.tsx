@@ -10,7 +10,7 @@ import { forwardTo } from '@/router/history';
 
 enum EnumMenuActions {
   OpenProfile,
-  OpenSettings,
+  ProfileSettings,
   AddBoard,
   CopyLink,
 }
@@ -41,8 +41,8 @@ export const Profile: FC<IProfile> = ({
         dispatch(SystemActions.setIsOpenProfile(!isOpenProfile));
         break;
       }
-      case EnumMenuActions.OpenSettings: {
-        forwardTo('/settings/account');
+      case EnumMenuActions.ProfileSettings: {
+        forwardTo('/settings/profile');
         break;
       }
       case EnumMenuActions.AddBoard: {
@@ -112,7 +112,7 @@ export const Profile: FC<IProfile> = ({
           text="Profile Settings"
           imageSrc="/assets/svg/menu/profile-settings.svg"
           onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.OpenSettings);
+            menuButtonClickHandler(EnumMenuActions.ProfileSettings);
           }}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />

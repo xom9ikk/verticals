@@ -46,6 +46,11 @@ export interface IUpdateBoardCardType {
   cardType: EnumTodoType;
 }
 
+export interface IUpdateBoardIcon {
+  id: number;
+  icon: string;
+}
+
 export interface IRemoveBoard {
   id: number;
 }

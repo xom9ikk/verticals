@@ -63,6 +63,7 @@ export const RoundedButton: FC<IRoundedButton> = ({
     isActive,
     text,
     color,
+    icon,
     children,
   ]);
 

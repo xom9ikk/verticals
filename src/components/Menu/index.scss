@@ -11,7 +11,14 @@
   padding: 8px 10px;
   border-radius: 6px;
   transition: background .2s ease-in-out, opacity .2s ease-in-out, width .2s ease-in-out, padding .2s ease-in-out;
-
+  &__icons-container {
+    display: flex;
+    padding-left: 8px;
+    margin-bottom: -15px;
+    flex-wrap: wrap;
+    max-height: 200px;
+    overflow: scroll;
+  }
   span {
     font-size: 15px;
     color: transparent;

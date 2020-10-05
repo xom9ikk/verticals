@@ -88,6 +88,7 @@ export function* watchBoard() {
     takeLatest(BoardsActions.Type.UPDATE_DESCRIPTION, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_COLOR, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_CARD_TYPE, updateWorker),
+    takeLatest(BoardsActions.Type.UPDATE_ICON, updateWorker),
     takeLatest(BoardsActions.Type.RESET_COLOR, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_POSITION, updatePositionWorker),
   ]);

@@ -76,6 +76,13 @@ export const BoardsReducer = handleActions<IBoards, any>({
             cardType: action.payload.cardType,
           }
           : board))),
+  [BoardsActions.Type.UPDATE_ICON]:
+        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
+          ? {
+            ...board,
+            icon: action.payload.icon,
+          }
+          : board))),
   [BoardsActions.Type.REMOVE]:
         (state, action) => state
           .filter((board: IBoard) => board.id !== action.payload.id)
