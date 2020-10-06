@@ -10,7 +10,7 @@ import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
 import { useDispatch } from 'react-redux';
 import {
-  BoardsActions, SystemActions,
+  BoardsActions, ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';

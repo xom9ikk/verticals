@@ -199,27 +199,25 @@ export const Card: FC<ICard> = ({
     [],
   );
 
-  const card = useMemo(() => {
-    console.log('rerender crd', status);
-    return (
-      <div
-        className={`card__block-wrapper 
+  const card = useMemo(() => (
+    <div
+      className={`card__block-wrapper 
           ${isEditable ? 'card__block-wrapper--editable' : ''}
         `}
-        onClick={handleClick}
+      onClick={handleClick}
+    >
+      <Bullet
+        type={cardType}
+        status={status}
+        onChangeStatus={changeStatusHandler}
+      />
+      <div
+        className="card__block"
+        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
+        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+        onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
       >
-        <Bullet
-          type={cardType}
-          status={status}
-          onChangeStatus={changeStatusHandler}
-        />
-        <div
-          className="card__block"
-          onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-          onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
-          onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
-        >
-          {
+        {
               isEditable ? (
                 <div
                   className="card__editable-content"
@@ -256,10 +254,10 @@ export const Card: FC<ICard> = ({
 
               )
             }
-        </div>
       </div>
-    );
-  }, [
+    </div>
+  ),
+  [
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,

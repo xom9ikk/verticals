@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
 import { EnumColors, ITodo } from '@/types';
-import { ColumnsActions, TodosActions } from '@/store/actions';
+import { ColumnsActions, SystemActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
 import { FallbackLoader } from '@comp/FallbackLoader';
@@ -41,9 +41,9 @@ export const Columns: FC<IColumns> = () => {
   const { filterTodos } = useFilterTodos();
   const {
     columns, todos, system:
-      {
-        query, isLoadedBoards, isLoadedColumns, activeBoardId,
-      },
+        {
+          query, isLoadedBoards, isLoadedColumns, activeBoardId,
+        },
   } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<number>>([]);
@@ -52,8 +52,16 @@ export const Columns: FC<IColumns> = () => {
 
   useEffect(() => {
     if (activeBoardId !== null) {
-      dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
-      dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
+      console.log('1) set is loaded columns');
+      dispatch(SystemActions.setIsLoadedColumns(false));
+      dispatch(SystemActions.setIsLoadedTodos(false));
+      const timeout = setTimeout(() => {
+        dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
+        dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
+      }, 500);
+      return () => {
+        clearInterval(timeout);
+      };
     }
   }, [activeBoardId]);
 
@@ -62,27 +70,27 @@ export const Columns: FC<IColumns> = () => {
     console.time('create map');
     const data = {};
     const _orderedId: Array<number> = [];
-      columns
-          ?.filter((column) => column.boardId === activeBoardId)
-          ?.sort((a, b) => a.position - b.position)
-          ?.forEach((column) => {
-            // @ts-ignore
-            data[`column-${column.id}`] = {
-              ...column,
-              todos: todos.filter((todo) => todo.columnId === column.id),
-            };
-            _orderedId.push(column.id);
-          });
-      // console.log('===prep', data);
-      setPreparedData(data);
-      setOrderedId(_orderedId);
-      // setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
-      console.timeEnd('create map');
+    columns
+        ?.filter((column) => column.boardId === activeBoardId)
+        ?.sort((a, b) => a.position - b.position)
+        ?.forEach((column) => {
+          // @ts-ignore
+          data[`column-${column.id}`] = {
+            ...column,
+            todos: todos.filter((todo) => todo.columnId === column.id),
+          };
+          _orderedId.push(column.id);
+        });
+    // console.log('===prep', data);
+    setPreparedData(data);
+    setOrderedId(_orderedId);
+    // setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
+    console.timeEnd('create map');
   }, [activeBoardId, columns, todos]);
 
-  useEffect(() => {
-    scrollToRight();
-  }, [preparedData]);
+  // useEffect(() => {
+  //   scrollToRight();
+  // }, [preparedData]);
 
   const onDragEnd = (result: DropResult) => {
     // if (result.combine) {
@@ -228,37 +236,41 @@ export const Columns: FC<IColumns> = () => {
     // };
   };
 
-  const memoColumns = useMemo(() => (
-    orderedId && orderedId.map((_key, index) => {
-      const key = `column-${_key}`;
-      if (query) {
-        const isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
-        if (!isContainTodosByQuery) {
-          return null;
+  const memoColumns = useMemo(() => {
+    console.log('memoColumns');
+    return (
+      orderedId.length !== 0 && orderedId.map((_key, index) => {
+        const key = `column-${_key}`;
+        if (query) {
+          const isContainTodosByQuery = preparedData[key].todos.filter(filterTodos).length > 0;
+          if (!isContainTodosByQuery) {
+            return null;
+          }
         }
-      }
-      return (
-        <Column
-          index={index}
-          color={preparedData[key].color}
-          isCollapsed={preparedData[key].isCollapsed}
-          columnId={_key}
-          boardId={activeBoardId}
-          belowId={preparedData[key]?.belowId}
-          key={key}
-          title={preparedData[key].title}
-          todos={preparedData[key].todos} // TODO: useSelector in column
-          description={preparedData[key].description}
-        />
-      );
-    })
-  ), [preparedData, orderedId, activeBoardId, query]);
+        return (
+          <Column
+            key={key}
+            index={index}
+            color={preparedData[key].color}
+            isCollapsed={preparedData[key].isCollapsed}
+            columnId={_key}
+            boardId={activeBoardId}
+            belowId={preparedData[key]?.belowId}
+            title={preparedData[key].title}
+            todos={preparedData[key].todos} // TODO: useSelector in column
+            description={preparedData[key].description}
+          />
+        );
+      })
+    );
+  }, [preparedData, activeBoardId, query]);
 
   const memoNewColumn = useMemo(() => (
     <Column
       boardId={activeBoardId}
       index={orderedId.length}
       isNew
+      scrollToRight={scrollToRight}
     />
   ), [activeBoardId, orderedId]);
 
@@ -268,7 +280,7 @@ export const Columns: FC<IColumns> = () => {
       boardId={activeBoardId}
       key="column-deleted"
       title="Deleted cards"
-      // todos={preparedData[key].todos}
+          // todos={preparedData[key].todos}
       description="Restore deleted cards"
       isDeleted
     />
@@ -290,6 +302,18 @@ export const Columns: FC<IColumns> = () => {
             }}
             {...provided.droppableProps}
           >
+            <FallbackLoader
+              backgroundColor="#ffffff"
+              isAbsolute
+              size="medium"
+              delay={1000}
+              minimumZIndex={1000}
+              isLoading={
+                      !isLoadedBoards
+                      || !isLoadedColumns
+                      // || Object.keys(preparedData).length === 0
+                    }
+            />
             {
               activeBoardId === -1 ? memoDeletedCardsColumn : (
                 <>
@@ -297,23 +321,13 @@ export const Columns: FC<IColumns> = () => {
                   { memoNewColumn }
                 </>
               )
-            }
+             }
             {provided.placeholder}
-            <FallbackLoader
-              backgroundColor="#ffffff"
-              isAbsolute
-              size="medium"
-              isLoading={
-                  !isLoadedBoards
-                  || !isLoadedColumns
-                  // || Object.keys(preparedData).length === 0
-                }
-            />
           </div>
         )}
       </Droppable>
     </DragDropContext>
-  ), [activeBoardId, orderedId, isLoadedBoards, isLoadedColumns, preparedData, query]);
+  ), [isLoadedBoards, isLoadedColumns, activeBoardId, orderedId, preparedData, query]);
 
   return (
     <>

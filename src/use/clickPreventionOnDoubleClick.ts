@@ -1,9 +1,9 @@
-import { SyntheticEvent } from 'react';
+import React from 'react';
 import { useCancellablePromises } from './cancellablePromise';
 
 export const useClickPreventionOnDoubleClick = (
-  onClick: (event: SyntheticEvent) => void,
-  onDoubleClick: (event: SyntheticEvent) => void,
+  onClick: (event: React.SyntheticEvent) => void,
+  onDoubleClick: (event: React.SyntheticEvent) => void,
   isStopPropagation?: boolean,
 ) => {
   const {
@@ -14,7 +14,7 @@ export const useClickPreventionOnDoubleClick = (
     delay,
   } = useCancellablePromises();
 
-  const handleClick = (event: SyntheticEvent) => {
+  const handleClick = (event: React.SyntheticEvent) => {
     if (isStopPropagation) {
       console.log('====stop propagation');
       event.stopPropagation();
@@ -36,7 +36,7 @@ export const useClickPreventionOnDoubleClick = (
       });
   };
 
-  const handleDoubleClick = (event: SyntheticEvent) => {
+  const handleDoubleClick = (event: React.SyntheticEvent) => {
     if (isStopPropagation) {
       event.stopPropagation();
     }

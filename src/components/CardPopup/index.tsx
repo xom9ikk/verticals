@@ -114,11 +114,9 @@ export const CardPopup: FC<ICardPopup> = ({
   // @ts-ignore
   const colorClass = todo?.color !== undefined ? `card-popup__inner--${Object.values(EnumColors)[todo.color]?.toLowerCase()}` : '';
 
-  const memoCardPopup = useMemo(() => {
-    console.log('todo', todo);
-    return (
-      <>
-        {
+  const memoCardPopup = useMemo(() => (
+    <>
+      {
             todo ? (
               <div
                 className={`card-popup ${todo ? 'card-popup--opened' : ''}`}
@@ -256,9 +254,9 @@ export const CardPopup: FC<ICardPopup> = ({
               <div className="card-popup" />
             )
           }
-      </>
-    );
-  }, [todo, titleValue, descriptionValue, isProgress, cardType]);
+    </>
+  ),
+  [todo, titleValue, descriptionValue, isProgress, cardType]);
 
   return (
     <>

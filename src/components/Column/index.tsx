@@ -38,6 +38,7 @@ interface IColumn {
   todos?: ITodos;
   isNew?: boolean;
   isDeleted?: boolean;
+  scrollToRight?: () => void;
 }
 
 enum EnumMenuActions {
@@ -61,6 +62,7 @@ export const Column: FC<IColumn> = ({
   todos,
   isNew,
   isDeleted,
+  scrollToRight,
 }) => {
   const dispatch = useDispatch();
 
@@ -113,7 +115,9 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
-      setTimeout(() => setIsOpenNewCard(true));
+      setTimeout(() => {
+        setIsOpenNewCard(true);
+      });
       dispatch(TodosActions.create({
         columnId: columnId!,
         title,
@@ -157,6 +161,7 @@ export const Column: FC<IColumn> = ({
       }
     } else if (title) {
       setTimeout(() => {
+        scrollToRight?.();
         setIsEditable(true);
       });
       dispatch(ColumnsActions.create({
