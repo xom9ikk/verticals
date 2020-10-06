@@ -90,18 +90,18 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
-  const keydownHandler = (event: any, isDescription: boolean) => {
+  const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      if (!isDescription) {
-        setTitleValue(titleValue.trim());
-        focus(descriptionInputRef);
-      } else {
-        saveTodo();
-        setIsEditable(false);
-      }
+      // if (!isDescription) {
+      // setTitleValue(titleValue.trim());
+      // focus(descriptionInputRef);
+      // } else {
+      saveTodo();
+      setIsEditable(false);
+      // }
     }
   };
 
@@ -231,8 +231,8 @@ export const Card: FC<ICard> = ({
                     placeholder="New Card"
                     minRows={1}
                     maxRows={20}
+                    onKeyDownCapture={(event: any) => keydownHandler(event)}
                     onChange={(event: any) => changeTextHandler(event, false)}
-                    onKeyUp={(event: any) => keydownHandler(event, false)}
                   />
                   <TextArea
                     ref={descriptionInputRef}
@@ -241,8 +241,8 @@ export const Card: FC<ICard> = ({
                     placeholder="Notes"
                     minRows={1}
                     maxRows={20}
+                    onKeyDownCapture={(event: any) => keydownHandler(event)}
                     onChange={(event: any) => changeTextHandler(event, true)}
-                    onKeyDownCapture={(event: any) => keydownHandler(event, true)}
                   />
                 </div>
               ) : (

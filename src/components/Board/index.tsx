@@ -72,7 +72,7 @@ export const Board: FC<IBoard> = ({
   color,
   title: initialTitle = '',
   countTodos,
-  description: initialDescription,
+  description: initialDescription = '',
   isEditableDefault,
   onExitFromEditable,
   isActive = false,
@@ -85,8 +85,8 @@ export const Board: FC<IBoard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const { isEditableBoard } = useSelector((state: IRootState) => state.system);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const [titleValue, setTitleValue] = useState<string>(initialTitle || '');
-  const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription || '');
+  const [titleValue, setTitleValue] = useState<string>(initialTitle);
+  const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
@@ -125,18 +125,13 @@ export const Board: FC<IBoard> = ({
     focus(titleInputRef);
   }, [isEditable]);
 
-  const keydownHandler = (event: any, isDescription: boolean) => {
+  const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      if (!isDescription) {
-        setTitleValue(titleValue.trim());
-        focus(descriptionInputRef);
-      } else {
-        saveBoard();
-        setIsEditable(false);
-      }
+      setIsEditable(false);
+      saveBoard();
     }
   };
 
@@ -307,6 +302,7 @@ export const Board: FC<IBoard> = ({
                 const link = `/assets/svg/board/${filename}.svg`;
                 return (
                   <Menu
+                    key={filename}
                     imageSrc={link}
                     alt={filename}
                     imageSize={24}
@@ -399,7 +395,7 @@ export const Board: FC<IBoard> = ({
                       minRows={1}
                       maxRows={20}
                       onChange={(event: any) => changeHandler(event, false)}
-                      onKeyUp={(event: any) => keydownHandler(event, false)}
+                      onKeyDownCapture={(event: any) => keydownHandler(event)}
                     />
                     <TextArea
                       ref={descriptionInputRef}
@@ -409,7 +405,7 @@ export const Board: FC<IBoard> = ({
                       minRows={1}
                       maxRows={20}
                       onChange={(event: any) => changeHandler(event, true)}
-                      onKeyDownCapture={(event: any) => keydownHandler(event, true)}
+                      onKeyDownCapture={(event: any) => keydownHandler(event)}
                     />
                   </div>
                 </div>

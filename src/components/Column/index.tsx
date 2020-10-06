@@ -113,6 +113,7 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
+      setTimeout(() => setIsOpenNewCard(true));
       dispatch(TodosActions.create({
         columnId: columnId!,
         title,
@@ -155,6 +156,9 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
+      setTimeout(() => {
+        setIsEditable(true);
+      });
       dispatch(ColumnsActions.create({
         boardId: boardId!,
         title,
@@ -169,18 +173,13 @@ export const Column: FC<IColumn> = ({
     setIsHover(false);
   };
 
-  const keydownHandler = (event: any, isDescription: boolean) => {
+  const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      if (!isDescription) {
-        focus(descriptionInputRef);
-        setTitleValue(titleValue.trim());
-      } else {
-        saveColumn();
-        setIsEditable(false);
-      }
+      setIsEditable(false);
+      saveColumn();
     }
   };
 
@@ -402,8 +401,8 @@ export const Column: FC<IColumn> = ({
               placeholder="Notes"
               minRows={1}
               maxRows={4}
+              onKeyDownCapture={(event) => keydownHandler(event)}
               onChange={(event) => changeHandler(event, true)}
-              onKeyUp={(event) => keydownHandler(event, true)}
             />
           ) : (
             <span
@@ -433,8 +432,8 @@ export const Column: FC<IColumn> = ({
                 placeholder="New column"
                 minRows={1}
                 maxRows={4}
+                onKeyDownCapture={(event) => keydownHandler(event)}
                 onChange={(event) => changeHandler(event, false)}
-                onKeyUp={(event) => keydownHandler(event, false)}
               />
             ) : (
               <>

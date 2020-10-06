@@ -34,7 +34,7 @@ ReactDOM.render(
 setInterval(() => {
   console.log('rebuild');
   ReactTooltip.rebuild();
-}, 100);
+}, 2000);
 
 // @ts-ignore
 if (module.hot) {

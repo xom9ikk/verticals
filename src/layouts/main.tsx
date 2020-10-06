@@ -10,14 +10,13 @@ import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
 import { useDispatch } from 'react-redux';
 import {
-  BoardsActions, ColumnsActions, SystemActions, TodosActions,
+  BoardsActions, SystemActions,
 } from '@/store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@/use/readableId';
-import { forwardTo } from '@/router/history';
 
 const { toNumericId } = useReadableId();
 
@@ -28,7 +27,6 @@ export const MainLayout: FC = ({ match }) => {
 
   const { boardId, todoId } = match.params;
 
-  console.log('math', match.params);
   const numericBoardId = boardId === 'trash'
     ? -1
     : boardId !== undefined
@@ -51,14 +49,14 @@ export const MainLayout: FC = ({ match }) => {
   const closeAllPopups = () => {
     // TODO: refactor this. useOutsideClick
     console.log('closeAllPopups');
-    dispatch(SystemActions.setIsOpenPopup(false));
-    dispatch(SystemActions.setIsEditableCard(false));
-    dispatch(SystemActions.setIsEditableColumn(false));
-    dispatch(SystemActions.setIsEditableBoard(false));
-    forwardTo(`/userId/${refBoardId.current}`);
-    dispatch(BoardsActions.removeTemp());
-    dispatch(ColumnsActions.removeTemp());
-    dispatch(TodosActions.removeTemp());
+    // dispatch(SystemActions.setIsOpenPopup(false));
+    // dispatch(SystemActions.setIsEditableCard(false));
+    // dispatch(SystemActions.setIsEditableColumn(false));
+    // dispatch(SystemActions.setIsEditableBoard(false));
+    // forwardTo(`/userId/${refBoardId.current}`);
+    // dispatch(BoardsActions.removeTemp());
+    // dispatch(ColumnsActions.removeTemp());
+    // dispatch(TodosActions.removeTemp());
   };
 
   const keydownHandler = (event: any) => {

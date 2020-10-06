@@ -5,11 +5,11 @@
 <style type="text/css">
 	.st0{fill:#CC0039;}
 	.st1{fill:#F00044;}
-	.st2{fill:#B10042;}
+	.st2{opacity:0.82;fill:#B10042;}
 	.st3{fill:#08FFF9;}
 	.st4{fill:#00CCC7;}
-	.st5{opacity:0.76;fill:#212440;}
-	.st6{opacity:0.76;}
+	.st5{opacity:0.37;fill:#212440;}
+	.st6{opacity:0.37;}
 </style>
 <path class="st0" d="M342.5,118.8c-13-17.2-20.7-38.6-20.7-61.7c0-14.8-9-27.5-21.8-33.1c1.8,4.2,2.7,8.9,2.7,13.8
 	C302.8,70.7,318.3,100,342.5,118.8z"/>

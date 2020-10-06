@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define,no-underscore-dangle,no-plusplus */
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
   DragDropContext, DraggableLocation, Droppable, DroppableProvided, DropResult,
@@ -12,6 +12,7 @@ import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
 import { FallbackLoader } from '@comp/FallbackLoader';
+import { useAutoScroll } from '@/use/autoScroll';
 
 interface TodoMap {
   [key: string]: {
@@ -29,13 +30,14 @@ interface IColumns {
 }
 
 type ReorderTodoMapArgs = {
-  quoteMap: TodoMap,
+  todoMap: TodoMap,
   source: DraggableLocation,
   destination: DraggableLocation,
 };
 
 export const Columns: FC<IColumns> = () => {
   const dispatch = useDispatch();
+  const columnsRef = useRef<any>();
   const { filterTodos } = useFilterTodos();
   const {
     columns, todos, system:
@@ -46,6 +48,8 @@ export const Columns: FC<IColumns> = () => {
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<number>>([]);
 
+  const { scrollToRight } = useAutoScroll(columnsRef);
+
   useEffect(() => {
     if (activeBoardId !== null) {
       dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
@@ -53,23 +57,32 @@ export const Columns: FC<IColumns> = () => {
     }
   }, [activeBoardId]);
 
+  // TODO: optimize this
   useEffect(() => {
+    console.time('create map');
     const data = {};
+    const _orderedId: Array<number> = [];
       columns
           ?.filter((column) => column.boardId === activeBoardId)
           ?.sort((a, b) => a.position - b.position)
           ?.forEach((column) => {
-            // console.log('prepare column', column);
             // @ts-ignore
             data[`column-${column.id}`] = {
               ...column,
               todos: todos.filter((todo) => todo.columnId === column.id),
             };
+            _orderedId.push(column.id);
           });
       // console.log('===prep', data);
       setPreparedData(data);
-      setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
+      setOrderedId(_orderedId);
+      // setOrderedId(Object.keys(data).map((key) => Number(key.split('column-')[1])));
+      console.timeEnd('create map');
   }, [activeBoardId, columns, todos]);
+
+  useEffect(() => {
+    scrollToRight();
+  }, [preparedData]);
 
   const onDragEnd = (result: DropResult) => {
     // if (result.combine) {
@@ -129,7 +142,7 @@ export const Columns: FC<IColumns> = () => {
       return;
     }
     const data = reorderTodoMap({
-      quoteMap: preparedData,
+      todoMap: preparedData,
       source,
       destination,
     });
@@ -148,19 +161,16 @@ export const Columns: FC<IColumns> = () => {
   };
 
   const reorderTodoMap = ({
-    quoteMap,
+    todoMap,
     source,
     destination,
   }: ReorderTodoMapArgs): TodoMap => {
-    // const current = quoteMap[source.droppableId];
-    const currentTodos: ITodo[] = [...quoteMap[source.droppableId].todos];
-
-    // const next = quoteMap[destination.droppableId];
-    // const nextTodos: ITodo[] = [...quoteMap[destination.droppableId].todos];
+    // const current = todoMap[source.droppableId];
+    const currentTodos: ITodo[] = [...todoMap[source.droppableId].todos];
 
     const target: ITodo = currentTodos[source.index];
     if (!target) {
-      return quoteMap;
+      return todoMap;
     }
     // moving to same list
     const sourcePosition = source.index;
@@ -173,13 +183,13 @@ export const Columns: FC<IColumns> = () => {
         destinationPosition,
         columnId: targetColumnId,
       }));
-      return quoteMap;
+      return todoMap;
       // const reordered = {
       //   ...current,
       //   todos: reorder(currentTodos, sourcePosition, destinationPosition, true),
       // };
       // return {
-      //   ...quoteMap,
+      //   ...todoMap,
       //   [source.droppableId]: reordered,
       // };
     }
@@ -193,7 +203,7 @@ export const Columns: FC<IColumns> = () => {
       destinationPosition,
     }));
 
-    return quoteMap;
+    return todoMap;
 
     // // TODO delete this code
     // // remove from original
@@ -202,7 +212,7 @@ export const Columns: FC<IColumns> = () => {
     // nextTodos.splice(destination.index, 0, target);
     //
     // return {
-    //   ...quoteMap,
+    //   ...todoMap,
     //   [source.droppableId]: {
     //     ...current,
     //     todos: currentTodos.map((todo, index) => ({
@@ -237,7 +247,7 @@ export const Columns: FC<IColumns> = () => {
           belowId={preparedData[key]?.belowId}
           key={key}
           title={preparedData[key].title}
-          todos={preparedData[key].todos}
+          todos={preparedData[key].todos} // TODO: useSelector in column
           description={preparedData[key].description}
         />
       );
@@ -264,43 +274,50 @@ export const Columns: FC<IColumns> = () => {
     />
   ), [activeBoardId]);
 
-  return (
-    <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable
-          droppableId={`board-${activeBoardId}`}
-          type="COLUMN"
-          direction="horizontal"
-        >
-          {(provided: DroppableProvided) => (
-            <div
-              className="columns"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {
-                activeBoardId === -1 ? memoDeletedCardsColumn : (
-                  <>
-                    { memoColumns }
-                    { memoNewColumn }
-                  </>
-                )
-              }
-              {provided.placeholder}
-              <FallbackLoader
-                backgroundColor="#ffffff"
-                isAbsolute
-                size="medium"
-                isLoading={
+  const memoColumnsContainer = useMemo(() => (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable
+        droppableId={`board-${activeBoardId}`}
+        type="COLUMN"
+        direction="horizontal"
+      >
+        {(provided: DroppableProvided) => (
+          <div
+            className="columns"
+            ref={(r) => {
+              columnsRef.current = r;
+              provided.innerRef(r);
+            }}
+            {...provided.droppableProps}
+          >
+            {
+              activeBoardId === -1 ? memoDeletedCardsColumn : (
+                <>
+                  { memoColumns }
+                  { memoNewColumn }
+                </>
+              )
+            }
+            {provided.placeholder}
+            <FallbackLoader
+              backgroundColor="#ffffff"
+              isAbsolute
+              size="medium"
+              isLoading={
                   !isLoadedBoards
                   || !isLoadedColumns
                   // || Object.keys(preparedData).length === 0
                 }
-              />
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+            />
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  ), [activeBoardId, orderedId, isLoadedBoards, isLoadedColumns, preparedData, query]);
+
+  return (
+    <>
+      {memoColumnsContainer}
     </>
   );
 };

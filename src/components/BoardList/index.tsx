@@ -72,6 +72,7 @@ export const BoardList: FC<IBoardList> = () => {
         }));
       }
     } else if (title) {
+      setTimeout(() => setIsOpenNewBoard(true));
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
         title,
