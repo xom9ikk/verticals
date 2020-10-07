@@ -27,4 +27,5 @@ export enum EnumTodoStatus {
   Todo,
   Doing,
   Done,
+  Canceled,
 }

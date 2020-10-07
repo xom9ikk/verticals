@@ -72,7 +72,7 @@ export const LockedInput: FC<ILockedInput> = ({
             ) : (
               <img
                 className="locked-input__indicator"
-                src="/assets/svg/menu/tick-active.svg"
+                src="/assets/svg/menu/tick.svg"
                 alt="tick"
               />
             )

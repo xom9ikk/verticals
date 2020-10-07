@@ -176,74 +176,79 @@ export const CommentItem: FC<ICommentItem> = ({
 
   return (
     <div
-      className={`comment 
-      ${isDoubleClick ? 'comment--pressed' : ''}
-      ${isEditable ? 'comment--editable' : ''}
-      `}
+      className="comment"
       onDoubleClick={() => setIsDoubleClick(true)}
     >
-      {memoComment}
-      <div className="comment__controls">
-        <div className="comment__controls--buttons">
-          <Menu
-            imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg`}
-            tooltip={`${isLikeByMe ? 'Unlike' : 'Like'}`}
-            alt="like"
-            imageSize={16}
-            size={22}
-            isShowPopup={false}
-            onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
-          />
-          <Menu
-            imageSrc="/assets/svg/reply.svg"
-            tooltip="Reply"
-            alt="reply"
-            imageSize={16}
-            size={22}
-            isShowPopup={false}
-            onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
-          />
-        </div>
-        <div className="comment__controls--actions">
-          {
-            isEdited && (
-            <span>Edited</span>
-            )
-          }
-          <div className="comment__date">{formatDate(new Date(date))}</div>
-          <Avatar size={20} />
-          <Menu
-            imageSrc="/assets/svg/dots.svg"
-            tooltip="More"
-            alt="menu"
-            imageSize={16}
-            size={22}
-            position="right"
-          >
-            <MenuButton
-              text={`${isLikeByMe ? 'Unlike' : 'Like'}`}
-              imageSrc="/assets/svg/like.svg"
+      <Avatar />
+      <div
+        className={`comment__wrapper
+        ${isDoubleClick ? 'comment__wrapper--pressed' : ''}
+        ${isEditable ? 'comment__wrapper--editable' : ''}
+        `}
+      >
+        {memoComment}
+        <div className="comment__controls">
+          <div className="comment__controls--buttons">
+            <Menu
+              imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg`}
+              tooltip={`${isLikeByMe ? 'Unlike' : 'Like'}`}
+              alt="like"
+              imageSize={16}
+              size={22}
+              isShowPopup={false}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
             />
-            <MenuButton
-              text="Reply"
+            <Menu
               imageSrc="/assets/svg/reply.svg"
+              tooltip="Reply"
+              alt="reply"
+              imageSize={16}
+              size={22}
+              isShowPopup={false}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
             />
-            <MenuButton
-              text="Edit"
-              imageSrc="/assets/svg/menu/edit.svg"
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
-            />
-            <Divider verticalSpacer={7} horizontalSpacer={10} />
-            <MenuButton
-              text="Delete"
-              imageSrc="/assets/svg/menu/remove.svg"
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
-            />
-          </Menu>
+          </div>
+          <div className="comment__controls--actions">
+            {
+              isEdited && (
+              <span>Edited</span>
+              )
+            }
+            <div className="comment__date">{formatDate(new Date(date))}</div>
+            <Menu
+              imageSrc="/assets/svg/dots.svg"
+              tooltip="More"
+              alt="menu"
+              imageSize={16}
+              size={22}
+              position="right"
+            >
+              <MenuButton
+                text={`${isLikeByMe ? 'Unlike' : 'Like'}`}
+                imageSrc="/assets/svg/like.svg"
+                onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
+              />
+              <MenuButton
+                text="Reply"
+                imageSrc="/assets/svg/reply.svg"
+                onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
+              />
+              <MenuButton
+                text="Edit"
+                imageSrc="/assets/svg/menu/edit.svg"
+                onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
+              />
+              <Divider verticalSpacer={7} horizontalSpacer={10} />
+              <MenuButton
+                text="Delete"
+                imageSrc="/assets/svg/menu/remove.svg"
+                onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
+              />
+            </Menu>
+          </div>
         </div>
       </div>
+
     </div>
   );
 };

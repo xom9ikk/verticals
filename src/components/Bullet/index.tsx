@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-static-element-interactions,no-nested-ternary */
 import React, {
   FC,
 } from 'react';
@@ -10,7 +10,7 @@ const bullets = ['arrow', 'dot', 'dash'];
 interface IBullet {
   type: EnumTodoType;
   status: EnumTodoStatus;
-  onChangeStatus: ()=>void;
+  onChangeStatus: (event: any) => void;
 }
 
 export const Bullet: FC<IBullet> = ({
@@ -24,13 +24,15 @@ export const Bullet: FC<IBullet> = ({
         return (
           <>
             {
-              status === EnumTodoStatus.Doing && (
-              <div className="card__overlay-doing" />
-              )
+              status === EnumTodoStatus.Doing ? (
+                <div className="card__overlay-doing" />
+              ) : status === EnumTodoStatus.Canceled ? (
+                <div className="card__overlay-canceled" />
+              ) : null
             }
             <Checkbox
               isActive={status === EnumTodoStatus.Done}
-              onClick={onChangeStatus}
+              onChange={onChangeStatus}
               style={{ marginTop: 10, marginBottom: 10 }}
             />
           </>

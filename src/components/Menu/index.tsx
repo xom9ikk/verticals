@@ -24,6 +24,7 @@ interface IMenu {
   isAbsolute?: boolean;
   isInvertColor?: boolean;
   isPrimary?: boolean;
+  isColored?: boolean;
   style?: any;
 }
 
@@ -45,6 +46,7 @@ export const Menu: FC<IMenu> = ({
   isAbsolute = true,
   isInvertColor,
   isPrimary,
+  isColored,
   style,
   children,
 }) => {
@@ -100,6 +102,9 @@ export const Menu: FC<IMenu> = ({
     }
     if (isInvertColor) {
       classes.push('menu--invert');
+    }
+    if (isColored) {
+      classes.push('menu--colored');
     }
 
     const clickHandler = (event: SyntheticEvent) => {

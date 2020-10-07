@@ -123,8 +123,13 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
-  const changeStatusHandler = () => {
-    if (status === EnumTodoStatus.Done) {
+  const changeStatusHandler = (event: any) => {
+    const { shiftKey, metaKey } = event.nativeEvent;
+    if (shiftKey) {
+      saveTodo({ newStatus: EnumTodoStatus.Canceled });
+    } else if (metaKey) {
+      saveTodo({ newStatus: EnumTodoStatus.Doing });
+    } else if (status === EnumTodoStatus.Done) {
       saveTodo({ newStatus: EnumTodoStatus.Todo });
     } else {
       saveTodo({ newStatus: EnumTodoStatus.Done });
@@ -250,7 +255,9 @@ export const Card: FC<ICard> = ({
                 </div>
               ) : (
                 <div
-                  className="card__inner"
+                  className={`card__inner 
+                  ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
+                  `}
                 >
                   <span>
                     {titleValue}

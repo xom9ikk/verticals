@@ -136,6 +136,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 imageSize={24}
                 size={26}
                 isShowPopup={false}
+                isColored
                 onClick={() => {
                 }}
               />
@@ -146,6 +147,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 imageSize={24}
                 size={26}
                 isShowPopup={false}
+                isColored
                 onClick={() => {
                 }}
               />

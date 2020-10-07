@@ -21,13 +21,11 @@
     right: 0;
     border-radius: 6px;
     transition: background .1s ease-in-out;
+    filter: grayscale(1) brightness(1.4);
 
     &:hover {
       background: $primary-light;
-
-      img {
-        filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg);
-      }
+      filter: none;
     }
 
     img {

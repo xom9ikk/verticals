@@ -35,7 +35,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
     setIsHover(false);
   };
 
-  const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick-active.svg' : '');
+  const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick.svg' : '');
 
   const menuButtonClickHandler = (action: EnumToolbarActions, payload?: any) => {
     switch (action) {
@@ -123,6 +123,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             <MenuButton
               text="English"
               hintImageSrc={getTickSvg(EnumLanguage.English)}
+              isColoredHintImage
               onClick={() => menuButtonClickHandler(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.English,
               )}
@@ -130,6 +131,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             <MenuButton
               text="Русский"
               hintImageSrc={getTickSvg(EnumLanguage.Russian)}
+              isColoredHintImage
               onClick={() => menuButtonClickHandler(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.Russian,
               )}
@@ -137,6 +139,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             <MenuButton
               text="Français"
               hintImageSrc={getTickSvg(EnumLanguage.French)}
+              isColoredHintImage
               onClick={() => menuButtonClickHandler(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.French,
               )}
@@ -144,6 +147,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             <MenuButton
               text="Español"
               hintImageSrc={getTickSvg(EnumLanguage.Spanish)}
+              isColoredHintImage
               onClick={() => menuButtonClickHandler(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.Spanish,
               )}

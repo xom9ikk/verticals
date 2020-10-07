@@ -11,6 +11,7 @@
   padding: 8px 10px;
   border-radius: 6px;
   transition: background .2s ease-in-out, opacity .2s ease-in-out, width .2s ease-in-out, padding .2s ease-in-out;
+
   &__icons-container {
     display: flex;
     padding-left: 8px;
@@ -19,6 +20,17 @@
     max-height: 200px;
     overflow: scroll;
   }
+
+  &--colored {
+    img {
+      filter: none !important;
+    }
+  }
+
+  img {
+    filter: grayscale(1) brightness(1.4);
+  }
+
   span {
     font-size: 15px;
     color: transparent;
@@ -30,7 +42,7 @@
     background: $primary-light;
 
     img {
-      filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg)
+      filter: none;
     }
 
     span {
@@ -62,8 +74,10 @@
 
   &--primary {
     background: $primary;
+
     &:hover {
       background: rgba(38, 136, 243, 0.8);
+
       img {
         filter: none;
       }

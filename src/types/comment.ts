@@ -12,6 +12,8 @@ export interface IImage {
 
 export interface IComment {
   id: string;
+  userId: number;
+  userAvatar: string;
   date: number;
   todoId: number;
   text?: string;

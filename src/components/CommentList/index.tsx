@@ -20,7 +20,10 @@ const CommentListComponent = ({
           <>
             {
               data.map((comment: IComment) => (
-                <CommentItem key={comment.id} comment={comment} />
+                <CommentItem
+                  key={comment.id}
+                  comment={comment}
+                />
               ))
             }
           </>

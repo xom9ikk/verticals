@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, {
   FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -152,22 +153,31 @@ export const CardPopup: FC<ICardPopup> = ({
                   <div className="card-popup__header">
                     <div className="card-popup__input-container">
                       {
-                        todo.status === EnumTodoStatus.Doing && (
-                        <div
-                          className="card__overlay-doing"
-                          style={{
-                            marginTop: 6,
-                            width: 9,
-                            height: 18,
-                          }}
-                        />
-                        )
+                        todo.status === EnumTodoStatus.Doing ? (
+                          <div
+                            className="card__overlay-doing"
+                            style={{
+                              marginTop: 6,
+                              width: 9,
+                              height: 18,
+                            }}
+                          />
+                        ) : todo.status === EnumTodoStatus.Canceled ? (
+                          <div
+                            className="card__overlay-canceled"
+                            style={{
+                              marginTop: 6,
+                              width: 18,
+                              height: 18,
+                            }}
+                          />
+                        ) : null
                       }
                       {
                         cardType === EnumTodoType.Checkboxes && (
                         <Checkbox
                           isActive={todo.status === EnumTodoStatus.Done}
-                          onClick={changeStatusHandler}
+                          onChange={changeStatusHandler}
                           style={{
                             marginTop: 6,
                             width: 18,
@@ -207,6 +217,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           imageSize={24}
                           size={36}
                           isShowPopup={false}
+                          isColored
                         />
                         <CardContextMenu
                           id={todo.id}
@@ -220,6 +231,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           size={36}
                           imageSize={24}
                           isPrimary
+                          isColored
                           onStartEdit={() => {
                                 titleInputRef.current?.focus();
                           }}
@@ -238,6 +250,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         imageSize={24}
                         size={36}
                         isShowPopup={false}
+                        isColored
                         style={{
                           justifySelf: 'flex-end',
                         }}

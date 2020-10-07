@@ -20,6 +20,7 @@ interface ICardContextMenu {
   size?: number;
   imageSize?: number;
   isPrimary?: boolean;
+  isColored?: boolean;
   onStartEdit: () => void;
   onChangeColor: (newColor: EnumColors) => void;
   onHidePopup?: () => void;
@@ -51,6 +52,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   size,
   imageSize,
   isPrimary,
+  isColored,
   onStartEdit,
   onChangeColor,
   onHidePopup,
@@ -131,6 +133,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       imageSize={imageSize || 22}
       size={size || 24}
       isHide
+      isColored={isColored}
       isInvertColor={isActive}
       isHoverBlock={isHover}
       position="right"
@@ -162,7 +165,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         <MenuButton
           text="Mark as to do"
           imageSrc="/assets/svg/menu/rounded-square.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Todo ? '/assets/svg/menu/tick-active.svg' : ''}`}
+          hintImageSrc={`${status === EnumTodoStatus.Todo ? '/assets/svg/menu/tick.svg' : ''}`}
+          isColoredHintImage
           onClick={() => menuButtonClickHandler(
             EnumCardActions.CompleteStatus, EnumTodoStatus.Todo,
           )}
@@ -170,25 +174,47 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         <MenuButton
           text="Mark as doing"
           imageSrc="/assets/svg/menu/rounded-square-half-filled.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Doing ? '/assets/svg/menu/tick-active.svg' : ''}`}
+          hintImageSrc={`${status === EnumTodoStatus.Doing ? '/assets/svg/menu/tick.svg' : ''}`}
+          isColoredHintImage
           onClick={() => menuButtonClickHandler(
             EnumCardActions.CompleteStatus, EnumTodoStatus.Doing,
           )}
-        />
+        >
+          <span>Alt</span>
+          +
+          <span>Click</span>
+          on a checkbox to mark as doing
+        </MenuButton>
         <MenuButton
           text="Mark as done"
           imageSrc="/assets/svg/menu/rounded-square-check.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick-active.svg' : ''}`}
+          hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick.svg' : ''}`}
+          isColoredHintImage
           onClick={() => menuButtonClickHandler(
             EnumCardActions.CompleteStatus, EnumTodoStatus.Done,
           )}
         />
+        <MenuButton
+          text="Mark as canceled"
+          imageSrc="/assets/svg/menu/rounded-square-canceled.svg"
+          hintImageSrc={`${status === EnumTodoStatus.Canceled ? '/assets/svg/menu/tick.svg' : ''}`}
+          isColoredHintImage
+          onClick={() => menuButtonClickHandler(
+            EnumCardActions.CompleteStatus, EnumTodoStatus.Canceled,
+          )}
+        >
+          <span>Shift</span>
+          +
+          <span>Click</span>
+          on a checkbox to mark as canceled
+        </MenuButton>
       </Submenu>
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuButton
         text="Notifications"
         imageSrc="/assets/svg/menu/notifications.svg"
-        hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick-active.svg' : ''}`}
+        hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick.svg' : ''}`}
+        isColoredHintImage
         onClick={() => menuButtonClickHandler(EnumCardActions.Notifications)}
       />
       <MenuButton

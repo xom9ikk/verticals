@@ -13,5 +13,8 @@
   &--empty {
     justify-content: center;
     color: $text;
+    img {
+      filter: grayscale(1) brightness(1.4);
+    }
   }
 }
