@@ -25,6 +25,7 @@ import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
 import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 
 interface IColumn {
   index: number;
@@ -68,6 +69,7 @@ export const Column: FC<IColumn> = ({
 
   const { focus } = useFocus();
   const { filterTodos } = useFilterTodos();
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
 
   const {
     system: { isEditableColumn, query },
@@ -406,6 +408,7 @@ export const Column: FC<IColumn> = ({
               placeholder="Notes"
               minRows={1}
               maxRows={4}
+              onKeyDown={shiftEnterRestriction}
               onKeyDownCapture={(event) => keydownHandler(event)}
               onChange={(event) => changeHandler(event, true)}
             />
@@ -437,6 +440,7 @@ export const Column: FC<IColumn> = ({
                 placeholder="New column"
                 minRows={1}
                 maxRows={4}
+                onKeyDown={shiftEnterRestriction}
                 onKeyDownCapture={(event) => keydownHandler(event)}
                 onChange={(event) => changeHandler(event, false)}
               />

@@ -15,6 +15,7 @@ import { IRootState } from '@/store/reducers/state';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { useFocus } from '@/use/focus';
 import { EnumColors, EnumTodoType } from '@/types';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 
 const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
@@ -80,6 +81,7 @@ export const Board: FC<IBoard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
@@ -125,7 +127,7 @@ export const Board: FC<IBoard> = ({
     focus(titleInputRef);
   }, [isEditable]);
 
-  const keydownHandler = (event: any) => {
+  const keyDownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
@@ -394,8 +396,9 @@ export const Board: FC<IBoard> = ({
                       placeholder="New Board"
                       minRows={1}
                       maxRows={20}
+                      onKeyDown={shiftEnterRestriction}
                       onChange={(event: any) => changeHandler(event, false)}
-                      onKeyDownCapture={(event: any) => keydownHandler(event)}
+                      onKeyDownCapture={(event: any) => keyDownHandler(event)}
                     />
                     <TextArea
                       ref={descriptionInputRef}
@@ -404,8 +407,9 @@ export const Board: FC<IBoard> = ({
                       placeholder="Notes"
                       minRows={1}
                       maxRows={20}
+                      onKeyDown={shiftEnterRestriction}
                       onChange={(event: any) => changeHandler(event, true)}
-                      onKeyDownCapture={(event: any) => keydownHandler(event)}
+                      onKeyDownCapture={(event: any) => keyDownHandler(event)}
                     />
                   </div>
                 </div>

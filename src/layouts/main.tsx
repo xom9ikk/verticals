@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, Ref, useEffect, useMemo, useRef,
+  FC, useEffect, useMemo,
 } from 'react';
 import { RouteWrapper } from '@/router/router';
 import { SettingsLayout } from '@/layouts/Settings';
@@ -8,7 +8,7 @@ import { SuspenseWrapper } from '@comp/SuspenseWrapper';
 import { Route, Switch } from 'react-router-dom';
 import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   BoardsActions, ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';
@@ -17,15 +17,19 @@ import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@/use/readableId';
+import { useValueRef } from '@/use/valueRef';
+import { forwardTo } from '@/router/history';
+import { IRootState } from '@/store/reducers/state';
 
 const { toNumericId } = useReadableId();
 
 // @ts-ignore
 export const MainLayout: FC = ({ match }) => {
   const dispatch = useDispatch();
-  const refBoardId = useRef<Ref<string>>();
-
   const { boardId, todoId } = match.params;
+  const refBoardId = useValueRef(boardId);
+  const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
+  const refActiveTodoId = useValueRef(activeTodoId);
 
   const numericBoardId = boardId === 'trash'
     ? -1
@@ -36,7 +40,6 @@ export const MainLayout: FC = ({ match }) => {
   console.log('numericBoardId', numericBoardId);
 
   const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
-  refBoardId.current = boardId;
 
   dispatch(SystemActions.setActiveBoardReadableId(boardId));
   dispatch(SystemActions.setActiveBoardId(numericBoardId));
@@ -47,16 +50,17 @@ export const MainLayout: FC = ({ match }) => {
   }, []);
 
   const closeAllPopups = () => {
-    // TODO: refactor this. useOutsideClick
     console.log('closeAllPopups');
-    // dispatch(SystemActions.setIsOpenPopup(false));
-    // dispatch(SystemActions.setIsEditableCard(false));
-    // dispatch(SystemActions.setIsEditableColumn(false));
-    // dispatch(SystemActions.setIsEditableBoard(false));
-    // forwardTo(`/userId/${refBoardId.current}`);
-    // dispatch(BoardsActions.removeTemp());
-    // dispatch(ColumnsActions.removeTemp());
-    // dispatch(TodosActions.removeTemp());
+    dispatch(SystemActions.setIsOpenPopup(false));
+    dispatch(SystemActions.setIsEditableCard(false));
+    dispatch(SystemActions.setIsEditableColumn(false));
+    dispatch(SystemActions.setIsEditableBoard(false));
+    dispatch(BoardsActions.removeTemp());
+    dispatch(ColumnsActions.removeTemp());
+    dispatch(TodosActions.removeTemp());
+    if (refActiveTodoId.current) { // TODO: fix
+      forwardTo(`/userId/${refBoardId.current}`);
+    }
   };
 
   const keydownHandler = (event: any) => {

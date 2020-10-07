@@ -124,7 +124,7 @@ export const Popup: FC<IPopup> = ({
     );
     // @ts-ignore
     return createPortal(content, document.querySelector('#menu-root'));
-  }, [isOpen, observed]);
+  }, [isOpen, observed, children]);
 
   return isOpen ? (
     <>{memoPopup}</>

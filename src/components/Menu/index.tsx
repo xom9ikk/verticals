@@ -82,7 +82,7 @@ export const Menu: FC<IMenu> = ({
     </Popup>
     )
   ),
-  [isOpen, position, sourceRef]);
+  [isOpen, position, sourceRef, isAbsolute, children]);
 
   const button = useMemo(() => {
     const classes = ['menu'];

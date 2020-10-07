@@ -69,7 +69,7 @@ export const CommentForm: FC<ICommentForm> = ({
     }
   };
 
-  const keyupHandler = (event: any) => {
+  const keyUpHandler = (event: any) => {
     const {
       key, shiftKey,
     } = event;
@@ -122,7 +122,7 @@ export const CommentForm: FC<ICommentForm> = ({
               placeholder="Add comment or note"
               value={commentText}
               onChange={changeHandler}
-              onKeyUp={keyupHandler}
+              onKeyUp={keyUpHandler}
               onKeyDown={keydownHandler}
               minRows={1}
               maxRows={10}

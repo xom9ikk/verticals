@@ -24,12 +24,14 @@ interface IBoardList {}
 export const BoardList: FC<IBoardList> = () => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
+  const { toReadableId } = useReadableId();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
-  const { toReadableId } = useReadableId();
 
   const {
-    system: { query, isLoadedBoards, activeBoardId },
+    system: {
+      query, isLoadedBoards, activeBoardId, isEditableBoard,
+    },
     boards,
     todos,
     columns,
@@ -147,13 +149,21 @@ export const BoardList: FC<IBoardList> = () => {
   // };
 
   const handleClick = (title: string, id: number) => {
+    dispatch(SystemActions.setIsLoadedColumns(false));
+    dispatch(SystemActions.setIsLoadedTodos(false));
     forwardTo(`/userId/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {
     console.log('boards redraw');
     return (
-      <div onClick={(e) => e.stopPropagation()}>
+      <div
+        onClick={(e) => {
+          if (isEditableBoard) {
+            e.stopPropagation();
+          }
+        }}
+      >
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -215,7 +225,7 @@ export const BoardList: FC<IBoardList> = () => {
         </Link>
       </div>
     );
-  }, [boards, activeBoardId, query]);
+  }, [boards, activeBoardId, query, isEditableBoard]);
 
   const profile = useMemo(() => (
     <Profile

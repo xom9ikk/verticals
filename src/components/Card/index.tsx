@@ -14,6 +14,7 @@ import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
 import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -65,6 +66,8 @@ export const Card: FC<ICard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
+
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
@@ -229,6 +232,7 @@ export const Card: FC<ICard> = ({
                     placeholder="New Card"
                     minRows={1}
                     maxRows={20}
+                    onKeyDown={shiftEnterRestriction}
                     onKeyDownCapture={(event: any) => keydownHandler(event)}
                     onChange={(event: any) => changeTextHandler(event, false)}
                   />
@@ -239,6 +243,7 @@ export const Card: FC<ICard> = ({
                     placeholder="Notes"
                     minRows={1}
                     maxRows={20}
+                    onKeyDown={shiftEnterRestriction}
                     onKeyDownCapture={(event: any) => keydownHandler(event)}
                     onChange={(event: any) => changeTextHandler(event, true)}
                   />

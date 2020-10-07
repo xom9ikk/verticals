@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
 import { EnumColors, ITodo } from '@/types';
-import { ColumnsActions, SystemActions, TodosActions } from '@/store/actions';
+import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';
 import { FallbackLoader } from '@comp/FallbackLoader';
@@ -42,7 +42,7 @@ export const Columns: FC<IColumns> = () => {
   const {
     columns, todos, system:
         {
-          query, isLoadedBoards, isLoadedColumns, activeBoardId,
+          query, activeBoardId, isLoadedBoards, isLoadedColumns,
         },
   } = useSelector((state: IRootState) => state);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
@@ -53,12 +53,10 @@ export const Columns: FC<IColumns> = () => {
   useEffect(() => {
     if (activeBoardId !== null) {
       console.log('1) set is loaded columns');
-      dispatch(SystemActions.setIsLoadedColumns(false));
-      dispatch(SystemActions.setIsLoadedTodos(false));
       const timeout = setTimeout(() => {
         dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
         dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
-      }, 500);
+      }, 100);
       return () => {
         clearInterval(timeout);
       };
@@ -307,7 +305,7 @@ export const Columns: FC<IColumns> = () => {
               isAbsolute
               size="medium"
               delay={1000}
-              minimumZIndex={1000}
+              minimumZIndex={2}
               isLoading={
                       !isLoadedBoards
                       || !isLoadedColumns

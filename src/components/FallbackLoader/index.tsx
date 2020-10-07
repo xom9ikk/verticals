@@ -20,7 +20,7 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
   isAbsolute,
   size = 'large',
   delay = 500,
-  minimumZIndex = 999,
+  minimumZIndex = 1,
 }) => {
   const [zIndex, setZIndex] = useState(999);
   const [isLoading, setIsLoading] = useState(initialIsLoading);
@@ -56,13 +56,11 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
       if (!initialIsLoading) {
         setIsLoading(false);
         setZIndex(-1);
-        console.log(' setIsLoading(false);');
       }
     }, delay);
 
     const timeoutLoader = setTimeout(() => {
       if (!initialIsLoading) {
-        console.log(' setIsShowLoader(false);');
         setIsShowLoader(false);
       }
     }, delayTimeout);

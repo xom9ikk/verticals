@@ -15,6 +15,7 @@ import { CardContextMenu } from '@comp/CardContextMenu';
 import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
 import { forwardTo } from '@/router/history';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 
 interface ICardPopup {
   columnId: number;
@@ -36,6 +37,7 @@ export const CardPopup: FC<ICardPopup> = ({
   const [isProgress, setIsProgress] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useState<string | undefined>(todo?.title);
   const [descriptionValue, setDescriptionValue] = useState<string | undefined>(todo?.description);
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
 
   const titleInputRef = useRef<any>(null);
 
@@ -180,6 +182,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           className="card__textarea card-popup__textarea"
                           placeholder="Card Title"
                           value={titleValue}
+                          onKeyDown={shiftEnterRestriction}
                           onChange={(event: any) => changeTextHandler(event, false)}
                           minRows={1}
                           maxRows={5}
@@ -188,6 +191,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           className="card__textarea card-popup__textarea card-popup__textarea--description"
                           placeholder="Notes"
                           value={descriptionValue}
+                          onKeyDown={shiftEnterRestriction}
                           onChange={(event: any) => changeTextHandler(event, true)}
                           minRows={1}
                           maxRows={5}
@@ -222,7 +226,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           onChangeColor={(newColor) => {
                             dispatch(TodosActions.updateColor({
                               id: todo.id,
-                              color: newColor,
+                              color: todo.color !== newColor ? newColor : null,
                             }));
                           }}
                         />

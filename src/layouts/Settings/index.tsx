@@ -27,6 +27,7 @@ interface ISettings {
 export const SettingsLayout: FC<ISettings> = ({ children }) => {
   const drawMenu = useMemo(() => menuItems.map((menuItem) => (
     <NavLink
+      key={menuItem.type}
       to={`/settings/${menuItem.type}`}
       exact
     >

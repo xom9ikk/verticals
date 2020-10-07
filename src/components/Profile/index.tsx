@@ -1,4 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
+// @ts-ignore
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
 import { MenuButton } from '@comp/MenuButton';
 import { Divider } from '@comp/Divider';
@@ -23,9 +25,12 @@ export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
   const dispatch = useDispatch();
-  const { system: { isOpenProfile } } = useSelector((state: IRootState) => state);
+  const {
+    system: { isOpenProfile, activeBoardReadableId },
+  } = useSelector((state: IRootState) => state);
 
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
@@ -50,8 +55,12 @@ export const Profile: FC<IProfile> = ({
         break;
       }
       case EnumMenuActions.CopyLink: {
-        console.log('copy', 'https://');
-        break;
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+          hidePopup();
+        }, 1000);
+        return;
       }
       default: break;
     }
@@ -80,6 +89,8 @@ export const Profile: FC<IProfile> = ({
     <h4 className="profile__popup-subtitle">@xom9ik</h4>
   </div>
   ), [isOpenProfile]);
+
+  console.log('isCopied', isCopied);
 
   return (
     <div
@@ -124,16 +135,19 @@ export const Profile: FC<IProfile> = ({
             menuButtonClickHandler(EnumMenuActions.AddBoard);
           }}
         />
-        <MenuButton
-          text="Copy link"
-          imageSrc="/assets/svg/menu/copy-link.svg"
-          onClick={() => {
+        <CopyToClipboard
+          text={`verticals.xom9ik.com/userId/${activeBoardReadableId}`}
+          onCopy={() => {
             menuButtonClickHandler(EnumMenuActions.CopyLink);
           }}
-        />
+        >
+          <MenuButton
+            text={isCopied ? 'Copied!' : 'Copy link'}
+            imageSrc="/assets/svg/menu/copy-link.svg"
+          />
+        </CopyToClipboard>
       </Menu>
       { profile }
-
     </div>
   );
 };
