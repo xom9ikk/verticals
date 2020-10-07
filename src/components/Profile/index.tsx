@@ -26,7 +26,7 @@ export const Profile: FC<IProfile> = ({
 }) => {
   const dispatch = useDispatch();
   const {
-    system: { isOpenProfile, activeBoardReadableId },
+    system: { isOpenProfile },
   } = useSelector((state: IRootState) => state);
 
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -136,7 +136,7 @@ export const Profile: FC<IProfile> = ({
           }}
         />
         <CopyToClipboard
-          text={`verticals.xom9ik.com/userId/${activeBoardReadableId}`}
+          text="verticals.xom9ik.com/userId"
           onCopy={() => {
             menuButtonClickHandler(EnumMenuActions.CopyLink);
           }}

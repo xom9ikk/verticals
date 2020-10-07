@@ -302,6 +302,7 @@ export const Card: FC<ICard> = ({
             !isEditable && (
             <CardContextMenu
               id={id}
+              title={initialTitle}
               columnId={columnId}
               isArchived={isArchived}
               isActive={isActive}

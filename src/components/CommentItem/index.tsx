@@ -29,7 +29,7 @@ export const CommentItem: FC<ICommentItem> = ({
   comment,
 }) => {
   const {
-    text, attachedFiles, date, isEdited, replyCommentId,
+    text, attachedFiles, date, editDate, replyCommentId,
   } = comment;
   const { formatDate } = useFormatDate();
   const dispatch = useDispatch();
@@ -210,7 +210,7 @@ export const CommentItem: FC<ICommentItem> = ({
           </div>
           <div className="comment__controls--actions">
             {
-              isEdited && (
+              editDate && (
               <span>Edited</span>
               )
             }

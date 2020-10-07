@@ -18,6 +18,7 @@ const initialState = {
   isOpenProfile: false,
   activeBoardId: null,
   activeBoardReadableId: null,
+  activeTodoReadableId: null,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -53,5 +54,10 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({
         ...state,
         activeBoardReadableId: action.payload.activeBoardReadableId,
+      }),
+  [SystemActions.Type.SET_ACTIVE_TODO_READABLE_ID]:
+      (state, action) => ({
+        ...state,
+        activeTodoReadableId: action.payload.activeTodoReadableId,
       }),
 }, initialState);

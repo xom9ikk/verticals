@@ -13,7 +13,9 @@ import {
   ISetSystemQuery,
   ISetSystemReplyCommentId,
   ISetSystemIsOpenProfile,
-  ISetSystemActiveBoardId, ISetSystemActiveBoardReadableId,
+  ISetSystemActiveBoardId,
+  ISetSystemActiveBoardReadableId,
+  ISetSystemActiveTodoReadableId,
 } from '@/types/actions';
 
 enum Type {
@@ -32,6 +34,7 @@ enum Type {
   SET_IS_OPEN_PROFILE = 'SYSTEM/SET_IS_OPEN_PROFILE',
   SET_ACTIVE_BOARD_ID = 'SYSTEM/SET_ACTIVE_BOARD_ID',
   SET_ACTIVE_BOARD_READABLE_ID = 'SYSTEM/SET_ACTIVE_BOARD_READABLE_ID',
+  SET_ACTIVE_TODO_READABLE_ID = 'SYSTEM/SET_ACTIVE_TODO_READABLE_ID',
 }
 
 const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
@@ -101,6 +104,11 @@ const setActiveBoardReadableId = createAction(
   (activeBoardReadableId: ISetSystemActiveBoardReadableId) => ({ activeBoardReadableId }),
 );
 
+const setActiveTodoReadableId = createAction(
+  Type.SET_ACTIVE_TODO_READABLE_ID,
+  (activeTodoReadableId: ISetSystemActiveTodoReadableId) => ({ activeTodoReadableId }),
+);
+
 export const SystemActions = {
   Type,
   setIsLoadedBoards,
@@ -118,4 +126,5 @@ export const SystemActions = {
   setIsOpenProfile,
   setActiveBoardId,
   setActiveBoardReadableId,
+  setActiveTodoReadableId,
 };

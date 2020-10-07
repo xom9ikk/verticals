@@ -8,7 +8,7 @@ const symbols = [...generateCharArray(48, 57), ...generateCharArray(97, 122)];
 const size = symbols.length;
 
 const intToString = (number: number) => {
-  if (number < 1) throw new Error('Int must be greater than 0');
+  if (number < 1) throw new Error(`Int must be greater than 0. Received ${number}`);
   let res = '';
   let n = number + 1;
   while (n > 1) {

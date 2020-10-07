@@ -42,6 +42,7 @@ export const MainLayout: FC = ({ match }) => {
   const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
 
   dispatch(SystemActions.setActiveBoardReadableId(boardId));
+  dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
   dispatch(SystemActions.setActiveBoardId(numericBoardId));
   dispatch(SystemActions.setActiveTodoId(numericTodoId));
 

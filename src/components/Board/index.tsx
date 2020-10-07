@@ -16,6 +16,8 @@ import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleCl
 import { useFocus } from '@/use/focus';
 import { EnumColors, EnumTodoType } from '@/types';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useReadableId } from '@/use/readableId';
 
 const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
@@ -81,6 +83,7 @@ export const Board: FC<IBoard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
@@ -89,6 +92,8 @@ export const Board: FC<IBoard> = ({
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
@@ -210,9 +215,12 @@ export const Board: FC<IBoard> = ({
         break;
       }
       case EnumMenuActions.CopyLink: {
-        // TODO
-        console.log('copy', `https://${id}`);
-        break;
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+          hidePopup();
+        }, 1000);
+        return;
       }
       case EnumMenuActions.AddBoardBelow: {
         dispatch(BoardsActions.removeTemp());
@@ -228,124 +236,134 @@ export const Board: FC<IBoard> = ({
     hidePopup();
   };
 
-  const memoMenu = useMemo(() => (
-    <div className="board-item__menu">
-      {/* {JSON.stringify({ isHover })} */}
-      <Menu
-        imageSrc="/assets/svg/dots.svg"
-        alt="menu"
-        imageSize={22}
-        size={24}
-        isHide
-        isHoverBlock={isHover}
-        onClick={() => {
-          setIsMenuClick(true);
-        }}
-        onMouseEnter={() => setIsMenuClick(true)}
-        onMouseLeave={() => setIsMenuClick(false)}
-        position="right"
-        isAbsolute={false}
-        isInvertColor={isActive}
-      >
-        <ColorPicker onPick={colorPickHandler} activeColor={color} />
-        <MenuButton
-          text="Edit board"
-          imageSrc="/assets/svg/menu/edit.svg"
-          hintText="E"
-          onClick={() => menuButtonClickHandler(EnumMenuActions.EditBoard)}
-        />
-        <Divider verticalSpacer={7} horizontalSpacer={10} />
-        <Submenu
-          text="Card style"
-          imageSrc="/assets/svg/menu/rect.svg"
-        >
-          <MenuButton
-            text="Checkboxes"
-            imageSrc="/assets/svg/menu/square.svg"
-            onClick={() => menuButtonClickHandler(
-              EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
-            )}
-          />
-          <MenuButton
-            text="Arrows"
-            imageSrc="/assets/svg/menu/arrow.svg"
-            onClick={() => menuButtonClickHandler(
-              EnumMenuActions.CardStyle, EnumTodoType.Arrows,
-            )}
-          />
-          <MenuButton
-            text="Dots"
-            imageSrc="/assets/svg/menu/circle.svg"
-            onClick={() => menuButtonClickHandler(
-              EnumMenuActions.CardStyle, EnumTodoType.Dots,
-            )}
-          />
-          <MenuButton
-            text="Dashes"
-            imageSrc="/assets/svg/menu/dash.svg"
-            onClick={() => menuButtonClickHandler(
-              EnumMenuActions.CardStyle, EnumTodoType.Dashes,
-            )}
-          />
-          <MenuButton
-            text="Nothing"
-            onClick={() => menuButtonClickHandler(
-              EnumMenuActions.CardStyle, EnumTodoType.Nothing,
-            )}
-          />
-        </Submenu>
-        <Submenu
-          text="Icon"
-          imageSrc="/assets/svg/menu/icon.svg"
-        >
-          <div className="menu__icons-container">
-            {
-              icons.map((filename) => {
-                const link = `/assets/svg/board/${filename}.svg`;
-                return (
-                  <Menu
-                    key={filename}
-                    imageSrc={link}
-                    alt={filename}
-                    imageSize={24}
-                    size={36}
-                    isShowPopup={false}
-                    onClick={(e: React.SyntheticEvent) => {
-                      e.stopPropagation();
-                      dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));
-                    }}
-                  />
-                );
-              })
-            }
-          </div>
-        </Submenu>
-        <MenuButton
-          text="Reverse column order"
-          imageSrc="/assets/svg/menu/reverse.svg"
-          onClick={() => menuButtonClickHandler(EnumMenuActions.ReverseColumnOrder)}
-        />
-        <MenuButton
-          text="Copy link"
-          imageSrc="/assets/svg/menu/copy-link.svg"
-          onClick={() => menuButtonClickHandler(EnumMenuActions.CopyLink)}
-        />
-        <Divider verticalSpacer={7} horizontalSpacer={10} />
-        <MenuButton
-          text="Add board below"
-          imageSrc="/assets/svg/menu/add-board.svg"
-          onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
-        />
-        <Divider verticalSpacer={7} horizontalSpacer={10} />
-        <MenuButton
-          text="Delete"
-          imageSrc="/assets/svg/menu/remove.svg"
-          hintText="⌫"
-          onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
-        />
-      </Menu>
-    </div>
-  ), [id, isHover, isActive, color]);
+  const memoMenu = useMemo(() => {
+    if (id !== -1) {
+      return (
+        <div className="board-item__menu">
+          {/* {JSON.stringify({ isHover })} */}
+          <Menu
+            imageSrc="/assets/svg/dots.svg"
+            alt="menu"
+            imageSize={22}
+            size={24}
+            isHide
+            isHoverBlock={isHover}
+            onClick={() => {
+              setIsMenuClick(true);
+            }}
+            onMouseEnter={() => setIsMenuClick(true)}
+            onMouseLeave={() => setIsMenuClick(false)}
+            position="right"
+            isAbsolute={false}
+            isInvertColor={isActive}
+          >
+            <ColorPicker onPick={colorPickHandler} activeColor={color} />
+            <MenuButton
+              text="Edit board"
+              imageSrc="/assets/svg/menu/edit.svg"
+              hintText="E"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.EditBoard)}
+            />
+            <Divider verticalSpacer={7} horizontalSpacer={10} />
+            <Submenu
+              text="Card style"
+              imageSrc="/assets/svg/menu/rect.svg"
+            >
+              <MenuButton
+                text="Checkboxes"
+                imageSrc="/assets/svg/menu/square.svg"
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
+                )}
+              />
+              <MenuButton
+                text="Arrows"
+                imageSrc="/assets/svg/menu/arrow.svg"
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Arrows,
+                )}
+              />
+              <MenuButton
+                text="Dots"
+                imageSrc="/assets/svg/menu/circle.svg"
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Dots,
+                )}
+              />
+              <MenuButton
+                text="Dashes"
+                imageSrc="/assets/svg/menu/dash.svg"
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Dashes,
+                )}
+              />
+              <MenuButton
+                text="Nothing"
+                onClick={() => menuButtonClickHandler(
+                  EnumMenuActions.CardStyle, EnumTodoType.Nothing,
+                )}
+              />
+            </Submenu>
+            <Submenu
+              text="Icon"
+              imageSrc="/assets/svg/menu/icon.svg"
+            >
+              <div className="menu__icons-container">
+                {
+                icons.map((filename) => {
+                  const link = `/assets/svg/board/${filename}.svg`;
+                  return (
+                    <Menu
+                      key={filename}
+                      imageSrc={link}
+                      alt={filename}
+                      imageSize={24}
+                      size={36}
+                      isShowPopup={false}
+                      onClick={(e: React.SyntheticEvent) => {
+                        e.stopPropagation();
+                        dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));
+                      }}
+                    />
+                  );
+                })
+              }
+              </div>
+            </Submenu>
+            <MenuButton
+              text="Reverse column order"
+              imageSrc="/assets/svg/menu/reverse.svg"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.ReverseColumnOrder)}
+            />
+            <CopyToClipboard
+              text={`verticals.xom9ik.com/userId/${toReadableId(initialTitle, id)}`}
+              onCopy={() => {
+                menuButtonClickHandler(EnumMenuActions.CopyLink);
+              }}
+            >
+              <MenuButton
+                text={isCopied ? 'Copied!' : 'Copy link'}
+                imageSrc="/assets/svg/menu/copy-link.svg"
+              />
+            </CopyToClipboard>
+            <Divider verticalSpacer={7} horizontalSpacer={10} />
+            <MenuButton
+              text="Add board below"
+              imageSrc="/assets/svg/menu/add-board.svg"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
+            />
+            <Divider verticalSpacer={7} horizontalSpacer={10} />
+            <MenuButton
+              text="Delete"
+              imageSrc="/assets/svg/menu/remove.svg"
+              hintText="⌫"
+              onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
+            />
+          </Menu>
+        </div>
+      );
+    }
+  }, [id, isHover, isActive, color, isCopied]);
 
   const memoCounter = useMemo(() => (
     <div className="board-item__counter">
@@ -434,7 +452,7 @@ export const Board: FC<IBoard> = ({
   ), [
     isHover, isActive, isMenuClick,
     isEditable, titleValue, descriptionValue,
-    snapshot, color, countTodos, icon,
+    snapshot, color, countTodos, icon, isCopied,
   ]);
   // console.log('ishover', isHover);
 

@@ -21,4 +21,5 @@ export interface ISystem {
   isOpenProfile: boolean;
   activeBoardId: number | null;
   activeBoardReadableId: string | null;
+  activeTodoReadableId: string | null;
 }

@@ -15,3 +15,4 @@ export type ISetSystemReplyCommentId = string;
 export type ISetSystemIsOpenProfile = boolean;
 export type ISetSystemActiveBoardId = number | null;
 export type ISetSystemActiveBoardReadableId = string | null;
+export type ISetSystemActiveTodoReadableId = string | null;

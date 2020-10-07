@@ -221,6 +221,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         />
                         <CardContextMenu
                           id={todo.id}
+                          title={todo.title}
                           columnId={todo.columnId}
                           isArchived={todo.isArchived}
                           isActive={false}

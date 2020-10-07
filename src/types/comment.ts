@@ -19,7 +19,7 @@ export interface IComment {
   text?: string;
   attachedFiles?: Array<IFile>;
   likes?: Array<string>;
-  isEdited?: boolean;
+  editDate?: Date;
   replyCommentId?: string;
 }
 
