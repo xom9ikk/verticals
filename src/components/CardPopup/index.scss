@@ -5,7 +5,7 @@
 
 .card-popup {
   width: 0;
-  border-right: 1px solid rgb(242, 242, 242);
+  //border-right: 1px solid rgb(242, 242, 242);
   transition: width .2s ease-in-out;
   height: calc(100vh - 15px);
   &--opened {

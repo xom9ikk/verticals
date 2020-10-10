@@ -147,7 +147,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   };
 
   const memoMenu = useMemo(() => {
-    console.log('====', id, title);
     if (id && title) {
       return (
         <Menu
@@ -241,7 +240,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
             onClick={() => menuButtonClickHandler(EnumCardActions.Notifications)}
           />
           <CopyToClipboard
-            text={`verticals.xom9ik.com/userId/${activeBoardReadableId}/card/${toReadableId(title!, id!)}`}
+            text={`verticals.xom9ik.com/userId/${activeBoardReadableId}/card/${toReadableId(title, id!)}`}
             onCopy={() => {
               menuButtonClickHandler(EnumCardActions.CopyLink);
             }}
