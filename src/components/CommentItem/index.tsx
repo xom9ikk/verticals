@@ -2,7 +2,7 @@ import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IComment, IFile } from '@/types';
+import { IComment, IFile } from '@/types/entities';
 import { MenuButton } from '@comp/MenuButton';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
@@ -179,7 +179,9 @@ export const CommentItem: FC<ICommentItem> = ({
       className="comment"
       onDoubleClick={() => setIsDoubleClick(true)}
     >
-      <Avatar />
+      <Avatar
+        fullName="Max Romanyuta"
+      />
       <div
         className={`comment__wrapper
         ${isDoubleClick ? 'comment__wrapper--pressed' : ''}

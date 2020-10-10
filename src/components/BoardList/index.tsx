@@ -12,7 +12,7 @@ import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
   EnumTodoType, IColumn, ITodo, ITodos,
-} from '@/types';
+} from '@/types/entities';
 import { useFilterTodos } from '@/use/filterTodos';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@/use/readableId';

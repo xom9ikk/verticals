@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import {
   IColumn, IColumns,
-} from '@/types';
+} from '@/types/entities';
 import { ColumnsActions } from '../actions';
 
 const initialState: IColumns = [

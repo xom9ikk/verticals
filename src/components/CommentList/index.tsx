@@ -2,7 +2,7 @@ import React, {
   forwardRef,
 } from 'react';
 import { CommentItem } from '@comp/CommentItem';
-import { IComment, IComments } from '@/types';
+import { IComment, IComments } from '@/types/entities';
 
 interface ICommentList {
   data?: IComments

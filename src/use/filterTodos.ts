@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { ITodo } from '@/types';
+import { ITodo } from '@/types/entities';
 import { IRootState } from '@/store/reducers/state';
 
 export const useFilterTodos = () => {

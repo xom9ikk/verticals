@@ -1,4 +1,4 @@
-import { EnumLanguage } from '@/types';
+import { EnumLanguage } from '@/types/entities';
 
 export type ISetSystemIsLoadedBoards = boolean;
 export type ISetSystemIsLoadedColumns = boolean;

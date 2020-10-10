@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import { handleActions } from 'redux-actions';
-import { IComment, IComments, IFile } from '@/types';
+import { IComment, IComments, IFile } from '@/types/entities';
 import { CommentsActions } from '../actions';
 
 const initialState: IComments = [];

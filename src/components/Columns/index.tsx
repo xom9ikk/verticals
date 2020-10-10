@@ -7,7 +7,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
-import { EnumColors, ITodo } from '@/types';
+import { EnumColors, ITodo } from '@/types/entities';
 import { ColumnsActions, TodosActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFilterTodos } from '@/use/filterTodos';

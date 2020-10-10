@@ -83,6 +83,7 @@ export const Profile: FC<IProfile> = ({
       onClick={closeHandler}
     />
     <Avatar
+      fullName="Max Romanyuta"
       size={180}
     />
     <h1 className="profile__popup-title">Max Romanyuta</h1>
@@ -99,6 +100,7 @@ export const Profile: FC<IProfile> = ({
       onMouseOut={() => setIsHover(false)}
     >
       <Avatar
+        fullName="Max Romanyuta"
         onClick={() => {
           menuButtonClickHandler(EnumMenuActions.OpenProfile);
         }}

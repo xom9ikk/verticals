@@ -10,7 +10,11 @@ import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  BoardsActions, ColumnsActions, SystemActions, TodosActions,
+  SystemActions,
+  BoardsActions,
+  // ColumnsActions,
+  // TodosActions,
+  UserActions,
 } from '@/store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
@@ -47,6 +51,7 @@ export const MainLayout: FC = ({ match }) => {
   dispatch(SystemActions.setActiveTodoId(numericTodoId));
 
   useEffect(() => {
+    dispatch(UserActions.fetchMe());
     dispatch(BoardsActions.fetchAll());
   }, []);
 
@@ -56,9 +61,9 @@ export const MainLayout: FC = ({ match }) => {
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
-    dispatch(BoardsActions.removeTemp());
-    dispatch(ColumnsActions.removeTemp());
-    dispatch(TodosActions.removeTemp());
+    // dispatch(BoardsActions.removeTemp()); // TODO: fix
+    // dispatch(ColumnsActions.removeTemp()); // TODO: fix
+    // dispatch(TodosActions.removeTemp()); // TODO: fix
     if (refActiveTodoId.current) { // TODO: fix
       forwardTo(`/userId/${refBoardId.current}`);
     }

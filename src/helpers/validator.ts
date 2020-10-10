@@ -37,6 +37,12 @@ const password = (payload: string, minLength: number = 5) => {
 };
 
 const text = (payload: string, minLength: number = 5, fieldName: string) => {
+  if (minLength === 0 && payload.length === 0) {
+    return {
+      isValid: true,
+    };
+  }
+
   let error = '';
 
   if (payload.length <= minLength) {

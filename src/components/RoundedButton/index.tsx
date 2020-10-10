@@ -1,7 +1,7 @@
 import React, {
   FC, useMemo,
 } from 'react';
-import { EnumColors } from '@/types';
+import { EnumColors } from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 
 interface IRoundedButton {

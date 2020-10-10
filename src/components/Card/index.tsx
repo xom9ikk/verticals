@@ -8,7 +8,7 @@ import { CardContextMenu } from '@comp/CardContextMenu';
 import { SystemActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useFocus } from '@/use/focus';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types';
+import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';

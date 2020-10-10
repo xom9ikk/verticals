@@ -6,7 +6,7 @@ import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
 import { AuthActions, SystemActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
-import { EnumLanguage } from '@/types';
+import { EnumLanguage } from '@/types/entities';
 import { forwardTo } from '@/router/history';
 
 interface IToolbar {

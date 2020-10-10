@@ -5,4 +5,5 @@ export const TYPES = {
   BoardService: Symbol.for('BoardService'),
   ColumnService: Symbol.for('ColumnService'),
   TodoService: Symbol.for('TodoService'),
+  UserService: Symbol.for('UserService'),
 };

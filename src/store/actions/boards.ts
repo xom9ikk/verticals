@@ -11,7 +11,7 @@ import {
   IUpdateBoardDescription,
   IUpdateBoardPosition,
   IUpdateBoardTitle,
-} from '@/types';
+} from '@/types/actions';
 
 enum Type {
   FETCH_ALL = 'BOARDS/FETCH_BOARDS',

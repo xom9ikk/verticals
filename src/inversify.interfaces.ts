@@ -24,6 +24,7 @@ import {
   IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
   IDuplicateTodoRequest, IDuplicateTodoResponse,
   IReverseColumnOrderRequest, IReverseColumnOrderResponse,
+  IGetMeResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -39,6 +40,7 @@ export interface IServices {
   boardService: IBoardService;
   columnService: IColumnService;
   todoService: ITodoService;
+  userService: IUserService;
 }
 
 export interface IAuthService {
@@ -76,4 +78,8 @@ export interface ITodoService {
   update(body: IUpdateTodoRequest): Promise<IUpdateTodoResponse>;
   updatePosition(body: IUpdateTodoPositionRequest): Promise<IUpdateTodoPositionResponse>;
   duplicate(body: IDuplicateTodoRequest): Promise<IDuplicateTodoResponse>;
+}
+
+export interface IUserService {
+  getMe(): Promise<IGetMeResponse>;
 }

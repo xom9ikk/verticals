@@ -13,5 +13,5 @@ export const validatorProfileForm = ({
   name: validator.text(name, 2, 'First name'),
   surname: validator.text(surname, 2, 'Last name'),
   username: validator.text(username, 2, 'Username'),
-  bio: validator.text(bio, 2, 'Bio'),
+  bio: validator.text(bio, 0, 'Bio'),
 });

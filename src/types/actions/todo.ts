@@ -1,5 +1,4 @@
-import { EnumColors } from '@/types';
-import { EnumTodoStatus, ITodos } from '../todo';
+import { EnumColors, EnumTodoStatus, ITodos } from '@/types/entities';
 
 export interface IFetchTodosByBoardId {
   boardId: number;

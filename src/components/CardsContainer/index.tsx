@@ -3,7 +3,7 @@ import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beau
 import { useSelector } from 'react-redux';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
-} from '@/types';
+} from '@/types/entities';
 import { Card } from '@comp/Card';
 import { IRootState } from '@/store/reducers/state';
 import { FallbackLoader } from '@comp/FallbackLoader';

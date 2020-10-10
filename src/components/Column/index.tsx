@@ -15,7 +15,7 @@ import {
 } from '@/store/actions';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo, ITodos,
-} from '@/types';
+} from '@/types/entities';
 import { useFocus } from '@/use/focus';
 import { IRootState } from '@/store/reducers/state';
 import { ColorPicker } from '@comp/ColorPicker';

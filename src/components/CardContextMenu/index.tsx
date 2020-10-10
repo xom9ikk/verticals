@@ -4,7 +4,7 @@ import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
 import { MenuButton } from '@comp/MenuButton';
 import { Submenu } from '@comp/Submenu';
-import { EnumColors, EnumTodoStatus } from '@/types';
+import { EnumColors, EnumTodoStatus } from '@/types/entities';
 import { Divider } from '@comp/Divider';
 import { SystemActions, TodosActions } from '@/store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';

@@ -3,7 +3,7 @@ import React, {
   FC,
 } from 'react';
 import { Checkbox } from '@comp/Checkbox';
-import { EnumTodoStatus, EnumTodoType } from '@/types';
+import { EnumTodoStatus, EnumTodoType } from '@/types/entities';
 
 const bullets = ['arrow', 'dot', 'dash'];
 

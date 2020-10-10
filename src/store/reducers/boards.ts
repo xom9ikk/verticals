@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { EnumTodoType, IBoard, IBoards } from '@/types';
+import { EnumTodoType, IBoard, IBoards } from '@/types/entities';
 import { BoardsActions } from '../actions';
 
 const initialState: IBoards = [];

@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { EnumLanguage, ISystem } from '@/types';
+import { EnumLanguage, ISystem } from '@/types/entities';
 import { SystemActions } from '../actions';
 
 const initialState = {

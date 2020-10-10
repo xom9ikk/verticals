@@ -1,4 +1,4 @@
-import { EnumColors, IColumns } from '@/types';
+import { EnumColors, IColumns } from '@/types/entities';
 
 export interface IFetchColumnsByBoardId {
   boardId: number;

@@ -6,7 +6,7 @@ import { CommentList } from '@comp/CommentList';
 import { CommentForm } from '@comp/CommentForm';
 import { IRootState } from '@/store/reducers/state';
 import { useAutoScroll, ScrollDirection } from '@/use/autoScroll';
-import { IComment, IComments } from '@/types';
+import { IComment, IComments } from '@/types/entities';
 
 interface ICommentsWrapper {
   todoId: number;

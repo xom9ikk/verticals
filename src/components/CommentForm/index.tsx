@@ -7,7 +7,7 @@ import { Avatar } from '@comp/Avatar';
 import { CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
 import { IRootState } from '@/store/reducers/state';
-import { IComment } from '@/types';
+import { IComment } from '@/types/entities';
 import { useFocus } from '@/use/focus';
 
 interface ICommentForm {
@@ -91,7 +91,9 @@ export const CommentForm: FC<ICommentForm> = ({
   return (
     <div className="comment-form">
       <div className="comment-form__wrapper">
-        <Avatar />
+        <Avatar
+          fullName="Max Romanyuta"
+        />
         <div className="comment-form__input-wrapper">
           <div
             className={`comment-form__reply 

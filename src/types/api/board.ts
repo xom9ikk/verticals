@@ -1,4 +1,4 @@
-import { EnumColors, EnumTodoType, IBoards } from '@/types';
+import { EnumColors, EnumTodoType, IBoards } from '@/types/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllBoardsResponse = IServerResponse<{

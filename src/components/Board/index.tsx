@@ -14,7 +14,7 @@ import { BoardsActions, ColumnsActions, SystemActions } from '@/store/actions';
 import { IRootState } from '@/store/reducers/state';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { useFocus } from '@/use/focus';
-import { EnumColors, EnumTodoType } from '@/types';
+import { EnumColors, EnumTodoType } from '@/types/entities';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
@@ -210,7 +210,6 @@ export const Board: FC<IBoard> = ({
         break;
       }
       case EnumMenuActions.ReverseColumnOrder: {
-        // TODO
         dispatch(ColumnsActions.reverseOrder({ boardId: id }));
         break;
       }

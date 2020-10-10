@@ -17,7 +17,7 @@ import {
   IGetColumnsByBoardIdRequest,
   IDuplicateColumnRequest, IReverseColumnOrderRequest,
 } from '@/types/api';
-import { ITodo } from '@/types';
+import { ITodo } from '@/types/entities';
 
 const { columnService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

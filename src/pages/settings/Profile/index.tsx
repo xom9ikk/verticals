@@ -66,7 +66,10 @@ export const Profile: FC<IProfile> = () => {
           isMaxWidth
         >
           <div className="profile-avatar">
-            <Avatar size={150} />
+            <Avatar
+              fullName="Max Romanyuta"
+              size={150}
+            />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
                 <button

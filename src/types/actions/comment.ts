@@ -1,4 +1,4 @@
-import { IFile, IImage } from '../comment';
+import { IFile, IImage } from '@/types/entities';
 
 export interface IAddComment {
   todoId: number;
