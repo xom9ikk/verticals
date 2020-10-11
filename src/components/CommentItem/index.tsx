@@ -33,7 +33,8 @@ export const CommentItem: FC<ICommentItem> = ({
   } = comment;
   const { formatDate } = useFormatDate();
   const dispatch = useDispatch();
-  const { system: { editCommentId }, comments } = useSelector((state: IRootState) => state);
+  const comments = useSelector((state: IRootState) => state.comments);
+  const editCommentId = useSelector((state: IRootState) => state.system.editCommentId);
   const [images, setImages] = useState<Array<IFile>>([]);
   const [files, setFiles] = useState<Array<IFile>>([]);
   const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);

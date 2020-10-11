@@ -31,24 +31,30 @@ const { toNumericId } = useReadableId();
 export const MainLayout: FC = ({ match }) => {
   const dispatch = useDispatch();
   const { boardId, todoId } = match.params;
-  const refBoardId = useValueRef(boardId);
+  const activeBoardId = useSelector((state: IRootState) => state.system.activeBoardId);
   const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
+  const username = useSelector((state: IRootState) => state.user.username);
+  const refBoardId = useValueRef(boardId);
   const refActiveTodoId = useValueRef(activeTodoId);
+  const refUsername = useValueRef(username);
 
-  const numericBoardId = boardId === 'trash'
-    ? -1
-    : boardId !== undefined
-      && !['account', 'profile'].includes(boardId)
-      ? toNumericId(boardId)
-      : null;
-  console.log('numericBoardId', numericBoardId);
+  useEffect(() => {
+    const numericBoardId = boardId === 'trash'
+      ? -1
+      : boardId !== undefined
+        && !['account', 'profile'].includes(boardId)
+        ? toNumericId(boardId)
+        : null;
+    console.log('numericBoardId', numericBoardId);
+    dispatch(SystemActions.setActiveBoardId(numericBoardId));
+    dispatch(SystemActions.setActiveBoardReadableId(boardId));
+  }, [boardId]);
 
-  const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
-
-  dispatch(SystemActions.setActiveBoardReadableId(boardId));
-  dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
-  dispatch(SystemActions.setActiveBoardId(numericBoardId));
-  dispatch(SystemActions.setActiveTodoId(numericTodoId));
+  useEffect(() => {
+    const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
+    dispatch(SystemActions.setActiveTodoId(numericTodoId));
+    dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
+  }, [todoId]);
 
   useEffect(() => {
     dispatch(UserActions.fetchMe());
@@ -65,7 +71,7 @@ export const MainLayout: FC = ({ match }) => {
     // dispatch(ColumnsActions.removeTemp()); // TODO: fix
     // dispatch(TodosActions.removeTemp()); // TODO: fix
     if (refActiveTodoId.current) { // TODO: fix
-      forwardTo(`/userId/${refBoardId.current}`);
+      forwardTo(`/${refUsername.current}/${refBoardId.current}`);
     }
   };
 
@@ -98,7 +104,7 @@ export const MainLayout: FC = ({ match }) => {
       <Search />
       <BoardList />
     </Sidebar>
-  ), [numericBoardId]);
+  ), [activeBoardId]);
 
   const memoRouter = useMemo(() => (
     <Switch>

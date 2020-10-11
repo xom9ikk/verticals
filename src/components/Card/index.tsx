@@ -72,9 +72,10 @@ export const Card: FC<ICard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const {
-    system: { isEditableCard, activeBoardReadableId },
-  } = useSelector((state: IRootState) => state);
+  const isEditableCard = useSelector((state: IRootState) => state.system.isEditableCard);
+  const activeBoardReadableId = useSelector(
+    (state: IRootState) => state.system.activeBoardReadableId,
+  );
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const titleInputRef = useRef<any>(null);

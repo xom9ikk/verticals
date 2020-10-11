@@ -65,11 +65,9 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
 
-  const {
-    system: {
-      activeBoardReadableId,
-    },
-  } = useSelector((state: IRootState) => state);
+  const activeBoardReadableId = useSelector(
+    (state: IRootState) => state.system.activeBoardReadableId,
+  );
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const hidePopup = () => {

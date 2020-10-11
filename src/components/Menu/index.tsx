@@ -51,7 +51,7 @@ export const Menu: FC<IMenu> = ({
   children,
 }) => {
   const dispatch = useDispatch();
-  const { isOpenPopup } = useSelector((state:IRootState) => state.system);
+  const isOpenPopup = useSelector((state:IRootState) => state.system.isOpenPopup);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const sourceRef = useRef<any>(null);

@@ -1,5 +1,5 @@
 import {
-  ISystem, IBoards, IColumns, ITodos, IComments,
+  ISystem, IBoards, IColumns, ITodos, IComments, IUser,
 } from '@/types/entities';
 
 export interface IRootState {
@@ -8,4 +8,5 @@ export interface IRootState {
   columns: IColumns;
   todos: ITodos;
   comments: IComments;
+  user: IUser;
 }

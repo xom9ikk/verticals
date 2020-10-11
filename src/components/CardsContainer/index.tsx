@@ -28,7 +28,8 @@ export const CardsContainer: FC<ICardsContainer> = ({
   cardType,
   onExitFromEditable,
 }) => {
-  const { activeTodoId, isLoadedTodos } = useSelector((state: IRootState) => state.system);
+  const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
+  const isLoadedTodos = useSelector((state: IRootState) => state.system.isLoadedTodos);
 
   return (
     <>

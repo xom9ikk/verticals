@@ -21,9 +21,9 @@ export const CommentForm: FC<ICommentForm> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
-  const {
-    system: { editCommentId, replyCommentId }, comments,
-  } = useSelector((state: IRootState) => state);
+  const editCommentId = useSelector((state: IRootState) => state.system.editCommentId);
+  const replyCommentId = useSelector((state: IRootState) => state.system.replyCommentId);
+  const comments = useSelector((state: IRootState) => state.comments);
   const [commentText, setCommentText] = useState<string>();
   const [replyComment, setReplyComment] = useState<IComment>();
   const [shiftPressed, setShiftPressed] = useState<boolean>();

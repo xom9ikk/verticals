@@ -29,10 +29,11 @@ export const CardPopup: FC<ICardPopup> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const {
-    todos,
-    system: { activeTodoId, activeBoardReadableId },
-  } = useSelector((state: IRootState) => state);
+  const todos = useSelector((state: IRootState) => state.todos);
+  const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
+  const activeBoardReadableId = useSelector(
+    (state: IRootState) => state.system.activeBoardReadableId,
+  );
 
   const [todo, setTodo] = useState<ITodo>();
   const [isProgress, setIsProgress] = useState<boolean>(false);

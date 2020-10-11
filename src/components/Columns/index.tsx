@@ -39,12 +39,12 @@ export const Columns: FC<IColumns> = () => {
   const dispatch = useDispatch();
   const columnsRef = useRef<any>();
   const { filterTodos } = useFilterTodos();
-  const {
-    columns, todos, system:
-        {
-          query, activeBoardId, isLoadedBoards, isLoadedColumns,
-        },
-  } = useSelector((state: IRootState) => state);
+  const columns = useSelector((state: IRootState) => state.columns);
+  const todos = useSelector((state: IRootState) => state.todos);
+  const query = useSelector((state: IRootState) => state.system.query);
+  const activeBoardId = useSelector((state: IRootState) => state.system.activeBoardId);
+  const isLoadedBoards = useSelector((state: IRootState) => state.system.isLoadedBoards);
+  const isLoadedColumns = useSelector((state: IRootState) => state.system.isLoadedColumns);
   const [preparedData, setPreparedData] = useState<TodoMap>({});
   const [orderedId, setOrderedId] = useState<Array<number>>([]);
 

@@ -88,7 +88,7 @@ export const Board: FC<IBoard> = ({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
-  const { isEditableBoard } = useSelector((state: IRootState) => state.system);
+  const isEditableBoard = useSelector((state: IRootState) => state.system.isEditableBoard);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
@@ -379,6 +379,7 @@ export const Board: FC<IBoard> = ({
       className={`board-item 
        ${isEditable ? 'board-item--editable' : ''} 
        ${snapshot?.isDragging ? 'board-item--dragging' : ''} 
+       ${isActive ? 'board-item--active' : ''} 
        `}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}

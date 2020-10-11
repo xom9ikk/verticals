@@ -25,9 +25,7 @@ export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
   const dispatch = useDispatch();
-  const {
-    system: { isOpenProfile },
-  } = useSelector((state: IRootState) => state);
+  const isOpenProfile = useSelector((state: IRootState) => state.system.isOpenProfile);
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);

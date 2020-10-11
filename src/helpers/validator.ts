@@ -50,7 +50,7 @@ const text = (payload: string, minLength: number = 5, fieldName: string) => {
   }
 
   if (payload.length === 0) {
-    error = 'Can’t be blank';
+    error = 'Can\'t be blank';
   }
 
   return {

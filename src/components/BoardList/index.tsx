@@ -28,14 +28,13 @@ export const BoardList: FC<IBoardList> = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
-  const {
-    system: {
-      query, isLoadedBoards, activeBoardId, isEditableBoard,
-    },
-    boards,
-    todos,
-    columns,
-  } = useSelector((state: IRootState) => state);
+  const boards = useSelector((state: IRootState) => state.boards);
+  const columns = useSelector((state: IRootState) => state.columns);
+  const todos = useSelector((state: IRootState) => state.todos);
+  const query = useSelector((state: IRootState) => state.system.query);
+  const isLoadedBoards = useSelector((state: IRootState) => state.system.isLoadedBoards);
+  const activeBoardId = useSelector((state: IRootState) => state.system.activeBoardId);
+  const isEditableBoard = useSelector((state: IRootState) => state.system.isEditableBoard);
 
   useEffect(() => {
     if (boards.length) {

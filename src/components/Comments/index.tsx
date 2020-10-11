@@ -15,7 +15,7 @@ interface ICommentsWrapper {
 export const Comments: FC<ICommentsWrapper> = ({
   todoId,
 }) => {
-  const { comments } = useSelector((state: IRootState) => state);
+  const comments = useSelector((state: IRootState) => state.comments);
   const [filteredComments, setFilteredComments] = useState<IComments>([]);
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const listRef = useRef<any>(null);

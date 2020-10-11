@@ -71,10 +71,9 @@ export const Column: FC<IColumn> = ({
   const { filterTodos } = useFilterTodos();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
-  const {
-    system: { isEditableColumn, query },
-    boards,
-  } = useSelector((state: IRootState) => state);
+  const boards = useSelector((state: IRootState) => state.boards);
+  const isEditableColumn = useSelector((state: IRootState) => state.system.isEditableColumn);
+  const query = useSelector((state: IRootState) => state.system.query);
 
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);

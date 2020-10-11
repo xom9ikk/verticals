@@ -5,6 +5,7 @@ import { BoardsReducer } from './boards';
 import { ColumnsReducer } from './columns';
 import { TodosReducer } from './todos';
 import { CommentsReducer } from './comments';
+import { UserReducer } from './user';
 
 export const rootReducer = combineReducers<IRootState>({
   system: SystemReducer as any,
@@ -12,4 +13,5 @@ export const rootReducer = combineReducers<IRootState>({
   columns: ColumnsReducer as any,
   todos: TodosReducer as any,
   comments: CommentsReducer as any,
+  user: UserReducer as any,
 });

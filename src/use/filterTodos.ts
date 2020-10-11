@@ -3,7 +3,7 @@ import { ITodo } from '@/types/entities';
 import { IRootState } from '@/store/reducers/state';
 
 export const useFilterTodos = () => {
-  const { query } = useSelector((state: IRootState) => state.system);
+  const query = useSelector((state: IRootState) => state.system.query);
 
   const filterTodos = (todo: ITodo) => {
     const lowerCaseQuery = query.toLocaleLowerCase();

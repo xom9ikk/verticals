@@ -28,7 +28,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   const dispatch = useDispatch();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isPinSidebar, setIsPinSidebar] = useState<boolean>(true);
-  const { language } = useSelector((state: IRootState) => state.system);
+  const language = useSelector((state: IRootState) => state.system.language);
 
   const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
