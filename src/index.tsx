@@ -8,17 +8,17 @@ import ReactTooltip from 'react-tooltip';
 
 import './styles/scss/main.scss';
 
-import createDebug from 'debug';
+// import createDebug from 'debug';
 import { configureStore } from './store/configureStore';
 import { MainRouter } from './router';
 
 const store = configureStore();
-const debug = createDebug('app');
+// const debug = createDebug('app');
 
 // @ts-ignore
-console.log = (...rest) => {
-  debug(rest.join(' '));
-};
+// console.log = (...rest) => {
+//   debug(rest.join(' '));
+// };
 
 ReactDOM.render(
   <Provider store={store}>

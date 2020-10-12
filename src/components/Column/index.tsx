@@ -14,7 +14,7 @@ import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodo, ITodos,
+  EnumColors, EnumTodoStatus, ITodo,
 } from '@/types/entities';
 import { useFocus } from '@/use/focus';
 import { ColorPicker } from '@comp/ColorPicker';
@@ -25,7 +25,9 @@ import { CardsContainer } from '@comp/CardsContainer';
 import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import { getIsEditableColumn, getQuery, getBoards } from '@/store/selectors';
+import {
+  getIsEditableColumn, getQuery, getBoardCardType, getTodosByColumnId,
+} from '@/store/selectors';
 
 interface IColumn {
   index: number;
@@ -36,7 +38,7 @@ interface IColumn {
   boardId?: number | null;
   title?: string;
   description?: string;
-  todos?: ITodos;
+  // todos?: ITodos;
   isNew?: boolean;
   isDeleted?: boolean;
   scrollToRight?: () => void;
@@ -60,7 +62,7 @@ export const Column: FC<IColumn> = ({
   boardId,
   title: initialTitle,
   description: initialDescription,
-  todos,
+  // todos,
   isNew,
   isDeleted,
   scrollToRight,
@@ -71,7 +73,8 @@ export const Column: FC<IColumn> = ({
   const { filterTodos } = useFilterTodos();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
-  const boards = useSelector(getBoards);
+  const todos = useSelector(getTodosByColumnId(columnId));
+  const cardType = useSelector(getBoardCardType(boardId));
   const isEditableColumn = useSelector(getIsEditableColumn);
   const query = useSelector(getQuery);
 
@@ -87,8 +90,6 @@ export const Column: FC<IColumn> = ({
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
-
-  const { cardType } = boards.filter((board) => board.id === boardId)[0] || EnumTodoType.Checkboxes;
 
   const saveCard = (
     id?: number,
@@ -337,7 +338,7 @@ export const Column: FC<IColumn> = ({
       isActiveQuery={!!query}
       onExitFromEditable={saveCard}
     />
-  ), [boards, todos, columnId, isOpenNewCard, query]);
+  ), [todos, columnId, isOpenNewCard, query]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -606,7 +607,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, boards, todos, color, colorClass, columnId, isHover,
+    index, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, query, isCollapsed,
     isTopHover, isDraggingCard, isNew,
