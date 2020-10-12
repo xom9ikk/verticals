@@ -8,7 +8,6 @@ import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
 } from '@/types/entities';
 import { Checkbox } from '@comp/Checkbox';
-import { IRootState } from '@/store/reducers/state';
 import { SystemActions, TodosActions } from '@/store/actions';
 import { Menu } from '@comp/Menu';
 import { Loader } from '@comp/Loader';
@@ -17,6 +16,7 @@ import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
 import { forwardTo } from '@/router/history';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { getActiveBoardReadableId, getActiveTodoId, getTodos } from '@/store/selectors';
 
 interface ICardPopup {
   columnId: number;
@@ -29,11 +29,9 @@ export const CardPopup: FC<ICardPopup> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const todos = useSelector((state: IRootState) => state.todos);
-  const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
-  const activeBoardReadableId = useSelector(
-    (state: IRootState) => state.system.activeBoardReadableId,
-  );
+  const todos = useSelector(getTodos);
+  const activeTodoId = useSelector(getActiveTodoId);
+  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
 
   const [todo, setTodo] = useState<ITodo>();
   const [isProgress, setIsProgress] = useState<boolean>(false);

@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { ITodo } from '@/types/entities';
-import { IRootState } from '@/store/reducers/state';
+import { getQuery } from '@/store/selectors';
 
 export const useFilterTodos = () => {
-  const query = useSelector((state: IRootState) => state.system.query);
+  const query = useSelector(getQuery);
 
   const filterTodos = (todo: ITodo) => {
     const lowerCaseQuery = query.toLocaleLowerCase();

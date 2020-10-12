@@ -23,7 +23,7 @@ import { Columns } from '@comp/Columns';
 import { useReadableId } from '@/use/readableId';
 import { useValueRef } from '@/use/valueRef';
 import { forwardTo } from '@/router/history';
-import { IRootState } from '@/store/reducers/state';
+import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
 
 const { toNumericId } = useReadableId();
 
@@ -31,9 +31,9 @@ const { toNumericId } = useReadableId();
 export const MainLayout: FC = ({ match }) => {
   const dispatch = useDispatch();
   const { boardId, todoId } = match.params;
-  const activeBoardId = useSelector((state: IRootState) => state.system.activeBoardId);
-  const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
-  const username = useSelector((state: IRootState) => state.user.username);
+  const activeBoardId = useSelector(getActiveBoardId);
+  const activeTodoId = useSelector(getActiveTodoId);
+  const username = useSelector(getUsername);
   const refBoardId = useValueRef(boardId);
   const refActiveTodoId = useValueRef(activeTodoId);
   const refUsername = useValueRef(username);

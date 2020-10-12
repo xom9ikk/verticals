@@ -5,9 +5,9 @@ import { MenuButton } from '@comp/MenuButton';
 import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
 import { AuthActions, SystemActions } from '@/store/actions';
-import { IRootState } from '@/store/reducers/state';
 import { EnumLanguage } from '@/types/entities';
 import { forwardTo } from '@/router/history';
+import { getLanguage } from '@/store/selectors';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -28,7 +28,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   const dispatch = useDispatch();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isPinSidebar, setIsPinSidebar] = useState<boolean>(true);
-  const language = useSelector((state: IRootState) => state.system.language);
+  const language = useSelector(getLanguage);
 
   const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));

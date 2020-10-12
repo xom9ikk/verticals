@@ -12,7 +12,7 @@ import { Avatar } from '@comp/Avatar';
 import {
   CommentsActions, SystemActions,
 } from '@/store/actions';
-import { IRootState } from '@/store/reducers/state';
+import { getComments, getEditCommentId } from '@/store/selectors';
 
 interface ICommentItem {
   comment: IComment
@@ -33,8 +33,8 @@ export const CommentItem: FC<ICommentItem> = ({
   } = comment;
   const { formatDate } = useFormatDate();
   const dispatch = useDispatch();
-  const comments = useSelector((state: IRootState) => state.comments);
-  const editCommentId = useSelector((state: IRootState) => state.system.editCommentId);
+  const comments = useSelector(getComments);
+  const editCommentId = useSelector(getEditCommentId);
   const [images, setImages] = useState<Array<IFile>>([]);
   const [files, setFiles] = useState<Array<IFile>>([]);
   const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);

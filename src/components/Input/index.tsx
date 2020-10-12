@@ -7,9 +7,9 @@ interface IInput {
   width?: string,
   touched?: boolean,
   error?: string,
-  onChange: (event:any)=>void;
-  onBlur?: (event:any)=>void;
-  onKeyDown?: (event:any)=>void;
+  onChange: (event:any) => void;
+  onBlur?: (event:any) => void;
+  onKeyDown?: (event:any) => void;
   value: string,
   placeholder?: string,
   label?: string,

@@ -7,14 +7,14 @@ interface ITextArea {
   name?: string,
   value?: string;
   placeholder?: string;
-  onChange: (event:any)=>void;
-  onBlur?: (event:any)=>void;
-  onKeyUp?: (event:any)=>void;
-  onKeyDown?: (event:any)=>void;
-  onKeyDownCapture?: (event:any)=>void;
+  onChange: (event:any) => void;
+  onBlur?: (event:any) => void;
+  onKeyUp?: (event:any) => void;
+  onKeyDown?: (event:any) => void;
+  onKeyDownCapture?: (event:any) => void;
   minRows: number,
   maxRows: number;
-  onChangeHeight?: (height: number)=>void;
+  onChangeHeight?: (height: number) => void;
   style?: any;
 }
 

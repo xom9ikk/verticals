@@ -4,7 +4,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';
 import { SystemActions } from '@/store/actions';
-import { IRootState } from '@/store/reducers/state';
+import { getIsOpenPopup } from '@/store/selectors';
 
 interface IMenu {
   imageSrc: string;
@@ -16,10 +16,10 @@ interface IMenu {
   size?: number;
   isHide?: boolean;
   isShowPopup?: boolean;
-  onClick?: (event: React.SyntheticEvent)=>void;
+  onClick?: (event: React.SyntheticEvent) => void;
   isMaxWidth?:boolean;
-  onMouseEnter?:()=>void;
-  onMouseLeave?:()=>void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   isAbsolute?: boolean;
   isInvertColor?: boolean;
@@ -51,7 +51,7 @@ export const Menu: FC<IMenu> = ({
   children,
 }) => {
   const dispatch = useDispatch();
-  const isOpenPopup = useSelector((state:IRootState) => state.system.isOpenPopup);
+  const isOpenPopup = useSelector(getIsOpenPopup);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const sourceRef = useRef<any>(null);

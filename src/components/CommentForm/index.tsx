@@ -6,13 +6,13 @@ import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
 import { CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
-import { IRootState } from '@/store/reducers/state';
 import { IComment } from '@/types/entities';
 import { useFocus } from '@/use/focus';
+import { getComments, getEditCommentId, getReplyCommentId } from '@/store/selectors';
 
 interface ICommentForm {
   todoId: number;
-  onChangeTextAreaHeight: (height: number)=>void;
+  onChangeTextAreaHeight: (height: number) => void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({
@@ -21,9 +21,9 @@ export const CommentForm: FC<ICommentForm> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
-  const editCommentId = useSelector((state: IRootState) => state.system.editCommentId);
-  const replyCommentId = useSelector((state: IRootState) => state.system.replyCommentId);
-  const comments = useSelector((state: IRootState) => state.comments);
+  const editCommentId = useSelector(getEditCommentId);
+  const replyCommentId = useSelector(getReplyCommentId);
+  const comments = useSelector(getComments);
   const [commentText, setCommentText] = useState<string>();
   const [replyComment, setReplyComment] = useState<IComment>();
   const [shiftPressed, setShiftPressed] = useState<boolean>();

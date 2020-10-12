@@ -5,8 +5,8 @@ import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
 } from '@/types/entities';
 import { Card } from '@comp/Card';
-import { IRootState } from '@/store/reducers/state';
 import { FallbackLoader } from '@comp/FallbackLoader';
+import { getActiveTodoId, getIsLoadedTodos } from '@/store/selectors';
 
 interface ICardsContainer {
   todos?: ITodos;
@@ -28,8 +28,8 @@ export const CardsContainer: FC<ICardsContainer> = ({
   cardType,
   onExitFromEditable,
 }) => {
-  const activeTodoId = useSelector((state: IRootState) => state.system.activeTodoId);
-  const isLoadedTodos = useSelector((state: IRootState) => state.system.isLoadedTodos);
+  const activeTodoId = useSelector(getActiveTodoId);
+  const isLoadedTodos = useSelector(getIsLoadedTodos);
 
   return (
     <>

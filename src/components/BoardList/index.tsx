@@ -8,7 +8,6 @@ import {
 import { Menu } from '@comp/Menu';
 import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
-import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
   EnumTodoType, IColumn, ITodo, ITodos,
@@ -18,6 +17,15 @@ import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@/use/readableId';
 import { forwardTo } from '@/router/history';
 import { Link } from 'react-router-dom';
+import {
+  getActiveBoardId,
+  getIsEditableBoard,
+  getIsLoadedBoards,
+  getQuery,
+  getBoards,
+  getColumns,
+  getTodos,
+} from '@/store/selectors';
 
 interface IBoardList {}
 
@@ -28,13 +36,13 @@ export const BoardList: FC<IBoardList> = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
-  const boards = useSelector((state: IRootState) => state.boards);
-  const columns = useSelector((state: IRootState) => state.columns);
-  const todos = useSelector((state: IRootState) => state.todos);
-  const query = useSelector((state: IRootState) => state.system.query);
-  const isLoadedBoards = useSelector((state: IRootState) => state.system.isLoadedBoards);
-  const activeBoardId = useSelector((state: IRootState) => state.system.activeBoardId);
-  const isEditableBoard = useSelector((state: IRootState) => state.system.isEditableBoard);
+  const boards = useSelector(getBoards);
+  const columns = useSelector(getColumns);
+  const todos = useSelector(getTodos);
+  const query = useSelector(getQuery);
+  const isLoadedBoards = useSelector(getIsLoadedBoards);
+  const activeBoardId = useSelector(getActiveBoardId);
+  const isEditableBoard = useSelector(getIsEditableBoard);
 
   useEffect(() => {
     if (boards.length) {

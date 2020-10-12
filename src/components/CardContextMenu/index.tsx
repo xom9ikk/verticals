@@ -8,8 +8,8 @@ import { EnumColors, EnumTodoStatus } from '@/types/entities';
 import { Divider } from '@comp/Divider';
 import { SystemActions, TodosActions } from '@/store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { IRootState } from '@/store/reducers/state';
 import { useReadableId } from '@/use/readableId';
+import { getActiveBoardReadableId } from '@/store/selectors';
 
 interface ICardContextMenu {
   id?: number;
@@ -65,9 +65,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
 
-  const activeBoardReadableId = useSelector(
-    (state: IRootState) => state.system.activeBoardReadableId,
-  );
+  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const hidePopup = () => {

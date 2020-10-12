@@ -10,10 +10,10 @@ interface IRoundedButton {
   color?: EnumColors;
   text?: string;
   isActive?: boolean;
-  onClick?: (e: React.SyntheticEvent)=>void;
-  onDoubleClick?: (e: React.SyntheticEvent)=>void;
-  onMouseOver?: (e: React.SyntheticEvent)=>void;
-  onMouseOut?: (e: React.SyntheticEvent)=>void;
+  onClick?: (e: React.SyntheticEvent) => void;
+  onDoubleClick?: (e: React.SyntheticEvent) => void;
+  onMouseOver?: (e: React.SyntheticEvent) => void;
+  onMouseOut?: (e: React.SyntheticEvent) => void;
 }
 
 export const RoundedButton: FC<IRoundedButton> = ({

@@ -17,7 +17,6 @@ import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo, ITodos,
 } from '@/types/entities';
 import { useFocus } from '@/use/focus';
-import { IRootState } from '@/store/reducers/state';
 import { ColorPicker } from '@comp/ColorPicker';
 import { useFilterTodos } from '@/use/filterTodos';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
@@ -26,6 +25,7 @@ import { CardsContainer } from '@comp/CardsContainer';
 import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { getIsEditableColumn, getQuery, getBoards } from '@/store/selectors';
 
 interface IColumn {
   index: number;
@@ -71,9 +71,9 @@ export const Column: FC<IColumn> = ({
   const { filterTodos } = useFilterTodos();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
-  const boards = useSelector((state: IRootState) => state.boards);
-  const isEditableColumn = useSelector((state: IRootState) => state.system.isEditableColumn);
-  const query = useSelector((state: IRootState) => state.system.query);
+  const boards = useSelector(getBoards);
+  const isEditableColumn = useSelector(getIsEditableColumn);
+  const query = useSelector(getQuery);
 
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);

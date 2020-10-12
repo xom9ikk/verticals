@@ -12,8 +12,8 @@ interface ILockedInput {
   width?: string,
   touched?: boolean,
   error?: string,
-  onChange: (event: React.SyntheticEvent)=>void;
-  onBlur?: (event: React.SyntheticEvent)=>void;
+  onChange: (event: React.SyntheticEvent) => void;
+  onBlur?: (event: React.SyntheticEvent) => void;
   value: string,
   placeholder?: string,
   label?: string,

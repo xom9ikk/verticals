@@ -11,13 +11,13 @@ import { Submenu } from '@comp/Submenu';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
 import { BoardsActions, ColumnsActions, SystemActions } from '@/store/actions';
-import { IRootState } from '@/store/reducers/state';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { useFocus } from '@/use/focus';
 import { EnumColors, EnumTodoType } from '@/types/entities';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
+import { getIsEditableBoard } from '@/store/selectors';
 
 const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
@@ -88,7 +88,7 @@ export const Board: FC<IBoard> = ({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
-  const isEditableBoard = useSelector((state: IRootState) => state.system.isEditableBoard);
+  const isEditableBoard = useSelector(getIsEditableBoard);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);

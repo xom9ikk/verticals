@@ -6,9 +6,9 @@ interface IMenuButton {
   hintText?: string;
   hintImageSrc?: string;
   isColoredHintImage?: boolean;
-  onClick?: ()=>void;
-  onMouseEnter?: ()=>void;
-  onMouseLeave?: ()=>void;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export const MenuButton: FC<IMenuButton> = ({

@@ -7,8 +7,8 @@ import { Divider } from '@comp/Divider';
 import { Avatar } from '@comp/Avatar';
 import { SystemActions } from '@/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '@/store/reducers/state';
 import { forwardTo } from '@/router/history';
+import { getIsOpenProfile } from '@/store/selectors';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -25,7 +25,7 @@ export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
   const dispatch = useDispatch();
-  const isOpenProfile = useSelector((state: IRootState) => state.system.isOpenProfile);
+  const isOpenProfile = useSelector(getIsOpenProfile);
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);

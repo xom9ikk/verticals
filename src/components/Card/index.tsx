@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { SystemActions } from '@/store/actions';
-import { IRootState } from '@/store/reducers/state';
 import { useFocus } from '@/use/focus';
 import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
@@ -15,6 +14,7 @@ import { Bullet } from '@comp/Bullet';
 import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { getActiveBoardReadableId, getIsEditableCard } from '@/store/selectors';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -72,10 +72,8 @@ export const Card: FC<ICard> = ({
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const isEditableCard = useSelector((state: IRootState) => state.system.isEditableCard);
-  const activeBoardReadableId = useSelector(
-    (state: IRootState) => state.system.activeBoardReadableId,
-  );
+  const isEditableCard = useSelector(getIsEditableCard);
+  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const titleInputRef = useRef<any>(null);
