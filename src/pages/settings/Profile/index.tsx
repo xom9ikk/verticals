@@ -7,35 +7,44 @@ import { useForm } from '@/use/form';
 import { validatorProfileForm } from '@/helpers/validatorProfileForm';
 import { LockedInput } from '@comp/LockedInput';
 import { Avatar } from '@comp/Avatar';
-
-const initialState = {
-  username: {
-    defaultValue: 'xom9ik',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  name: {
-    defaultValue: 'Max',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  surname: {
-    defaultValue: 'Romanyuta',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  bio: {
-    defaultValue: 'About me bio lorem ipsum sit dolor amet',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-};
+import { useSelector } from 'react-redux';
+import {
+  getBio, getName, getSurname, getUsername,
+} from '@/store/selectors';
 
 interface IProfile {
 
 }
 
 export const Profile: FC<IProfile> = () => {
+  const username = useSelector(getUsername);
+  const name = useSelector(getName);
+  const surname = useSelector(getSurname);
+  const bio = useSelector(getBio);
+
+  const initialState = {
+    username: {
+      defaultValue: username,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+    name: {
+      defaultValue: name,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+    surname: {
+      defaultValue: surname,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+    bio: {
+      defaultValue: bio,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+  };
+
   const handlerSubmit = async () => {
     console.log('submit', values);
     // dispatch(AuthActions.signIn({
@@ -67,7 +76,6 @@ export const Profile: FC<IProfile> = () => {
         >
           <div className="profile-avatar">
             <Avatar
-              fullName="Max Romanyuta"
               size={150}
             />
             <div className="profile-avatar__controls">

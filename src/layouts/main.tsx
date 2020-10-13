@@ -86,7 +86,6 @@ export const MainLayout: FC = ({ match }) => {
   };
 
   const clickHandler = (event: any) => {
-    console.log('clickHandler', event);
     if (event.isTrusted) closeAllPopups();
   };
 

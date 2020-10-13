@@ -32,7 +32,7 @@ const initialState = {
   },
   password: {
     defaultValue: '',
-    error: 'Can’t be blank',
+    error: 'Can\'t be blank',
     isValid: false,
   },
 };

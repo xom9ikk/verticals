@@ -91,9 +91,7 @@ export const CommentForm: FC<ICommentForm> = ({
   return (
     <div className="comment-form">
       <div className="comment-form__wrapper">
-        <Avatar
-          fullName="Max Romanyuta"
-        />
+        <Avatar />
         <div className="comment-form__input-wrapper">
           <div
             className={`comment-form__reply 

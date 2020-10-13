@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -44,15 +44,15 @@ export const BoardList: FC<IBoardList> = () => {
   const activeBoardId = useSelector(getActiveBoardId);
   const isEditableBoard = useSelector(getIsEditableBoard);
 
-  useEffect(() => {
-    if (boards.length) {
-      console.log('boards change');
-      if (activeBoardId === null) {
-        const { id, title } = boards[0];
-        forwardTo(`/userId/${toReadableId(title, id)}`);
-      }
-    }
-  }, [boards]);
+  // useEffect(() => {
+  //   if (boards.length) {
+  //     console.log('boards change');
+  //     if (activeBoardId === null) {
+  //       const { id, title } = boards[0];
+  //       forwardTo(`/userId/${toReadableId(title, id)}`);
+  //     }
+  //   }
+  // }, [boards]);
 
   const saveBoard = (
     {

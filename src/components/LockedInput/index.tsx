@@ -44,7 +44,7 @@ export const LockedInput: FC<ILockedInput> = ({
       ref.current?.focus();
       ref.current?.blur();
       ref.current?.focus();
-    });
+    }, 1000);
   };
 
   const handleChange = (e: React.SyntheticEvent) => {

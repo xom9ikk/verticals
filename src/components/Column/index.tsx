@@ -165,7 +165,7 @@ export const Column: FC<IColumn> = ({
       setTimeout(() => {
         scrollToRight?.();
         setIsEditable(true);
-      });
+      }, 200);
       dispatch(ColumnsActions.create({
         boardId: boardId!,
         title,

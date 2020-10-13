@@ -27,7 +27,7 @@ const password = (payload: string, minLength: number = 5) => {
   }
 
   if (payload.length === 0) {
-    error = 'Can’t be blank';
+    error = 'Can\'t be blank';
   }
 
   return {

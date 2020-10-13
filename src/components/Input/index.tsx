@@ -40,6 +40,7 @@ export const InputComponent = ({
   ...attrs
 }: IInput, ref: any) => {
   const isError = (touched && !!error);
+  console.log('isError', isError);
   const isSuccess = !error;
 
   const inputClasses = [

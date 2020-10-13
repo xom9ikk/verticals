@@ -8,7 +8,7 @@ import { Avatar } from '@comp/Avatar';
 import { SystemActions } from '@/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { forwardTo } from '@/router/history';
-import { getIsOpenProfile } from '@/store/selectors';
+import { getFullName, getIsOpenProfile, getUsername } from '@/store/selectors';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -26,6 +26,8 @@ export const Profile: FC<IProfile> = ({
 }) => {
   const dispatch = useDispatch();
   const isOpenProfile = useSelector(getIsOpenProfile);
+  const fullName = useSelector(getFullName);
+  const username = useSelector(getUsername);
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -81,11 +83,13 @@ export const Profile: FC<IProfile> = ({
       onClick={closeHandler}
     />
     <Avatar
-      fullName="Max Romanyuta"
       size={180}
     />
-    <h1 className="profile__popup-title">Max Romanyuta</h1>
-    <h4 className="profile__popup-subtitle">@xom9ik</h4>
+    <h1 className="profile__popup-title">{fullName}</h1>
+    <h4 className="profile__popup-subtitle">
+      @
+      {username}
+    </h4>
   </div>
   ), [isOpenProfile]);
 
@@ -98,7 +102,6 @@ export const Profile: FC<IProfile> = ({
       onMouseOut={() => setIsHover(false)}
     >
       <Avatar
-        fullName="Max Romanyuta"
         onClick={() => {
           menuButtonClickHandler(EnumMenuActions.OpenProfile);
         }}

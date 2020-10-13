@@ -180,9 +180,7 @@ export const CommentItem: FC<ICommentItem> = ({
       className="comment"
       onDoubleClick={() => setIsDoubleClick(true)}
     >
-      <Avatar
-        fullName="Max Romanyuta"
-      />
+      <Avatar />
       <div
         className={`comment__wrapper
         ${isDoubleClick ? 'comment__wrapper--pressed' : ''}
