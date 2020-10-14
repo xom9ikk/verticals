@@ -5,5 +5,5 @@ interface IValidatorAccountForm {
 }
 
 export const validatorAccountForm = ({ email }: IValidatorAccountForm) => ({
-  email: validator.email(email),
+  email: validator.email()(email),
 });

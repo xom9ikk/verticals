@@ -1,61 +1,31 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { Button } from '@comp/Button';
-import { useForm } from '@/use/form';
-import { validatorAccountForm } from '@/helpers/validatorAccountForm';
-import { LockedInput } from '@comp/LockedInput';
+import { SyncInput } from '@comp/SyncInput';
 import { useSelector } from 'react-redux';
 import { getEmail } from '@/store/selectors';
+import { UserActions } from '@/store/actions';
+import validator from '@/helpers/validator';
 
 interface IAccount {
 
 }
 
-interface IInitialFormState {
-  [key: string]: {
-    defaultValue: string | number | null,
-    error?: string;
-    isValid: boolean,
-  }
-}
-
 export const Account: FC<IAccount> = () => {
   const email = useSelector(getEmail);
-
-  const initialState: IInitialFormState = {
-    email: {
-      defaultValue: email,
-      error: 'Invalid email address',
-      isValid: false,
-    },
-  };
-
-  const handlerSubmit = async () => {
-    console.log('handlerSubmit', values);
-  };
-
-  const {
-    handleChange, handleBlur, values, errors,
-  } = useForm(initialState, handlerSubmit, validatorAccountForm, true);
-  console.log(values);
-  // @ts-ignore
-
-  console.log(initialState, '=>', errors);
 
   return (
     <>
       <h1 className="settings__title">Account</h1>
       <div>
-        <LockedInput
+        <SyncInput
           type="email"
           name="email"
           label="Email"
-          touched
-          error={errors.email.error}
-          value={values.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
           isLight
+          initialValue={email}
+          action={UserActions.updateEmail}
+          validator={validator.email()}
         />
         <div className="input">
           <div className="input__wrapper">

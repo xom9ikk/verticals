@@ -6,6 +6,8 @@ import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
 import { UserActions } from '@/store/actions';
+import { Action } from 'redux-actions';
+import { IUpdateUserRequest } from '@/types/api';
 
 const { userService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -20,8 +22,28 @@ function* fetchMeWorker() {
   }
 }
 
+function* updateUsernameWorker(action: Action<IUpdateUserRequest>) {
+  try {
+    yield* apply(userService, userService.update, [action.payload]);
+    yield put(UserActions.setUsername(action.payload.username!));
+  } catch (error) {
+    yield call(show, 'User', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* updateEmailWorker(action: Action<IUpdateUserRequest>) {
+  try {
+    yield* apply(userService, userService.update, [action.payload]);
+    yield put(UserActions.setEmail(action.payload.email!));
+  } catch (error) {
+    yield call(show, 'User', error, ALERT_TYPES.DANGER);
+  }
+}
+
 export function* watchUser() {
   yield* all([
     takeLatest(UserActions.Type.FETCH_ME, fetchMeWorker),
+    takeLatest(UserActions.Type.UPDATE_USERNAME, updateUsernameWorker),
+    takeLatest(UserActions.Type.UPDATE_EMAIL, updateEmailWorker),
   ]);
 }

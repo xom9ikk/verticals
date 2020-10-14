@@ -27,13 +27,6 @@ export type IRefreshResponse = IServerResponse<{
   refreshToken: string;
 }>;
 
-export type IMeResponse = IServerResponse<{
-  email: string;
-  name: string;
-  surname: string;
-  username: string;
-}>;
-
 export type ILogoutResponse = IServerResponse;
 
 export interface IResetPasswordRequest {

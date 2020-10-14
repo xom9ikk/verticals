@@ -102,12 +102,10 @@ export const BoardList: FC<IBoardList> = () => {
     if (sourcePosition === destinationPosition) {
       return;
     }
-    dispatch(BoardsActions.updatePosition(
-      {
-        sourcePosition,
-        destinationPosition,
-      },
-    ));
+    dispatch(BoardsActions.updatePosition({
+      sourcePosition,
+      destinationPosition,
+    }));
   };
 
   const getCountTodos = (boardId: number) => {

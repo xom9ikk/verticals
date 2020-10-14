@@ -10,8 +10,8 @@ interface IValidatorProfileForm {
 export const validatorProfileForm = ({
   name, surname, username, bio,
 }: IValidatorProfileForm) => ({
-  name: validator.text(name, 2, 'First name'),
-  surname: validator.text(surname, 2, 'Last name'),
-  username: validator.text(username, 2, 'Username'),
-  bio: validator.text(bio, 0, 'Bio'),
+  name: validator.text({ min: 2, name: 'First name' })(name),
+  surname: validator.text({ min: 2, name: 'Last name' })(surname),
+  username: validator.text({ min: 2, name: 'Username' })(username),
+  bio: validator.text({ min: 0, name: 'Bio' })(bio),
 });

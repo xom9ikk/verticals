@@ -1,6 +1,5 @@
 import {
   ILogoutResponse,
-  IMeResponse,
   IGetAllColumnsResponse,
   IGetAllBoardsResponse,
   IGetAllTodosResponse,
@@ -25,6 +24,7 @@ import {
   IDuplicateTodoRequest, IDuplicateTodoResponse,
   IReverseColumnOrderRequest, IReverseColumnOrderResponse,
   IGetMeResponse,
+  IUpdateUserResponse, IUpdateUserRequest,
 } from './types/api';
 
 export interface IHttpClient {
@@ -46,7 +46,6 @@ export interface IServices {
 export interface IAuthService {
   signUp(body: ISignUpRequest): Promise<ISignUpResponse>;
   signIn(body: ISignInRequest): Promise<ISignInResponse>;
-  me(): Promise<IMeResponse>;
   logout(): Promise<ILogoutResponse>;
   reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
 }
@@ -82,4 +81,5 @@ export interface ITodoService {
 
 export interface IUserService {
   getMe(): Promise<IGetMeResponse>;
+  update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
 }

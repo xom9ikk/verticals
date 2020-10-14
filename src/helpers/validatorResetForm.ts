@@ -5,5 +5,5 @@ interface IValidatorResetForm {
 }
 
 export const validatorResetForm = ({ email }: IValidatorResetForm) => ({
-  email: validator.email(email),
+  email: validator.email()(email),
 });
