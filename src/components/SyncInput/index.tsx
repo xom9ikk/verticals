@@ -57,6 +57,7 @@ export const SyncInput: FC<ISyncInput> = ({
   } = useValidator(initialValue, validator, debounceSubmit);
 
   useEffect(() => {
+    console.log('initialValue', initialValue, 'validValue', validValue);
     if (initialValue === validValue) {
       setTimeout(() => {
         setIsLoading(false);

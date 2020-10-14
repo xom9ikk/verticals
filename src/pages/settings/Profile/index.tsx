@@ -25,11 +25,6 @@ export const Profile: FC<IProfile> = () => {
   const bio = useSelector(getBio);
 
   const initialState = {
-    username: {
-      defaultValue: username,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
     name: {
       defaultValue: name,
       error: 'Can\'t be blank',

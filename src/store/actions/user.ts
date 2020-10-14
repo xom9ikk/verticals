@@ -24,7 +24,10 @@ const updateEmail = createAction(
   Type.UPDATE_EMAIL,
   (payload: IUpdateEmail) => ({ email: payload }),
 );
-const setUsername = createAction<ISetUsername>(Type.SET_USERNAME);
+const setUsername = createAction(
+  Type.SET_USERNAME,
+  (payload: ISetUsername) => ({ username: payload }),
+);
 const setEmail = createAction(
   Type.SET_EMAIL,
   (payload: ISetEmail) => ({ email: payload }),
