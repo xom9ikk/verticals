@@ -1,16 +1,18 @@
 import React, { FC, useMemo, useState } from 'react';
+// @ts-ignore
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
 import { MenuButton } from '@comp/MenuButton';
 import { Divider } from '@comp/Divider';
 import { Avatar } from '@comp/Avatar';
 import { SystemActions } from '@/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '@/store/reducers/state';
 import { forwardTo } from '@/router/history';
+import { getFullName, getIsOpenProfile, getUsername } from '@/store/selectors';
 
 enum EnumMenuActions {
   OpenProfile,
-  OpenSettings,
+  ProfileSettings,
   AddBoard,
   CopyLink,
 }
@@ -23,9 +25,12 @@ export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
   const dispatch = useDispatch();
-  const { system: { isOpenProfile } } = useSelector((state: IRootState) => state);
+  const isOpenProfile = useSelector(getIsOpenProfile);
+  const fullName = useSelector(getFullName);
+  const username = useSelector(getUsername);
 
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
@@ -41,8 +46,8 @@ export const Profile: FC<IProfile> = ({
         dispatch(SystemActions.setIsOpenProfile(!isOpenProfile));
         break;
       }
-      case EnumMenuActions.OpenSettings: {
-        forwardTo('/settings/account');
+      case EnumMenuActions.ProfileSettings: {
+        forwardTo('/settings/profile');
         break;
       }
       case EnumMenuActions.AddBoard: {
@@ -50,8 +55,12 @@ export const Profile: FC<IProfile> = ({
         break;
       }
       case EnumMenuActions.CopyLink: {
-        console.log('copy', 'https://');
-        break;
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+          hidePopup();
+        }, 1000);
+        return;
       }
       default: break;
     }
@@ -76,10 +85,15 @@ export const Profile: FC<IProfile> = ({
     <Avatar
       size={180}
     />
-    <h1 className="profile__popup-title">Max Romanyuta</h1>
-    <h4 className="profile__popup-subtitle">@xom9ik</h4>
+    <h1 className="profile__popup-title">{fullName}</h1>
+    <h4 className="profile__popup-subtitle">
+      @
+      {username}
+    </h4>
   </div>
   ), [isOpenProfile]);
+
+  console.log('isCopied', isCopied);
 
   return (
     <div
@@ -112,7 +126,7 @@ export const Profile: FC<IProfile> = ({
           text="Profile Settings"
           imageSrc="/assets/svg/menu/profile-settings.svg"
           onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.OpenSettings);
+            menuButtonClickHandler(EnumMenuActions.ProfileSettings);
           }}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
@@ -124,16 +138,19 @@ export const Profile: FC<IProfile> = ({
             menuButtonClickHandler(EnumMenuActions.AddBoard);
           }}
         />
-        <MenuButton
-          text="Copy link"
-          imageSrc="/assets/svg/menu/copy-link.svg"
-          onClick={() => {
+        <CopyToClipboard
+          text="verticals.xom9ik.com/userId"
+          onCopy={() => {
             menuButtonClickHandler(EnumMenuActions.CopyLink);
           }}
-        />
+        >
+          <MenuButton
+            text={isCopied ? 'Copied!' : 'Copy link'}
+            imageSrc="/assets/svg/menu/copy-link.svg"
+          />
+        </CopyToClipboard>
       </Menu>
       { profile }
-
     </div>
   );
 };

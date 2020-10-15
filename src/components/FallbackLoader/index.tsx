@@ -1,22 +1,30 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useEffect, useMemo, useState,
+} from 'react';
 import { Loader } from '@comp/Loader';
 
 interface IFallbackLoader {
   backgroundColor?: string;
-  isLoading?: boolean
-  isFixed?: boolean
-  isAbsolute?: boolean
-  size?: 'small' | 'medium' | 'large'
+  isLoading?: boolean;
+  isFixed?: boolean;
+  isAbsolute?: boolean;
+  size?: 'small' | 'medium' | 'large';
+  delay?: number;
+  minimumZIndex?: number;
 }
 
 export const FallbackLoader: FC<IFallbackLoader> = ({
   backgroundColor,
-  isLoading = true,
+  isLoading: initialIsLoading = true,
   isFixed,
   isAbsolute,
   size = 'large',
+  delay = 500,
+  minimumZIndex = 1,
 }) => {
   const [zIndex, setZIndex] = useState(999);
+  const [isLoading, setIsLoading] = useState(initialIsLoading);
+  const [isShowLoader, setIsShowLoader] = useState(initialIsLoading);
 
   const sizeGrid = {
     small: {
@@ -37,13 +45,33 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setZIndex(isLoading ? 999 : -1);
-    }, 500);
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+    if (initialIsLoading) {
+      setIsShowLoader(true);
+      setIsLoading(true);
+      setZIndex(minimumZIndex);
+    }
+    const delayTimeout = delay - 200 > 0 ? delay - 200 : 0;
 
-  return (
+    const timeout = setTimeout(() => {
+      if (!initialIsLoading) {
+        setIsLoading(false);
+        setZIndex(-1);
+      }
+    }, delay);
+
+    const timeoutLoader = setTimeout(() => {
+      if (!initialIsLoading) {
+        setIsShowLoader(false);
+      }
+    }, delayTimeout);
+
+    return () => {
+      clearTimeout(timeout);
+      clearTimeout(timeoutLoader);
+    };
+  }, [initialIsLoading]);
+
+  const memoFallback = useMemo(() => (
     <div
       className={`fallback-loader 
       ${isFixed ? 'fallback-loader--fixed' : ''}
@@ -54,12 +82,17 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
     >
       <div className="fallback-loader__wrapper">
         <Loader
-          isOpen
+          isOpen={isShowLoader}
           size={sizeGrid[size].size}
           strokeWidth={sizeGrid[size].strokeWidth}
           strokeDashoffset={sizeGrid[size].strokeDashoffset}
         />
       </div>
     </div>
+  ), [isFixed, isAbsolute, backgroundColor, size,
+    isShowLoader, isLoading, zIndex]);
+
+  return (
+    <>{memoFallback}</>
   );
 };

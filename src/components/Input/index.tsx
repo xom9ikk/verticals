@@ -7,9 +7,9 @@ interface IInput {
   width?: string,
   touched?: boolean,
   error?: string,
-  onChange: (event:any)=>void;
-  onBlur?: (event:any)=>void;
-  onKeyDown?: (event:any)=>void;
+  onChange: (event:any) => void;
+  onBlur?: (event:any) => void;
+  onKeyDown?: (event:any) => void;
   value: string,
   placeholder?: string,
   label?: string,
@@ -40,6 +40,7 @@ export const InputComponent = ({
   ...attrs
 }: IInput, ref: any) => {
   const isError = (touched && !!error);
+  console.log('isError', isError);
   const isSuccess = !error;
 
   const inputClasses = [

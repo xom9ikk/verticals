@@ -15,7 +15,7 @@ import {
   IUpdateTodoDescription,
   IUpdateTodoPosition,
   IUpdateTodoTitle,
-} from '@/types';
+} from '@/types/actions';
 
 enum Type {
   FETCH_BY_BOARD_ID = 'TODOS/FETCH_BY_BOARD_ID',

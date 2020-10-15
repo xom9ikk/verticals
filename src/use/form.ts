@@ -16,29 +16,30 @@ const getInitialStateForValues = (initialState: any) => {
   return arr;
 };
 
-export const useForm = (initialState: any, callback: any, validator: any) => {
-  const [
-    values,
-    setValues,
-  ] = useState<any>({});
-  const [
-    errors,
-    setErrors,
-  ] = useState(initialState);
-  const [
-    touched,
-    setTouched,
-  ] = useState<any>({});
-  const [
-    isValidForm,
-    setIsValidForm,
-  ] = useState(false);
+export const useForm = (
+  initialState: any, callback: any,
+  validator: any, instantlySubmit?:boolean,
+) => {
+  console.log('useForm', initialState);
+  const [values, setValues] = useState<any>({});
+  const [errors, setErrors] = useState(initialState);
+  const [touched, setTouched] = useState<any>({});
+  const [isValidForm, setIsValidForm] = useState(false);
 
   useEffect(() => {
-    setValues(getInitialStateForValues(initialState));
-    setErrors(validator(initialState));
-    setTouched(getInitialStateForTouched(initialState, false));
-  }, []);
+    const isSetDefaultValues = Object.keys(initialState)
+      .every((key) => {
+        const value = initialState[key].defaultValue;
+        return value !== null && value !== undefined;
+      });
+    const isEmptyValues = Object.keys(values).length === 0;
+    if (isSetDefaultValues && isEmptyValues) {
+      const initialStateForValues = getInitialStateForValues(initialState);
+      setValues(initialStateForValues);
+      setErrors(validator(initialStateForValues));
+      setTouched(getInitialStateForTouched(initialState, false));
+    }
+  }, [initialState]);
 
   const updateValue = (key: string, value: any) => {
     const newValues = {
@@ -49,20 +50,13 @@ export const useForm = (initialState: any, callback: any, validator: any) => {
     setErrors(validator(newValues));
   };
 
-  const resetTouch = (key: string) => {
-    const newValue = {
-      ...touched,
-      [key]: false,
-    };
-    setTouched(newValue);
-  };
-
-  const handleChange = (event: React.BaseSyntheticEvent, selectName?: string) => {
-    const { target } = event;
-    const name = target ? event.target.name : selectName;
-    const value = target ? event.target.value : event;
-    updateValue(name, value);
-  };
+  // const resetTouch = (key: string) => {
+  //   const newValue = {
+  //     ...touched,
+  //     [key]: false,
+  //   };
+  //   setTouched(newValue);
+  // };
 
   const handleSubmit = async (event: React.BaseSyntheticEvent) => {
     if (event) {
@@ -70,9 +64,23 @@ export const useForm = (initialState: any, callback: any, validator: any) => {
     }
     setTouched(getInitialStateForTouched(initialState, true));
     setErrors(await validator(values));
+    console.log('isValidForm', isValidForm);
     if (isValidForm) {
       callback();
     }
+  };
+
+  const handleChange = (event: React.BaseSyntheticEvent, selectName?: string) => {
+    const { target } = event;
+    const name = target ? event.target.name : selectName;
+    const value = target ? event.target.value : event;
+    updateValue(name, value);
+    setTimeout(() => {
+      if (instantlySubmit && isValidForm) {
+        console.log('instantlySubmit', instantlySubmit, 'isValidForm', isValidForm);
+        callback();
+      }
+    });
   };
 
   const handleBlur = (event: React.BaseSyntheticEvent, selectName?: string) => {
@@ -96,6 +104,6 @@ export const useForm = (initialState: any, callback: any, validator: any) => {
     errors,
     touched,
     updateValue,
-    resetTouch,
+    // resetTouch,
   };
 };

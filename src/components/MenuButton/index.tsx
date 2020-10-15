@@ -5,9 +5,10 @@ interface IMenuButton {
   imageSrc?: string;
   hintText?: string;
   hintImageSrc?: string;
-  onClick?: ()=>void;
-  onMouseEnter?: ()=>void;
-  onMouseLeave?: ()=>void;
+  isColoredHintImage?: boolean;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export const MenuButton: FC<IMenuButton> = ({
@@ -15,9 +16,11 @@ export const MenuButton: FC<IMenuButton> = ({
   imageSrc,
   hintText,
   hintImageSrc,
+  isColoredHintImage,
   onClick,
   onMouseEnter,
   onMouseLeave,
+  children,
 }) => (
   <button
     type="button"
@@ -27,24 +30,37 @@ export const MenuButton: FC<IMenuButton> = ({
     onMouseLeave={onMouseLeave}
   >
     <div className="menu-button__block">
-      {
-            imageSrc ? (
-              <img
-                src={imageSrc}
-                alt="ico"
-                className="menu-button__icon"
-              />
-            ) : (
-              <span className="menu-button__icon" />
-            )
+      <div className="menu-button__row">
+        {
+          imageSrc ? (
+            <img
+              src={imageSrc}
+              alt="ico"
+              className="menu-button__icon"
+            />
+          ) : (
+            <span className="menu-button__icon" />
+          )
         }
-      {text}
+        <div className="menu-button__content">
+          {text}
+        </div>
+      </div>
+      <div className="menu-button__additional-content">
+        {children}
+      </div>
     </div>
     {
       hintText ? <span>{hintText}</span> : null
     }
     {
-      hintImageSrc ? <img src={hintImageSrc} alt="hint" className="menu-button__hint-icon" /> : null
+      hintImageSrc ? (
+        <img
+          src={hintImageSrc}
+          alt="hint"
+          className={`menu-button__hint-icon ${isColoredHintImage ? 'menu-button__hint-icon--colored' : ''}`}
+        />
+      ) : null
     }
   </button>
 );

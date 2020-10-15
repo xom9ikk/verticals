@@ -14,10 +14,9 @@ import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodo, ITodos,
-} from '@/types';
+  EnumColors, EnumTodoStatus, ITodo,
+} from '@/types/entities';
 import { useFocus } from '@/use/focus';
-import { IRootState } from '@/store/reducers/state';
 import { ColorPicker } from '@comp/ColorPicker';
 import { useFilterTodos } from '@/use/filterTodos';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
@@ -25,6 +24,10 @@ import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
 import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import {
+  getIsEditableColumn, getQuery, getBoardCardType, getTodosByColumnId,
+} from '@/store/selectors';
 
 interface IColumn {
   index: number;
@@ -35,9 +38,10 @@ interface IColumn {
   boardId?: number | null;
   title?: string;
   description?: string;
-  todos?: ITodos;
+  // todos?: ITodos;
   isNew?: boolean;
   isDeleted?: boolean;
+  scrollToRight?: () => void;
 }
 
 enum EnumMenuActions {
@@ -58,19 +62,21 @@ export const Column: FC<IColumn> = ({
   boardId,
   title: initialTitle,
   description: initialDescription,
-  todos,
+  // todos,
   isNew,
   isDeleted,
+  scrollToRight,
 }) => {
   const dispatch = useDispatch();
 
   const { focus } = useFocus();
   const { filterTodos } = useFilterTodos();
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
 
-  const {
-    system: { isEditableColumn, query },
-    boards,
-  } = useSelector((state: IRootState) => state);
+  const todos = useSelector(getTodosByColumnId(columnId));
+  const cardType = useSelector(getBoardCardType(boardId));
+  const isEditableColumn = useSelector(getIsEditableColumn);
+  const query = useSelector(getQuery);
 
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -84,8 +90,6 @@ export const Column: FC<IColumn> = ({
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
-
-  const { cardType } = boards.filter((board) => board.id === boardId)[0] || EnumTodoType.Checkboxes;
 
   const saveCard = (
     id?: number,
@@ -113,6 +117,9 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
+      setTimeout(() => {
+        setIsOpenNewCard(true);
+      });
       dispatch(TodosActions.create({
         columnId: columnId!,
         title,
@@ -155,6 +162,10 @@ export const Column: FC<IColumn> = ({
         }));
       }
     } else if (title) {
+      setTimeout(() => {
+        scrollToRight?.();
+        setIsEditable(true);
+      }, 200);
       dispatch(ColumnsActions.create({
         boardId: boardId!,
         title,
@@ -169,18 +180,13 @@ export const Column: FC<IColumn> = ({
     setIsHover(false);
   };
 
-  const keydownHandler = (event: any, isDescription: boolean) => {
+  const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      if (!isDescription) {
-        focus(descriptionInputRef);
-        setTitleValue(titleValue.trim());
-      } else {
-        saveColumn();
-        setIsEditable(false);
-      }
+      setIsEditable(false);
+      saveColumn();
     }
   };
 
@@ -332,7 +338,7 @@ export const Column: FC<IColumn> = ({
       isActiveQuery={!!query}
       onExitFromEditable={saveCard}
     />
-  ), [boards, todos, columnId, isOpenNewCard, query]);
+  ), [todos, columnId, isOpenNewCard, query]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -402,8 +408,9 @@ export const Column: FC<IColumn> = ({
               placeholder="Notes"
               minRows={1}
               maxRows={4}
+              onKeyDown={shiftEnterRestriction}
+              onKeyDownCapture={(event) => keydownHandler(event)}
               onChange={(event) => changeHandler(event, true)}
-              onKeyUp={(event) => keydownHandler(event, true)}
             />
           ) : (
             <span
@@ -433,8 +440,9 @@ export const Column: FC<IColumn> = ({
                 placeholder="New column"
                 minRows={1}
                 maxRows={4}
+                onKeyDown={shiftEnterRestriction}
+                onKeyDownCapture={(event) => keydownHandler(event)}
                 onChange={(event) => changeHandler(event, false)}
-                onKeyUp={(event) => keydownHandler(event, false)}
               />
             ) : (
               <>
@@ -599,7 +607,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, boards, todos, color, colorClass, columnId, isHover,
+    index, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, query, isCollapsed,
     isTopHover, isDraggingCard, isNew,

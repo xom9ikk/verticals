@@ -2,6 +2,7 @@
   transition: opacity 0.2s ease-in-out;
   opacity: 1;
   display: flex;
+  animation: 1s rotate linear infinite;
 
   .meter {
     fill: none;
@@ -12,19 +13,15 @@
     stroke-dasharray: 360;
     //stroke-dashoffset: 325;
     stroke: $primary;
-    animation: progress 1s linear infinite;
-  }
-
-  @keyframes progress {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
   }
 
   &--hidden {
     opacity: 0;
   }
+}
+
+
+@keyframes rotate {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
 }

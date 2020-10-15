@@ -2,11 +2,11 @@ import React, { FC, useState } from 'react';
 // @ts-ignore
 import downloadjs from 'downloadjs';
 import { Menu } from '@comp/Menu';
-import { IFile } from '@/types';
+import { IFile } from '@/types/entities';
 
 interface ICommentFile {
   file: IFile;
-  onRemove: (id: string)=>void;
+  onRemove: (id: string) => void;
   isCompact: boolean;
   isImage: boolean;
 }

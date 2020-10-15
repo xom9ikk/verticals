@@ -1,55 +1,81 @@
 // @ts-ignore
 import is from 'is_js';
 
-const email = (payload: string) => {
+export type IValidatorPayload = string | null;
+
+export interface IValidatorRules {
+  min?: number;
+  name?: string;
+}
+
+export interface IValidatorResult {
+  isValid: boolean;
+  message?: string;
+}
+
+const email = () => (payload: IValidatorPayload): IValidatorResult => {
   const isValid = is.email(payload);
-  let error = '';
+  let message = '';
 
   if (!isValid) {
-    error = 'Invalid email address';
+    message = 'Invalid email address';
   }
 
-  if (payload.length === 0) {
-    error = 'Invalid email address';
+  if (payload?.length === 0) {
+    message = 'Can\'t be blank';
   }
 
   return {
-    error,
+    message,
     isValid,
   };
 };
 
-const password = (payload: string, minLength: number = 5) => {
-  let error = '';
+const password = (
+  { min = 5 }: IValidatorRules,
+) => (payload: IValidatorPayload): IValidatorResult => {
+  let message = '';
 
-  if (payload.length <= minLength) {
-    error = 'Password is short';
+  const length = payload?.length ?? 0;
+
+  if (length <= min) {
+    message = 'Password is short';
   }
 
-  if (payload.length === 0) {
-    error = 'Can’t be blank';
+  if (length === 0) {
+    message = 'Can\'t be blank';
   }
 
   return {
-    error,
-    isValid: !error,
+    message,
+    isValid: !message,
   };
 };
 
-const text = (payload: string, minLength: number = 5, fieldName: string) => {
-  let error = '';
+const text = (
+  { min = 5, name }: IValidatorRules,
+) => (payload: IValidatorPayload) : IValidatorResult => {
+  const length = payload?.length ?? 0;
 
-  if (payload.length <= minLength) {
-    error = `${fieldName} is short`;
+  if (min === 0 && length === 0) {
+    return {
+      isValid: true,
+    };
   }
 
-  if (payload.length === 0) {
-    error = 'Can’t be blank';
+  let message = '';
+
+  if (length <= min) {
+    message = `${name || 'Entered value'} is short`;
+  }
+
+  if (length === 0) {
+    message = 'Can\'t be blank';
   }
 
   return {
-    error,
-    isValid: !error,
+    message,
+    isValid: !message,
   };
 };
 

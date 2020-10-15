@@ -1,116 +1,47 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
-import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
-import { Form } from '@comp/Form';
-import { useForm } from '@/use/form';
-import { validatorProfileForm } from '@/helpers/validatorProfileForm';
-import { LockedInput } from '@comp/LockedInput';
-
-const initialState = {
-  username: {
-    defaultValue: 'xom9ik',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  name: {
-    defaultValue: 'Max',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  surname: {
-    defaultValue: 'Romanyuta',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  bio: {
-    defaultValue: 'About me bio lorem ipsum sit dolor amet',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-};
+import { SyncInput } from '@comp/SyncInput';
+import { useSelector } from 'react-redux';
+import { getEmail } from '@/store/selectors';
+import { UserActions } from '@/store/actions';
+import validator from '@/helpers/validator';
 
 interface IAccount {
 
 }
 
 export const Account: FC<IAccount> = () => {
-  const handlerSubmit = async () => {
-    console.log('submit', values);
-    // dispatch(AuthActions.signIn({
-    //   email: values.email,
-    //   password: values.password,
-    // }));
-  };
-
-  const {
-    handleChange, handleSubmit, handleBlur, values, errors, touched,
-  } = useForm(initialState, handlerSubmit, validatorProfileForm);
+  const email = useSelector(getEmail);
 
   return (
     <>
       <h1 className="settings__title">Account</h1>
       <div>
-        <Form
-          handleSubmit={handleSubmit}
-          alignItems="left"
-          isMaxWidth
-        >
-          <LockedInput
-            type="text"
-            label="Username"
-            touched={touched.username}
-            error={errors.username.error}
-            name="username"
-            value={values.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isLight
-          />
-          <Input
-            type="text"
-            label="First name"
-            touched={touched.name}
-            error={errors.name.error}
-            name="name"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isLight
-          />
-          <Input
-            type="text"
-            label="Last name"
-            touched={touched.surname}
-            error={errors.surname.error}
-            name="surname"
-            value={values.surname}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isLight
-          />
-          <Input
-            type="text"
-            label="Bio"
-            touched={touched.bio}
-            error={errors.bio.error}
-            name="bio"
-            value={values.bio}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            isMultiline
-            isLight
-          />
-          <div className="settings__controls">
-            <Button
-              type="submit"
-              modificator="primary"
-              isMaxWidth
-            >
-              Save changes
-            </Button>
+        <SyncInput
+          type="email"
+          name="email"
+          label="Email"
+          isLight
+          initialValue={email}
+          action={UserActions.updateEmail}
+          validator={validator.email()}
+        />
+        <div className="input">
+          <div className="input__wrapper">
+            <div className="input__inner">
+              <span className="input__label">Password</span>
+              <div className="input__holder">
+                <Button
+                  type="submit"
+                  isMaxWidth
+                >
+                  Change password
+                </Button>
+              </div>
+            </div>
           </div>
-        </Form>
+        </div>
       </div>
     </>
   );

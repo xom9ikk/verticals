@@ -1,0 +1,25 @@
+.sync-input {
+  width: 100%;
+  position: relative;
+  margin-bottom: 20px;
+  &__overlay {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    position: absolute;
+    right: 10px;
+    //background: red;
+    z-index: 1;
+  }
+  &__button {
+    border: 0;
+    background: none;
+    font-size: 15px;
+    font-family: 'Nunito Light', sans-serif;
+    color: $primary;
+  }
+  &__indicator {
+    width: 17px;
+    height: 17px;
+  }
+}

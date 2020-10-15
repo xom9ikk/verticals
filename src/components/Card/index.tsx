@@ -6,12 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { SystemActions } from '@/store/actions';
-import { IRootState } from '@/store/reducers/state';
 import { useFocus } from '@/use/focus';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types';
+import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
+import { forwardTo } from '@/router/history';
+import { useReadableId } from '@/use/readableId';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { getActiveBoardReadableId, getIsEditableCard } from '@/store/selectors';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -63,11 +66,14 @@ export const Card: FC<ICard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
+
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const { system: { isEditableCard } } = useSelector((state: IRootState) => state);
+  const isEditableCard = useSelector(getIsEditableCard);
+  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const titleInputRef = useRef<any>(null);
@@ -86,18 +92,18 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
-  const keydownHandler = (event: any, isDescription: boolean) => {
+  const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      if (!isDescription) {
-        setTitleValue(titleValue.trim());
-        focus(descriptionInputRef);
-      } else {
-        saveTodo();
-        setIsEditable(false);
-      }
+      // if (!isDescription) {
+      // setTitleValue(titleValue.trim());
+      // focus(descriptionInputRef);
+      // } else {
+      saveTodo();
+      setIsEditable(false);
+      // }
     }
   };
 
@@ -116,8 +122,13 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
-  const changeStatusHandler = () => {
-    if (status === EnumTodoStatus.Done) {
+  const changeStatusHandler = (event: any) => {
+    const { shiftKey, metaKey } = event.nativeEvent;
+    if (shiftKey) {
+      saveTodo({ newStatus: EnumTodoStatus.Canceled });
+    } else if (metaKey) {
+      saveTodo({ newStatus: EnumTodoStatus.Doing });
+    } else if (status === EnumTodoStatus.Done) {
       saveTodo({ newStatus: EnumTodoStatus.Todo });
     } else {
       saveTodo({ newStatus: EnumTodoStatus.Done });
@@ -131,8 +142,10 @@ export const Card: FC<ICard> = ({
     setIsDoubleClicked(true);
   };
 
+  const { toReadableId } = useReadableId();
+
   const clickHandler = () => {
-    dispatch(SystemActions.setCurrentTodoId(id!));
+    forwardTo(`/userId/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
   };
 
   const {
@@ -193,27 +206,25 @@ export const Card: FC<ICard> = ({
     [],
   );
 
-  const card = useMemo(() => {
-    console.log('rerender crd', status);
-    return (
-      <div
-        className={`card__block-wrapper 
+  const card = useMemo(() => (
+    <div
+      className={`card__block-wrapper 
           ${isEditable ? 'card__block-wrapper--editable' : ''}
         `}
-        onClick={handleClick}
+      onClick={handleClick}
+    >
+      <Bullet
+        type={cardType}
+        status={status}
+        onChangeStatus={changeStatusHandler}
+      />
+      <div
+        className="card__block"
+        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
+        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+        onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
       >
-        <Bullet
-          type={cardType}
-          status={status}
-          onChangeStatus={changeStatusHandler}
-        />
-        <div
-          className="card__block"
-          onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-          onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
-          onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
-        >
-          {
+        {
               isEditable ? (
                 <div
                   className="card__editable-content"
@@ -225,8 +236,9 @@ export const Card: FC<ICard> = ({
                     placeholder="New Card"
                     minRows={1}
                     maxRows={20}
+                    onKeyDown={shiftEnterRestriction}
+                    onKeyDownCapture={(event: any) => keydownHandler(event)}
                     onChange={(event: any) => changeTextHandler(event, false)}
-                    onKeyUp={(event: any) => keydownHandler(event, false)}
                   />
                   <TextArea
                     ref={descriptionInputRef}
@@ -235,13 +247,16 @@ export const Card: FC<ICard> = ({
                     placeholder="Notes"
                     minRows={1}
                     maxRows={20}
+                    onKeyDown={shiftEnterRestriction}
+                    onKeyDownCapture={(event: any) => keydownHandler(event)}
                     onChange={(event: any) => changeTextHandler(event, true)}
-                    onKeyDownCapture={(event: any) => keydownHandler(event, true)}
                   />
                 </div>
               ) : (
                 <div
-                  className="card__inner"
+                  className={`card__inner 
+                  ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
+                  `}
                 >
                   <span>
                     {titleValue}
@@ -250,10 +265,10 @@ export const Card: FC<ICard> = ({
 
               )
             }
-        </div>
       </div>
-    );
-  }, [
+    </div>
+  ),
+  [
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,
@@ -286,6 +301,7 @@ export const Card: FC<ICard> = ({
             !isEditable && (
             <CardContextMenu
               id={id}
+              title={initialTitle}
               columnId={columnId}
               isArchived={isArchived}
               isActive={isActive}

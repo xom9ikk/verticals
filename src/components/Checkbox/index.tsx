@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 
 interface ICheckbox {
   isActive: boolean;
-  onClick: ()=>void;
+  onChange: (event: any) => void;
   style?: any;
 }
 
-export const Checkbox: FC<ICheckbox> = ({ isActive, onClick, style }) => (
+export const Checkbox: FC<ICheckbox> = ({ isActive, onChange, style }) => (
   <div
     className="checkbox"
     style={style}
@@ -16,8 +16,8 @@ export const Checkbox: FC<ICheckbox> = ({ isActive, onClick, style }) => (
       type="checkbox"
       className="checkbox__input"
       defaultChecked={isActive}
-      onChange={() => {
-        onClick();
+      onChange={(e) => {
+        onChange(e);
       }}
     />
     <div className={`checkbox__imitator ${isActive ? 'checkbox__imitator--active' : ''}`}>

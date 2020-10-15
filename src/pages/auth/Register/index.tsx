@@ -32,7 +32,7 @@ const initialState = {
   },
   password: {
     defaultValue: '',
-    error: 'Can’t be blank',
+    error: 'Can\'t be blank',
     isValid: false,
   },
 };
@@ -64,7 +64,7 @@ export const Register: FC = () => {
         type="text"
         placeholder="First name"
         touched={touched.name}
-        error={errors.name.error}
+        error={errors.name.message}
         name="name"
         value={values.name}
         onChange={handleChange}
@@ -74,7 +74,7 @@ export const Register: FC = () => {
         type="text"
         placeholder="Last name"
         touched={touched.surname}
-        error={errors.surname.error}
+        error={errors.surname.message}
         name="surname"
         value={values.surname}
         onChange={handleChange}
@@ -84,7 +84,7 @@ export const Register: FC = () => {
         type="text"
         placeholder="Enter your email..."
         touched={touched.email}
-        error={errors.email.error}
+        error={errors.email.message}
         name="email"
         value={values.email}
         onChange={handleChange}
@@ -94,7 +94,7 @@ export const Register: FC = () => {
         type="text"
         placeholder="Username"
         touched={touched.username}
-        error={errors.username.error}
+        error={errors.username.message}
         name="username"
         value={values.username}
         onChange={handleChange}
@@ -104,7 +104,7 @@ export const Register: FC = () => {
         type="password"
         placeholder="Password"
         touched={touched.password}
-        error={errors.password.error}
+        error={errors.password.message}
         name="password"
         value={values.password}
         onChange={handleChange}

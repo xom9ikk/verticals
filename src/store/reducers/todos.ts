@@ -2,7 +2,7 @@
 import { handleActions } from 'redux-actions';
 import {
   ITodo, ITodos,
-} from '@/types';
+} from '@/types/entities';
 import { TodosActions } from '../actions';
 
 const initialState: ITodos = [];

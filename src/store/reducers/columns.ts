@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import {
   IColumn, IColumns,
-} from '@/types';
+} from '@/types/entities';
 import { ColumnsActions } from '../actions';
 
 const initialState: IColumns = [
@@ -77,22 +77,52 @@ export const ColumnsReducer = handleActions<IColumns, any>({
       (state, action) => ([...state, {
         ...action.payload,
       }]),
-  [ColumnsActions.Type.UPDATE_POSITION]: // TODO: copy logic from todo
-      (state, action) => {
-        const { sourcePosition, destinationPosition, boardId } = action.payload;
-        const columns = [...state];
-        const sourceColumn = state
-          .filter((column) => column.boardId === boardId
-            && column.position === sourcePosition)[0];
-        columns.splice(sourcePosition, 1);
-        columns.splice(destinationPosition, 0, {
-          ...sourceColumn, position: destinationPosition,
-        });
-        return columns.map((column, index) => ({ // remap all columns
-          ...column,
-          position: index,
-        }));
-      },
+  // [ColumnsActions.Type.UPDATE_POSITION]: // TODO: copy logic from todo
+  //     (state, action) => {
+  //       const { sourcePosition, destinationPosition, boardId } = action.payload;
+  //       const columns = [...state];
+  //       const sourceColumn = state
+  //         .filter((column) => column.boardId === boardId
+  //           && column.position === sourcePosition)[0];
+  //       columns.splice(sourcePosition, 1);
+  //       columns.splice(destinationPosition, 0, {
+  //         ...sourceColumn, position: destinationPosition,
+  //       });
+  //       return columns.map((column, index) => ({ // remap all columns
+  //         ...column,
+  //         position: index,
+  //       }));
+  //     },
+  [ColumnsActions.Type.UPDATE_POSITION]:
+        (state, action) => {
+          const {
+            boardId, sourcePosition, destinationPosition,
+          } = action.payload;
+          const targetBoard = state
+            .filter((column: IColumn) => column.boardId === boardId)
+            .sort((a, b) => a.position - b.position);
+          const otherBoards = state
+            .filter((column: IColumn) => column.boardId !== boardId);
+          const targetColumnIndex = targetBoard
+            .findIndex((column: IColumn) => column.position === sourcePosition);
+          const targetColumn = targetBoard[targetColumnIndex];
+          targetBoard.splice(targetColumnIndex, 1);
+
+          targetBoard.splice(destinationPosition, 0, {
+            ...targetColumn,
+            position: destinationPosition,
+          });
+
+          const newTargetBoard = targetBoard.map((column, index) => ({
+            ...column,
+            position: index,
+          }));
+
+          return [
+            ...otherBoards,
+            ...newTargetBoard,
+          ];
+        },
   [ColumnsActions.Type.INSERT_IN_POSITION]:
       (state, action) => {
         const { position, boardId } = action.payload;
@@ -200,4 +230,27 @@ export const ColumnsReducer = handleActions<IColumns, any>({
         });
         return columns;
       },
+  [ColumnsActions.Type.REVERSE_ORDER]:
+        (state, action) => {
+          const {
+            boardId,
+          } = action.payload;
+          const targetBoard = state
+            .filter((column: IColumn) => column.boardId === boardId)
+            .sort((a, b) => a.position - b.position);
+          const otherBoards = state
+            .filter((column: IColumn) => column.boardId !== boardId);
+
+          const newTargetBoard = targetBoard
+            .sort((a, b) => b.position - a.position)
+            .map((column, index) => ({
+              ...column,
+              position: index,
+            }));
+
+          return [
+            ...otherBoards,
+            ...newTargetBoard,
+          ];
+        },
 }, initialState);

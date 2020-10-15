@@ -2,7 +2,7 @@ import React, {
   forwardRef,
 } from 'react';
 import { CommentItem } from '@comp/CommentItem';
-import { IComment, IComments } from '@/types';
+import { IComment, IComments } from '@/types/entities';
 
 interface ICommentList {
   data?: IComments
@@ -20,7 +20,10 @@ const CommentListComponent = ({
           <>
             {
               data.map((comment: IComment) => (
-                <CommentItem key={comment.id} comment={comment} />
+                <CommentItem
+                  key={comment.id}
+                  comment={comment}
+                />
               ))
             }
           </>

@@ -17,7 +17,7 @@ const initialState = {
   },
   password: {
     defaultValue: '',
-    error: 'Can’t be blank',
+    error: 'Can\'t be blank',
     isValid: false,
   },
 };
@@ -46,7 +46,7 @@ export const Login: FC = () => {
         type="text"
         placeholder="Email"
         touched={touched.email}
-        error={errors.email.error}
+        error={errors.email.message}
         name="email"
         value={values.email}
         onChange={handleChange}
@@ -56,7 +56,7 @@ export const Login: FC = () => {
         type="password"
         placeholder="Password"
         touched={touched.password}
-        error={errors.password.error}
+        error={errors.password.message}
         name="password"
         value={values.password}
         onChange={handleChange}

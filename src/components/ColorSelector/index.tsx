@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 
 interface IColorSelector {
   color: string;
-  onClick: (color: string)=>void;
+  onClick: (color: string) => void;
   isActive: boolean
 }
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import { handleActions } from 'redux-actions';
-import { IComment, IComments, IFile } from '@/types';
+import { IComment, IComments, IFile } from '@/types/entities';
 import { CommentsActions } from '../actions';
 
 const initialState: IComments = [];
@@ -211,7 +211,7 @@ export const CommentsReducer = handleActions<IComments, any>({
         ? {
           ...comment,
           text: action.payload.text,
-          isEdited: true,
+          editDate: new Date(),
         }
         : comment))),
   [CommentsActions.Type.REMOVE_FILE]:

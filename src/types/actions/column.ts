@@ -1,4 +1,4 @@
-import { EnumColors, IColumns } from '@/types';
+import { EnumColors, IColumns } from '@/types/entities';
 
 export interface IFetchColumnsByBoardId {
   boardId: number;
@@ -62,4 +62,8 @@ export interface IDuplicateColumn {
 export interface IDrawColumnBelow {
   boardId: number;
   belowId: number;
+}
+
+export interface IReverseColumnOrder {
+  boardId: number;
 }

@@ -5,37 +5,43 @@ import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
 import { useForm } from '@/use/form';
 import { validatorProfileForm } from '@/helpers/validatorProfileForm';
-import { LockedInput } from '@comp/LockedInput';
+import { SyncInput } from '@comp/SyncInput';
 import { Avatar } from '@comp/Avatar';
-
-const initialState = {
-  username: {
-    defaultValue: 'xom9ik',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  name: {
-    defaultValue: 'Max',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  surname: {
-    defaultValue: 'Romanyuta',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-  bio: {
-    defaultValue: 'About me bio lorem ipsum sit dolor amet',
-    error: 'Can’t be blank',
-    isValid: false,
-  },
-};
+import { useSelector } from 'react-redux';
+import {
+  getBio, getName, getSurname, getUsername,
+} from '@/store/selectors';
+import { UserActions } from '@/store/actions';
+import validator from '@/helpers/validator';
 
 interface IProfile {
 
 }
 
 export const Profile: FC<IProfile> = () => {
+  const username = useSelector(getUsername);
+  const name = useSelector(getName);
+  const surname = useSelector(getSurname);
+  const bio = useSelector(getBio);
+
+  const initialState = {
+    name: {
+      defaultValue: name,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+    surname: {
+      defaultValue: surname,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+    bio: {
+      defaultValue: bio,
+      error: 'Can\'t be blank',
+      isValid: false,
+    },
+  };
+
   const handlerSubmit = async () => {
     console.log('submit', values);
     // dispatch(AuthActions.signIn({
@@ -66,7 +72,9 @@ export const Profile: FC<IProfile> = () => {
           isMaxWidth
         >
           <div className="profile-avatar">
-            <Avatar size={150} />
+            <Avatar
+              size={150}
+            />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
                 <button
@@ -91,22 +99,20 @@ export const Profile: FC<IProfile> = () => {
               </div>
             </div>
           </div>
-          <LockedInput
+          <SyncInput
             type="text"
-            label="Username"
-            touched={touched.username}
-            error={errors.username.error}
             name="username"
-            value={values.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            label="Username"
             isLight
+            initialValue={username}
+            action={UserActions.updateUsername}
+            validator={validator.text({ min: 2, name: 'Username' })}
           />
           <Input
             type="text"
             label="First name"
             touched={touched.name}
-            error={errors.name.error}
+            error={errors.name.message}
             name="name"
             value={values.name}
             onChange={handleChange}
@@ -117,7 +123,7 @@ export const Profile: FC<IProfile> = () => {
             type="text"
             label="Last name"
             touched={touched.surname}
-            error={errors.surname.error}
+            error={errors.surname.message}
             name="surname"
             value={values.surname}
             onChange={handleChange}
@@ -128,7 +134,7 @@ export const Profile: FC<IProfile> = () => {
             type="text"
             label="Bio"
             touched={touched.bio}
-            error={errors.bio.error}
+            error={errors.bio.message}
             name="bio"
             value={values.bio}
             onChange={handleChange}

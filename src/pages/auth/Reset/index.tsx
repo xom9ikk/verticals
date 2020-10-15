@@ -38,7 +38,7 @@ export const Reset: FC = () => {
         type="text"
         placeholder="Enter your email..."
         touched={touched.email}
-        error={errors.email.error}
+        error={errors.email.message}
         name="email"
         value={values.email}
         onChange={handleChange}

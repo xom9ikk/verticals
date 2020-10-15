@@ -8,7 +8,8 @@ import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
-  ICreateBoardRequest, IRemoveBoardRequest,
+  ICreateBoardRequest,
+  IRemoveBoardRequest,
   IUpdateBoardRequest,
   IUpdateBoardPositionRequest,
 } from '@/types/api';
@@ -88,6 +89,7 @@ export function* watchBoard() {
     takeLatest(BoardsActions.Type.UPDATE_DESCRIPTION, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_COLOR, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_CARD_TYPE, updateWorker),
+    takeLatest(BoardsActions.Type.UPDATE_ICON, updateWorker),
     takeLatest(BoardsActions.Type.RESET_COLOR, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_POSITION, updatePositionWorker),
   ]);

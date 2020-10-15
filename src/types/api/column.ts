@@ -1,4 +1,4 @@
-import { EnumColors, IColumns, ITodos } from '@/types';
+import { EnumColors, IColumns, ITodos } from '@/types/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllColumnsResponse = IServerResponse<{
@@ -66,3 +66,9 @@ export type IDuplicateColumnResponse = IServerResponse<{
   belowId?: string;
   todos: ITodos;
 }>;
+
+export interface IReverseColumnOrderRequest {
+  boardId: number;
+}
+
+export type IReverseColumnOrderResponse = IServerResponse;

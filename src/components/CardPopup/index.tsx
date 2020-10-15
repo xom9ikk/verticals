@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, {
   FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -5,15 +6,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
-} from '@/types';
+} from '@/types/entities';
 import { Checkbox } from '@comp/Checkbox';
-import { IRootState } from '@/store/reducers/state';
 import { SystemActions, TodosActions } from '@/store/actions';
 import { Menu } from '@comp/Menu';
 import { Loader } from '@comp/Loader';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
+import { forwardTo } from '@/router/history';
+import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { getActiveBoardReadableId, getActiveTodoId, getTodos } from '@/store/selectors';
 
 interface ICardPopup {
   columnId: number;
@@ -26,13 +29,15 @@ export const CardPopup: FC<ICardPopup> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { system: { currentTodoId } } = useSelector((state: IRootState) => state);
-  const { todos } = useSelector((state: IRootState) => state);
+  const todos = useSelector(getTodos);
+  const activeTodoId = useSelector(getActiveTodoId);
+  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
 
   const [todo, setTodo] = useState<ITodo>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useState<string | undefined>(todo?.title);
   const [descriptionValue, setDescriptionValue] = useState<string | undefined>(todo?.description);
+  const { shiftEnterRestriction } = useShiftEnterRestriction();
 
   const titleInputRef = useRef<any>(null);
 
@@ -62,7 +67,7 @@ export const CardPopup: FC<ICardPopup> = ({
       : setTitleValue(value);
   };
 
-  const closeHandler = () => dispatch(SystemActions.setCurrentTodoId(null));
+  const closeHandler = () => forwardTo(`/userId/${activeBoardReadableId}`);
 
   const changeStatusHandler = () => {
     const newStatus = todo!.status === EnumTodoStatus.Done
@@ -75,8 +80,8 @@ export const CardPopup: FC<ICardPopup> = ({
   };
 
   useEffect(() => {
-    setTodo(todos.find((t: ITodo) => t.id === currentTodoId && t.columnId === columnId));
-  }, [currentTodoId, todos]);
+    setTodo(todos.find((t: ITodo) => t.id === activeTodoId && t.columnId === columnId));
+  }, [activeTodoId, todos]);
 
   useEffect(() => {
     setTitleValue(todo?.title);
@@ -111,11 +116,9 @@ export const CardPopup: FC<ICardPopup> = ({
   // @ts-ignore
   const colorClass = todo?.color !== undefined ? `card-popup__inner--${Object.values(EnumColors)[todo.color]?.toLowerCase()}` : '';
 
-  const memoCardPopup = useMemo(() => {
-    console.log('todo', todo);
-    return (
-      <>
-        {
+  const memoCardPopup = useMemo(() => (
+    <>
+      {
             todo ? (
               <div
                 className={`card-popup ${todo ? 'card-popup--opened' : ''}`}
@@ -149,22 +152,31 @@ export const CardPopup: FC<ICardPopup> = ({
                   <div className="card-popup__header">
                     <div className="card-popup__input-container">
                       {
-                        todo.status === EnumTodoStatus.Doing && (
-                        <div
-                          className="card__overlay-doing"
-                          style={{
-                            marginTop: 6,
-                            width: 9,
-                            height: 18,
-                          }}
-                        />
-                        )
+                        todo.status === EnumTodoStatus.Doing ? (
+                          <div
+                            className="card__overlay-doing"
+                            style={{
+                              marginTop: 6,
+                              width: 9,
+                              height: 18,
+                            }}
+                          />
+                        ) : todo.status === EnumTodoStatus.Canceled ? (
+                          <div
+                            className="card__overlay-canceled"
+                            style={{
+                              marginTop: 6,
+                              width: 18,
+                              height: 18,
+                            }}
+                          />
+                        ) : null
                       }
                       {
                         cardType === EnumTodoType.Checkboxes && (
                         <Checkbox
                           isActive={todo.status === EnumTodoStatus.Done}
-                          onClick={changeStatusHandler}
+                          onChange={changeStatusHandler}
                           style={{
                             marginTop: 6,
                             width: 18,
@@ -179,6 +191,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           className="card__textarea card-popup__textarea"
                           placeholder="Card Title"
                           value={titleValue}
+                          onKeyDown={shiftEnterRestriction}
                           onChange={(event: any) => changeTextHandler(event, false)}
                           minRows={1}
                           maxRows={5}
@@ -187,6 +200,7 @@ export const CardPopup: FC<ICardPopup> = ({
                           className="card__textarea card-popup__textarea card-popup__textarea--description"
                           placeholder="Notes"
                           value={descriptionValue}
+                          onKeyDown={shiftEnterRestriction}
                           onChange={(event: any) => changeTextHandler(event, true)}
                           minRows={1}
                           maxRows={5}
@@ -202,9 +216,11 @@ export const CardPopup: FC<ICardPopup> = ({
                           imageSize={24}
                           size={36}
                           isShowPopup={false}
+                          isColored
                         />
                         <CardContextMenu
                           id={todo.id}
+                          title={todo.title}
                           columnId={todo.columnId}
                           isArchived={todo.isArchived}
                           isActive={false}
@@ -215,13 +231,14 @@ export const CardPopup: FC<ICardPopup> = ({
                           size={36}
                           imageSize={24}
                           isPrimary
+                          isColored
                           onStartEdit={() => {
                                 titleInputRef.current?.focus();
                           }}
                           onChangeColor={(newColor) => {
                             dispatch(TodosActions.updateColor({
                               id: todo.id,
-                              color: newColor,
+                              color: todo.color !== newColor ? newColor : null,
                             }));
                           }}
                         />
@@ -233,6 +250,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         imageSize={24}
                         size={36}
                         isShowPopup={false}
+                        isColored
                         style={{
                           justifySelf: 'flex-end',
                         }}
@@ -246,16 +264,16 @@ export const CardPopup: FC<ICardPopup> = ({
                     </div>
                     <hr />
                   </div>
-                  <Comments todoId={currentTodoId!} />
+                  <Comments todoId={activeTodoId!} />
                 </div>
               </div>
             ) : (
               <div className="card-popup" />
             )
           }
-      </>
-    );
-  }, [todo, titleValue, descriptionValue, isProgress, cardType]);
+    </>
+  ),
+  [todo, titleValue, descriptionValue, isProgress, cardType]);
 
   return (
     <>

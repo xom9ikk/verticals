@@ -1,6 +1,5 @@
 import {
   ILogoutResponse,
-  IMeResponse,
   IGetAllColumnsResponse,
   IGetAllBoardsResponse,
   IGetAllTodosResponse,
@@ -23,6 +22,9 @@ import {
   IUpdateTodoRequest, IUpdateTodoResponse,
   IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
   IDuplicateTodoRequest, IDuplicateTodoResponse,
+  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
+  IGetMeResponse,
+  IUpdateUserResponse, IUpdateUserRequest,
 } from './types/api';
 
 export interface IHttpClient {
@@ -38,12 +40,12 @@ export interface IServices {
   boardService: IBoardService;
   columnService: IColumnService;
   todoService: ITodoService;
+  userService: IUserService;
 }
 
 export interface IAuthService {
   signUp(body: ISignUpRequest): Promise<ISignUpResponse>;
   signIn(body: ISignInRequest): Promise<ISignInResponse>;
-  me(): Promise<IMeResponse>;
   logout(): Promise<ILogoutResponse>;
   reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
 }
@@ -64,6 +66,7 @@ export interface IColumnService {
   update(body: IUpdateColumnRequest): Promise<IUpdateColumnResponse>;
   updatePosition(body: IUpdateColumnPositionRequest): Promise<IUpdateColumnPositionResponse>;
   duplicate(body: IDuplicateColumnRequest): Promise<IDuplicateColumnResponse>;
+  reverseOrder(body: IReverseColumnOrderRequest): Promise<IReverseColumnOrderResponse>;
 }
 
 export interface ITodoService {
@@ -74,4 +77,9 @@ export interface ITodoService {
   update(body: IUpdateTodoRequest): Promise<IUpdateTodoResponse>;
   updatePosition(body: IUpdateTodoPositionRequest): Promise<IUpdateTodoPositionResponse>;
   duplicate(body: IDuplicateTodoRequest): Promise<IDuplicateTodoResponse>;
+}
+
+export interface IUserService {
+  getMe(): Promise<IGetMeResponse>;
+  update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
 }

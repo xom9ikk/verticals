@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { EnumTodoType, IBoard, IBoards } from '@/types';
+import { EnumTodoType, IBoard, IBoards } from '@/types/entities';
 import { BoardsActions } from '../actions';
 
 const initialState: IBoards = [];
@@ -74,6 +74,13 @@ export const BoardsReducer = handleActions<IBoards, any>({
           ? {
             ...board,
             cardType: action.payload.cardType,
+          }
+          : board))),
+  [BoardsActions.Type.UPDATE_ICON]:
+        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
+          ? {
+            ...board,
+            icon: action.payload.icon,
           }
           : board))),
   [BoardsActions.Type.REMOVE]:

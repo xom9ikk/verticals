@@ -5,46 +5,74 @@ import React, {
 import { RouteWrapper } from '@/router/router';
 import { SettingsLayout } from '@/layouts/Settings';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  BoardsActions, ColumnsActions, SystemActions, TodosActions,
+  SystemActions,
+  BoardsActions,
+  // ColumnsActions,
+  // TodosActions,
+  UserActions,
 } from '@/store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@/use/readableId';
+import { useValueRef } from '@/use/valueRef';
+import { forwardTo } from '@/router/history';
+import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
 
 const { toNumericId } = useReadableId();
 
 // @ts-ignore
 export const MainLayout: FC = ({ match }) => {
   const dispatch = useDispatch();
-
-  const { boardId } = match.params;
-  const numericBoardId = boardId === 'trash'
-    ? -1
-    : boardId !== undefined
-      ? toNumericId(boardId)
-      : null;
-  dispatch(SystemActions.setActiveBoardId(numericBoardId));
+  const { boardId, todoId } = match.params;
+  const activeBoardId = useSelector(getActiveBoardId);
+  const activeTodoId = useSelector(getActiveTodoId);
+  const username = useSelector(getUsername);
+  const refBoardId = useValueRef(boardId);
+  const refActiveTodoId = useValueRef(activeTodoId);
+  const refUsername = useValueRef(username);
 
   useEffect(() => {
+    const numericBoardId = boardId === 'trash'
+      ? -1
+      : boardId !== undefined
+        && !['account', 'profile'].includes(boardId)
+        ? toNumericId(boardId)
+        : null;
+    console.log('numericBoardId', numericBoardId);
+    dispatch(SystemActions.setActiveBoardId(numericBoardId));
+    dispatch(SystemActions.setActiveBoardReadableId(boardId));
+  }, [boardId]);
+
+  useEffect(() => {
+    const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
+    dispatch(SystemActions.setActiveTodoId(numericTodoId));
+    dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
+  }, [todoId]);
+
+  useEffect(() => {
+    dispatch(UserActions.fetchMe());
     dispatch(BoardsActions.fetchAll());
   }, []);
 
   const closeAllPopups = () => {
+    console.log('closeAllPopups');
     dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
-    dispatch(SystemActions.setCurrentTodoId(null));
-    dispatch(BoardsActions.removeTemp());
-    dispatch(ColumnsActions.removeTemp());
-    dispatch(TodosActions.removeTemp());
+    // dispatch(BoardsActions.removeTemp()); // TODO: fix
+    // dispatch(ColumnsActions.removeTemp()); // TODO: fix
+    // dispatch(TodosActions.removeTemp()); // TODO: fix
+    if (refActiveTodoId.current) { // TODO: fix
+      forwardTo(`/${refUsername.current}/${refBoardId.current}`);
+    }
   };
 
   const keydownHandler = (event: any) => {
@@ -75,10 +103,10 @@ export const MainLayout: FC = ({ match }) => {
       <Search />
       <BoardList />
     </Sidebar>
-  ), [numericBoardId]);
+  ), [activeBoardId]);
 
   const memoRouter = useMemo(() => (
-    <>
+    <Switch>
       <RouteWrapper
         path="/settings/account"
         layout={SettingsLayout}
@@ -99,7 +127,7 @@ export const MainLayout: FC = ({ match }) => {
         path="/"
         component={() => <Columns />}
       />
-    </>
+    </Switch>
   ), []);
 
   return (

@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,42 +8,51 @@ import {
 import { Menu } from '@comp/Menu';
 import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
-import { IRootState } from '@/store/reducers/state';
 import { BoardsActions, SystemActions } from '@/store/actions';
 import {
   EnumTodoType, IColumn, ITodo, ITodos,
-} from '@/types';
+} from '@/types/entities';
 import { useFilterTodos } from '@/use/filterTodos';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@/use/readableId';
 import { forwardTo } from '@/router/history';
 import { Link } from 'react-router-dom';
+import {
+  getActiveBoardId,
+  getIsEditableBoard,
+  getIsLoadedBoards,
+  getQuery,
+  getBoards,
+  getColumns,
+  getTodos,
+} from '@/store/selectors';
 
 interface IBoardList {}
 
 export const BoardList: FC<IBoardList> = () => {
   const dispatch = useDispatch();
   const { filterTodos } = useFilterTodos();
+  const { toReadableId } = useReadableId();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
-  const { toReadableId } = useReadableId();
 
-  const {
-    system: { query, isLoadedBoards, activeBoardId },
-    boards,
-    todos,
-    columns,
-  } = useSelector((state: IRootState) => state);
+  const boards = useSelector(getBoards);
+  const columns = useSelector(getColumns);
+  const todos = useSelector(getTodos);
+  const query = useSelector(getQuery);
+  const isLoadedBoards = useSelector(getIsLoadedBoards);
+  const activeBoardId = useSelector(getActiveBoardId);
+  const isEditableBoard = useSelector(getIsEditableBoard);
 
-  useEffect(() => {
-    if (boards.length) {
-      console.log('boards change');
-      if (activeBoardId === null) {
-        const { id, title } = boards[0];
-        forwardTo(`/userId/${toReadableId(title, id)}`);
-      }
-    }
-  }, [boards]);
+  // useEffect(() => {
+  //   if (boards.length) {
+  //     console.log('boards change');
+  //     if (activeBoardId === null) {
+  //       const { id, title } = boards[0];
+  //       forwardTo(`/userId/${toReadableId(title, id)}`);
+  //     }
+  //   }
+  // }, [boards]);
 
   const saveBoard = (
     {
@@ -72,6 +81,7 @@ export const BoardList: FC<IBoardList> = () => {
         }));
       }
     } else if (title) {
+      setTimeout(() => setIsOpenNewBoard(true));
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
         title,
@@ -92,12 +102,10 @@ export const BoardList: FC<IBoardList> = () => {
     if (sourcePosition === destinationPosition) {
       return;
     }
-    dispatch(BoardsActions.updatePosition(
-      {
-        sourcePosition,
-        destinationPosition,
-      },
-    ));
+    dispatch(BoardsActions.updatePosition({
+      sourcePosition,
+      destinationPosition,
+    }));
   };
 
   const getCountTodos = (boardId: number) => {
@@ -146,13 +154,21 @@ export const BoardList: FC<IBoardList> = () => {
   // };
 
   const handleClick = (title: string, id: number) => {
+    dispatch(SystemActions.setIsLoadedColumns(false));
+    dispatch(SystemActions.setIsLoadedTodos(false));
     forwardTo(`/userId/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {
     console.log('boards redraw');
     return (
-      <>
+      <div
+        onClick={(e) => {
+          if (isEditableBoard) {
+            e.stopPropagation();
+          }
+        }}
+      >
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided) => (
@@ -212,9 +228,9 @@ export const BoardList: FC<IBoardList> = () => {
             isActive={activeBoardId === -1}
           />
         </Link>
-      </>
+      </div>
     );
-  }, [boards, activeBoardId, query]);
+  }, [boards, activeBoardId, query, isEditableBoard]);
 
   const profile = useMemo(() => (
     <Profile

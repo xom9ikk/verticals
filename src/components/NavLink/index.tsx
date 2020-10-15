@@ -45,6 +45,7 @@ export const NavLink: FC<INavLink> = ({
           className={moddedClassName}
           style={isActive ? { ...style, ...activeStyle } : style}
           {...rest}
+          onClick={(e) => e.stopPropagation()}
         >
           {typeof children === 'function' ? children(isActive) : children}
         </Link>

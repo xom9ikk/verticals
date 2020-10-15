@@ -3,7 +3,7 @@ import {
   ISetSystemIsLoadedBoards,
   ISetSystemIsLoadedColumns,
   ISetSystemIsLoadedTodos,
-  ISetSystemCurrentTodoId,
+  ISetSystemActiveTodoId,
   ISetSystemEditCommentId,
   ISetSystemIsEditableBoard,
   ISetSystemIsEditableCard,
@@ -12,8 +12,10 @@ import {
   ISetSystemLanguage,
   ISetSystemQuery,
   ISetSystemReplyCommentId,
-  ISetIsOpenProfile,
-  ISetActiveBoardId,
+  ISetSystemIsOpenProfile,
+  ISetSystemActiveBoardId,
+  ISetSystemActiveBoardReadableId,
+  ISetSystemActiveTodoReadableId,
 } from '@/types/actions';
 
 enum Type {
@@ -26,11 +28,13 @@ enum Type {
   SET_IS_EDITABLE_BOARD = 'SYSTEM/SET_IS_EDITABLE_BOARD',
   SET_QUERY = 'SYSTEM/SET_QUERY',
   SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
-  SET_CURRENT_TODO_ID = 'SYSTEM/SET_CURRENT_TODO_ID',
+  SET_ACTIVE_TODO_ID = 'SYSTEM/SET_ACTIVE_TODO_ID',
   SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
   SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
   SET_IS_OPEN_PROFILE = 'SYSTEM/SET_IS_OPEN_PROFILE',
   SET_ACTIVE_BOARD_ID = 'SYSTEM/SET_ACTIVE_BOARD_ID',
+  SET_ACTIVE_BOARD_READABLE_ID = 'SYSTEM/SET_ACTIVE_BOARD_READABLE_ID',
+  SET_ACTIVE_TODO_READABLE_ID = 'SYSTEM/SET_ACTIVE_TODO_READABLE_ID',
 }
 
 const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
@@ -70,9 +74,9 @@ const setLanguage = createAction(
   (language: ISetSystemLanguage) => ({ language }),
 );
 
-const setCurrentTodoId = createAction(
-  Type.SET_CURRENT_TODO_ID,
-  (currentTodoId: ISetSystemCurrentTodoId) => ({ currentTodoId }),
+const setActiveTodoId = createAction(
+  Type.SET_ACTIVE_TODO_ID,
+  (activeTodoId: ISetSystemActiveTodoId) => ({ activeTodoId }),
 );
 
 const setEditCommentId = createAction(
@@ -87,12 +91,22 @@ const setReplyCommentId = createAction(
 
 const setIsOpenProfile = createAction(
   Type.SET_IS_OPEN_PROFILE,
-  (isOpenProfile: ISetIsOpenProfile) => ({ isOpenProfile }),
+  (isOpenProfile: ISetSystemIsOpenProfile) => ({ isOpenProfile }),
 );
 
 const setActiveBoardId = createAction(
   Type.SET_ACTIVE_BOARD_ID,
-  (activeBoardId: ISetActiveBoardId) => ({ activeBoardId }),
+  (activeBoardId: ISetSystemActiveBoardId) => ({ activeBoardId }),
+);
+
+const setActiveBoardReadableId = createAction(
+  Type.SET_ACTIVE_BOARD_READABLE_ID,
+  (activeBoardReadableId: ISetSystemActiveBoardReadableId) => ({ activeBoardReadableId }),
+);
+
+const setActiveTodoReadableId = createAction(
+  Type.SET_ACTIVE_TODO_READABLE_ID,
+  (activeTodoReadableId: ISetSystemActiveTodoReadableId) => ({ activeTodoReadableId }),
 );
 
 export const SystemActions = {
@@ -106,9 +120,11 @@ export const SystemActions = {
   setIsEditableBoard,
   setQuery,
   setLanguage,
-  setCurrentTodoId,
+  setActiveTodoId,
   setEditCommentId,
   setReplyCommentId,
   setIsOpenProfile,
   setActiveBoardId,
+  setActiveBoardReadableId,
+  setActiveTodoReadableId,
 };

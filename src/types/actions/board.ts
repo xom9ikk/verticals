@@ -1,4 +1,4 @@
-import { EnumColors, EnumTodoType, IBoards } from '@/types';
+import { EnumColors, EnumTodoType, IBoards } from '@/types/entities';
 
 export type ISetBoards = IBoards;
 
@@ -44,6 +44,11 @@ export interface IUpdateBoardColor {
 export interface IUpdateBoardCardType {
   id: number;
   cardType: EnumTodoType;
+}
+
+export interface IUpdateBoardIcon {
+  id: number;
+  icon: string;
 }
 
 export interface IRemoveBoard {

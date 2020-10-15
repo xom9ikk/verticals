@@ -4,9 +4,9 @@ import React, {
 import { useSelector } from 'react-redux';
 import { CommentList } from '@comp/CommentList';
 import { CommentForm } from '@comp/CommentForm';
-import { IRootState } from '@/store/reducers/state';
-import { useAutoScroll } from '@/use/autoScroll';
-import { IComment, IComments } from '@/types';
+import { useAutoScroll, ScrollDirection } from '@/use/autoScroll';
+import { IComment, IComments } from '@/types/entities';
+import { getComments } from '@/store/selectors';
 
 interface ICommentsWrapper {
   todoId: number;
@@ -15,11 +15,13 @@ interface ICommentsWrapper {
 export const Comments: FC<ICommentsWrapper> = ({
   todoId,
 }) => {
-  const { comments } = useSelector((state: IRootState) => state);
+  const comments = useSelector(getComments);
   const [filteredComments, setFilteredComments] = useState<IComments>([]);
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const listRef = useRef<any>(null);
-  const { scrollToBottom } = useAutoScroll(listRef, [textAreaHeight, comments.length]);
+  const { scrollToBottom } = useAutoScroll(
+    listRef, ScrollDirection.Bottom, [textAreaHeight, comments.length],
+  );
 
   useEffect(() => {
     const data = comments.filter((comment: IComment) => comment.todoId === todoId);
