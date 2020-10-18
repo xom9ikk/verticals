@@ -26,6 +26,7 @@ function* updateUsernameWorker(action: Action<IUpdateUserRequest>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
     yield put(UserActions.setUsername(action.payload.username!));
+    yield call(show, 'Column', 'Username updated successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'User', error, ALERT_TYPES.DANGER);
   }
@@ -35,6 +36,24 @@ function* updateEmailWorker(action: Action<IUpdateUserRequest>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
     yield put(UserActions.setEmail(action.payload.email!));
+    yield call(show, 'Column', 'Email updated successfully', ALERT_TYPES.SUCCESS);
+  } catch (error) {
+    yield call(show, 'User', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* updatePersonalDataWorker(action: Action<IUpdateUserRequest>) {
+  try {
+    yield* apply(userService, userService.update, [action.payload]);
+    const { name, surname, bio } = action.payload;
+    yield put(UserActions.setPersonalData({
+      name: name!,
+      surname: surname!,
+      bio: bio!,
+    }));
+    yield call(
+      show, 'Column', 'Personal data updated successfully', ALERT_TYPES.SUCCESS,
+    );
   } catch (error) {
     yield call(show, 'User', error, ALERT_TYPES.DANGER);
   }
@@ -45,5 +64,6 @@ export function* watchUser() {
     takeLatest(UserActions.Type.FETCH_ME, fetchMeWorker),
     takeLatest(UserActions.Type.UPDATE_USERNAME, updateUsernameWorker),
     takeLatest(UserActions.Type.UPDATE_EMAIL, updateEmailWorker),
+    takeLatest(UserActions.Type.UPDATE_PERSONAL_DATA, updatePersonalDataWorker),
   ]);
 }

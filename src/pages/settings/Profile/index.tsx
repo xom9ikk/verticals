@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-use-before-define,no-shadow */
 import React, { FC } from 'react';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { useForm } from '@/use/form';
+import { IFormValues, useForm } from '@/use/form';
 import { validatorProfileForm } from '@/helpers/validatorProfileForm';
 import { SyncInput } from '@comp/SyncInput';
 import { Avatar } from '@comp/Avatar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getBio, getName, getSurname, getUsername,
 } from '@/store/selectors';
@@ -19,6 +19,8 @@ interface IProfile {
 }
 
 export const Profile: FC<IProfile> = () => {
+  const dispatch = useDispatch();
+
   const username = useSelector(getUsername);
   const name = useSelector(getName);
   const surname = useSelector(getSurname);
@@ -30,12 +32,13 @@ export const Profile: FC<IProfile> = () => {
     bio,
   };
 
-  const handlerSubmit = async () => {
+  const handleSubmitForm = ({ name, surname, bio }: IFormValues) => {
     console.log('Profile handlerSubmit', values);
-    // dispatch(AuthActions.signIn({
-    //   email: values.email,
-    //   password: values.password,
-    // }));
+    dispatch(UserActions.updatePersonalData({
+      name: name!,
+      surname: surname!,
+      bio: bio!,
+    }));
   };
 
   const handleUpload = () => {
@@ -48,7 +51,7 @@ export const Profile: FC<IProfile> = () => {
 
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handlerSubmit, validatorProfileForm);
+  } = useForm(initialState, handleSubmitForm, validatorProfileForm);
 
   return (
     <>

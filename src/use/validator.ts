@@ -20,6 +20,7 @@ export const useValidator: IUseValidator = (
   callback,
   validatorCallback,
 ) => {
+  const [isChanged, setIsChanged] = useState<boolean>(false);
   const [value, setValue] = useState<IValidatorPayload>(null);
   const [error, setError] = useState<IValidatorResult>();
 
@@ -27,9 +28,13 @@ export const useValidator: IUseValidator = (
     if (initialValue !== null && value === null) {
       setValue(initialValue);
     }
-    const newError = validator(initialValue);
-    setError(newError);
-    validatorCallback?.(initialValue, newError);
+    if (!error) {
+      const newError = validator(initialValue);
+      if (initialValue !== null && !newError.isValid) {
+        setError(newError);
+      }
+      validatorCallback?.(initialValue, newError);
+    }
   }, [initialValue]);
 
   const handleChange = (event: React.BaseSyntheticEvent) => {
@@ -37,12 +42,14 @@ export const useValidator: IUseValidator = (
     const newError = validator(newValue);
     setValue(newValue);
     setError(newError);
+    setIsChanged(true);
     validatorCallback?.(newValue, newError);
   };
 
   useEffect(() => {
     const isValid = error?.isValid;
-    if (isValid && value !== null && value !== undefined) {
+    if (isValid && value !== null && value !== undefined && isChanged) {
+      console.log('===callback', error);
       callback?.(value);
     }
   }, [error]);

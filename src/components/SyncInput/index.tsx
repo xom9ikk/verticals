@@ -18,10 +18,6 @@ interface ISyncInput {
   validator: (payload: IValidatorPayload) => IValidatorResult;
   width?: string,
   touched?: boolean,
-  // error?: string,
-  // onChange: (event: React.SyntheticEvent) => void;
-  // onBlur?: (event: React.SyntheticEvent) => void;
-  // value: string,
   placeholder?: string,
   label?: string,
   style?: Object,
@@ -33,6 +29,7 @@ export const SyncInput: FC<ISyncInput> = ({
   initialValue,
   action,
   validator,
+  style,
   ...attrs
 }) => {
   const dispatch = useDispatch();
@@ -42,6 +39,7 @@ export const SyncInput: FC<ISyncInput> = ({
   const [validValue, setValidValue] = useState<string>();
 
   const handlerSubmit = async (valueForUpdate: string) => {
+    console.log('===handlerSubmit', valueForUpdate);
     setIsLoading(true);
     dispatch(action(valueForUpdate));
     setValidValue(valueForUpdate);
@@ -83,7 +81,7 @@ export const SyncInput: FC<ISyncInput> = ({
   };
 
   return (
-    <div className="sync-input">
+    <div className="sync-input" style={style}>
       <div className="sync-input__overlay">
         {
           isLoading ? (
@@ -114,7 +112,7 @@ export const SyncInput: FC<ISyncInput> = ({
         isDisable={isLocked}
         value={value || ''}
         error={error?.message}
-        touched
+        touched={!isLocked}
       />
     </div>
   );

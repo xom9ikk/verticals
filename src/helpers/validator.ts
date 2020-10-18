@@ -5,6 +5,7 @@ export type IValidatorPayload = string | null;
 
 export interface IValidatorRules {
   min?: number;
+  max?: number;
   name?: string;
 }
 
@@ -13,15 +14,23 @@ export interface IValidatorResult {
   message?: string;
 }
 
-const email = () => (payload: IValidatorPayload): IValidatorResult => {
+const email = (
+  { max = 64 }: IValidatorRules,
+) => (payload: IValidatorPayload): IValidatorResult => {
   const isValid = is.email(payload);
   let message = '';
+
+  const length = payload?.length ?? 0;
 
   if (!isValid) {
     message = 'Invalid email address';
   }
 
-  if (payload?.length === 0) {
+  if (length > max) {
+    message = 'Email is too long';
+  }
+
+  if (length === 0) {
     message = 'Can\'t be blank';
   }
 
@@ -32,14 +41,18 @@ const email = () => (payload: IValidatorPayload): IValidatorResult => {
 };
 
 const password = (
-  { min = 5 }: IValidatorRules,
+  { min = 5, max = 36, name }: IValidatorRules,
 ) => (payload: IValidatorPayload): IValidatorResult => {
   let message = '';
 
   const length = payload?.length ?? 0;
 
-  if (length <= min) {
+  if (length < min) {
     message = 'Password is short';
+  }
+
+  if (length > max) {
+    message = `${name || 'Entered value'} is too long`;
   }
 
   if (length === 0) {
@@ -53,7 +66,7 @@ const password = (
 };
 
 const text = (
-  { min = 5, name }: IValidatorRules,
+  { min = 5, max = 200, name }: IValidatorRules,
 ) => (payload: IValidatorPayload) : IValidatorResult => {
   const length = payload?.length ?? 0;
 
@@ -65,8 +78,12 @@ const text = (
 
   let message = '';
 
-  if (length <= min) {
+  if (length < min) {
     message = `${name || 'Entered value'} is short`;
+  }
+
+  if (length > max) {
+    message = `${name || 'Entered value'} is too long`;
   }
 
   if (length === 0) {
