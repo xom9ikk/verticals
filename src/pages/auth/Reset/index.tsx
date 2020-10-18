@@ -3,30 +3,27 @@ import React, { FC } from 'react';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { useForm } from '@/use/form';
+import { IFormValues, useForm } from '@/use/form';
 import { validatorResetForm } from '@/helpers/validatorResetForm';
 import { AuthActions } from '@/store/actions';
 import { useDispatch } from 'react-redux';
 
 const initialState = {
-  email: {
-    defaultValue: '',
-    error: 'Invalid email address',
-    isValid: false,
-  },
+  email: '',
 };
 
 export const Reset: FC = () => {
   const dispatch = useDispatch();
 
-  const handlerSubmit = async () => {
+  const handleSubmitForm = ({ email }: IFormValues) => {
     dispatch(AuthActions.reset({
-      email: values.email,
+      email: email!,
     }));
   };
+
   const {
-    handleChange, handleSubmit, handleBlur, values, errors, touched,
-  } = useForm(initialState, handlerSubmit, validatorResetForm);
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
+  } = useForm(initialState, handleSubmitForm, validatorResetForm);
 
   return (
     <Form
@@ -37,8 +34,8 @@ export const Reset: FC = () => {
       <Input
         type="text"
         placeholder="Enter your email..."
-        touched={touched.email}
-        error={errors.email.message}
+        touched={touches.email}
+        error={errors.email}
         name="email"
         value={values.email}
         onChange={handleChange}

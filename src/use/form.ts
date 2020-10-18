@@ -1,100 +1,100 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { IUseValidatorResult, useValidator } from '@/use/validator';
+import { IValidatorPayload, IValidatorResult } from '@/helpers/validator';
 
-const getInitialStateForTouched = (initialState: any, value: any) => {
-  const arr: any = { };
-  Object.keys(initialState).forEach((key) => {
-    arr[key] = value;
-  });
-  return arr;
-};
+export interface IFormValues {
+  [key: string]: IValidatorPayload;
+}
 
-const getInitialStateForValues = (initialState: any) => {
-  const arr: any = { };
-  Object.keys(initialState).forEach((key) => {
-    arr[key] = initialState[key].defaultValue;
-  });
-  return arr;
-};
+interface IFormErrors {
+  [key: string]: string;
+}
 
-export const useForm = (
-  initialState: any, callback: any,
-  validator: any, instantlySubmit?:boolean,
+interface IFormTouched {
+  [key: string]: boolean;
+}
+
+interface IFormValidator {
+  [key: string]: (payload: IValidatorPayload) => IValidatorResult;
+}
+
+interface IValidators {
+  [key: string]: IUseValidatorResult;
+}
+
+type IUseForm = (
+  initialValues: IFormValues,
+  callback:(data: IFormValues) => void,
+  formValidator: IFormValidator,
 ) => {
-  console.log('useForm', initialState);
-  const [values, setValues] = useState<any>({});
-  const [errors, setErrors] = useState(initialState);
-  const [touched, setTouched] = useState<any>({});
-  const [isValidForm, setIsValidForm] = useState(false);
+  handleChange: (event: React.BaseSyntheticEvent) => void;
+  handleBlur: (event: React.BaseSyntheticEvent) => void;
+  handleSubmit: (event: React.BaseSyntheticEvent) => void;
+  values: IFormValues;
+  errors: IFormErrors;
+  touches: IFormTouched;
+};
 
-  useEffect(() => {
-    const isSetDefaultValues = Object.keys(initialState)
-      .every((key) => {
-        const value = initialState[key].defaultValue;
-        return value !== null && value !== undefined;
-      });
-    const isEmptyValues = Object.keys(values).length === 0;
-    if (isSetDefaultValues && isEmptyValues) {
-      const initialStateForValues = getInitialStateForValues(initialState);
-      setValues(initialStateForValues);
-      setErrors(validator(initialStateForValues));
-      setTouched(getInitialStateForTouched(initialState, false));
-    }
-  }, [initialState]);
+const validators: IValidators = {};
 
-  const updateValue = (key: string, value: any) => {
-    const newValues = {
-      ...values,
-      [key]: value,
-    };
-    setValues(newValues);
-    setErrors(validator(newValues));
+export const useForm: IUseForm = (
+  initialValues, callback, formValidator,
+) => {
+  const [values, setValues] = useState<IFormValues>({});
+  const [errors, setErrors] = useState<IFormErrors>({});
+  const [touches, setTouches] = useState<IFormTouched>({});
+
+  const handleValidatorResult = (
+    key: string, value: IValidatorPayload, error: IValidatorResult,
+  ) => {
+    setValues((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => ({ ...prev, [key]: error?.message! }));
   };
 
-  // const resetTouch = (key: string) => {
-  //   const newValue = {
-  //     ...touched,
-  //     [key]: false,
-  //   };
-  //   setTouched(newValue);
-  // };
+  const initialValuesKeys = Object.keys(initialValues);
+  initialValuesKeys.forEach((key) => {
+    validators[key] = useValidator(
+      initialValues[key],
+      formValidator[key],
+      undefined,
+      (...rest) => handleValidatorResult(key, ...rest),
+    );
+  });
 
-  const handleSubmit = async (event: React.BaseSyntheticEvent) => {
+  const handleChange = (event: React.BaseSyntheticEvent) => {
+    const { name } = event.target;
+    validators[name].handleChange(event);
+  };
+
+  const handleSubmit = (event: React.BaseSyntheticEvent) => {
     if (event) {
       event.preventDefault();
     }
-    setTouched(getInitialStateForTouched(initialState, true));
-    setErrors(await validator(values));
-    console.log('isValidForm', isValidForm);
-    if (isValidForm) {
-      callback();
-    }
-  };
 
-  const handleChange = (event: React.BaseSyntheticEvent, selectName?: string) => {
-    const { target } = event;
-    const name = target ? event.target.name : selectName;
-    const value = target ? event.target.value : event;
-    updateValue(name, value);
-    setTimeout(() => {
-      if (instantlySubmit && isValidForm) {
-        console.log('instantlySubmit', instantlySubmit, 'isValidForm', isValidForm);
-        callback();
-      }
-    });
+    const validatorsKeys = Object.keys(validators);
+    const allTouched: IFormTouched = validatorsKeys
+      .reduce((acc, value) => ({
+        ...acc,
+        [value]: true,
+      }), {});
+    setTouches(allTouched);
+
+    const errorsKeys = Object.keys(errors);
+    const isValidForm = errorsKeys.every((key) => !errors[key]);
+
+    if (isValidForm) {
+      callback(values);
+    }
   };
 
   const handleBlur = (event: React.BaseSyntheticEvent, selectName?: string) => {
     const { target } = event;
-    const name = target && target.name ? target.name : selectName;
-    setTouched({
-      ...touched,
+    const name = target?.name ?? selectName;
+    setTouches(() => ({
+      ...touches,
       [name]: true,
-    });
+    }));
   };
-
-  useEffect(() => {
-    setIsValidForm(Object.keys(errors).every((key) => errors[key].isValid));
-  }, [errors]);
 
   return {
     handleChange,
@@ -102,8 +102,6 @@ export const useForm = (
     handleBlur,
     values,
     errors,
-    touched,
-    updateValue,
-    // resetTouch,
+    touches,
   };
 };

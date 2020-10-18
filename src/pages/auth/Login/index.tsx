@@ -5,36 +5,28 @@ import { useDispatch } from 'react-redux';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { useForm } from '@/use/form';
+import { IFormValues, useForm } from '@/use/form';
 import { validatorLoginForm } from '@/helpers/validatorLoginForm';
 import { AuthActions } from '@/store/actions';
 
 const initialState = {
-  email: {
-    defaultValue: '',
-    error: 'Invalid email address',
-    isValid: false,
-  },
-  password: {
-    defaultValue: '',
-    error: 'Can\'t be blank',
-    isValid: false,
-  },
+  email: '',
+  password: '',
 };
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
 
-  const handlerSubmit = async () => {
+  const handleSubmitForm = ({ email, password }: IFormValues) => {
     dispatch(AuthActions.signIn({
-      email: values.email,
-      password: values.password,
+      email: email!,
+      password: password!,
     }));
   };
 
   const {
-    handleChange, handleSubmit, handleBlur, values, errors, touched,
-  } = useForm(initialState, handlerSubmit, validatorLoginForm);
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
+  } = useForm(initialState, handleSubmitForm, validatorLoginForm);
 
   return (
     <Form
@@ -45,8 +37,8 @@ export const Login: FC = () => {
       <Input
         type="text"
         placeholder="Email"
-        touched={touched.email}
-        error={errors.email.message}
+        touched={touches.email}
+        error={errors.email}
         name="email"
         value={values.email}
         onChange={handleChange}
@@ -55,8 +47,8 @@ export const Login: FC = () => {
       <Input
         type="password"
         placeholder="Password"
-        touched={touched.password}
-        error={errors.password.message}
+        touched={touches.password}
+        error={errors.password}
         name="password"
         value={values.password}
         onChange={handleChange}

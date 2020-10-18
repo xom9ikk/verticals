@@ -4,55 +4,37 @@ import { useDispatch } from 'react-redux';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { useForm } from '@/use/form';
+import { IFormValues, useForm } from '@/use/form';
 import { validatorRegisterForm } from '@/helpers/validatorRegisterForm';
 import { Divider } from '@comp/Divider';
 import { AuthActions } from '@/store/actions';
 
 const initialState = {
-  name: {
-    defaultValue: '',
-    error: 'Can\'t be blank',
-    isValid: false,
-  },
-  surname: {
-    defaultValue: '',
-    error: 'Can\'t be blank',
-    isValid: false,
-  },
-  email: {
-    defaultValue: '',
-    error: 'Invalid email address',
-    isValid: false,
-  },
-  username: {
-    defaultValue: '',
-    error: 'Can\'t be blank',
-    isValid: false,
-  },
-  password: {
-    defaultValue: '',
-    error: 'Can\'t be blank',
-    isValid: false,
-  },
+  name: '',
+  surname: '',
+  email: '',
+  username: '',
+  password: '',
 };
 
 export const Register: FC = () => {
   const dispatch = useDispatch();
 
-  const handlerSubmit = async () => {
+  const handleSubmitForm = ({
+    name, surname, email, username, password,
+  } : IFormValues) => {
     dispatch(AuthActions.signUp({
-      name: values.name,
-      surname: values.surname,
-      email: values.email,
-      username: values.username,
-      password: values.password,
+      name: name!,
+      surname: surname!,
+      email: email!,
+      username: username!,
+      password: password!,
     }));
   };
 
   const {
-    handleChange, handleSubmit, handleBlur, values, errors, touched,
-  } = useForm(initialState, handlerSubmit, validatorRegisterForm);
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
+  } = useForm(initialState, handleSubmitForm, validatorRegisterForm);
 
   return (
     <Form
@@ -63,8 +45,8 @@ export const Register: FC = () => {
       <Input
         type="text"
         placeholder="First name"
-        touched={touched.name}
-        error={errors.name.message}
+        touched={touches.name}
+        error={errors.name}
         name="name"
         value={values.name}
         onChange={handleChange}
@@ -73,8 +55,8 @@ export const Register: FC = () => {
       <Input
         type="text"
         placeholder="Last name"
-        touched={touched.surname}
-        error={errors.surname.message}
+        touched={touches.surname}
+        error={errors.surname}
         name="surname"
         value={values.surname}
         onChange={handleChange}
@@ -83,8 +65,8 @@ export const Register: FC = () => {
       <Input
         type="text"
         placeholder="Enter your email..."
-        touched={touched.email}
-        error={errors.email.message}
+        touched={touches.email}
+        error={errors.email}
         name="email"
         value={values.email}
         onChange={handleChange}
@@ -93,8 +75,8 @@ export const Register: FC = () => {
       <Input
         type="text"
         placeholder="Username"
-        touched={touched.username}
-        error={errors.username.message}
+        touched={touches.username}
+        error={errors.username}
         name="username"
         value={values.username}
         onChange={handleChange}
@@ -103,8 +85,8 @@ export const Register: FC = () => {
       <Input
         type="password"
         placeholder="Password"
-        touched={touched.password}
-        error={errors.password.message}
+        touched={touches.password}
+        error={errors.password}
         name="password"
         value={values.password}
         onChange={handleChange}

@@ -25,25 +25,13 @@ export const Profile: FC<IProfile> = () => {
   const bio = useSelector(getBio);
 
   const initialState = {
-    name: {
-      defaultValue: name,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
-    surname: {
-      defaultValue: surname,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
-    bio: {
-      defaultValue: bio,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
+    name,
+    surname,
+    bio,
   };
 
   const handlerSubmit = async () => {
-    console.log('submit', values);
+    console.log('Profile handlerSubmit', values);
     // dispatch(AuthActions.signIn({
     //   email: values.email,
     //   password: values.password,
@@ -59,7 +47,7 @@ export const Profile: FC<IProfile> = () => {
   };
 
   const {
-    handleChange, handleSubmit, handleBlur, values, errors, touched,
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm(initialState, handlerSubmit, validatorProfileForm);
 
   return (
@@ -111,8 +99,8 @@ export const Profile: FC<IProfile> = () => {
           <Input
             type="text"
             label="First name"
-            touched={touched.name}
-            error={errors.name.message}
+            touched={touches.name}
+            error={errors.name}
             name="name"
             value={values.name}
             onChange={handleChange}
@@ -122,8 +110,8 @@ export const Profile: FC<IProfile> = () => {
           <Input
             type="text"
             label="Last name"
-            touched={touched.surname}
-            error={errors.surname.message}
+            touched={touches.surname}
+            error={errors.surname}
             name="surname"
             value={values.surname}
             onChange={handleChange}
@@ -133,8 +121,8 @@ export const Profile: FC<IProfile> = () => {
           <Input
             type="text"
             label="Bio"
-            touched={touched.bio}
-            error={errors.bio.message}
+            touched={touches.bio}
+            error={errors.bio}
             name="bio"
             value={values.bio}
             onChange={handleChange}
