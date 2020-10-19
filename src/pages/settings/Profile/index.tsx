@@ -41,12 +41,17 @@ export const Profile: FC<IProfile> = () => {
     }));
   };
 
-  const handleUpload = () => {
-
+  const handleUpload = (event: React.BaseSyntheticEvent) => {
+    event.preventDefault();
+    const [file] = event.target.files;
+    console.log('handleUpload', file);
+    dispatch(UserActions.uploadAvatar(file));
   };
 
-  const handleDelete = () => {
-
+  const handleDelete = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    console.log('handleDelete');
+    dispatch(UserActions.removeAvatar());
   };
 
   const {
@@ -62,24 +67,34 @@ export const Profile: FC<IProfile> = () => {
           alignItems="left"
           isMaxWidth
         >
-          <div className="profile-avatar">
+          <div
+            className="profile-avatar"
+          >
             <Avatar
               size={150}
             />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
-                <button
-                  className="profile-avatar__button-upload"
-                  onClick={handleUpload}
-                >
+                <input
+                  type="file"
+                  className="profile-avatar__upload-input"
+                  onChange={handleUpload}
+                />
+                <div className="profile-avatar__upload-button">
                   <img
                     src="/assets/svg/upload.svg"
                     alt="upload"
                   />
                   Click to update
-                </button>
+                </div>
+                {/* <img */}
+                {/*  src="/assets/svg/upload.svg" */}
+                {/*  alt="upload" */}
+                {/* /> */}
+                {/* Click to update */}
+                {/* </input> */}
                 <button
-                  className="profile-avatar__button-delete"
+                  className="profile-avatar__delete-button"
                   onClick={handleDelete}
                 >
                   <img

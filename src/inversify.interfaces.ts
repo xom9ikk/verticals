@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import {
   ILogoutResponse,
   IGetAllColumnsResponse,
@@ -25,14 +26,16 @@ import {
   IReverseColumnOrderRequest, IReverseColumnOrderResponse,
   IGetMeResponse,
   IUpdateUserResponse, IUpdateUserRequest,
+  IUploadUserAvatarRequest, IUploadUserAvatarResponse,
+  IRemoveUserAvatarResponse,
 } from './types/api';
 
 export interface IHttpClient {
-  post: <T>(url: string, options?: Object) => Promise<T>;
-  patch: <T>(url: string, options?: Object) => Promise<T>;
-  get: <T>(url: string, options?: Object) => Promise<T>;
-  put: <T>(url: string, options?: Object) => Promise<T>;
-  delete: <T>(url: string, options?: Object) => Promise<T>;
+  post: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
+  patch: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
+  get: <T>(url: string, body?: Object) => Promise<T>;
+  put: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
+  delete: <T>(url: string, body?: Object) => Promise<T>;
 }
 
 export interface IServices {
@@ -82,4 +85,6 @@ export interface ITodoService {
 export interface IUserService {
   getMe(): Promise<IGetMeResponse>;
   update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
+  uploadAvatar(body: IUploadUserAvatarRequest): Promise<IUploadUserAvatarResponse>;
+  removeAvatar(): Promise<IRemoveUserAvatarResponse>;
 }

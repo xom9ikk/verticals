@@ -4,6 +4,8 @@ export type ISetUserData = IUser;
 
 export type IUpdateUsername = string;
 export type IUpdateEmail = string;
+export type IUploadAvatar = File;
+
 export interface IUpdatePersonalData {
   name: string;
   surname: string;

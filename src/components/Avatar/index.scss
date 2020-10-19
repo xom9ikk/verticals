@@ -3,6 +3,7 @@
   border-radius: 50%;
   transition: box-shadow .2s ease-in-out;
   cursor: pointer;
+  object-fit: cover;
   &:hover {
     box-shadow: $primary-light 0 0 0 3px;
   }

@@ -4,4 +4,5 @@ export interface IUser {
   surname: string | null,
   username: string | null,
   bio: string | null,
+  avatar: string | null,
 }

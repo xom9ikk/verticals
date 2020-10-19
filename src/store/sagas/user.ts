@@ -7,7 +7,7 @@ import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
 import { UserActions } from '@/store/actions';
 import { Action } from 'redux-actions';
-import { IUpdateUserRequest } from '@/types/api';
+import { IUpdateUserRequest, IUploadUserAvatarRequest } from '@/types/api';
 
 const { userService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -26,7 +26,7 @@ function* updateUsernameWorker(action: Action<IUpdateUserRequest>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
     yield put(UserActions.setUsername(action.payload.username!));
-    yield call(show, 'Column', 'Username updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, 'User', 'Username updated successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'User', error, ALERT_TYPES.DANGER);
   }
@@ -36,7 +36,7 @@ function* updateEmailWorker(action: Action<IUpdateUserRequest>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
     yield put(UserActions.setEmail(action.payload.email!));
-    yield call(show, 'Column', 'Email updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, 'User', 'Email updated successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'User', error, ALERT_TYPES.DANGER);
   }
@@ -52,7 +52,29 @@ function* updatePersonalDataWorker(action: Action<IUpdateUserRequest>) {
       bio: bio!,
     }));
     yield call(
-      show, 'Column', 'Personal data updated successfully', ALERT_TYPES.SUCCESS,
+      show, 'User', 'Personal data updated successfully', ALERT_TYPES.SUCCESS,
+    );
+  } catch (error) {
+    yield call(show, 'User', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* uploadAvatarWorker(action: Action<IUploadUserAvatarRequest>) {
+  try {
+    yield* apply(userService, userService.uploadAvatar, [action.payload]);
+    yield call(
+      show, 'User', 'Avatar successfully uploaded', ALERT_TYPES.SUCCESS,
+    );
+  } catch (error) {
+    yield call(show, 'User', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* removeAvatarWorker() {
+  try {
+    yield* apply(userService, userService.removeAvatar, []);
+    yield call(
+      show, 'User', 'Avatar removed successfully', ALERT_TYPES.SUCCESS,
     );
   } catch (error) {
     yield call(show, 'User', error, ALERT_TYPES.DANGER);
@@ -65,5 +87,7 @@ export function* watchUser() {
     takeLatest(UserActions.Type.UPDATE_USERNAME, updateUsernameWorker),
     takeLatest(UserActions.Type.UPDATE_EMAIL, updateEmailWorker),
     takeLatest(UserActions.Type.UPDATE_PERSONAL_DATA, updatePersonalDataWorker),
+    takeLatest(UserActions.Type.UPLOAD_AVATAR, uploadAvatarWorker),
+    takeLatest(UserActions.Type.REMOVE_AVATAR, removeAvatarWorker),
   ]);
 }

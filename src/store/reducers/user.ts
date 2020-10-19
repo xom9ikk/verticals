@@ -8,6 +8,7 @@ const initialState: IUser = {
   surname: null,
   username: null,
   bio: null,
+  avatar: null,
 };
 
 export const UserReducer = handleActions<IUser, IUser>({
