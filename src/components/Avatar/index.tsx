@@ -1,26 +1,25 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getFullName } from '@/store/selectors';
+import { getAvatarUrl, getFullName } from '@/store/selectors';
 
 interface IAvatar {
   size?: number;
-  imageSrc?: string;
   onClick?: () => void;
 }
 
 export const Avatar: FC<IAvatar> = ({
   size = 44,
-  imageSrc,
   onClick,
 }) => {
   const fullName = useSelector(getFullName);
+  const url = useSelector(getAvatarUrl);
   const firstLetter = fullName[0]?.toUpperCase() ?? ':)';
 
   return (
     <>
-      { imageSrc ? (
+      { url ? (
         <img
-          src={imageSrc}
+          src={url}
           alt="avatar"
           className="avatar"
           style={{

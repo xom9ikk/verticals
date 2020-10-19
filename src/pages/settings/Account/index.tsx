@@ -25,7 +25,8 @@ export const Account: FC<IAccount> = () => {
           isLight
           initialValue={email}
           action={UserActions.updateEmail}
-          validator={validator.email()}
+          validator={validator.email({ max: 64 })}
+          style={{ marginBottom: 20 }}
         />
         <div className="input">
           <div className="input__wrapper">

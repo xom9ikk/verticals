@@ -34,28 +34,28 @@ export class HttpClient implements IHttpClient {
     this.client.interceptors.response.use((r) => r, this.responseInterceptor.bind(this));
   }
 
-  async post(url: string, options?: Object) {
-    const { data } = await this.client.post(url, options);
+  async post(url: string, body?: Object, config?: AxiosRequestConfig) {
+    const { data } = await this.client.post(url, body, config);
     return data;
   }
 
-  async patch(url: string, options?: Object) {
-    const { data } = await this.client.patch(url, options);
+  async patch(url: string, body?: Object, config?: AxiosRequestConfig) {
+    const { data } = await this.client.patch(url, body, config);
     return data;
   }
 
-  async get(url: string, options?: Object) {
-    const { data } = await this.client.get(url, options);
+  async get(url: string, body?: Object) {
+    const { data } = await this.client.get(url, body);
     return data;
   }
 
-  async put(url: string, options?: Object) {
-    const { data } = await this.client.put(url, options);
+  async put(url: string, body?: Object, config?: AxiosRequestConfig) {
+    const { data } = await this.client.put(url, body, config);
     return data;
   }
 
-  async delete(url: string, options?: Object) {
-    const { data } = await this.client.delete(url, options);
+  async delete(url: string, body?: Object) {
+    const { data } = await this.client.delete(url, body);
     return data;
   }
 
@@ -111,6 +111,7 @@ export class HttpClient implements IHttpClient {
     return {
       ...config,
       headers: {
+        ...config.headers,
         Authorization: `${AUTH_PREFIX}${token}`,
       },
     };

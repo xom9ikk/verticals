@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-use-before-define,no-shadow */
 import React, { FC } from 'react';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { useForm } from '@/use/form';
+import { IFormValues, useForm } from '@/use/form';
 import { validatorProfileForm } from '@/helpers/validatorProfileForm';
 import { SyncInput } from '@comp/SyncInput';
 import { Avatar } from '@comp/Avatar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getBio, getName, getSurname, getUsername,
 } from '@/store/selectors';
@@ -19,48 +19,44 @@ interface IProfile {
 }
 
 export const Profile: FC<IProfile> = () => {
+  const dispatch = useDispatch();
+
   const username = useSelector(getUsername);
   const name = useSelector(getName);
   const surname = useSelector(getSurname);
   const bio = useSelector(getBio);
 
   const initialState = {
-    name: {
-      defaultValue: name,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
-    surname: {
-      defaultValue: surname,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
-    bio: {
-      defaultValue: bio,
-      error: 'Can\'t be blank',
-      isValid: false,
-    },
+    name,
+    surname,
+    bio,
   };
 
-  const handlerSubmit = async () => {
-    console.log('submit', values);
-    // dispatch(AuthActions.signIn({
-    //   email: values.email,
-    //   password: values.password,
-    // }));
+  const handleSubmitForm = ({ name, surname, bio }: IFormValues) => {
+    console.log('Profile handlerSubmit', values);
+    dispatch(UserActions.updatePersonalData({
+      name: name!,
+      surname: surname!,
+      bio: bio!,
+    }));
   };
 
-  const handleUpload = () => {
-
+  const handleUpload = (event: React.BaseSyntheticEvent) => {
+    event.preventDefault();
+    const [file] = event.target.files;
+    console.log('handleUpload', file);
+    dispatch(UserActions.uploadAvatar(file));
   };
 
-  const handleDelete = () => {
-
+  const handleDelete = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    console.log('handleDelete');
+    dispatch(UserActions.removeAvatar());
   };
 
   const {
-    handleChange, handleSubmit, handleBlur, values, errors, touched,
-  } = useForm(initialState, handlerSubmit, validatorProfileForm);
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
+  } = useForm(initialState, handleSubmitForm, validatorProfileForm);
 
   return (
     <>
@@ -71,24 +67,34 @@ export const Profile: FC<IProfile> = () => {
           alignItems="left"
           isMaxWidth
         >
-          <div className="profile-avatar">
+          <div
+            className="profile-avatar"
+          >
             <Avatar
               size={150}
             />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
-                <button
-                  className="profile-avatar__button-upload"
-                  onClick={handleUpload}
-                >
+                <input
+                  type="file"
+                  className="profile-avatar__upload-input"
+                  onChange={handleUpload}
+                />
+                <div className="profile-avatar__upload-button">
                   <img
                     src="/assets/svg/upload.svg"
                     alt="upload"
                   />
                   Click to update
-                </button>
+                </div>
+                {/* <img */}
+                {/*  src="/assets/svg/upload.svg" */}
+                {/*  alt="upload" */}
+                {/* /> */}
+                {/* Click to update */}
+                {/* </input> */}
                 <button
-                  className="profile-avatar__button-delete"
+                  className="profile-avatar__delete-button"
                   onClick={handleDelete}
                 >
                   <img
@@ -111,8 +117,8 @@ export const Profile: FC<IProfile> = () => {
           <Input
             type="text"
             label="First name"
-            touched={touched.name}
-            error={errors.name.message}
+            touched={touches.name}
+            error={errors.name}
             name="name"
             value={values.name}
             onChange={handleChange}
@@ -122,8 +128,8 @@ export const Profile: FC<IProfile> = () => {
           <Input
             type="text"
             label="Last name"
-            touched={touched.surname}
-            error={errors.surname.message}
+            touched={touches.surname}
+            error={errors.surname}
             name="surname"
             value={values.surname}
             onChange={handleChange}
@@ -133,8 +139,8 @@ export const Profile: FC<IProfile> = () => {
           <Input
             type="text"
             label="Bio"
-            touched={touched.bio}
-            error={errors.bio.message}
+            touched={touches.bio}
+            error={errors.bio}
             name="bio"
             value={values.bio}
             onChange={handleChange}

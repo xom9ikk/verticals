@@ -12,3 +12,13 @@ export interface IUpdateUserRequest {
 }
 
 export type IUpdateUserResponse = IServerResponse;
+
+export interface IUploadUserAvatarRequest {
+  avatarFile: File;
+}
+
+export interface IUploadUserAvatarResponse {
+  avatar: string;
+}
+
+export type IRemoveUserAvatarResponse = IServerResponse;

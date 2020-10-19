@@ -10,7 +10,7 @@ interface IInput {
   onChange: (event:any) => void;
   onBlur?: (event:any) => void;
   onKeyDown?: (event:any) => void;
-  value: string,
+  value: string | null,
   placeholder?: string,
   label?: string,
   style?: Object,
@@ -75,7 +75,7 @@ export const InputComponent = ({
                   ref={ref}
                   className={inputClasses.join(' ')}
                   name={name}
-                  value={value}
+                  value={value || ''}
                   placeholder={placeholder}
                   onChange={onChange}
                   onBlur={onBlur}
@@ -91,7 +91,7 @@ export const InputComponent = ({
                   className={inputClasses.join(' ')}
                   type={type}
                   name={name}
-                  value={value}
+                  value={value || ''}
                   placeholder={placeholder}
                   onChange={onChange}
                   onBlur={onBlur}
