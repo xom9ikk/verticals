@@ -17,7 +17,7 @@ import { EnumColors, EnumTodoType } from '@/types/entities';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
-import { getIsEditableBoard } from '@/store/selectors';
+import { getIsEditableBoard, getUsername } from '@/store/selectors';
 
 const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
@@ -88,11 +88,13 @@ export const Board: FC<IBoard> = ({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
-  const isEditableBoard = useSelector(getIsEditableBoard);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  const isEditableBoard = useSelector(getIsEditableBoard);
+  const username = useSelector(getUsername);
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
@@ -335,7 +337,7 @@ export const Board: FC<IBoard> = ({
               onClick={() => menuButtonClickHandler(EnumMenuActions.ReverseColumnOrder)}
             />
             <CopyToClipboard
-              text={`verticals.xom9ik.com/userId/${toReadableId(initialTitle, id)}`}
+              text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle, id)}`}
               onCopy={() => {
                 menuButtonClickHandler(EnumMenuActions.CopyLink);
               }}
@@ -362,7 +364,7 @@ export const Board: FC<IBoard> = ({
         </div>
       );
     }
-  }, [id, isHover, isActive, color, isCopied]);
+  }, [id, isHover, isActive, color, username, isCopied]);
 
   const memoCounter = useMemo(() => (
     <div className="board-item__counter">
@@ -452,7 +454,7 @@ export const Board: FC<IBoard> = ({
   ), [
     isHover, isActive, isMenuClick,
     isEditable, titleValue, descriptionValue,
-    snapshot, color, countTodos, icon, isCopied,
+    snapshot, color, countTodos, icon, username, isCopied,
   ]);
   // console.log('ishover', isHover);
 

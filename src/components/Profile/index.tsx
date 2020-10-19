@@ -139,7 +139,7 @@ export const Profile: FC<IProfile> = ({
           }}
         />
         <CopyToClipboard
-          text="verticals.xom9ik.com/userId"
+          text={`verticals.xom9ik.com/${username}`} // TODO move to env
           onCopy={() => {
             menuButtonClickHandler(EnumMenuActions.CopyLink);
           }}

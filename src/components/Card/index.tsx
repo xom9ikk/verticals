@@ -14,7 +14,7 @@ import { Bullet } from '@comp/Bullet';
 import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import { getActiveBoardReadableId, getIsEditableCard } from '@/store/selectors';
+import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -66,16 +66,20 @@ export const Card: FC<ICard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+
+  const username = useSelector(getUsername);
+  const isEditableCard = useSelector(getIsEditableCard);
+  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const isEditableCard = useSelector(getIsEditableCard);
-  const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
@@ -142,10 +146,8 @@ export const Card: FC<ICard> = ({
     setIsDoubleClicked(true);
   };
 
-  const { toReadableId } = useReadableId();
-
   const clickHandler = () => {
-    forwardTo(`/userId/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
+    forwardTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
   };
 
   const {

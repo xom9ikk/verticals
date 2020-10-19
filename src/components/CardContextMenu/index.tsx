@@ -9,7 +9,7 @@ import { Divider } from '@comp/Divider';
 import { SystemActions, TodosActions } from '@/store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
-import { getActiveBoardReadableId } from '@/store/selectors';
+import { getActiveBoardReadableId, getUsername } from '@/store/selectors';
 
 interface ICardContextMenu {
   id?: number;
@@ -65,7 +65,9 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
 
+  const username = useSelector(getUsername);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
+
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const hidePopup = () => {
@@ -236,7 +238,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
             onClick={() => menuButtonClickHandler(EnumCardActions.Notifications)}
           />
           <CopyToClipboard
-            text={`verticals.xom9ik.com/userId/${activeBoardReadableId}/card/${toReadableId(title, id!)}`}
+            text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(title, id!)}`}
             onCopy={() => {
               menuButtonClickHandler(EnumCardActions.CopyLink);
             }}
@@ -275,7 +277,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   },
   [isHover, color,
     isNotificationsEnabled,
-    isArchived, status, isCopied]);
+    isArchived, status, username, isCopied]);
 
   return (
     <>

@@ -16,7 +16,9 @@ import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
 import { forwardTo } from '@/router/history';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import { getActiveBoardReadableId, getActiveTodoId, getTodos } from '@/store/selectors';
+import {
+  getActiveBoardReadableId, getActiveTodoId, getTodos, getUsername,
+} from '@/store/selectors';
 
 interface ICardPopup {
   columnId: number;
@@ -32,6 +34,7 @@ export const CardPopup: FC<ICardPopup> = ({
   const todos = useSelector(getTodos);
   const activeTodoId = useSelector(getActiveTodoId);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
+  const username = useSelector(getUsername);
 
   const [todo, setTodo] = useState<ITodo>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
@@ -67,7 +70,7 @@ export const CardPopup: FC<ICardPopup> = ({
       : setTitleValue(value);
   };
 
-  const closeHandler = () => forwardTo(`/userId/${activeBoardReadableId}`);
+  const closeHandler = () => forwardTo(`/${username}/${activeBoardReadableId}`);
 
   const changeStatusHandler = () => {
     const newStatus = todo!.status === EnumTodoStatus.Done
