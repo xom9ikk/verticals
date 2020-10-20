@@ -94,12 +94,6 @@ export const Profile: FC<IProfile> = () => {
                   />
                   Click to update
                 </div>
-                {/* <img */}
-                {/*  src="/assets/svg/upload.svg" */}
-                {/*  alt="upload" */}
-                {/* /> */}
-                {/* Click to update */}
-                {/* </input> */}
                 <button
                   className="profile-avatar__delete-button"
                   onClick={handleDelete}

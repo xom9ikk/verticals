@@ -2,14 +2,14 @@
 import { store } from 'react-notifications-component';
 
 const defaultPreferences = {
-  insert: 'top',
-  container: 'top-right',
+  insert: 'bottom',
+  container: 'bottom-right',
   dismiss: {
     duration: 5000,
     onScreen: true,
   },
   slidingExit: {
-    duration: 800,
+    duration: 500,
     timingFunction: 'ease-out',
     delay: 0,
   },

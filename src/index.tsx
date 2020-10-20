@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { createPortal } from 'react-dom';
 import { Provider } from 'react-redux';
 import 'react-notifications-component/dist/theme.css';
 // @ts-ignore
@@ -22,7 +22,7 @@ const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <ReactNotification />
+    {createPortal(<><ReactNotification /></>, document.querySelector('#notification-root')!)}
     <MainRouter />
     <ReactTooltip
       id="tooltip"
