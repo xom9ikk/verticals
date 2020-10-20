@@ -122,8 +122,7 @@ export const Popup: FC<IPopup> = ({
         {popup()}
       </div>
     );
-    // @ts-ignore
-    return createPortal(content, document.querySelector('#menu-root'));
+    return createPortal(content, document.querySelector('#menu-root')!);
   }, [isOpen, observed, children]);
 
   return isOpen ? (

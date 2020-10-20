@@ -25,4 +25,6 @@ export const UserReducer = handleActions<IUser, IUser>({
           surname: action.payload.surname,
           bio: action.payload.bio,
         }),
+  [UserActions.Type.SET_AVATAR]:
+        (state, action) => ({ ...state, avatar: action.payload.avatar }),
 }, initialState);

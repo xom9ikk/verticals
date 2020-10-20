@@ -61,7 +61,9 @@ function* updatePersonalDataWorker(action: Action<IUpdateUserRequest>) {
 
 function* uploadAvatarWorker(action: Action<IUploadUserAvatarRequest>) {
   try {
-    yield* apply(userService, userService.uploadAvatar, [action.payload]);
+    const response = yield* apply(userService, userService.uploadAvatar, [action.payload]);
+    const { avatar } = response.data;
+    yield put(UserActions.setAvatar(avatar));
     yield call(
       show, 'User', 'Avatar successfully uploaded', ALERT_TYPES.SUCCESS,
     );
@@ -76,6 +78,7 @@ function* removeAvatarWorker() {
     yield call(
       show, 'User', 'Avatar removed successfully', ALERT_TYPES.SUCCESS,
     );
+    yield put(UserActions.setAvatar(null));
   } catch (error) {
     yield call(show, 'User', error, ALERT_TYPES.DANGER);
   }

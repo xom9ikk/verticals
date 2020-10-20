@@ -48,6 +48,11 @@ export const Profile: FC<IProfile> = () => {
     dispatch(UserActions.uploadAvatar(file));
   };
 
+  const handleClick = (event: React.BaseSyntheticEvent) => {
+    // eslint-disable-next-line no-param-reassign
+    event.target.value = null;
+  };
+
   const handleDelete = (event: React.SyntheticEvent) => {
     event.preventDefault();
     console.log('handleDelete');
@@ -77,8 +82,10 @@ export const Profile: FC<IProfile> = () => {
               <div className="profile-avatar__controls-wrapper">
                 <input
                   type="file"
+                  accept="image/x-png,image/jpeg"
                   className="profile-avatar__upload-input"
                   onChange={handleUpload}
+                  onClick={handleClick}
                 />
                 <div className="profile-avatar__upload-button">
                   <img
