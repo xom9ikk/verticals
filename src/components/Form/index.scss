@@ -12,8 +12,7 @@
     justify-content: left;
   }
   &__inner {
-    width: 280px;
-    padding-bottom: 30px;
+    min-width: 280px;
     display: flex;
     align-items: center;
     flex-direction: column;

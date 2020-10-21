@@ -28,6 +28,7 @@ import {
   IUpdateUserResponse, IUpdateUserRequest,
   IUploadUserAvatarRequest, IUploadUserAvatarResponse,
   IRemoveUserAvatarResponse,
+  IChangePasswordRequest, IChangePasswordResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -51,6 +52,7 @@ export interface IAuthService {
   signIn(body: ISignInRequest): Promise<ISignInResponse>;
   logout(): Promise<ILogoutResponse>;
   reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
+  change(body: IChangePasswordRequest): Promise<IChangePasswordResponse>;
 }
 
 export interface IBoardService {

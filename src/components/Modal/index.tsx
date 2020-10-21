@@ -7,22 +7,26 @@ import { Button } from '../Button';
 
 interface IModal {
   isOpen: boolean,
+  type?: 'button' | 'submit' | 'reset',
   isSoftExit?: boolean,
   negative?: string,
   positive: string,
   onPositive: Function,
   onNegative?: Function,
+  renderWrapper?: (children: React.ReactChild) => React.ReactChild,
   onClose: Function,
   size?: string,
 }
 
 export const Modal: FC<IModal> = ({
   isOpen,
+  type = 'button',
   isSoftExit = true,
   negative,
   positive,
   onPositive,
   onNegative,
+  renderWrapper = (c: React.ReactChild) => c,
   onClose,
   size = 'small',
   children,
@@ -41,6 +45,7 @@ export const Modal: FC<IModal> = ({
   };
 
   const handleClose = () => {
+    console.log('handleClose');
     onClose();
   };
 
@@ -60,7 +65,7 @@ export const Modal: FC<IModal> = ({
     classes.push('dialog--is-open');
     if (isSoftExit) {
       document.body.onkeydown = (e) => {
-        if (e.key === 'Escape') {
+        if (e.code === 'Escape') {
           handleClose();
         }
       };
@@ -73,12 +78,6 @@ export const Modal: FC<IModal> = ({
   const modal = (
     <>
       <div className={classes.join(' ')}>
-        {/* <span */}
-        {/*  role="button" */}
-        {/*  tabIndex={0} */}
-        {/*  className="dialog__back" */}
-        {/*  onClick={isSoftExit ? handleClose : () => {}} */}
-        {/* /> */}
         <div
           ref={ref}
           className={`dialog__wrap dialog__wrap--${size}`}
@@ -96,29 +95,38 @@ export const Modal: FC<IModal> = ({
             }}
             onClick={handleClose}
           />
-          {children}
-          <div
-            className="dialog__prompt"
-          >
-            {
-                negative && (
-                <Button
-                  type="button"
-                  modificator="transparent"
-                  onClick={handleNegative}
-                >
-                  {negative}
-                </Button>
-                )
+          {
+            renderWrapper(
+              <>
+                {children}
+                {
+                !renderWrapper ? children : null
               }
-            <Button
-              type="button"
-              modificator="primary"
-              onClick={handlePositive}
-            >
-              {positive}
-            </Button>
-          </div>
+                <div
+                  className="dialog__prompt"
+                >
+                  {
+                  negative && (
+                  <Button
+                    type="button"
+                    modificator="transparent"
+                    onClick={handleNegative}
+                  >
+                    {negative}
+                  </Button>
+                  )
+                }
+                  <Button
+                    type={type}
+                    modificator="primary"
+                    onClick={handlePositive}
+                  >
+                    {positive}
+                  </Button>
+                </div>
+              </>,
+            )
+          }
         </div>
       </div>
     </>

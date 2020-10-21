@@ -127,7 +127,10 @@ export const Menu: FC<IMenu> = ({
       <button
         ref={sourceRef}
         className={classes.join(' ')}
-        onClick={clickHandler}
+        onClick={(e) => {
+          console.log('===button click', e.nativeEvent);
+          clickHandler(e);
+        }}
         onDoubleClick={(e) => e.stopPropagation()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}

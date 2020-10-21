@@ -18,3 +18,8 @@ export type ISignIn = {
 export interface IResetPassword {
   email: string;
 }
+
+export interface IChangePassword {
+  oldPassword: string;
+  newPassword: string;
+}
