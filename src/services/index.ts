@@ -7,6 +7,7 @@ import {
   IBoardService,
   IColumnService,
   ITodoService,
+  ICommentService,
   IUserService,
 } from '@/inversify.interfaces';
 
@@ -20,6 +21,8 @@ export class Services implements IServices {
 
   todoService: ITodoService;
 
+  commentService: ICommentService;
+
   userService: IUserService;
 
   constructor(
@@ -27,12 +30,14 @@ export class Services implements IServices {
     @inject(TYPES.BoardService) boardService: IBoardService,
     @inject(TYPES.ColumnService) columnService: IColumnService,
     @inject(TYPES.TodoService) todoService: ITodoService,
+    @inject(TYPES.CommentService) commentService: ICommentService,
     @inject(TYPES.UserService) userService: IUserService,
   ) {
     this.authService = authService;
     this.boardService = boardService;
     this.columnService = columnService;
     this.todoService = todoService;
+    this.commentService = commentService;
     this.userService = userService;
   }
 }

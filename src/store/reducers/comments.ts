@@ -175,10 +175,13 @@ const initialState: IComments = [];
 // ].map((el) => ({ ...el, id: `comment-${(count += 1).toString()}` }));
 
 export const CommentsReducer = handleActions<IComments, any>({
+  [CommentsActions.Type.SET_COMMENTS]:
+        (state, action) => ([...action.payload]),
   [CommentsActions.Type.ADD]:
       (state, action) => ([...state, {
         id: Math.random().toString(),
-        date: new Date().getTime(),
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime(),
         ...action.payload,
       }]),
   [CommentsActions.Type.REMOVE]:
@@ -211,7 +214,7 @@ export const CommentsReducer = handleActions<IComments, any>({
         ? {
           ...comment,
           text: action.payload.text,
-          editDate: new Date(),
+          updatedAt: new Date().getTime(),
         }
         : comment))),
   [CommentsActions.Type.REMOVE_FILE]:

@@ -40,8 +40,6 @@ export const Popup: FC<IPopup> = ({
     }
     return (
       <div
-        role="button"
-        tabIndex={0}
         className={classes.join(' ')}
         style={style}
         onClick={(e) => e.stopPropagation()}
@@ -111,7 +109,7 @@ export const Popup: FC<IPopup> = ({
 
     const wrapperStyle = {
       position: `${isAbsolute ? 'absolute' : 'fixed'}`,
-      zIndex: `${isAbsolute ? 1 : 2}`,
+      zIndex: `${isAbsolute ? 2 : 3}`,
       ...coordinates,
     } as React.CSSProperties;
     const content = (

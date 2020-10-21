@@ -12,7 +12,7 @@ import { Avatar } from '@comp/Avatar';
 import {
   CommentsActions, SystemActions,
 } from '@/store/actions';
-import { getComments, getEditCommentId } from '@/store/selectors';
+import { getComments, getEditCommentId, getUsername } from '@/store/selectors';
 
 interface ICommentItem {
   comment: IComment
@@ -29,10 +29,12 @@ export const CommentItem: FC<ICommentItem> = ({
   comment,
 }) => {
   const {
-    text, attachedFiles, date, editDate, replyCommentId,
+    text, attachedFiles, createdAt, updatedAt, replyCommentId,
   } = comment;
+
   const { formatDate } = useFormatDate();
   const dispatch = useDispatch();
+  const username = useSelector(getUsername);
   const comments = useSelector(getComments);
   const editCommentId = useSelector(getEditCommentId);
   const [images, setImages] = useState<Array<IFile>>([]);
@@ -79,7 +81,7 @@ export const CommentItem: FC<ICommentItem> = ({
         console.log('add like');
         dispatch(CommentsActions.switchLike({
           id: comment.id,
-          userId: 'user-id',
+          username: username!,
         }));
         break;
       }
@@ -113,7 +115,7 @@ export const CommentItem: FC<ICommentItem> = ({
     };
   }, [isDoubleClick]);
 
-  const removeHandler = (id: string) => {
+  const removeHandler = (id: number) => {
     dispatch(CommentsActions.removeFile({
       id: comment.id,
       fileId: id,
@@ -211,18 +213,22 @@ export const CommentItem: FC<ICommentItem> = ({
           </div>
           <div className="comment__controls--actions">
             {
-              editDate && (
-              <span>Edited</span>
-              )
-            }
-            <div className="comment__date">{formatDate(new Date(date))}</div>
+                updatedAt !== createdAt ? (
+                  <span>
+                    Edited (
+                    {formatDate(new Date(updatedAt!))}
+                    )&nbsp;·&nbsp;
+                  </span>
+                ) : null
+              }
+            <div className="comment__date">{formatDate(new Date(createdAt))}</div>
             <Menu
               imageSrc="/assets/svg/dots.svg"
               tooltip="More"
               alt="menu"
               imageSize={16}
               size={22}
-              position="right"
+              position="top"
             >
               <MenuButton
                 text={`${isLikeByMe ? 'Unlike' : 'Like'}`}

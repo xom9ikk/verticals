@@ -6,3 +6,7 @@ export const getTodosByColumnId = (columnId?: number) => createSelector(
   [getTodos],
   (todos) => todos.filter((todo) => todo.columnId === columnId),
 );
+export const getTodoById = (todoId: number | null) => createSelector(
+  [getTodos],
+  (todos) => todos.find((todo) => todo.id === todoId),
+);

@@ -17,13 +17,18 @@ import {
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
   IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
   IDuplicateColumnRequest, IDuplicateColumnResponse,
+  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
   IGetTodosByBoardIdRequest, IGetTodosByBoardIdResponse,
   ICreateTodoRequest, ICreateTodoResponse,
   IRemoveTodoRequest, IRemoveTodoResponse,
   IUpdateTodoRequest, IUpdateTodoResponse,
   IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
   IDuplicateTodoRequest, IDuplicateTodoResponse,
-  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
+  ICreateCommentRequest, ICreateCommentResponse,
+  IGetAllCommentsResponse,
+  IGetCommentsByTodoIdRequest, IGetCommentsByTodoIdResponse,
+  IRemoveCommentRequest, IRemoveCommentResponse,
+  IUpdateCommentRequest, IUpdateCommentResponse,
   IGetMeResponse,
   IUpdateUserResponse, IUpdateUserRequest,
   IUploadUserAvatarRequest, IUploadUserAvatarResponse,
@@ -44,6 +49,7 @@ export interface IServices {
   boardService: IBoardService;
   columnService: IColumnService;
   todoService: ITodoService;
+  commentService: ICommentService;
   userService: IUserService;
 }
 
@@ -82,6 +88,14 @@ export interface ITodoService {
   update(body: IUpdateTodoRequest): Promise<IUpdateTodoResponse>;
   updatePosition(body: IUpdateTodoPositionRequest): Promise<IUpdateTodoPositionResponse>;
   duplicate(body: IDuplicateTodoRequest): Promise<IDuplicateTodoResponse>;
+}
+
+export interface ICommentService {
+  getAll(): Promise<IGetAllCommentsResponse>;
+  getByTodoId(body: IGetCommentsByTodoIdRequest): Promise<IGetCommentsByTodoIdResponse>;
+  create(body: ICreateCommentRequest): Promise<ICreateCommentResponse>;
+  remove(body: IRemoveCommentRequest): Promise<IRemoveCommentResponse>;
+  update(body: IUpdateCommentRequest): Promise<IUpdateCommentResponse>;
 }
 
 export interface IUserService {

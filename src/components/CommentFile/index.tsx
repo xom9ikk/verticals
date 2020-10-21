@@ -6,7 +6,7 @@ import { IFile } from '@/types/entities';
 
 interface ICommentFile {
   file: IFile;
-  onRemove: (id: string) => void;
+  onRemove: (id: number) => void;
   isCompact: boolean;
   isImage: boolean;
 }

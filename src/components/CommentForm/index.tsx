@@ -21,44 +21,49 @@ export const CommentForm: FC<ICommentForm> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const commentInputRef = useRef<any>();
+
   const editCommentId = useSelector(getEditCommentId);
   const replyCommentId = useSelector(getReplyCommentId);
   const comments = useSelector(getComments);
+
   const [commentText, setCommentText] = useState<string>();
   const [replyComment, setReplyComment] = useState<IComment>();
   const [shiftPressed, setShiftPressed] = useState<boolean>();
-  const commentInputRef = useRef<any>();
 
-  const getComment = (id: string) => comments.find((comment: IComment) => comment.id === id);
+  const getComment = (id: number) => comments.find((comment: IComment) => comment.id === id);
 
   useEffect(() => {
-    const comment = getComment(editCommentId);
-    setCommentText(comment?.text ?? '');
-    focus(commentInputRef);
+    if (editCommentId) {
+      const comment = getComment(editCommentId);
+      setCommentText(comment?.text);
+      focus(commentInputRef);
+    }
   }, [editCommentId]);
 
   useEffect(() => {
-    const comment = getComment(replyCommentId);
-    setReplyComment(comment);
-    focus(commentInputRef);
+    if (replyCommentId) {
+      const comment = getComment(replyCommentId);
+      setReplyComment(comment);
+      focus(commentInputRef);
+    }
   }, [replyCommentId]);
 
   const sendCommentHandler = () => {
     if (!commentText) return;
-    console.log('comment save', commentText);
     if (editCommentId) {
       dispatch(CommentsActions.updateText({
         id: editCommentId,
         text: commentText,
       }));
-      dispatch(SystemActions.setEditCommentId(''));
+      dispatch(SystemActions.setEditCommentId(null));
     } else {
-      dispatch(CommentsActions.add({
+      dispatch(CommentsActions.create({
         todoId,
         text: commentText,
-        replyCommentId,
+        replyCommentId: replyCommentId || undefined,
       }));
-      dispatch(SystemActions.setReplyCommentId(''));
+      dispatch(SystemActions.setReplyCommentId(null));
     }
     setCommentText('');
   };
@@ -73,19 +78,21 @@ export const CommentForm: FC<ICommentForm> = ({
     const {
       key, shiftKey,
     } = event;
-    setShiftPressed(shiftKey);
     if (key === 'Enter' && shiftKey) {
+      setShiftPressed(false);
       sendCommentHandler();
     }
   };
 
-  const keydownHandler = (event: any) => {
-    const { shiftKey } = event;
-    setShiftPressed(shiftKey);
+  const keyDownHandler = (event: any) => {
+    const { key, shiftKey } = event;
+    if (key === 'Enter' && shiftKey) {
+      setShiftPressed(true);
+    }
   };
 
   const removeReplyHandler = () => {
-    dispatch(SystemActions.setReplyCommentId(''));
+    dispatch(SystemActions.setReplyCommentId(null));
   };
 
   return (
@@ -123,7 +130,7 @@ export const CommentForm: FC<ICommentForm> = ({
               value={commentText}
               onChange={changeHandler}
               onKeyUp={keyUpHandler}
-              onKeyDown={keydownHandler}
+              onKeyDown={keyDownHandler}
               minRows={1}
               maxRows={10}
               onChangeHeight={onChangeTextAreaHeight}

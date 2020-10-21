@@ -79,6 +79,7 @@ export const Menu: FC<IMenu> = ({
       position={position}
       sourceRef={sourceRef}
       isAbsolute={isAbsolute}
+      style={{ zIndex: 2 }}
     >
       {children}
     </Popup>
