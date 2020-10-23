@@ -9,6 +9,7 @@ import { TextArea } from '@comp/TextArea';
 import { IComment } from '@/types/entities';
 import { useFocus } from '@/use/focus';
 import { getComments, getEditCommentId, getReplyCommentId } from '@/store/selectors';
+import { useOpenFiles } from '@/use/openFiles';
 
 interface ICommentForm {
   todoId: number;
@@ -21,6 +22,7 @@ export const CommentForm: FC<ICommentForm> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { openFiles } = useOpenFiles('image/x-png,image/jpeg', true);
   const commentInputRef = useRef<any>();
 
   const editCommentId = useSelector(getEditCommentId);
@@ -68,13 +70,13 @@ export const CommentForm: FC<ICommentForm> = ({
     setCommentText('');
   };
 
-  const changeHandler = (event: any) => {
+  const changeHandler = (event: React.BaseSyntheticEvent) => {
     if (!shiftPressed) {
       setCommentText(event.target.value);
     }
   };
 
-  const keyUpHandler = (event: any) => {
+  const keyUpHandler = (event: React.KeyboardEvent) => {
     const {
       key, shiftKey,
     } = event;
@@ -84,7 +86,7 @@ export const CommentForm: FC<ICommentForm> = ({
     }
   };
 
-  const keyDownHandler = (event: any) => {
+  const keyDownHandler = (event: React.KeyboardEvent) => {
     const { key, shiftKey } = event;
     if (key === 'Enter' && shiftKey) {
       setShiftPressed(true);
@@ -93,6 +95,11 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const removeReplyHandler = () => {
     dispatch(SystemActions.setReplyCommentId(null));
+  };
+
+  const handleUploadImage = async () => {
+    const files = await openFiles();
+    console.log('files', files);
   };
 
   return (
@@ -144,8 +151,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 size={26}
                 isShowPopup={false}
                 isColored
-                onClick={() => {
-                }}
+                onClick={handleUploadImage}
               />
               <Menu
                 imageSrc="/assets/svg/attach.svg"
