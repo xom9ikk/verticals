@@ -8,7 +8,9 @@ import {
   EnumColors, EnumTodoStatus, EnumTodoType,
 } from '@/types/entities';
 import { Checkbox } from '@comp/Checkbox';
-import { CommentsActions, SystemActions, TodosActions } from '@/store/actions';
+import {
+  CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
+} from '@/store/actions';
 import { Menu } from '@comp/Menu';
 import { Loader } from '@comp/Loader';
 import { CardContextMenu } from '@comp/CardContextMenu';
@@ -88,6 +90,7 @@ export const CardPopup: FC<ICardPopup> = ({
       setTitleValue(activeTodo.title);
       setDescriptionValue(activeTodo.description);
       dispatch(CommentsActions.fetchByTodoId({ todoId: activeTodo.id }));
+      dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: activeTodo.id }));
     }
   }, [activeTodo]);
 

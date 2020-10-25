@@ -1,5 +1,5 @@
+/* eslint-disable max-len */
 import { AxiosRequestConfig } from 'axios';
-import { IUploadCommentAttachmentRequest, IUploadCommentAttachmentResponse } from '@/types/api/comment-attachment';
 import {
   ILogoutResponse,
   IGetAllColumnsResponse,
@@ -35,6 +35,8 @@ import {
   IUploadUserAvatarRequest, IUploadUserAvatarResponse,
   IRemoveUserAvatarResponse,
   IChangePasswordRequest, IChangePasswordResponse,
+  IGetCommentAttachmentsByTodoIdRequest, IGetCommentAttachmentsByTodoIdResponse,
+  IUploadCommentAttachmentRequest, IUploadCommentAttachmentResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -108,5 +110,6 @@ export interface ICommentService {
 }
 
 export interface ICommentAttachmentService {
+  getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest): Promise<IGetCommentAttachmentsByTodoIdResponse>;
   uploadFile(body: IUploadCommentAttachmentRequest): Promise<IUploadCommentAttachmentResponse>;
 }

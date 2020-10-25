@@ -6,7 +6,7 @@ export type IGetAllCommentsResponse = IServerResponse<{
 }>;
 
 export interface IGetCommentsByTodoIdRequest {
-  columnId: number;
+  todoId: number;
 }
 
 export type IGetCommentsByTodoIdResponse = IServerResponse<{
