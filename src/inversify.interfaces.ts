@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
+import { IUploadCommentAttachmentRequest, IUploadCommentAttachmentResponse } from '@/types/api/comment-attachment';
 import {
   ILogoutResponse,
   IGetAllColumnsResponse,
@@ -46,11 +47,12 @@ export interface IHttpClient {
 
 export interface IServices {
   authService: IAuthService;
+  userService: IUserService;
   boardService: IBoardService;
   columnService: IColumnService;
   todoService: ITodoService;
   commentService: ICommentService;
-  userService: IUserService;
+  commentAttachmentService: ICommentAttachmentService;
 }
 
 export interface IAuthService {
@@ -59,6 +61,13 @@ export interface IAuthService {
   logout(): Promise<ILogoutResponse>;
   reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
   change(body: IChangePasswordRequest): Promise<IChangePasswordResponse>;
+}
+
+export interface IUserService {
+  getMe(): Promise<IGetMeResponse>;
+  update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
+  uploadAvatar(body: IUploadUserAvatarRequest): Promise<IUploadUserAvatarResponse>;
+  removeAvatar(): Promise<IRemoveUserAvatarResponse>;
 }
 
 export interface IBoardService {
@@ -98,9 +107,6 @@ export interface ICommentService {
   update(body: IUpdateCommentRequest): Promise<IUpdateCommentResponse>;
 }
 
-export interface IUserService {
-  getMe(): Promise<IGetMeResponse>;
-  update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
-  uploadAvatar(body: IUploadUserAvatarRequest): Promise<IUploadUserAvatarResponse>;
-  removeAvatar(): Promise<IRemoveUserAvatarResponse>;
+export interface ICommentAttachmentService {
+  uploadFile(body: IUploadCommentAttachmentRequest): Promise<IUploadCommentAttachmentResponse>;
 }

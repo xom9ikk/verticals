@@ -21,7 +21,7 @@ interface IProfile {
 
 export const Profile: FC<IProfile> = () => {
   const dispatch = useDispatch();
-  const { openFiles } = useOpenFiles('image/x-png,image/jpeg', false);
+  const { openFiles } = useOpenFiles();
 
   const username = useSelector(getUsername);
   const name = useSelector(getName);
@@ -44,7 +44,7 @@ export const Profile: FC<IProfile> = () => {
   };
 
   const handleClick = async () => {
-    const [file] = await openFiles();
+    const [file] = await openFiles('image/x-png,image/jpeg', false);
     dispatch(UserActions.uploadAvatar(file));
   };
 

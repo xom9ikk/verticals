@@ -3,19 +3,23 @@ import { TYPES } from '@/inversify.types';
 import { HttpClient } from '@/plugins/httpClient';
 import { Services } from '@/services';
 import { AuthService } from '@/services/auth';
+import { UserService } from '@/services/user';
 import { BoardService } from '@/services/board';
 import { ColumnService } from '@/services/column';
 import { TodoService } from '@/services/todo';
 import { CommentService } from '@/services/comment';
-import { UserService } from '@/services/user';
+import { CommentAttachmentService } from '@/services/comment-attachment';
 
 import {
   IHttpClient,
   IServices,
   IAuthService,
+  IUserService,
   IBoardService,
   IColumnService,
-  ITodoService, IUserService, ICommentService,
+  ITodoService,
+  ICommentService,
+  ICommentAttachmentService,
 } from './inversify.interfaces';
 
 const container = new Container();
@@ -33,6 +37,11 @@ container
 container
   .bind<IAuthService>(TYPES.AuthService)
   .to(AuthService)
+  .inSingletonScope();
+
+container
+  .bind<IUserService>(TYPES.UserService)
+  .to(UserService)
   .inSingletonScope();
 
 container
@@ -56,8 +65,8 @@ container
   .inSingletonScope();
 
 container
-  .bind<IUserService>(TYPES.UserService)
-  .to(UserService)
+  .bind<ICommentAttachmentService>(TYPES.CommentAttachmentService)
+  .to(CommentAttachmentService)
   .inSingletonScope();
 
 export { container };

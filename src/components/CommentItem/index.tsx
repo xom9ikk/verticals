@@ -12,7 +12,9 @@ import { Avatar } from '@comp/Avatar';
 import {
   CommentsActions, SystemActions,
 } from '@/store/actions';
-import { getComments, getEditCommentId, getUsername } from '@/store/selectors';
+import {
+  getComments, getEditCommentId, getFullName, getUsername,
+} from '@/store/selectors';
 
 interface ICommentItem {
   comment: IComment
@@ -34,6 +36,8 @@ export const CommentItem: FC<ICommentItem> = ({
 
   const { formatDate } = useFormatDate();
   const dispatch = useDispatch();
+
+  const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
   const comments = useSelector(getComments);
   const editCommentId = useSelector(getEditCommentId);
@@ -87,10 +91,12 @@ export const CommentItem: FC<ICommentItem> = ({
       }
       case EnumMenuActions.Reply: {
         dispatch(SystemActions.setReplyCommentId(comment.id));
+        dispatch(SystemActions.setEditCommentId(null));
         break;
       }
       case EnumMenuActions.Edit: {
         dispatch(SystemActions.setEditCommentId(comment.id));
+        dispatch(SystemActions.setReplyCommentId(null));
         break;
       }
       case EnumMenuActions.Delete: {
@@ -160,7 +166,7 @@ export const CommentItem: FC<ICommentItem> = ({
               className="comment-form__reply--divider"
             />
             <div className="comment-form__reply--name">
-              Max Romanyuta
+              {fullName}
               <span className="comment-form__reply--text">
                 {replyComment?.text}
               </span>
@@ -175,7 +181,7 @@ export const CommentItem: FC<ICommentItem> = ({
       {drawList(files)}
       {drawList(images)}
     </div>
-  ), [comment, images, files]);
+  ), [comment, images, files, fullName]);
 
   return (
     <div
@@ -255,7 +261,6 @@ export const CommentItem: FC<ICommentItem> = ({
           </div>
         </div>
       </div>
-
     </div>
   );
 };

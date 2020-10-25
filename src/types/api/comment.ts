@@ -17,6 +17,7 @@ export interface ICreateCommentRequest {
   todoId: number;
   text: string;
   replyCommentId: number;
+  files?: FileList | null;
 }
 
 export type ICreateCommentResponse = IServerResponse<{

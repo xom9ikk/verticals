@@ -4,16 +4,19 @@ import { TYPES } from '@/inversify.types';
 import {
   IServices,
   IAuthService,
+  IUserService,
   IBoardService,
   IColumnService,
   ITodoService,
   ICommentService,
-  IUserService,
+  ICommentAttachmentService,
 } from '@/inversify.interfaces';
 
 @injectable()
 export class Services implements IServices {
   authService: IAuthService;
+
+  userService: IUserService;
 
   boardService: IBoardService;
 
@@ -23,21 +26,23 @@ export class Services implements IServices {
 
   commentService: ICommentService;
 
-  userService: IUserService;
+  commentAttachmentService: ICommentAttachmentService;
 
   constructor(
   @inject(TYPES.AuthService) authService: IAuthService,
+    @inject(TYPES.UserService) userService: IUserService,
     @inject(TYPES.BoardService) boardService: IBoardService,
     @inject(TYPES.ColumnService) columnService: IColumnService,
     @inject(TYPES.TodoService) todoService: ITodoService,
     @inject(TYPES.CommentService) commentService: ICommentService,
-    @inject(TYPES.UserService) userService: IUserService,
+    @inject(TYPES.CommentAttachmentService) commentAttachmentService: ICommentAttachmentService,
   ) {
     this.authService = authService;
+    this.userService = userService;
     this.boardService = boardService;
     this.columnService = columnService;
     this.todoService = todoService;
     this.commentService = commentService;
-    this.userService = userService;
+    this.commentAttachmentService = commentAttachmentService;
   }
 }

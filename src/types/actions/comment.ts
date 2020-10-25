@@ -1,4 +1,4 @@
-import { IComments, IFile, IImage } from '@/types/entities';
+import { IComments } from '@/types/entities';
 
 export interface IFetchCommentsByTodoId {
   todoId: number;
@@ -10,8 +10,7 @@ export interface ICreateComment {
   todoId: number;
   text: string;
   replyCommentId?: number;
-  attachedFiles?: Array<IFile>;
-  attachedImages?: Array<IImage>;
+  files: FileList | null;
 }
 
 export interface IAddComment {

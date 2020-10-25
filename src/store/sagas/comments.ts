@@ -6,7 +6,7 @@ import { useAlert } from '@/use/alert';
 import { container } from '@/inversify.config';
 import { TYPES } from '@/inversify.types';
 import { IServices } from '@/inversify.interfaces';
-import { CommentsActions } from '@/store/actions';
+import { CommentAttachmentsActions, CommentsActions } from '@/store/actions';
 import {
   ICreateCommentRequest,
   IRemoveCommentRequest,
@@ -30,12 +30,23 @@ function* fetchByTodoIdWorker(action: Action<IGetCommentsByTodoIdRequest>) {
 
 function* createWorker(action: Action<ICreateCommentRequest>) {
   try {
-    const response = yield* apply(commentService, commentService.create, [action.payload]);
+    const { files, ...comment } = action.payload;
+    const response = yield* apply(commentService, commentService.create, [comment]);
     const { commentId } = response.data;
     yield put(CommentsActions.add({
       ...action.payload,
       id: commentId,
     }));
+    if (files) {
+      console.log('upload files', commentId, files);
+      for (let i = 0; i < files.length; i += 1) {
+        const file = files[i];
+        yield put(CommentAttachmentsActions.uploadFile({
+          commentId,
+          file,
+        }));
+      }
+    }
     yield call(show, 'Comment', 'Comment added successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
@@ -66,7 +77,5 @@ export function* watchComment() {
     takeLatest(CommentsActions.Type.CREATE, createWorker),
     takeLatest(CommentsActions.Type.REMOVE, removeWorker),
     takeLatest(CommentsActions.Type.UPDATE_TEXT, updateWorker),
-    // takeLatest(CommentsActions.Type.UPDATE_DESCRIPTION, updateWorker),
-    // takeLatest(CommentsActions.Type.UPDATE_COLOR, updateWorker),
   ]);
 }

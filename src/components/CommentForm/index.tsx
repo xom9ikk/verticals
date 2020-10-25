@@ -6,10 +6,40 @@ import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
 import { CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
-import { IComment } from '@/types/entities';
 import { useFocus } from '@/use/focus';
-import { getComments, getEditCommentId, getReplyCommentId } from '@/store/selectors';
+import {
+  getCommentById, getEditCommentId, getFullName, getReplyCommentId,
+} from '@/store/selectors';
 import { useOpenFiles } from '@/use/openFiles';
+import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+
+const merge = (...args: Array<FileList | null>) => {
+  const dataTransfer = new DataTransfer();
+
+  args.forEach((fileList) => {
+    if (fileList !== null) {
+      for (let i = 0; i < fileList.length; i += 1) {
+        dataTransfer.items.add(fileList[i]);
+      }
+    }
+  });
+
+  return dataTransfer.files;
+};
+
+const filter = (fileList: FileList | null, predicate: (file: File, index: number) => boolean) => {
+  const dataTransfer = new DataTransfer();
+
+  if (fileList !== null) {
+    for (let i = 0; i < fileList.length; i += 1) {
+      if (predicate(fileList[i], i)) {
+        dataTransfer.items.add(fileList[i]);
+      }
+    }
+  }
+
+  return dataTransfer.files;
+};
 
 interface ICommentForm {
   todoId: number;
@@ -22,34 +52,28 @@ export const CommentForm: FC<ICommentForm> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
-  const { openFiles } = useOpenFiles('image/x-png,image/jpeg', true);
+  const { openFiles } = useOpenFiles();
   const commentInputRef = useRef<any>();
 
+  const fullName = useSelector(getFullName);
   const editCommentId = useSelector(getEditCommentId);
   const replyCommentId = useSelector(getReplyCommentId);
-  const comments = useSelector(getComments);
+  const commentForReply = useSelector(getCommentById(replyCommentId));
+  const commentForEdit = useSelector(getCommentById(editCommentId));
 
   const [commentText, setCommentText] = useState<string>();
-  const [replyComment, setReplyComment] = useState<IComment>();
   const [shiftPressed, setShiftPressed] = useState<boolean>();
-
-  const getComment = (id: number) => comments.find((comment: IComment) => comment.id === id);
-
-  useEffect(() => {
-    if (editCommentId) {
-      const comment = getComment(editCommentId);
-      setCommentText(comment?.text);
-      focus(commentInputRef);
-    }
-  }, [editCommentId]);
+  const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
   useEffect(() => {
-    if (replyCommentId) {
-      const comment = getComment(replyCommentId);
-      setReplyComment(comment);
+    setCommentText(commentForEdit?.text);
+  }, [commentForEdit]);
+
+  useEffect(() => {
+    if (commentForReply || commentForEdit) {
       focus(commentInputRef);
     }
-  }, [replyCommentId]);
+  }, [commentForReply, commentForEdit]);
 
   const sendCommentHandler = () => {
     if (!commentText) return;
@@ -64,8 +88,10 @@ export const CommentForm: FC<ICommentForm> = ({
         todoId,
         text: commentText,
         replyCommentId: replyCommentId || undefined,
+        files,
       }));
       dispatch(SystemActions.setReplyCommentId(null));
+      setFiles(null);
     }
     setCommentText('');
   };
@@ -97,10 +123,23 @@ export const CommentForm: FC<ICommentForm> = ({
     dispatch(SystemActions.setReplyCommentId(null));
   };
 
-  const handleUploadImage = async () => {
-    const files = await openFiles();
-    console.log('files', files);
+  const handleUploadImages = async () => {
+    const openedFiles = await openFiles('image/x-png,image/jpeg', true);
+    console.log('openedFiles', openedFiles);
+    setFiles((prev) => merge(prev, openedFiles));
   };
+
+  const handleUploadFiles = async () => {
+    const openedFiles = await openFiles('*', true);
+    console.log('openedFiles', openedFiles);
+    setFiles((prev) => merge(prev, openedFiles));
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setFiles((prev) => filter(prev, (file, i) => i !== index));
+  };
+
+  const isAvailableSend = commentText?.length || files?.length;
 
   return (
     <div className="comment-form">
@@ -119,16 +158,20 @@ export const CommentForm: FC<ICommentForm> = ({
               size={26}
               isShowPopup={false}
               onClick={removeReplyHandler}
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 2 }}
             />
             <div className="comment-form__reply--divider" />
             <div className="comment-form__reply--name">
-              Max Romanyuta
+              {fullName}
               <span className="comment-form__reply--text">
-                {replyComment?.text}
+                {commentForReply?.text}
               </span>
             </div>
           </div>
+          <CommentFormAttachments
+            files={files}
+            onRemove={handleRemoveFile}
+          />
           <div className="comment-form__input-inner">
             <TextArea
               ref={commentInputRef}
@@ -151,7 +194,7 @@ export const CommentForm: FC<ICommentForm> = ({
                 size={26}
                 isShowPopup={false}
                 isColored
-                onClick={handleUploadImage}
+                onClick={handleUploadImages}
               />
               <Menu
                 imageSrc="/assets/svg/attach.svg"
@@ -161,21 +204,20 @@ export const CommentForm: FC<ICommentForm> = ({
                 size={26}
                 isShowPopup={false}
                 isColored
-                onClick={() => {
-                }}
+                onClick={handleUploadFiles}
               />
               <Menu
                 imageSrc="/assets/svg/arrow-up.svg"
                 tooltip={`${commentText?.length ? 'Add comment' : ''}`}
                 alt="send"
-                imageSize={commentText?.length ? 24 : 0}
+                imageSize={isAvailableSend ? 24 : 0}
                 size={30}
                 isShowPopup={false}
                 isPrimary
                 style={{
-                  width: commentText?.length ? 30 : 0,
-                  opacity: commentText?.length ? 1 : 0,
-                  padding: commentText?.length ? '8px 10px' : '8px 0',
+                  width: isAvailableSend ? 30 : 0,
+                  opacity: isAvailableSend ? 1 : 0,
+                  padding: isAvailableSend ? '8px 10px' : '8px 0',
                 }}
                 onClick={sendCommentHandler}
               />
