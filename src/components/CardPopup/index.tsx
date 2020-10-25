@@ -270,7 +270,7 @@ export const CardPopup: FC<ICardPopup> = ({
                 </div>
                 <hr />
               </div>
-              <Comments todoId={activeTodo.id} />
+              <Comments />
             </div>
           </div>
         ) : (

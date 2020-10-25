@@ -42,7 +42,7 @@ const filter = (fileList: FileList | null, predicate: (file: File, index: number
 };
 
 interface ICommentForm {
-  todoId: number;
+  todoId: number | null;
   onChangeTextAreaHeight: (height: number) => void;
 }
 
@@ -85,7 +85,7 @@ export const CommentForm: FC<ICommentForm> = ({
       dispatch(SystemActions.setEditCommentId(null));
     } else {
       dispatch(CommentsActions.create({
-        todoId,
+        todoId: todoId!,
         text: commentText,
         replyCommentId: replyCommentId || undefined,
         files,
@@ -226,7 +226,7 @@ export const CommentForm: FC<ICommentForm> = ({
         </div>
       </div>
       <div className={`comment-form__helper
-        ${commentText?.length ? 'comment-form__helper--opened' : ''}
+        ${isAvailableSend ? 'comment-form__helper--opened' : ''}
         `}
       >
         <button>

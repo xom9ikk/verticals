@@ -2,31 +2,40 @@ import React, { FC, useState } from 'react';
 // @ts-ignore
 import downloadjs from 'downloadjs';
 import { Menu } from '@comp/Menu';
-import { IFile } from '@/types/entities';
+import { useFormat } from '@/use/format';
 
 interface ICommentFile {
-  file: IFile;
+  id: number;
+  size: number;
+  name: string;
+  path: string;
+  extension: string;
   onRemove: (id: number) => void;
   isCompact: boolean;
   isImage: boolean;
 }
 
 export const CommentFile: FC<ICommentFile> = ({
-  file,
+  id,
+  size,
+  name,
+  path,
+  extension,
   onRemove,
   isCompact,
   isImage,
 }) => {
+  const { formatSize } = useFormat();
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const styleImage = isImage ? {
-    backgroundImage: `url('${file.link}')`,
+    backgroundImage: `url('${path}')`,
   } : {};
 
   const downloadHandler = (event: React.SyntheticEvent) => {
     event.stopPropagation();
-    console.log('download', file.link);
-    downloadjs(file.link);
+    console.log('download', path);
+    downloadjs(path);
   };
 
   return (
@@ -63,10 +72,10 @@ export const CommentFile: FC<ICommentFile> = ({
           <div className="comment-file__info">
             <img src="/assets/svg/extension.svg" alt="extension" />
             <span>
-              {file.type.substring(0, 3)}
+              {extension.substring(0, 3)}
             </span>
             <div className="comment-file__info--text">
-              {file.name}
+              {name}
             </div>
           </div>
           )
@@ -82,14 +91,14 @@ export const CommentFile: FC<ICommentFile> = ({
           isHide
           isShowPopup={false}
           isHoverBlock={isHover}
-          onClick={() => onRemove(file.id)}
+          onClick={() => onRemove(id)}
         />
         <div className={`comment-file__size
          ${isImage
           ? 'comment-file__size--image'
           : 'comment-file__size--file'}`}
         >
-          {file.size}
+          {formatSize(size)}
         </div>
       </div>
 

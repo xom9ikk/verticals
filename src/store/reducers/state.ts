@@ -1,12 +1,19 @@
 import {
-  ISystem, IBoards, IColumns, ITodos, IComments, IUser,
+  ISystem,
+  IUser,
+  IBoards,
+  IColumns,
+  ITodos,
+  IComments,
+  ICommentAttachments,
 } from '@/types/entities';
 
 export interface IRootState {
   system: ISystem;
+  user: IUser;
   boards: IBoards;
   columns: IColumns;
   todos: ITodos;
   comments: IComments;
-  user: IUser;
+  commentAttachments: ICommentAttachments;
 }

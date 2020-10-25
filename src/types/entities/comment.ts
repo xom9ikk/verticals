@@ -6,20 +6,20 @@ export interface IFile {
   name: string;
 }
 
-export interface IImage {
-  link: string;
-}
+// export interface IImage {
+//   link: string;
+// }
 
 export interface IComment {
   id: number;
   userId: number;
-  createdAt: number;
   todoId: number;
   text?: string;
-  attachedFiles?: Array<IFile>;
-  likes?: Array<string>;
+  createdAt: number;
   updatedAt: number | null;
-  replyCommentId?: number;
+  replyCommentId: number;
+  // attachedFiles?: Array<IFile>;
+  // likes?: Array<string>;
 }
 
 export type IComments = Array<IComment>;
