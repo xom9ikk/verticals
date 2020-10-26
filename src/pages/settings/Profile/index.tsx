@@ -13,6 +13,7 @@ import {
 } from '@/store/selectors';
 import { UserActions } from '@/store/actions';
 import validator from '@/helpers/validator';
+import { useOpenFiles } from '@/use/openFiles';
 
 interface IProfile {
 
@@ -20,6 +21,7 @@ interface IProfile {
 
 export const Profile: FC<IProfile> = () => {
   const dispatch = useDispatch();
+  const { openFiles } = useOpenFiles();
 
   const username = useSelector(getUsername);
   const name = useSelector(getName);
@@ -41,10 +43,8 @@ export const Profile: FC<IProfile> = () => {
     }));
   };
 
-  const handleUpload = (event: React.BaseSyntheticEvent) => {
-    event.preventDefault();
-    const [file] = event.target.files;
-    console.log('handleUpload', file);
+  const handleClick = async () => {
+    const [file] = await openFiles('image/x-png,image/jpeg', false);
     dispatch(UserActions.uploadAvatar(file));
   };
 
@@ -75,26 +75,18 @@ export const Profile: FC<IProfile> = () => {
             />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
-                <input
-                  type="file"
-                  className="profile-avatar__upload-input"
-                  onChange={handleUpload}
-                />
-                <div className="profile-avatar__upload-button">
+                <div
+                  className="profile-avatar__button-upload"
+                  onClick={handleClick}
+                >
                   <img
                     src="/assets/svg/upload.svg"
                     alt="upload"
                   />
                   Click to update
                 </div>
-                {/* <img */}
-                {/*  src="/assets/svg/upload.svg" */}
-                {/*  alt="upload" */}
-                {/* /> */}
-                {/* Click to update */}
-                {/* </input> */}
                 <button
-                  className="profile-avatar__delete-button"
+                  className="profile-avatar__button-delete"
                   onClick={handleDelete}
                 >
                   <img

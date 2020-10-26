@@ -24,7 +24,7 @@ import {
   getQuery,
   getBoards,
   getColumns,
-  getTodos,
+  getTodos, getUsername,
 } from '@/store/selectors';
 
 interface IBoardList {}
@@ -36,6 +36,7 @@ export const BoardList: FC<IBoardList> = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
+  const username = useSelector(getUsername);
   const boards = useSelector(getBoards);
   const columns = useSelector(getColumns);
   const todos = useSelector(getTodos);
@@ -156,7 +157,7 @@ export const BoardList: FC<IBoardList> = () => {
   const handleClick = (title: string, id: number) => {
     dispatch(SystemActions.setIsLoadedColumns(false));
     dispatch(SystemActions.setIsLoadedTodos(false));
-    forwardTo(`/userId/${toReadableId(title, id)}`);
+    forwardTo(`/${username}/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {
@@ -219,7 +220,7 @@ export const BoardList: FC<IBoardList> = () => {
             )}
           </Droppable>
         </DragDropContext>
-        <Link to="/userId/trash">
+        <Link to={`/${username}/trash`}>
           <Board
             key={-1}
             id={-1}
@@ -230,7 +231,7 @@ export const BoardList: FC<IBoardList> = () => {
         </Link>
       </div>
     );
-  }, [boards, activeBoardId, query, isEditableBoard]);
+  }, [boards, activeBoardId, query, isEditableBoard, username]);
 
   const profile = useMemo(() => (
     <Profile

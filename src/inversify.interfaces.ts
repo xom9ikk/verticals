@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { AxiosRequestConfig } from 'axios';
 import {
   ILogoutResponse,
@@ -17,17 +18,26 @@ import {
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
   IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
   IDuplicateColumnRequest, IDuplicateColumnResponse,
+  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
   IGetTodosByBoardIdRequest, IGetTodosByBoardIdResponse,
   ICreateTodoRequest, ICreateTodoResponse,
   IRemoveTodoRequest, IRemoveTodoResponse,
   IUpdateTodoRequest, IUpdateTodoResponse,
   IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
   IDuplicateTodoRequest, IDuplicateTodoResponse,
-  IReverseColumnOrderRequest, IReverseColumnOrderResponse,
+  ICreateCommentRequest, ICreateCommentResponse,
+  IGetAllCommentsResponse,
+  IGetCommentsByTodoIdRequest, IGetCommentsByTodoIdResponse,
+  IRemoveCommentRequest, IRemoveCommentResponse,
+  IUpdateCommentRequest, IUpdateCommentResponse,
   IGetMeResponse,
   IUpdateUserResponse, IUpdateUserRequest,
   IUploadUserAvatarRequest, IUploadUserAvatarResponse,
   IRemoveUserAvatarResponse,
+  IChangePasswordRequest, IChangePasswordResponse,
+  IGetCommentAttachmentsByTodoIdRequest, IGetCommentAttachmentsByTodoIdResponse,
+  IUploadCommentAttachmentRequest, IUploadCommentAttachmentResponse,
+  IRemoveCommentAttachmentRequest, IRemoveCommentAttachmentResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -40,10 +50,12 @@ export interface IHttpClient {
 
 export interface IServices {
   authService: IAuthService;
+  userService: IUserService;
   boardService: IBoardService;
   columnService: IColumnService;
   todoService: ITodoService;
-  userService: IUserService;
+  commentService: ICommentService;
+  commentAttachmentService: ICommentAttachmentService;
 }
 
 export interface IAuthService {
@@ -51,6 +63,14 @@ export interface IAuthService {
   signIn(body: ISignInRequest): Promise<ISignInResponse>;
   logout(): Promise<ILogoutResponse>;
   reset(body: IResetPasswordRequest): Promise<IResetPasswordResponse>;
+  change(body: IChangePasswordRequest): Promise<IChangePasswordResponse>;
+}
+
+export interface IUserService {
+  getMe(): Promise<IGetMeResponse>;
+  update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
+  uploadAvatar(body: IUploadUserAvatarRequest): Promise<IUploadUserAvatarResponse>;
+  removeAvatar(): Promise<IRemoveUserAvatarResponse>;
 }
 
 export interface IBoardService {
@@ -82,9 +102,16 @@ export interface ITodoService {
   duplicate(body: IDuplicateTodoRequest): Promise<IDuplicateTodoResponse>;
 }
 
-export interface IUserService {
-  getMe(): Promise<IGetMeResponse>;
-  update(body: IUpdateUserRequest): Promise<IUpdateUserResponse>;
-  uploadAvatar(body: IUploadUserAvatarRequest): Promise<IUploadUserAvatarResponse>;
-  removeAvatar(): Promise<IRemoveUserAvatarResponse>;
+export interface ICommentService {
+  getAll(): Promise<IGetAllCommentsResponse>;
+  getByTodoId(body: IGetCommentsByTodoIdRequest): Promise<IGetCommentsByTodoIdResponse>;
+  create(body: ICreateCommentRequest): Promise<ICreateCommentResponse>;
+  remove(body: IRemoveCommentRequest): Promise<IRemoveCommentResponse>;
+  update(body: IUpdateCommentRequest): Promise<IUpdateCommentResponse>;
+}
+
+export interface ICommentAttachmentService {
+  getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest): Promise<IGetCommentAttachmentsByTodoIdResponse>;
+  uploadFile(body: IUploadCommentAttachmentRequest): Promise<IUploadCommentAttachmentResponse>;
+  remove(body: IRemoveCommentAttachmentRequest): Promise<IRemoveCommentAttachmentResponse>;
 }

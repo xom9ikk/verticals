@@ -79,6 +79,7 @@ export const Menu: FC<IMenu> = ({
       position={position}
       sourceRef={sourceRef}
       isAbsolute={isAbsolute}
+      style={{ zIndex: 2 }}
     >
       {children}
     </Popup>
@@ -127,7 +128,10 @@ export const Menu: FC<IMenu> = ({
       <button
         ref={sourceRef}
         className={classes.join(' ')}
-        onClick={clickHandler}
+        onClick={(e) => {
+          console.log('===button click', e.nativeEvent);
+          clickHandler(e);
+        }}
         onDoubleClick={(e) => e.stopPropagation()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}

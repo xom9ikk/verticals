@@ -1,33 +1,24 @@
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import { CommentList } from '@comp/CommentList';
 import { CommentForm } from '@comp/CommentForm';
 import { useAutoScroll, ScrollDirection } from '@/use/autoScroll';
-import { IComment, IComments } from '@/types/entities';
-import { getComments } from '@/store/selectors';
+import { useSelector } from 'react-redux';
+import { getActiveTodoId, getCommentsByTodoId } from '@/store/selectors';
 
 interface ICommentsWrapper {
-  todoId: number;
 }
 
-export const Comments: FC<ICommentsWrapper> = ({
-  todoId,
-}) => {
-  const comments = useSelector(getComments);
-  const [filteredComments, setFilteredComments] = useState<IComments>([]);
+export const Comments: FC<ICommentsWrapper> = () => {
+  const activeTodoId = useSelector(getActiveTodoId);
+  const comments = useSelector(getCommentsByTodoId(activeTodoId));
+
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const listRef = useRef<any>(null);
   const { scrollToBottom } = useAutoScroll(
     listRef, ScrollDirection.Bottom, [textAreaHeight, comments.length],
   );
-
-  useEffect(() => {
-    const data = comments.filter((comment: IComment) => comment.todoId === todoId);
-    console.log('filtered comments', data);
-    setFilteredComments(data);
-  }, [todoId, comments]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -36,20 +27,16 @@ export const Comments: FC<ICommentsWrapper> = ({
     return () => {
       clearTimeout(timeout);
     };
-  }, [todoId]);
-
-  useEffect(() => {
-    console.log('change length');
-  }, [comments.length]);
+  }, [activeTodoId]);
 
   return (
     <div className="comments">
       <CommentList
         ref={listRef}
-        data={filteredComments}
+        comments={comments}
       />
       <CommentForm
-        todoId={todoId}
+        todoId={activeTodoId}
         onChangeTextAreaHeight={setTextAreaHeight}
       />
     </div>

@@ -1,26 +1,25 @@
 export interface IFile {
-  id: string;
+  id: number;
   link: string;
   type: string;
   size: string;
   name: string;
 }
 
-export interface IImage {
-  link: string;
-}
+// export interface IImage {
+//   link: string;
+// }
 
 export interface IComment {
-  id: string;
+  id: number;
   userId: number;
-  userAvatar: string;
-  date: number;
   todoId: number;
   text?: string;
-  attachedFiles?: Array<IFile>;
-  likes?: Array<string>;
-  editDate?: Date;
-  replyCommentId?: string;
+  createdAt: number;
+  updatedAt: number | null;
+  replyCommentId: number;
+  // attachedFiles?: Array<IFile>;
+  // likes?: Array<string>;
 }
 
 export type IComments = Array<IComment>;

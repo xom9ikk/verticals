@@ -7,7 +7,7 @@ import {
   IUploadAvatar,
   ISetEmail,
   ISetUsername,
-  ISetPersonalData,
+  ISetPersonalData, ISetAvatar,
 } from '@/types/actions';
 
 enum Type {
@@ -21,6 +21,7 @@ enum Type {
   SET_USERNAME = 'USER/SET_USERNAME',
   SET_EMAIL = 'USER/SET_EMAIL',
   SET_PERSONAL_DATA = 'USER/SET_PERSONAL_DATA',
+  SET_AVATAR = 'USER/SET_AVATAR',
 }
 
 const fetchMe = createAction(Type.FETCH_ME);
@@ -52,6 +53,10 @@ const setEmail = createAction(
   (payload: ISetEmail) => ({ email: payload }),
 );
 const setPersonalData = createAction<ISetPersonalData>(Type.SET_PERSONAL_DATA);
+const setAvatar = createAction(
+  Type.SET_AVATAR,
+  (payload: ISetAvatar) => ({ avatar: payload }),
+);
 
 export const UserActions = {
   Type,
@@ -65,4 +70,5 @@ export const UserActions = {
   setUsername,
   setEmail,
   setPersonalData,
+  setAvatar,
 };

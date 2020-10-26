@@ -1,28 +1,40 @@
-import { IFile, IImage } from '@/types/entities';
+import { IComments } from '@/types/entities';
 
-export interface IAddComment {
+export interface IFetchCommentsByTodoId {
+  todoId: number;
+}
+
+export type ISetComments = IComments;
+
+export interface ICreateComment {
   todoId: number;
   text: string;
-  replyCommentId: string;
-  attachedFiles?: Array<IFile>;
-  attachedImages?: Array<IImage>;
+  replyCommentId?: number;
+  files: FileList | null;
+}
+
+export interface IAddComment {
+  id: number;
+  todoId: number;
+  text: string;
+  replyCommentId?: number;
 }
 
 export interface IRemoveComment {
-  id: string;
+  id: number;
 }
 
 export interface ISwitchCommentLike {
-  id: string;
-  userId: string;
+  id: number;
+  username: string;
 }
 
 export interface IUpdateCommentText {
-  id: string;
+  id: number;
   text: string;
 }
 
 export interface IRemoveCommentFile {
-  id: string;
-  fileId: string;
+  id: number;
+  fileId: number;
 }

@@ -49,6 +49,16 @@ body {
   display: flex;
   flex: 1;
   overflow: hidden !important;
+  transition: filter .5s cubic-bezier(0, 0, 0, 1);
+}
+
+#notification-root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
 }
 
 .container {
@@ -97,9 +107,15 @@ button {
 }
 
 .notification {
+
   &-item {
+    margin: 8px 0 !important;
     border-radius: 8px !important;
-    box-shadow: 3px 8px 18px rgba(0, 0, 0, .22) !important;
+    box-shadow: 3px 2px 18px rgba(0, 0, 0, .22) !important;
+
+    &:nth-child(-n+2) {
+      box-shadow: none !important;
+    }
   }
 
   &-danger {
@@ -116,9 +132,17 @@ button {
     background-color: $primary !important;
 
     & .timer {
-      background-color: lighten($primary, 15) !important;
+      background-color: lighten($primary, 10) !important;
     }
   }
+}
+
+.notification-container-bottom-right {
+  bottom: 0 !important;
+  max-height: 190px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 #tooltip {

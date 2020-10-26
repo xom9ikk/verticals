@@ -6,7 +6,7 @@ import {
   ILogoutResponse,
   IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
-  ISignUpRequest, ISignUpResponse,
+  ISignUpRequest, ISignUpResponse, IChangePasswordRequest, IChangePasswordResponse,
 } from '../types/api';
 
 @injectable()
@@ -33,5 +33,9 @@ export class AuthService implements IAuthService {
 
   reset(body: IResetPasswordRequest) {
     return this.httpClient.post<IResetPasswordResponse>('/auth/reset', body);
+  }
+
+  change(body: IChangePasswordRequest) {
+    return this.httpClient.post<IChangePasswordResponse>('/auth/change-password', body);
   }
 }

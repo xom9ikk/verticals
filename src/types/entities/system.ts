@@ -16,8 +16,8 @@ export interface ISystem {
   query: string;
   language: EnumLanguage;
   activeTodoId: number | null;
-  editCommentId: string;
-  replyCommentId: string;
+  editCommentId: number | null;
+  replyCommentId: number | null;
   isOpenProfile: boolean;
   activeBoardId: number | null;
   activeBoardReadableId: string | null;

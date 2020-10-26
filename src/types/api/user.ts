@@ -17,8 +17,8 @@ export interface IUploadUserAvatarRequest {
   avatarFile: File;
 }
 
-export interface IUploadUserAvatarResponse {
+export type IUploadUserAvatarResponse = IServerResponse<{
   avatar: string;
-}
+}>;
 
 export type IRemoveUserAvatarResponse = IServerResponse;

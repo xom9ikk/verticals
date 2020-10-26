@@ -5,10 +5,10 @@
   display: flex;
   flex-basis: 100%;
   align-items: center;
-  background: $white;
+  background: #f7f7f7;
   transition: box-shadow .3s ease-in-out;
   border-radius: 6px;
-  cursor: pointer;
+cursor: pointer;
   margin: 5px;
   &:hover {
     box-shadow: $primary-light 0 0 0 2px;
@@ -33,14 +33,14 @@
     justify-content: center;
     align-items: center;
     border-radius: inherit;
-    &-info {
-      z-index: 2;
-      display: flex;
-      flex: 1;
-      height: 100%;
-      justify-content: flex-end;
-      padding: 5px 15px 0px;
-    }
+    //&-info {
+    //  z-index: 2;
+    //  display: flex;
+    //  flex: 1;
+    //  height: 100%;
+    //  justify-content: flex-end;
+    //  padding: 5px 15px 0px;
+    //}
   }
   &--image {
     height: 200px;
@@ -50,8 +50,8 @@
     }
   }
   &--compact {
-    flex-basis: 47.5%;
-    //min-height: 200px;
+    max-width: 47%;
+    max-height: 120px;
   }
   &__image {
     position: absolute;
@@ -100,19 +100,18 @@
     }
   }
   &__size {
+    position: absolute;
     color: $text;
     font-size: 12px;
     opacity: 0;
     transition: opacity .3s ease-in-out ;
     &--image {
-      position: absolute;
       bottom: 12px;
       right: 20px;
     }
     &--file {
-      position: absolute;
       bottom: 5px;
-      right: 20px;
+      right: 10px;
     }
   }
 }

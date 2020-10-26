@@ -1,3 +1,60 @@
+.comment-form-attachments {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 10px;
+    max-height: 200px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar-thumb {
+      border: 5px solid $hover-color !important;
+    }
+  }
+  &__inner {
+    flex: 0 0 48%;
+    display: flex;
+    padding: 1px 4px;
+    margin: 5px 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: $white;
+    border-radius: 4px;
+  }
+  &__wrapper {
+    display: flex;
+    flex: 0 0 48%;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 4px;
+  }
+  &__preview {
+    width: 23px;
+    height: 18px;
+    margin-right: 10px;
+    border-radius: 2px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    &--empty {
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      filter: grayscale(1) brightness(1.4);
+    }
+  }
+  &__text {
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
 .comment-form {
   $block: &;
 
@@ -14,32 +71,30 @@
     padding-left: 10px;
     align-items: center;
     max-height: 40px;
-    opacity: 0;
-    height: 0px;
+    height: 0;
     overflow: hidden;
-    transition: height .1s ease-in-out;
+    //transition: height .1s ease-in-out;
     &--opened {
-      height: 40px;
-      opacity: 1;
+      height: 100%;
     }
     &--divider {
-      width: 2px;
+      min-width: 2px;
       background: $primary;
       border-radius: 3px;
-      height: 25px;
+      height: 90%;
+      margin-right: 5px;
     }
     &--name {
       font-size: 15px;
       color: $black;
       font-family: 'Nunito Extra Bold', sans-serif;
       max-height: 40px;
-      padding-left: 10px;
-      margin-left: 5px;
       overflow: hidden;
     }
     &--text {
       font-size: 15px;
       color: $text-light;
+      font-family: 'Nunito Regular', sans-serif;
       padding-left: 10px;
       overflow: hidden;
     }
@@ -50,7 +105,7 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      background: #f9f9f9;
+      background: $hover-color;
       border-radius: 8px;
       padding: 10px 10px 10px 0;
       margin-left: 10px;

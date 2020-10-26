@@ -33,4 +33,11 @@ export interface IResetPasswordRequest {
   email: string;
 }
 
-export type IResetPasswordResponse = IServerResponse<{}>;
+export type IResetPasswordResponse = IServerResponse;
+
+export interface IChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export type IChangePasswordResponse = IServerResponse;

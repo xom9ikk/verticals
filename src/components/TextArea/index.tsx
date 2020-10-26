@@ -21,7 +21,7 @@ interface ITextArea {
 const TextAreaComponent = ({
   className,
   name,
-  value,
+  value = '',
   placeholder,
   onChange,
   onBlur,
