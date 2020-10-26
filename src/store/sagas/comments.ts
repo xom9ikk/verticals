@@ -38,14 +38,10 @@ function* createWorker(action: Action<ICreateCommentRequest>) {
       id: commentId,
     }));
     if (files) {
-      console.log('upload files', commentId, files);
-      for (let i = 0; i < files.length; i += 1) {
-        const file = files[i];
-        yield put(CommentAttachmentsActions.uploadFile({
-          commentId,
-          file,
-        }));
-      }
+      yield put(CommentAttachmentsActions.uploadFiles({
+        commentId,
+        files,
+      }));
     }
     yield call(show, 'Comment', 'Comment added successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {

@@ -152,7 +152,7 @@ export const CommentItem: FC<ICommentItem> = ({
   // );
 
   const memoAttachments = useMemo(() => (
-    <>
+    <div className="comment__attachments">
       {
         attachments
           .sort((file) => (isImage(file.extension) ? -1 : 1))
@@ -176,7 +176,7 @@ export const CommentItem: FC<ICommentItem> = ({
             );
           })
       }
-    </>
+    </div>
   ), [attachments]);
 
   const memoComment = useMemo(() => (

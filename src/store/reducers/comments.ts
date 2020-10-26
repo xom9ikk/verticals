@@ -175,7 +175,7 @@ const initialState: IComments = [];
 // ].map((el) => ({ ...el, id: `comment-${(count += 1).toString()}` }));
 
 export const CommentsReducer = handleActions<IComments, any>({
-  [CommentsActions.Type.SET_COMMENTS]:
+  [CommentsActions.Type.SET_ALL]:
         (state, action) => ([...action.payload]),
   [CommentsActions.Type.ADD]:
       (state, action) => ([...state, {

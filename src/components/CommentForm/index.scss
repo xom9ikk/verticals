@@ -24,8 +24,9 @@
     border-radius: 4px;
   }
   &__wrapper {
-    flex: 0 0 48%;
     display: flex;
+    flex: 0 0 48%;
+    position: relative;
     flex-direction: row;
     align-items: center;
     border-radius: 4px;
@@ -38,6 +39,13 @@
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    z-index: 1;
+    &--empty {
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      filter: grayscale(1) brightness(1.4);
+    }
   }
   &__text {
     max-width: 100px;

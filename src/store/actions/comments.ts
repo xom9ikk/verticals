@@ -12,7 +12,7 @@ import {
 
 enum Type {
   FETCH_BY_TODO_ID = 'COMMENTS/FETCH_BY_TODO_ID',
-  SET_COMMENTS = 'COMMENTS/SET_COMMENTS',
+  SET_ALL = 'COMMENTS/SET_ALL',
   CREATE = 'COMMENTS/CREATE',
   ADD = 'COMMENTS/ADD',
   REMOVE = 'COMMENTS/REMOVE',
@@ -22,7 +22,7 @@ enum Type {
 }
 
 const fetchByTodoId = createAction<IFetchCommentsByTodoId>(Type.FETCH_BY_TODO_ID);
-const setAll = createAction<ISetComments>(Type.SET_COMMENTS);
+const setAll = createAction<ISetComments>(Type.SET_ALL);
 const create = createAction<ICreateComment>(Type.CREATE);
 const add = createAction<IAddComment>(Type.ADD);
 const remove = createAction<IRemoveComment>(Type.REMOVE);

@@ -4,7 +4,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
-import { CommentsActions, SystemActions } from '@/store/actions';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
 import { useFocus } from '@/use/focus';
 import {
@@ -61,12 +61,12 @@ export const CommentForm: FC<ICommentForm> = ({
   const commentForReply = useSelector(getCommentById(replyCommentId));
   const commentForEdit = useSelector(getCommentById(editCommentId));
 
-  const [commentText, setCommentText] = useState<string>();
+  const [commentText, setCommentText] = useState<string>('');
   const [shiftPressed, setShiftPressed] = useState<boolean>();
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
   useEffect(() => {
-    setCommentText(commentForEdit?.text);
+    setCommentText(commentForEdit?.text || '');
   }, [commentForEdit]);
 
   useEffect(() => {
@@ -76,12 +76,17 @@ export const CommentForm: FC<ICommentForm> = ({
   }, [commentForReply, commentForEdit]);
 
   const sendCommentHandler = () => {
-    if (!commentText) return;
     if (editCommentId) {
       dispatch(CommentsActions.updateText({
         id: editCommentId,
         text: commentText,
       }));
+      if (files) {
+        dispatch(CommentAttachmentsActions.uploadFiles({
+          commentId: editCommentId,
+          files,
+        }));
+      }
       dispatch(SystemActions.setEditCommentId(null));
     } else {
       dispatch(CommentsActions.create({
@@ -91,8 +96,8 @@ export const CommentForm: FC<ICommentForm> = ({
         files,
       }));
       dispatch(SystemActions.setReplyCommentId(null));
-      setFiles(null);
     }
+    setFiles(null);
     setCommentText('');
   };
 

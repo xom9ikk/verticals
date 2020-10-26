@@ -18,6 +18,12 @@ export const CommentFormAttachments: FC<ICommentFormAttachments> = ({
               className="comment-form-attachments__inner"
             >
               <div className="comment-form-attachments__wrapper">
+                <img
+                  className="comment-form-attachments__preview--empty"
+                  src="/assets/svg/extension.svg"
+                  alt="extension"
+                />
+
                 <div
                   className="comment-form-attachments__preview"
                   style={{ backgroundImage: `url("${URL.createObjectURL(file)}")` }}

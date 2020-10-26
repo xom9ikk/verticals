@@ -1,4 +1,4 @@
-import { ICommentAttachments } from '@/types/entities';
+import { ICommentAttachment, ICommentAttachments } from '@/types/entities';
 import { IServerResponse } from './response';
 
 export interface IGetCommentAttachmentsByTodoIdRequest {
@@ -14,9 +14,7 @@ export interface IUploadCommentAttachmentRequest {
   file: File;
 }
 
-export type IUploadCommentAttachmentResponse = IServerResponse<{
-  file: string;
-}>;
+export type IUploadCommentAttachmentResponse = IServerResponse<ICommentAttachment>;
 
 export interface IRemoveCommentAttachmentRequest {
   id: number;
