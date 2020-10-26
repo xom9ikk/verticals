@@ -17,3 +17,9 @@ export interface IUploadCommentAttachmentRequest {
 export type IUploadCommentAttachmentResponse = IServerResponse<{
   file: string;
 }>;
+
+export interface IRemoveCommentAttachmentRequest {
+  id: number;
+}
+
+export type IRemoveCommentAttachmentResponse = IServerResponse;

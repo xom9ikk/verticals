@@ -10,6 +10,7 @@ import { CommentFile } from '@comp/CommentFile';
 import { useFormat } from '@/use/format';
 import { Avatar } from '@comp/Avatar';
 import {
+  CommentAttachmentsActions,
   CommentsActions, SystemActions,
 } from '@/store/actions';
 import {
@@ -122,11 +123,9 @@ export const CommentItem: FC<ICommentItem> = ({
   }, [isDoubleClick]);
 
   const removeHandler = (fileId: number) => {
-    dispatch(CommentsActions.removeFile({
-      id,
-      fileId,
+    dispatch(CommentAttachmentsActions.remove({
+      id: fileId,
     }));
-    console.log('remove attached fileId', id);
   };
 
   // const drawList = (list: Array<IFile>) => (

@@ -37,6 +37,7 @@ import {
   IChangePasswordRequest, IChangePasswordResponse,
   IGetCommentAttachmentsByTodoIdRequest, IGetCommentAttachmentsByTodoIdResponse,
   IUploadCommentAttachmentRequest, IUploadCommentAttachmentResponse,
+  IRemoveCommentAttachmentRequest, IRemoveCommentAttachmentResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -112,4 +113,5 @@ export interface ICommentService {
 export interface ICommentAttachmentService {
   getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest): Promise<IGetCommentAttachmentsByTodoIdResponse>;
   uploadFile(body: IUploadCommentAttachmentRequest): Promise<IUploadCommentAttachmentResponse>;
+  remove(body: IRemoveCommentAttachmentRequest): Promise<IRemoveCommentAttachmentResponse>;
 }

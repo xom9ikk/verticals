@@ -3,8 +3,12 @@ import 'reflect-metadata';
 import { TYPES } from '@/inversify.types';
 import { ICommentAttachmentService, IHttpClient } from '@/inversify.interfaces';
 import {
-  IGetCommentAttachmentsByTodoIdRequest, IGetCommentAttachmentsByTodoIdResponse,
-  IUploadCommentAttachmentRequest, IUploadCommentAttachmentResponse,
+  IGetCommentAttachmentsByTodoIdRequest,
+  IGetCommentAttachmentsByTodoIdResponse,
+  IRemoveCommentAttachmentRequest,
+  IRemoveCommentAttachmentResponse,
+  IUploadCommentAttachmentRequest,
+  IUploadCommentAttachmentResponse,
 } from '@/types/api';
 
 @injectable()
@@ -28,5 +32,10 @@ export class CommentAttachmentService implements ICommentAttachmentService {
     return this.httpClient.post<IUploadCommentAttachmentResponse>(`/comment-attachment/${commentId}`, file, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+  }
+
+  remove(body: IRemoveCommentAttachmentRequest) {
+    const { id } = body;
+    return this.httpClient.delete<IRemoveCommentAttachmentResponse>(`/comment-attachment/${id}`);
   }
 }

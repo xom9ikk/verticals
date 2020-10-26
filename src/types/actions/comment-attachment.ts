@@ -10,3 +10,7 @@ export interface IUploadCommentAttachmentsFile {
   commentId: number;
   file: File;
 }
+
+export interface IRemoveCommentAttachment {
+  id: number;
+}

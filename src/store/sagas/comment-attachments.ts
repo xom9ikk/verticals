@@ -8,7 +8,7 @@ import { IServices } from '@/inversify.interfaces';
 import { CommentAttachmentsActions } from '@/store/actions';
 import { Action } from 'redux-actions';
 import {
-  IGetCommentAttachmentsByTodoIdRequest,
+  IGetCommentAttachmentsByTodoIdRequest, IRemoveCommentAttachmentRequest,
   IUploadCommentAttachmentRequest,
 } from '@/types/api';
 
@@ -39,9 +39,19 @@ function* uploadFileWorker(action: Action<IUploadCommentAttachmentRequest>) {
   }
 }
 
+function* removeWorker(action: Action<IRemoveCommentAttachmentRequest>) {
+  try {
+    yield* apply(commentAttachmentService, commentAttachmentService.remove, [action.payload]);
+    yield call(show, 'Attachments', 'Attachment removed successfully', ALERT_TYPES.SUCCESS);
+  } catch (error) {
+    yield call(show, 'Attachments', error, ALERT_TYPES.DANGER);
+  }
+}
+
 export function* watchCommentAttachments() {
   yield* all([
     takeLatest(CommentAttachmentsActions.Type.FETCH_BY_TODO_ID, fetchByTodoIdWorker),
     takeLatest(CommentAttachmentsActions.Type.UPLOAD_FILE, uploadFileWorker),
+    takeLatest(CommentAttachmentsActions.Type.REMOVE, removeWorker),
   ]);
 }
