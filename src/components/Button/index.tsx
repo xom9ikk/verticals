@@ -5,7 +5,7 @@ interface IButton {
   modificator?: 'primary' | 'transparent' | 'danger',
   onClick?: (event: React.SyntheticEvent) => void,
   isMaxWidth?: boolean,
-  style?: Object,
+  style?: React.CSSProperties,
 }
 
 export const Button: FC<IButton> = ({

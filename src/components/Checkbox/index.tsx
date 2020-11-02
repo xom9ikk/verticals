@@ -3,12 +3,18 @@ import React, { FC } from 'react';
 interface ICheckbox {
   isActive: boolean;
   onChange: (event: any) => void;
-  style?: any;
+  size?: 'small' | 'medium' | 'large';
+  style?: React.CSSProperties;
 }
 
-export const Checkbox: FC<ICheckbox> = ({ isActive, onChange, style }) => (
+export const Checkbox: FC<ICheckbox> = ({
+  isActive,
+  onChange,
+  size = 'small',
+  style,
+}) => (
   <div
-    className="checkbox"
+    className={`checkbox checkbox--${size}`}
     style={style}
     onClick={(e) => e.stopPropagation()}
   >

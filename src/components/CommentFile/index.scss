@@ -86,17 +86,27 @@ cursor: pointer;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+  }
+  &__extension {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    align-items: center;
+    position: relative;
+    width: 16px;
+    margin-right: 10px;
     img {
+      position: absolute;
       width: 20px;
       height: 24px;
-      margin-right: 10px;
+      filter: grayscale(1) brightness(1.4);
     }
     span {
-      position: absolute;
+      margin-top: 10px;
       font-size: 7px;
-      left: 3px;
-      top: 10px;
-      color: $text-dark;
+      //left: 50%;
+      //top: 10px;
+      color: $text;
     }
   }
   &__size {

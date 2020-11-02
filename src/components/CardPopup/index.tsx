@@ -7,7 +7,6 @@ import debounce from 'lodash.debounce';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType,
 } from '@/types/entities';
-import { Checkbox } from '@comp/Checkbox';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
 } from '@/store/actions';
@@ -24,6 +23,7 @@ import {
   getTodoById,
   getUsername,
 } from '@/store/selectors';
+import { Bullet } from '@comp/Bullet';
 
 interface ICardPopup {
   columnId: number;
@@ -75,10 +75,7 @@ export const CardPopup: FC<ICardPopup> = ({
 
   const closeHandler = () => forwardTo(`/${username}/${activeBoardReadableId}`);
 
-  const changeStatusHandler = () => {
-    const newStatus = activeTodo!.status === EnumTodoStatus.Done
-      ? EnumTodoStatus.Todo
-      : EnumTodoStatus.Done;
+  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
     dispatch(TodosActions.updateCompleteStatus({
       id: activeTodo!.id,
       status: newStatus,
@@ -158,36 +155,13 @@ export const CardPopup: FC<ICardPopup> = ({
               <div className="card-popup__header">
                 <div className="card-popup__input-container">
                   {
-                    activeTodo.status === EnumTodoStatus.Doing ? (
-                      <div
-                        className="card__overlay-doing"
-                        style={{
-                          marginTop: 6,
-                          width: 9,
-                          height: 18,
-                        }}
-                      />
-                    ) : activeTodo.status === EnumTodoStatus.Canceled ? (
-                      <div
-                        className="card__overlay-canceled"
-                        style={{
-                          marginTop: 6,
-                          width: 18,
-                          height: 18,
-                        }}
-                      />
-                    ) : null
-                  }
-                  {
                     cardType === EnumTodoType.Checkboxes && (
-                    <Checkbox
-                      isActive={activeTodo.status === EnumTodoStatus.Done}
-                      onChange={changeStatusHandler}
-                      style={{
-                        marginTop: 6,
-                        width: 18,
-                        height: 18,
-                      }}
+                    <Bullet
+                      type={cardType}
+                      status={activeTodo.status!}
+                      onChangeStatus={changeStatusHandler}
+                      size="large"
+                      style={{ marginTop: 5 }}
                     />
                     )
                   }

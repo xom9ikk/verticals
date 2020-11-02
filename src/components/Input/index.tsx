@@ -13,7 +13,7 @@ interface IInput {
   value: string | null,
   placeholder?: string,
   label?: string,
-  style?: Object,
+  style?: React.CSSProperties,
   isMultiline?: boolean,
   isLight?: boolean,
   isDisable?: boolean,

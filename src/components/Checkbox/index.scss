@@ -2,8 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 12px;
-  height: 12px;
   background: none;
   padding: 0;
   margin: 0;
@@ -62,5 +60,17 @@
       opacity: 1;
       transition: opacity .1s ease-in-out;
     }
+  }
+  &--small {
+    width: 12px;
+    height: 12px;
+  }
+  &--medium {
+    width: 14px;
+    height: 14px;
+  }
+  &--large {
+    width: 18px;
+    height: 18px;
   }
 }

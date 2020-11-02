@@ -126,17 +126,8 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
-  const changeStatusHandler = (event: any) => {
-    const { shiftKey, metaKey } = event.nativeEvent;
-    if (shiftKey) {
-      saveTodo({ newStatus: EnumTodoStatus.Canceled });
-    } else if (metaKey) {
-      saveTodo({ newStatus: EnumTodoStatus.Doing });
-    } else if (status === EnumTodoStatus.Done) {
-      saveTodo({ newStatus: EnumTodoStatus.Todo });
-    } else {
-      saveTodo({ newStatus: EnumTodoStatus.Done });
-    }
+  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
+    saveTodo({ newStatus });
   };
 
   const doubleClickHandler = () => {

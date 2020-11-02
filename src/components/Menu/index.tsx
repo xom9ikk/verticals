@@ -25,7 +25,7 @@ interface IMenu {
   isInvertColor?: boolean;
   isPrimary?: boolean;
   isColored?: boolean;
-  style?: any;
+  style?: React.CSSProperties;
 }
 
 export const Menu: FC<IMenu> = ({
