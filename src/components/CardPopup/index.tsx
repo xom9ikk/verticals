@@ -46,6 +46,7 @@ export const CardPopup: FC<ICardPopup> = ({
   const [titleValue, setTitleValue] = useState<string>();
   const [descriptionValue, setDescriptionValue] = useState<string>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
+  const [isDrag, setIsDrag] = useState<boolean>(false);
 
   const debounceSave = useCallback(
     debounce((id: number, { newTitle, newDescription } : any) => {
@@ -124,13 +125,43 @@ export const CardPopup: FC<ICardPopup> = ({
       {
         activeTodo && activeTodo.columnId === columnId ? (
           <div
-            className={`card-popup ${activeTodo ? 'card-popup--opened' : ''}`}
+            className={`card-popup
+             ${activeTodo ? 'card-popup--open' : ''}
+             `}
             onClick={(e) => {
               e.stopPropagation();
               dispatch(SystemActions.setIsOpenPopup(false));
             }}
           >
-            <div className={`card-popup__inner ${colorClass}`}>
+            <div
+              className={`card-popup__inner ${colorClass}`}
+              onDragEnter={(event: React.DragEvent) => {
+                console.log('onDragEnter');
+                if (event?.dataTransfer?.items?.length) {
+                  setIsDrag(true);
+                }
+                setIsDrag(true);
+              }}
+            >
+              <div
+                className={`card-popup__overlay 
+              ${!isDrag ? 'card-popup__overlay--hidden' : ''}`}
+                onDragLeave={() => {
+                  console.log('onDragLeave');
+                  setIsDrag(false);
+                }}
+              >
+                <h3>Drop files here</h3>
+                <input
+                  type="file"
+                  accept="*"
+                  multiple
+                  onDrop={(e) => {
+                    console.log('onDrop', e.dataTransfer);
+                    setIsDrag(false);
+                  }}
+                />
+              </div>
               <Loader
                 isOpen={isProgress}
                 style={{
@@ -253,7 +284,14 @@ export const CardPopup: FC<ICardPopup> = ({
       }
     </>
   ),
-  [activeTodo, titleValue, descriptionValue, isProgress, cardType]);
+  [
+    activeTodo,
+    titleValue,
+    descriptionValue,
+    isProgress,
+    cardType,
+    isDrag,
+  ]);
 
   return (
     <>

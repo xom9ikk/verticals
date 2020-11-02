@@ -74,7 +74,7 @@
     height: 0;
     overflow: hidden;
     //transition: height .1s ease-in-out;
-    &--opened {
+    &--open {
       height: 100%;
     }
     &--divider {
@@ -157,7 +157,7 @@
     margin-bottom: 10px;
     transition: bottom .2s ease-in-out, opacity .2s ease-in-out;
 
-    &--opened {
+    &--open {
       opacity: 1;
       bottom: -7px;
     }

@@ -210,6 +210,7 @@ export const Card: FC<ICard> = ({
         type={cardType}
         status={status}
         onChangeStatus={changeStatusHandler}
+        style={{ marginTop: 10 }}
       />
       <div
         className="card__block"

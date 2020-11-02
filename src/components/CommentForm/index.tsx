@@ -153,7 +153,7 @@ export const CommentForm: FC<ICommentForm> = ({
         <div className="comment-form__input-wrapper">
           <div
             className={`comment-form__reply 
-            ${replyCommentId ? 'comment-form__reply--opened' : ''}
+            ${replyCommentId ? 'comment-form__reply--open' : ''}
             `}
           >
             <Menu
@@ -231,7 +231,7 @@ export const CommentForm: FC<ICommentForm> = ({
         </div>
       </div>
       <div className={`comment-form__helper
-        ${isAvailableSend ? 'comment-form__helper--opened' : ''}
+        ${isAvailableSend ? 'comment-form__helper--open' : ''}
         `}
       >
         <button>
