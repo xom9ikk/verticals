@@ -5,9 +5,11 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
-import { SystemActions } from '@/store/actions';
+import { CommentsActions, SystemActions } from '@/store/actions';
 import { useFocus } from '@/use/focus';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types/entities';
+import {
+  EnumColors, EnumTodoStatus, EnumTodoType,
+} from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
@@ -15,6 +17,7 @@ import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
+import { DropZone } from '@comp/DropZone';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -199,6 +202,15 @@ export const Card: FC<ICard> = ({
     [],
   );
 
+  const handleDropFiles = (files: FileList) => {
+    console.log('handleDropFiles', files);
+    dispatch(CommentsActions.create({
+      todoId: id!,
+      text: '',
+      files,
+    }));
+  };
+
   const card = useMemo(() => (
     <div
       className={`card__block-wrapper 
@@ -290,8 +302,12 @@ export const Card: FC<ICard> = ({
         ${invertColor ? 'card__wrapper--invert' : ''}
         `}
       >
-        { card }
-        {
+        <DropZone
+          onOpen={handleDropFiles}
+          size="small"
+        >
+          { card }
+          {
             !isEditable && (
             <CardContextMenu
               id={id}
@@ -309,6 +325,7 @@ export const Card: FC<ICard> = ({
             />
             )
           }
+        </DropZone>
       </div>
     </div>
   );

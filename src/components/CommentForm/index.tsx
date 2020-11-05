@@ -86,6 +86,7 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const sendCommentHandler = () => {
     if (editCommentId) {
+      console.log('1111');
       dispatch(CommentsActions.updateText({
         id: editCommentId,
         text: commentText,
@@ -98,6 +99,7 @@ export const CommentForm: FC<ICommentForm> = ({
       }
       dispatch(SystemActions.setEditCommentId(null));
     } else {
+      console.log('222', files);
       dispatch(CommentsActions.create({
         todoId: todoId!,
         text: commentText,

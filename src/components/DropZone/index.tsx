@@ -2,11 +2,13 @@ import React, { FC, useState } from 'react';
 
 interface IDropZone {
   onOpen: (files: FileList) => void;
+  size?: 'small' | 'large';
   accept?: string;
 }
 
 export const DropZone: FC<IDropZone> = ({
   onOpen,
+  size = 'large',
   accept = '*',
   children,
 }) => {
@@ -24,7 +26,8 @@ export const DropZone: FC<IDropZone> = ({
       {children}
       <div
         className={`drop-zone__overlay 
-        ${!isDrag ? 'drop-zone__overlay--hidden' : ''}`}
+        ${!isDrag ? 'drop-zone__overlay--hidden' : ''}
+        drop-zone__overlay--${size}`}
         onDragLeave={() => {
           setIsDrag(false);
         }}
@@ -34,6 +37,7 @@ export const DropZone: FC<IDropZone> = ({
           type="file"
           accept={accept}
           multiple
+          className="drop-zone__input"
           onDrop={(e) => {
             onOpen(e.dataTransfer.files);
             setIsDrag(false);
