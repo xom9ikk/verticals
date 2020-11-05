@@ -5,7 +5,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType,
+  EnumColors, EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
 } from '@/types/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
@@ -24,6 +24,7 @@ import {
   getUsername,
 } from '@/store/selectors';
 import { Bullet } from '@comp/Bullet';
+import { DropZone } from '@comp/DropZone';
 
 interface ICardPopup {
   columnId: number;
@@ -46,7 +47,6 @@ export const CardPopup: FC<ICardPopup> = ({
   const [titleValue, setTitleValue] = useState<string>();
   const [descriptionValue, setDescriptionValue] = useState<string>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
-  const [isDrag, setIsDrag] = useState<boolean>(false);
 
   const debounceSave = useCallback(
     debounce((id: number, { newTitle, newDescription } : any) => {
@@ -80,6 +80,13 @@ export const CardPopup: FC<ICardPopup> = ({
     dispatch(TodosActions.updateCompleteStatus({
       id: activeTodo!.id,
       status: newStatus,
+    }));
+  };
+
+  const handleDropFiles = (files: FileList) => {
+    dispatch(SystemActions.setDroppedFiles({
+      type: EnumDroppedZoneType.CardPopup,
+      files,
     }));
   };
 
@@ -135,147 +142,123 @@ export const CardPopup: FC<ICardPopup> = ({
           >
             <div
               className={`card-popup__inner ${colorClass}`}
-              onDragEnter={(event: React.DragEvent) => {
-                console.log('onDragEnter');
-                if (event?.dataTransfer?.items?.length) {
-                  setIsDrag(true);
-                }
-                setIsDrag(true);
-              }}
             >
-              <div
-                className={`card-popup__overlay 
-              ${!isDrag ? 'card-popup__overlay--hidden' : ''}`}
-                onDragLeave={() => {
-                  console.log('onDragLeave');
-                  setIsDrag(false);
-                }}
-              >
-                <h3>Drop files here</h3>
-                <input
-                  type="file"
-                  accept="*"
-                  multiple
-                  onDrop={(e) => {
-                    console.log('onDrop', e.dataTransfer);
-                    setIsDrag(false);
+              <DropZone onOpen={handleDropFiles}>
+                <Loader
+                  isOpen={isProgress}
+                  style={{
+                    position: 'absolute',
+                    right: 40,
+                    top: 12,
                   }}
                 />
-              </div>
-              <Loader
-                isOpen={isProgress}
-                style={{
-                  position: 'absolute',
-                  right: 40,
-                  top: 12,
-                }}
-              />
-              <Menu
-                imageSrc="/assets/svg/close.svg"
-                alt="close"
-                imageSize={24}
-                size={30}
-                isShowPopup={false}
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: 10,
-                }}
-                onClick={closeHandler}
-              />
-              <div className="card-popup__header">
-                <div className="card-popup__input-container">
-                  {
-                    cardType === EnumTodoType.Checkboxes && (
-                    <Bullet
-                      type={cardType}
-                      status={activeTodo.status!}
-                      onChangeStatus={changeStatusHandler}
-                      size="large"
-                      style={{ marginTop: 5 }}
-                    />
-                    )
-                  }
-                  <div className="card-popup__textarea-inner">
-                    <TextArea
-                      ref={titleInputRef}
-                      className="card__textarea card-popup__textarea"
-                      placeholder="Card Title"
-                      value={titleValue}
-                      onKeyDown={shiftEnterRestriction}
-                      onChange={(event: any) => changeTextHandler(event, false)}
-                      minRows={1}
-                      maxRows={5}
-                    />
-                    <TextArea
-                      className="card__textarea card-popup__textarea card-popup__textarea--description"
-                      placeholder="Notes"
-                      value={descriptionValue}
-                      onKeyDown={shiftEnterRestriction}
-                      onChange={(event: any) => changeTextHandler(event, true)}
-                      minRows={1}
-                      maxRows={5}
-                    />
+                <Menu
+                  imageSrc="/assets/svg/close.svg"
+                  alt="close"
+                  imageSize={24}
+                  size={30}
+                  isShowPopup={false}
+                  style={{
+                    position: 'absolute',
+                    right: 10,
+                    top: 10,
+                  }}
+                  onClick={closeHandler}
+                />
+                <div className="card-popup__header">
+                  <div className="card-popup__input-container">
+                    {
+                        cardType === EnumTodoType.Checkboxes && (
+                        <Bullet
+                          type={cardType}
+                          status={activeTodo.status!}
+                          onChangeStatus={changeStatusHandler}
+                          size="large"
+                          style={{ marginTop: 5 }}
+                        />
+                        )
+                      }
+                    <div className="card-popup__textarea-inner">
+                      <TextArea
+                        ref={titleInputRef}
+                        className="card__textarea card-popup__textarea"
+                        placeholder="Card Title"
+                        value={titleValue}
+                        onKeyDown={shiftEnterRestriction}
+                        onChange={(event: any) => changeTextHandler(event, false)}
+                        minRows={1}
+                        maxRows={5}
+                      />
+                      <TextArea
+                        className="card__textarea card-popup__textarea card-popup__textarea--description"
+                        placeholder="Notes"
+                        value={descriptionValue}
+                        onKeyDown={shiftEnterRestriction}
+                        onChange={(event: any) => changeTextHandler(event, true)}
+                        minRows={1}
+                        maxRows={5}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="card-popup__toolbar">
-                  <div>
+                  <div className="card-popup__toolbar">
+                    <div>
+                      <Menu
+                        imageSrc="/assets/svg/calendar.svg"
+                        tooltip="Date"
+                        alt="date"
+                        imageSize={24}
+                        size={36}
+                        isShowPopup={false}
+                        isColored
+                      />
+                      <CardContextMenu
+                        id={activeTodo.id}
+                        title={activeTodo.title}
+                        columnId={activeTodo.columnId}
+                        isArchived={activeTodo.isArchived}
+                        isActive={false}
+                        isHover
+                        isNotificationsEnabled={activeTodo.isNotificationsEnabled}
+                        color={activeTodo.color}
+                        status={activeTodo.status}
+                        size={36}
+                        imageSize={24}
+                        isPrimary
+                        isColored
+                        onStartEdit={() => {
+                              titleInputRef.current?.focus();
+                        }}
+                        onChangeColor={(newColor) => {
+                          dispatch(TodosActions.updateColor({
+                            id: activeTodo.id,
+                            color: activeTodo.color !== newColor ? newColor : null,
+                          }));
+                        }}
+                      />
+                    </div>
                     <Menu
-                      imageSrc="/assets/svg/calendar.svg"
-                      tooltip="Date"
-                      alt="date"
+                      imageSrc={`/assets/svg/bell${activeTodo.isNotificationsEnabled ? '-active' : ''}.svg`}
+                      tooltip={`Turn ${activeTodo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
+                      alt="notification"
                       imageSize={24}
                       size={36}
                       isShowPopup={false}
                       isColored
-                    />
-                    <CardContextMenu
-                      id={activeTodo.id}
-                      title={activeTodo.title}
-                      columnId={activeTodo.columnId}
-                      isArchived={activeTodo.isArchived}
-                      isActive={false}
-                      isHover
-                      isNotificationsEnabled={activeTodo.isNotificationsEnabled}
-                      color={activeTodo.color}
-                      status={activeTodo.status}
-                      size={36}
-                      imageSize={24}
-                      isPrimary
-                      isColored
-                      onStartEdit={() => {
-                            titleInputRef.current?.focus();
+                      style={{
+                        justifySelf: 'flex-end',
                       }}
-                      onChangeColor={(newColor) => {
-                        dispatch(TodosActions.updateColor({
+                      onClick={() => {
+                        dispatch(TodosActions.updateNotificationEnabled({
                           id: activeTodo.id,
-                          color: activeTodo.color !== newColor ? newColor : null,
+                          isNotificationsEnabled: !activeTodo.isNotificationsEnabled,
                         }));
                       }}
                     />
                   </div>
-                  <Menu
-                    imageSrc={`/assets/svg/bell${activeTodo.isNotificationsEnabled ? '-active' : ''}.svg`}
-                    tooltip={`Turn ${activeTodo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
-                    alt="notification"
-                    imageSize={24}
-                    size={36}
-                    isShowPopup={false}
-                    isColored
-                    style={{
-                      justifySelf: 'flex-end',
-                    }}
-                    onClick={() => {
-                      dispatch(TodosActions.updateNotificationEnabled({
-                        id: activeTodo.id,
-                        isNotificationsEnabled: !activeTodo.isNotificationsEnabled,
-                      }));
-                    }}
-                  />
+                  <hr />
                 </div>
-                <hr />
-              </div>
-              <Comments />
+                <Comments />
+              </DropZone>
             </div>
           </div>
         ) : (
@@ -290,7 +273,6 @@ export const CardPopup: FC<ICardPopup> = ({
     descriptionValue,
     isProgress,
     cardType,
-    isDrag,
   ]);
 
   return (

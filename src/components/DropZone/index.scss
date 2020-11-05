@@ -1,0 +1,38 @@
+.drop-zone {
+  display: inherit;
+  flex: inherit;
+  flex-direction: inherit;
+  justify-content: inherit;
+  align-items: inherit;
+  height: inherit;
+  width: inherit;
+  position: inherit;
+  &__overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px dashed $primary;
+    border-radius: 13px;
+    z-index: 2;
+    transition: opacity .3s ease-out;
+    &--hidden {
+      z-index: -1;
+      opacity: 0;
+    }
+    h3 {
+      color: $text-dark;
+    }
+    input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  }
+}

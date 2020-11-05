@@ -8,10 +8,11 @@ import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/sto
 import { TextArea } from '@comp/TextArea';
 import { useFocus } from '@/use/focus';
 import {
-  getCommentById, getEditCommentId, getFullName, getReplyCommentId,
+  getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@/store/selectors';
 import { useOpenFiles } from '@/use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+import { EnumDroppedZoneType } from '@/types/entities';
 
 const merge = (...args: Array<FileList | null>) => {
   const dataTransfer = new DataTransfer();
@@ -60,6 +61,7 @@ export const CommentForm: FC<ICommentForm> = ({
   const replyCommentId = useSelector(getReplyCommentId);
   const commentForReply = useSelector(getCommentById(replyCommentId));
   const commentForEdit = useSelector(getCommentById(editCommentId));
+  const droppedFiles = useSelector(getDroppedFiles);
 
   const [commentText, setCommentText] = useState<string>('');
   const [shiftPressed, setShiftPressed] = useState<boolean>();
@@ -68,6 +70,13 @@ export const CommentForm: FC<ICommentForm> = ({
   useEffect(() => {
     setCommentText(commentForEdit?.text || '');
   }, [commentForEdit]);
+
+  useEffect(() => {
+    if (droppedFiles && droppedFiles.type === EnumDroppedZoneType.CardPopup) {
+      const mergedFiles = merge(files, droppedFiles.files);
+      setFiles(mergedFiles);
+    }
+  }, [droppedFiles]);
 
   useEffect(() => {
     if (commentForReply || commentForEdit) {

@@ -1,0 +1,45 @@
+import React, { FC, useState } from 'react';
+
+interface IDropZone {
+  onOpen: (files: FileList) => void;
+  accept?: string;
+}
+
+export const DropZone: FC<IDropZone> = ({
+  onOpen,
+  accept = '*',
+  children,
+}) => {
+  const [isDrag, setIsDrag] = useState<boolean>(false);
+
+  return (
+    <div
+      onDragEnter={(event: React.DragEvent) => {
+        if (event?.dataTransfer?.items?.length) {
+          setIsDrag(true);
+        }
+      }}
+      className="drop-zone"
+    >
+      {children}
+      <div
+        className={`drop-zone__overlay 
+        ${!isDrag ? 'drop-zone__overlay--hidden' : ''}`}
+        onDragLeave={() => {
+          setIsDrag(false);
+        }}
+      >
+        <h3>Drop files here</h3>
+        <input
+          type="file"
+          accept={accept}
+          multiple
+          onDrop={(e) => {
+            onOpen(e.dataTransfer.files);
+            setIsDrag(false);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
