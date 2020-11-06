@@ -1,4 +1,4 @@
-.menu {
+.control-button {
   $block: &;
 
   display: flex;
@@ -7,19 +7,11 @@
   outline: none;
   border: none;
   height: 36px;
+  width: 36px;
   background: none;
   padding: 8px 10px;
   border-radius: 6px;
   transition: background .2s ease-in-out, opacity .2s ease-in-out, width .2s ease-in-out, padding .2s ease-in-out;
-
-  &__icons-container {
-    display: flex;
-    padding-left: 8px;
-    margin-bottom: -15px;
-    flex-wrap: wrap;
-    max-height: 200px;
-    overflow: scroll;
-  }
 
   &--colored {
     img {
@@ -31,22 +23,20 @@
     filter: grayscale(1) brightness(1.4);
   }
 
-  span {
+  &__text {
     font-size: 15px;
     color: transparent;
     padding-left: 10px;
     transition: color .1s ease-in-out;
   }
-
   &:hover {
     background: $primary-light;
-
     img {
       filter: none;
     }
-
-    span {
+    #{$block}__text {
       color: $black !important;
+      filter: none;
     }
   }
 
@@ -55,7 +45,7 @@
   }
 
   &--hover-block {
-    span {
+    #{$block}__text {
       color: $text-light;
     }
   }
@@ -63,12 +53,13 @@
   &--max-width {
     width: 100%;
     justify-content: flex-start;
+    align-items: center;
   }
 
   &--invert {
     &:hover {
       transition: background .2s ease-in-out, opacity .2s ease-in-out, width .2s ease-in-out, padding .2s ease-in-out;
-      background: $sidebar-gradient;
+      background: $sidebar-gradient !important;
     }
   }
 
@@ -83,4 +74,23 @@
       }
     }
   }
+
+  &--textable {
+    img {
+      position: absolute;
+    }
+    #{$block}__text {
+      padding-left: 0;
+      font-size: 9px;
+      color: $primary;
+      filter: grayscale(1) brightness(1.4);
+    }
+    &:hover {
+      #{$block}__text {
+        color: #2688f3 !important;
+        filter: none;
+      }
+    }
+  }
+
 }

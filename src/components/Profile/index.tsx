@@ -2,7 +2,7 @@ import React, { FC, useMemo, useState } from 'react';
 // @ts-ignore
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
-import { MenuButton } from '@comp/MenuButton';
+import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { Avatar } from '@comp/Avatar';
 import { SystemActions } from '@/store/actions';
@@ -115,14 +115,14 @@ export const Profile: FC<IProfile> = ({
         position="bottom"
         isAbsolute={false}
       >
-        <MenuButton
+        <MenuItem
           text="My Profile"
           imageSrc="/assets/svg/menu/my-profile.svg"
           onClick={() => {
             menuButtonClickHandler(EnumMenuActions.OpenProfile);
           }}
         />
-        <MenuButton
+        <MenuItem
           text="Profile Settings"
           imageSrc="/assets/svg/menu/profile-settings.svg"
           onClick={() => {
@@ -130,7 +130,7 @@ export const Profile: FC<IProfile> = ({
           }}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
-        <MenuButton
+        <MenuItem
           text="Add board"
           imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
@@ -144,7 +144,7 @@ export const Profile: FC<IProfile> = ({
             menuButtonClickHandler(EnumMenuActions.CopyLink);
           }}
         >
-          <MenuButton
+          <MenuItem
             text={isCopied ? 'Copied!' : 'Copy link'}
             imageSrc="/assets/svg/menu/copy-link.svg"
           />

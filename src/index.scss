@@ -5,7 +5,6 @@
 @import 'components/Divider';
 @import 'components/Sidebar';
 @import 'components/Toolbar';
-@import 'components/Menu';
 @import 'components/Search';
 @import 'components/BoardList';
 @import 'components/Board';
@@ -16,7 +15,7 @@
 @import 'components/Checkbox';
 @import 'components/CardToolbar';
 @import 'components/Popup';
-@import 'components/MenuButton';
+@import 'components/MenuItem';
 @import 'components/ColorPicker';
 @import 'components/ColorSelector';
 @import 'components/ArchiveContainer';
@@ -35,6 +34,7 @@
 @import 'components/Modal';
 @import 'components/Bullet';
 @import 'components/DropZone';
+@import 'components/ControlButton';
 @import 'layouts/Settings';
 @import 'pages/settings/Profile';
 @import 'pages/settings/Account';

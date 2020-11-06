@@ -8,6 +8,7 @@
   padding: 1px 0;
   &__wrapper {
     display: flex;
+    align-items: center;
     flex: 1;
     padding: 1px 0;
     transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
@@ -86,24 +87,24 @@
   }
   &__block {
     display: flex;
-    padding: 10px 10px 8px 2px;
+    padding: 8px 10px 8px 2px;
     justify-content: center;
     align-items: center;
     flex: 1;
     line-height: 20px;
-    span {
+  }
+  &__title {
       font-size: 15px;
-      margin-top: -4px;
-      margin-left: 10px;
+      margin: 0 5px 0 10px;
       max-height: 440px;
       max-width: $column-width - 100;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
   }
   &__inner {
     display: flex;
     flex: 1;
+    align-items: center;
     &--cross-out {
       text-decoration: line-through;
     }

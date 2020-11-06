@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';
 import { SystemActions } from '@/store/actions';
 import { getIsOpenPopup } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 interface IMenu {
   imageSrc: string;
@@ -88,26 +89,6 @@ export const Menu: FC<IMenu> = ({
   [isOpen, position, sourceRef, isAbsolute, children]);
 
   const button = useMemo(() => {
-    const classes = ['menu'];
-    if (isHide && !isHoverBlock) {
-      classes.push('menu--invisible');
-    }
-    if (isPrimary) {
-      classes.push('menu--primary');
-    }
-    if (isHoverBlock) {
-      classes.push('menu--hover-block');
-    }
-    if (isMaxWidth) {
-      classes.push('menu--max-width');
-    }
-    if (isInvertColor) {
-      classes.push('menu--invert');
-    }
-    if (isColored) {
-      classes.push('menu--colored');
-    }
-
     const clickHandler = (event: SyntheticEvent) => {
       event.stopPropagation();
       onClick?.(event);
@@ -125,29 +106,26 @@ export const Menu: FC<IMenu> = ({
     };
 
     return (
-      <button
+      <ControlButton
         ref={sourceRef}
-        className={classes.join(' ')}
-        onClick={(e) => {
-          console.log('===button click', e.nativeEvent);
-          clickHandler(e);
-        }}
+        imageSrc={imageSrc}
+        alt={alt}
+        imageSize={imageSize}
+        tooltip={tooltip}
+        size={size}
+        style={style}
+        text={text}
+        isHide={isHide}
+        isHoverBlock={isHoverBlock}
+        isMaxWidth={isMaxWidth}
+        isInvertColor={isInvertColor}
+        isPrimary={isPrimary}
+        isColored={isColored}
+        onClick={clickHandler}
         onDoubleClick={(e) => e.stopPropagation()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        style={size ? { height: size, width: size, ...style } : { ...style }}
-        data-for="tooltip"
-        data-tip={tooltip}
-      >
-        <img
-          src={imageSrc}
-          alt={alt}
-          style={{ width: style?.width || imageSize, height: imageSize }}
-        />
-        {
-          text ? (<span>{text}</span>) : null
-        }
-      </button>
+      />
     );
   }, [
     isHide, isHoverBlock, isMaxWidth,

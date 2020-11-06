@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-interface IMenuButton {
+interface IMenuItem {
   text: string;
   imageSrc?: string;
   hintText?: string;
@@ -11,7 +11,7 @@ interface IMenuButton {
   onMouseLeave?: () => void;
 }
 
-export const MenuButton: FC<IMenuButton> = ({
+export const MenuItem: FC<IMenuItem> = ({
   text,
   imageSrc,
   hintText,
@@ -24,29 +24,29 @@ export const MenuButton: FC<IMenuButton> = ({
 }) => (
   <button
     type="button"
-    className="menu-button"
+    className="menu-item"
     onClick={onClick}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-    <div className="menu-button__block">
-      <div className="menu-button__row">
+    <div className="menu-item__block">
+      <div className="menu-item__row">
         {
           imageSrc ? (
             <img
               src={imageSrc}
               alt="ico"
-              className="menu-button__icon"
+              className="menu-item__icon"
             />
           ) : (
-            <span className="menu-button__icon" />
+            <span className="menu-item__icon" />
           )
         }
-        <div className="menu-button__content">
+        <div className="menu-item__content">
           {text}
         </div>
       </div>
-      <div className="menu-button__additional-content">
+      <div className="menu-item__additional-content">
         {children}
       </div>
     </div>
@@ -58,7 +58,7 @@ export const MenuButton: FC<IMenuButton> = ({
         <img
           src={hintImageSrc}
           alt="hint"
-          className={`menu-button__hint-icon ${isColoredHintImage ? 'menu-button__hint-icon--colored' : ''}`}
+          className={`menu-item__hint-icon ${isColoredHintImage ? 'menu-item__hint-icon--colored' : ''}`}
         />
       ) : null
     }

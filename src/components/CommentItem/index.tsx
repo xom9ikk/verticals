@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IComment } from '@/types/entities';
-import { MenuButton } from '@comp/MenuButton';
+import { MenuItem } from '@comp/MenuItem';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
 import { CommentFile } from '@comp/CommentFile';
@@ -270,23 +270,23 @@ export const CommentItem: FC<ICommentItem> = ({
               size={22}
               position="top"
             >
-              <MenuButton
+              <MenuItem
                 text={`${isLikeByMe ? 'Unlike' : 'Like'}`}
                 imageSrc="/assets/svg/like.svg"
                 onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
               />
-              <MenuButton
+              <MenuItem
                 text="Reply"
                 imageSrc="/assets/svg/reply.svg"
                 onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
               />
-              <MenuButton
+              <MenuItem
                 text="Edit"
                 imageSrc="/assets/svg/menu/edit.svg"
                 onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
               />
               <Divider verticalSpacer={7} horizontalSpacer={10} />
-              <MenuButton
+              <MenuItem
                 text="Delete"
                 imageSrc="/assets/svg/menu/remove.svg"
                 onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}

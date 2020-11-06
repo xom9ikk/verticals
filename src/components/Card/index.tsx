@@ -18,6 +18,7 @@ import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
 import { DropZone } from '@comp/DropZone';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -222,7 +223,7 @@ export const Card: FC<ICard> = ({
         type={cardType}
         status={status}
         onChangeStatus={changeStatusHandler}
-        style={{ marginTop: 10 }}
+        style={{ marginTop: 12 }}
       />
       <div
         className="card__block"
@@ -231,46 +232,73 @@ export const Card: FC<ICard> = ({
         onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
       >
         {
-              isEditable ? (
-                <div
-                  className="card__editable-content"
-                >
-                  <TextArea
-                    ref={titleInputRef}
-                    className="card__textarea"
-                    value={titleValue}
-                    placeholder="New Card"
-                    minRows={1}
-                    maxRows={20}
-                    onKeyDown={shiftEnterRestriction}
-                    onKeyDownCapture={(event: any) => keydownHandler(event)}
-                    onChange={(event: any) => changeTextHandler(event, false)}
-                  />
-                  <TextArea
-                    ref={descriptionInputRef}
-                    className="card__textarea card__textarea--description"
-                    value={descriptionValue}
-                    placeholder="Notes"
-                    minRows={1}
-                    maxRows={20}
-                    onKeyDown={shiftEnterRestriction}
-                    onKeyDownCapture={(event: any) => keydownHandler(event)}
-                    onChange={(event: any) => changeTextHandler(event, true)}
-                  />
-                </div>
-              ) : (
-                <div
-                  className={`card__inner 
-                  ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
-                  `}
-                >
-                  <span>
-                    {titleValue}
-                  </span>
-                </div>
-
-              )
-            }
+          isEditable ? (
+            <div
+              className="card__editable-content"
+            >
+              <TextArea
+                ref={titleInputRef}
+                className="card__textarea"
+                value={titleValue}
+                placeholder="New Card"
+                minRows={1}
+                maxRows={20}
+                onKeyDown={shiftEnterRestriction}
+                onKeyDownCapture={(event: any) => keydownHandler(event)}
+                onChange={(event: any) => changeTextHandler(event, false)}
+              />
+              <TextArea
+                ref={descriptionInputRef}
+                className="card__textarea card__textarea--description"
+                value={descriptionValue}
+                placeholder="Notes"
+                minRows={1}
+                maxRows={20}
+                onKeyDown={shiftEnterRestriction}
+                onKeyDownCapture={(event: any) => keydownHandler(event)}
+                onChange={(event: any) => changeTextHandler(event, true)}
+              />
+            </div>
+          ) : (
+            <div
+              className={`card__inner 
+              ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
+              `}
+            >
+              <span className="card__title">
+                {titleValue}
+              </span>
+              <ControlButton
+                imageSrc="/assets/svg/files.svg"
+                tooltip="Show files"
+                alt="files"
+                imageSize={16}
+                size={20}
+                isInvertColor={isActive}
+                isTextable
+              />
+              <ControlButton
+                imageSrc="/assets/svg/images.svg"
+                tooltip="Show gallery"
+                alt="images"
+                imageSize={16}
+                size={20}
+                isInvertColor={isActive}
+                isTextable
+              />
+              <ControlButton
+                imageSrc="/assets/svg/bubble.svg"
+                tooltip="3 comments"
+                alt="bubble"
+                imageSize={16}
+                size={20}
+                isInvertColor={isActive}
+                isTextable
+                text="1"
+              />
+            </div>
+          )
+        }
       </div>
     </div>
   ),
