@@ -60,6 +60,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   color={todo.color}
                   isArchived={todo.isArchived}
                   isNotificationsEnabled={todo.isNotificationsEnabled}
+                  commentsCount={todo.commentsCount}
                   onExitFromEditable={(...rest) => onExitFromEditable(todo.id, ...rest)}
                   isActive={activeTodoId === todo.id}
                 />

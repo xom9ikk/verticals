@@ -11,6 +11,7 @@ export interface ITodo {
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
   belowId?: number;
+  commentsCount: number;
 }
 
 export type ITodos = Array<ITodo>;

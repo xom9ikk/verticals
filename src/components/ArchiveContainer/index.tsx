@@ -54,6 +54,7 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
                         status={todo.status}
                         color={todo.color}
                         isArchived={todo.isArchived}
+                        commentsCount={todo.commentsCount}
                         invertColor
                         onExitFromEditable={
                           (newTitle, newDescription,

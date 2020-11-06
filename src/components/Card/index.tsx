@@ -38,6 +38,7 @@ interface ICard {
   isNotificationsEnabled?: boolean;
   invertColor?: boolean;
   isEditableDefault?: boolean;
+  commentsCount?: number;
   onExitFromEditable?: (
     title?: string,
     description?: string,
@@ -63,6 +64,7 @@ export const Card: FC<ICard> = ({
   isNotificationsEnabled,
   invertColor,
   isEditableDefault,
+  commentsCount,
   onExitFromEditable,
   isActive,
   provided,
@@ -270,7 +272,7 @@ export const Card: FC<ICard> = ({
               </span>
               <ControlButton
                 imageSrc="/assets/svg/files.svg"
-                tooltip="Show files"
+                tooltip="Show Files"
                 alt="files"
                 imageSize={16}
                 size={20}
@@ -279,23 +281,29 @@ export const Card: FC<ICard> = ({
               />
               <ControlButton
                 imageSrc="/assets/svg/images.svg"
-                tooltip="Show gallery"
+                tooltip="Show Gallery"
                 alt="images"
                 imageSize={16}
                 size={20}
                 isInvertColor={isActive}
                 isTextable
               />
-              <ControlButton
-                imageSrc="/assets/svg/bubble.svg"
-                tooltip="3 comments"
-                alt="bubble"
-                imageSize={16}
-                size={20}
-                isInvertColor={isActive}
-                isTextable
-                text="1"
-              />
+              {
+                commentsCount !== undefined
+                && commentsCount > 0
+                && (
+                <ControlButton
+                  imageSrc="/assets/svg/bubble.svg"
+                  tooltip={`${commentsCount} comments`}
+                  alt="bubble"
+                  imageSize={16}
+                  size={20}
+                  isInvertColor={isActive}
+                  isTextable
+                  text={String(commentsCount)}
+                />
+                )
+              }
             </div>
           )
         }
@@ -306,6 +314,7 @@ export const Card: FC<ICard> = ({
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,
+    isActive,
   ]);
 
   // @ts-ignore
