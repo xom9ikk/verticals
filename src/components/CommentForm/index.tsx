@@ -7,40 +7,13 @@ import { Avatar } from '@comp/Avatar';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
 import { useFocus } from '@/use/focus';
+import { useFileList } from '@/use/fileList';
 import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@/store/selectors';
 import { useOpenFiles } from '@/use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@/types/entities';
-
-const merge = (...args: Array<FileList | null>) => {
-  const dataTransfer = new DataTransfer();
-
-  args.forEach((fileList) => {
-    if (fileList !== null) {
-      for (let i = 0; i < fileList.length; i += 1) {
-        dataTransfer.items.add(fileList[i]);
-      }
-    }
-  });
-
-  return dataTransfer.files;
-};
-
-const filter = (fileList: FileList | null, predicate: (file: File, index: number) => boolean) => {
-  const dataTransfer = new DataTransfer();
-
-  if (fileList !== null) {
-    for (let i = 0; i < fileList.length; i += 1) {
-      if (predicate(fileList[i], i)) {
-        dataTransfer.items.add(fileList[i]);
-      }
-    }
-  }
-
-  return dataTransfer.files;
-};
 
 interface ICommentForm {
   todoId: number | null;
@@ -54,6 +27,7 @@ export const CommentForm: FC<ICommentForm> = ({
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const { openFiles } = useOpenFiles();
+  const { merge, filter } = useFileList();
   const commentInputRef = useRef<any>();
 
   const fullName = useSelector(getFullName);
@@ -192,6 +166,7 @@ export const CommentForm: FC<ICommentForm> = ({
             <TextArea
               ref={commentInputRef}
               className="card__textarea comment-form__textarea"
+              style={{ paddingLeft: 10 }}
               placeholder="Add comment or note"
               value={commentText}
               onChange={changeHandler}

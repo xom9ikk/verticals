@@ -20,6 +20,9 @@ import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/stor
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
 import { Menu } from '@comp/Menu';
+import { useFileList } from '@/use/fileList';
+import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+import { useOpenFiles } from '@/use/openFiles';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -77,6 +80,8 @@ export const Card: FC<ICard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { merge, filter } = useFileList();
+  const { openFiles } = useOpenFiles();
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
@@ -90,6 +95,7 @@ export const Card: FC<ICard> = ({
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+  const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
@@ -107,6 +113,15 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
+  const saveAttachments = (attachedFiles: FileList | null) => {
+    dispatch(CommentsActions.create({
+      todoId: id!,
+      text: '',
+      files: attachedFiles,
+    }));
+    setFiles(null);
+  };
+
   const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
@@ -118,6 +133,7 @@ export const Card: FC<ICard> = ({
       // } else {
       saveTodo();
       setIsEditable(false);
+      saveAttachments(files);
       // }
     }
   };
@@ -171,6 +187,7 @@ export const Card: FC<ICard> = ({
     if (isDoubleClicked === false && !isEditableCard && isEditable) {
       setIsEditable(false);
       saveTodo();
+      saveAttachments(files);
       setIsDoubleClicked(undefined);
     }
   }, [isEditableCard]);
@@ -210,13 +227,23 @@ export const Card: FC<ICard> = ({
     [],
   );
 
-  const handleDropFiles = (files: FileList) => {
-    console.log('handleDropFiles', files);
-    dispatch(CommentsActions.create({
-      todoId: id!,
-      text: '',
-      files,
-    }));
+  const handleDropFiles = (droppedFiles: FileList) => {
+    const mergedFiles = merge(files, droppedFiles);
+    if (!isEditable) {
+      saveAttachments(mergedFiles);
+    } else {
+      setFiles(mergedFiles);
+    }
+  };
+
+  const handleUploadFile = async () => {
+    const openedFiles = await openFiles('*', true);
+    console.log('openedFiles', openedFiles);
+    setFiles((prev) => merge(prev, openedFiles));
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setFiles((prev) => filter(prev, (file, i) => i !== index));
   };
 
   const renderIcon = (
@@ -283,6 +310,11 @@ export const Card: FC<ICard> = ({
                 onKeyDownCapture={(event: any) => keydownHandler(event)}
                 onChange={(event: any) => changeTextHandler(event, true)}
               />
+              <CommentFormAttachments
+                files={files}
+                onRemove={handleRemoveFile}
+                isListView
+              />
               <div
                 className="card__editable-container"
               >
@@ -306,6 +338,7 @@ export const Card: FC<ICard> = ({
                     size={20}
                     isShowPopup={false}
                     isColored
+                    onClick={handleUploadFile}
                   />
                 </div>
                 <span>Drop files here</span>
@@ -337,7 +370,7 @@ export const Card: FC<ICard> = ({
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,
-    isActive,
+    isActive, files,
   ]);
 
   // @ts-ignore
