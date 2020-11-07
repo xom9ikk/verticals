@@ -82,8 +82,14 @@ export const ControlButtonComponent = ({
         style={{ width: style?.width || imageSize, height: imageSize }}
       />
       {
-        text ? (<span className="control-button__text">{text}</span>) : null
-      }
+        (text || isTextable) && (
+        <span className="control-button__text">
+          &nbsp;
+          {text}
+          &nbsp;
+        </span>
+        )
+       }
     </button>
   );
 };

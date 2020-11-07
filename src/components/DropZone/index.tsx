@@ -42,6 +42,7 @@ export const DropZone: FC<IDropZone> = ({
             onOpen(e.dataTransfer.files);
             setIsDrag(false);
           }}
+          onClick={(e) => e.stopPropagation()}
         />
       </div>
     </div>

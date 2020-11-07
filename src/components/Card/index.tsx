@@ -19,6 +19,7 @@ import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
+import { Menu } from '@comp/Menu';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -224,16 +225,16 @@ export const Card: FC<ICard> = ({
     tooltip: string,
     text?: string,
   ) => count !== undefined && count > 0 && (
-  <ControlButton
-    imageSrc={`/assets/svg/${name}.svg`}
-    tooltip={tooltip}
-    alt={name}
-    imageSize={16}
-    size={20}
-    isInvertColor={isActive}
-    isTextable
-    text={text}
-  />
+    <ControlButton
+      imageSrc={`/assets/svg/${name}.svg`}
+      tooltip={tooltip}
+      alt={name}
+      imageSize={16}
+      size={20}
+      isInvertColor={isActive}
+      isTextable
+      text={text}
+    />
   );
 
   const card = useMemo(() => (
@@ -241,7 +242,7 @@ export const Card: FC<ICard> = ({
       className={`card__block-wrapper 
           ${isEditable ? 'card__block-wrapper--editable' : ''}
         `}
-      onClick={handleClick}
+      onClick={(e) => !isEditable && handleClick(e)}
     >
       <Bullet
         type={cardType}
@@ -282,6 +283,33 @@ export const Card: FC<ICard> = ({
                 onKeyDownCapture={(event: any) => keydownHandler(event)}
                 onChange={(event: any) => changeTextHandler(event, true)}
               />
+              <div
+                className="card__editable-container"
+              >
+                <div
+                  className="card__editable-controls"
+                >
+                  <Menu
+                    imageSrc="/assets/svg/calendar-dots.svg"
+                    tooltip="Add Date"
+                    alt="date"
+                    imageSize={16}
+                    size={20}
+                    isShowPopup={false}
+                    isColored
+                  />
+                  <Menu
+                    imageSrc="/assets/svg/attach.svg"
+                    tooltip="Attach a file"
+                    alt="file"
+                    imageSize={16}
+                    size={20}
+                    isShowPopup={false}
+                    isColored
+                  />
+                </div>
+                <span>Drop files here</span>
+              </div>
             </div>
           ) : (
             <div
@@ -292,55 +320,13 @@ export const Card: FC<ICard> = ({
               <span className="card__title">
                 {titleValue}
               </span>
-              {renderIcon(attachmentsCount, 'files', 'Show Files')}
-              {renderIcon(imagesCount, 'images', 'Show Gallery')}
-              {renderIcon(commentsCount, 'bubble', `${commentsCount} comments`, String(commentsCount))}
-              {/* { */}
-              {/*  attachmentsCount !== undefined */}
-              {/*  && attachmentsCount > 0 */}
-              {/*    && ( */}
-              {/*      <ControlButton */}
-              {/*        imageSrc="/assets/svg/files.svg" */}
-              {/*        tooltip="Show Files" */}
-              {/*        alt="files" */}
-              {/*        imageSize={16} */}
-              {/*        size={20} */}
-              {/*        isInvertColor={isActive} */}
-              {/*        isTextable */}
-              {/*      /> */}
-              {/*    ) */}
-              {/* } */}
-              {/* { */}
-              {/*  imagesCount !== undefined */}
-              {/*  && imagesCount > 0 */}
-              {/*  && ( */}
-              {/*  <ControlButton */}
-              {/*    imageSrc="/assets/svg/images.svg" */}
-              {/*    tooltip="Show Gallery" */}
-              {/*    alt="images" */}
-              {/*    imageSize={16} */}
-              {/*    size={20} */}
-              {/*    isInvertColor={isActive} */}
-              {/*    isTextable */}
-              {/*  /> */}
-              {/*  ) */}
-              {/* } */}
-              {/* { */}
-              {/*  commentsCount !== undefined */}
-              {/*  && commentsCount > 0 */}
-              {/*  && ( */}
-              {/*  <ControlButton */}
-              {/*    imageSrc="/assets/svg/bubble.svg" */}
-              {/*    tooltip={`${commentsCount} comments`} */}
-              {/*    alt="bubble" */}
-              {/*    imageSize={16} */}
-              {/*    size={20} */}
-              {/*    isInvertColor={isActive} */}
-              {/*    isTextable */}
-              {/*    text={String(commentsCount)} */}
-              {/*  /> */}
-              {/*  ) */}
-              {/* } */}
+              <div
+                className="card__toggle-container"
+              >
+                {renderIcon(attachmentsCount, 'files', 'Show Files')}
+                {renderIcon(imagesCount, 'images', 'Show Gallery')}
+                {renderIcon(commentsCount, 'bubble', `${commentsCount} comments`, String(commentsCount))}
+              </div>
             </div>
           )
         }

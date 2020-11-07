@@ -6,74 +6,99 @@
   align-items: flex-start;
   cursor: grab;
   padding: 1px 0;
+
   &__wrapper {
     display: flex;
-    align-items: center;
     flex: 1;
     padding: 1px 0;
     transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
     border-radius: 6px;
-    &--red {
-      background: rgba(255, 106, 86, 0.3);
-      &:hover {
-        background: rgba(255, 106, 86, 0.15);
-      }
-    }
-    &--yellow {
-      background: rgba(254, 233, 48, 0.3);
-      &:hover {
-        background: rgba(254, 233, 48, 0.15);
-      }
-    }
-    &--green {
-      background: rgba(156, 196, 71, 0.3);
-      &:hover {
-        background: rgba(156, 196, 71, 0.15);
-      }
-    }
-    &--turquoise {
-      background: rgba(50, 218, 188, 0.3);
-      &:hover {
-        background: rgba(50, 218, 188, 0.15);
-      }
-    }
-    &--blue {
-      background: rgba(95, 193, 233, 0.3);
-      &:hover {
-        background: rgba(95, 193, 233, 0.15);
-      }
-    }
-    &--gray {
-      background: rgba(216, 216, 216, 0.3);
-      &:hover {
-        background: rgba(216, 216, 216, 0.15);
-      }
-    }
 
     &:hover {
       background: $hover-color;
     }
+
     &--invert {
       &:hover {
         background: $white;
       }
     }
+
     &--editable {
       //width: $column-width - 27;
-      margin: 3px 3px;
-      padding: 7px;
+      margin: 1px 3px;
+      //padding: 7px;
+      //padding: 0 7px 7px 7px;
       box-shadow: rgba(0, 0, 0, 0.25) 0 2px 6px;
+
       &:hover {
         background: $white;
       }
+
+      #{$block}__block {
+        padding-top: 12px;
+      }
+      #{$block}__block-wrapper {
+        padding: 0 7px;
+      }
     }
+
     &--pressed {
       background: $primary-light !important;
     }
+
     &--dragging {
       background: $primary-light;
-      box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.5),
+      box-shadow: 10px 10px 30px rgba(210, 227, 253, 0.5),
       -10px -10px 30px rgba(210, 227, 253, 0.3);
+    }
+
+    &--red {
+      background: rgba(255, 106, 86, 0.3);
+
+      &:hover {
+        background: rgba(255, 106, 86, 0.15);
+      }
+    }
+
+    &--yellow {
+      background: rgba(254, 233, 48, 0.3);
+
+      &:hover {
+        background: rgba(254, 233, 48, 0.15);
+      }
+    }
+
+    &--green {
+      background: rgba(156, 196, 71, 0.3);
+
+      &:hover {
+        background: rgba(156, 196, 71, 0.15);
+      }
+    }
+
+    &--turquoise {
+      background: rgba(50, 218, 188, 0.3);
+
+      &:hover {
+        background: rgba(50, 218, 188, 0.15);
+      }
+    }
+
+    &--blue {
+      background: rgba(95, 193, 233, 0.3);
+
+      &:hover {
+        background: rgba(95, 193, 233, 0.15);
+      }
+    }
+
+    &--gray {
+      background: rgba(216, 216, 216, 0.3);
+
+      &:hover {
+        background: rgba(216, 216, 216, 0.15);
+      }
     }
   }
 
@@ -81,10 +106,12 @@
     display: flex;
     flex: 1;
     padding-left: 10px;
+
     &--editable {
       padding: 0;
     }
   }
+
   &__block {
     display: flex;
     padding: 8px 10px 8px 2px;
@@ -93,22 +120,30 @@
     flex: 1;
     line-height: 20px;
   }
+
   &__title {
-      font-size: 15px;
-      margin: 0 5px 0 10px;
-      max-height: 440px;
-      max-width: $column-width - 100;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    display: inline;
+    font-size: 15px;
+    margin: 0 5px 0 0;
+    max-height: 440px;
+    max-width: $column-width - 100;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   &__inner {
-    display: flex;
-    flex: 1;
-    align-items: center;
+    display: block;
+    width: 100%;
+    padding-left: 10px;
+    //display: flex;
+    //flex: 1;
+    //align-items: center;
+
     &--cross-out {
       text-decoration: line-through;
     }
   }
+
   &__textarea {
     outline: none;
     border: none;
@@ -116,23 +151,49 @@
     font-family: 'Nunito Regular', sans-serif;
     font-size: 15px;
     margin-top: -6px;
-    margin-left: 10px;
     transition: inherit;
     background: inherit;
     min-height: 20px;
     width: 180px;
+
     &--description {
       font-size: 14px;
       color: $text-dark;
     }
+
     &::placeholder {
       color: $text-light;
     }
+
     &:-ms-input-placeholder {
       color: $text-light;
     }
+
     &::-ms-input-placeholder {
       color: $text-light;
     }
+  }
+
+  &__editable {
+    &-content {
+      padding-left: 8px;
+    }
+    &-container {
+      display: flex;
+      justify-content: space-between;
+      span {
+        font-family: 'Nunito Light', sans-serif;
+        font-size: 14px;
+        color: $text-very-light;
+      }
+    }
+    &-controls {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  &__toggle-container {
+    display: inline-block;
+    transform: translateY(-2px);
   }
 }
