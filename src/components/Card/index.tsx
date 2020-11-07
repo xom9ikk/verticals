@@ -39,6 +39,8 @@ interface ICard {
   invertColor?: boolean;
   isEditableDefault?: boolean;
   commentsCount?: number;
+  imagesCount?: number;
+  attachmentsCount?: number;
   onExitFromEditable?: (
     title?: string,
     description?: string,
@@ -65,6 +67,8 @@ export const Card: FC<ICard> = ({
   invertColor,
   isEditableDefault,
   commentsCount,
+  imagesCount,
+  attachmentsCount,
   onExitFromEditable,
   isActive,
   provided,
@@ -214,6 +218,24 @@ export const Card: FC<ICard> = ({
     }));
   };
 
+  const renderIcon = (
+    count: number | undefined,
+    name: string,
+    tooltip: string,
+    text?: string,
+  ) => count !== undefined && count > 0 && (
+  <ControlButton
+    imageSrc={`/assets/svg/${name}.svg`}
+    tooltip={tooltip}
+    alt={name}
+    imageSize={16}
+    size={20}
+    isInvertColor={isActive}
+    isTextable
+    text={text}
+  />
+  );
+
   const card = useMemo(() => (
     <div
       className={`card__block-wrapper 
@@ -270,40 +292,55 @@ export const Card: FC<ICard> = ({
               <span className="card__title">
                 {titleValue}
               </span>
-              <ControlButton
-                imageSrc="/assets/svg/files.svg"
-                tooltip="Show Files"
-                alt="files"
-                imageSize={16}
-                size={20}
-                isInvertColor={isActive}
-                isTextable
-              />
-              <ControlButton
-                imageSrc="/assets/svg/images.svg"
-                tooltip="Show Gallery"
-                alt="images"
-                imageSize={16}
-                size={20}
-                isInvertColor={isActive}
-                isTextable
-              />
-              {
-                commentsCount !== undefined
-                && commentsCount > 0
-                && (
-                <ControlButton
-                  imageSrc="/assets/svg/bubble.svg"
-                  tooltip={`${commentsCount} comments`}
-                  alt="bubble"
-                  imageSize={16}
-                  size={20}
-                  isInvertColor={isActive}
-                  isTextable
-                  text={String(commentsCount)}
-                />
-                )
-              }
+              {renderIcon(attachmentsCount, 'files', 'Show Files')}
+              {renderIcon(imagesCount, 'images', 'Show Gallery')}
+              {renderIcon(commentsCount, 'bubble', `${commentsCount} comments`, String(commentsCount))}
+              {/* { */}
+              {/*  attachmentsCount !== undefined */}
+              {/*  && attachmentsCount > 0 */}
+              {/*    && ( */}
+              {/*      <ControlButton */}
+              {/*        imageSrc="/assets/svg/files.svg" */}
+              {/*        tooltip="Show Files" */}
+              {/*        alt="files" */}
+              {/*        imageSize={16} */}
+              {/*        size={20} */}
+              {/*        isInvertColor={isActive} */}
+              {/*        isTextable */}
+              {/*      /> */}
+              {/*    ) */}
+              {/* } */}
+              {/* { */}
+              {/*  imagesCount !== undefined */}
+              {/*  && imagesCount > 0 */}
+              {/*  && ( */}
+              {/*  <ControlButton */}
+              {/*    imageSrc="/assets/svg/images.svg" */}
+              {/*    tooltip="Show Gallery" */}
+              {/*    alt="images" */}
+              {/*    imageSize={16} */}
+              {/*    size={20} */}
+              {/*    isInvertColor={isActive} */}
+              {/*    isTextable */}
+              {/*  /> */}
+              {/*  ) */}
+              {/* } */}
+              {/* { */}
+              {/*  commentsCount !== undefined */}
+              {/*  && commentsCount > 0 */}
+              {/*  && ( */}
+              {/*  <ControlButton */}
+              {/*    imageSrc="/assets/svg/bubble.svg" */}
+              {/*    tooltip={`${commentsCount} comments`} */}
+              {/*    alt="bubble" */}
+              {/*    imageSize={16} */}
+              {/*    size={20} */}
+              {/*    isInvertColor={isActive} */}
+              {/*    isTextable */}
+              {/*    text={String(commentsCount)} */}
+              {/*  /> */}
+              {/*  ) */}
+              {/* } */}
             </div>
           )
         }

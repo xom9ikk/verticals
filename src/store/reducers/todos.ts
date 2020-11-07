@@ -794,6 +794,8 @@ export const TodosReducer = handleActions<ITodos, any>({
           position: spliceIndex + 1,
           title: '',
           commentsCount: 0,
+          imagesCount: 0,
+          attachmentsCount: 0,
         });
         const sortedTodos = todosInColumn
           .map((todo: ITodo, index) => ({

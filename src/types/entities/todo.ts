@@ -12,6 +12,8 @@ export interface ITodo {
   isNotificationsEnabled?: boolean;
   belowId?: number;
   commentsCount: number;
+  imagesCount: number;
+  attachmentsCount: number;
 }
 
 export type ITodos = Array<ITodo>;
