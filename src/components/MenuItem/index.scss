@@ -1,4 +1,4 @@
-.menu-button {
+.menu-item {
   outline: none;
   border: none;
   background: none;
@@ -10,54 +10,74 @@
   transition: background .1s ease-in-out;
   font-size: 14px;
   color: $black;
+
+  &__icons-container {
+    display: flex;
+    padding-left: 8px;
+    margin-bottom: -15px;
+    flex-wrap: wrap;
+    max-height: 200px;
+    overflow: scroll;
+  }
+
   &__content {
     //display: flex;
     //width: 100%;
   }
+
   &__additional-content {
     text-align: left;
     padding-left: 30px;
     font-size: 12px;
     color: $text-light;
     line-height: 16px;
+
     span {
-      background: rgba(250,250,250,0.9);
+      background: rgba(250, 250, 250, 0.9);
       border-radius: 5px;
       padding: 2px 5px;
       margin: 3px;
+
       &:first-child {
-        margin-left: 0px;
+        margin-left: 0;
       }
     }
   }
+
   &__icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;
     filter: grayscale(1) brightness(1.4);
   }
+
   &__hint-icon {
     width: 14px;
     height: 14px;
     filter: grayscale(1) brightness(1.4);
+
     &--colored {
       filter: none;
     }
   }
+
   &:hover {
     background: $primary-light;
   }
+
   &__block {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
   }
+
   &__row {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
+
   span {
     color: $text-light;
   }

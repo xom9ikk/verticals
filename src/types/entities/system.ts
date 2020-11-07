@@ -5,6 +5,11 @@ export enum EnumLanguage {
   Spanish,
 }
 
+export enum EnumDroppedZoneType {
+  CardPopup,
+  Card,
+}
+
 export interface ISystem {
   isLoadedBoards: boolean;
   isLoadedColumns: boolean;
@@ -22,4 +27,8 @@ export interface ISystem {
   activeBoardId: number | null;
   activeBoardReadableId: string | null;
   activeTodoReadableId: string | null;
+  droppedFiles: {
+    type: EnumDroppedZoneType;
+    files: FileList;
+  } | null;
 }

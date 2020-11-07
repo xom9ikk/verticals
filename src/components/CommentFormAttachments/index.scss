@@ -1,18 +1,19 @@
 .comment-form-attachments {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-left: 10px;
-    max-height: 200px;
-    overflow-y: scroll;
+  $block: &;
 
-    &::-webkit-scrollbar-thumb {
-      border: 5px solid $hover-color !important;
-    }
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 10px;
+  max-height: 200px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar-thumb {
+    border: 5px solid $hover-color !important;
   }
-  &__inner {
+
+  &__item {
     flex: 0 0 48%;
     display: flex;
     padding: 1px 4px;
@@ -23,13 +24,16 @@
     background: $white;
     border-radius: 4px;
   }
+
   &__wrapper {
-    flex: 0 0 48%;
     display: flex;
+    flex: 0 0 48%;
+    position: relative;
     flex-direction: row;
     align-items: center;
     border-radius: 4px;
   }
+
   &__preview {
     width: 23px;
     height: 18px;
@@ -37,133 +41,47 @@
     border-radius: 2px;
     background-size: cover;
     background-position: center center;
-    background-image: url('https://dpqbarxjhc74k.cloudfront.net/uploads/image/19717/eePAvfcEjUkyyQKqJ5L8sq3k.jpg');
     background-repeat: no-repeat;
-  }
-}
+    z-index: 1;
 
-.comment-form {
-  $block: &;
-
-  display: flex;
-  flex-direction: column;
-  padding: 5px 0;
-
-  &__wrapper {
-    display: flex;
+    &--empty {
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      filter: grayscale(1) brightness(1.4);
+    }
   }
 
-  &__reply {
-    display: flex;
-    padding-left: 10px;
-    align-items: center;
-    max-height: 40px;
-    height: 0;
+  &__text {
+    max-width: 100px;
     overflow: hidden;
-    //transition: height .1s ease-in-out;
-    &--opened {
-      height: 100%;
-    }
-    &--divider {
-      min-width: 2px;
-      background: $primary;
-      border-radius: 3px;
-      height: 90%;
-      margin-right: 5px;
-    }
-    &--name {
-      font-size: 15px;
-      color: $black;
-      font-family: 'Nunito Extra Bold', sans-serif;
-      max-height: 40px;
-      overflow: hidden;
-    }
-    &--text {
-      font-size: 15px;
-      color: $text-light;
-      font-family: 'Nunito Regular', sans-serif;
-      padding-left: 10px;
-      overflow: hidden;
-    }
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  &__input {
-    &-wrapper {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      background: $hover-color;
-      border-radius: 8px;
-      padding: 10px 10px 10px 0;
-      margin-left: 10px;
-      transition: box-shadow .2s ease-in-out;
+  &--list-view {
+    border: 2px dashed $primary-light;
+    border-radius: 4px;
+    padding-left: 0;
+    flex: 1;
+    flex-direction: column;
+    flex-wrap: unset;
+    overflow-y: auto;
+    //#{$block}__item:not(:last-child) {
+    //  border-bottom: 2px dashed $primary-light;
+    //}
 
-      &:hover, &:focus-within {
-        box-shadow: $primary-light 0 0 0 2px;
-      }
-    }
-    &-inner {
-      display: flex;
-      align-items: center;
-    }
-  }
-
-  &__textarea {
-    width: 75%;
-    min-height: 27px;
-    height: 27px;
-    max-height: 300px;
-    margin-top: 0;
-  }
-
-  &__controls {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-self: flex-end;
-    align-items: center;
-    width: 25%;
-    height: 30px;
-
-    button {
-      margin: 0 2px;
-    }
-  }
-
-  &__helper {
-    position: absolute;
-    bottom: -10px;
-    right: 20px;
-    opacity: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    color: $text-light;
-    font-size: 12px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    transition: bottom .2s ease-in-out, opacity .2s ease-in-out;
-
-    &--opened {
-      opacity: 1;
-      bottom: -7px;
+    &::-webkit-scrollbar-thumb {
+      border: 5px solid $white !important;
     }
 
-    button {
-      outline: none;
-      background: none;
-      border: none;
-      margin-right: 10px;
-      color: $text-light;
-      font-size: 12px;
-      text-decoration: underline;
-      cursor: pointer;
-      padding: 0;
-      transition: opacity .2s ease-in-out;
-
-      &:hover {
-        opacity: 0.75;
-      }
+    #{$block}__item {
+      flex: 0 0 100%;
+      border-radius: 0;
+      margin: 0;
+    }
+    #{$block}__text {
+      max-width: 145px;
     }
   }
 }

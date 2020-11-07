@@ -5,9 +5,11 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
-import { SystemActions } from '@/store/actions';
+import { CommentsActions, SystemActions } from '@/store/actions';
 import { useFocus } from '@/use/focus';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '@/types/entities';
+import {
+  EnumColors, EnumTodoStatus, EnumTodoType,
+} from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
@@ -15,6 +17,12 @@ import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
+import { DropZone } from '@comp/DropZone';
+import { ControlButton } from '@comp/ControlButton';
+import { Menu } from '@comp/Menu';
+import { useFileList } from '@/use/fileList';
+import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+import { useOpenFiles } from '@/use/openFiles';
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -34,6 +42,9 @@ interface ICard {
   isNotificationsEnabled?: boolean;
   invertColor?: boolean;
   isEditableDefault?: boolean;
+  commentsCount?: number;
+  imagesCount?: number;
+  attachmentsCount?: number;
   onExitFromEditable?: (
     title?: string,
     description?: string,
@@ -59,6 +70,9 @@ export const Card: FC<ICard> = ({
   isNotificationsEnabled,
   invertColor,
   isEditableDefault,
+  commentsCount,
+  imagesCount,
+  attachmentsCount,
   onExitFromEditable,
   isActive,
   provided,
@@ -66,6 +80,8 @@ export const Card: FC<ICard> = ({
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
+  const { merge, filter } = useFileList();
+  const { openFiles } = useOpenFiles();
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
@@ -79,6 +95,7 @@ export const Card: FC<ICard> = ({
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+  const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
@@ -96,6 +113,15 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
+  const saveAttachments = (attachedFiles: FileList | null) => {
+    dispatch(CommentsActions.create({
+      todoId: id!,
+      text: '',
+      files: attachedFiles,
+    }));
+    setFiles(null);
+  };
+
   const keydownHandler = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
@@ -107,6 +133,7 @@ export const Card: FC<ICard> = ({
       // } else {
       saveTodo();
       setIsEditable(false);
+      saveAttachments(files);
       // }
     }
   };
@@ -126,17 +153,8 @@ export const Card: FC<ICard> = ({
     setIsHover(false);
   };
 
-  const changeStatusHandler = (event: any) => {
-    const { shiftKey, metaKey } = event.nativeEvent;
-    if (shiftKey) {
-      saveTodo({ newStatus: EnumTodoStatus.Canceled });
-    } else if (metaKey) {
-      saveTodo({ newStatus: EnumTodoStatus.Doing });
-    } else if (status === EnumTodoStatus.Done) {
-      saveTodo({ newStatus: EnumTodoStatus.Todo });
-    } else {
-      saveTodo({ newStatus: EnumTodoStatus.Done });
-    }
+  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
+    saveTodo({ newStatus });
   };
 
   const doubleClickHandler = () => {
@@ -169,6 +187,7 @@ export const Card: FC<ICard> = ({
     if (isDoubleClicked === false && !isEditableCard && isEditable) {
       setIsEditable(false);
       saveTodo();
+      saveAttachments(files);
       setIsDoubleClicked(undefined);
     }
   }, [isEditableCard]);
@@ -208,17 +227,55 @@ export const Card: FC<ICard> = ({
     [],
   );
 
+  const handleDropFiles = (droppedFiles: FileList) => {
+    const mergedFiles = merge(files, droppedFiles);
+    if (!isEditable) {
+      saveAttachments(mergedFiles);
+    } else {
+      setFiles(mergedFiles);
+    }
+  };
+
+  const handleUploadFile = async () => {
+    const openedFiles = await openFiles('*', true);
+    console.log('openedFiles', openedFiles);
+    setFiles((prev) => merge(prev, openedFiles));
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setFiles((prev) => filter(prev, (file, i) => i !== index));
+  };
+
+  const renderIcon = (
+    count: number | undefined,
+    name: string,
+    tooltip: string,
+    text?: string,
+  ) => count !== undefined && count > 0 && (
+    <ControlButton
+      imageSrc={`/assets/svg/${name}.svg`}
+      tooltip={tooltip}
+      alt={name}
+      imageSize={16}
+      size={20}
+      isInvertColor={isActive}
+      isTextable
+      text={text}
+    />
+  );
+
   const card = useMemo(() => (
     <div
       className={`card__block-wrapper 
           ${isEditable ? 'card__block-wrapper--editable' : ''}
         `}
-      onClick={handleClick}
+      onClick={(e) => !isEditable && handleClick(e)}
     >
       <Bullet
         type={cardType}
         status={status}
         onChangeStatus={changeStatusHandler}
+        style={{ marginTop: 12 }}
       />
       <div
         className="card__block"
@@ -227,46 +284,85 @@ export const Card: FC<ICard> = ({
         onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
       >
         {
-              isEditable ? (
+          isEditable ? (
+            <div
+              className="card__editable-content"
+            >
+              <TextArea
+                ref={titleInputRef}
+                className="card__textarea"
+                value={titleValue}
+                placeholder="New Card"
+                minRows={1}
+                maxRows={20}
+                onKeyDown={shiftEnterRestriction}
+                onKeyDownCapture={(event: any) => keydownHandler(event)}
+                onChange={(event: any) => changeTextHandler(event, false)}
+              />
+              <TextArea
+                ref={descriptionInputRef}
+                className="card__textarea card__textarea--description"
+                value={descriptionValue}
+                placeholder="Notes"
+                minRows={1}
+                maxRows={20}
+                onKeyDown={shiftEnterRestriction}
+                onKeyDownCapture={(event: any) => keydownHandler(event)}
+                onChange={(event: any) => changeTextHandler(event, true)}
+              />
+              <CommentFormAttachments
+                files={files}
+                onRemove={handleRemoveFile}
+                isListView
+              />
+              <div
+                className="card__editable-container"
+              >
                 <div
-                  className="card__editable-content"
+                  className="card__editable-controls"
                 >
-                  <TextArea
-                    ref={titleInputRef}
-                    className="card__textarea"
-                    value={titleValue}
-                    placeholder="New Card"
-                    minRows={1}
-                    maxRows={20}
-                    onKeyDown={shiftEnterRestriction}
-                    onKeyDownCapture={(event: any) => keydownHandler(event)}
-                    onChange={(event: any) => changeTextHandler(event, false)}
+                  <Menu
+                    imageSrc="/assets/svg/calendar-dots.svg"
+                    tooltip="Add Date"
+                    alt="date"
+                    imageSize={16}
+                    size={20}
+                    isShowPopup={false}
+                    isColored
                   />
-                  <TextArea
-                    ref={descriptionInputRef}
-                    className="card__textarea card__textarea--description"
-                    value={descriptionValue}
-                    placeholder="Notes"
-                    minRows={1}
-                    maxRows={20}
-                    onKeyDown={shiftEnterRestriction}
-                    onKeyDownCapture={(event: any) => keydownHandler(event)}
-                    onChange={(event: any) => changeTextHandler(event, true)}
+                  <Menu
+                    imageSrc="/assets/svg/attach.svg"
+                    tooltip="Attach a file"
+                    alt="file"
+                    imageSize={16}
+                    size={20}
+                    isShowPopup={false}
+                    isColored
+                    onClick={handleUploadFile}
                   />
                 </div>
-              ) : (
-                <div
-                  className={`card__inner 
-                  ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
-                  `}
-                >
-                  <span>
-                    {titleValue}
-                  </span>
-                </div>
-
-              )
-            }
+                <span>Drop files here</span>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={`card__inner 
+              ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
+              `}
+            >
+              <span className="card__title">
+                {titleValue}
+              </span>
+              <div
+                className="card__toggle-container"
+              >
+                {renderIcon(attachmentsCount, 'files', 'Show Files')}
+                {renderIcon(imagesCount, 'images', 'Show Gallery')}
+                {renderIcon(commentsCount, 'bubble', `${commentsCount} comments`, String(commentsCount))}
+              </div>
+            </div>
+          )
+        }
       </div>
     </div>
   ),
@@ -274,6 +370,7 @@ export const Card: FC<ICard> = ({
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,
+    isActive, files,
   ]);
 
   // @ts-ignore
@@ -298,8 +395,12 @@ export const Card: FC<ICard> = ({
         ${invertColor ? 'card__wrapper--invert' : ''}
         `}
       >
-        { card }
-        {
+        <DropZone
+          onOpen={handleDropFiles}
+          size="small"
+        >
+          { card }
+          {
             !isEditable && (
             <CardContextMenu
               id={id}
@@ -317,6 +418,7 @@ export const Card: FC<ICard> = ({
             />
             )
           }
+        </DropZone>
       </div>
     </div>
   );

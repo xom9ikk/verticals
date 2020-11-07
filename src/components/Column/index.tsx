@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
 import { Card } from '@comp/Card';
 import { CardToolbar } from '@comp/CardToolbar';
-import { MenuButton } from '@comp/MenuButton';
+import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import {
   ColumnsActions, SystemActions, TodosActions,
@@ -351,35 +351,35 @@ export const Column: FC<IColumn> = ({
       position="bottom"
     >
       <ColorPicker onPick={colorPickHandler} activeColor={color} />
-      <MenuButton
+      <MenuItem
         text="Edit column"
         imageSrc="/assets/svg/menu/edit.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.EditColumn)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <MenuButton
+      <MenuItem
         text="Duplicate"
         imageSrc="/assets/svg/menu/duplicate.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.Duplicate)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <MenuButton
+      <MenuItem
         text="Add card"
         imageSrc="/assets/svg/menu/add-card.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddCard)}
       />
-      <MenuButton
+      <MenuItem
         text="Add heading"
         imageSrc="/assets/svg/menu/add-heading.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddHeading)}
       />
-      <MenuButton
+      <MenuItem
         text="Add column after"
         imageSrc="/assets/svg/menu/add-column.svg"
         onClick={() => menuButtonClickHandler(EnumMenuActions.AddColumnAfter)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <MenuButton
+      <MenuItem
         text="Delete"
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"

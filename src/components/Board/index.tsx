@@ -4,7 +4,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { Menu } from '@comp/Menu';
-import { MenuButton } from '@comp/MenuButton';
+import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { ColorPicker } from '@comp/ColorPicker';
 import { Submenu } from '@comp/Submenu';
@@ -26,7 +26,7 @@ const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'a
   'preferences', 'preferences-2', 'profile', 'profiles', 'raspberry', 'restart', 'restart-2', 'rocket', 'scissors',
   'search', 'share-link', 'shortcut', 'shrimp', 'smile-1', 'smile-10', 'smile-11', 'smile-12', 'smile-13', 'smile-14',
   'smile-2', 'smile-3', 'smile-4', 'smile-5', 'smile-6', 'smile-7', 'smile-8', 'smile-9', 'sound-off',
-  'sound-on', 'stop', 'tick', 'tick-2', 'timer', 'usd', 'wallet', 'trash', 'fire', 'star', 'twitch', 'youtube',
+  'sound-on', 'stop', 'tick', 'tick-2', 'timer', 'usd', 'wallet', 'trash', 'fire', 'twitch', 'youtube',
   'github', 'linkedin', 'twitter', 'facebook', 'instagram', 'snap', 'tik-tok'];
 
 export interface IExitFromEditable {
@@ -259,7 +259,7 @@ export const Board: FC<IBoard> = ({
             isInvertColor={isActive}
           >
             <ColorPicker onPick={colorPickHandler} activeColor={color} />
-            <MenuButton
+            <MenuItem
               text="Edit board"
               imageSrc="/assets/svg/menu/edit.svg"
               hintText="E"
@@ -270,35 +270,35 @@ export const Board: FC<IBoard> = ({
               text="Card style"
               imageSrc="/assets/svg/menu/rect.svg"
             >
-              <MenuButton
+              <MenuItem
                 text="Checkboxes"
                 imageSrc="/assets/svg/menu/square.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
                 )}
               />
-              <MenuButton
+              <MenuItem
                 text="Arrows"
                 imageSrc="/assets/svg/menu/arrow.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Arrows,
                 )}
               />
-              <MenuButton
+              <MenuItem
                 text="Dots"
                 imageSrc="/assets/svg/menu/circle.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Dots,
                 )}
               />
-              <MenuButton
+              <MenuItem
                 text="Dashes"
                 imageSrc="/assets/svg/menu/dash.svg"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Dashes,
                 )}
               />
-              <MenuButton
+              <MenuItem
                 text="Nothing"
                 onClick={() => menuButtonClickHandler(
                   EnumMenuActions.CardStyle, EnumTodoType.Nothing,
@@ -309,7 +309,7 @@ export const Board: FC<IBoard> = ({
               text="Icon"
               imageSrc="/assets/svg/menu/icon.svg"
             >
-              <div className="menu__icons-container">
+              <div className="menu-item__icons-container">
                 {
                 icons.map((filename) => {
                   const link = `/assets/svg/board/${filename}.svg`;
@@ -331,7 +331,7 @@ export const Board: FC<IBoard> = ({
               }
               </div>
             </Submenu>
-            <MenuButton
+            <MenuItem
               text="Reverse column order"
               imageSrc="/assets/svg/menu/reverse.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.ReverseColumnOrder)}
@@ -342,19 +342,19 @@ export const Board: FC<IBoard> = ({
                 menuButtonClickHandler(EnumMenuActions.CopyLink);
               }}
             >
-              <MenuButton
+              <MenuItem
                 text={isCopied ? 'Copied!' : 'Copy link'}
                 imageSrc="/assets/svg/menu/copy-link.svg"
               />
             </CopyToClipboard>
             <Divider verticalSpacer={7} horizontalSpacer={10} />
-            <MenuButton
+            <MenuItem
               text="Add board below"
               imageSrc="/assets/svg/menu/add-board.svg"
               onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
-            <MenuButton
+            <MenuItem
               text="Delete"
               imageSrc="/assets/svg/menu/remove.svg"
               hintText="⌫"

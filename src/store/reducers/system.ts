@@ -19,6 +19,7 @@ const initialState = {
   activeBoardId: null,
   activeBoardReadableId: null,
   activeTodoReadableId: null,
+  droppedFiles: null,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -60,4 +61,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
         ...state,
         activeTodoReadableId: action.payload.activeTodoReadableId,
       }),
+  [SystemActions.Type.SET_DROPPED_FILES]:
+      (state, action) => ({ ...state, droppedFiles: action.payload.droppedFiles }),
 }, initialState);

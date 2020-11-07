@@ -20,7 +20,7 @@ interface ISyncInput {
   touched?: boolean,
   placeholder?: string,
   label?: string,
-  style?: Object,
+  style?: React.CSSProperties,
   isMultiline?: boolean,
   isLight?: boolean,
 }

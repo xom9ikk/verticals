@@ -9,7 +9,7 @@ interface IPopup {
   isAbsolute: boolean
   sourceRef: MutableRefObject<any>
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
-  style?: any;
+  style?: React.CSSProperties;
 }
 
 interface ICoordinates {

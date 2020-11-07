@@ -1,0 +1,46 @@
+.bullet {
+  &__image {
+    height: 16px;
+    width: 16px;
+    align-self: center;
+    margin-left: -4px;
+  }
+  &__overlay {
+    position: relative;
+    &--small {
+      width: 12px;
+      height: 12px;
+    }
+    &--medium {
+      width: 14px;
+      height: 14px;
+    }
+    &--large {
+      width: 18px;
+      height: 18px;
+    }
+    &--doing {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+      background: $primary;
+      z-index: 1;
+      transition: background .1s ease-in-out;
+    }
+    &--canceled {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 3px;
+      background-color: $primary;
+      background-size: 87%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-image: url("/assets/svg/cross.svg");
+      z-index: 1;
+      transition: background .1s ease-in-out;
+    }
+  }
+}

@@ -16,3 +16,4 @@ export const getIsOpenProfile = (state: IRootState) => state.system.isOpenProfil
 export const getActiveBoardId = (state: IRootState) => state.system.activeBoardId;
 export const getActiveBoardReadableId = (state: IRootState) => state.system.activeBoardReadableId;
 export const getActiveTodoReadableId = (state: IRootState) => state.system.activeTodoReadableId;
+export const getDroppedFiles = (state: IRootState) => state.system.droppedFiles;

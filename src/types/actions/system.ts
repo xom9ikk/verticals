@@ -1,4 +1,4 @@
-import { EnumLanguage } from '@/types/entities';
+import { EnumDroppedZoneType, EnumLanguage } from '@/types/entities';
 
 export type ISetSystemIsLoadedBoards = boolean;
 export type ISetSystemIsLoadedColumns = boolean;
@@ -16,3 +16,7 @@ export type ISetSystemIsOpenProfile = boolean;
 export type ISetSystemActiveBoardId = number | null;
 export type ISetSystemActiveBoardReadableId = string | null;
 export type ISetSystemActiveTodoReadableId = string | null;
+export interface ISetSystemDroppedFiles {
+  type: EnumDroppedZoneType;
+  files: FileList;
+}

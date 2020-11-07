@@ -2,7 +2,7 @@ import React, { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
-import { MenuButton } from '@comp/MenuButton';
+import { MenuItem } from '@comp/MenuItem';
 import { Submenu } from '@comp/Submenu';
 import { EnumColors, EnumTodoStatus } from '@/types/entities';
 import { Divider } from '@comp/Divider';
@@ -163,17 +163,17 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
             onPick={(newColor) => menuButtonClickHandler(EnumCardActions.ChangeColor, newColor)}
             activeColor={color}
           />
-          <MenuButton
+          <MenuItem
             text="Edit card"
             imageSrc="/assets/svg/menu/edit.svg"
             onClick={() => menuButtonClickHandler(EnumCardActions.EditCard)}
           />
-          <MenuButton
+          <MenuItem
             text="Attach file"
             imageSrc="/assets/svg/menu/attach.svg"
             onClick={() => menuButtonClickHandler(EnumCardActions.AttachFile)}
           />
-          <MenuButton
+          <MenuItem
             text="Add date"
             imageSrc="/assets/svg/menu/add-date.svg"
             onClick={() => menuButtonClickHandler(EnumCardActions.AddDate)}
@@ -182,7 +182,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
             text="Complete"
             imageSrc="/assets/svg/menu/complete.svg"
           >
-            <MenuButton
+            <MenuItem
               text="Mark as to do"
               imageSrc="/assets/svg/menu/rounded-square.svg"
               hintImageSrc={`${status === EnumTodoStatus.Todo ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -191,7 +191,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                 EnumCardActions.CompleteStatus, EnumTodoStatus.Todo,
               )}
             />
-            <MenuButton
+            <MenuItem
               text="Mark as doing"
               imageSrc="/assets/svg/menu/rounded-square-half-filled.svg"
               hintImageSrc={`${status === EnumTodoStatus.Doing ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -204,8 +204,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
               +
               <span>Click</span>
               on a checkbox to mark as doing
-            </MenuButton>
-            <MenuButton
+            </MenuItem>
+            <MenuItem
               text="Mark as done"
               imageSrc="/assets/svg/menu/rounded-square-check.svg"
               hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -214,7 +214,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                 EnumCardActions.CompleteStatus, EnumTodoStatus.Done,
               )}
             />
-            <MenuButton
+            <MenuItem
               text="Mark as canceled"
               imageSrc="/assets/svg/menu/rounded-square-canceled.svg"
               hintImageSrc={`${status === EnumTodoStatus.Canceled ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -227,10 +227,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
               +
               <span>Click</span>
               on a checkbox to mark as canceled
-            </MenuButton>
+            </MenuItem>
           </Submenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <MenuButton
+          <MenuItem
             text="Notifications"
             imageSrc="/assets/svg/menu/notifications.svg"
             hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -243,29 +243,29 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
               menuButtonClickHandler(EnumCardActions.CopyLink);
             }}
           >
-            <MenuButton
+            <MenuItem
               text={isCopied ? 'Copied!' : 'Copy link'}
               imageSrc="/assets/svg/menu/copy-link.svg"
             />
           </CopyToClipboard>
-          <MenuButton
+          <MenuItem
             text="Duplicate"
             imageSrc="/assets/svg/menu/duplicate.svg"
             onClick={() => menuButtonClickHandler(EnumCardActions.Duplicate)}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <MenuButton
+          <MenuItem
             text="Add card below"
             imageSrc="/assets/svg/menu/add-card.svg"
             onClick={() => menuButtonClickHandler(EnumCardActions.AddCardBelow)}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <MenuButton
+          <MenuItem
             text={isArchived ? 'Unarchive' : 'Archive'}
             imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
             onClick={() => menuButtonClickHandler(EnumCardActions.Archive)}
           />
-          <MenuButton
+          <MenuItem
             text="Delete"
             imageSrc="/assets/svg/menu/remove.svg"
             hintText="⌫"

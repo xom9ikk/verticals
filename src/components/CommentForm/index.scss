@@ -1,60 +1,3 @@
-.comment-form-attachments {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-left: 10px;
-    max-height: 200px;
-    overflow-y: scroll;
-
-    &::-webkit-scrollbar-thumb {
-      border: 5px solid $hover-color !important;
-    }
-  }
-  &__inner {
-    flex: 0 0 48%;
-    display: flex;
-    padding: 1px 4px;
-    margin: 5px 0;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    background: $white;
-    border-radius: 4px;
-  }
-  &__wrapper {
-    display: flex;
-    flex: 0 0 48%;
-    position: relative;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 4px;
-  }
-  &__preview {
-    width: 23px;
-    height: 18px;
-    margin-right: 10px;
-    border-radius: 2px;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    z-index: 1;
-    &--empty {
-      position: absolute;
-      height: 16px;
-      width: 16px;
-      filter: grayscale(1) brightness(1.4);
-    }
-  }
-  &__text {
-    max-width: 100px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-}
-
 .comment-form {
   $block: &;
 
@@ -74,7 +17,7 @@
     height: 0;
     overflow: hidden;
     //transition: height .1s ease-in-out;
-    &--opened {
+    &--open {
       height: 100%;
     }
     &--divider {
@@ -157,7 +100,7 @@
     margin-bottom: 10px;
     transition: bottom .2s ease-in-out, opacity .2s ease-in-out;
 
-    &--opened {
+    &--open {
       opacity: 1;
       bottom: -7px;
     }

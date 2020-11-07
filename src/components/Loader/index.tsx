@@ -5,7 +5,7 @@ interface ILoader {
   size?: number;
   strokeWidth?: number;
   strokeDashoffset?: number;
-  style?: any,
+  style?: React.CSSProperties,
 }
 
 export const Loader: FC<ILoader> = ({

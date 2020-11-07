@@ -15,7 +15,7 @@ interface ITextArea {
   minRows: number,
   maxRows: number;
   onChangeHeight?: (height: number) => void;
-  style?: any;
+  style?: React.CSSProperties;
 }
 
 const TextAreaComponent = ({

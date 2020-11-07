@@ -11,6 +11,7 @@ const baseURL = process.env.API_URL;
 const AUTH_PREFIX = 'Bearer ';
 const DEFAULT_CONTENT_TYPE = 'application/json; charset=utf-8';
 const UNAUTHORIZED_STATUS = 401;
+const REFRESH_ROUTE = '/auth/refresh';
 
 interface IPairTokens {
   token: string;
@@ -71,7 +72,7 @@ export class HttpClient implements IHttpClient {
     const refreshToken = storage.getRefreshToken();
 
     if (!this.refreshRequest) {
-      this.refreshRequest = this.post('/auth/refresh', { refreshToken });
+      this.refreshRequest = this.post(REFRESH_ROUTE, { refreshToken });
     }
 
     const { data } = await this.refreshRequest;
@@ -98,8 +99,8 @@ export class HttpClient implements IHttpClient {
         delete this.refreshRequest;
       }
     } catch (e) {
-      const eee = error?.response?.data?.message || 'Internal error';
-      return Promise.reject(eee);
+      const err = error?.response?.data?.message || 'Internal error';
+      return Promise.reject(err);
     }
   }
 

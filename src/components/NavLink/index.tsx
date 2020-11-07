@@ -10,7 +10,7 @@ interface INavLink {
   className?: string;
   activeStyle?: any;
   inactiveClassName?: string;
-  style?: any;
+  style?: React.CSSProperties;
   isActive?: any;
 }
 

@@ -7,39 +7,13 @@ import { Avatar } from '@comp/Avatar';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
 import { useFocus } from '@/use/focus';
+import { useFileList } from '@/use/fileList';
 import {
-  getCommentById, getEditCommentId, getFullName, getReplyCommentId,
+  getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@/store/selectors';
 import { useOpenFiles } from '@/use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
-
-const merge = (...args: Array<FileList | null>) => {
-  const dataTransfer = new DataTransfer();
-
-  args.forEach((fileList) => {
-    if (fileList !== null) {
-      for (let i = 0; i < fileList.length; i += 1) {
-        dataTransfer.items.add(fileList[i]);
-      }
-    }
-  });
-
-  return dataTransfer.files;
-};
-
-const filter = (fileList: FileList | null, predicate: (file: File, index: number) => boolean) => {
-  const dataTransfer = new DataTransfer();
-
-  if (fileList !== null) {
-    for (let i = 0; i < fileList.length; i += 1) {
-      if (predicate(fileList[i], i)) {
-        dataTransfer.items.add(fileList[i]);
-      }
-    }
-  }
-
-  return dataTransfer.files;
-};
+import { EnumDroppedZoneType } from '@/types/entities';
 
 interface ICommentForm {
   todoId: number | null;
@@ -53,6 +27,7 @@ export const CommentForm: FC<ICommentForm> = ({
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const { openFiles } = useOpenFiles();
+  const { merge, filter } = useFileList();
   const commentInputRef = useRef<any>();
 
   const fullName = useSelector(getFullName);
@@ -60,6 +35,7 @@ export const CommentForm: FC<ICommentForm> = ({
   const replyCommentId = useSelector(getReplyCommentId);
   const commentForReply = useSelector(getCommentById(replyCommentId));
   const commentForEdit = useSelector(getCommentById(editCommentId));
+  const droppedFiles = useSelector(getDroppedFiles);
 
   const [commentText, setCommentText] = useState<string>('');
   const [shiftPressed, setShiftPressed] = useState<boolean>();
@@ -70,6 +46,13 @@ export const CommentForm: FC<ICommentForm> = ({
   }, [commentForEdit]);
 
   useEffect(() => {
+    if (droppedFiles && droppedFiles.type === EnumDroppedZoneType.CardPopup) {
+      const mergedFiles = merge(files, droppedFiles.files);
+      setFiles(mergedFiles);
+    }
+  }, [droppedFiles]);
+
+  useEffect(() => {
     if (commentForReply || commentForEdit) {
       focus(commentInputRef);
     }
@@ -77,6 +60,7 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const sendCommentHandler = () => {
     if (editCommentId) {
+      console.log('1111');
       dispatch(CommentsActions.updateText({
         id: editCommentId,
         text: commentText,
@@ -89,6 +73,7 @@ export const CommentForm: FC<ICommentForm> = ({
       }
       dispatch(SystemActions.setEditCommentId(null));
     } else {
+      console.log('222', files);
       dispatch(CommentsActions.create({
         todoId: todoId!,
         text: commentText,
@@ -153,7 +138,7 @@ export const CommentForm: FC<ICommentForm> = ({
         <div className="comment-form__input-wrapper">
           <div
             className={`comment-form__reply 
-            ${replyCommentId ? 'comment-form__reply--opened' : ''}
+            ${replyCommentId ? 'comment-form__reply--open' : ''}
             `}
           >
             <Menu
@@ -181,6 +166,7 @@ export const CommentForm: FC<ICommentForm> = ({
             <TextArea
               ref={commentInputRef}
               className="card__textarea comment-form__textarea"
+              style={{ paddingLeft: 10 }}
               placeholder="Add comment or note"
               value={commentText}
               onChange={changeHandler}
@@ -231,7 +217,7 @@ export const CommentForm: FC<ICommentForm> = ({
         </div>
       </div>
       <div className={`comment-form__helper
-        ${isAvailableSend ? 'comment-form__helper--opened' : ''}
+        ${isAvailableSend ? 'comment-form__helper--open' : ''}
         `}
       >
         <button>

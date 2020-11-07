@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
-import { MenuButton } from '@comp/MenuButton';
+import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
 import { AuthActions, SystemActions } from '@/store/actions';
@@ -104,12 +104,12 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           position="top"
           isAbsolute={false}
         >
-          <MenuButton
+          <MenuItem
             text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
             imageSrc="/assets/svg/menu/hide-sidebar.svg"
             onClick={() => menuButtonClickHandler(EnumToolbarActions.SwitchSidebar)}
           />
-          <MenuButton
+          <MenuItem
             text="Account settings"
             imageSrc="/assets/svg/menu/profile-settings.svg"
             onClick={() => menuButtonClickHandler(EnumToolbarActions.AccountSettings)}
@@ -120,7 +120,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             text="Language: English"
             imageSrc="/assets/svg/menu/language.svg"
           >
-            <MenuButton
+            <MenuItem
               text="English"
               hintImageSrc={getTickSvg(EnumLanguage.English)}
               isColoredHintImage
@@ -128,7 +128,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.English,
               )}
             />
-            <MenuButton
+            <MenuItem
               text="Русский"
               hintImageSrc={getTickSvg(EnumLanguage.Russian)}
               isColoredHintImage
@@ -136,7 +136,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.Russian,
               )}
             />
-            <MenuButton
+            <MenuItem
               text="Français"
               hintImageSrc={getTickSvg(EnumLanguage.French)}
               isColoredHintImage
@@ -144,7 +144,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.French,
               )}
             />
-            <MenuButton
+            <MenuItem
               text="Español"
               hintImageSrc={getTickSvg(EnumLanguage.Spanish)}
               isColoredHintImage
@@ -157,21 +157,21 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             text="More"
             imageSrc="/assets/svg/dots.svg"
           >
-            <MenuButton
+            <MenuItem
               text="Write to developer"
               onClick={() => menuButtonClickHandler(EnumToolbarActions.WriteToDeveloper)}
             />
-            <MenuButton
+            <MenuItem
               text="Terms of Service"
               onClick={() => menuButtonClickHandler(EnumToolbarActions.TermsOfService)}
             />
-            <MenuButton
+            <MenuItem
               text="Privacy Policy"
               onClick={() => menuButtonClickHandler(EnumToolbarActions.PrivacyPolicy)}
             />
           </Submenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <MenuButton
+          <MenuItem
             text="Log out"
             imageSrc="/assets/svg/menu/logout.svg"
             onClick={() => menuButtonClickHandler(EnumToolbarActions.Logout)}
