@@ -10,7 +10,6 @@ import {
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
 } from '@/store/actions';
-import { Menu } from '@comp/Menu';
 import { Loader } from '@comp/Loader';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { TextArea } from '@comp/TextArea';
@@ -25,6 +24,7 @@ import {
 } from '@/store/selectors';
 import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ICardPopup {
   columnId: number;
@@ -152,12 +152,11 @@ export const CardPopup: FC<ICardPopup> = ({
                     top: 12,
                   }}
                 />
-                <Menu
+                <ControlButton
                   imageSrc="/assets/svg/close.svg"
                   alt="close"
                   imageSize={24}
                   size={30}
-                  isShowPopup={false}
                   style={{
                     position: 'absolute',
                     right: 10,
@@ -202,13 +201,12 @@ export const CardPopup: FC<ICardPopup> = ({
                   </div>
                   <div className="card-popup__toolbar">
                     <div>
-                      <Menu
+                      <ControlButton
                         imageSrc="/assets/svg/calendar.svg"
                         tooltip="Date"
                         alt="date"
                         imageSize={24}
                         size={36}
-                        isShowPopup={false}
                         isColored
                       />
                       <CardContextMenu
@@ -236,13 +234,12 @@ export const CardPopup: FC<ICardPopup> = ({
                         }}
                       />
                     </div>
-                    <Menu
+                    <ControlButton
                       imageSrc={`/assets/svg/bell${activeTodo.isNotificationsEnabled ? '-active' : ''}.svg`}
                       tooltip={`Turn ${activeTodo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
                       alt="notification"
                       imageSize={24}
                       size={36}
-                      isShowPopup={false}
                       isColored
                       style={{
                         justifySelf: 'flex-end',

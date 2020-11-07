@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Menu } from '@comp/Menu';
 import { Toolbar } from '@comp/Toolbar';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ISidebar {
 }
@@ -23,7 +23,7 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
       >
         <div className="sidebar__inner">
           <div className="sidebar__toggle">
-            <Menu
+            <ControlButton
               imageSrc={`/assets/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
               tooltip={`${isPinnedSidebar ? 'Hide sidebar' : 'Show sidebar'}`}
               alt="add"
@@ -31,7 +31,6 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
               size={20}
               isHide
               isHoverBlock={isHover}
-              isShowPopup={false}
               onClick={() => setIsPinnedSidebar((prev) => !prev)}
             />
           </div>

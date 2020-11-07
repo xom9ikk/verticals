@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
 // @ts-ignore
 import downloadjs from 'downloadjs';
-import { Menu } from '@comp/Menu';
 import { useFormat } from '@/use/format';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentFile {
   id: number;
@@ -55,23 +55,21 @@ export const CommentFile: FC<ICommentFile> = ({
       <div
         className="comment-file__overlay"
       >
-        <Menu
+        <ControlButton
           imageSrc="/assets/svg/download.svg"
           alt="download"
           imageSize={isCompact || !isImage ? 20 : 40}
           size={isCompact || !isImage ? 30 : 60}
-          isShowPopup={false}
           isPrimary
           onClick={downloadHandler}
           style={{ zIndex: 2, borderRadius: '50%', opacity: '0.6' }}
         />
-        <Menu
+        <ControlButton
           imageSrc="/assets/svg/menu/remove.svg"
           alt="delete"
           imageSize={22}
           size={24}
           isHide
-          isShowPopup={false}
           isHoverBlock={isHover}
           onClick={() => onRemove(id)}
           style={{ position: 'absolute', right: 5, top: 5 }}
@@ -101,27 +99,6 @@ export const CommentFile: FC<ICommentFile> = ({
           )
         }
       </div>
-
-      {/* <div className="comment-file__overlay-info"> */}
-      {/* <Menu */}
-      {/*  imageSrc="/assets/svg/menu/remove.svg" */}
-      {/*  alt="delete" */}
-      {/*  imageSize={22} */}
-      {/*  size={24} */}
-      {/*  isHide */}
-      {/*  isShowPopup={false} */}
-      {/*  isHoverBlock={isHover} */}
-      {/*  onClick={() => onRemove(id)} */}
-      {/* /> */}
-      {/* <div className={`comment-file__size */}
-      {/*   ${isImage */}
-      {/*  ? 'comment-file__size--image' */}
-      {/*  : 'comment-file__size--file'}`} */}
-      {/* > */}
-      {/*  {formatSize(size)} */}
-      {/* </div> */}
-      {/* </div> */}
-
     </div>
   );
 };

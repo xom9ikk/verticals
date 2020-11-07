@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { Menu } from '@comp/Menu';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentFormAttachments {
   files: FileList | null;
@@ -18,7 +18,7 @@ export const CommentFormAttachments: FC<ICommentFormAttachments> = ({
   }
   >
     {
-        files !== null && [...files].map((file, index) => (
+        [...files].map((file, index) => (
           <div
             key={`${file.name}-${file.lastModified}`}
             className="comment-form-attachments__item"
@@ -38,12 +38,11 @@ export const CommentFormAttachments: FC<ICommentFormAttachments> = ({
                 {file.name}
               </div>
             </div>
-            <Menu
+            <ControlButton
               imageSrc="/assets/svg/close.svg"
               alt="remove"
               imageSize={10}
               size={16}
-              isShowPopup={false}
               style={{ padding: 8, borderRadius: 4 }}
               onClick={() => onRemove(index)}
             />

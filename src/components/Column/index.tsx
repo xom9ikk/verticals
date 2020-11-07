@@ -28,6 +28,7 @@ import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import {
   getIsEditableColumn, getQuery, getBoardCardType, getTodosByColumnId,
 } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 interface IColumn {
   index: number;
@@ -304,14 +305,13 @@ export const Column: FC<IColumn> = ({
   const addCard = useMemo(() => (
     (!isOpenNewCard && !isNew) && (
     <>
-      <Menu
+      <ControlButton
         imageSrc="/assets/svg/add.svg"
         alt="add"
         text="Add card"
         isHide
         isHoverBlock={(isTopHover && !isDraggingCard) || todos?.length === 0}
         isMaxWidth
-        isShowPopup={false}
         onClick={() => setIsOpenNewCard(true)}
       />
     </>

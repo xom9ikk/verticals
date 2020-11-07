@@ -19,7 +19,6 @@ import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
-import { Menu } from '@comp/Menu';
 import { useFileList } from '@/use/fileList';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { useOpenFiles } from '@/use/openFiles';
@@ -321,22 +320,20 @@ export const Card: FC<ICard> = ({
                 <div
                   className="card__editable-controls"
                 >
-                  <Menu
+                  <ControlButton
                     imageSrc="/assets/svg/calendar-dots.svg"
                     tooltip="Add Date"
                     alt="date"
                     imageSize={16}
                     size={20}
-                    isShowPopup={false}
                     isColored
                   />
-                  <Menu
+                  <ControlButton
                     imageSrc="/assets/svg/attach.svg"
                     tooltip="Attach a file"
                     alt="file"
                     imageSize={16}
                     size={20}
-                    isShowPopup={false}
                     isColored
                     onClick={handleUploadFile}
                   />

@@ -18,6 +18,7 @@ import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
 import { getIsEditableBoard, getUsername } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
@@ -314,13 +315,12 @@ export const Board: FC<IBoard> = ({
                 icons.map((filename) => {
                   const link = `/assets/svg/board/${filename}.svg`;
                   return (
-                    <Menu
+                    <ControlButton
                       key={filename}
                       imageSrc={link}
                       alt={filename}
                       imageSize={24}
                       size={36}
-                      isShowPopup={false}
                       onClick={(e: React.SyntheticEvent) => {
                         e.stopPropagation();
                         dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));

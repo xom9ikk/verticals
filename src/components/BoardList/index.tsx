@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
-import { Menu } from '@comp/Menu';
 import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
 import { BoardsActions, SystemActions } from '@/store/actions';
@@ -26,6 +25,7 @@ import {
   getColumns,
   getTodos, getUsername,
 } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 interface IBoardList {}
 
@@ -250,14 +250,13 @@ export const BoardList: FC<IBoardList> = () => {
   ), [isOpenNewBoard]);
 
   const memoMenu = useMemo(() => !isOpenNewBoard && (
-    <Menu
+    <ControlButton
       imageSrc="/assets/svg/add.svg"
       alt="add"
       text="Add board"
       isHide
       isHoverBlock={isHover}
       isMaxWidth
-      isShowPopup={false}
       onClick={addNewBoard}
     />
   ),

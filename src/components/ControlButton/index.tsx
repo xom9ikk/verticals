@@ -21,7 +21,7 @@ interface IControlButton {
   style?: React.CSSProperties;
 }
 
-export const ControlButtonComponent = ({
+const ControlButtonComponent = ({
   imageSrc,
   text,
   alt,

@@ -20,6 +20,7 @@ import {
   getUsername,
   getCommentAttachmentsByCommentId,
 } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 type ICommentItem = IComment;
 
@@ -232,22 +233,20 @@ export const CommentItem: FC<ICommentItem> = ({
         {memoComment}
         <div className="comment__controls">
           <div className="comment__controls--buttons">
-            <Menu
+            <ControlButton
               imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg`}
               tooltip={`${isLikeByMe ? 'Unlike' : 'Like'}`}
               alt="like"
               imageSize={16}
               size={22}
-              isShowPopup={false}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
             />
-            <Menu
+            <ControlButton
               imageSrc="/assets/svg/reply.svg"
               tooltip="Reply"
               alt="reply"
               imageSize={16}
               size={22}
-              isShowPopup={false}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
             />
           </div>

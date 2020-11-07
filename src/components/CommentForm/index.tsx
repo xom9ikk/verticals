@@ -2,7 +2,6 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
@@ -14,6 +13,7 @@ import {
 import { useOpenFiles } from '@/use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@/types/entities';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentForm {
   todoId: number | null;
@@ -141,12 +141,11 @@ export const CommentForm: FC<ICommentForm> = ({
             ${replyCommentId ? 'comment-form__reply--open' : ''}
             `}
           >
-            <Menu
+            <ControlButton
               imageSrc="/assets/svg/close.svg"
               alt="remove"
               imageSize={24}
               size={26}
-              isShowPopup={false}
               onClick={removeReplyHandler}
               style={{ marginRight: 2 }}
             />
@@ -177,33 +176,30 @@ export const CommentForm: FC<ICommentForm> = ({
               onChangeHeight={onChangeTextAreaHeight}
             />
             <div className="comment-form__controls">
-              <Menu
+              <ControlButton
                 imageSrc="/assets/svg/gallery.svg"
                 tooltip="Add an image"
                 alt="image"
                 imageSize={24}
                 size={26}
-                isShowPopup={false}
                 isColored
                 onClick={handleUploadImages}
               />
-              <Menu
+              <ControlButton
                 imageSrc="/assets/svg/attach.svg"
                 tooltip="Attach a file"
                 alt="file"
                 imageSize={24}
                 size={26}
-                isShowPopup={false}
                 isColored
                 onClick={handleUploadFiles}
               />
-              <Menu
+              <ControlButton
                 imageSrc="/assets/svg/arrow-up.svg"
                 tooltip={`${commentText?.length ? 'Add comment' : ''}`}
                 alt="send"
                 imageSize={isAvailableSend ? 24 : 0}
                 size={30}
-                isShowPopup={false}
                 isPrimary
                 style={{
                   width: isAvailableSend ? 30 : 0,

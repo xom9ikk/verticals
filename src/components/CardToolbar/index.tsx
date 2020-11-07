@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Menu } from '@comp/Menu';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ICardToolbar {
   isHoverBlock: boolean;
@@ -16,23 +16,20 @@ export const CardToolbar: FC<ICardToolbar> = ({
     className={`card-toolbar ${!isHoverBlock ? 'card-toolbar--invisible' : ''}`}
   >
     <div className="card-toolbar__inner">
-      <Menu
+      <ControlButton
         imageSrc="/assets/svg/add.svg"
         text="Add card"
         alt="add"
         isHoverBlock={isHoverBlock}
         isMaxWidth
-        position="top"
-        isShowPopup={false}
         onClick={onClickCard}
       />
-      <Menu
+      <ControlButton
         imageSrc="/assets/svg/add-head.svg"
         alt="add"
         isHoverBlock={isHoverBlock}
         imageSize={24}
         size={36}
-        isShowPopup={false}
         onClick={onClickHeading}
       />
     </div>
