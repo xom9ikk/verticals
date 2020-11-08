@@ -9,16 +9,16 @@ interface IControlButton {
   size?: number;
   isHide?: boolean;
   isHoverBlock?: boolean;
-  onClick?: (event: React.SyntheticEvent) => void;
-  onDoubleClick?: (event: React.SyntheticEvent) => void;
   isMaxWidth?:boolean;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
   isInvertColor?: boolean;
   isPrimary?: boolean;
   isColored?: boolean;
   isTextable?: boolean;
   style?: React.CSSProperties;
+  onClick?: (event: React.SyntheticEvent) => void;
+  onDoubleClick?: (event: React.SyntheticEvent) => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const ControlButtonComponent = ({
@@ -30,16 +30,16 @@ const ControlButtonComponent = ({
   size,
   isHide = false,
   isHoverBlock = false,
-  onClick,
-  onDoubleClick,
   isMaxWidth,
-  onMouseEnter,
-  onMouseLeave,
   isInvertColor,
   isPrimary,
   isColored,
   isTextable,
   style,
+  onClick,
+  onDoubleClick,
+  onMouseEnter,
+  onMouseLeave,
 }: IControlButton, ref: any) => {
   const classes = ['control-button'];
   if (isHide && !isHoverBlock) {

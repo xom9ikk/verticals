@@ -157,7 +157,13 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
           isInvertColor={isActive}
           isHoverBlock={isHover}
           position="right"
-          style={{ marginTop: 5, marginRight: 8, marginBottom: 5 }}
+          style={{
+            // marginTop: 7,
+            // marginRight: 8,
+            // marginBottom: 5,
+            transform: 'translateY(-2px)',
+            float: 'right',
+          }}
         >
           <ColorPicker
             onPick={(newColor) => menuButtonClickHandler(EnumCardActions.ChangeColor, newColor)}

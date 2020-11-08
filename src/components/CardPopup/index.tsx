@@ -167,16 +167,16 @@ export const CardPopup: FC<ICardPopup> = ({
                 <div className="card-popup__header">
                   <div className="card-popup__input-container">
                     {
-                        cardType === EnumTodoType.Checkboxes && (
-                        <Bullet
-                          type={cardType}
-                          status={activeTodo.status!}
-                          onChangeStatus={changeStatusHandler}
-                          size="large"
-                          style={{ marginTop: 5 }}
-                        />
-                        )
-                      }
+                      cardType === EnumTodoType.Checkboxes && (
+                      <Bullet
+                        type={cardType}
+                        status={activeTodo.status!}
+                        onChangeStatus={changeStatusHandler}
+                        size="large"
+                        style={{ margin: '5px' }}
+                      />
+                      )
+                    }
                     <div className="card-popup__textarea-inner">
                       <TextArea
                         ref={titleInputRef}
