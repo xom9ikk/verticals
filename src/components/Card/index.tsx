@@ -23,6 +23,7 @@ import { useFileList } from '@/use/fileList';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { useOpenFiles } from '@/use/openFiles';
 import { CardAttachments } from '@comp/CardAttachments';
+import { MiniGallery } from '@comp/MiniGallery';
 
 enum EnumToggleType {
   Files,
@@ -286,12 +287,12 @@ export const Card: FC<ICard> = ({
     switch (type) {
       case EnumToggleType.Files: {
         event.stopPropagation();
-        setIsShowFiles((prev) => !prev);
+        setTimeout(() => setIsShowFiles((prev) => !prev), 300);
         setIsShowGallery(false); break;
       }
       case EnumToggleType.Gallery: {
         event.stopPropagation();
-        setIsShowGallery((prev) => !prev);
+        setTimeout(() => setIsShowGallery((prev) => !prev), 300);
         setIsShowFiles(false); break;
       }
       default: break;
@@ -411,6 +412,10 @@ export const Card: FC<ICard> = ({
               <CardAttachments
                 id={id}
                 isCollapse={!isShowFiles}
+              />
+              <MiniGallery
+                id={id}
+                isCollapse={!isShowGallery}
               />
             </div>
           )

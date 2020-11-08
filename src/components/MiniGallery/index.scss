@@ -1,0 +1,43 @@
+.mini-gallery {
+  $block: &;
+
+  transition: max-height .3s ease-in-out;
+  max-width: 215px;
+  max-height: 2000px;
+  overflow: hidden;
+
+  &__wrapper {
+    max-width: 215px;
+    max-height: 2000px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    overflow: hidden;
+    transition: border .3s ease-in-out;
+  }
+
+  &--collapse {
+    max-height: 0;
+    min-height: 0;
+  }
+
+  &:hover {
+    #{$block}__wrapper {
+      border: 2px solid $primary;
+    }
+  }
+}
+
+.preview {
+
+}
+
+.swiper-wrapper {
+  max-width: 215px;
+  max-height: 2000px;
+  position: relative;
+  margin-bottom: -5px;
+  img {
+    max-width: 215px;
+    max-height: 2000px;
+  }
+}
