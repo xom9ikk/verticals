@@ -16,7 +16,6 @@ interface IMenu {
   imageSize?: number;
   size?: number;
   isHide?: boolean;
-  isShowPopup?: boolean;
   onClick?: (event: React.SyntheticEvent) => void;
   isMaxWidth?:boolean;
   onMouseEnter?: () => void;
@@ -38,7 +37,6 @@ export const Menu: FC<IMenu> = ({
   imageSize = 12,
   size,
   isHide = false,
-  isShowPopup = true,
   onClick,
   isMaxWidth,
   onMouseEnter,
@@ -74,7 +72,6 @@ export const Menu: FC<IMenu> = ({
   }, [isOpenPopup]);
 
   const popup = useMemo(() => (
-    isShowPopup && (
     <Popup
       isOpen={isOpen}
       position={position}
@@ -84,7 +81,6 @@ export const Menu: FC<IMenu> = ({
     >
       {children}
     </Popup>
-    )
   ),
   [isOpen, position, sourceRef, isAbsolute, children]);
 

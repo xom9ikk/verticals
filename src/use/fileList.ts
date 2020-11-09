@@ -1,5 +1,5 @@
 export const useFileList = () => {
-  const merge = (...args: Array<FileList | null>) => {
+  const merge = (...args: Array<FileList | null>): FileList | null => {
     const dataTransfer = new DataTransfer();
 
     args.forEach((fileList) => {
@@ -13,7 +13,10 @@ export const useFileList = () => {
     return dataTransfer.files;
   };
 
-  const filter = (fileList: FileList | null, predicate: (file: File, index: number) => boolean) => {
+  const filter = (
+    fileList: FileList | null,
+    predicate: (file: File, index: number) => boolean,
+  ): FileList | null => {
     const dataTransfer = new DataTransfer();
 
     if (fileList !== null) {

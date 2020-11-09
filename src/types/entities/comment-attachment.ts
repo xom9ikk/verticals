@@ -1,5 +1,6 @@
 export interface ICommentAttachment {
   id: number;
+  todoId: number;
   commentId: number;
   path: string;
   name: string;

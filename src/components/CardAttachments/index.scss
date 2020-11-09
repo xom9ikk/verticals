@@ -1,0 +1,48 @@
+.card-attachments {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: max-height .3s ease-in-out;
+  max-height: 300px;
+  overflow: scroll;
+
+  &::-webkit-scrollbar-thumb {
+    border: 0 !important;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &--collapse {
+    max-height: 0;
+  }
+}
+
+.card-attachment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 18px 10px 16px;
+  background: $hover-color;
+  &:hover {
+    background: $primary-light;
+  }
+  &:not(:last-child) {
+    margin-bottom: 1px;
+  }
+  &:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+  &:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  &__name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 146px;
+  }
+}

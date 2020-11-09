@@ -9,6 +9,7 @@ import { SystemActions } from '@/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { forwardTo } from '@/router/history';
 import { getFullName, getIsOpenProfile, getUsername } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -69,12 +70,11 @@ export const Profile: FC<IProfile> = ({
 
   const profile = useMemo(() => isOpenProfile && (
   <div className="profile__popup">
-    <Menu
+    <ControlButton
       imageSrc="/assets/svg/close.svg"
       alt="close"
       imageSize={24}
       size={30}
-      isShowPopup={false}
       style={{
         position: 'absolute',
         right: 10,

@@ -5,7 +5,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
-import { CommentsActions, SystemActions } from '@/store/actions';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { useFocus } from '@/use/focus';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType,
@@ -16,13 +16,28 @@ import { Bullet } from '@comp/Bullet';
 import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
+import {
+  getActiveBoardReadableId,
+  getCommentImageAttachmentsByTodoId,
+  getCommentFileAttachmentsByTodoId,
+  getCommentsByTodoId,
+  getIsEditableCard,
+  getUsername,
+} from '@/store/selectors';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
-import { Menu } from '@comp/Menu';
 import { useFileList } from '@/use/fileList';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { useOpenFiles } from '@/use/openFiles';
+import { CardAttachments } from '@comp/CardAttachments';
+import { MiniGallery } from '@comp/MiniGallery';
+import { useColorClass } from '@/use/colorClass';
+
+enum EnumToggleType {
+  Files,
+  Gallery,
+  Comments,
+}
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
@@ -84,10 +99,18 @@ export const Card: FC<ICard> = ({
   const { openFiles } = useOpenFiles();
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const colorClass = useColorClass('card__content', color);
 
   const username = useSelector(getUsername);
   const isEditableCard = useSelector(getIsEditableCard);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
+  const comments = useSelector(getCommentsByTodoId(id || null));
+  const imageAttachments = useSelector(getCommentImageAttachmentsByTodoId(id || null));
+  const fileAttachments = useSelector(getCommentFileAttachmentsByTodoId(id || null));
+
+  const commentsCountWithCache = comments?.length || commentsCount;
+  const imagesCountWithCache = imageAttachments?.length || imagesCount;
+  const filesCountWithCache = fileAttachments?.length || attachmentsCount;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
@@ -96,6 +119,8 @@ export const Card: FC<ICard> = ({
   const [titleValue, setTitleValue] = useState<string>(initialTitle);
   const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
+  const [isShowFiles, setIsShowFiles] = useState<boolean>(false);
+  const [isShowGallery, setIsShowGallery] = useState<boolean>(false);
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
@@ -114,11 +139,13 @@ export const Card: FC<ICard> = ({
   };
 
   const saveAttachments = (attachedFiles: FileList | null) => {
-    dispatch(CommentsActions.create({
-      todoId: id!,
-      text: '',
-      files: attachedFiles,
-    }));
+    if (attachedFiles?.length) {
+      dispatch(CommentsActions.create({
+        todoId: id!,
+        text: '',
+        files: attachedFiles,
+      }));
+    }
     setFiles(null);
   };
 
@@ -250,6 +277,8 @@ export const Card: FC<ICard> = ({
     count: number | undefined,
     name: string,
     tooltip: string,
+    onClick: (e: React.SyntheticEvent) => void,
+    isColored: boolean,
     text?: string,
   ) => count !== undefined && count > 0 && (
     <ControlButton
@@ -261,8 +290,41 @@ export const Card: FC<ICard> = ({
       isInvertColor={isActive}
       isTextable
       text={text}
+      onClick={onClick}
+      onDoubleClick={(e) => e.stopPropagation()}
+      isColored={isColored}
+      isStopPropagation={false}
     />
   );
+
+  const handleToggle = (
+    event: React.SyntheticEvent,
+    type: EnumToggleType,
+  ) => {
+    switch (type) {
+      case EnumToggleType.Files: {
+        event.stopPropagation();
+        setTimeout(() => setIsShowFiles((prev) => {
+          if (!prev) {
+            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: id! }));
+          }
+          return !prev;
+        }), 400);
+        setIsShowGallery(false); break;
+      }
+      case EnumToggleType.Gallery: {
+        event.stopPropagation();
+        setTimeout(() => setIsShowGallery((prev) => {
+          if (!prev) {
+            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: id! }));
+          }
+          return !prev;
+        }), 300);
+        setIsShowFiles(false); break;
+      }
+      default: break;
+    }
+  };
 
   const card = useMemo(() => (
     <div
@@ -321,24 +383,22 @@ export const Card: FC<ICard> = ({
                 <div
                   className="card__editable-controls"
                 >
-                  <Menu
+                  <ControlButton
                     imageSrc="/assets/svg/calendar-dots.svg"
                     tooltip="Add Date"
                     alt="date"
                     imageSize={16}
                     size={20}
-                    isShowPopup={false}
                     isColored
                   />
-                  <Menu
+                  <ControlButton
                     imageSrc="/assets/svg/attach.svg"
                     tooltip="Attach a file"
                     alt="file"
                     imageSize={16}
                     size={20}
-                    isShowPopup={false}
-                    isColored
                     onClick={handleUploadFile}
+                    isColored
                   />
                 </div>
                 <span>Drop files here</span>
@@ -346,20 +406,44 @@ export const Card: FC<ICard> = ({
             </div>
           ) : (
             <div
-              className={`card__inner 
-              ${status === EnumTodoStatus.Canceled ? 'card__inner--cross-out' : ''}
-              `}
+              className="card__inner"
             >
-              <span className="card__title">
+              <CardContextMenu
+                id={id}
+                title={initialTitle}
+                columnId={columnId}
+                isArchived={isArchived}
+                isActive={isActive}
+                isHover={isHover}
+                isNotificationsEnabled={isNotificationsEnabled}
+                color={color}
+                status={status}
+                onStartEdit={doubleClickHandler}
+                onChangeColor={colorPickHandler}
+                onHidePopup={hidePopupHandler}
+              />
+              <span
+                className={`card__title 
+              ${status === EnumTodoStatus.Canceled ? 'card__title--cross-out' : ''}
+              `}
+              >
                 {titleValue}
               </span>
               <div
                 className="card__toggle-container"
               >
-                {renderIcon(attachmentsCount, 'files', 'Show Files')}
-                {renderIcon(imagesCount, 'images', 'Show Gallery')}
-                {renderIcon(commentsCount, 'bubble', `${commentsCount} comments`, String(commentsCount))}
+                {renderIcon(filesCountWithCache, 'files', 'Show Files', (e) => handleToggle(e, EnumToggleType.Files), isShowFiles)}
+                {renderIcon(imagesCountWithCache, 'images', 'Show Gallery', (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery)}
+                {renderIcon(commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`, (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache))}
               </div>
+              <MiniGallery
+                todoId={id}
+                isCollapse={!isShowGallery}
+              />
+              <CardAttachments
+                todoId={id}
+                isCollapse={!isShowFiles}
+              />
             </div>
           )
         }
@@ -370,11 +454,10 @@ export const Card: FC<ICard> = ({
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,
-    isActive, files,
+    isActive, files, isHover,
+    commentsCountWithCache, imagesCountWithCache, filesCountWithCache,
+    isShowFiles, isShowGallery,
   ]);
-
-  // @ts-ignore
-  const colorClass = color !== undefined ? `card__wrapper--${Object.values(EnumColors)[color]?.toLowerCase()}` : '';
 
   return (
     <div
@@ -387,37 +470,21 @@ export const Card: FC<ICard> = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div
-        className={`card__wrapper
-        ${snapshot?.isDragging ? 'card__wrapper--dragging' : ''}
-        ${isEditable ? 'card__wrapper--editable' : ''}
-        ${isMouseDown || isActive ? 'card__wrapper--pressed' : ''}
+        className={`card__content
+        ${snapshot?.isDragging ? 'card__content--dragging' : ''}
+        ${isEditable ? 'card__content--editable' : ''}
+        ${isMouseDown || isActive ? 'card__content--pressed' : ''}
         ${color !== undefined ? colorClass : ''}
-        ${invertColor ? 'card__wrapper--invert' : ''}
+        ${invertColor ? 'card__content--invert' : ''}
         `}
       >
         <DropZone
           onOpen={handleDropFiles}
           size="small"
         >
-          { card }
-          {
-            !isEditable && (
-            <CardContextMenu
-              id={id}
-              title={initialTitle}
-              columnId={columnId}
-              isArchived={isArchived}
-              isActive={isActive}
-              isHover={isHover}
-              isNotificationsEnabled={isNotificationsEnabled}
-              color={color}
-              status={status}
-              onStartEdit={doubleClickHandler}
-              onChangeColor={colorPickHandler}
-              onHidePopup={hidePopupHandler}
-            />
-            )
-          }
+          <div className="card__wrapper">
+            { card }
+          </div>
         </DropZone>
       </div>
     </div>

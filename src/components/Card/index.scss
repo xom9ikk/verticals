@@ -9,10 +9,17 @@
 
   &__wrapper {
     display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+
+  &__content {
+    display: flex;
     flex: 1;
     padding: 1px 0;
     transition: background-color .2s ease-in-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
     border-radius: 6px;
+    flex-direction: column;
 
     &:hover {
       background: $hover-color;
@@ -114,7 +121,7 @@
 
   &__block {
     display: flex;
-    padding: 8px 10px 8px 2px;
+    padding: 8px 10px 6px 2px;
     justify-content: center;
     align-items: center;
     flex: 1;
@@ -129,6 +136,10 @@
     max-width: $column-width - 100;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &--cross-out {
+      text-decoration: line-through;
+    }
   }
 
   &__inner {
@@ -138,10 +149,6 @@
     //display: flex;
     //flex: 1;
     //align-items: center;
-
-    &--cross-out {
-      text-decoration: line-through;
-    }
   }
 
   &__textarea {
@@ -154,7 +161,7 @@
     transition: inherit;
     background: inherit;
     min-height: 20px;
-    width: 180px;
+    width: 205px;
 
     &--description {
       font-size: 14px;

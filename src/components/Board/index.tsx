@@ -18,6 +18,7 @@ import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
 import { getIsEditableBoard, getUsername } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
@@ -89,8 +90,8 @@ export const Board: FC<IBoard> = ({
   const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const [titleValue, setTitleValue] = useState<string>(initialTitle);
-  const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+  const [titleValue, setTitleValue] = useState<string | undefined>(initialTitle);
+  const [descriptionValue, setDescriptionValue] = useState<string | undefined>(initialDescription);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const isEditableBoard = useSelector(getIsEditableBoard);
@@ -101,10 +102,10 @@ export const Board: FC<IBoard> = ({
 
   const getNewData = () => ({
     newTitle: initialTitle !== titleValue
-      ? titleValue.trim()
+      ? titleValue?.trim()
       : undefined,
     newDescription: initialDescription !== descriptionValue
-      ? descriptionValue.trim()
+      ? descriptionValue?.trim()
       : undefined,
   });
 
@@ -116,7 +117,7 @@ export const Board: FC<IBoard> = ({
   const saveBoard = (newColor?: EnumColors) => {
     const { newTitle, newDescription } = getNewData();
     onExitFromEditable?.({
-      boardId: id,
+      boardId: id!,
       title: newTitle,
       description: newDescription,
       color: newColor,
@@ -180,7 +181,7 @@ export const Board: FC<IBoard> = ({
 
   const clickHandler = () => {
     if (!isEditable && !isMenuClick) {
-      onClick?.(initialTitle, id);
+      onClick?.(initialTitle!, id!);
     }
   };
 
@@ -208,11 +209,11 @@ export const Board: FC<IBoard> = ({
         break;
       }
       case EnumMenuActions.CardStyle: {
-        dispatch(BoardsActions.updateCardType({ id, cardType: payload }));
+        dispatch(BoardsActions.updateCardType({ id: id!, cardType: payload }));
         break;
       }
       case EnumMenuActions.ReverseColumnOrder: {
-        dispatch(ColumnsActions.reverseOrder({ boardId: id }));
+        dispatch(ColumnsActions.reverseOrder({ boardId: id! }));
         break;
       }
       case EnumMenuActions.CopyLink: {
@@ -225,11 +226,11 @@ export const Board: FC<IBoard> = ({
       }
       case EnumMenuActions.AddBoardBelow: {
         dispatch(BoardsActions.removeTemp());
-        dispatch(BoardsActions.drawBelow({ belowId: id }));
+        dispatch(BoardsActions.drawBelow({ belowId: id! }));
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(BoardsActions.remove({ id }));
+        dispatch(BoardsActions.remove({ id: id! }));
         break;
       }
       default: break;
@@ -314,13 +315,12 @@ export const Board: FC<IBoard> = ({
                 icons.map((filename) => {
                   const link = `/assets/svg/board/${filename}.svg`;
                   return (
-                    <Menu
+                    <ControlButton
                       key={filename}
                       imageSrc={link}
                       alt={filename}
                       imageSize={24}
                       size={36}
-                      isShowPopup={false}
                       onClick={(e: React.SyntheticEvent) => {
                         e.stopPropagation();
                         dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));
@@ -337,7 +337,7 @@ export const Board: FC<IBoard> = ({
               onClick={() => menuButtonClickHandler(EnumMenuActions.ReverseColumnOrder)}
             />
             <CopyToClipboard
-              text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle, id)}`}
+              text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle!, id!)}`}
               onCopy={() => {
                 menuButtonClickHandler(EnumMenuActions.CopyLink);
               }}
@@ -373,9 +373,6 @@ export const Board: FC<IBoard> = ({
     </div>
   ), [countTodos]);
 
-  // @ts-ignore
-  // const colorClass = `board-item--${Object.values(EnumColors)[color]?.toLowerCase()}`;
-
   const boardItem = useMemo(() => (
     <div
       className={`board-item 
@@ -385,78 +382,62 @@ export const Board: FC<IBoard> = ({
        `}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
-      // onMouseOver={() => setIsHover(true)}
-      // onMouseOut={() => setIsHover(false)}
-      // onClick={handleClick}
-      // onDoubleClick={handleDoubleClick}
     >
-
-      {/* <div className="board-item__content"> */}
-      {/*  <img */}
-      {/*    src={`${isActive */}
-      {/*      ? icon.replace('item', 'item-active') */}
-      {/*      : icon}`} */}
-      {/*    alt="ico" */}
-      {/*    className="board-item__image" */}
-      {/*  /> */}
       {
-              isEditable ? (
-                <div
-                  className="card__block-wrapper card__block-wrapper--editable"
-                >
-                  <img
-                    src={icon}
-                    alt="ico"
-                  />
-                  <div className="card__editable-content">
-                    <TextArea
-                      ref={titleInputRef}
-                      className="card__textarea"
-                      value={titleValue}
-                      placeholder="New Board"
-                      minRows={1}
-                      maxRows={20}
-                      onKeyDown={shiftEnterRestriction}
-                      onChange={(event: any) => changeHandler(event, false)}
-                      onKeyDownCapture={(event: any) => keyDownHandler(event)}
-                    />
-                    <TextArea
-                      ref={descriptionInputRef}
-                      className="card__textarea card__textarea--description"
-                      value={descriptionValue}
-                      placeholder="Notes"
-                      minRows={1}
-                      maxRows={20}
-                      onKeyDown={shiftEnterRestriction}
-                      onChange={(event: any) => changeHandler(event, true)}
-                      onKeyDownCapture={(event: any) => keyDownHandler(event)}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <RoundedButton
-                  icon={icon}
-                  isSpecialIcon={icon.includes('trash') || icon.includes('star')}
-                  text={titleValue}
-                  color={color}
-                  isActive={isActive || snapshot?.isDragging}
-                  onClick={handleClick}
-                  onDoubleClick={handleDoubleClick}
-                >
-                  {/* {JSON.stringify({ icon })} */}
-                  { typeof countTodos === 'number' ? memoCounter : memoMenu }
-                </RoundedButton>
-              )
-            }
-      {/* </div> */}
-      {/* { !isEditable && typeof countTodos !== 'number' && memoMenu } */}
+        isEditable ? (
+          <div
+            className="card__block-wrapper card__block-wrapper--editable"
+          >
+            <img
+              src={icon}
+              alt="ico"
+            />
+            <div className="card__editable-content">
+              <TextArea
+                ref={titleInputRef}
+                className="card__textarea"
+                value={titleValue}
+                placeholder="New Board"
+                minRows={1}
+                maxRows={20}
+                onKeyDown={shiftEnterRestriction}
+                onChange={(event: any) => changeHandler(event, false)}
+                onKeyDownCapture={(event: any) => keyDownHandler(event)}
+              />
+              <TextArea
+                ref={descriptionInputRef}
+                className="card__textarea card__textarea--description"
+                value={descriptionValue}
+                placeholder="Notes"
+                minRows={1}
+                maxRows={20}
+                onKeyDown={shiftEnterRestriction}
+                onChange={(event: any) => changeHandler(event, true)}
+                onKeyDownCapture={(event: any) => keyDownHandler(event)}
+              />
+            </div>
+          </div>
+        ) : (
+          <RoundedButton
+            icon={icon}
+            isSpecialIcon={icon.includes('trash') || icon.includes('star')}
+            text={titleValue}
+            color={color}
+            isActive={isActive || snapshot?.isDragging}
+            onClick={handleClick}
+            onDoubleClick={handleDoubleClick}
+          >
+            {/* {JSON.stringify({ icon })} */}
+            { typeof countTodos === 'number' ? memoCounter : memoMenu }
+          </RoundedButton>
+        )
+      }
     </div>
   ), [
     isHover, isActive, isMenuClick,
     isEditable, titleValue, descriptionValue,
     snapshot, color, countTodos, icon, username, isCopied,
   ]);
-  // console.log('ishover', isHover);
 
   return (
     <>{ boardItem }</>

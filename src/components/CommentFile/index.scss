@@ -18,6 +18,9 @@ cursor: pointer;
     #{$block}__size {
       opacity: 1;
     }
+    #{$block}__show-more {
+      color: $primary;
+    }
   }
   &__overlay {
     z-index: 1;
@@ -41,6 +44,12 @@ cursor: pointer;
     //  justify-content: flex-end;
     //  padding: 5px 15px 0px;
     //}
+  }
+  &__show-more {
+    width: 100%;
+    text-align: center;
+    color: $text-light;
+    z-index: 1;
   }
   &--image {
     height: 200px;
@@ -90,7 +99,7 @@ cursor: pointer;
   &__extension {
     display: flex;
     justify-content: center;
-    flex: 1;
+    //flex: 1;
     align-items: center;
     position: relative;
     width: 16px;
@@ -114,7 +123,7 @@ cursor: pointer;
     color: $text;
     font-size: 12px;
     opacity: 0;
-    transition: opacity .3s ease-in-out ;
+    transition: opacity .3s ease-in-out;
     &--image {
       bottom: 12px;
       right: 20px;

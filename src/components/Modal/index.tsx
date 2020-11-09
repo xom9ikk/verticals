@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React, { FC, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Menu } from '@comp/Menu';
 import { useOutsideHandler } from '@/use/outsideHandler';
+import { ControlButton } from '@comp/ControlButton';
 import { Button } from '../Button';
 
 interface IModal {
@@ -82,12 +82,11 @@ export const Modal: FC<IModal> = ({
           ref={ref}
           className={`dialog__wrap dialog__wrap--${size}`}
         >
-          <Menu
+          <ControlButton
             imageSrc="/assets/svg/close.svg"
             alt="close"
             imageSize={24}
             size={30}
-            isShowPopup={false}
             style={{
               position: 'absolute',
               right: 10,

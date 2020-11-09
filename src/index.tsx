@@ -30,10 +30,7 @@ ReactDOM.render(
       effect="solid"
       multiline
       arrowColor="transparent"
-      overridePosition={({ left, top }, currentEvent) => {
-        console.log('currentEvent', currentEvent);
-        return { left, top };
-      }}
+      overridePosition={({ left, top }) => ({ left, top })}
     />
   </Provider>,
   document.getElementById('root'),

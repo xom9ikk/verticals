@@ -28,6 +28,8 @@ import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import {
   getIsEditableColumn, getQuery, getBoardCardType, getTodosByColumnId,
 } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
+import { useColorClass } from '@/use/colorClass';
 
 interface IColumn {
   index: number;
@@ -72,6 +74,7 @@ export const Column: FC<IColumn> = ({
   const { focus } = useFocus();
   const { filterTodos } = useFilterTodos();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const colorClass = useColorClass('column__wrapper', color);
 
   const todos = useSelector(getTodosByColumnId(columnId));
   const cardType = useSelector(getBoardCardType(boardId));
@@ -304,14 +307,13 @@ export const Column: FC<IColumn> = ({
   const addCard = useMemo(() => (
     (!isOpenNewCard && !isNew) && (
     <>
-      <Menu
+      <ControlButton
         imageSrc="/assets/svg/add.svg"
         alt="add"
         text="Add card"
         isHide
         isHoverBlock={(isTopHover && !isDraggingCard) || todos?.length === 0}
         isMaxWidth
-        isShowPopup={false}
         onClick={() => setIsOpenNewCard(true)}
       />
     </>
@@ -464,9 +466,6 @@ export const Column: FC<IColumn> = ({
         }
     </>
   ), [isEditable, titleValue, descriptionValue, todos, contextMenu, color]);
-
-  // @ts-ignore
-  const colorClass = color !== undefined ? `column__wrapper--${Object.values(EnumColors)[color]?.toLowerCase()}` : '';
 
   const memoColumn = useMemo(() => (
     <Draggable

@@ -20,6 +20,7 @@ import {
   getUsername,
   getCommentAttachmentsByCommentId,
 } from '@/store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 type ICommentItem = IComment;
 
@@ -46,13 +47,12 @@ export const CommentItem: FC<ICommentItem> = ({
   const replyComment = useSelector(getCommentById(replyCommentId));
   const editCommentId = useSelector(getEditCommentId);
   const attachments = useSelector(getCommentAttachmentsByCommentId(id));
-  console.log('====attachments', attachments);
-  console.log('====id', id);
   // const [images, setImages] = useState<Array<IFile>>([]);
   // const [files, setFiles] = useState<Array<IFile>>([]);
   // const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [isShowMore, setIsShowMore] = useState<boolean>(false);
 
   const isImage = (extension: string) => ['png', 'jpg', 'jpeg'].includes(extension);
 
@@ -155,11 +155,12 @@ export const CommentItem: FC<ICommentItem> = ({
     <div className="comment__attachments">
       {
         attachments
+          .slice(0, isShowMore ? attachments.length : 3)
           .sort((file) => (isImage(file.extension) ? -1 : 1))
           .map((file, index) => {
             let isCompact = attachments.length > 1;
             if (index === attachments.length - 1) {
-              isCompact = index % 2 !== 0;
+              isCompact = index % 2 !== 0 || attachments.length === index - 1;
             }
             return (
               <CommentFile
@@ -175,6 +176,25 @@ export const CommentItem: FC<ICommentItem> = ({
               />
             );
           })
+      }
+      {
+        attachments.length > 3
+        && !isShowMore
+        && (
+        <div
+          className="comment-file comment-file--compact"
+          onClick={() => { setIsShowMore(true); }}
+        >
+          <div
+            className="comment-file__overlay"
+          />
+          <span className="comment-file__show-more">
+            {attachments.length - 3}
+            {' '}
+            more items...
+          </span>
+        </div>
+        )
       }
     </div>
   ), [attachments]);
@@ -232,22 +252,20 @@ export const CommentItem: FC<ICommentItem> = ({
         {memoComment}
         <div className="comment__controls">
           <div className="comment__controls--buttons">
-            <Menu
+            <ControlButton
               imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg`}
               tooltip={`${isLikeByMe ? 'Unlike' : 'Like'}`}
               alt="like"
               imageSize={16}
               size={22}
-              isShowPopup={false}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
             />
-            <Menu
+            <ControlButton
               imageSrc="/assets/svg/reply.svg"
               tooltip="Reply"
               alt="reply"
               imageSize={16}
               size={22}
-              isShowPopup={false}
               onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
             />
           </div>

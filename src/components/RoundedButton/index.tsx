@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { EnumColors } from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+import { useColorClass } from '@/use/colorClass';
 
 interface IRoundedButton {
   icon: string;
@@ -28,8 +29,7 @@ export const RoundedButton: FC<IRoundedButton> = ({
   onMouseOut,
   children,
 }) => {
-  // @ts-ignore
-  const colorClass = `rounded-button--${Object.values(EnumColors)[color]?.toLowerCase()}`;
+  const colorClass = useColorClass('rounded-button', color);
 
   const {
     handleClick,

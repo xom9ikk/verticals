@@ -9,19 +9,20 @@ interface IControlButton {
   size?: number;
   isHide?: boolean;
   isHoverBlock?: boolean;
-  onClick?: (event: React.SyntheticEvent) => void;
-  onDoubleClick?: (event: React.SyntheticEvent) => void;
   isMaxWidth?:boolean;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
   isInvertColor?: boolean;
   isPrimary?: boolean;
   isColored?: boolean;
   isTextable?: boolean;
+  isStopPropagation?: boolean;
   style?: React.CSSProperties;
+  onClick?: (event: React.SyntheticEvent) => void;
+  onDoubleClick?: (event: React.SyntheticEvent) => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-export const ControlButtonComponent = ({
+const ControlButtonComponent = ({
   imageSrc,
   text,
   alt,
@@ -30,16 +31,17 @@ export const ControlButtonComponent = ({
   size,
   isHide = false,
   isHoverBlock = false,
-  onClick,
-  onDoubleClick,
   isMaxWidth,
-  onMouseEnter,
-  onMouseLeave,
   isInvertColor,
   isPrimary,
   isColored,
   isTextable,
+  isStopPropagation = true,
   style,
+  onClick,
+  onDoubleClick,
+  onMouseEnter,
+  onMouseLeave,
 }: IControlButton, ref: any) => {
   const classes = ['control-button'];
   if (isHide && !isHoverBlock) {
@@ -68,7 +70,12 @@ export const ControlButtonComponent = ({
     <button
       ref={ref}
       className={classes.join(' ')}
-      onClick={onClick}
+      onClick={(e) => {
+        if (isStopPropagation) {
+          e.stopPropagation();
+        }
+        onClick?.(e);
+      }}
       onDoubleClick={onDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

@@ -2,7 +2,6 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { TextArea } from '@comp/TextArea';
@@ -14,15 +13,20 @@ import {
 import { useOpenFiles } from '@/use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@/types/entities';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentForm {
   todoId: number | null;
   onChangeTextAreaHeight: (height: number) => void;
+  isScrolledToBottom: boolean;
+  onScrollToBottom: () => void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({
   todoId,
   onChangeTextAreaHeight,
+  isScrolledToBottom,
+  onScrollToBottom,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
@@ -141,12 +145,11 @@ export const CommentForm: FC<ICommentForm> = ({
             ${replyCommentId ? 'comment-form__reply--open' : ''}
             `}
           >
-            <Menu
+            <ControlButton
               imageSrc="/assets/svg/close.svg"
               alt="remove"
               imageSize={24}
               size={26}
-              isShowPopup={false}
               onClick={removeReplyHandler}
               style={{ marginRight: 2 }}
             />
@@ -177,33 +180,30 @@ export const CommentForm: FC<ICommentForm> = ({
               onChangeHeight={onChangeTextAreaHeight}
             />
             <div className="comment-form__controls">
-              <Menu
+              <ControlButton
                 imageSrc="/assets/svg/gallery.svg"
                 tooltip="Add an image"
                 alt="image"
                 imageSize={24}
                 size={26}
-                isShowPopup={false}
                 isColored
                 onClick={handleUploadImages}
               />
-              <Menu
+              <ControlButton
                 imageSrc="/assets/svg/attach.svg"
                 tooltip="Attach a file"
                 alt="file"
                 imageSize={24}
                 size={26}
-                isShowPopup={false}
                 isColored
                 onClick={handleUploadFiles}
               />
-              <Menu
+              <ControlButton
                 imageSrc="/assets/svg/arrow-up.svg"
                 tooltip={`${commentText?.length ? 'Add comment' : ''}`}
                 alt="send"
                 imageSize={isAvailableSend ? 24 : 0}
                 size={30}
-                isShowPopup={false}
                 isPrimary
                 style={{
                   width: isAvailableSend ? 30 : 0,
@@ -227,6 +227,25 @@ export const CommentForm: FC<ICommentForm> = ({
           Shift+Enter to send
         </span>
       </div>
+
+      <ControlButton
+        imageSrc="/assets/svg/arrow-down.svg"
+        alt="arrow-down"
+        imageSize={24}
+        size={26}
+        isHide={isScrolledToBottom}
+        // isPrimary
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: -48,
+          zIndex: 2,
+          background: '#fff',
+          boxShadow: '3px 3px 8px #eaeaea, 0px 0px 0px #f1f1f1',
+          // border: '1px solid #ccc',
+        }}
+        onClick={onScrollToBottom}
+      />
     </div>
   );
 };
