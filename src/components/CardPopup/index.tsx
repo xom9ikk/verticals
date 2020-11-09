@@ -5,7 +5,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
-  EnumColors, EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
+  EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
 } from '@/types/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
@@ -25,6 +25,7 @@ import {
 import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
+import { useColorClass } from '@/use/colorClass';
 
 interface ICardPopup {
   columnId: number;
@@ -37,12 +38,15 @@ export const CardPopup: FC<ICardPopup> = ({
 }) => {
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+
   const titleInputRef = useRef<any>(null);
 
   const activeTodoId = useSelector(getActiveTodoId);
   const activeTodo = useSelector(getTodoById(activeTodoId));
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const username = useSelector(getUsername);
+
+  const colorClass = useColorClass('card-popup__inner', activeTodo?.color);
 
   const [titleValue, setTitleValue] = useState<string>();
   const [descriptionValue, setDescriptionValue] = useState<string>();
@@ -123,9 +127,6 @@ export const CardPopup: FC<ICardPopup> = ({
       newDescription: descriptionValue,
     });
   }, [descriptionValue]);
-
-  // @ts-ignore
-  const colorClass = activeTodo?.color !== undefined ? `card-popup__inner--${Object.values(EnumColors)[activeTodo.color]?.toLowerCase()}` : '';
 
   const memoCardPopup = useMemo(() => (
     <>

@@ -31,6 +31,7 @@ import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { useOpenFiles } from '@/use/openFiles';
 import { CardAttachments } from '@comp/CardAttachments';
 import { MiniGallery } from '@comp/MiniGallery';
+import { useColorClass } from '@/use/colorClass';
 
 enum EnumToggleType {
   Files,
@@ -98,6 +99,7 @@ export const Card: FC<ICard> = ({
   const { openFiles } = useOpenFiles();
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const colorClass = useColorClass('card__content', color);
 
   const username = useSelector(getUsername);
   const isEditableCard = useSelector(getIsEditableCard);
@@ -456,9 +458,6 @@ export const Card: FC<ICard> = ({
     commentsCountWithCache, imagesCountWithCache, filesCountWithCache,
     isShowFiles, isShowGallery,
   ]);
-
-  // @ts-ignore
-  const colorClass = color !== undefined ? `card__content--${Object.values(EnumColors)[color]?.toLowerCase()}` : '';
 
   return (
     <div
