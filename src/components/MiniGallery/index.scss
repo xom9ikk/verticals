@@ -1,23 +1,16 @@
 .mini-gallery {
   $block: &;
 
-  transition: max-height .3s ease-in-out;
   max-width: 215px;
-  max-height: 2000px;
   overflow: hidden;
+  height: 0;
 
   &__wrapper {
     max-width: 215px;
-    max-height: 2000px;
     border-radius: 6px;
     border: 2px solid transparent;
     overflow: hidden;
     transition: border .3s ease-in-out;
-  }
-
-  &--collapse {
-    max-height: 0;
-    min-height: 0;
   }
 
   &:hover {
@@ -31,13 +24,78 @@
 
 }
 
-.swiper-wrapper {
-  max-width: 215px;
-  max-height: 2000px;
-  position: relative;
-  margin-bottom: -5px;
-  img {
+.swiper {
+  &-wrapper {
     max-width: 215px;
     max-height: 2000px;
+    position: relative;
+    margin-bottom: -5px;
+    margin-right: -5px;
+    img {
+      max-width: 215px;
+    }
   }
+  &-pagination {
+    &-fraction {
+      color: $white;
+      font-size: 10px;
+      width: auto !important;
+      top: 6px !important;
+      left: 6px !important;
+      bottom: auto !important;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 0 5px;
+    }
+    &-current {
+      margin-right: -2px;
+    }
+    &-total {
+      margin-left: -2px;
+    }
+  }
+  &-button {
+    &-prev {
+      color: $white !important;
+      height: 24px !important;
+      width: 24px !important;
+      top: 28px !important;
+      right: 34px !important;
+      left: auto !important;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 8px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-image: url("/assets/svg/arrow-left.svg");
+      &:hover {
+        background-color: $primary;
+      }
+
+      &:after {
+        content: '' !important;
+      }
+    }
+    &-next {
+      color: $white !important;
+      height: 24px !important;
+      width: 24px !important;
+      top: 28px !important;
+      right: 6px !important;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 8px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-image: url("/assets/svg/arrow-right.svg");
+      &:hover {
+        background-color: $primary;
+      }
+
+      &:after {
+        content: '' !important;
+      }
+    }
+  }
+
 }
