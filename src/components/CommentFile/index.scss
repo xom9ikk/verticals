@@ -18,6 +18,9 @@ cursor: pointer;
     #{$block}__size {
       opacity: 1;
     }
+    #{$block}__show-more {
+      color: $primary;
+    }
   }
   &__overlay {
     z-index: 1;
@@ -41,6 +44,12 @@ cursor: pointer;
     //  justify-content: flex-end;
     //  padding: 5px 15px 0px;
     //}
+  }
+  &__show-more {
+    width: 100%;
+    text-align: center;
+    color: $text-light;
+    z-index: 1;
   }
   &--image {
     height: 200px;

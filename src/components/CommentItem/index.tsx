@@ -52,6 +52,7 @@ export const CommentItem: FC<ICommentItem> = ({
   // const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [isShowMore, setIsShowMore] = useState<boolean>(false);
 
   const isImage = (extension: string) => ['png', 'jpg', 'jpeg'].includes(extension);
 
@@ -154,11 +155,12 @@ export const CommentItem: FC<ICommentItem> = ({
     <div className="comment__attachments">
       {
         attachments
+          .slice(0, isShowMore ? attachments.length : 3)
           .sort((file) => (isImage(file.extension) ? -1 : 1))
           .map((file, index) => {
             let isCompact = attachments.length > 1;
             if (index === attachments.length - 1) {
-              isCompact = index % 2 !== 0;
+              isCompact = index % 2 !== 0 || attachments.length === index - 1;
             }
             return (
               <CommentFile
@@ -174,6 +176,25 @@ export const CommentItem: FC<ICommentItem> = ({
               />
             );
           })
+      }
+      {
+        attachments.length > 3
+        && !isShowMore
+        && (
+        <div
+          className="comment-file comment-file--compact"
+          onClick={() => { setIsShowMore(true); }}
+        >
+          <div
+            className="comment-file__overlay"
+          />
+          <span className="comment-file__show-more">
+            {attachments.length - 3}
+            {' '}
+            more items...
+          </span>
+        </div>
+        )
       }
     </div>
   ), [attachments]);
