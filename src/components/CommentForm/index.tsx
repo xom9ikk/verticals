@@ -18,11 +18,15 @@ import { ControlButton } from '@comp/ControlButton';
 interface ICommentForm {
   todoId: number | null;
   onChangeTextAreaHeight: (height: number) => void;
+  isScrolledToBottom: boolean;
+  onScrollToBottom: () => void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({
   todoId,
   onChangeTextAreaHeight,
+  isScrolledToBottom,
+  onScrollToBottom,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
@@ -223,6 +227,25 @@ export const CommentForm: FC<ICommentForm> = ({
           Shift+Enter to send
         </span>
       </div>
+
+      <ControlButton
+        imageSrc="/assets/svg/arrow-down.svg"
+        alt="arrow-down"
+        imageSize={24}
+        size={26}
+        isHide={isScrolledToBottom}
+        // isPrimary
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: -48,
+          zIndex: 2,
+          background: '#fff',
+          boxShadow: '3px 3px 8px #eaeaea, 0px 0px 0px #f1f1f1',
+          // border: '1px solid #ccc',
+        }}
+        onClick={onScrollToBottom}
+      />
     </div>
   );
 };

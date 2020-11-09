@@ -16,8 +16,11 @@ export const Comments: FC<ICommentsWrapper> = () => {
 
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const listRef = useRef<any>(null);
-  const { scrollToBottom } = useAutoScroll(
-    listRef, ScrollDirection.Bottom, [textAreaHeight, comments.length],
+  const { scrollToBottom, isLimit } = useAutoScroll(
+    listRef,
+    ScrollDirection.Bottom,
+    [textAreaHeight, comments.length],
+    ScrollDirection.Bottom,
   );
 
   useEffect(() => {
@@ -38,6 +41,8 @@ export const Comments: FC<ICommentsWrapper> = () => {
       <CommentForm
         todoId={activeTodoId}
         onChangeTextAreaHeight={setTextAreaHeight}
+        isScrolledToBottom={isLimit}
+        onScrollToBottom={scrollToBottom}
       />
     </div>
   );

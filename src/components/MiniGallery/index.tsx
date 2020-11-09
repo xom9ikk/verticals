@@ -39,9 +39,10 @@ export const MiniGallery: FC<IMiniGallery> = ({
 
   useEffect(() => {
     if (images && images.length) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         setIsCollapse(initialIsCollapse);
       }, 100);
+      return () => clearTimeout(timeout);
     }
   }, [initialIsCollapse, images]);
 

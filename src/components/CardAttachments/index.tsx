@@ -22,6 +22,7 @@ export const CardAttachments: FC<ICardAttachments> = ({
       {
         attachments.map((attachment) => (
           <button
+            key={attachment.path}
             className="card-attachment"
             onClick={(e) => {
               e.stopPropagation();
