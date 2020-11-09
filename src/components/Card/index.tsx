@@ -5,7 +5,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
-import { CommentsActions, SystemActions } from '@/store/actions';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
 import { useFocus } from '@/use/focus';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType,
@@ -16,7 +16,14 @@ import { Bullet } from '@comp/Bullet';
 import { forwardTo } from '@/router/history';
 import { useReadableId } from '@/use/readableId';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import { getActiveBoardReadableId, getIsEditableCard, getUsername } from '@/store/selectors';
+import {
+  getActiveBoardReadableId,
+  getCommentImageAttachmentsByTodoId,
+  getCommentFileAttachmentsByTodoId,
+  getCommentsByTodoId,
+  getIsEditableCard,
+  getUsername,
+} from '@/store/selectors';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
 import { useFileList } from '@/use/fileList';
@@ -95,6 +102,13 @@ export const Card: FC<ICard> = ({
   const username = useSelector(getUsername);
   const isEditableCard = useSelector(getIsEditableCard);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
+  const comments = useSelector(getCommentsByTodoId(id || null));
+  const imageAttachments = useSelector(getCommentImageAttachmentsByTodoId(id || null));
+  const fileAttachments = useSelector(getCommentFileAttachmentsByTodoId(id || null));
+
+  const commentsCountWithCache = comments?.length || commentsCount;
+  const imagesCountWithCache = imageAttachments?.length || imagesCount;
+  const filesCountWithCache = fileAttachments?.length || attachmentsCount;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
@@ -277,6 +291,7 @@ export const Card: FC<ICard> = ({
       onClick={onClick}
       onDoubleClick={(e) => e.stopPropagation()}
       isColored={isColored}
+      isStopPropagation={false}
     />
   );
 
@@ -287,12 +302,22 @@ export const Card: FC<ICard> = ({
     switch (type) {
       case EnumToggleType.Files: {
         event.stopPropagation();
-        setTimeout(() => setIsShowFiles((prev) => !prev), 300);
+        setTimeout(() => setIsShowFiles((prev) => {
+          if (!prev) {
+            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: id! }));
+          }
+          return !prev;
+        }), 400);
         setIsShowGallery(false); break;
       }
       case EnumToggleType.Gallery: {
         event.stopPropagation();
-        setTimeout(() => setIsShowGallery((prev) => !prev), 300);
+        setTimeout(() => setIsShowGallery((prev) => {
+          if (!prev) {
+            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: id! }));
+          }
+          return !prev;
+        }), 300);
         setIsShowFiles(false); break;
       }
       default: break;
@@ -405,17 +430,17 @@ export const Card: FC<ICard> = ({
               <div
                 className="card__toggle-container"
               >
-                {renderIcon(attachmentsCount, 'files', 'Show Files', (e) => handleToggle(e, EnumToggleType.Files), isShowFiles)}
-                {renderIcon(imagesCount, 'images', 'Show Gallery', (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery)}
-                {renderIcon(commentsCount, 'bubble', `${commentsCount} comments`, (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCount))}
+                {renderIcon(filesCountWithCache, 'files', 'Show Files', (e) => handleToggle(e, EnumToggleType.Files), isShowFiles)}
+                {renderIcon(imagesCountWithCache, 'images', 'Show Gallery', (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery)}
+                {renderIcon(commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`, (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache))}
               </div>
-              <CardAttachments
-                id={id}
-                isCollapse={!isShowFiles}
-              />
               <MiniGallery
-                id={id}
+                todoId={id}
                 isCollapse={!isShowGallery}
+              />
+              <CardAttachments
+                todoId={id}
+                isCollapse={!isShowFiles}
               />
             </div>
           )
@@ -427,7 +452,9 @@ export const Card: FC<ICard> = ({
     status, isEditable, isEditableCard, isEditableDefault,
     titleInputRef, titleValue,
     descriptionInputRef, descriptionValue, cardType,
-    isActive, files, isHover, isShowFiles, isShowGallery,
+    isActive, files, isHover,
+    commentsCountWithCache, imagesCountWithCache, filesCountWithCache,
+    isShowFiles, isShowGallery,
   ]);
 
   // @ts-ignore

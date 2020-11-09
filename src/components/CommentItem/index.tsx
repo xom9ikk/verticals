@@ -47,8 +47,6 @@ export const CommentItem: FC<ICommentItem> = ({
   const replyComment = useSelector(getCommentById(replyCommentId));
   const editCommentId = useSelector(getEditCommentId);
   const attachments = useSelector(getCommentAttachmentsByCommentId(id));
-  console.log('====attachments', attachments);
-  console.log('====id', id);
   // const [images, setImages] = useState<Array<IFile>>([]);
   // const [files, setFiles] = useState<Array<IFile>>([]);
   // const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);

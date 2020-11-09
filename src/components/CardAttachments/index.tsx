@@ -1,92 +1,45 @@
 import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { useDownload } from '@/use/download';
+import { getCommentFileAttachmentsByTodoId } from '@/store/selectors';
 
 interface ICardAttachments {
-  id?: number,
+  todoId?: number,
   isCollapse: boolean,
 }
 
-const attachments = [{
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'ad s v sdv dsv dv v ds.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}, {
-  extension: 'png',
-  name: 'a.png',
-  path: 'https://a.com',
-}];
-
 export const CardAttachments: FC<ICardAttachments> = ({
+  todoId = null,
   isCollapse,
-}) => (
-  <div className={`card-attachments 
+}) => {
+  const { download } = useDownload();
+  const attachments = useSelector(getCommentFileAttachmentsByTodoId(todoId));
+
+  return attachments && attachments.length ? (
+    <div className={`card-attachments 
   ${isCollapse ? 'card-attachments--collapse' : ''}`}
-  >
-    {
-      attachments.map((attachment) => (
-        <div className="card-attachment">
-          <div className="comment-file__extension">
-            <img src="/assets/svg/extension.svg" alt="extension" />
-            <span>
-              {attachment.extension.substring(0, 4)}
+    >
+      {
+        attachments.map((attachment) => (
+          <button
+            className="card-attachment"
+            onClick={(e) => {
+              e.stopPropagation();
+              download(attachment.path);
+            }}
+          >
+            <div className="comment-file__extension">
+              <img src="/assets/svg/extension.svg" alt="extension" />
+              <span>
+                {attachment.extension.substring(0, 4)}
+              </span>
+            </div>
+            <span className="card-attachment__name">
+              {attachment.name}
             </span>
-          </div>
-          <span className="card-attachment__name">
-            {attachment.name}
-          </span>
-        </div>
-      ))
-    }
-  </div>
-);
+          </button>
+        ))
+      }
+    </div>
+  ) : null;
+};

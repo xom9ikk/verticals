@@ -14,6 +14,7 @@ interface IControlButton {
   isPrimary?: boolean;
   isColored?: boolean;
   isTextable?: boolean;
+  isStopPropagation?: boolean;
   style?: React.CSSProperties;
   onClick?: (event: React.SyntheticEvent) => void;
   onDoubleClick?: (event: React.SyntheticEvent) => void;
@@ -35,6 +36,7 @@ const ControlButtonComponent = ({
   isPrimary,
   isColored,
   isTextable,
+  isStopPropagation = true,
   style,
   onClick,
   onDoubleClick,
@@ -68,7 +70,12 @@ const ControlButtonComponent = ({
     <button
       ref={ref}
       className={classes.join(' ')}
-      onClick={onClick}
+      onClick={(e) => {
+        if (isStopPropagation) {
+          e.stopPropagation();
+        }
+        onClick?.(e);
+      }}
       onDoubleClick={onDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

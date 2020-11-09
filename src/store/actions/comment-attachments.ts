@@ -10,7 +10,7 @@ import {
 
 enum Type {
   FETCH_BY_TODO_ID = 'COMMENT_ATTACHMENTS/FETCH_BY_TODO_ID',
-  SET_ALL = 'COMMENT_ATTACHMENTS/SET_ALL',
+  MERGE = 'COMMENT_ATTACHMENTS/MERGE',
   ADD = 'COMMENT_ATTACHMENTS/ADD',
   UPLOAD_FILES = 'COMMENT_ATTACHMENTS/UPLOAD_FILES',
   UPLOAD_FILE = 'COMMENT_ATTACHMENTS/UPLOAD_FILE',
@@ -18,7 +18,7 @@ enum Type {
 }
 
 const fetchByTodoId = createAction<IFetchCommentAttachmentsByTodoId>(Type.FETCH_BY_TODO_ID);
-const setAll = createAction<ISetCommentAttachments>(Type.SET_ALL);
+const merge = createAction<ISetCommentAttachments>(Type.MERGE);
 const add = createAction<IAddCommentAttachment>(Type.ADD);
 const uploadFiles = createAction<IUploadCommentAttachmentsFiles>(Type.UPLOAD_FILES);
 const uploadFile = createAction(
@@ -38,7 +38,7 @@ const remove = createAction<IRemoveCommentAttachment>(Type.REMOVE);
 export const CommentAttachmentsActions = {
   Type,
   fetchByTodoId,
-  setAll,
+  merge,
   add,
   uploadFiles,
   uploadFile,

@@ -1,16 +1,17 @@
 .mini-gallery {
   $block: &;
 
-  max-width: 215px;
+  width: 215px;
   overflow: hidden;
   height: 0;
+  //height: auto;
 
   &__wrapper {
     max-width: 215px;
     border-radius: 6px;
     border: 2px solid transparent;
     overflow: hidden;
-    transition: border .3s ease-in-out;
+    transition: border .2s ease-in-out;
   }
 
   &:hover {
@@ -20,19 +21,17 @@
   }
 }
 
-.preview {
-
-}
 
 .swiper {
+  &-slide-active {
+    width: auto !important;
+  }
   &-wrapper {
     max-width: 215px;
-    max-height: 2000px;
-    position: relative;
     margin-bottom: -5px;
-    margin-right: -5px;
+    //margin-right: -5px;
     img {
-      max-width: 215px;
+      width: 211px;
     }
   }
   &-pagination {
@@ -97,5 +96,4 @@
       }
     }
   }
-
 }

@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
-// @ts-ignore
-import downloadjs from 'downloadjs';
 import { useFormat } from '@/use/format';
+import { useDownload } from '@/use/download';
 import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentFile {
@@ -26,6 +25,7 @@ export const CommentFile: FC<ICommentFile> = ({
   isImage,
 }) => {
   const { formatSize } = useFormat();
+  const { download } = useDownload();
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const styleImage = isImage ? {
@@ -35,7 +35,7 @@ export const CommentFile: FC<ICommentFile> = ({
   const downloadHandler = (event: React.SyntheticEvent) => {
     event.stopPropagation();
     console.log('download', path);
-    downloadjs(path);
+    download(path);
   };
 
   return (

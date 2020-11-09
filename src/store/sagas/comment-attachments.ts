@@ -22,7 +22,7 @@ function* fetchByTodoIdWorker(action: Action<IGetCommentAttachmentsByTodoIdReque
       commentAttachmentService, commentAttachmentService.getByTodoId, [action.payload],
     );
     const { attachments } = response.data;
-    yield put(CommentAttachmentsActions.setAll(attachments));
+    yield put(CommentAttachmentsActions.merge(attachments));
   } catch (error) {
     yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
   }

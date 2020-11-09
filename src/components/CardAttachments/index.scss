@@ -17,7 +17,6 @@
   &--collapse {
     max-height: 0;
   }
-
 }
 
 .card-attachment {
@@ -41,10 +40,9 @@
     border-bottom-right-radius: 6px;
   }
   &__name {
-    flex-grow: 1;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 150px;
+    max-width: 146px;
   }
 }
