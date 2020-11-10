@@ -92,11 +92,11 @@ export const MainLayout: FC = ({ match }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('keydown', keydownHandler);
-    document.addEventListener('click', clickHandler);
+    window.addEventListener('keydown', keydownHandler);
+    window.addEventListener('click', clickHandler);
     return () => {
-      document.removeEventListener('keydown', keydownHandler);
-      document.removeEventListener('click', clickHandler);
+      window.removeEventListener('keydown', keydownHandler);
+      window.removeEventListener('click', clickHandler);
     };
   }, []);
 
