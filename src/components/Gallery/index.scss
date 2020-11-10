@@ -12,7 +12,6 @@
   &__overlay {
     height: 100vh;
     width: 100vw;
-    //overflow: hidden;
     background: rgba(0, 0, 0, 0.8);
   }
 
@@ -21,7 +20,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    position: relative;
   }
 
   &__control {
@@ -83,7 +82,7 @@
         color: $white;
         font-size: 18px;
         width: auto !important;
-        top: 10px !important;
+        top: 16px !important;
         left: 50% !important;
         transform: translateX(-50%);
         bottom: auto !important;

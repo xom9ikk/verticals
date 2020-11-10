@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import SwiperCore, { Navigation, Pagination, Keyboard } from 'swiper';
+import SwiperCore, { Pagination, Keyboard } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/swiper.scss';
@@ -16,7 +16,7 @@ import { ControlButton } from '@comp/ControlButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDownload } from '@/use/download';
 
-SwiperCore.use([Navigation, Pagination, Keyboard]);
+SwiperCore.use([Pagination, Keyboard]);
 
 interface IGallery {
 }
@@ -51,6 +51,16 @@ export const Gallery: FC<IGallery> = () => {
     }, 1000);
   };
 
+  const handleNext = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    swiperController?.slideNext();
+  };
+
+  const handlePrev = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    swiperController?.slidePrev();
+  };
+
   const setBlur = (value: number) => {
     root!.style.filter = `blur(${value}px)`;
   };
@@ -74,7 +84,7 @@ export const Gallery: FC<IGallery> = () => {
   }, [images, index]);
 
   const memoSwiper = useMemo(() => (
-    <div className="gallery__overlay">
+    <div className="gallery__overlay" onClick={handleClose}>
       <div className="gallery__wrapper">
         <Swiper
           slidesPerView={1}
@@ -83,7 +93,6 @@ export const Gallery: FC<IGallery> = () => {
           keyboard
           setWrapperSize
           loop
-          navigation
           pagination={{ type: 'fraction' }}
           onSwiper={setSwiperController}
           onSlideChangeTransitionEnd={(swiper) => {
@@ -99,6 +108,8 @@ export const Gallery: FC<IGallery> = () => {
             ))
           }
         </Swiper>
+        <button className="swiper-button-next" onClick={handleNext} />
+        <button className="swiper-button-prev" onClick={handlePrev} />
       </div>
     </div>
   ), [images]);
@@ -114,6 +125,7 @@ export const Gallery: FC<IGallery> = () => {
           position: 'absolute',
           right: 16,
           top: 16,
+          zIndex: 2,
         }}
         onClick={handleClose}
       />
