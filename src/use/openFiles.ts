@@ -1,3 +1,7 @@
+import { useFileList } from '@/use/fileList';
+
+const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE);
+
 type IUseOpenFiles = () => {
   openFiles: (
     accept: string,
@@ -6,6 +10,8 @@ type IUseOpenFiles = () => {
 };
 
 export const useOpenFiles: IUseOpenFiles = () => {
+  const { restrictFileSize } = useFileList();
+
   const dispatchClick = (element: HTMLElement) => {
     const eventMouse = document.createEvent('MouseEvents');
     eventMouse.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -25,7 +31,8 @@ export const useOpenFiles: IUseOpenFiles = () => {
     fileInput.onchange = (event: Event) => {
       const { files } = event.target as HTMLInputElement;
       root.removeChild(fileInput);
-      return resolve(files);
+      const filteredFiles = restrictFileSize(files, MAX_FILE_SIZE);
+      return resolve(filteredFiles);
     };
 
     root.appendChild(fileInput);

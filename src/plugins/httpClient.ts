@@ -6,7 +6,7 @@ import { IHttpClient } from '@/inversify.interfaces';
 import { IRefreshResponse } from '@/types/api';
 import { storage } from './storage';
 
-const baseURL = process.env.API_URL;
+const { API_URL } = process.env;
 
 const AUTH_PREFIX = 'Bearer ';
 const DEFAULT_CONTENT_TYPE = 'application/json; charset=utf-8';
@@ -26,7 +26,7 @@ export class HttpClient implements IHttpClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL,
+      baseURL: API_URL,
       headers: {
         'Content-Type': DEFAULT_CONTENT_TYPE,
       },

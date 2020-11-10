@@ -128,29 +128,6 @@ export const CommentItem: FC<ICommentItem> = ({
     }));
   };
 
-  // const drawList = (list: Array<IFile>) => (
-  //   <div className="comment__attachments">
-  //     {
-  //       list && list?.length > 0 && list
-  //         .map((file, index) => {
-  //           let isCompact = list.length > 1;
-  //           if (index === list.length - 1) {
-  //             isCompact = index % 2 !== 0;
-  //           }
-  //           return (
-  //             <CommentFile
-  //               key={file.id}
-  //               file={file}
-  //               onRemove={removeHandler}
-  //               isCompact={isCompact}
-  //               isImage={isImage(file)}
-  //             />
-  //           );
-  //         })
-  //   }
-  //   </div>
-  // );
-
   const memoAttachments = useMemo(() => (
     <div className="comment__attachments">
       {
@@ -226,8 +203,6 @@ export const CommentItem: FC<ICommentItem> = ({
         text && (<div className="comment__text">{text}</div>)
       }
       { memoAttachments }
-      {/* {drawList(files)} */}
-      {/* {drawList(images)} */}
     </div>
   ), [
     replyCommentId,
