@@ -34,7 +34,6 @@ function* fetchWorker() {
       if (board) {
         const { id, title } = board;
         const readableBoardId = toReadableId(title, id);
-        yield put(SystemActions.setActiveBoardId(id));
         forwardTo(`/${username}/${readableBoardId}`);
       }
     }

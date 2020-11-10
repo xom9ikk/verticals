@@ -20,6 +20,7 @@ const initialState = {
   activeBoardReadableId: null,
   activeTodoReadableId: null,
   droppedFiles: null,
+  galleryImagesInfo: null,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -63,4 +64,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       }),
   [SystemActions.Type.SET_DROPPED_FILES]:
       (state, action) => ({ ...state, droppedFiles: action.payload.droppedFiles }),
+  [SystemActions.Type.SET_GALLERY_IMAGES_INFO]:
+      (state, action) => ({ ...state, galleryImagesInfo: action.payload.galleryImagesInfo }),
 }, initialState);

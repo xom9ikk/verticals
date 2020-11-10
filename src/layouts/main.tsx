@@ -24,23 +24,25 @@ import { useReadableId } from '@/use/readableId';
 import { useValueRef } from '@/use/valueRef';
 import { forwardTo } from '@/router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
-
-const { toNumericId } = useReadableId();
+import { TRASH_ID } from '../../constants';
 
 // @ts-ignore
 export const MainLayout: FC = ({ match }) => {
-  const dispatch = useDispatch();
   const { boardId, todoId } = match.params;
+
+  const dispatch = useDispatch();
   const activeBoardId = useSelector(getActiveBoardId);
   const activeTodoId = useSelector(getActiveTodoId);
   const username = useSelector(getUsername);
+
+  const { toNumericId } = useReadableId();
   const refBoardId = useValueRef(boardId);
   const refActiveTodoId = useValueRef(activeTodoId);
   const refUsername = useValueRef(username);
 
   useEffect(() => {
     const numericBoardId = boardId === 'trash'
-      ? -1
+      ? TRASH_ID
       : boardId !== undefined
         && !['account', 'profile'].includes(boardId)
         ? toNumericId(boardId)
@@ -90,11 +92,11 @@ export const MainLayout: FC = ({ match }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', keydownHandler);
-    window.addEventListener('click', clickHandler);
+    document.addEventListener('keydown', keydownHandler);
+    document.addEventListener('click', clickHandler);
     return () => {
-      window.removeEventListener('keydown', keydownHandler);
-      window.removeEventListener('click', clickHandler);
+      document.removeEventListener('keydown', keydownHandler);
+      document.removeEventListener('click', clickHandler);
     };
   }, []);
 
