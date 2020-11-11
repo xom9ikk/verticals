@@ -44,6 +44,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 146px;
+    max-width: $column-width - 134px;
   }
 }
