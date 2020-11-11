@@ -1,4 +1,4 @@
-import { IComments } from '@/types/entities';
+import { ICommentLike, IComments } from '@/types/entities';
 
 export interface IFetchCommentsByTodoId {
   todoId: number;
@@ -24,9 +24,18 @@ export interface IRemoveComment {
   id: number;
 }
 
-export interface ISwitchCommentLike {
-  id: number;
-  username: string;
+export interface IAddCommentLike {
+  commentId: number;
+}
+
+export interface IRemoveCommentLike {
+  commentId: number;
+}
+
+export interface IUpdateCommentLike {
+  commentId: number;
+  like: ICommentLike;
+  isLiked: boolean;
 }
 
 export interface IUpdateCommentText {

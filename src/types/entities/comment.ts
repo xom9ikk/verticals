@@ -10,6 +10,13 @@ export interface IFile {
 //   link: string;
 // }
 
+export interface ICommentLike {
+  name: string | null;
+  surname: string | null;
+  username: string | null;
+  avatar: string | null;
+}
+
 export interface IComment {
   id: number;
   userId: number;
@@ -18,8 +25,7 @@ export interface IComment {
   createdAt: number;
   updatedAt: number | null;
   replyCommentId: number;
-  // attachedFiles?: Array<IFile>;
-  // likes?: Array<string>;
+  likedUsers?: Array<ICommentLike>;
 }
 
 export type IComments = Array<IComment>;

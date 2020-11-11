@@ -38,6 +38,7 @@ export const CommentItem: FC<ICommentItem> = ({
   createdAt,
   updatedAt,
   replyCommentId,
+  likedUsers,
 }) => {
   const { formatDate } = useFormat();
   const dispatch = useDispatch();
@@ -49,13 +50,15 @@ export const CommentItem: FC<ICommentItem> = ({
   const attachments = useSelector(getCommentAttachmentsByCommentId(id));
   // const [images, setImages] = useState<Array<IFile>>([]);
   // const [files, setFiles] = useState<Array<IFile>>([]);
-  // const [isLikeByMe, setIsLikeByMe] = useState<boolean>(false);
+  // const [isLikedByMe, setIsLikeByMe] = useState<boolean>(false);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isShowMore, setIsShowMore] = useState<boolean>(false);
 
   const isImage = (extension: string) => ['png', 'jpg', 'jpeg'].includes(extension);
+  const isLikedByMe = likedUsers?.some((user) => user.username === username);
 
+  console.log('isLikedByMe', isLikedByMe);
   // useEffect(() => {
   //   setImages(attachedFiles?.filter((file) => isImage(file)) ?? []);
   //   setFiles(attachedFiles?.filter((file) => !isImage(file)) ?? []);
@@ -83,11 +86,12 @@ export const CommentItem: FC<ICommentItem> = ({
     console.log('menuButtonClickHandler', action, payload);
     switch (action) {
       case EnumMenuActions.Like: {
-        console.log('add like');
-        dispatch(CommentsActions.switchLike({
-          id,
-          username: username!,
-        }));
+        const like = { commentId: id };
+        if (isLikedByMe) {
+          dispatch(CommentsActions.removeLike(like));
+        } else {
+          dispatch(CommentsActions.addLike(like));
+        }
         break;
       }
       case EnumMenuActions.Reply: {
@@ -210,7 +214,9 @@ export const CommentItem: FC<ICommentItem> = ({
     fullName,
     attachments]);
 
-  const isLikeByMe = false;
+  const handleClickOnLikedUser = () => {
+
+  };
 
   return (
     <div
@@ -228,8 +234,9 @@ export const CommentItem: FC<ICommentItem> = ({
         <div className="comment__controls">
           <div className="comment__controls--buttons">
             <ControlButton
-              imageSrc={`/assets/svg/like${isLikeByMe ? '-active' : ''}.svg`}
-              tooltip={`${isLikeByMe ? 'Unlike' : 'Like'}`}
+              imageSrc={`/assets/svg/like${isLikedByMe ? '-active' : ''}.svg`}
+              tooltip={`${isLikedByMe ? 'Unlike' : 'Like'}`}
+              isColored={isLikedByMe}
               alt="like"
               imageSize={16}
               size={22}
@@ -255,6 +262,20 @@ export const CommentItem: FC<ICommentItem> = ({
               ) : null
             }
             <div className="comment__date">{formatDate(new Date(createdAt))}</div>
+            <div className="comment__like-bubbles">
+              {
+                likedUsers && likedUsers?.length > 0 && likedUsers.map((user) => (
+                  <Avatar
+                    size={16}
+                    onClick={handleClickOnLikedUser}
+                    borderSize="small"
+                    style={{ marginLeft: -8, background: '#f7f7f7' }}
+                    userAvatarUrl={user.avatar}
+                    userFullName={`${user.name} ${user.surname}`}
+                  />
+                ))
+              }
+            </div>
             <Menu
               imageSrc="/assets/svg/dots.svg"
               tooltip="More"
@@ -264,7 +285,7 @@ export const CommentItem: FC<ICommentItem> = ({
               position="top"
             >
               <MenuItem
-                text={`${isLikeByMe ? 'Unlike' : 'Like'}`}
+                text={`${isLikedByMe ? 'Unlike' : 'Like'}`}
                 imageSrc="/assets/svg/like.svg"
                 onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
               />

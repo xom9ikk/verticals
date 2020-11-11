@@ -4,10 +4,17 @@ import { TYPES } from '@/inversify.types';
 import { ICommentService, IHttpClient } from '@/inversify.interfaces';
 import {
   IGetAllCommentsResponse,
-  ICreateCommentRequest, ICreateCommentResponse,
-  IRemoveCommentRequest, IRemoveCommentResponse,
-  IUpdateCommentRequest, IUpdateCommentResponse,
-  IGetCommentsByTodoIdRequest, IGetCommentsByTodoIdResponse,
+  ICreateCommentRequest,
+  ICreateCommentResponse,
+  IRemoveCommentRequest,
+  IRemoveCommentResponse,
+  IUpdateCommentRequest,
+  IUpdateCommentResponse,
+  IGetCommentsByTodoIdRequest,
+  IGetCommentsByTodoIdResponse,
+  IAddCommentLikeRequest,
+  IAddCommentLikeResponse,
+  IRemoveCommentLikeRequest, IRemoveCommentLikeResponse,
 } from '@/types/api';
 
 @injectable()
@@ -42,5 +49,14 @@ export class CommentService implements ICommentService {
   update(body: IUpdateCommentRequest) {
     const { id } = body;
     return this.httpClient.patch<IUpdateCommentResponse>(`/comment/${id}`, body);
+  }
+
+  addLike(body: IAddCommentLikeRequest) {
+    return this.httpClient.post<IAddCommentLikeResponse>('/comment-like/', body);
+  }
+
+  removeLike(body: IRemoveCommentLikeRequest) {
+    const { commentId } = body;
+    return this.httpClient.delete<IRemoveCommentLikeResponse>(`/comment-like/${commentId}`);
   }
 }

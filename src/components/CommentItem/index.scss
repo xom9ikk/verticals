@@ -57,7 +57,10 @@
     font-family: 'Nunito Extra Light', sans-serif;
     //opacity: 0;
     //transition: opacity .2s ease-in-out;
-    margin-right: 5px;
+    margin-right: 15px;
+  }
+  &__like-bubbles {
+    display: flex;
   }
   //&__content {
   //  display: flex;
@@ -93,7 +96,6 @@
         color: $text-very-light;
         font-family: 'Nunito Extra Light', sans-serif;
         font-size: 10px;
-
       }
     }
     button {

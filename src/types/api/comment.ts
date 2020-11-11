@@ -36,3 +36,15 @@ export interface IUpdateCommentRequest {
 }
 
 export type IUpdateCommentResponse = IServerResponse;
+
+export interface IAddCommentLikeRequest {
+  commentId: number;
+}
+
+export type IAddCommentLikeResponse = IServerResponse;
+
+export interface IRemoveCommentLikeRequest {
+  commentId: number;
+}
+
+export type IRemoveCommentLikeResponse = IServerResponse;

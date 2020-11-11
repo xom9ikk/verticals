@@ -30,7 +30,7 @@ function* fetchWorker() {
     const currentBoardId = yield select(getActiveBoardId);
     const username = yield select(getUsername);
     if (currentBoardId === null) {
-      const board = boards[0];
+      const [board] = boards;
       if (board) {
         const { id, title } = board;
         const readableBoardId = toReadableId(title, id);
