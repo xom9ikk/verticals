@@ -9,6 +9,7 @@ import ReactTooltip from 'react-tooltip';
 import './styles/scss/main.scss';
 
 // import createDebug from 'debug';
+import { Gallery } from '@comp/Gallery';
 import { configureStore } from './store/configureStore';
 import { MainRouter } from './router';
 
@@ -32,6 +33,7 @@ ReactDOM.render(
       arrowColor="transparent"
       overridePosition={({ left, top }) => ({ left, top })}
     />
+    <Gallery />
   </Provider>,
   document.getElementById('root'),
 );

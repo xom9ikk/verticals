@@ -17,6 +17,7 @@ import {
   ISetSystemActiveBoardReadableId,
   ISetSystemActiveTodoReadableId,
   ISetSystemDroppedFiles,
+  ISetGalleryImagesInfo,
 } from '@/types/actions';
 
 enum Type {
@@ -37,6 +38,7 @@ enum Type {
   SET_ACTIVE_BOARD_READABLE_ID = 'SYSTEM/SET_ACTIVE_BOARD_READABLE_ID',
   SET_ACTIVE_TODO_READABLE_ID = 'SYSTEM/SET_ACTIVE_TODO_READABLE_ID',
   SET_DROPPED_FILES = 'SYSTEM/SET_DROPPED_FILES',
+  SET_GALLERY_IMAGES_INFO = 'SYSTEM/SET_GALLERY_IMAGES_INFO',
 }
 
 const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
@@ -116,6 +118,11 @@ const setDroppedFiles = createAction(
   (payload: ISetSystemDroppedFiles) => ({ droppedFiles: payload }),
 );
 
+const setGalleryImagesInfo = createAction(
+  Type.SET_GALLERY_IMAGES_INFO,
+  (payload: ISetGalleryImagesInfo) => ({ galleryImagesInfo: payload }),
+);
+
 export const SystemActions = {
   Type,
   setIsLoadedBoards,
@@ -135,4 +142,5 @@ export const SystemActions = {
   setActiveBoardReadableId,
   setActiveTodoReadableId,
   setDroppedFiles,
+  setGalleryImagesInfo,
 };

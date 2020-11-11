@@ -1,18 +1,19 @@
 import React, {
-  FC, useEffect, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 
-import SwiperCore, { Navigation, Pagination } from 'swiper';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCommentImageAttachmentsByTodoId } from '@/store/selectors';
+import { useCollapse } from '@/use/animationHeight';
+
+import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/swiper.scss';
-import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
-import { useCollapse } from '@/use/animationHeight';
-import { useSelector } from 'react-redux';
-import { getCommentImageAttachmentsByTodoId } from '@/store/selectors';
+import { SystemActions } from '@/store/actions';
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Pagination]);
 
 interface IMiniGallery {
   todoId?: number,
@@ -23,11 +24,23 @@ export const MiniGallery: FC<IMiniGallery> = ({
   todoId = null,
   isCollapse: initialIsCollapse,
 }) => {
+  const dispatch = useDispatch();
   const { collapse, expand } = useCollapse();
   const ref = useRef<any>();
   const [isCollapse, setIsCollapse] = useState<boolean>(true);
+  const [activeIndex, setActiveIndex] = useState<number>(1);
+  const [swiperController, setSwiperController] = useState<SwiperCore>();
 
   const images = useSelector(getCommentImageAttachmentsByTodoId(todoId));
+
+  const handleClick = (e: React.BaseSyntheticEvent) => {
+    e.stopPropagation();
+    console.log('handleClick activeIndex', activeIndex);
+    dispatch(SystemActions.setGalleryImagesInfo({
+      images,
+      index: activeIndex,
+    }));
+  };
 
   useEffect(() => {
     if (isCollapse) {
@@ -46,35 +59,58 @@ export const MiniGallery: FC<IMiniGallery> = ({
     }
   }, [initialIsCollapse, images]);
 
+  const handleNext = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    swiperController?.slideNext();
+  };
+
+  const handlePrev = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    swiperController?.slidePrev();
+  };
+
+  const memoSwiper = useMemo(() => (images && images.length ? (
+    <>
+      <div className="mini-gallery__wrapper">
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={0}
+          preventClicks={false}
+          threshold={2}
+          loop
+          setWrapperSize
+          autoHeight
+          pagination={{ type: 'fraction' }}
+          onSwiper={setSwiperController}
+          onSlideChangeTransitionEnd={(swiper) => {
+            const newActiveIndex = swiper.activeIndex - 1;
+            console.log('newActiveIndex', newActiveIndex);
+            setActiveIndex(newActiveIndex);
+          }}
+        >
+          {
+            images.map((image) => (
+              <SwiperSlide key={image.path}>
+                <img src={image.path} alt="" />
+              </SwiperSlide>
+            ))
+          }
+        </Swiper>
+        <button className="swiper-button-next" onClick={handleNext} />
+        <button className="swiper-button-prev" onClick={handlePrev} />
+      </div>
+    </>
+  ) : null),
+  [images]);
+
   return (
     <div
       ref={ref}
       className="mini-gallery"
-      onClick={(e) => e.stopPropagation()}
+      onClick={handleClick}
       onDoubleClick={(e) => e.stopPropagation()}
     >
-      { images && images.length ? (
-        <div className="mini-gallery__wrapper">
-          <Swiper
-            slidesPerView={1}
-            height={100}
-            spaceBetween={0}
-            loop
-            setWrapperSize
-            autoHeight
-            navigation
-            pagination={{ type: 'fraction' }}
-          >
-            {
-              images.map((image) => (
-                <SwiperSlide key={image.path}>
-                  <img src={image.path} alt="" />
-                </SwiperSlide>
-              ))
-            }
-          </Swiper>
-        </div>
-      ) : null}
+      { memoSwiper }
     </div>
   );
 };

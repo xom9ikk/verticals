@@ -1,4 +1,5 @@
 import { EnumDroppedZoneType, EnumLanguage } from '@/types/entities';
+import { ICommentAttachments } from '@/types/entities/comment-attachment';
 
 export type ISetSystemIsLoadedBoards = boolean;
 export type ISetSystemIsLoadedColumns = boolean;
@@ -20,3 +21,7 @@ export interface ISetSystemDroppedFiles {
   type: EnumDroppedZoneType;
   files: FileList;
 }
+export type ISetGalleryImagesInfo = {
+  images: ICommentAttachments | null;
+  index?: number;
+} | null;

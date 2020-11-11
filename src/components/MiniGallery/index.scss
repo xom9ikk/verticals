@@ -1,13 +1,15 @@
 .mini-gallery {
   $block: &;
 
-  width: 215px;
+  //max-width: 215px;
+  width: 100%;
   overflow: hidden;
   height: 0;
+  position: relative;
   //height: auto;
 
   &__wrapper {
-    max-width: 215px;
+    //max-width: 215px;
     border-radius: 6px;
     border: 2px solid transparent;
     overflow: hidden;
@@ -19,80 +21,81 @@
       border: 2px solid $primary;
     }
   }
-}
 
 
-.swiper {
-  &-slide-active {
-    width: auto !important;
-  }
-  &-wrapper {
-    max-width: 215px;
-    margin-bottom: -5px;
-    //margin-right: -5px;
-    img {
-      width: 211px;
-    }
-  }
-  &-pagination {
-    &-fraction {
-      color: $white;
-      font-size: 10px;
+
+  & .swiper {
+    &-slide-active {
       width: auto !important;
-      top: 6px !important;
-      left: 6px !important;
-      bottom: auto !important;
-      border-radius: 6px;
-      background-color: rgba(0, 0, 0, 0.2);
-      padding: 0 5px;
     }
-    &-current {
-      margin-right: -2px;
-    }
-    &-total {
-      margin-left: -2px;
-    }
-  }
-  &-button {
-    &-prev {
-      color: $white !important;
-      height: 24px !important;
-      width: 24px !important;
-      top: 28px !important;
-      right: 34px !important;
-      left: auto !important;
-      border-radius: 6px;
-      background-color: rgba(0, 0, 0, 0.2);
-      padding: 8px;
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-image: url("/assets/svg/arrow-left.svg");
-      &:hover {
-        background-color: $primary;
+    &-wrapper {
+      max-width: $column-width - 70;
+      margin-bottom: -5px;
+      //margin-right: -5px;
+      img {
+        width: $column-width - 70 + 1;
       }
+    }
+    &-pagination {
+      &-fraction {
+        color: $white;
+        font-size: 10px;
+        width: auto !important;
+        top: 6px !important;
+        left: 6px !important;
+        bottom: auto !important;
+        border-radius: 6px;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 0 5px;
+      }
+      &-current {
+        margin-right: -2px;
+      }
+      &-total {
+        margin-left: -2px;
+      }
+    }
+    &-button {
+      &-prev {
+        color: $white;
+        height: 24px;
+        width: 24px;
+        top: 30px;
+        right: 36px;
+        left: auto;
+        border-radius: 6px;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 8px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-image: url("/assets/svg/arrow-left.svg");
+        &:hover {
+          background-color: $primary;
+        }
 
-      &:after {
-        content: '' !important;
+        &:after {
+          content: '' !important;
+        }
       }
-    }
-    &-next {
-      color: $white !important;
-      height: 24px !important;
-      width: 24px !important;
-      top: 28px !important;
-      right: 6px !important;
-      border-radius: 6px;
-      background-color: rgba(0, 0, 0, 0.2);
-      padding: 8px;
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-image: url("/assets/svg/arrow-right.svg");
-      &:hover {
-        background-color: $primary;
-      }
+      &-next {
+        color: $white;
+        height: 24px;
+        width: 24px;
+        top: 30px;
+        right: 6px;
+        border-radius: 6px;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 8px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-image: url("/assets/svg/arrow-right.svg");
+        &:hover {
+          background-color: $primary;
+        }
 
-      &:after {
-        content: '' !important;
+        &:after {
+          content: '' !important;
+        }
       }
     }
   }

@@ -6,7 +6,9 @@ import {
   IAddComment,
   IRemoveComment,
   IRemoveCommentFile,
-  ISwitchCommentLike,
+  IAddCommentLike,
+  IRemoveCommentLike,
+  IUpdateCommentLike,
   IUpdateCommentText,
 } from '@/types/actions';
 
@@ -16,7 +18,9 @@ enum Type {
   CREATE = 'COMMENTS/CREATE',
   ADD = 'COMMENTS/ADD',
   REMOVE = 'COMMENTS/REMOVE',
-  SWITCH_LIKE = 'COMMENTS/SWITCH_LIKE',
+  ADD_LIKE = 'COMMENTS/ADD_LIKE',
+  REMOVE_LIKE = 'COMMENTS/REMOVE_LIKE',
+  UPDATE_LIKE = 'COMMENTS/UPDATE_LIKE',
   UPDATE_TEXT = 'COMMENTS/UPDATE_TEXT',
   REMOVE_FILE = 'COMMENTS/REMOVE_FILE',
 }
@@ -26,7 +30,9 @@ const setAll = createAction<ISetComments>(Type.SET_ALL);
 const create = createAction<ICreateComment>(Type.CREATE);
 const add = createAction<IAddComment>(Type.ADD);
 const remove = createAction<IRemoveComment>(Type.REMOVE);
-const switchLike = createAction<ISwitchCommentLike>(Type.SWITCH_LIKE);
+const addLike = createAction<IAddCommentLike>(Type.ADD_LIKE);
+const removeLike = createAction<IRemoveCommentLike>(Type.REMOVE_LIKE);
+const updateLike = createAction<IUpdateCommentLike>(Type.UPDATE_LIKE);
 const updateText = createAction<IUpdateCommentText>(Type.UPDATE_TEXT);
 const removeFile = createAction<IRemoveCommentFile>(Type.REMOVE_FILE);
 
@@ -37,7 +43,9 @@ export const CommentsActions = {
   create,
   add,
   remove,
-  switchLike,
+  addLike,
+  removeLike,
+  updateLike,
   updateText,
   removeFile,
 };

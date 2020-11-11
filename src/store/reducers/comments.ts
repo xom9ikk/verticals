@@ -186,29 +186,6 @@ export const CommentsReducer = handleActions<IComments, any>({
       }]),
   [CommentsActions.Type.REMOVE]:
       (state, action) => state.filter((comment: IComment) => comment.id !== action.payload.id),
-  // [CommentsActions.Type.SWITCH_LIKE]:
-  //     (state, action) => {
-  //       const { id, userId } = action.payload;
-  //       const targetComment = state.find((comment: IComment) => comment.id === id);
-  //       const isLiked = targetComment?.likes?.includes(userId) ?? false;
-  //       if (isLiked) {
-  //         return state.map((comment: IComment) => (comment.id === id
-  //           ? {
-  //             ...comment,
-  //             likes: comment?.likes?.filter((uId) => uId !== userId) ?? [],
-  //           }
-  //           : comment));
-  //       }
-  //       return state.map((comment: IComment) => (comment.id === id
-  //         ? {
-  //           ...comment,
-  //           likes: [
-  //             ...comment.likes || [],
-  //             action.payload.userId,
-  //           ],
-  //         }
-  //         : comment));
-  //     },
   [CommentsActions.Type.UPDATE_TEXT]:
       (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
         ? {
@@ -217,12 +194,17 @@ export const CommentsReducer = handleActions<IComments, any>({
           updatedAt: new Date().getTime(),
         }
         : comment))),
-  // [CommentsActions.Type.REMOVE_FILE]:
-  //     (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
-  //       ? {
-  //         ...comment,
-  //         attachedFiles: comment.attachedFiles
-  //             ?.filter((file: IFile) => file.id !== action.payload.fileId) ?? [],
-  //       }
-  //       : comment))),
+  [CommentsActions.Type.UPDATE_LIKE]:
+      (state, action) => (state.map((comment: IComment) => {
+        const { commentId, like, isLiked } = action.payload;
+        return comment.id === commentId
+          ? {
+            ...comment,
+            likedUsers: isLiked
+              ? [...comment.likedUsers, like]
+              : comment.likedUsers
+                      ?.filter((u) => u.username !== like.username),
+          }
+          : comment;
+      })),
 }, initialState);

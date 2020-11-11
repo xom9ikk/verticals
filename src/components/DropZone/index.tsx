@@ -1,4 +1,7 @@
 import React, { FC, useState } from 'react';
+import { useFileList } from '@/use/fileList';
+
+const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE);
 
 interface IDropZone {
   onOpen: (files: FileList) => void;
@@ -12,7 +15,14 @@ export const DropZone: FC<IDropZone> = ({
   accept = '*',
   children,
 }) => {
+  const { restrictFileSize } = useFileList();
   const [isDrag, setIsDrag] = useState<boolean>(false);
+
+  const handleDrop = (event: any) => {
+    const filteredFiles = restrictFileSize(event.dataTransfer.files, MAX_FILE_SIZE);
+    onOpen(filteredFiles!);
+    setIsDrag(false);
+  };
 
   return (
     <div
@@ -38,10 +48,7 @@ export const DropZone: FC<IDropZone> = ({
           accept={accept}
           multiple
           className="drop-zone__input"
-          onDrop={(e) => {
-            onOpen(e.dataTransfer.files);
-            setIsDrag(false);
-          }}
+          onDrop={handleDrop}
           onClick={(e) => e.stopPropagation()}
         />
       </div>

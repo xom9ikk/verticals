@@ -15,13 +15,20 @@ export const Comments: FC<ICommentsWrapper> = () => {
   const comments = useSelector(getCommentsByTodoId(activeTodoId));
 
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
+  const [commentsMaxCounter, setCommentsMaxCounter] = useState<number>(0);
   const listRef = useRef<any>(null);
   const { scrollToBottom, isLimit } = useAutoScroll(
     listRef,
     ScrollDirection.Bottom,
-    [textAreaHeight, comments.length],
+    [textAreaHeight, commentsMaxCounter],
     ScrollDirection.Bottom,
   );
+
+  useEffect(() => {
+    if (comments.length > commentsMaxCounter) {
+      setCommentsMaxCounter(comments.length);
+    }
+  }, [comments.length]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

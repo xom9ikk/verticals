@@ -17,3 +17,4 @@ export const getActiveBoardId = (state: IRootState) => state.system.activeBoardI
 export const getActiveBoardReadableId = (state: IRootState) => state.system.activeBoardReadableId;
 export const getActiveTodoReadableId = (state: IRootState) => state.system.activeTodoReadableId;
 export const getDroppedFiles = (state: IRootState) => state.system.droppedFiles;
+export const getGalleryImagesInfo = (state: IRootState) => state.system.galleryImagesInfo;

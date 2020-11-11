@@ -1,5 +1,5 @@
 import {
-  all, apply, call, put, takeLatest,
+  all, apply, call, put, select, takeLatest,
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
@@ -12,7 +12,12 @@ import {
   IRemoveCommentRequest,
   IUpdateCommentRequest,
   IGetCommentsByTodoIdRequest,
+  IAddCommentLikeRequest,
+  IRemoveCommentLikeRequest,
 } from '@/types/api';
+import {
+  getAvatarUrl, getName, getSurname, getUsername,
+} from '@/store/selectors';
 
 const { commentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -67,11 +72,59 @@ function* updateWorker(action: Action<IUpdateCommentRequest>) {
   }
 }
 
+function* addLikeWorker(action: Action<IAddCommentLikeRequest>) {
+  try {
+    yield* apply(commentService, commentService.addLike, [action.payload]);
+    const { commentId } = action.payload;
+    const name = yield select(getName);
+    const surname = yield select(getSurname);
+    const username = yield select(getUsername);
+    const avatar = yield select(getAvatarUrl);
+    yield put(CommentsActions.updateLike({
+      commentId,
+      like: {
+        name,
+        surname,
+        username,
+        avatar,
+      },
+      isLiked: true,
+    }));
+  } catch (error) {
+    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* removeLikeWorker(action: Action<IRemoveCommentLikeRequest>) {
+  try {
+    yield* apply(commentService, commentService.removeLike, [action.payload]);
+    const { commentId } = action.payload;
+    const name = yield select(getName);
+    const surname = yield select(getSurname);
+    const username = yield select(getUsername);
+    const avatar = yield select(getAvatarUrl);
+    yield put(CommentsActions.updateLike({
+      commentId,
+      like: {
+        name,
+        surname,
+        username,
+        avatar,
+      },
+      isLiked: false,
+    }));
+  } catch (error) {
+    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+  }
+}
+
 export function* watchComment() {
   yield* all([
     takeLatest(CommentsActions.Type.FETCH_BY_TODO_ID, fetchByTodoIdWorker),
     takeLatest(CommentsActions.Type.CREATE, createWorker),
     takeLatest(CommentsActions.Type.REMOVE, removeWorker),
     takeLatest(CommentsActions.Type.UPDATE_TEXT, updateWorker),
+    takeLatest(CommentsActions.Type.ADD_LIKE, addLikeWorker),
+    takeLatest(CommentsActions.Type.REMOVE_LIKE, removeLikeWorker),
   ]);
 }

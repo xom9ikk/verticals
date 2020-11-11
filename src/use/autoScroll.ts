@@ -84,7 +84,7 @@ export const useAutoScroll = (
         }
         default: break;
       }
-    }, 0);
+    }, 100);
     return () => {
       clearTimeout(timeout);
     };

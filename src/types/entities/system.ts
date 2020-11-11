@@ -1,3 +1,5 @@
+import { ICommentAttachments } from '@/types/entities/comment-attachment';
+
 export enum EnumLanguage {
   English,
   Russian,
@@ -31,4 +33,8 @@ export interface ISystem {
     type: EnumDroppedZoneType;
     files: FileList;
   } | null;
+  galleryImagesInfo: {
+    images: ICommentAttachments | null;
+    index: number;
+  } | null
 }

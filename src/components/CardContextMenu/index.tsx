@@ -6,10 +6,11 @@ import { MenuItem } from '@comp/MenuItem';
 import { Submenu } from '@comp/Submenu';
 import { EnumColors, EnumTodoStatus } from '@/types/entities';
 import { Divider } from '@comp/Divider';
-import { SystemActions, TodosActions } from '@/store/actions';
+import { CommentsActions, SystemActions, TodosActions } from '@/store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
 import { getActiveBoardReadableId, getUsername } from '@/store/selectors';
+import { useOpenFiles } from '@/use/openFiles';
 
 interface ICardContextMenu {
   id?: number;
@@ -64,6 +65,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
 }) => {
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
+  const { openFiles } = useOpenFiles();
 
   const username = useSelector(getUsername);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
@@ -73,6 +75,15 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   const hidePopup = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
     onHidePopup?.();
+  };
+
+  const handleUploadFiles = async () => {
+    const openedFiles = await openFiles('*', true);
+    dispatch(CommentsActions.create({
+      todoId: id!,
+      text: '',
+      files: openedFiles,
+    }));
   };
 
   const menuButtonClickHandler = (action: EnumCardActions, payload?: any) => {
@@ -86,6 +97,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.AttachFile: {
+        handleUploadFiles();
         // TODO:
         break;
       }
