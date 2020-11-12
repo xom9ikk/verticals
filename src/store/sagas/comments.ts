@@ -1,5 +1,5 @@
 import {
-  all, apply, call, put, select, takeLatest,
+  all, apply, call, put, select, takeLatest, takeLeading,
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
@@ -124,7 +124,7 @@ export function* watchComment() {
     takeLatest(CommentsActions.Type.CREATE, createWorker),
     takeLatest(CommentsActions.Type.REMOVE, removeWorker),
     takeLatest(CommentsActions.Type.UPDATE_TEXT, updateWorker),
-    takeLatest(CommentsActions.Type.ADD_LIKE, addLikeWorker),
-    takeLatest(CommentsActions.Type.REMOVE_LIKE, removeLikeWorker),
+    takeLeading(CommentsActions.Type.ADD_LIKE, addLikeWorker),
+    takeLeading(CommentsActions.Type.REMOVE_LIKE, removeLikeWorker),
   ]);
 }

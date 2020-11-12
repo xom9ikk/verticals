@@ -69,7 +69,7 @@ export const CommentFile: FC<ICommentFile> = ({
           alt="delete"
           imageSize={22}
           size={24}
-          isHide
+          isInvisible
           isHoverBlock={isHover}
           onClick={() => onRemove(id)}
           style={{ position: 'absolute', right: 5, top: 5 }}

@@ -234,7 +234,6 @@ export const CommentForm: FC<ICommentForm> = ({
         imageSize={24}
         size={26}
         isHide={isScrolledToBottom}
-        // isPrimary
         style={{
           position: 'absolute',
           right: 0,
@@ -242,7 +241,6 @@ export const CommentForm: FC<ICommentForm> = ({
           zIndex: 2,
           background: '#fff',
           boxShadow: '3px 3px 8px #eaeaea, 0px 0px 0px #f1f1f1',
-          // border: '1px solid #ccc',
         }}
         onClick={onScrollToBottom}
       />

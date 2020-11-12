@@ -21,6 +21,7 @@ import {
   getCommentAttachmentsByCommentId,
 } from '@/store/selectors';
 import { ControlButton } from '@comp/ControlButton';
+import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
 
 type ICommentItem = IComment;
 
@@ -34,7 +35,6 @@ enum EnumMenuActions {
 export const CommentItem: FC<ICommentItem> = ({
   id,
   text,
-  // attachedFiles,
   createdAt,
   updatedAt,
   replyCommentId,
@@ -48,27 +48,12 @@ export const CommentItem: FC<ICommentItem> = ({
   const replyComment = useSelector(getCommentById(replyCommentId));
   const editCommentId = useSelector(getEditCommentId);
   const attachments = useSelector(getCommentAttachmentsByCommentId(id));
-  // const [images, setImages] = useState<Array<IFile>>([]);
-  // const [files, setFiles] = useState<Array<IFile>>([]);
-  // const [isLikedByMe, setIsLikeByMe] = useState<boolean>(false);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isShowMore, setIsShowMore] = useState<boolean>(false);
 
   const isImage = (extension: string) => ['png', 'jpg', 'jpeg'].includes(extension);
   const isLikedByMe = likedUsers?.some((user) => user.username === username);
-
-  console.log('isLikedByMe', isLikedByMe);
-  // useEffect(() => {
-  //   setImages(attachedFiles?.filter((file) => isImage(file)) ?? []);
-  //   setFiles(attachedFiles?.filter((file) => !isImage(file)) ?? []);
-  // }, [attachedFiles]);
-
-  // useEffect(() => {
-  //   const newValue = comment.likes?.includes('user-id') ?? false;
-  //   console.log('setIsLikeByMe', newValue);
-  //   setIsLikeByMe(newValue);
-  // }, [comment]);
 
   useEffect(() => {
     if (editCommentId === id) {
@@ -82,8 +67,7 @@ export const CommentItem: FC<ICommentItem> = ({
     dispatch(SystemActions.setIsOpenPopup(false));
   };
 
-  const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
-    console.log('menuButtonClickHandler', action, payload);
+  const menuButtonClickHandler = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.Like: {
         const like = { commentId: id };
@@ -136,7 +120,7 @@ export const CommentItem: FC<ICommentItem> = ({
     <div className="comment__attachments">
       {
         attachments
-          .slice(0, isShowMore ? attachments.length : 3)
+          .slice(0, isShowMore ? attachments.length : MAX_FILES_IN_COMMENT_PREVIEW)
           .sort((file) => (isImage(file.extension) ? -1 : 1))
           .map((file, index) => {
             let isCompact = attachments.length > 1;
@@ -159,7 +143,7 @@ export const CommentItem: FC<ICommentItem> = ({
           })
       }
       {
-        attachments.length > 3
+        attachments.length > MAX_FILES_IN_COMMENT_PREVIEW
         && !isShowMore
         && (
         <div
@@ -170,7 +154,7 @@ export const CommentItem: FC<ICommentItem> = ({
             className="comment-file__overlay"
           />
           <span className="comment-file__show-more">
-            {attachments.length - 3}
+            {attachments.length - MAX_FILES_IN_COMMENT_PREVIEW}
             {' '}
             more items...
           </span>
@@ -215,7 +199,7 @@ export const CommentItem: FC<ICommentItem> = ({
     attachments]);
 
   const handleClickOnLikedUser = () => {
-
+    dispatch(SystemActions.setIsOpenProfile(true));
   };
 
   return (

@@ -248,7 +248,7 @@ export const Board: FC<IBoard> = ({
             alt="menu"
             imageSize={22}
             size={24}
-            isHide
+            isInvisible
             isHoverBlock={isHover}
             onClick={() => {
               setIsMenuClick(true);

@@ -16,6 +16,7 @@
     background: #f7f7f7;
     margin: 2px 0 2px 5px;
     padding: 10px;
+    transition: background .2s ease-in-out;
     &--pressed {
       background: $primary-light !important;
     }

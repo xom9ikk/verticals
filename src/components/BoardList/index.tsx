@@ -254,7 +254,7 @@ export const BoardList: FC<IBoardList> = () => {
       imageSrc="/assets/svg/add.svg"
       alt="add"
       text="Add board"
-      isHide
+      isInvisible
       isHoverBlock={isHover}
       isMaxWidth
       onClick={addNewBoard}

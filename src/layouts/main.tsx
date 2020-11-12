@@ -24,7 +24,7 @@ import { useReadableId } from '@/use/readableId';
 import { useValueRef } from '@/use/valueRef';
 import { forwardTo } from '@/router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
-import { TRASH_ID } from '../../constants';
+import { TRASH_BOARD_ID } from '@/constants';
 
 // @ts-ignore
 export const MainLayout: FC = ({ match }) => {
@@ -42,7 +42,7 @@ export const MainLayout: FC = ({ match }) => {
 
   useEffect(() => {
     const numericBoardId = boardId === 'trash'
-      ? TRASH_ID
+      ? TRASH_BOARD_ID
       : boardId !== undefined
         && !['account', 'profile'].includes(boardId)
         ? toNumericId(boardId)

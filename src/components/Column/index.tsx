@@ -311,7 +311,7 @@ export const Column: FC<IColumn> = ({
         imageSrc="/assets/svg/add.svg"
         alt="add"
         text="Add card"
-        isHide
+        isInvisible
         isHoverBlock={(isTopHover && !isDraggingCard) || todos?.length === 0}
         isMaxWidth
         onClick={() => setIsOpenNewCard(true)}
@@ -348,7 +348,7 @@ export const Column: FC<IColumn> = ({
       alt="menu"
       imageSize={22}
       size={24}
-      isHide
+      isInvisible
       isHoverBlock={isHover}
       position="bottom"
     >

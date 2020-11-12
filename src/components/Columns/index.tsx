@@ -18,7 +18,7 @@ import {
   getIsLoadedBoards,
   getIsLoadedColumns,
 } from '@/store/selectors';
-import { TRASH_ID } from '../../../constants';
+import { TRASH_BOARD_ID } from '@/constants';
 
 interface IColumns { }
 
@@ -38,7 +38,7 @@ export const Columns: FC<IColumns> = () => {
   useEffect(() => {
     if (activeBoardId !== null) {
       const timeout = setTimeout(() => {
-        if (activeBoardId !== TRASH_ID) {
+        if (activeBoardId !== TRASH_BOARD_ID) {
           dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
         }
         dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));

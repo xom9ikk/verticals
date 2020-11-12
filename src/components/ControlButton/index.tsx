@@ -8,6 +8,7 @@ interface IControlButton {
   imageSize?: number;
   size?: number;
   isHide?: boolean;
+  isInvisible?: boolean;
   isHoverBlock?: boolean;
   isMaxWidth?:boolean;
   isInvertColor?: boolean;
@@ -30,6 +31,7 @@ const ControlButtonComponent = ({
   imageSize = 12,
   size,
   isHide = false,
+  isInvisible = false,
   isHoverBlock = false,
   isMaxWidth,
   isInvertColor,
@@ -44,7 +46,10 @@ const ControlButtonComponent = ({
   onMouseLeave,
 }: IControlButton, ref: any) => {
   const classes = ['control-button'];
-  if (isHide && !isHoverBlock) {
+  if (isHide) {
+    classes.push('control-button--hidden');
+  }
+  if (isInvisible && !isHoverBlock) {
     classes.push('control-button--invisible');
   }
   if (isHoverBlock) {
