@@ -1,7 +1,15 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+/* eslint-disable no-shadow */
+import React, {
+  FC, useCallback, useEffect, useState,
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@comp/Input';
-import { SystemActions } from '@/store/actions';
+import {
+  BoardsActions, ColumnsActions,
+  SearchActions, SystemActions, TodosActions,
+} from '@/store/actions';
+import debounce from 'lodash.debounce';
+import { getActiveBoardId, getIsSearchMode } from '@/store/selectors';
 
 interface ISearch {
 }
@@ -9,9 +17,29 @@ interface ISearch {
 export const Search: FC<ISearch> = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState<string>('');
+  const activeBoardId = useSelector(getActiveBoardId);
+  const isSearchMode = useSelector(getIsSearchMode);
+
+  const debounceSearch = useCallback(
+    debounce((query: string) => {
+      dispatch(SearchActions.searchByTodoTitle({ query }));
+    }, 100),
+    [],
+  );
+
   useEffect(() => {
-    dispatch(SystemActions.setQuery(query));
-  }, [query]);
+    if (query) {
+      debounceSearch(query);
+    } else {
+      dispatch(BoardsActions.fetchAll());
+      dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId! }));
+      dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId! }));
+    }
+    if (!query && isSearchMode) {
+      dispatch(SystemActions.setIsSearchMode(false));
+    }
+  }, [query, isSearchMode]);
+
   return (
     <div className="search">
       <Input

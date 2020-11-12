@@ -20,7 +20,7 @@ export interface ISystem {
   isEditableCard: boolean;
   isEditableColumn: boolean;
   isEditableBoard: boolean;
-  query: string;
+  isSearchMode: boolean;
   language: EnumLanguage;
   activeTodoId: number | null;
   editCommentId: number | null;

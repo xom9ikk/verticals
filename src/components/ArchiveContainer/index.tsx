@@ -7,7 +7,6 @@ import { Card } from '@comp/Card';
 interface IArchiveContainer {
   archivedTodos?: ITodos;
   cardType: EnumTodoType;
-  isActiveQuery: boolean;
   onExitFromEditable: (
     id: number,
     title?: string,
@@ -22,6 +21,7 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
   onExitFromEditable,
 }) => {
   const [isOpenArchived, setIsOpenArchived] = useState<boolean>(false);
+
   return (
     <>
       {

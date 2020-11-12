@@ -11,12 +11,11 @@ import { ColumnsActions, TodosActions } from '@/store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useAutoScroll } from '@/use/autoScroll';
 import {
-  getQuery,
   getTodos,
-  getColumns,
   getActiveBoardId,
   getIsLoadedBoards,
   getIsLoadedColumns,
+  getIsSearchMode, getColumnsByBoardId,
 } from '@/store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 
@@ -26,17 +25,17 @@ export const Columns: FC<IColumns> = () => {
   const dispatch = useDispatch();
   const columnsRef = useRef<any>();
 
-  const query = useSelector(getQuery);
+  const isSearchMode = useSelector(getIsSearchMode);
   const todos = useSelector(getTodos);
-  const columns = useSelector(getColumns);
   const activeBoardId = useSelector(getActiveBoardId);
+  const columns = useSelector(getColumnsByBoardId(activeBoardId));
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const isLoadedColumns = useSelector(getIsLoadedColumns);
 
   const { scrollToRight } = useAutoScroll(columnsRef);
 
   useEffect(() => {
-    if (activeBoardId !== null) {
+    if (activeBoardId !== null && !isSearchMode) {
       const timeout = setTimeout(() => {
         if (activeBoardId !== TRASH_BOARD_ID) {
           dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
@@ -104,7 +103,7 @@ export const Columns: FC<IColumns> = () => {
   };
 
   const memoColumns = useMemo(() => {
-    console.log('memoColumns');
+    console.log('memoColumns', columns);
     return columns.map((column, index) => {
       const key = `column-${column.id}`;
       return (
@@ -121,7 +120,7 @@ export const Columns: FC<IColumns> = () => {
         />
       );
     });
-  }, [columns, activeBoardId, query]);
+  }, [columns, activeBoardId, isSearchMode]); // , query
 
   const memoNewColumn = useMemo(() => (
     <Column
@@ -184,7 +183,7 @@ export const Columns: FC<IColumns> = () => {
       </Droppable>
     </DragDropContext>
   ), [isLoadedBoards, isLoadedColumns,
-    activeBoardId, columns, todos, query]);
+    activeBoardId, columns, todos, isSearchMode]); // , query
 
   return (
     <>

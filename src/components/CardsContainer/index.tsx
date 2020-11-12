@@ -6,11 +6,10 @@ import {
 } from '@/types/entities';
 import { Card } from '@comp/Card';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { getActiveTodoId, getIsLoadedTodos } from '@/store/selectors';
+import { getActiveTodoId, getIsLoadedTodos, getIsSearchMode } from '@/store/selectors';
 
 interface ICardsContainer {
   todos?: ITodos;
-  isActiveQuery: boolean;
   cardType: EnumTodoType;
   onExitFromEditable: (
     id: number,
@@ -24,12 +23,12 @@ interface ICardsContainer {
 
 export const CardsContainer: FC<ICardsContainer> = ({
   todos,
-  isActiveQuery,
   cardType,
   onExitFromEditable,
 }) => {
   const activeTodoId = useSelector(getActiveTodoId);
   const isLoadedTodos = useSelector(getIsLoadedTodos);
+  const isSearchMode = useSelector(getIsSearchMode);
 
   return (
     <>
@@ -40,7 +39,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
               key={todo.id}
               draggableId={`todo-${todo.id}`}
               index={todo.position}
-              isDragDisabled={isActiveQuery || todo.belowId !== undefined}
+              isDragDisabled={isSearchMode || todo.belowId !== undefined}
             >
               {(
                 dragProvided: DraggableProvided,

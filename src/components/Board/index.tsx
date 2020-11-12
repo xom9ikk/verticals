@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
@@ -10,25 +11,19 @@ import { ColorPicker } from '@comp/ColorPicker';
 import { Submenu } from '@comp/Submenu';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
+import { ControlButton } from '@comp/ControlButton';
 import { BoardsActions, ColumnsActions, SystemActions } from '@/store/actions';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { useFocus } from '@/use/focus';
-import { EnumColors, EnumTodoType } from '@/types/entities';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@/use/readableId';
-import { getIsEditableBoard, getUsername } from '@/store/selectors';
-import { ControlButton } from '@comp/ControlButton';
-
-const icons = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
-  'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese', 'circle', 'coffee',
-  'croissant', 'cross', 'file', 'flag', 'foot', 'gallery', 'geo', 'heart', 'help', 'home', 'item', 'keyboard',
-  'light-bulb', 'link', 'lock', 'mail', 'message', 'music', 'phone', 'player',
-  'preferences', 'preferences-2', 'profile', 'profiles', 'raspberry', 'restart', 'restart-2', 'rocket', 'scissors',
-  'search', 'share-link', 'shortcut', 'shrimp', 'smile-1', 'smile-10', 'smile-11', 'smile-12', 'smile-13', 'smile-14',
-  'smile-2', 'smile-3', 'smile-4', 'smile-5', 'smile-6', 'smile-7', 'smile-8', 'smile-9', 'sound-off',
-  'sound-on', 'stop', 'tick', 'tick-2', 'timer', 'usd', 'wallet', 'trash', 'fire', 'twitch', 'youtube',
-  'github', 'linkedin', 'twitter', 'facebook', 'instagram', 'snap', 'tik-tok'];
+import { EnumColors, EnumTodoType } from '@/types/entities';
+import {
+  getCountTodosByBoardId,
+  getIsEditableBoard, getIsSearchMode,
+  getUsername,
+} from '@/store/selectors';
+import { ICONS } from '@/constants';
 
 export interface IExitFromEditable {
   boardId: number,
@@ -45,7 +40,6 @@ interface IBoard {
   icon: string;
   color?: EnumColors;
   title?: string;
-  countTodos?: number | undefined;
   isActive?: boolean;
   description?: string;
   isEditableDefault?: boolean;
@@ -75,7 +69,6 @@ export const Board: FC<IBoard> = ({
   icon,
   color,
   title: initialTitle = '',
-  countTodos,
   description: initialDescription = '',
   isEditableDefault,
   onExitFromEditable,
@@ -96,6 +89,8 @@ export const Board: FC<IBoard> = ({
 
   const isEditableBoard = useSelector(getIsEditableBoard);
   const username = useSelector(getUsername);
+  const isSearchMode = useSelector(getIsSearchMode);
+  const countTodos = useSelector(getCountTodosByBoardId(id));
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
@@ -312,22 +307,22 @@ export const Board: FC<IBoard> = ({
             >
               <div className="menu-item__icons-container">
                 {
-                icons.map((filename) => {
-                  const link = `/assets/svg/board/${filename}.svg`;
-                  return (
-                    <ControlButton
-                      key={filename}
-                      imageSrc={link}
-                      alt={filename}
-                      imageSize={24}
-                      size={36}
-                      onClick={(e: React.SyntheticEvent) => {
-                        e.stopPropagation();
-                        dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));
-                      }}
-                    />
-                  );
-                })
+                  ICONS.map((filename) => {
+                    const link = `/assets/svg/board/${filename}.svg`;
+                    return (
+                      <ControlButton
+                        key={filename}
+                        imageSrc={link}
+                        alt={filename}
+                        imageSize={24}
+                        size={36}
+                        onClick={(e: React.SyntheticEvent) => {
+                          e.stopPropagation();
+                          dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));
+                        }}
+                      />
+                    );
+                  })
               }
               </div>
             </Submenu>
@@ -427,8 +422,7 @@ export const Board: FC<IBoard> = ({
             onClick={handleClick}
             onDoubleClick={handleDoubleClick}
           >
-            {/* {JSON.stringify({ icon })} */}
-            { typeof countTodos === 'number' ? memoCounter : memoMenu }
+            { isSearchMode ? memoCounter : memoMenu }
           </RoundedButton>
         )
       }
@@ -436,7 +430,7 @@ export const Board: FC<IBoard> = ({
   ), [
     isHover, isActive, isMenuClick,
     isEditable, titleValue, descriptionValue,
-    snapshot, color, countTodos, icon, username, isCopied,
+    snapshot, color, countTodos, icon, username, isCopied, isSearchMode,
   ]);
 
   return (

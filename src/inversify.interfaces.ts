@@ -72,6 +72,8 @@ import {
   IAddCommentLikeResponse,
   IRemoveCommentLikeRequest,
   IRemoveCommentLikeResponse,
+  ISearchByTodoTitleRequest,
+  ISearchByTodoTitleResponse,
 } from './types/api';
 
 export interface IHttpClient {
@@ -90,6 +92,7 @@ export interface IServices {
   todoService: ITodoService;
   commentService: ICommentService;
   commentAttachmentService: ICommentAttachmentService;
+  searchService: ISearchService;
 }
 
 export interface IAuthService {
@@ -150,4 +153,8 @@ export interface ICommentAttachmentService {
   getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest): Promise<IGetCommentAttachmentsByTodoIdResponse>;
   uploadFile(body: IUploadCommentAttachmentRequest): Promise<IUploadCommentAttachmentResponse>;
   remove(body: IRemoveCommentAttachmentRequest): Promise<IRemoveCommentAttachmentResponse>;
+}
+
+export interface ISearchService {
+  searchByTodoTitle(body: ISearchByTodoTitleRequest): Promise<ISearchByTodoTitleResponse>;
 }

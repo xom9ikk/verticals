@@ -25,3 +25,4 @@ export type ISetGalleryImagesInfo = {
   images: ICommentAttachments | null;
   index?: number;
 } | null;
+export type ISetSystemIsSearchMode = boolean;

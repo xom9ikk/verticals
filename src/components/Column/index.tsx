@@ -18,7 +18,6 @@ import {
 } from '@/types/entities';
 import { useFocus } from '@/use/focus';
 import { ColorPicker } from '@comp/ColorPicker';
-import { useFilterTodos } from '@/use/filterTodos';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
@@ -26,7 +25,7 @@ import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
 import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
 import {
-  getIsEditableColumn, getQuery, getBoardCardType, getTodosByColumnId,
+  getIsEditableColumn, getBoardCardType, getTodosByColumnId, getIsSearchMode,
 } from '@/store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useColorClass } from '@/use/colorClass';
@@ -40,7 +39,6 @@ interface IColumn {
   boardId?: number | null;
   title?: string;
   description?: string;
-  // todos?: ITodos;
   isNew?: boolean;
   isDeleted?: boolean;
   scrollToRight?: () => void;
@@ -64,7 +62,6 @@ export const Column: FC<IColumn> = ({
   boardId,
   title: initialTitle,
   description: initialDescription,
-  // todos,
   isNew,
   isDeleted,
   scrollToRight,
@@ -72,14 +69,13 @@ export const Column: FC<IColumn> = ({
   const dispatch = useDispatch();
 
   const { focus } = useFocus();
-  const { filterTodos } = useFilterTodos();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const colorClass = useColorClass('column__wrapper', color);
 
   const todos = useSelector(getTodosByColumnId(columnId));
   const cardType = useSelector(getBoardCardType(boardId));
   const isEditableColumn = useSelector(getIsEditableColumn);
-  const query = useSelector(getQuery);
+  const isSearchMode = useSelector(getIsSearchMode);
 
   const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -334,13 +330,11 @@ export const Column: FC<IColumn> = ({
     <CardsContainer
       todos={todos
         ?.sort((a, b) => a.position - b.position)
-        ?.filter((todo: ITodo) => !todo.isArchived)
-        ?.filter(filterTodos)}
+        ?.filter((todo: ITodo) => !todo.isArchived)}
       cardType={cardType}
-      isActiveQuery={!!query}
       onExitFromEditable={saveCard}
     />
-  ), [todos, columnId, isOpenNewCard, query]);
+  ), [todos, columnId, isOpenNewCard]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -471,7 +465,7 @@ export const Column: FC<IColumn> = ({
     <Draggable
       draggableId={`column-${columnId}`}
       index={index}
-      isDragDisabled={isNew || isDeleted || !!query}
+      isDragDisabled={isNew || isDeleted || isSearchMode}
     >
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <>
@@ -501,9 +495,7 @@ export const Column: FC<IColumn> = ({
                     <div className="column__inner">
                       <div className="column__counter">
                         <div className="column__compact-text">
-                          {
-                            query ? todos?.filter(filterTodos).length : todos?.length
-                          }
+                          { todos?.length }
                         </div>
                       </div>
                       <div className="column__compact-text">{titleValue}</div>
@@ -584,9 +576,7 @@ export const Column: FC<IColumn> = ({
                             <ArchiveContainer
                               archivedTodos={todos
                                       ?.sort((a, b) => a.position - b.position)
-                                      ?.filter((todo: ITodo) => todo.isArchived)
-                                      ?.filter(filterTodos)}
-                              isActiveQuery={!!query}
+                                      ?.filter((todo: ITodo) => todo.isArchived)}
                               cardType={cardType}
                               onExitFromEditable={saveCard}
                             />
@@ -608,8 +598,8 @@ export const Column: FC<IColumn> = ({
   [
     index, todos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
-    titleValue, descriptionValue, query, isCollapsed,
-    isTopHover, isDraggingCard, isNew,
+    titleValue, descriptionValue, isCollapsed,
+    isTopHover, isDraggingCard, isNew, isSearchMode,
   ]);
 
   return (

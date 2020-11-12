@@ -7,7 +7,7 @@ export const getIsOpenPopup = (state: IRootState) => state.system.isOpenPopup;
 export const getIsEditableCard = (state: IRootState) => state.system.isEditableCard;
 export const getIsEditableColumn = (state: IRootState) => state.system.isEditableColumn;
 export const getIsEditableBoard = (state: IRootState) => state.system.isEditableBoard;
-export const getQuery = (state: IRootState) => state.system.query;
+export const getIsSearchMode = (state: IRootState) => state.system.isSearchMode;
 export const getLanguage = (state: IRootState) => state.system.language;
 export const getActiveTodoId = (state: IRootState) => state.system.activeTodoId;
 export const getEditCommentId = (state: IRootState) => state.system.editCommentId;

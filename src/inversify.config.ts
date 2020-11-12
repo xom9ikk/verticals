@@ -9,6 +9,7 @@ import { ColumnService } from '@/services/column';
 import { TodoService } from '@/services/todo';
 import { CommentService } from '@/services/comment';
 import { CommentAttachmentService } from '@/services/comment-attachment';
+import { SearchService } from '@/services/search';
 
 import {
   IHttpClient,
@@ -20,6 +21,7 @@ import {
   ITodoService,
   ICommentService,
   ICommentAttachmentService,
+  ISearchService,
 } from './inversify.interfaces';
 
 const container = new Container();
@@ -67,6 +69,11 @@ container
 container
   .bind<ICommentAttachmentService>(TYPES.CommentAttachmentService)
   .to(CommentAttachmentService)
+  .inSingletonScope();
+
+container
+  .bind<ISearchService>(TYPES.SearchService)
+  .to(SearchService)
   .inSingletonScope();
 
 export { container };
