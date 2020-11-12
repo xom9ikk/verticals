@@ -5,7 +5,7 @@
   flex-direction: row;
   position: relative;
   width: 100%;
-  transition: background .2s ease-in-out, box-shadow.2s ease-in-out;
+  transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
 
   &__wrapper {
     display: flex;
@@ -17,13 +17,16 @@
     margin: 2px 0 2px 5px;
     padding: 10px;
     transition: background .2s ease-in-out;
+
     &--pressed {
       background: $primary-light !important;
     }
+
     &--editable {
       box-shadow: $primary-light 0 0 0 2px inset;
     }
   }
+
   //&:hover {
   //  #{$block}__date {
   //    opacity: 1;
@@ -33,25 +36,142 @@
     display: flex;
     flex-direction: column;
   }
+
   &__attachments {
     display: flex;
     flex-wrap: wrap;
   }
+
   &__header {
     display: flex;
     flex: 1;
     //justify-content: space-between;
     align-items: center;
     padding: 0 5px 0;
+
     &--replied {
       padding-top: 8px;
     }
   }
+
   &__text {
-    color: #222;
-    font-size: 16px;
-    padding: 0 5px 0;
+    //color: #222;
+    font-size: 15px;
+    //padding: 0 5px 0;
+
+    img, table, td, tr, th, pre, code {
+      max-width: 100%;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    hr {
+      height: 1px;
+      border: none;
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    ul {
+      padding-left: 16px;
+      font-size: 15px;
+      list-style-type: none;
+
+      li {
+        position: relative;
+
+        &:before {
+          content: "";
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          top: 8px;
+          left: -10px;
+          border-radius: 50%;
+          background: $black;
+        }
+      }
+    }
+
+    ol {
+      padding-left: 25px;
+    }
+
+    pre {
+      display: block;
+      overflow-x: auto;
+      background: $primary-light;
+      color: rgb(77, 77, 76);
+      padding: 10px 10px 10px 10px;
+      margin: 0;
+      position: relative;
+      font-family: monospace, monospace;
+      font-size: 13px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      max-width: 360px;
+      //&:before {
+      //  content: "";
+      //  position: absolute;
+      //  top: 0px;
+      //  bottom: 0px;
+      //  left: 0px;
+      //  width: 50px;
+      //  background-color: rgb(255, 255, 255);
+      //  opacity: 0.5;
+      //  border-right: 1px solid rgb(255, 255, 255);
+      //}
+      &::-webkit-scrollbar-thumb {
+        border: 5px solid $primary-light !important;
+      }
+      code {
+        color: #222222;
+      }
+    }
+
+    blockquote {
+      margin: 0 0 0 6px;
+      border-left: 2px solid $primary-light;
+      padding: 0 0 0 10px;
+    }
+
+    code {
+      color: rgb(135, 135, 135);
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Nunito Extra Bold", sans-serif;
+    }
+
+    h1:not(:last-child),
+    h2:not(:last-child),
+    h3:not(:last-child),
+    h4:not(:last-child),
+    h5:not(:last-child),
+    h6:not(:last-child),
+    p:not(:last-child),
+    ul:not(:last-child),
+    ol:not(:last-child),
+    table:not(:last-child),
+    hr:not(:last-child) {
+      margin: 0 0 20px;
+    }
   }
+
   &__date {
     color: $text-very-light;
     font-size: 10px;
@@ -60,9 +180,11 @@
     //transition: opacity .2s ease-in-out;
     margin-right: 15px;
   }
+
   &__like-bubbles {
     display: flex;
   }
+
   //&__content {
   //  display: flex;
   //  align-items: center;
@@ -87,18 +209,22 @@
     flex: 1;
     justify-content: space-between;
     align-items: center;
+
     &--buttons {
       display: flex;
     }
+
     &--actions {
       display: flex;
       align-items: center;
+
       span {
         color: $text-very-light;
         font-family: 'Nunito Extra Light', sans-serif;
         font-size: 10px;
       }
     }
+
     button {
       margin: 0 3px;
     }

@@ -22,6 +22,7 @@ import {
 } from '@/store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
+import { useMarkdown } from '@/use/markdown';
 
 type ICommentItem = IComment;
 
@@ -41,6 +42,7 @@ export const CommentItem: FC<ICommentItem> = ({
   likedUsers,
 }) => {
   const { formatDate } = useFormat();
+  const { renderMarkdown } = useMarkdown();
   const dispatch = useDispatch();
 
   const fullName = useSelector(getFullName);
@@ -188,7 +190,7 @@ export const CommentItem: FC<ICommentItem> = ({
         }
       </div>
       {
-        text && (<div className="comment__text">{text}</div>)
+        text && (<div className="comment__text" dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }} />)
       }
       { memoAttachments }
     </div>
