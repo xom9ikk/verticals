@@ -36,5 +36,6 @@ export interface ISystem {
   galleryImagesInfo: {
     images: ICommentAttachments | null;
     index: number;
-  } | null
+  } | null;
+  isOpenFormattingHelp: boolean;
 }

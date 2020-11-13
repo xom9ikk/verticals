@@ -166,7 +166,6 @@ export const CommentItem: FC<ICommentItem> = ({
     </div>
   ), [attachments]);
 
-  console.log('render comment');
   const memoComment = useMemo(() => (
     <div
       className="comment__content"
@@ -194,6 +193,7 @@ export const CommentItem: FC<ICommentItem> = ({
         text && (
         <div
           className="comment__text"
+          onDoubleClick={(e) => e.stopPropagation()}
           dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
         />
         )

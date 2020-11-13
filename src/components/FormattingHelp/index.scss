@@ -1,0 +1,48 @@
+.formatting-help {
+  &__popup {
+    display: flex;
+    flex-direction: column;
+    max-width: 620px;
+    position: fixed;
+    right: 10px;
+    top: 23px;
+    bottom: 25px;
+    padding: 60px 30px 0;
+    background: $white;
+    box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
+    border-radius: 13px;
+    z-index: 1;
+    overflow: scroll;
+  }
+  &__original {
+    //margin: 0 10px;
+    background: $hover-color;
+    border-radius: 6px;
+    max-width: 260px;
+    min-width: 260px;
+    div {
+      padding: 7px 10px;
+      font-size: 14px;
+    }
+  }
+  &__result {
+    //margin: 0 10px;
+    background: $hover-color;
+    border-radius: 6px;
+    max-width: 300px;
+    padding: 7px 10px;
+  }
+  &__title {
+    font-size: 34px;
+  }
+  &__subtitle {
+    font-size: 14px;
+    color: $text;
+    margin-bottom: 20px;
+  }
+
+  &__content {
+    display: flex;
+    -webkit-user-select: text;
+  }
+}

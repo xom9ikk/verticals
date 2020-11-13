@@ -1,6 +1,7 @@
 @import './variables/colors';
 @import './variables/constants';
 @import './base';
+@import './markdown';
 @import '../../index';
 
 body {
@@ -184,3 +185,5 @@ button {
     }
   }
 }
+
+

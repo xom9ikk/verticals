@@ -18,3 +18,4 @@ export const getActiveBoardReadableId = (state: IRootState) => state.system.acti
 export const getActiveTodoReadableId = (state: IRootState) => state.system.activeTodoReadableId;
 export const getDroppedFiles = (state: IRootState) => state.system.droppedFiles;
 export const getGalleryImagesInfo = (state: IRootState) => state.system.galleryImagesInfo;
+export const getIsOpenFormattingHelp = (state: IRootState) => state.system.isOpenFormattingHelp;
