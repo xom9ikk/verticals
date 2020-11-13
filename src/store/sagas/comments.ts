@@ -3,9 +3,6 @@ import {
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
-import { container } from '@/inversify.config';
-import { TYPES } from '@/inversify.types';
-import { IServices } from '@/inversify.interfaces';
 import { CommentAttachmentsActions, CommentsActions } from '@/store/actions';
 import {
   ICreateCommentRequest,
@@ -18,6 +15,9 @@ import {
 import {
   getAvatarUrl, getName, getSurname, getUsername,
 } from '@/store/selectors';
+import { container } from '@/inversify/config';
+import { IServices } from '@/inversify/interfaces';
+import { TYPES } from '@/inversify/types';
 
 const { commentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

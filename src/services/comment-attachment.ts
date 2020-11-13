@@ -1,7 +1,6 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
-import { TYPES } from '@/inversify.types';
-import { ICommentAttachmentService, IHttpClient } from '@/inversify.interfaces';
+import { TYPES } from '@/inversify/types';
 import {
   IGetCommentAttachmentsByTodoIdRequest,
   IGetCommentAttachmentsByTodoIdResponse,
@@ -10,6 +9,8 @@ import {
   IUploadCommentAttachmentRequest,
   IUploadCommentAttachmentResponse,
 } from '@/types/api';
+import { IHttpClient } from '@/inversify/interfaces/httpClient';
+import { ICommentAttachmentService } from '@/inversify/interfaces/services';
 
 @injectable()
 export class CommentAttachmentService implements ICommentAttachmentService {

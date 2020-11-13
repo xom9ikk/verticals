@@ -1,6 +1,17 @@
 import { Container } from 'inversify';
-import { TYPES } from '@/inversify.types';
 import { HttpClient } from '@/plugins/httpClient';
+import { IServices } from '@/inversify/interfaces';
+import {
+  IAuthService,
+  IBoardService,
+  IColumnService,
+  ICommentAttachmentService,
+  ICommentService,
+  ISearchService,
+  ITodoService,
+  IUserService,
+} from '@/inversify/interfaces/services';
+import { IHttpClient } from '@/inversify/interfaces/httpClient';
 import { Services } from '@/services';
 import { AuthService } from '@/services/auth';
 import { UserService } from '@/services/user';
@@ -10,19 +21,7 @@ import { TodoService } from '@/services/todo';
 import { CommentService } from '@/services/comment';
 import { CommentAttachmentService } from '@/services/comment-attachment';
 import { SearchService } from '@/services/search';
-
-import {
-  IHttpClient,
-  IServices,
-  IAuthService,
-  IUserService,
-  IBoardService,
-  IColumnService,
-  ITodoService,
-  ICommentService,
-  ICommentAttachmentService,
-  ISearchService,
-} from './inversify.interfaces';
+import { TYPES } from './types';
 
 const container = new Container();
 
