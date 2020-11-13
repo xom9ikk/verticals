@@ -21,7 +21,7 @@ const initialState = {
   activeTodoReadableId: null,
   droppedFiles: null,
   galleryImagesInfo: null,
-  isOpenFormattingHelp: true,
+  isOpenFormattingHelp: false,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
