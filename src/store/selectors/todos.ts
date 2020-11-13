@@ -1,5 +1,6 @@
 import { IRootState } from '@/store/reducers/state';
 import { createSelector } from 'reselect';
+import { getColumns } from '@/store/selectors/columns';
 
 export const getTodos = (state: IRootState) => state.todos;
 export const getTodosByColumnId = (columnId?: number) => createSelector(
@@ -9,4 +10,13 @@ export const getTodosByColumnId = (columnId?: number) => createSelector(
 export const getTodoById = (todoId: number | null) => createSelector(
   [getTodos],
   (todos) => todos.find((todo) => todo.id === todoId),
+);
+export const getCountTodosByBoardId = (boardId: number | null) => createSelector(
+  [getColumns, getTodos],
+  (columns, todos) => {
+    const filteredColumns = columns.filter((column) => column.boardId === boardId);
+    const columnIds = filteredColumns.map((column) => column.id);
+    const filteredTodos = todos.filter((todo) => columnIds.includes(todo.columnId));
+    return filteredTodos.length;
+  },
 );

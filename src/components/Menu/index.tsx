@@ -16,6 +16,7 @@ interface IMenu {
   imageSize?: number;
   size?: number;
   isHide?: boolean;
+  isInvisible?: boolean;
   onClick?: (event: React.SyntheticEvent) => void;
   isMaxWidth?:boolean;
   onMouseEnter?: () => void;
@@ -37,6 +38,7 @@ export const Menu: FC<IMenu> = ({
   imageSize = 12,
   size,
   isHide = false,
+  isInvisible = false,
   onClick,
   isMaxWidth,
   onMouseEnter,
@@ -112,6 +114,7 @@ export const Menu: FC<IMenu> = ({
         style={style}
         text={text}
         isHide={isHide}
+        isInvisible={isInvisible}
         isHoverBlock={isHoverBlock}
         isMaxWidth={isMaxWidth}
         isInvertColor={isInvertColor}

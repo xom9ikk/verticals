@@ -20,7 +20,7 @@ export interface ISystem {
   isEditableCard: boolean;
   isEditableColumn: boolean;
   isEditableBoard: boolean;
-  query: string;
+  isSearchMode: boolean;
   language: EnumLanguage;
   activeTodoId: number | null;
   editCommentId: number | null;
@@ -36,5 +36,6 @@ export interface ISystem {
   galleryImagesInfo: {
     images: ICommentAttachments | null;
     index: number;
-  } | null
+  } | null;
+  isOpenFormattingHelp: boolean;
 }

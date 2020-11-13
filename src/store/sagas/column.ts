@@ -3,9 +3,9 @@ import {
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
-import { container } from '@/inversify.config';
-import { TYPES } from '@/inversify.types';
-import { IServices } from '@/inversify.interfaces';
+import { container } from '@/inversify/config';
+import { TYPES } from '@/inversify/types';
+import { IServices } from '@/inversify/interfaces';
 import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@/store/actions';

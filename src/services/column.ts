@@ -1,7 +1,6 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
-import { TYPES } from '@/inversify.types';
-import { IColumnService, IHttpClient } from '@/inversify.interfaces';
+import { TYPES } from '@/inversify/types';
 import {
   ICreateColumnRequest, ICreateColumnResponse,
   IRemoveColumnRequest, IRemoveColumnResponse,
@@ -12,6 +11,8 @@ import {
   IDuplicateColumnRequest, IDuplicateColumnResponse,
   IReverseColumnOrderRequest, IReverseColumnOrderResponse,
 } from '@/types/api';
+import { IHttpClient } from '@/inversify/interfaces/httpClient';
+import { IColumnService } from '@/inversify/interfaces/services';
 
 @injectable()
 export class ColumnService implements IColumnService {

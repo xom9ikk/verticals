@@ -1,11 +1,8 @@
 import {
-  all, apply, call, put, select, takeLatest,
+  all, apply, call, put, select, takeLatest, takeLeading,
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
-import { container } from '@/inversify.config';
-import { TYPES } from '@/inversify.types';
-import { IServices } from '@/inversify.interfaces';
 import { CommentAttachmentsActions, CommentsActions } from '@/store/actions';
 import {
   ICreateCommentRequest,
@@ -18,6 +15,9 @@ import {
 import {
   getAvatarUrl, getName, getSurname, getUsername,
 } from '@/store/selectors';
+import { container } from '@/inversify/config';
+import { IServices } from '@/inversify/interfaces';
+import { TYPES } from '@/inversify/types';
 
 const { commentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -124,7 +124,7 @@ export function* watchComment() {
     takeLatest(CommentsActions.Type.CREATE, createWorker),
     takeLatest(CommentsActions.Type.REMOVE, removeWorker),
     takeLatest(CommentsActions.Type.UPDATE_TEXT, updateWorker),
-    takeLatest(CommentsActions.Type.ADD_LIKE, addLikeWorker),
-    takeLatest(CommentsActions.Type.REMOVE_LIKE, removeLikeWorker),
+    takeLeading(CommentsActions.Type.ADD_LIKE, addLikeWorker),
+    takeLeading(CommentsActions.Type.REMOVE_LIKE, removeLikeWorker),
   ]);
 }

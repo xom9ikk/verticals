@@ -29,7 +29,7 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
               alt="add"
               imageSize={16}
               size={20}
-              isHide
+              isInvisible
               isHoverBlock={isHover}
               onClick={() => setIsPinnedSidebar((prev) => !prev)}
             />

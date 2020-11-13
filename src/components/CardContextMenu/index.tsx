@@ -164,7 +164,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
           alt="menu"
           imageSize={imageSize || 22}
           size={size || 24}
-          isHide
+          isInvisible
           isColored={isColored}
           isInvertColor={isActive}
           isHoverBlock={isHover}

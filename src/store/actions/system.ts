@@ -10,7 +10,7 @@ import {
   ISetSystemIsEditableColumn,
   ISetSystemIsOpenPopup,
   ISetSystemLanguage,
-  ISetSystemQuery,
+  ISetSystemIsSearchMode,
   ISetSystemReplyCommentId,
   ISetSystemIsOpenProfile,
   ISetSystemActiveBoardId,
@@ -18,6 +18,7 @@ import {
   ISetSystemActiveTodoReadableId,
   ISetSystemDroppedFiles,
   ISetGalleryImagesInfo,
+  ISetIsOpenFormattingHelp,
 } from '@/types/actions';
 
 enum Type {
@@ -28,7 +29,7 @@ enum Type {
   SET_IS_EDITABLE_CARD = 'SYSTEM/SET_IS_EDITABLE_CARD',
   SET_IS_EDITABLE_COLUMN = 'SYSTEM/SET_IS_EDITABLE_COLUMN',
   SET_IS_EDITABLE_BOARD = 'SYSTEM/SET_IS_EDITABLE_BOARD',
-  SET_QUERY = 'SYSTEM/SET_QUERY',
+  SET_IS_SEARCH_MODE = 'SYSTEM/SET_IS_SEARCH_MODE',
   SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
   SET_ACTIVE_TODO_ID = 'SYSTEM/SET_ACTIVE_TODO_ID',
   SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
@@ -39,6 +40,7 @@ enum Type {
   SET_ACTIVE_TODO_READABLE_ID = 'SYSTEM/SET_ACTIVE_TODO_READABLE_ID',
   SET_DROPPED_FILES = 'SYSTEM/SET_DROPPED_FILES',
   SET_GALLERY_IMAGES_INFO = 'SYSTEM/SET_GALLERY_IMAGES_INFO',
+  SET_IS_OPEN_FORMATTING_HELP = 'SYSTEM/SET_IS_OPEN_FORMATTING_HELP',
 }
 
 const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
@@ -68,9 +70,9 @@ const setIsEditableBoard = createAction(
   (isEditableBoard: ISetSystemIsEditableBoard) => ({ isEditableBoard }),
 );
 
-const setQuery = createAction(
-  Type.SET_QUERY,
-  (query: ISetSystemQuery) => ({ query }),
+const setIsSearchMode = createAction(
+  Type.SET_IS_SEARCH_MODE,
+  (isSearchMode: ISetSystemIsSearchMode) => ({ isSearchMode }),
 );
 
 const setLanguage = createAction(
@@ -123,6 +125,11 @@ const setGalleryImagesInfo = createAction(
   (payload: ISetGalleryImagesInfo) => ({ galleryImagesInfo: payload }),
 );
 
+const setIsOpenFormattingHelp = createAction(
+  Type.SET_IS_OPEN_FORMATTING_HELP,
+  (payload: ISetIsOpenFormattingHelp) => ({ isOpenFormattingHelp: payload }),
+);
+
 export const SystemActions = {
   Type,
   setIsLoadedBoards,
@@ -132,7 +139,7 @@ export const SystemActions = {
   setIsEditableCard,
   setIsEditableColumn,
   setIsEditableBoard,
-  setQuery,
+  setIsSearchMode,
   setLanguage,
   setActiveTodoId,
   setEditCommentId,
@@ -143,4 +150,5 @@ export const SystemActions = {
   setActiveTodoReadableId,
   setDroppedFiles,
   setGalleryImagesInfo,
+  setIsOpenFormattingHelp,
 };

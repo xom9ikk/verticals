@@ -10,6 +10,7 @@ import './styles/scss/main.scss';
 
 // import createDebug from 'debug';
 import { Gallery } from '@comp/Gallery';
+import { FormattingHelp } from '@comp/FormattingHelp';
 import { configureStore } from './store/configureStore';
 import { MainRouter } from './router';
 
@@ -34,6 +35,7 @@ ReactDOM.render(
       overridePosition={({ left, top }) => ({ left, top })}
     />
     <Gallery />
+    <FormattingHelp />
   </Provider>,
   document.getElementById('root'),
 );

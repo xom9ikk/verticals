@@ -45,6 +45,10 @@
     opacity: 0;
   }
 
+  &--hidden {
+    display: none;
+  }
+
   &--hover-block {
     #{$block}__text {
       color: $text-light;

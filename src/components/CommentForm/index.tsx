@@ -76,7 +76,7 @@ export const CommentForm: FC<ICommentForm> = ({
         }));
       }
       dispatch(SystemActions.setEditCommentId(null));
-    } else {
+    } else if (files?.length || commentText) {
       console.log('222', files);
       dispatch(CommentsActions.create({
         todoId: todoId!,
@@ -131,6 +131,10 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const handleRemoveFile = (index: number) => {
     setFiles((prev) => filter(prev, (file, i) => i !== index));
+  };
+
+  const handleOpenFormattingHelp = () => {
+    dispatch(SystemActions.setIsOpenFormattingHelp(true));
   };
 
   const isAvailableSend = commentText?.length || files?.length;
@@ -220,7 +224,7 @@ export const CommentForm: FC<ICommentForm> = ({
         ${isAvailableSend ? 'comment-form__helper--open' : ''}
         `}
       >
-        <button>
+        <button onClick={handleOpenFormattingHelp}>
           Formatting help
         </button>
         <span>
@@ -234,7 +238,6 @@ export const CommentForm: FC<ICommentForm> = ({
         imageSize={24}
         size={26}
         isHide={isScrolledToBottom}
-        // isPrimary
         style={{
           position: 'absolute',
           right: 0,
@@ -242,7 +245,6 @@ export const CommentForm: FC<ICommentForm> = ({
           zIndex: 2,
           background: '#fff',
           boxShadow: '3px 3px 8px #eaeaea, 0px 0px 0px #f1f1f1',
-          // border: '1px solid #ccc',
         }}
         onClick={onScrollToBottom}
       />

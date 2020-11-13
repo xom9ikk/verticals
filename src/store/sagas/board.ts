@@ -3,10 +3,12 @@ import {
 } from 'typed-redux-saga';
 import { Action } from 'redux-actions';
 import { useAlert } from '@/use/alert';
-import { container } from '@/inversify.config';
-import { TYPES } from '@/inversify.types';
-import { IServices } from '@/inversify.interfaces';
-import { BoardsActions, SystemActions } from '@/store/actions';
+import { container } from '@/inversify/config';
+import { TYPES } from '@/inversify/types';
+import { IServices } from '@/inversify/interfaces';
+import {
+  BoardsActions, SystemActions,
+} from '@/store/actions';
 import {
   ICreateBoardRequest,
   IRemoveBoardRequest,
@@ -104,7 +106,6 @@ export function* watchBoard() {
     takeLatest(BoardsActions.Type.UPDATE_COLOR, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_CARD_TYPE, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_ICON, updateWorker),
-    takeLatest(BoardsActions.Type.RESET_COLOR, updateWorker),
     takeLatest(BoardsActions.Type.UPDATE_POSITION, updatePositionWorker),
   ]);
 }

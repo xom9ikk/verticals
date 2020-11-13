@@ -5,7 +5,7 @@
   flex-direction: row;
   position: relative;
   width: 100%;
-  transition: background .2s ease-in-out, box-shadow.2s ease-in-out;
+  transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
 
   &__wrapper {
     display: flex;
@@ -16,88 +16,70 @@
     background: #f7f7f7;
     margin: 2px 0 2px 5px;
     padding: 10px;
+    transition: background .2s ease-in-out;
+
     &--pressed {
       background: $primary-light !important;
     }
+
     &--editable {
       box-shadow: $primary-light 0 0 0 2px inset;
     }
   }
-  //&:hover {
-  //  #{$block}__date {
-  //    opacity: 1;
-  //  }
-  //}
+
   &__content {
     display: flex;
     flex-direction: column;
   }
+
   &__attachments {
     display: flex;
     flex-wrap: wrap;
   }
+
   &__header {
     display: flex;
     flex: 1;
-    //justify-content: space-between;
     align-items: center;
     padding: 0 5px 0;
+
     &--replied {
       padding-top: 8px;
     }
   }
-  &__text {
-    color: #222;
-    font-size: 16px;
-    padding: 0 5px 0;
-  }
+
   &__date {
     color: $text-very-light;
     font-size: 10px;
     font-family: 'Nunito Extra Light', sans-serif;
-    //opacity: 0;
-    //transition: opacity .2s ease-in-out;
     margin-right: 15px;
   }
+
   &__like-bubbles {
     display: flex;
   }
-  //&__content {
-  //  display: flex;
-  //  align-items: center;
-  //  &--file {
-  //    background: $white;
-  //    transition: box-shadow .2s ease-in-out;
-  //    min-height: 52px;
-  //    border-radius: 6px;
-  //    padding: 10px 12px 10px 16px;
-  //    justify-content: space-between;
-  //    &:hover, &:focus-within {
-  //      box-shadow: $primary-light 0 0 0 2px;
-  //    }
-  //  }
-  //  &--text {
-  //    color: #222;
-  //    font-size: 15px;
-  //  }
-  //}
+
   &__controls {
     display: flex;
     flex: 1;
     justify-content: space-between;
     align-items: center;
+
     &--buttons {
       display: flex;
     }
+
     &--actions {
       display: flex;
       align-items: center;
+
       span {
         color: $text-very-light;
         font-family: 'Nunito Extra Light', sans-serif;
         font-size: 10px;
       }
     }
+
     button {
       margin: 0 3px;
     }

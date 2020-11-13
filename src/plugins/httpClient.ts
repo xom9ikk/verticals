@@ -2,8 +2,8 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { IHttpClient } from '@/inversify.interfaces';
 import { IRefreshResponse } from '@/types/api';
+import { IHttpClient } from '@/inversify/interfaces/httpClient';
 import { storage } from './storage';
 
 const { API_URL } = process.env;

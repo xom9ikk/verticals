@@ -10,7 +10,7 @@ const initialState = {
   isEditableCard: false,
   isEditableColumn: false,
   isEditableBoard: false,
-  query: '',
+  isSearchMode: false,
   language: EnumLanguage.English,
   activeTodoId: null,
   editCommentId: null,
@@ -21,6 +21,7 @@ const initialState = {
   activeTodoReadableId: null,
   droppedFiles: null,
   galleryImagesInfo: null,
+  isOpenFormattingHelp: false,
 };
 
 export const SystemReducer = handleActions<ISystem, ISystem>({
@@ -38,8 +39,8 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
         (state, action) => ({ ...state, isEditableColumn: action.payload.isEditableColumn }),
   [SystemActions.Type.SET_IS_EDITABLE_BOARD]:
         (state, action) => ({ ...state, isEditableBoard: action.payload.isEditableBoard }),
-  [SystemActions.Type.SET_QUERY]:
-      (state, action) => ({ ...state, query: action.payload.query }),
+  [SystemActions.Type.SET_IS_SEARCH_MODE]:
+      (state, action) => ({ ...state, isSearchMode: action.payload.isSearchMode }),
   [SystemActions.Type.SET_LANGUAGE]:
       (state, action) => ({ ...state, language: action.payload.language }),
   [SystemActions.Type.SET_ACTIVE_TODO_ID]:
@@ -66,4 +67,6 @@ export const SystemReducer = handleActions<ISystem, ISystem>({
       (state, action) => ({ ...state, droppedFiles: action.payload.droppedFiles }),
   [SystemActions.Type.SET_GALLERY_IMAGES_INFO]:
       (state, action) => ({ ...state, galleryImagesInfo: action.payload.galleryImagesInfo }),
+  [SystemActions.Type.SET_IS_OPEN_FORMATTING_HELP]:
+      (state, action) => ({ ...state, isOpenFormattingHelp: action.payload.isOpenFormattingHelp }),
 }, initialState);

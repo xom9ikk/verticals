@@ -8,4 +8,5 @@ export const TYPES = {
   TodoService: Symbol.for('TodoService'),
   CommentService: Symbol.for('CommentService'),
   CommentAttachmentService: Symbol.for('CommentAttachmentService'),
+  SearchService: Symbol.for('SearchService'),
 };

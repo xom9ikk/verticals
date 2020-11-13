@@ -6,6 +6,7 @@ import { watchColumn } from '@/store/sagas/column';
 import { watchTodo } from '@/store/sagas/todo';
 import { watchComment } from '@/store/sagas/comments';
 import { watchCommentAttachments } from '@/store/sagas/comment-attachments';
+import { watchSearch } from '@/store/sagas/search';
 
 export function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export function* rootSaga() {
     watchTodo(),
     watchComment(),
     watchCommentAttachments(),
+    watchSearch(),
   ]);
 }

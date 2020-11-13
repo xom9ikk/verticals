@@ -1,7 +1,8 @@
 import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
-import { TYPES } from '@/inversify.types';
-import { IAuthService, IHttpClient } from '@/inversify.interfaces';
+import { TYPES } from '@/inversify/types';
+import { IHttpClient } from '@/inversify/interfaces/httpClient';
+import { IAuthService } from '@/inversify/interfaces/services';
 import {
   ILogoutResponse,
   IResetPasswordRequest, IResetPasswordResponse,

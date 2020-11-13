@@ -8,7 +8,7 @@ export type ISetSystemIsOpenPopup = boolean;
 export type ISetSystemIsEditableCard = boolean;
 export type ISetSystemIsEditableColumn = boolean;
 export type ISetSystemIsEditableBoard = boolean;
-export type ISetSystemQuery = string;
+export type ISetSystemIsSearchMode = boolean;
 export type ISetSystemLanguage = EnumLanguage;
 export type ISetSystemActiveTodoId = number | null;
 export type ISetSystemEditCommentId = number | null;
@@ -25,3 +25,4 @@ export type ISetGalleryImagesInfo = {
   images: ICommentAttachments | null;
   index?: number;
 } | null;
+export type ISetIsOpenFormattingHelp = boolean;
