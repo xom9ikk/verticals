@@ -166,6 +166,7 @@ export const CommentItem: FC<ICommentItem> = ({
     </div>
   ), [attachments]);
 
+  console.log('render comment');
   const memoComment = useMemo(() => (
     <div
       className="comment__content"
@@ -190,7 +191,12 @@ export const CommentItem: FC<ICommentItem> = ({
         }
       </div>
       {
-        text && (<div className="comment__text" dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }} />)
+        text && (
+        <div
+          className="comment__text"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
+        />
+        )
       }
       { memoAttachments }
     </div>
@@ -198,7 +204,8 @@ export const CommentItem: FC<ICommentItem> = ({
     replyCommentId,
     replyComment,
     fullName,
-    attachments]);
+    attachments,
+  ]);
 
   const handleClickOnLikedUser = () => {
     dispatch(SystemActions.setIsOpenProfile(true));

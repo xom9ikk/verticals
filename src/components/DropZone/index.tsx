@@ -28,7 +28,11 @@ export const DropZone: FC<IDropZone> = ({
     <div
       onDragEnter={(event: React.DragEvent) => {
         if (event?.dataTransfer?.items?.length) {
-          setIsDrag(true);
+          const items = [...event?.dataTransfer?.items];
+          const isContainsFile = items.some((item) => item.kind === 'file');
+          if (isContainsFile) {
+            setIsDrag(true);
+          }
         }
       }}
       className="drop-zone"
