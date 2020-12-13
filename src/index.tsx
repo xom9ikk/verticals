@@ -12,9 +12,9 @@ import './styles/scss/main.scss';
 import { Gallery } from '@comp/Gallery';
 import { FormattingHelp } from '@comp/FormattingHelp';
 import { configureStore } from './store/configureStore';
-import { MainRouter } from './router';
+import {MainRouter } from './router';
 
-const store = configureStore();
+let store = configureStore();
 // const debug = createDebug('app');
 
 // @ts-ignore

@@ -1,12 +1,13 @@
 module.exports = {
-  "parser":  "@typescript-eslint/parser",
-  "extends": [
+  parser:  "@typescript-eslint/parser",
+  plugins: ['@typescript-eslint'],
+  extends: [
     "airbnb-typescript",
   ],
-  "parserOptions": {
+  parserOptions: {
     "project": "./tsconfig.json"
   },
-  "rules": {
+  rules: {
     "import/extensions": "off",
     "semi": [2, "always"],
     "no-console": "warn",
