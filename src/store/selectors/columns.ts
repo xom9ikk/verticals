@@ -1,4 +1,4 @@
-import { IRootState } from '@/store/reducers/state';
+import { IRootState } from '@/store/state';
 import { createSelector } from 'reselect';
 
 export const getColumns = (state: IRootState) => state.columns;

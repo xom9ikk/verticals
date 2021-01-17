@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 import { handleActions } from 'redux-actions';
-import { IComment, IComments } from '@/types/entities';
+import { IComment, ICommentLike, IComments } from '@/types/entities';
 import { CommentsActions } from '../actions';
 
 const initialState: IComments = [];
@@ -197,13 +197,13 @@ export const CommentsReducer = handleActions<IComments, any>({
   [CommentsActions.Type.UPDATE_LIKE]:
       (state, action) => (state.map((comment: IComment) => {
         const { commentId, like, isLiked } = action.payload;
+        const likedUsers = comment.likedUsers ?? [];
         return comment.id === commentId
           ? {
             ...comment,
             likedUsers: isLiked
-              ? [...comment.likedUsers, like]
-              : comment.likedUsers
-                      ?.filter((u) => u.username !== like.username),
+              ? [...likedUsers, like]
+              : likedUsers?.filter((l: ICommentLike) => l.username !== like.username),
           }
           : comment;
       })),

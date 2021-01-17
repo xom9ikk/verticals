@@ -225,7 +225,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         isPrimary
                         isColored
                         onStartEdit={() => {
-                              titleInputRef.current?.focus();
+                          titleInputRef.current?.focus();
                         }}
                         onChangeColor={(newColor) => {
                           dispatch(TodosActions.updateColor({

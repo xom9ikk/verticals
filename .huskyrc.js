@@ -1,5 +1,5 @@
 module.exports = {
   "hooks": {
-    "pre-commit": "npm run lint:fix"
+    "pre-commit": "npm run lint"
   }
 }

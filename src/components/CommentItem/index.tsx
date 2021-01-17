@@ -214,7 +214,7 @@ export const CommentItem: FC<ICommentItem> = ({
   return (
     <div
       className="comment"
-      onDoubleClick={() => setIsDoubleClick(true)}
+      onDoubleClickCapture={() => setIsDoubleClick(true)}
     >
       <Avatar />
       <div

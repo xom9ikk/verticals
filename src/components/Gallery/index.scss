@@ -78,6 +78,11 @@
     }
 
     &-pagination {
+      position: absolute;
+      text-align: center;
+      transition: opacity .3s;
+      transform: translateZ(0);
+      z-index: 10;
       &-fraction {
         color: $white;
         font-size: 18px;
@@ -102,6 +107,11 @@
 
     &-button {
       &-prev {
+        position: absolute;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: $white !important;
         height: 34px !important;
         width: 34px !important;
@@ -124,6 +134,11 @@
       }
 
       &-next {
+        position: absolute;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: $white !important;
         height: 34px !important;
         width: 34px !important;

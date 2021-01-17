@@ -1,4 +1,4 @@
-import { IRootState } from '@/store/reducers/state';
+import { IRootState } from '@/store/state';
 import { createSelector } from 'reselect';
 import { getColumns } from '@/store/selectors/columns';
 

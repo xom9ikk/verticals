@@ -575,8 +575,8 @@ export const Column: FC<IColumn> = ({
                             </div>
                             <ArchiveContainer
                               archivedTodos={todos
-                                      ?.sort((a, b) => a.position - b.position)
-                                      ?.filter((todo: ITodo) => todo.isArchived)}
+                                ?.sort((a, b) => a.position - b.position)
+                                ?.filter((todo: ITodo) => todo.isArchived)}
                               cardType={cardType}
                               onExitFromEditable={saveCard}
                             />

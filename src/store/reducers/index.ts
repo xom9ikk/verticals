@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { IRootState } from './state';
+import { IRootState } from '@/store/state';
 import { SystemReducer } from './system';
 import { UserReducer } from './user';
 import { BoardsReducer } from './boards';

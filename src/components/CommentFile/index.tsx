@@ -2,6 +2,8 @@ import React, { FC, useState } from 'react';
 import { useFormat } from '@/use/format';
 import { useDownload } from '@/use/download';
 import { ControlButton } from '@comp/ControlButton';
+// import { SystemActions } from '@/store/actions';
+// import { useDispatch } from 'react-redux';
 
 interface ICommentFile {
   id: number;
@@ -32,10 +34,19 @@ export const CommentFile: FC<ICommentFile> = ({
     backgroundImage: `url('${path}')`,
   } : {};
 
-  const downloadHandler = (event: React.SyntheticEvent) => {
+  const handleDownload = (event: React.SyntheticEvent) => {
     event.stopPropagation();
     console.log('download', path);
     download(path);
+  };
+
+  // const dispatch = useDispatch();
+
+  const handleOpenGallery = () => {
+    if (isImage) {
+      // dispatch(SystemActions.setActiveGalleryId(id)); // calculate images for id by
+      console.log(id);
+    }
   };
 
   return (
@@ -46,7 +57,7 @@ export const CommentFile: FC<ICommentFile> = ({
       `}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
-      onClick={downloadHandler}
+      onClick={handleOpenGallery}
     >
       <div
         className="comment-file__image"
@@ -61,7 +72,7 @@ export const CommentFile: FC<ICommentFile> = ({
           imageSize={isCompact || !isImage ? 20 : 40}
           size={isCompact || !isImage ? 30 : 60}
           isPrimary
-          onClick={downloadHandler}
+          onClick={handleDownload}
           style={{ zIndex: 2, borderRadius: '50%', opacity: '0.6' }}
         />
         <ControlButton

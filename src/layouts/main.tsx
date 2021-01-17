@@ -27,7 +27,7 @@ import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selector
 import { TRASH_BOARD_ID } from '@/constants';
 
 // @ts-ignore
-export const MainLayout: FC = ({ match }) => {
+export const MainLayout: FC<any> = ({ match }) => {
   const { boardId, todoId } = match.params;
 
   const dispatch = useDispatch();
@@ -63,8 +63,8 @@ export const MainLayout: FC = ({ match }) => {
     dispatch(BoardsActions.fetchAll());
   }, []);
 
-  const closeAllPopups = () => {
-    console.log('closeAllPopups');
+  const closePopupsAndEditable = () => {
+    console.log('closePopupsAndEditable');
     dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
@@ -72,7 +72,8 @@ export const MainLayout: FC = ({ match }) => {
     // dispatch(BoardsActions.removeTemp()); // TODO: fix
     // dispatch(ColumnsActions.removeTemp()); // TODO: fix
     // dispatch(TodosActions.removeTemp()); // TODO: fix
-    if (refActiveTodoId.current) { // TODO: fix
+    const isCardOpened = !!refActiveTodoId.current;
+    if (isCardOpened) {
       forwardTo(`/${refUsername.current}/${refBoardId.current}`);
     }
   };
@@ -80,7 +81,7 @@ export const MainLayout: FC = ({ match }) => {
   const keydownHandler = (event: any) => {
     switch (event.code) {
       case 'Escape': {
-        closeAllPopups();
+        closePopupsAndEditable();
         break;
       }
       default: break;
@@ -88,7 +89,7 @@ export const MainLayout: FC = ({ match }) => {
   };
 
   const clickHandler = (event: any) => {
-    if (event.isTrusted) closeAllPopups();
+    if (event.isTrusted) closePopupsAndEditable();
   };
 
   useEffect(() => {
