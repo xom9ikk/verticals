@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { useDownload } from '@/use/download';
 import { getCommentFileAttachmentsByTodoId } from '@/store/selectors';
@@ -16,8 +17,9 @@ export const CardAttachments: FC<ICardAttachments> = ({
   const attachments = useSelector(getCommentFileAttachmentsByTodoId(todoId));
 
   return attachments && attachments.length ? (
-    <div className={`card-attachments 
-  ${isCollapse ? 'card-attachments--collapse' : ''}`}
+    <div className={cn('card-attachments', {
+      'card-attachments--collapse': isCollapse,
+    })}
     >
       {
         attachments.map((attachment) => (

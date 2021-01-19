@@ -1,6 +1,7 @@
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
+import cn from 'classnames';
 import { Loader } from '@comp/Loader';
 
 interface IFallbackLoader {
@@ -73,11 +74,11 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
 
   const memoFallback = useMemo(() => (
     <div
-      className={`fallback-loader 
-      ${isFixed ? 'fallback-loader--fixed' : ''}
-      ${isAbsolute ? 'fallback-loader--absolute' : ''}
-      ${!isLoading ? 'fallback-loader--hide' : ''}
-  `}
+      className={cn('fallback-loader', {
+        'fallback-loader--fixed': isFixed,
+        'fallback-loader--absolute': isAbsolute,
+        'fallback-loader--hide': !isLoading,
+      })}
       style={{ zIndex, background: backgroundColor }}
     >
       <div className="fallback-loader__wrapper">

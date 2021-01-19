@@ -2,6 +2,7 @@
 import React, {
   FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
@@ -133,16 +134,18 @@ export const CardPopup: FC<ICardPopup> = ({
       {
         activeTodo && activeTodo.columnId === columnId ? (
           <div
-            className={`card-popup
-             ${activeTodo ? 'card-popup--open' : ''}
-             `}
+            className={cn('card-popup', {
+              'card-popup--open': activeTodo,
+            })}
             onClick={(e) => {
               e.stopPropagation();
               dispatch(SystemActions.setIsOpenPopup(false));
             }}
           >
             <div
-              className={`card-popup__inner ${colorClass}`}
+              className={cn('card-popup__inner', {
+                [colorClass]: colorClass,
+              })}
             >
               <DropZone onOpen={handleDropFiles}>
                 <Loader

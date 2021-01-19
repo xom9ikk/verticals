@@ -1,7 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions,no-nested-ternary */
-import React, {
-  FC,
-} from 'react';
+import React, { FC } from 'react';
 import { Checkbox } from '@comp/Checkbox';
 import { EnumTodoStatus, EnumTodoType } from '@/types/entities';
 
@@ -42,9 +40,7 @@ export const Bullet: FC<IBullet> = ({
       case EnumTodoType.Checkboxes:
         return (
           <div
-            className={`
-          bullet__overlay 
-          bullet__overlay--${size}`}
+            className={`bullet__overlay bullet__overlay--${size}`}
             style={style}
           >
             {

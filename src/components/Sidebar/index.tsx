@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import cn from 'classnames';
 import { Toolbar } from '@comp/Toolbar';
 import { ControlButton } from '@comp/ControlButton';
 
@@ -13,11 +14,18 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
     setIsHover(false);
   }, [isPinnedSidebar]);
 
+  const isUnpinned = !isPinnedSidebar && !isHover;
+
   return (
     <>
-      <div className={`sidebar__overlay ${!isPinnedSidebar && !isHover ? 'sidebar__overlay--unpinned' : ''}`} />
+      <div className={cn('sidebar__overlay', {
+        'sidebar__overlay--unpinned': isUnpinned,
+      })}
+      />
       <aside
-        className={`sidebar ${!isPinnedSidebar && !isHover ? 'sidebar--unpinned' : ''}`}
+        className={cn('sidebar', {
+          'sidebar--unpinned': isUnpinned,
+        })}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >

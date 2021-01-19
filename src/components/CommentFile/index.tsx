@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import cn from 'classnames';
 import { useFormat } from '@/use/format';
 import { useDownload } from '@/use/download';
 import { ControlButton } from '@comp/ControlButton';
@@ -51,10 +52,10 @@ export const CommentFile: FC<ICommentFile> = ({
 
   return (
     <div
-      className={`comment-file 
-      ${isImage ? 'comment-file--image' : ''}
-      ${isCompact ? 'comment-file--compact' : ''}
-      `}
+      className={cn('comment-file', {
+        'comment-file--image': isImage,
+        'comment-file--compact': isCompact,
+      })}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
       onClick={handleOpenGallery}
@@ -85,10 +86,10 @@ export const CommentFile: FC<ICommentFile> = ({
           onClick={() => onRemove(id)}
           style={{ position: 'absolute', right: 5, top: 5 }}
         />
-        <div className={`comment-file__size
-         ${isImage
-          ? 'comment-file__size--image'
-          : 'comment-file__size--file'}`}
+        <div className={cn('comment-file__size', {
+          'comment-file__size--image': isImage,
+          'comment-file__size--file': !isImage,
+        })}
         >
           {formatSize(size)}
         </div>

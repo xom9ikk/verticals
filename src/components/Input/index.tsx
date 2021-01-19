@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import cn from 'classnames';
 import { TextArea } from '@comp/TextArea';
 
 interface IInput {
@@ -102,7 +103,9 @@ export const InputComponent = ({
               )
             }
             <div
-              className={`input__error ${isError ? 'input__error--open' : ''}`}
+              className={cn('input__error', {
+                'input__error--open': isError,
+              })}
             >
               { isError ? error : ''}
             </div>

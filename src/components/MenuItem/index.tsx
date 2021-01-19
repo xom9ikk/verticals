@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 interface IMenuItem {
   text: string;
@@ -58,7 +59,9 @@ export const MenuItem: FC<IMenuItem> = ({
         <img
           src={hintImageSrc}
           alt="hint"
-          className={`menu-item__hint-icon ${isColoredHintImage ? 'menu-item__hint-icon--colored' : ''}`}
+          className={cn('menu-item__hint-icon', {
+            'menu-item__hint-icon--colored': isColoredHintImage,
+          })}
         />
       ) : null
     }
