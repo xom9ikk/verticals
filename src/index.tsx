@@ -6,8 +6,6 @@ import ReactNotification from 'react-notifications-component';
 import ReactTooltip from 'react-tooltip';
 
 import 'swiper/swiper.scss';
-// import 'swiper/components/pagination/pagination.scss';
-// import 'swiper/components/navigation/navigation.scss';
 import 'react-notifications-component/dist/theme.css';
 import { Gallery } from '@comp/Gallery';
 import { FormattingHelp } from '@comp/FormattingHelp';
@@ -40,7 +38,7 @@ ReactDOM.render(
 
 setInterval(() => {
   // console.log('rebuild');
-  ReactTooltip.rebuild();
+  ReactTooltip.rebuild(); // TODO: move to data-tip update hook
 }, 2000);
 
 // @ts-ignore

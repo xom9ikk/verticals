@@ -14,8 +14,7 @@ const PATHS = {
 module.exports = {
   target: 'web',
   entry: {
-    app: `${PATHS.src}/index.tsx`,
-    // app: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
+    app: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
   },
   output: {
     filename: path.join('js', '[name].[fullhash].js'),
@@ -42,6 +41,7 @@ module.exports = {
               presets: [
                 '@babel/preset-env',
                 '@babel/preset-react',
+                '@babel/preset-typescript',
               ],
               plugins: [
                 ['@babel/plugin-proposal-decorators', { legacy: true }],
@@ -50,7 +50,6 @@ module.exports = {
               ],
             },
           },
-          'ts-loader',
         ],
       },
       {
