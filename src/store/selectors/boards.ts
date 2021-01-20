@@ -1,5 +1,5 @@
-import { IRootState } from '@/store/state';
 import { createSelector } from 'reselect';
+import { IRootState } from '@/store/state';
 import { EnumTodoType } from '@/types/entities';
 
 export const getBoards = (state: IRootState) => state.boards;

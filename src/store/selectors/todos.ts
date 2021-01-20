@@ -1,5 +1,5 @@
-import { IRootState } from '@/store/state';
 import { createSelector } from 'reselect';
+import { IRootState } from '@/store/state';
 import { getColumns } from '@/store/selectors/columns';
 
 export const getTodos = (state: IRootState) => state.todos;

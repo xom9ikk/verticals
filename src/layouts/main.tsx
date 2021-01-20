@@ -1,14 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useEffect, useMemo,
+  FC, useEffect, useMemo, useRef,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch, useParams } from 'react-router-dom';
 import { RouteWrapper } from '@/router/router';
 import { SettingsLayout } from '@/layouts/Settings';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
-import { Route, Switch } from 'react-router-dom';
 import { Account } from '@/pages/settings/Account';
 import { Profile } from '@/pages/settings/Profile';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   SystemActions,
   BoardsActions,
@@ -21,24 +21,24 @@ import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@/use/readableId';
-import { useValueRef } from '@/use/valueRef';
 import { forwardTo } from '@/router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 
 // @ts-ignore
-export const MainLayout: FC<any> = ({ match }) => {
-  const { boardId, todoId } = match.params;
+export const MainLayout: FC<{}> = () => {
+  const { boardId, todoId } = useParams();
 
   const dispatch = useDispatch();
+
   const activeBoardId = useSelector(getActiveBoardId);
   const activeTodoId = useSelector(getActiveTodoId);
   const username = useSelector(getUsername);
 
   const { toNumericId } = useReadableId();
-  const refBoardId = useValueRef(boardId);
-  const refActiveTodoId = useValueRef(activeTodoId);
-  const refUsername = useValueRef(username);
+  const refBoardId = useRef(boardId);
+  const refActiveTodoId = useRef(activeTodoId);
+  const refUsername = useRef(username);
 
   useEffect(() => {
     const numericBoardId = boardId === 'trash'
