@@ -1,6 +1,7 @@
 import React, {
   FC, MutableRefObject, useMemo, useState,
 } from 'react';
+import cn from 'classnames';
 import { createPortal } from 'react-dom';
 
 interface IPopup {
@@ -24,7 +25,7 @@ export const Popup: FC<IPopup> = ({
   sourceRef,
   isSubMenu,
   isAbsolute,
-  position,
+  position = 'top',
   style,
   children,
 }) => {
@@ -33,24 +34,24 @@ export const Popup: FC<IPopup> = ({
     clientHeight: 0,
   });
 
-  const popup = () => {
-    const classes = ['popup'];
-    if (isSubMenu) {
-      classes.push(`popup--${position || 'top'}`);
-    }
-    return (
+  const popup = () => (
+    <div
+      className={cn('popup', {
+        [`popup--${position}`]: isSubMenu,
+      })}
+      style={style}
+      onClick={(e) => e.stopPropagation()}
+      onDoubleClick={(e) => e.stopPropagation()}
+    >
       <div
-        className={classes.join(' ')}
-        style={style}
-        onClick={(e) => e.stopPropagation()}
-        onDoubleClick={(e) => e.stopPropagation()}
+        className={cn('popup__inner', {
+          'popup__inner--submenu': isSubMenu,
+        })}
       >
-        <div className={`popup__inner ${isSubMenu ? 'popup__inner--submenu' : ''}`}>
-          {children}
-        </div>
+        {children}
       </div>
-    );
-  };
+    </div>
+  );
 
   const memoPopup = useMemo(() => {
     if (!isOpen) {

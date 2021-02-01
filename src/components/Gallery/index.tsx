@@ -6,9 +6,9 @@ import { createPortal } from 'react-dom';
 import SwiperCore, { Pagination, Keyboard } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import 'swiper/swiper.scss';
-import 'swiper/components/navigation/navigation.scss';
-import 'swiper/components/pagination/pagination.scss';
+// import 'swiper/swiper.scss';
+// import 'swiper/components/navigation/navigation.scss';
+// import 'swiper/components/pagination/pagination.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGalleryImagesInfo } from '@/store/selectors';
 import { SystemActions } from '@/store/actions';

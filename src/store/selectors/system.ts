@@ -1,4 +1,4 @@
-import { IRootState } from '@/store/reducers/state';
+import { IRootState } from '@/store/state';
 
 export const getIsLoadedBoards = (state: IRootState) => state.system.isLoadedBoards;
 export const getIsLoadedColumns = (state: IRootState) => state.system.isLoadedColumns;

@@ -2,18 +2,64 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
-const { merge } = require('webpack-merge');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 const TerserPlugin = require('terser-webpack-plugin');
+const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config');
 
 const buildWebpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /\.(scss|css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: false,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              postcssOptions: {
+                plugins: [
+                  autoprefixer,
+                  cssnano({
+                    preset: [
+                      'default',
+                      {
+                        discardComments: {
+                          removeAll: true,
+                        },
+                      },
+                    ],
+                  }),
+                ],
+              },
+            },
+          },
+          'sass-loader',
+        ],
+      },
+    ],
+  },
   plugins: [
     new Dotenv({
       path: path.resolve('.env.production'),
     }),
     new MiniCssExtractPlugin({
-      filename: path.join('css', '[name].[hash].css'),
+      filename: path.join('css', '[name].[contenthash].css'),
+    }),
+    new ESLintPlugin({
+      extensions: ['ts', 'tsx'],
+      exclude: '/node_modules/',
     }),
   ],
   optimization: {

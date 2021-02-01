@@ -1,6 +1,7 @@
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { IComment } from '@/types/entities';
 import { MenuItem } from '@comp/MenuItem';
@@ -171,7 +172,9 @@ export const CommentItem: FC<ICommentItem> = ({
       className="comment__content"
     >
       <div
-        className={`comment__header ${replyCommentId ? 'comment__header--replied' : ''}`}
+        className={cn('comment__header', {
+          'comment__header--replied': replyCommentId,
+        })}
       >
         {
           replyCommentId && (
@@ -191,11 +194,11 @@ export const CommentItem: FC<ICommentItem> = ({
       </div>
       {
         text && (
-        <div
-          className="comment__text"
-          onDoubleClick={(e) => e.stopPropagation()}
-          dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
-        />
+          <div
+            className="comment__text"
+            onDoubleClick={(e) => e.stopPropagation()}
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
+          />
         )
       }
       { memoAttachments }
@@ -214,14 +217,14 @@ export const CommentItem: FC<ICommentItem> = ({
   return (
     <div
       className="comment"
-      onDoubleClick={() => setIsDoubleClick(true)}
+      onDoubleClickCapture={() => setIsDoubleClick(true)}
     >
       <Avatar />
       <div
-        className={`comment__wrapper
-        ${isDoubleClick ? 'comment__wrapper--pressed' : ''}
-        ${isEditable ? 'comment__wrapper--editable' : ''}
-        `}
+        className={cn('comment__wrapper', {
+          'comment__wrapper--pressed': isDoubleClick,
+          'comment__wrapper--editable': isEditable,
+        })}
       >
         {memoComment}
         <div className="comment__controls">

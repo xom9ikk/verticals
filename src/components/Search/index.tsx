@@ -21,8 +21,8 @@ export const Search: FC<ISearch> = () => {
   const isSearchMode = useSelector(getIsSearchMode);
 
   const debounceSearch = useCallback(
-    debounce((query: string) => {
-      dispatch(SearchActions.searchByTodoTitle({ query }));
+    debounce((queryString: string) => {
+      dispatch(SearchActions.searchByTodoTitle({ query: queryString }));
     }, 100),
     [],
   );

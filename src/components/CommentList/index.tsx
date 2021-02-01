@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
 } from 'react';
+import cn from 'classnames';
 import { CommentItem } from '@comp/CommentItem';
 import { IComment, IComments } from '@/types/entities';
 
@@ -13,7 +14,9 @@ const CommentListComponent = ({
 }: ICommentList, ref: any) => (
   <div
     ref={ref}
-    className={`comment-list ${!comments?.length ? 'comment-list--empty' : ''}`}
+    className={cn('comment-list', {
+      'comment-list--empty': !comments?.length,
+    })}
   >
     {
       comments.length > 0 ? (

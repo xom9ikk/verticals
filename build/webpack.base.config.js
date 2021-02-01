@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
@@ -13,13 +12,13 @@ const PATHS = {
 };
 
 module.exports = {
+  target: 'web',
   entry: {
-    app: `${PATHS.src}/index.tsx`,
-    // app: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
+    app: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
   },
   output: {
-    filename: path.join('js', '[name].[hash].js'),
-    chunkFilename: path.join('js', 'chunks', '[name].[hash].js'),
+    filename: path.join('js', '[name].[fullhash].js'),
+    chunkFilename: path.join('js', 'chunks', '[name].[fullhash].js'),
     path: PATHS.dist,
     publicPath: '/',
   },
@@ -42,62 +41,24 @@ module.exports = {
               presets: [
                 '@babel/preset-env',
                 '@babel/preset-react',
+                '@babel/preset-typescript',
               ],
               plugins: [
                 ['@babel/plugin-proposal-decorators', { legacy: true }],
-                'react-hot-loader/babel',
                 'babel-plugin-parameter-decorator',
                 '@babel/plugin-syntax-dynamic-import',
               ],
             },
           },
-          'ts-loader',
         ],
       },
       {
-        // fonts
-        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader',
-        options: {
-          name: path.join(PATHS.assets, 'fonts', '[name].[ext]'),
-        },
+        test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+        type: 'asset/resource',
       },
       {
-        // css
-        test: /\.css$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-        ],
-      },
-      {
-        // scss
-        test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: true, // TODO
-              reloadAll: true,
-            },
-          },
-          {
-            loader: 'css-loader',
-            options: { sourceMap: true },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              config: { path: path.resolve('postcss.config.js') },
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true },
-          },
-        ],
+        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+        type: 'asset/inline',
       },
     ],
   },
@@ -106,12 +67,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.join(PATHS.src, PATHS.assets, 'images'),
-          to: path.join(PATHS.assets, 'images'),
-        },
-        {
-          from: path.join(PATHS.src, PATHS.assets, 'svg'),
-          to: path.join(PATHS.assets, 'svg'),
+          from: path.join(PATHS.src, PATHS.assets),
+          to: PATHS.assets,
         },
         {
           from: PATHS.static,
@@ -120,6 +77,8 @@ module.exports = {
       ],
     }),
     new HTMLWebpackPlugin({
+      title: 'App title',
+      favicon: path.resolve(PATHS.static, 'favicon.ico'),
       template: path.resolve(PATHS.static, 'index.html'),
       filename: 'index.html',
       minify: {

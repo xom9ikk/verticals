@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 import { Route, Link } from 'react-router-dom';
 
 interface INavLink {
@@ -7,9 +8,9 @@ interface INavLink {
   strict?: boolean;
   location?: any;
   activeClassName?: string;
+  inactiveClassName?: string;
   className?: string;
   activeStyle?: any;
-  inactiveClassName?: string;
   style?: React.CSSProperties;
   isActive?: any;
 }
@@ -19,10 +20,10 @@ export const NavLink: FC<INavLink> = ({
   exact,
   strict,
   location,
-  activeClassName,
-  className,
+  activeClassName = '',
+  inactiveClassName = '',
+  className = '',
   activeStyle,
-  inactiveClassName,
   style,
   isActive: getIsActive,
   children,
@@ -36,13 +37,13 @@ export const NavLink: FC<INavLink> = ({
   >
     {({ location: l, match }) => {
       const isActive = !!(getIsActive ? getIsActive(match, l) : match);
-      const moddedClassName = `${className || ''} ${isActive
-        ? activeClassName
-        : inactiveClassName}`;
       return (
         <Link
           to={to}
-          className={moddedClassName}
+          className={cn(className, {
+            [activeClassName]: isActive,
+            [inactiveClassName]: !isActive,
+          })}
           style={isActive ? { ...style, ...activeStyle } : style}
           {...rest}
           onClick={(e) => e.stopPropagation()}

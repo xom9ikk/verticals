@@ -1,6 +1,7 @@
 import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -370,11 +371,11 @@ export const Board: FC<IBoard> = ({
 
   const boardItem = useMemo(() => (
     <div
-      className={`board-item 
-       ${isEditable ? 'board-item--editable' : ''} 
-       ${snapshot?.isDragging ? 'board-item--dragging' : ''} 
-       ${isActive ? 'board-item--active' : ''} 
-       `}
+      className={cn('board-item', {
+        'board-item--editable': isEditable,
+        'board-item--dragging': snapshot?.isDragging,
+        'board-item--active': isActive,
+      })}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
     >

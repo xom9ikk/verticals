@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-use-before-define,no-shadow */
+/* eslint-disable @typescript-eslint/no-use-before-define,no-shadow,@typescript-eslint/no-shadow */
 import React, { FC } from 'react';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
@@ -44,7 +44,7 @@ export const Profile: FC<IProfile> = () => {
   };
 
   const handleClick = async () => {
-    const [file] = await openFiles('image/x-png,image/jpeg', false);
+    const [file] = await openFiles('image/x-png,image/jpeg', false) || [];
     dispatch(UserActions.uploadAvatar(file));
   };
 

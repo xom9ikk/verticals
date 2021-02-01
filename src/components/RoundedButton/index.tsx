@@ -1,6 +1,5 @@
-import React, {
-  FC, useMemo,
-} from 'react';
+import React, { FC, useMemo } from 'react';
+import cn from 'classnames';
 import { EnumColors } from '@/types/entities';
 import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
 import { useColorClass } from '@/use/colorClass';
@@ -38,10 +37,10 @@ export const RoundedButton: FC<IRoundedButton> = ({
 
   const roundedButton = useMemo(() => (
     <div
-      className={`rounded-button 
-       ${isActive ? 'rounded-button--active' : ''} 
-       ${color !== undefined ? colorClass : ''} 
-       `}
+      className={cn('rounded-button', {
+        'rounded-button--active': isActive,
+        [colorClass]: color !== undefined,
+      })}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       onClick={handleClick}
@@ -51,9 +50,9 @@ export const RoundedButton: FC<IRoundedButton> = ({
         <img
           src={icon}
           alt="ico"
-          className={`rounded-button__image 
-          ${isSpecialIcon ? 'rounded-button__image--always-colored' : ''}
-          `}
+          className={cn('rounded-button__image', {
+            'rounded-button__image--always-colored': isSpecialIcon,
+          })}
         />
         <span className="rounded-button__text">{text}</span>
         {children}

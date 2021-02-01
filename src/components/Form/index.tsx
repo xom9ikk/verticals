@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 interface IForm {
   title?: string;
@@ -21,7 +22,10 @@ export const Form: FC<IForm> = ({
     onSubmit={handleSubmit}
     noValidate
   >
-    <div className={`form__inner ${isMaxWidth ? 'form__inner--max-width' : ''}`}>
+    <div className={cn('form__inner', {
+      'form__inner--max-width': isMaxWidth,
+    })}
+    >
       {title?.length > 0 && <div className="form__title">{title}</div>}
       {subtitle?.length > 0 && <div className="form__subtitle">{subtitle}</div>}
       {children}

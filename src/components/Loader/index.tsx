@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 interface ILoader {
   isOpen: boolean;
@@ -15,7 +16,12 @@ export const Loader: FC<ILoader> = ({
   strokeDashoffset = 325,
   style,
 }) => (
-  <div className={`loader ${!isOpen ? 'loader--hidden' : ''}`} style={style}>
+  <div
+    className={cn('loader', {
+      'loader--hidden': !isOpen,
+    })}
+    style={style}
+  >
     <svg
       style={{
         width: size,

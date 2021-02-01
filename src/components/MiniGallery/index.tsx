@@ -9,8 +9,8 @@ import { useCollapse } from '@/use/animationHeight';
 import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import 'swiper/swiper.scss';
-import 'swiper/components/pagination/pagination.scss';
+// import 'swiper/swiper.scss';
+// import 'swiper/components/pagination/pagination.scss';
 import { SystemActions } from '@/store/actions';
 
 SwiperCore.use([Pagination]);
@@ -21,7 +21,7 @@ interface IMiniGallery {
 }
 
 export const MiniGallery: FC<IMiniGallery> = ({
-  todoId = null,
+  todoId,
   isCollapse: initialIsCollapse,
 }) => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export const MiniGallery: FC<IMiniGallery> = ({
   const [activeIndex, setActiveIndex] = useState<number>(1);
   const [swiperController, setSwiperController] = useState<SwiperCore>();
 
-  const images = useSelector(getCommentImageAttachmentsByTodoId(todoId));
+  const images = useSelector(getCommentImageAttachmentsByTodoId(todoId || null));
 
   const handleClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation();
@@ -70,36 +70,34 @@ export const MiniGallery: FC<IMiniGallery> = ({
   };
 
   const memoSwiper = useMemo(() => (images && images.length ? (
-    <>
-      <div className="mini-gallery__wrapper">
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={0}
-          preventClicks={false}
-          threshold={2}
-          loop
-          setWrapperSize
-          autoHeight
-          pagination={{ type: 'fraction' }}
-          onSwiper={setSwiperController}
-          onSlideChangeTransitionEnd={(swiper) => {
-            const newActiveIndex = swiper.activeIndex - 1;
-            console.log('newActiveIndex', newActiveIndex);
-            setActiveIndex(newActiveIndex);
-          }}
-        >
-          {
-            images.map((image) => (
-              <SwiperSlide key={image.path}>
-                <img src={image.path} alt="" />
-              </SwiperSlide>
-            ))
-          }
-        </Swiper>
-        <button className="swiper-button-next" onClick={handleNext} />
-        <button className="swiper-button-prev" onClick={handlePrev} />
-      </div>
-    </>
+    <div className="mini-gallery__wrapper">
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={0}
+        preventClicks={false}
+        threshold={2}
+        loop
+        setWrapperSize
+        autoHeight
+        pagination={{ type: 'fraction' }}
+        onSwiper={setSwiperController}
+        onSlideChangeTransitionEnd={(swiper) => {
+          const newActiveIndex = swiper.activeIndex - 1;
+          console.log('newActiveIndex', newActiveIndex);
+          setActiveIndex(newActiveIndex);
+        }}
+      >
+        {
+          images.map((image) => (
+            <SwiperSlide key={image.path}>
+              <img src={image.path} alt="" />
+            </SwiperSlide>
+          ))
+        }
+      </Swiper>
+      <button className="swiper-button-prev" onClick={handlePrev} />
+      <button className="swiper-button-next" onClick={handleNext} />
+    </div>
   ) : null),
   [images]);
 

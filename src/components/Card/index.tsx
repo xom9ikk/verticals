@@ -2,6 +2,7 @@
 import React, {
   FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
@@ -328,9 +329,9 @@ export const Card: FC<ICard> = ({
 
   const card = useMemo(() => (
     <div
-      className={`card__block-wrapper 
-          ${isEditable ? 'card__block-wrapper--editable' : ''}
-        `}
+      className={cn('card__block-wrapper', {
+        'card__block-wrapper--editable': isEditable,
+      })}
       onClick={(e) => !isEditable && handleClick(e)}
     >
       <Bullet
@@ -423,9 +424,9 @@ export const Card: FC<ICard> = ({
                 onHidePopup={hidePopupHandler}
               />
               <span
-                className={`card__title 
-              ${status === EnumTodoStatus.Canceled ? 'card__title--cross-out' : ''}
-              `}
+                className={cn('card__title', {
+                  'card__title--cross-out': status === EnumTodoStatus.Canceled,
+                })}
               >
                 {titleValue}
               </span>
@@ -470,13 +471,13 @@ export const Card: FC<ICard> = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div
-        className={`card__content
-        ${snapshot?.isDragging ? 'card__content--dragging' : ''}
-        ${isEditable ? 'card__content--editable' : ''}
-        ${isMouseDown || isActive ? 'card__content--pressed' : ''}
-        ${color !== undefined ? colorClass : ''}
-        ${invertColor ? 'card__content--invert' : ''}
-        `}
+        className={cn('card__content', {
+          'card__content--editable': isEditable,
+          'card__content--invert': invertColor,
+          'card__content--pressed': isMouseDown || isActive,
+          'card__content--dragging': snapshot?.isDragging,
+          [colorClass]: color !== undefined,
+        })}
       >
         <DropZone
           onOpen={handleDropFiles}

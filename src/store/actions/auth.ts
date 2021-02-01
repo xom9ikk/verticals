@@ -30,5 +30,3 @@ export const AuthActions = {
   reset,
   changePassword,
 };
-
-export type AuthActions = Omit<typeof AuthActions, 'Type'>;

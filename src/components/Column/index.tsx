@@ -1,6 +1,7 @@
 import React, {
   FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
+import cn from 'classnames';
 import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
@@ -410,7 +411,9 @@ export const Column: FC<IColumn> = ({
             />
           ) : (
             <span
-              className={`column__description ${!descriptionValue ? 'column__description--empty' : ''}`}
+              className={cn('column__description', {
+                'column__description--empty': !descriptionValue,
+              })}
             >
               {descriptionValue || 'Notes'}
             </span>
@@ -443,7 +446,9 @@ export const Column: FC<IColumn> = ({
             ) : (
               <>
                 <span
-                  className={`column__title ${!titleValue ? 'column__title--empty' : ''}`}
+                  className={cn('column__title', {
+                    'column__title--empty': !titleValue,
+                  })}
                 >
                   {titleValue || 'New column'}
                 </span>
@@ -475,9 +480,9 @@ export const Column: FC<IColumn> = ({
                 <div
                   role="button"
                   tabIndex={0}
-                  className={`column column--compact 
-                  ${snapshot.isDragging ? 'column--dragging' : ''}
-                  `}
+                  className={cn('column', 'column--compact', {
+                    'column--dragging': snapshot.isDragging,
+                  })}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   onMouseEnter={() => setIsHoverHeader(true)}
@@ -485,11 +490,11 @@ export const Column: FC<IColumn> = ({
                   onClick={handleClick}
                 >
                   <div
-                    className={`column__wrapper column__wrapper--compact
-                  ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
-                  ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
-                  ${color !== null ? colorClass : ''}
-                  `}
+                    className={cn('column__wrapper', 'column__wrapper--compact', {
+                      'column__wrapper--hovered': isHoverHeader && !isEditable,
+                      'column__wrapper--dragging': snapshot.isDragging,
+                      [colorClass]: color !== undefined,
+                    })}
                     {...provided.dragHandleProps}
                   >
                     <div className="column__inner">
@@ -505,7 +510,9 @@ export const Column: FC<IColumn> = ({
               </>
             ) : (
               <div
-                className={`column ${snapshot.isDragging ? 'column--dragging' : ''}`}
+                className={cn('column', {
+                  'column--dragging': snapshot.isDragging,
+                })}
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 onMouseOver={() => setIsHover(true)}
@@ -513,11 +520,11 @@ export const Column: FC<IColumn> = ({
                 onClick={isNew ? handleClick : () => {}}
               >
                 <div
-                  className={`column__wrapper
-                    ${isHoverHeader && !isEditable ? 'column__wrapper--hovered' : ''}
-                    ${snapshot.isDragging ? 'column__wrapper--dragging' : ''}
-                    ${isEditable ? 'column__wrapper--editable' : ''}
-                    `}
+                  className={cn('column__wrapper', {
+                    'column__wrapper--editable': isEditable,
+                    'column__wrapper--dragging': snapshot.isDragging,
+                    'column__wrapper--hovered': isHoverHeader && !isEditable,
+                  })}
                 >
                   <Droppable
                     droppableId={`column-${columnId?.toString() || 'todo-this-case'}`}
@@ -539,10 +546,10 @@ export const Column: FC<IColumn> = ({
                               <div
                                 role="button"
                                 tabIndex={0}
-                                className={`column__header
-                                ${color !== null ? colorClass : ''}
-                                ${isEditable ? 'column__header--editable' : ''}
-                              `}
+                                className={cn('column__header', {
+                                  'column__header--editable': isEditable,
+                                  [colorClass]: color !== undefined,
+                                })}
                                 {...provided.dragHandleProps}
                                 onMouseEnter={() => setIsHoverHeader(true)}
                                 onMouseLeave={() => setIsHoverHeader(false)}
@@ -575,8 +582,8 @@ export const Column: FC<IColumn> = ({
                             </div>
                             <ArchiveContainer
                               archivedTodos={todos
-                                      ?.sort((a, b) => a.position - b.position)
-                                      ?.filter((todo: ITodo) => todo.isArchived)}
+                                ?.sort((a, b) => a.position - b.position)
+                                ?.filter((todo: ITodo) => todo.isArchived)}
                               cardType={cardType}
                               onExitFromEditable={saveCard}
                             />

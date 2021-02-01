@@ -1,5 +1,5 @@
-import { IRootState } from '@/store/reducers/state';
 import { createSelector } from 'reselect';
+import { IRootState } from '@/store/state';
 
 export const getComments = (state: IRootState) => state.comments;
 export const getCommentsByTodoId = (todoId: number | null) => createSelector(

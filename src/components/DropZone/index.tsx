@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import cn from 'classnames';
 import { useFileList } from '@/use/fileList';
 
 const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE);
@@ -39,9 +40,9 @@ export const DropZone: FC<IDropZone> = ({
     >
       {children}
       <div
-        className={`drop-zone__overlay 
-        ${!isDrag ? 'drop-zone__overlay--hidden' : ''}
-        drop-zone__overlay--${size}`}
+        className={cn('drop-zone__overlay', `drop-zone__overlay--${size}`, {
+          'drop-zone__overlay--hidden': !isDrag,
+        })}
         onDragLeave={() => {
           setIsDrag(false);
         }}

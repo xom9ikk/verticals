@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { RefObject, useEffect, useState } from 'react';
+import {
+  RefObject, useEffect, useLayoutEffect, useState,
+} from 'react';
 
 export enum ScrollDirection {
   Top,
@@ -54,10 +56,12 @@ export const useAutoScroll = (
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (observeDirectionLimit !== undefined) {
       ref.current.addEventListener('scroll', handleScroll);
-      return () => ref.current.removeEventListener('scroll', handleScroll);
+      return () => {
+        ref.current.removeEventListener('scroll', handleScroll);
+      };
     }
   }, []);
 

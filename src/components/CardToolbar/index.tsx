@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 import { ControlButton } from '@comp/ControlButton';
 
 interface ICardToolbar {
@@ -13,7 +14,9 @@ export const CardToolbar: FC<ICardToolbar> = ({
   onClickHeading,
 }) => (
   <div
-    className={`card-toolbar ${!isHoverBlock ? 'card-toolbar--invisible' : ''}`}
+    className={cn('card-toolbar', {
+      'card-toolbar--invisible': !isHoverBlock,
+    })}
   >
     <div className="card-toolbar__inner">
       <ControlButton

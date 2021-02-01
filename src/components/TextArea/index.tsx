@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 import React, {
-  forwardRef, useEffect, useRef, useState,
+  forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState,
 } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 
 interface ITextArea {
   className: string;
@@ -34,66 +36,83 @@ const TextAreaComponent = ({
   style,
   ...attrs
 }: ITextArea, ref: any) => {
-  const textAreaRef = useRef<any>(null);
+  const internalRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useImperativeHandle(ref, () => internalRef.current);
+
   const [height, setHeight] = useState<number>(0);
 
-  const resize = () => {
-    textAreaRef.current.style.height = '0px';
-    const { scrollHeight } = textAreaRef.current;
+  const resize = (el: HTMLTextAreaElement) => {
+    el.style.height = '0px';
+    const { scrollHeight } = el;
     setHeight(scrollHeight);
-    textAreaRef.current.style.height = `${scrollHeight}px`;
+    el.style.height = `${scrollHeight}px`;
     if (height !== scrollHeight) {
       onChangeHeight?.(height);
     }
   };
 
-  useEffect(() => {
-    // @ts-ignore
+  const setDefaultHeight = (el: HTMLTextAreaElement, min: number, max: number) => {
+    el.style.minHeight = `${min}px`;
+    el.style.height = `${min}px`;
+    el.style.maxHeight = `${max}px`;
+  };
+
+  useLayoutEffect(() => {
+    console.log('internalRef', internalRef);
+    if (!internalRef.current) return;
     const resizeObserver = new ResizeObserver(() => {
-      resize();
+      console.log('call 2 resize HTMLTextAreaElement', internalRef.current);
+      if (internalRef.current) {
+        resize(internalRef.current!);
+      }
     });
-    resizeObserver.observe(textAreaRef.current);
+    resizeObserver.observe(internalRef.current!);
     return () => {
-      resizeObserver.unobserve(textAreaRef.current);
+      console.log('unmount', internalRef.current);
+      resizeObserver.unobserve(internalRef.current!);
     };
   }, []);
 
   useEffect(() => {
-    const {
-      fontSize, lineHeight, paddingTop, paddingBottom,
-    } = window.getComputedStyle(textAreaRef.current);
+    if (internalRef.current) {
+      const {
+        fontSize, lineHeight, paddingTop, paddingBottom,
+      } = window.getComputedStyle(internalRef.current!);
 
-    const fz = parseInt(fontSize, 10);
-    const pt = parseInt(paddingTop, 10);
-    const pb = parseInt(paddingBottom, 10);
-    const lh = lineHeight !== 'normal'
-      ? parseInt(lineHeight, 10)
-      : 1.3;
+      const fz = parseInt(fontSize, 10);
+      const pt = parseInt(paddingTop, 10);
+      const pb = parseInt(paddingBottom, 10);
+      const lh = lineHeight !== 'normal'
+        ? parseInt(lineHeight, 10)
+        : 1.3;
 
-    const rowHeight = (fz) * lh;
-    const min = minRows * rowHeight;
-    const max = maxRows * rowHeight + pt + pb;
-
-    textAreaRef.current.style.minHeight = `${min}px`;
-    textAreaRef.current.style.height = `${min}px`;
-    textAreaRef.current.style.maxHeight = `${max}px`;
-  }, [textAreaRef]);
+      const rowHeight = fz * lh;
+      const min = minRows * rowHeight;
+      const max = maxRows * rowHeight + pt + pb;
+      setDefaultHeight(internalRef.current!, min, max);
+    }
+  }, [ref]);
 
   useEffect(() => {
-    resize();
+    if (internalRef.current) {
+      console.log('call 1 resize HTMLTextAreaElement', internalRef.current);
+      resize(internalRef.current!);
+    }
   }, [value]);
 
-  useEffect(() => {
-    if (ref) {
-      // eslint-disable-next-line no-param-reassign
-      ref.current = textAreaRef.current;
-    }
-  }, [textAreaRef]);
+  // useEffect(() => {
+  //   if (ref) {
+  //     console.log('textAreaRef', textAreaRef.current);
+  //     // eslint-disable-next-line no-param-reassign
+  //     ref.current = ref.current;
+  //   }
+  // }, [textAreaRef]);
 
   return (
     <textarea
       {...attrs}
-      ref={textAreaRef}
+      ref={internalRef}
       name={name}
       className={className}
       value={value}

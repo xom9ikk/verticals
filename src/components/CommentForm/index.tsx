@@ -1,6 +1,7 @@
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@comp/Avatar';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
@@ -145,9 +146,9 @@ export const CommentForm: FC<ICommentForm> = ({
         <Avatar />
         <div className="comment-form__input-wrapper">
           <div
-            className={`comment-form__reply 
-            ${replyCommentId ? 'comment-form__reply--open' : ''}
-            `}
+            className={cn('comment-form__reply', {
+              'comment-form__reply--open': replyCommentId,
+            })}
           >
             <ControlButton
               imageSrc="/assets/svg/close.svg"
@@ -220,9 +221,9 @@ export const CommentForm: FC<ICommentForm> = ({
           </div>
         </div>
       </div>
-      <div className={`comment-form__helper
-        ${isAvailableSend ? 'comment-form__helper--open' : ''}
-        `}
+      <div className={cn('comment-form__helper', {
+        'comment-form__helper--open': isAvailableSend,
+      })}
       >
         <button onClick={handleOpenFormattingHelp}>
           Formatting help

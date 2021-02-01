@@ -65,8 +65,7 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
                           )
                         }
                       />
-                    )
-                  )
+                    ))
                 }
               </div>
               )
