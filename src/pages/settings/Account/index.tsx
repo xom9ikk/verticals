@@ -3,14 +3,14 @@ import React, { FC, useState } from 'react';
 import { Button } from '@comp/Button';
 import { SyncInput } from '@comp/SyncInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEmail } from '@/store/selectors';
-import { AuthActions, UserActions } from '@/store/actions';
-import validator from '@/helpers/validator';
+import { getEmail } from '@store/selectors';
+import { AuthActions, UserActions } from '@store/actions';
+import validator from '@helpers/validator';
 import { Modal } from '@comp/Modal';
 import { Form } from '@comp/Form';
 import { Input } from '@comp/Input';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorChangePasswordForm } from '@/helpers/validatorChangePasswordForm';
+import { IFormValues, useForm } from '@use/form';
+import { validatorChangePasswordForm } from '@helpers/validatorChangePasswordForm';
 
 interface IAccount {
 

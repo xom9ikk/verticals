@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { IRootState } from '@/store/reducers';
+import { IRootState } from '@store/reducers';
 
 export const getComments = (state: IRootState) => state.comments;
 export const getCommentsByTodoId = (todoId: number | null) => createSelector(

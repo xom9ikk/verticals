@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { IRootState } from '@/store/reducers';
+import { IRootState } from '@store/reducers';
 
 export const getColumns = (state: IRootState) => state.columns;
 export const getColumnsByBoardId = (boardId: number | null) => createSelector(

@@ -8,7 +8,7 @@ import {
   IUpdateBoardPositionResponse,
   IUpdateBoardRequest,
   IUpdateBoardResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface IBoardService {
   getAll(): Promise<IGetAllBoardsResponse>;

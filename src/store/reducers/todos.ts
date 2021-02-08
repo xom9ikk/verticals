@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign,no-plusplus,max-len */
 import {
   ITodo, ITodos,
-} from '@/types/entities';
+} from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
 import { TodosActions } from '../actions';
 

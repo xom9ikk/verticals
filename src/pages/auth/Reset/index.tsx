@@ -3,9 +3,9 @@ import React, { FC } from 'react';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorResetForm } from '@/helpers/validatorResetForm';
-import { AuthActions } from '@/store/actions';
+import { IFormValues, useForm } from '@use/form';
+import { validatorResetForm } from '@helpers/validatorResetForm';
+import { AuthActions } from '@store/actions';
 import { useDispatch } from 'react-redux';
 
 const initialState = {

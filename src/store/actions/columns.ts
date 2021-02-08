@@ -13,7 +13,7 @@ import {
   IUpdateColumnTitle,
   IDrawColumnBelow,
   IReverseColumnOrder,
-} from '@/types/actions';
+} from '@type/actions';
 
 const fetchByBoardId = createAction<IFetchColumnsByBoardId>('COLUMNS/FETCH_BY_BOARD_ID');
 const setAll = createAction<ISetColumns>('COLUMNS/SET_ALL');

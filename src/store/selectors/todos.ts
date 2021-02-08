@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { IRootState } from '@/store/reducers';
-import { getColumns } from '@/store/selectors/columns';
+import { IRootState } from '@store/reducers';
+import { getColumns } from '@store/selectors/columns';
 
 export const getTodos = (state: IRootState) => state.todos;
 export const getTodosByColumnId = (columnId?: number) => createSelector(

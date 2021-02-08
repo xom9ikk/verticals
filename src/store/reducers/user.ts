@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { IUser } from '@/types/entities';
-import { UserActions } from '@/store/actions';
+import { IUser } from '@type/entities';
+import { UserActions } from '@store/actions';
 
 const initialState: IUser = {
   email: null,

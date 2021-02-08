@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorRegisterForm } from '@/helpers/validatorRegisterForm';
+import { IFormValues, useForm } from '@use/form';
+import { validatorRegisterForm } from '@helpers/validatorRegisterForm';
 import { Divider } from '@comp/Divider';
-import { AuthActions } from '@/store/actions';
+import { AuthActions } from '@store/actions';
 
 const initialState = {
   name: '',

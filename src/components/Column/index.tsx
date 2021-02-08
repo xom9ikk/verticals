@@ -13,23 +13,23 @@ import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import {
   ColumnsActions, SystemActions, TodosActions,
-} from '@/store/actions';
+} from '@store/actions';
 import {
   EnumColors, EnumTodoStatus, ITodo,
-} from '@/types/entities';
-import { useFocus } from '@/use/focus';
+} from '@type/entities';
+import { useFocus } from '@use/focus';
 import { ColorPicker } from '@comp/ColorPicker';
-import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
 import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
-import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
   getIsEditableColumn, getBoardCardType, getTodosByColumnId, getIsSearchMode,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
-import { useColorClass } from '@/use/colorClass';
+import { useColorClass } from '@use/colorClass';
 
 interface IColumn {
   index: number;

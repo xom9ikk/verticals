@@ -3,7 +3,7 @@ import React, {
   FC, useMemo,
 } from 'react';
 import { RoundedButton } from '@comp/RoundedButton';
-import { NavLink } from '@/components/NavLink';
+import { NavLink } from '@comp/NavLink';
 
 enum EnumMenu {
   Account='account',

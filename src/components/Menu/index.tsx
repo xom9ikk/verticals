@@ -3,8 +3,8 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';
-import { SystemActions } from '@/store/actions';
-import { getIsOpenPopup } from '@/store/selectors';
+import { SystemActions } from '@store/actions';
+import { getIsOpenPopup } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 
 interface IMenu {

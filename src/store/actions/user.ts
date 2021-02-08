@@ -16,7 +16,7 @@ import {
   ISetAvatarRaw,
   IUpdateUsername,
   IUpdateUsernameRaw,
-} from '@/types/actions';
+} from '@type/actions';
 
 const fetchMe = createAction('USER/FETCH_ME');
 const setUserData = createAction<ISetUserData>('USER/SET_USER_DATA');

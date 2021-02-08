@@ -2,14 +2,14 @@ import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
 import {
   BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
-} from '@/store/actions';
-import { ISearchByTodoTitle } from '@/types/actions';
+} from '@store/actions';
+import { ISearchByTodoTitle } from '@type/actions';
 
 const { searchService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

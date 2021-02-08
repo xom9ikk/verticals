@@ -1,8 +1,8 @@
 import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
-import { EnumColors } from '@/types/entities';
-import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
-import { useColorClass } from '@/use/colorClass';
+import { EnumColors } from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { useColorClass } from '@use/colorClass';
 
 interface IRoundedButton {
   icon: string;

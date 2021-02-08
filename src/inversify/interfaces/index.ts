@@ -7,7 +7,7 @@ import {
   ISearchService,
   ITodoService,
   IUserService,
-} from '@/inversify/interfaces/services';
+} from '@inversify/interfaces/services';
 
 export interface IServices {
   authService: IAuthService;

@@ -7,13 +7,13 @@ import {
 } from 'react-beautiful-dnd';
 import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
-import { BoardsActions, SystemActions } from '@/store/actions';
+import { BoardsActions, SystemActions } from '@store/actions';
 import {
   EnumTodoType,
-} from '@/types/entities';
+} from '@type/entities';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { useReadableId } from '@/use/readableId';
-import { forwardTo } from '@/router/history';
+import { useReadableId } from '@use/readableId';
+import { forwardTo } from '@router/history';
 import { Link } from 'react-router-dom';
 import {
   getActiveBoardId,
@@ -22,7 +22,7 @@ import {
   getBoards,
   getUsername,
   getIsSearchMode,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 
 interface IBoardList {}

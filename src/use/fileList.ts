@@ -1,5 +1,5 @@
-import { useAlert } from '@/use/alert';
-import { useFormat } from '@/use/format';
+import { useAlert } from '@use/alert';
+import { useFormat } from '@use/format';
 
 export const useFileList = () => {
   const { show, ALERT_TYPES } = useAlert();

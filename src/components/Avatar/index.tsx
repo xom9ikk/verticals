@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { getAvatarUrl, getFullName } from '@/store/selectors';
+import { getAvatarUrl, getFullName } from '@store/selectors';
 
 interface IAvatar {
   userAvatarUrl?: string | null

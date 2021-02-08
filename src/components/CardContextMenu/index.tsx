@@ -4,13 +4,13 @@ import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
 import { MenuItem } from '@comp/MenuItem';
 import { Submenu } from '@comp/Submenu';
-import { EnumColors, EnumTodoStatus } from '@/types/entities';
+import { EnumColors, EnumTodoStatus } from '@type/entities';
 import { Divider } from '@comp/Divider';
-import { CommentsActions, SystemActions, TodosActions } from '@/store/actions';
+import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { useReadableId } from '@/use/readableId';
-import { getActiveBoardReadableId, getUsername } from '@/store/selectors';
-import { useOpenFiles } from '@/use/openFiles';
+import { useReadableId } from '@use/readableId';
+import { getActiveBoardReadableId, getUsername } from '@store/selectors';
+import { useOpenFiles } from '@use/openFiles';
 
 interface ICardContextMenu {
   id?: number;

@@ -3,15 +3,15 @@ import React, {
 } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getCommentImageAttachmentsByTodoId } from '@/store/selectors';
-import { useCollapse } from '@/use/animationHeight';
+import { getCommentImageAttachmentsByTodoId } from '@store/selectors';
+import { useCollapse } from '@use/animationHeight';
 
 import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // import 'swiper/swiper.scss';
 // import 'swiper/components/pagination/pagination.scss';
-import { SystemActions } from '@/store/actions';
+import { SystemActions } from '@store/actions';
 
 SwiperCore.use([Pagination]);
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign,max-len */
-import { IComment, ICommentLike, IComments } from '@/types/entities';
+import { IComment, ICommentLike, IComments } from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
-import { CommentsActions } from '@/store/actions';
+import { CommentsActions } from '@store/actions';
 
 const initialState: IComments = [];
 // const initialState: IComments = [

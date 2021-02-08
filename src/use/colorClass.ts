@@ -1,4 +1,4 @@
-import { EnumColors } from '@/types/entities';
+import { EnumColors } from '@type/entities';
 
 export const useColorClass = (baseClass: string, color?: EnumColors) => {
   if (color === undefined || color === null) {

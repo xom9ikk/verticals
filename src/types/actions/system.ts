@@ -1,5 +1,5 @@
-import { EnumDroppedZoneType, EnumLanguage } from '@/types/entities';
-import { ICommentAttachments } from '@/types/entities/comment-attachment';
+import { EnumDroppedZoneType, EnumLanguage } from '@type/entities';
+import { ICommentAttachments } from '@type/entities/comment-attachment';
 
 export type ISetSystemIsLoadedBoards = boolean;
 export type ISetSystemIsLoadedColumns = boolean;

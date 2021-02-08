@@ -19,7 +19,7 @@ import {
   ISetSystemDroppedFiles,
   ISetGalleryImagesInfo,
   ISetIsOpenFormattingHelp,
-} from '@/types/actions';
+} from '@type/actions';
 
 const setIsLoadedBoards = createAction<ISetSystemIsLoadedBoards>('SYSTEM/SET_IS_LOADED_BOARDS');
 const setIsLoadedColumns = createAction<ISetSystemIsLoadedColumns>('SYSTEM/SET_IS_LOADED_COLUMNS');

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions,no-nested-ternary */
 import React, { FC } from 'react';
 import { Checkbox } from '@comp/Checkbox';
-import { EnumTodoStatus, EnumTodoType } from '@/types/entities';
+import { EnumTodoStatus, EnumTodoType } from '@type/entities';
 
 const bullets = ['arrow', 'dot', 'dash'];
 

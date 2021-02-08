@@ -7,9 +7,9 @@ import { Input } from '@comp/Input';
 import {
   BoardsActions, ColumnsActions,
   SearchActions, SystemActions, TodosActions,
-} from '@/store/actions';
+} from '@store/actions';
 import debounce from 'lodash.debounce';
-import { getActiveBoardId, getIsSearchMode } from '@/store/selectors';
+import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 
 interface ISearch {
 }

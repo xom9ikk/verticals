@@ -2,13 +2,13 @@ import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
 import {
   ColumnsActions, SystemActions, TodosActions,
-} from '@/store/actions';
+} from '@store/actions';
 import {
   IFetchColumnsByBoardId,
   ICreateColumn,
@@ -20,8 +20,8 @@ import {
   IUpdateColumnDescription,
   IUpdateColumnColor,
   IUpdateColumnIsCollapsed,
-} from '@/types/actions';
-import { ITodo } from '@/types/entities';
+} from '@type/actions';
+import { ITodo } from '@type/entities';
 
 const { columnService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

@@ -10,7 +10,7 @@ import {
   IRemoveCommentLike,
   IUpdateCommentLike,
   IUpdateCommentText,
-} from '@/types/actions';
+} from '@type/actions';
 
 const fetchByTodoId = createAction<IFetchCommentsByTodoId>('COMMENTS/FETCH_BY_TODO_ID');
 const setAll = createAction<ISetComments>('COMMENTS/SET_ALL');

@@ -6,17 +6,17 @@ import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { CardContextMenu } from '@comp/CardContextMenu';
-import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
-import { useFocus } from '@/use/focus';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
+import { useFocus } from '@use/focus';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType,
-} from '@/types/entities';
-import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
+} from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
-import { forwardTo } from '@/router/history';
-import { useReadableId } from '@/use/readableId';
-import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { forwardTo } from '@router/history';
+import { useReadableId } from '@use/readableId';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
   getActiveBoardReadableId,
   getCommentImageAttachmentsByTodoId,
@@ -24,15 +24,15 @@ import {
   getCommentsByTodoId,
   getIsEditableCard,
   getUsername,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
-import { useFileList } from '@/use/fileList';
+import { useFileList } from '@use/fileList';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
-import { useOpenFiles } from '@/use/openFiles';
+import { useOpenFiles } from '@use/openFiles';
 import { CardAttachments } from '@comp/CardAttachments';
 import { MiniGallery } from '@comp/MiniGallery';
-import { useColorClass } from '@/use/colorClass';
+import { useColorClass } from '@use/colorClass';
 
 enum EnumToggleType {
   Files,

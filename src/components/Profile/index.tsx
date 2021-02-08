@@ -5,10 +5,10 @@ import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { Avatar } from '@comp/Avatar';
-import { SystemActions } from '@/store/actions';
+import { SystemActions } from '@store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { forwardTo } from '@/router/history';
-import { getFullName, getIsOpenProfile, getUsername } from '@/store/selectors';
+import { forwardTo } from '@router/history';
+import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 
 enum EnumMenuActions {

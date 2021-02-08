@@ -3,10 +3,10 @@ import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beau
 import { useSelector } from 'react-redux';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
-} from '@/types/entities';
+} from '@type/entities';
 import { Card } from '@comp/Card';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { getActiveTodoId, getIsLoadedTodos, getIsSearchMode } from '@/store/selectors';
+import { getActiveTodoId, getIsLoadedTodos, getIsSearchMode } from '@store/selectors';
 
 interface ICardsContainer {
   todos?: ITodos;

@@ -3,27 +3,27 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { IComment } from '@/types/entities';
+import { IComment } from '@type/entities';
 import { MenuItem } from '@comp/MenuItem';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
 import { CommentFile } from '@comp/CommentFile';
-import { useFormat } from '@/use/format';
+import { useFormat } from '@use/format';
 import { Avatar } from '@comp/Avatar';
 import {
   CommentAttachmentsActions,
   CommentsActions, SystemActions,
-} from '@/store/actions';
+} from '@store/actions';
 import {
   getFullName,
   getCommentById,
   getEditCommentId,
   getUsername,
   getCommentAttachmentsByCommentId,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
-import { useMarkdown } from '@/use/markdown';
+import { useMarkdown } from '@use/markdown';
 
 type ICommentItem = IComment;
 

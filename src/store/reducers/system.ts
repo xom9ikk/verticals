@@ -1,7 +1,7 @@
 /* eslint-disable max-len,no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { EnumLanguage, ISystem } from '@/types/entities';
-import { SystemActions } from '@/store/actions';
+import { EnumLanguage, ISystem } from '@type/entities';
+import { SystemActions } from '@store/actions';
 
 const initialState: ISystem = {
   isLoadedBoards: false,

@@ -2,14 +2,14 @@ import {
   all, apply, call, put, select, takeLatest, takeLeading,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@/use/alert';
-import { CommentAttachmentsActions, CommentsActions } from '@/store/actions';
+import { useAlert } from '@use/alert';
+import { CommentAttachmentsActions, CommentsActions } from '@store/actions';
 import {
   getAvatarUrl, getName, getSurname, getUsername,
-} from '@/store/selectors';
-import { container } from '@/inversify/config';
-import { IServices } from '@/inversify/interfaces';
-import { TYPES } from '@/inversify/types';
+} from '@store/selectors';
+import { container } from '@inversify/config';
+import { IServices } from '@inversify/interfaces';
+import { TYPES } from '@inversify/types';
 import {
   IAddCommentLike,
   ICreateComment,
@@ -17,7 +17,7 @@ import {
   IRemoveComment,
   IRemoveCommentLike,
   IUpdateCommentText,
-} from '@/types/actions';
+} from '@type/actions';
 
 const { commentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

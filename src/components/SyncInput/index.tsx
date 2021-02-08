@@ -3,10 +3,10 @@ import React, {
   FC, useCallback, useEffect, useRef, useState,
 } from 'react';
 import { Input } from '@comp/Input';
-import { useOutsideHandler } from '@/use/outsideHandler';
+import { useOutsideHandler } from '@use/outsideHandler';
 import { Loader } from '@comp/Loader';
-import { useValidator } from '@/use/validator';
-import { IValidatorPayload, IValidatorResult } from '@/helpers/validator';
+import { useValidator } from '@use/validator';
+import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
 import { useDispatch } from 'react-redux';
 import debounce from 'lodash.debounce';
 

@@ -1,20 +1,20 @@
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
-import { storage } from '@/plugins/storage';
-import { forwardTo } from '@/router/history';
-import { AuthActions } from '@/store/actions';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
+import { storage } from '@plugins/storage';
+import { forwardTo } from '@router/history';
+import { AuthActions } from '@store/actions';
 import {
   IChangePassword,
   IResetPassword,
   ISignIn,
   ISignUp,
   ISetAuthInfo,
-} from '@/types/actions';
+} from '@type/actions';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 const { authService } = container.get<IServices>(TYPES.Services);

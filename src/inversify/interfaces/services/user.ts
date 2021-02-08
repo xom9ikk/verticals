@@ -5,7 +5,7 @@ import {
   IUpdateUserResponse,
   IUploadUserAvatarRequest,
   IUploadUserAvatarResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface IUserService {
   getMe(): Promise<IGetMeResponse>;

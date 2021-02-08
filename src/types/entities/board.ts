@@ -1,4 +1,4 @@
-import { EnumColors, EnumTodoType } from '@/types/entities';
+import { EnumColors, EnumTodoType } from '@type/entities';
 
 export interface IBoard {
   id: number;

@@ -1,4 +1,4 @@
-import { ICommentLike, IComments } from '@/types/entities';
+import { ICommentLike, IComments } from '@type/entities';
 
 export interface IFetchCommentsByTodoId {
   todoId: number;

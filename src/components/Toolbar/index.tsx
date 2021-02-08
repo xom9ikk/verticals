@@ -4,10 +4,10 @@ import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
-import { AuthActions, SystemActions } from '@/store/actions';
-import { EnumLanguage } from '@/types/entities';
-import { forwardTo } from '@/router/history';
-import { getLanguage } from '@/store/selectors';
+import { AuthActions, SystemActions } from '@store/actions';
+import { EnumLanguage } from '@type/entities';
+import { forwardTo } from '@router/history';
+import { getLanguage } from '@store/selectors';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;

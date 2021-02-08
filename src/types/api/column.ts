@@ -1,4 +1,4 @@
-import { EnumColors, IColumns, ITodos } from '@/types/entities';
+import { EnumColors, IColumns, ITodos } from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllColumnsResponse = IServerResponse<{

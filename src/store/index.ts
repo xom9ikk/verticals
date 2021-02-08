@@ -2,8 +2,8 @@
 // import { composeWithDevTools } from 'redux-devtools-extension';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import { rootSaga } from '@/store/sagas';
-import { rootReducer } from '@/store/reducers';
+import { rootSaga } from '@store/sagas';
+import { rootReducer } from '@store/reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 

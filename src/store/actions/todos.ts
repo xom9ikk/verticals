@@ -14,7 +14,7 @@ import {
   IUpdateTodoDescription,
   IUpdateTodoPosition,
   IUpdateTodoTitle,
-} from '@/types/actions';
+} from '@type/actions';
 
 const fetchByBoardId = createAction<IFetchTodosByBoardId>('TODOS/FETCH_BY_BOARD_ID');
 const setAll = createAction<ISetTodos>('TODOS/SET_ALL');

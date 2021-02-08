@@ -4,25 +4,25 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useParams } from 'react-router-dom';
-import { RouteWrapper } from '@/router/router';
-import { SettingsLayout } from '@/layouts/Settings';
+import { RouteWrapper } from '@router/router';
+import { SettingsLayout } from '@layouts/Settings';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
-import { Account } from '@/pages/settings/Account';
-import { Profile } from '@/pages/settings/Profile';
+import { Account } from '@pages/settings/Account';
+import { Profile } from '@pages/settings/Profile';
 import {
   SystemActions,
   BoardsActions,
   // ColumnsActions,
   // TodosActions,
   UserActions,
-} from '@/store/actions';
+} from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
-import { useReadableId } from '@/use/readableId';
-import { forwardTo } from '@/router/history';
-import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
+import { useReadableId } from '@use/readableId';
+import { forwardTo } from '@router/history';
+import { getActiveBoardId, getActiveTodoId, getUsername } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 
 // @ts-ignore

@@ -11,7 +11,7 @@ import {
   IUpdateBoardDescription,
   IUpdateBoardPosition,
   IUpdateBoardTitle,
-} from '@/types/actions';
+} from '@type/actions';
 
 const fetchAll = createAction('BOARDS/FETCH_ALL');
 const setAll = createAction<ISetBoards>('BOARDS/SET_ALL');

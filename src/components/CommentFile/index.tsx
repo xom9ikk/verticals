@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
-import { useFormat } from '@/use/format';
-import { useDownload } from '@/use/download';
+import { useFormat } from '@use/format';
+import { useDownload } from '@use/download';
 import { ControlButton } from '@comp/ControlButton';
-// import { SystemActions } from '@/store/actions';
+// import { SystemActions } from '@store/actions';
 // import { useDispatch } from 'react-redux';
 
 interface ICommentFile {

@@ -2,16 +2,16 @@ import {
   all, apply, call, put, select, takeLatest,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
 import {
   BoardsActions, SystemActions,
-} from '@/store/actions';
-import { getActiveBoardId, getUsername } from '@/store/selectors';
-import { useReadableId } from '@/use/readableId';
-import { forwardTo } from '@/router/history';
+} from '@store/actions';
+import { getActiveBoardId, getUsername } from '@store/selectors';
+import { useReadableId } from '@use/readableId';
+import { forwardTo } from '@router/history';
 import {
   ICreateBoard,
   IRemoveBoard,
@@ -21,7 +21,7 @@ import {
   IUpdateBoardIcon,
   IUpdateBoardPosition,
   IUpdateBoardTitle,
-} from '@/types/actions';
+} from '@type/actions';
 
 const { boardService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

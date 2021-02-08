@@ -9,7 +9,7 @@ import {
   IRemoveCommentResponse,
   IUpdateCommentRequest,
   IUpdateCommentResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface ICommentService {
   getAll(): Promise<IGetAllCommentsResponse>;

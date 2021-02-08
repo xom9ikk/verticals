@@ -5,7 +5,7 @@ import {
   ISetAuthInfo,
   ISignIn,
   ISignUp,
-} from '@/types/actions';
+} from '@type/actions';
 
 const setAuthInfo = createAction<ISetAuthInfo>('AUTH/SET_AUTH_INFO');
 const signUp = createAction<ISignUp>('AUTH/SIGN_UP');

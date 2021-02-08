@@ -2,11 +2,11 @@ import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
-import { SystemActions, TodosActions } from '@/store/actions';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
+import { SystemActions, TodosActions } from '@store/actions';
 import {
   ICreateTodo,
   IRemoveTodo,
@@ -18,7 +18,7 @@ import {
   IUpdateTodoColor,
   IUpdateTodoCompleteStatus,
   IUpdateTodoNotificationsEnabled, IUpdateTodoIsArchive,
-} from '@/types/actions';
+} from '@type/actions';
 
 const { todoService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

@@ -7,7 +7,7 @@ import {
   IUploadCommentAttachmentsFile,
   IUploadCommentAttachmentsFileRaw,
   IRemoveCommentAttachment,
-} from '@/types/actions';
+} from '@type/actions';
 
 const fetchByTodoId = createAction<IFetchCommentAttachmentsByTodoId>('COMMENT_ATTACHMENTS/FETCH_BY_TODO_ID');
 const merge = createAction<ISetCommentAttachments>('COMMENT_ATTACHMENTS/MERGE');

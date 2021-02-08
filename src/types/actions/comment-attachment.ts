@@ -1,4 +1,4 @@
-import { ICommentAttachment, ICommentAttachments } from '@/types/entities';
+import { ICommentAttachment, ICommentAttachments } from '@type/entities';
 
 export interface IFetchCommentAttachmentsByTodoId {
   todoId: number;

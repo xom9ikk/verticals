@@ -3,17 +3,17 @@ import React, { FC } from 'react';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorProfileForm } from '@/helpers/validatorProfileForm';
+import { IFormValues, useForm } from '@use/form';
+import { validatorProfileForm } from '@helpers/validatorProfileForm';
 import { SyncInput } from '@comp/SyncInput';
 import { Avatar } from '@comp/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getBio, getName, getSurname, getUsername,
-} from '@/store/selectors';
-import { UserActions } from '@/store/actions';
-import validator from '@/helpers/validator';
-import { useOpenFiles } from '@/use/openFiles';
+} from '@store/selectors';
+import { UserActions } from '@store/actions';
+import validator from '@helpers/validator';
+import { useOpenFiles } from '@use/openFiles';
 
 interface IProfile {
 

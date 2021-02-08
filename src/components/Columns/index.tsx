@@ -6,17 +6,17 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
-import { ITodo } from '@/types/entities';
-import { ColumnsActions, TodosActions } from '@/store/actions';
+import { ITodo } from '@type/entities';
+import { ColumnsActions, TodosActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { useAutoScroll } from '@/use/autoScroll';
+import { useAutoScroll } from '@use/autoScroll';
 import {
   getTodos,
   getActiveBoardId,
   getIsLoadedBoards,
   getIsLoadedColumns,
   getIsSearchMode, getColumnsByBoardId,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 
 interface IColumns { }

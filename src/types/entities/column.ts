@@ -1,4 +1,4 @@
-import { EnumColors } from '@/types/entities/colors';
+import { EnumColors } from '@type/entities/colors';
 
 export interface IColumn {
   id: number;

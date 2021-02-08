@@ -1,4 +1,4 @@
-import { EnumColors } from '@/types/entities';
+import { EnumColors } from '@type/entities';
 
 export interface ITodo {
   id: number;

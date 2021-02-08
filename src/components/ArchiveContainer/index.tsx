@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import {
   EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
-} from '@/types/entities';
+} from '@type/entities';
 import { Card } from '@comp/Card';
 
 interface IArchiveContainer {

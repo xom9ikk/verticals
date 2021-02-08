@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React, { FC, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { useOutsideHandler } from '@/use/outsideHandler';
+import { useOutsideHandler } from '@use/outsideHandler';
 import { ControlButton } from '@comp/ControlButton';
 import { Button } from '../Button';
 

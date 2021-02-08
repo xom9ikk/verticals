@@ -4,16 +4,16 @@ import React, {
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@comp/Avatar';
-import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
 import { TextArea } from '@comp/TextArea';
-import { useFocus } from '@/use/focus';
-import { useFileList } from '@/use/fileList';
+import { useFocus } from '@use/focus';
+import { useFileList } from '@use/fileList';
 import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
-} from '@/store/selectors';
-import { useOpenFiles } from '@/use/openFiles';
+} from '@store/selectors';
+import { useOpenFiles } from '@use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
-import { EnumDroppedZoneType } from '@/types/entities';
+import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentForm {

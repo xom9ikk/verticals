@@ -1,4 +1,4 @@
-import { EnumColors, EnumTodoType, IBoards } from '@/types/entities';
+import { EnumColors, EnumTodoType, IBoards } from '@type/entities';
 
 export type ISetBoards = IBoards;
 

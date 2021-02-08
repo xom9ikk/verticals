@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
-import { useDownload } from '@/use/download';
-import { getCommentFileAttachmentsByTodoId } from '@/store/selectors';
+import { useDownload } from '@use/download';
+import { getCommentFileAttachmentsByTodoId } from '@store/selectors';
 
 interface ICardAttachments {
   todoId?: number,

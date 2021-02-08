@@ -3,9 +3,9 @@ import React, {
 } from 'react';
 import { CommentList } from '@comp/CommentList';
 import { CommentForm } from '@comp/CommentForm';
-import { useAutoScroll, ScrollDirection } from '@/use/autoScroll';
+import { useAutoScroll, ScrollDirection } from '@use/autoScroll';
 import { useSelector } from 'react-redux';
-import { getActiveTodoId, getCommentsByTodoId } from '@/store/selectors';
+import { getActiveTodoId, getCommentsByTodoId } from '@store/selectors';
 
 interface ICommentsWrapper {
 }

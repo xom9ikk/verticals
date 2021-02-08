@@ -7,26 +7,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import {
   EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
-} from '@/types/entities';
+} from '@type/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
-} from '@/store/actions';
+} from '@store/actions';
 import { Loader } from '@comp/Loader';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
-import { forwardTo } from '@/router/history';
-import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+import { forwardTo } from '@router/history';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
   getActiveBoardReadableId,
   getActiveTodoId,
   getTodoById,
   getUsername,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
-import { useColorClass } from '@/use/colorClass';
+import { useColorClass } from '@use/colorClass';
 
 interface ICardPopup {
   columnId: number;

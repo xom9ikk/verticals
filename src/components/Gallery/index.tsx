@@ -10,11 +10,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // import 'swiper/components/navigation/navigation.scss';
 // import 'swiper/components/pagination/pagination.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGalleryImagesInfo } from '@/store/selectors';
-import { SystemActions } from '@/store/actions';
+import { getGalleryImagesInfo } from '@store/selectors';
+import { SystemActions } from '@store/actions';
 import { ControlButton } from '@comp/ControlButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { useDownload } from '@/use/download';
+import { useDownload } from '@use/download';
 
 SwiperCore.use([Pagination, Keyboard]);
 

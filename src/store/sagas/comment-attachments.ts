@@ -2,17 +2,17 @@ import {
   all, apply, call, put, takeLatest, takeEvery,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
-import { CommentAttachmentsActions } from '@/store/actions';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
+import { CommentAttachmentsActions } from '@store/actions';
 import {
   IFetchCommentAttachmentsByTodoId,
   IRemoveCommentAttachment,
   IUploadCommentAttachmentsFile,
   IUploadCommentAttachmentsFiles,
-} from '@/types/actions';
+} from '@type/actions';
 
 const { commentAttachmentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();

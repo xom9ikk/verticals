@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { ColorSelector } from '@comp/ColorSelector';
-import { colors, EnumColors } from '@/types/entities';
+import { colors, EnumColors } from '@type/entities';
 
 interface IColorPicker {
   onPick: (color: EnumColors) => void;

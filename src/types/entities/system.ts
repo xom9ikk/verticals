@@ -1,4 +1,4 @@
-import { ICommentAttachments } from '@/types/entities/comment-attachment';
+import { ICommentAttachments } from '@type/entities/comment-attachment';
 
 export enum EnumLanguage {
   English,

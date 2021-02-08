@@ -1,4 +1,4 @@
-import { IUser } from '@/types/entities';
+import { IUser } from '@type/entities';
 
 export type ISetUserData = IUser;
 

@@ -27,6 +27,16 @@ module.exports = {
     alias: {
       '@': PATHS.src,
       '@comp': path.resolve(PATHS.src, 'components'),
+      '@helpers': path.resolve(PATHS.src, 'helpers'),
+      '@inversify': path.resolve(PATHS.src, 'inversify'),
+      '@layouts': path.resolve(PATHS.src, 'layouts'),
+      '@pages': path.resolve(PATHS.src, 'pages'),
+      '@plugins': path.resolve(PATHS.src, 'plugins'),
+      '@router': path.resolve(PATHS.src, 'router'),
+      '@services': path.resolve(PATHS.src, 'services'),
+      '@store': path.resolve(PATHS.src, 'store'),
+      '@type': path.resolve(PATHS.src, 'type'),
+      '@use': path.resolve(PATHS.src, 'use'),
     },
   },
   module: {

@@ -1,4 +1,4 @@
-import { EnumColors, EnumTodoStatus, ITodos } from '@/types/entities';
+import { EnumColors, EnumTodoStatus, ITodos } from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllTodosResponse = IServerResponse<{

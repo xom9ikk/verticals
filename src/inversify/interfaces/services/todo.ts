@@ -12,7 +12,7 @@ import {
   IUpdateTodoPositionResponse,
   IUpdateTodoRequest,
   IUpdateTodoResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface ITodoService {
   getAll(): Promise<IGetAllTodosResponse>;

@@ -13,17 +13,17 @@ import { Submenu } from '@comp/Submenu';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
 import { ControlButton } from '@comp/ControlButton';
-import { BoardsActions, ColumnsActions, SystemActions } from '@/store/actions';
-import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
-import { useFocus } from '@/use/focus';
-import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import { useReadableId } from '@/use/readableId';
-import { EnumColors, EnumTodoType } from '@/types/entities';
+import { BoardsActions, ColumnsActions, SystemActions } from '@store/actions';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { useFocus } from '@use/focus';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useReadableId } from '@use/readableId';
+import { EnumColors, EnumTodoType } from '@type/entities';
 import {
   getCountTodosByBoardId,
   getIsEditableBoard, getIsSearchMode,
   getUsername,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { ICONS } from '@/constants';
 
 export interface IExitFromEditable {

@@ -1,4 +1,4 @@
-import { IComments } from '@/types/entities';
+import { IComments } from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllCommentsResponse = IServerResponse<{

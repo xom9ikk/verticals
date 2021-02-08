@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { CommentItem } from '@comp/CommentItem';
-import { IComment, IComments } from '@/types/entities';
+import { IComment, IComments } from '@type/entities';
 
 interface ICommentList {
   comments: IComments

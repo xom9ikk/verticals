@@ -1,6 +1,6 @@
 import {
   EnumColors, EnumTodoType, IBoards,
-} from '@/types/entities';
+} from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllBoardsResponse = IServerResponse<{

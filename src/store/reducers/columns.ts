@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 import {
   IColumn, IColumns,
-} from '@/types/entities';
+} from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
-import { ColumnsActions } from '@/store/actions';
+import { ColumnsActions } from '@store/actions';
 
 const initialState: IColumns = [
   // {
