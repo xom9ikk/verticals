@@ -94,8 +94,8 @@ export const BoardList: FC<IBoardList> = () => {
     }
     const { source, destination } = result;
     const sourcePosition = source.index;
-    const destinationPosition = destination.index;
-    if (sourcePosition === destinationPosition) {
+    const destinationPosition = destination?.index;
+    if (destinationPosition === undefined || sourcePosition === destinationPosition) {
       return;
     }
     dispatch(BoardsActions.updatePosition({
@@ -118,7 +118,7 @@ export const BoardList: FC<IBoardList> = () => {
   };
 
   const boardItems = useMemo(() => {
-    console.log('boards redraw');
+    console.log('boards redraw', boards);
     return (
       <div
         onClick={(e) => {
@@ -134,7 +134,8 @@ export const BoardList: FC<IBoardList> = () => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {boards
+                {/* TODO: move to selector */}
+                {[...boards]
                   .sort((a, b) => a.position - b.position)
                   .map(({
                     id, icon, title, color, belowId,

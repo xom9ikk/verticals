@@ -19,7 +19,7 @@ export interface ICreateColumnRequest {
   description?: string;
   color?: EnumColors;
   isCollapsed?: boolean;
-  belowId?: string;
+  belowId?: number;
 }
 
 export type ICreateColumnResponse = IServerResponse<{
@@ -28,17 +28,17 @@ export type ICreateColumnResponse = IServerResponse<{
 }>;
 
 export interface IRemoveColumnRequest {
-  id: string;
+  id: number;
 }
 
 export type IRemoveColumnResponse = IServerResponse;
 
 export interface IUpdateColumnRequest {
-  id: string;
-  boardId: number;
+  id: number;
+  // boardId: number;
   title?: string;
   description?: string;
-  color?: EnumColors;
+  color?: EnumColors | null;
   isCollapsed?: boolean;
 }
 
@@ -63,7 +63,7 @@ export type IDuplicateColumnResponse = IServerResponse<{
   description?: string;
   color?: EnumColors;
   isCollapsed?: boolean;
-  belowId?: string;
+  belowId?: number;
   todos: ITodos;
 }>;
 

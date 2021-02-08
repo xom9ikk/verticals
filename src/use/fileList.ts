@@ -42,7 +42,11 @@ export const useFileList = () => {
     if (file.size < maxBytes) {
       return true;
     }
-    show('Attachments', `File ${file.name} exceeds the maximum allowed size ${formatSize(maxBytes)}`, ALERT_TYPES.DANGER);
+    show(
+      'Attachments',
+      `File ${file.name} exceeds the maximum allowed size ${formatSize(maxBytes)}`,
+      ALERT_TYPES.DANGER,
+    );
     return false;
   });
 

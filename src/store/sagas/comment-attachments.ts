@@ -1,22 +1,23 @@
 import {
   all, apply, call, put, takeLatest, takeEvery,
 } from 'typed-redux-saga';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@/use/alert';
 import { container } from '@/inversify/config';
 import { TYPES } from '@/inversify/types';
 import { IServices } from '@/inversify/interfaces';
 import { CommentAttachmentsActions } from '@/store/actions';
-import { Action } from 'redux-actions';
 import {
-  IGetCommentAttachmentsByTodoIdRequest, IRemoveCommentAttachmentRequest,
-  IUploadCommentAttachmentRequest,
-} from '@/types/api';
-import { IUploadCommentAttachmentsFiles } from '@/types/actions';
+  IFetchCommentAttachmentsByTodoId,
+  IRemoveCommentAttachment,
+  IUploadCommentAttachmentsFile,
+  IUploadCommentAttachmentsFiles,
+} from '@/types/actions';
 
 const { commentAttachmentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* fetchByTodoIdWorker(action: Action<IGetCommentAttachmentsByTodoIdRequest>) {
+function* fetchByTodoIdWorker(action: PayloadAction<IFetchCommentAttachmentsByTodoId>) {
   try {
     const response = yield* apply(
       commentAttachmentService, commentAttachmentService.getByTodoId, [action.payload],
@@ -28,10 +29,10 @@ function* fetchByTodoIdWorker(action: Action<IGetCommentAttachmentsByTodoIdReque
   }
 }
 
-function* uploadFilesWorker(action: Action<IUploadCommentAttachmentsFiles>) {
+function* uploadFilesWorker(action: PayloadAction<IUploadCommentAttachmentsFiles>) {
   try {
     const { files, commentId } = action.payload;
-    for (let i = 0; i < files.length; i += 1) {
+    for (let i = 0; i < files.length; i += 1) { // TODO: foreach?
       const file = files[i];
       yield put(CommentAttachmentsActions.uploadFile({
         commentId,
@@ -43,20 +44,19 @@ function* uploadFilesWorker(action: Action<IUploadCommentAttachmentsFiles>) {
   }
 }
 
-function* uploadFileWorker(action: Action<IUploadCommentAttachmentRequest>) {
+function* uploadFileWorker(action: PayloadAction<IUploadCommentAttachmentsFile>) {
   try {
     const response = yield* apply(
       commentAttachmentService, commentAttachmentService.uploadFile, [action.payload],
     );
     const { data } = response;
-    console.log('uploadFileWorker response', data);
     yield put(CommentAttachmentsActions.add(data));
   } catch (error) {
     yield call(show, 'Attachments', error, ALERT_TYPES.DANGER);
   }
 }
 
-function* removeWorker(action: Action<IRemoveCommentAttachmentRequest>) {
+function* removeWorker(action: PayloadAction<IRemoveCommentAttachment>) {
   try {
     yield* apply(commentAttachmentService, commentAttachmentService.remove, [action.payload]);
     yield call(show, 'Attachments', 'Attachment removed successfully', ALERT_TYPES.SUCCESS);
@@ -67,9 +67,9 @@ function* removeWorker(action: Action<IRemoveCommentAttachmentRequest>) {
 
 export function* watchCommentAttachments() {
   yield* all([
-    takeLatest(CommentAttachmentsActions.Type.FETCH_BY_TODO_ID, fetchByTodoIdWorker),
-    takeLatest(CommentAttachmentsActions.Type.UPLOAD_FILES, uploadFilesWorker),
-    takeEvery(CommentAttachmentsActions.Type.UPLOAD_FILE, uploadFileWorker),
-    takeLatest(CommentAttachmentsActions.Type.REMOVE, removeWorker),
+    takeLatest(CommentAttachmentsActions.fetchByTodoId, fetchByTodoIdWorker),
+    takeLatest(CommentAttachmentsActions.uploadFiles, uploadFilesWorker),
+    takeEvery(CommentAttachmentsActions.uploadFile, uploadFileWorker),
+    takeLatest(CommentAttachmentsActions.remove, removeWorker),
   ]);
 }

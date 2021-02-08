@@ -1,8 +1,8 @@
-/* eslint-disable no-return-assign,no-plusplus */
-import { handleActions } from 'redux-actions';
+/* eslint-disable no-return-assign,no-plusplus,max-len */
 import {
   ITodo, ITodos,
 } from '@/types/entities';
+import { createReducer } from '@reduxjs/toolkit';
 import { TodosActions } from '../actions';
 
 const initialState: ITodos = [];
@@ -641,202 +641,170 @@ const initialState: ITodos = [];
 //   },
 // ].map((el) => ({ ...el, id: `todo-${(count += 1).toString()}` }));
 
-export const TodosReducer = handleActions<ITodos, any>({
-  [TodosActions.Type.SET_TODOS]:
-        (state, action) => ([...action.payload]),
-  [TodosActions.Type.UPDATE_TITLE]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
-          ...todo,
-          title: action.payload.title,
-        }
-        : todo))),
-  [TodosActions.Type.UPDATE_DESCRIPTION]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
-          ...todo,
-          description: action.payload.description,
-        }
-        : todo))),
-  [TodosActions.Type.UPDATE_COMPLETE_STATUS]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
-          ...todo,
-          status: action.payload.status,
-        }
-        : todo))),
-  [TodosActions.Type.ADD]:
-        (state, action) => ([...state, {
-          ...action.payload,
-        }]),
-  [TodosActions.Type.UPDATE_POSITION]:
-        (state, action) => {
-          const {
-            columnId, sourcePosition, destinationPosition, targetColumnId,
-          } = action.payload;
-          const sourceColumn = state
-            .filter((todo: ITodo) => todo.columnId === columnId)
-            .sort((a, b) => a.position - b.position);
-          const targetColumn = state
-            .filter((todo: ITodo) => todo.columnId === targetColumnId)
-            .sort((a, b) => a.position - b.position);
-          const filterOtherColumn = targetColumnId
-            ? (todo: ITodo) => todo.columnId !== columnId && todo.columnId !== targetColumnId
-            : (todo: ITodo) => todo.columnId !== columnId;
-          const otherColumns = state.filter(filterOtherColumn);
-          const targetTodoIndex = sourceColumn
-            .findIndex((todo: ITodo) => todo.position === sourcePosition);
-          const targetTodo = sourceColumn[targetTodoIndex];
-          sourceColumn.splice(targetTodoIndex, 1);
+export const TodosReducer = createReducer(initialState, (builder) => builder
+  .addCase(TodosActions.setAll, (state, action) => action.payload)
+  .addCase(TodosActions.updateTitle, (draft, action) => {
+    draft[draft.findIndex((todo) => todo.id === action.payload.id)].title = action.payload.title;
+  })
+  .addCase(TodosActions.updateDescription, (draft, action) => {
+    draft[draft.findIndex((todo) => todo.id === action.payload.id)].description = action.payload.description;
+  })
+  .addCase(TodosActions.updateCompleteStatus, (draft, action) => {
+    draft[draft.findIndex((todo) => todo.id === action.payload.id)].status = action.payload.status;
+  })
+  .addCase(TodosActions.updateColor, (draft, action) => {
+    draft[draft.findIndex((todo) => todo.id === action.payload.id)].color = action.payload.color;
+  })
+  .addCase(TodosActions.updateIsArchive, (draft, action) => {
+    draft[draft.findIndex((todo) => todo.id === action.payload.id)].isArchived = action.payload.isArchived;
+  })
+  .addCase(TodosActions.updateNotificationEnabled, (draft, action) => {
+    draft[draft.findIndex((todo) => todo.id === action.payload.id)].isNotificationsEnabled = action.payload.isNotificationsEnabled;
+  })
+  .addCase(TodosActions.add, (draft, action) => {
+    draft.push(action.payload);
+  })
+  .addCase(TodosActions.updatePosition, (state, action) => {
+    const {
+      columnId, sourcePosition, destinationPosition, targetColumnId,
+    } = action.payload;
+    const sourceColumn = state
+      .filter((todo: ITodo) => todo.columnId === columnId)
+      .sort((a, b) => a.position - b.position);
+    const targetColumn = state
+      .filter((todo: ITodo) => todo.columnId === targetColumnId)
+      .sort((a, b) => a.position - b.position);
+    const filterOtherColumn = targetColumnId
+      ? (todo: ITodo) => todo.columnId !== columnId && todo.columnId !== targetColumnId
+      : (todo: ITodo) => todo.columnId !== columnId;
+    const otherColumns = state.filter(filterOtherColumn);
+    const targetTodoIndex = sourceColumn
+      .findIndex((todo: ITodo) => todo.position === sourcePosition);
+    const targetTodo = sourceColumn[targetTodoIndex];
+    sourceColumn.splice(targetTodoIndex, 1);
 
-          if (targetColumnId) {
-            targetColumn.splice(destinationPosition, 0, {
-              ...targetTodo,
-              position: destinationPosition,
-              columnId: targetColumnId,
-            });
-          } else {
-            sourceColumn.splice(destinationPosition, 0, {
-              ...targetTodo,
-              position: destinationPosition,
-            });
-          }
+    if (targetColumnId) {
+      targetColumn.splice(destinationPosition, 0, {
+        ...targetTodo,
+        position: destinationPosition,
+        columnId: targetColumnId,
+      });
+    } else {
+      sourceColumn.splice(destinationPosition, 0, {
+        ...targetTodo,
+        position: destinationPosition,
+      });
+    }
 
-          const newSourceColumn = sourceColumn.map((todo, index) => ({
-            ...todo,
-            position: index,
-          }));
+    const newSourceColumn = sourceColumn.map((todo, index) => ({
+      ...todo,
+      position: index,
+    }));
 
-          if (targetColumnId) {
-            const newTargetColumn = targetColumn.map((todo, index) => ({
-              ...todo,
-              position: index,
-            }));
-            return [
-              ...otherColumns,
-              ...newSourceColumn,
-              ...newTargetColumn,
-            ];
-          }
-          return [
-            ...otherColumns,
-            ...newSourceColumn,
-          ];
-        },
-  [TodosActions.Type.INSERT_IN_POSITION]:
-        (state, action) => {
-          const { position, columnId } = action.payload;
-          const targetColumn = state
-            .filter((todo: ITodo) => todo.columnId === columnId)
-            .sort((a, b) => a.position - b.position);
-          const otherColumns = state
-            .filter((todo: ITodo) => todo.columnId !== columnId);
-          const spliceIndex = targetColumn.findIndex((todo: ITodo) => todo.position === position);
-          const normalizedSpliceIndex = spliceIndex === -1 ? targetColumn.length : spliceIndex;
-          const { belowId, ...newTodo } = action.payload;
-          targetColumn.splice(normalizedSpliceIndex, 0, newTodo);
-          const newTargetColumn = targetColumn.map((todo: ITodo, index) => ({
-            ...todo,
-            position: index,
-          }));
-          return [
-            ...otherColumns,
-            ...newTargetColumn,
-          ];
-        },
-  [TodosActions.Type.UPDATE_COLOR]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
+    if (targetColumnId) {
+      const newTargetColumn = targetColumn.map((todo, index) => ({
+        ...todo,
+        position: index,
+      }));
+      return [
+        ...otherColumns,
+        ...newSourceColumn,
+        ...newTargetColumn,
+      ];
+    }
+    return [
+      ...otherColumns,
+      ...newSourceColumn,
+    ];
+  })
+  .addCase(TodosActions.insertInPosition, (state, action) => {
+    const { position, columnId } = action.payload;
+    const targetColumn = state
+      .filter((todo: ITodo) => todo.columnId === columnId)
+      .sort((a, b) => a.position - b.position);
+    const otherColumns = state
+      .filter((todo: ITodo) => todo.columnId !== columnId);
+    const spliceIndex = targetColumn.findIndex((todo: ITodo) => todo.position === position);
+    const normalizedSpliceIndex = spliceIndex === -1 ? targetColumn.length : spliceIndex;
+    const { belowId, ...newTodo } = action.payload;
+    targetColumn.splice(normalizedSpliceIndex, 0, newTodo);
+    const newTargetColumn = targetColumn.map((todo: ITodo, index) => ({
+      ...todo,
+      position: index,
+    }));
+    return [
+      ...otherColumns,
+      ...newTargetColumn,
+    ];
+  })
+  .addCase(TodosActions.remove, (state, action) => {
+    let columnId: number | null = null;
+    const todosAfterDelete = state.filter((todo: ITodo) => {
+      if (todo.id !== action.payload.id) {
+        return true;
+      }
+      columnId = todo.columnId;
+      return false;
+    });
+    if (columnId) {
+      const todosInColumn = todosAfterDelete
+        .filter((todo: ITodo) => todo.columnId === columnId)
+        .sort((a, b) => a.position - b.position)
+        .map((todo: ITodo, index) => ({
           ...todo,
-          color: action.payload.color,
-        }
-        : todo))),
-  [TodosActions.Type.REMOVE]:
-      (state, action) => {
-        let columnId: number | null = null;
-        const todosAfterDelete = state.filter((todo: ITodo) => {
-          if (todo.id !== action.payload.id) {
-            return true;
-          }
-          columnId = todo.columnId;
-          return false;
-        });
-        if (columnId) {
-          const todosInColumn = todosAfterDelete
-            .filter((todo: ITodo) => todo.columnId === columnId)
-            .sort((a, b) => a.position - b.position)
-            .map((todo: ITodo, index) => ({
-              ...todo,
-              position: index,
-            }));
-          const otherTodos = [...todosAfterDelete]
-            .filter((todo: ITodo) => todo.columnId !== columnId);
-          return [
-            ...todosInColumn,
-            ...otherTodos,
-          ];
-        }
-        return state;
-      },
-  [TodosActions.Type.DRAW_BELOW]:
-      (state, action) => {
-        const { belowId, columnId } = action.payload;
-        const todosInColumn = [...state]
-          .sort((a, b) => a.position - b.position)
-          .filter((todo: ITodo) => todo.columnId === columnId);
-        const otherTodos = [...state]
-          .filter((todo: ITodo) => todo.columnId !== columnId);
-        const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === belowId);
-        todosInColumn.splice(spliceIndex + 1, 0, {
-          id: 0,
-          columnId,
-          belowId,
-          position: spliceIndex + 1,
-          title: '',
-          commentsCount: 0,
-          imagesCount: 0,
-          attachmentsCount: 0,
-        });
-        const sortedTodos = todosInColumn
-          .map((todo: ITodo, index) => ({
-            ...todo,
-            position: index,
-          }));
-        return [
-          ...sortedTodos,
-          ...otherTodos,
-        ];
-      },
-  [TodosActions.Type.REMOVE_TEMP]:
-      (state) => {
-        const columnIds = new Set();
-        state.forEach((todo: ITodo) => columnIds.add(todo.columnId));
-        let todos: ITodos = [];
-        columnIds.forEach((columnId) => {
-          const todosInColumn = state
-            .filter((todo: ITodo) => todo.columnId === columnId)
-            .filter((todo: ITodo) => todo.belowId === undefined)
-            .sort((a: ITodo, b: ITodo) => a.position - b.position)
-            .map((todo: ITodo, index) => ({
-              ...todo,
-              position: index,
-            }));
-          todos = [...todos, ...todosInColumn];
-        });
-        return todos;
-      },
-  [TodosActions.Type.UPDATE_IS_ARCHIVE]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
+          position: index,
+        }));
+      const otherTodos = [...todosAfterDelete]
+        .filter((todo: ITodo) => todo.columnId !== columnId);
+      return [
+        ...todosInColumn,
+        ...otherTodos,
+      ];
+    }
+    return state;
+  })
+  .addCase(TodosActions.drawBelow, (state, action) => {
+    const { belowId, columnId } = action.payload;
+    const todosInColumn = [...state]
+      .sort((a, b) => a.position - b.position)
+      .filter((todo: ITodo) => todo.columnId === columnId);
+    const otherTodos = [...state]
+      .filter((todo: ITodo) => todo.columnId !== columnId);
+    const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === belowId);
+    todosInColumn.splice(spliceIndex + 1, 0, {
+      id: 0,
+      columnId,
+      belowId,
+      position: spliceIndex + 1,
+      title: '',
+      commentsCount: 0,
+      imagesCount: 0,
+      attachmentsCount: 0,
+    });
+    const sortedTodos = todosInColumn
+      .map((todo: ITodo, index) => ({
+        ...todo,
+        position: index,
+      }));
+    return [
+      ...sortedTodos,
+      ...otherTodos,
+    ];
+  })
+  .addCase(TodosActions.removeTemp, (state) => {
+    const columnIds = new Set();
+    state.forEach((todo: ITodo) => columnIds.add(todo.columnId));
+    let todos: ITodos = [];
+    columnIds.forEach((columnId) => {
+      const todosInColumn = state
+        .filter((todo: ITodo) => todo.columnId === columnId)
+        .filter((todo: ITodo) => todo.belowId === undefined)
+        .sort((a: ITodo, b: ITodo) => a.position - b.position)
+        .map((todo: ITodo, index) => ({
           ...todo,
-          isArchived: action.payload.isArchived,
-        }
-        : todo))),
-  [TodosActions.Type.UPDATE_NOTIFICATION_ENABLED]:
-      (state, action) => (state.map((todo: ITodo) => (todo.id === action.payload.id
-        ? {
-          ...todo,
-          isNotificationsEnabled: action.payload.isNotificationsEnabled,
-        }
-        : todo))),
-}, initialState);
+          position: index,
+        }));
+      todos = [...todos, ...todosInColumn];
+    });
+    return todos;
+  }));

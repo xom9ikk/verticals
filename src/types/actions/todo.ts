@@ -64,7 +64,7 @@ export interface IDrawTodoBelow {
   belowId: number;
 }
 
-export interface IUpdateIsArchive {
+export interface IUpdateTodoIsArchive {
   id: number;
   isArchived: boolean;
 }

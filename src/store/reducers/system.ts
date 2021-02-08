@@ -1,8 +1,9 @@
-import { handleActions } from 'redux-actions';
+/* eslint-disable max-len,no-param-reassign */
+import { createReducer } from '@reduxjs/toolkit';
 import { EnumLanguage, ISystem } from '@/types/entities';
-import { SystemActions } from '../actions';
+import { SystemActions } from '@/store/actions';
 
-const initialState = {
+const initialState: ISystem = {
   isLoadedBoards: false,
   isLoadedColumns: false,
   isLoadedTodos: false,
@@ -24,49 +25,23 @@ const initialState = {
   isOpenFormattingHelp: false,
 };
 
-export const SystemReducer = handleActions<ISystem, ISystem>({
-  [SystemActions.Type.SET_IS_LOADED_BOARDS]:
-        (state, action) => ({ ...state, isLoadedBoards: action.payload.isLoadedBoards }),
-  [SystemActions.Type.SET_IS_LOADED_COLUMNS]:
-        (state, action) => ({ ...state, isLoadedColumns: action.payload.isLoadedColumns }),
-  [SystemActions.Type.SET_IS_LOADED_TODOS]:
-        (state, action) => ({ ...state, isLoadedTodos: action.payload.isLoadedTodos }),
-  [SystemActions.Type.SET_IS_OPEN_POPUP]:
-        (state, action) => ({ ...state, isOpenPopup: action.payload.isOpenPopup }),
-  [SystemActions.Type.SET_IS_EDITABLE_CARD]:
-        (state, action) => ({ ...state, isEditableCard: action.payload.isEditableCard }),
-  [SystemActions.Type.SET_IS_EDITABLE_COLUMN]:
-        (state, action) => ({ ...state, isEditableColumn: action.payload.isEditableColumn }),
-  [SystemActions.Type.SET_IS_EDITABLE_BOARD]:
-        (state, action) => ({ ...state, isEditableBoard: action.payload.isEditableBoard }),
-  [SystemActions.Type.SET_IS_SEARCH_MODE]:
-      (state, action) => ({ ...state, isSearchMode: action.payload.isSearchMode }),
-  [SystemActions.Type.SET_LANGUAGE]:
-      (state, action) => ({ ...state, language: action.payload.language }),
-  [SystemActions.Type.SET_ACTIVE_TODO_ID]:
-      (state, action) => ({ ...state, activeTodoId: action.payload.activeTodoId }),
-  [SystemActions.Type.SET_EDIT_COMMENT_ID]:
-      (state, action) => ({ ...state, editCommentId: action.payload.editCommentId }),
-  [SystemActions.Type.SET_REPLY_COMMENT_ID]:
-      (state, action) => ({ ...state, replyCommentId: action.payload.replyCommentId }),
-  [SystemActions.Type.SET_IS_OPEN_PROFILE]:
-      (state, action) => ({ ...state, isOpenProfile: action.payload.isOpenProfile }),
-  [SystemActions.Type.SET_ACTIVE_BOARD_ID]:
-      (state, action) => ({ ...state, activeBoardId: action.payload.activeBoardId }),
-  [SystemActions.Type.SET_ACTIVE_BOARD_READABLE_ID]:
-      (state, action) => ({
-        ...state,
-        activeBoardReadableId: action.payload.activeBoardReadableId,
-      }),
-  [SystemActions.Type.SET_ACTIVE_TODO_READABLE_ID]:
-      (state, action) => ({
-        ...state,
-        activeTodoReadableId: action.payload.activeTodoReadableId,
-      }),
-  [SystemActions.Type.SET_DROPPED_FILES]:
-      (state, action) => ({ ...state, droppedFiles: action.payload.droppedFiles }),
-  [SystemActions.Type.SET_GALLERY_IMAGES_INFO]:
-      (state, action) => ({ ...state, galleryImagesInfo: action.payload.galleryImagesInfo }),
-  [SystemActions.Type.SET_IS_OPEN_FORMATTING_HELP]:
-      (state, action) => ({ ...state, isOpenFormattingHelp: action.payload.isOpenFormattingHelp }),
-}, initialState);
+export const SystemReducer = createReducer(initialState, (builder) => builder
+  .addCase(SystemActions.setIsLoadedBoards, (draft, action) => { draft.isLoadedBoards = action.payload; })
+  .addCase(SystemActions.setIsLoadedColumns, (draft, action) => { draft.isLoadedColumns = action.payload; })
+  .addCase(SystemActions.setIsLoadedTodos, (draft, action) => { draft.isLoadedTodos = action.payload; })
+  .addCase(SystemActions.setIsOpenPopup, (draft, action) => { draft.isOpenPopup = action.payload; })
+  .addCase(SystemActions.setIsEditableCard, (draft, action) => { draft.isEditableCard = action.payload; })
+  .addCase(SystemActions.setIsEditableColumn, (draft, action) => { draft.isEditableColumn = action.payload; })
+  .addCase(SystemActions.setIsEditableBoard, (draft, action) => { draft.isEditableBoard = action.payload; })
+  .addCase(SystemActions.setIsSearchMode, (draft, action) => { draft.isSearchMode = action.payload; })
+  .addCase(SystemActions.setLanguage, (draft, action) => { draft.language = action.payload; })
+  .addCase(SystemActions.setActiveTodoId, (draft, action) => { draft.activeTodoId = action.payload; })
+  .addCase(SystemActions.setEditCommentId, (draft, action) => { draft.editCommentId = action.payload; })
+  .addCase(SystemActions.setReplyCommentId, (draft, action) => { draft.replyCommentId = action.payload; })
+  .addCase(SystemActions.setIsOpenProfile, (draft, action) => { draft.isOpenProfile = action.payload; })
+  .addCase(SystemActions.setActiveBoardId, (draft, action) => { draft.activeBoardId = action.payload; })
+  .addCase(SystemActions.setActiveBoardReadableId, (draft, action) => { draft.activeBoardReadableId = action.payload; })
+  .addCase(SystemActions.setActiveTodoReadableId, (draft, action) => { draft.activeTodoReadableId = action.payload; })
+  .addCase(SystemActions.setDroppedFiles, (draft, action) => { draft.droppedFiles = action.payload; })
+  .addCase(SystemActions.setGalleryImagesInfo, (draft, action) => { draft.galleryImagesInfo = action.payload; })
+  .addCase(SystemActions.setIsOpenFormattingHelp, (draft, action) => { draft.isOpenFormattingHelp = action.payload; }));

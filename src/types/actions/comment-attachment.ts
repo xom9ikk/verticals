@@ -12,9 +12,13 @@ export interface IUploadCommentAttachmentsFiles {
   files: FileList;
 }
 
-export interface IUploadCommentAttachmentsFile {
+export interface IUploadCommentAttachmentsFileRaw {
   commentId: number;
   file: File;
+}
+export interface IUploadCommentAttachmentsFile {
+  commentId: number;
+  file: FormData;
 }
 
 export interface IRemoveCommentAttachment {

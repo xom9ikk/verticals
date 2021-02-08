@@ -16,7 +16,7 @@ export interface IAddBoard {
   position: number;
   icon: string;
   cardType: EnumTodoType;
-  title?: string;
+  title: string;
   description?: string;
   color?: EnumColors;
 }

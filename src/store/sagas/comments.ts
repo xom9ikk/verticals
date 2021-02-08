@@ -1,28 +1,28 @@
 import {
   all, apply, call, put, select, takeLatest, takeLeading,
 } from 'typed-redux-saga';
-import { Action } from 'redux-actions';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@/use/alert';
 import { CommentAttachmentsActions, CommentsActions } from '@/store/actions';
-import {
-  ICreateCommentRequest,
-  IRemoveCommentRequest,
-  IUpdateCommentRequest,
-  IGetCommentsByTodoIdRequest,
-  IAddCommentLikeRequest,
-  IRemoveCommentLikeRequest,
-} from '@/types/api';
 import {
   getAvatarUrl, getName, getSurname, getUsername,
 } from '@/store/selectors';
 import { container } from '@/inversify/config';
 import { IServices } from '@/inversify/interfaces';
 import { TYPES } from '@/inversify/types';
+import {
+  IAddCommentLike,
+  ICreateComment,
+  IFetchCommentsByTodoId,
+  IRemoveComment,
+  IRemoveCommentLike,
+  IUpdateCommentText,
+} from '@/types/actions';
 
 const { commentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* fetchByTodoIdWorker(action: Action<IGetCommentsByTodoIdRequest>) {
+function* fetchByTodoIdWorker(action: PayloadAction<IFetchCommentsByTodoId>) {
   try {
     const response = yield* apply(commentService, commentService.getByTodoId, [action.payload]);
     const { comments } = response.data;
@@ -33,7 +33,7 @@ function* fetchByTodoIdWorker(action: Action<IGetCommentsByTodoIdRequest>) {
   }
 }
 
-function* createWorker(action: Action<ICreateCommentRequest>) {
+function* createWorker(action: PayloadAction<ICreateComment>) {
   try {
     const { files, ...comment } = action.payload;
     const response = yield* apply(commentService, commentService.create, [comment]);
@@ -54,7 +54,7 @@ function* createWorker(action: Action<ICreateCommentRequest>) {
   }
 }
 
-function* removeWorker(action: Action<IRemoveCommentRequest>) {
+function* removeWorker(action: PayloadAction<IRemoveComment>) {
   try {
     yield* apply(commentService, commentService.remove, [action.payload]);
     yield call(show, 'Comment', 'Comment removed successfully', ALERT_TYPES.SUCCESS);
@@ -63,7 +63,7 @@ function* removeWorker(action: Action<IRemoveCommentRequest>) {
   }
 }
 
-function* updateWorker(action: Action<IUpdateCommentRequest>) {
+function* updateWorker(action: PayloadAction<IUpdateCommentText>) {
   try {
     yield* apply(commentService, commentService.update, [action.payload]);
     yield call(show, 'Comment', 'Comment updated successfully', ALERT_TYPES.SUCCESS);
@@ -72,7 +72,7 @@ function* updateWorker(action: Action<IUpdateCommentRequest>) {
   }
 }
 
-function* addLikeWorker(action: Action<IAddCommentLikeRequest>) {
+function* addLikeWorker(action: PayloadAction<IAddCommentLike>) {
   try {
     yield* apply(commentService, commentService.addLike, [action.payload]);
     const { commentId } = action.payload;
@@ -95,7 +95,7 @@ function* addLikeWorker(action: Action<IAddCommentLikeRequest>) {
   }
 }
 
-function* removeLikeWorker(action: Action<IRemoveCommentLikeRequest>) {
+function* removeLikeWorker(action: PayloadAction<IRemoveCommentLike>) {
   try {
     yield* apply(commentService, commentService.removeLike, [action.payload]);
     const { commentId } = action.payload;
@@ -120,11 +120,11 @@ function* removeLikeWorker(action: Action<IRemoveCommentLikeRequest>) {
 
 export function* watchComment() {
   yield* all([
-    takeLatest(CommentsActions.Type.FETCH_BY_TODO_ID, fetchByTodoIdWorker),
-    takeLatest(CommentsActions.Type.CREATE, createWorker),
-    takeLatest(CommentsActions.Type.REMOVE, removeWorker),
-    takeLatest(CommentsActions.Type.UPDATE_TEXT, updateWorker),
-    takeLeading(CommentsActions.Type.ADD_LIKE, addLikeWorker),
-    takeLeading(CommentsActions.Type.REMOVE_LIKE, removeLikeWorker),
+    takeLatest(CommentsActions.fetchByTodoId, fetchByTodoIdWorker),
+    takeLatest(CommentsActions.create, createWorker),
+    takeLatest(CommentsActions.remove, removeWorker),
+    takeLatest(CommentsActions.updateText, updateWorker),
+    takeLeading(CommentsActions.addLike, addLikeWorker),
+    takeLeading(CommentsActions.removeLike, removeLikeWorker),
   ]);
 }

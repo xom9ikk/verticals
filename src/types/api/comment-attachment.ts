@@ -2,7 +2,7 @@ import { ICommentAttachment, ICommentAttachments } from '@/types/entities';
 import { IServerResponse } from './response';
 
 export interface IGetCommentAttachmentsByTodoIdRequest {
-  columnId: number;
+  todoId: number;
 }
 
 export type IGetCommentAttachmentsByTodoIdResponse = IServerResponse<{

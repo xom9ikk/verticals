@@ -1,5 +1,5 @@
-import { createSelector } from 'reselect';
-import { IRootState } from '@/store/state';
+import { createSelector } from '@reduxjs/toolkit';
+import { IRootState } from '@/store/reducers';
 
 const imageTypes = ['image/png', 'image/jpeg'];
 

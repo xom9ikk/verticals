@@ -1,6 +1,6 @@
-import { handleActions } from 'redux-actions';
+import { createReducer } from '@reduxjs/toolkit';
 import { IUser } from '@/types/entities';
-import { UserActions } from '../actions';
+import { UserActions } from '@/store/actions';
 
 const initialState: IUser = {
   email: null,
@@ -11,20 +11,13 @@ const initialState: IUser = {
   avatar: null,
 };
 
-export const UserReducer = handleActions<IUser, IUser>({
-  [UserActions.Type.SET_USER_DATA]:
-        (state, action) => ({ ...state, ...action.payload }),
-  [UserActions.Type.SET_USERNAME]:
-        (state, action) => ({ ...state, username: action.payload.username }),
-  [UserActions.Type.SET_EMAIL]:
-        (state, action) => ({ ...state, email: action.payload.email }),
-  [UserActions.Type.SET_PERSONAL_DATA]:
-        (state, action) => ({
-          ...state,
-          name: action.payload.name,
-          surname: action.payload.surname,
-          bio: action.payload.bio,
-        }),
-  [UserActions.Type.SET_AVATAR]:
-        (state, action) => ({ ...state, avatar: action.payload.avatar }),
-}, initialState);
+export const UserReducer = createReducer(initialState, (builder) => builder
+  .addCase(UserActions.setUserData, (draft, action) => action.payload)
+  .addCase(UserActions.setUsername, (draft, action) => { draft.username = action.payload.username; })
+  .addCase(UserActions.setEmail, (draft, action) => { draft.email = action.payload.email; })
+  .addCase(UserActions.setPersonalData, (draft, action) => {
+    draft.name = action.payload.name;
+    draft.surname = action.payload.surname;
+    draft.bio = action.payload.bio;
+  })
+  .addCase(UserActions.setAvatar, (draft, action) => { draft.avatar = action.payload.avatar; }));

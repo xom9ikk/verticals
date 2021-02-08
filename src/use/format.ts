@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const months = [
   'Jan', 'Feb', 'Mar',
   'Apr', 'May', 'Jun',

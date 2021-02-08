@@ -10,9 +10,9 @@ export type IGetAllBoardsResponse = IServerResponse<{
 export interface ICreateBoardRequest {
   icon: string;
   title: string;
-  cardType: number;
+  cardType: EnumTodoType;
   description?: string;
-  belowId?: string;
+  belowId?: number;
 }
 
 export type ICreateBoardResponse = IServerResponse<{
@@ -21,18 +21,18 @@ export type ICreateBoardResponse = IServerResponse<{
 }>;
 
 export interface IRemoveBoardRequest {
-  id: string;
+  id: number;
 }
 
 export type IRemoveBoardResponse = IServerResponse;
 
 export interface IUpdateBoardRequest {
-  id: string;
+  id: number;
   icon?: string;
   title?: string;
   cardType?: EnumTodoType;
   description?: string;
-  color?: EnumColors;
+  color?: EnumColors | null;
 }
 
 export type IUpdateBoardResponse = IServerResponse;

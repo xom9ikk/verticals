@@ -7,7 +7,7 @@ export interface IBoard {
   position: number;
   cardType: EnumTodoType;
   description?: string;
-  color?: EnumColors;
+  color?: EnumColors | null;
   belowId?: number;
 }
 

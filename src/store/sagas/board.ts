@@ -1,7 +1,7 @@
 import {
   all, apply, call, put, select, takeLatest,
 } from 'typed-redux-saga';
-import { Action } from 'redux-actions';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@/use/alert';
 import { container } from '@/inversify/config';
 import { TYPES } from '@/inversify/types';
@@ -9,15 +9,19 @@ import { IServices } from '@/inversify/interfaces';
 import {
   BoardsActions, SystemActions,
 } from '@/store/actions';
-import {
-  ICreateBoardRequest,
-  IRemoveBoardRequest,
-  IUpdateBoardRequest,
-  IUpdateBoardPositionRequest,
-} from '@/types/api';
 import { getActiveBoardId, getUsername } from '@/store/selectors';
 import { useReadableId } from '@/use/readableId';
 import { forwardTo } from '@/router/history';
+import {
+  ICreateBoard,
+  IRemoveBoard,
+  IUpdateBoardCardType,
+  IUpdateBoardColor,
+  IUpdateBoardDescription,
+  IUpdateBoardIcon,
+  IUpdateBoardPosition,
+  IUpdateBoardTitle,
+} from '@/types/actions';
 
 const { boardService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -44,7 +48,7 @@ function* fetchWorker() {
   }
 }
 
-function* createWorker(action: Action<ICreateBoardRequest>) {
+function* createWorker(action: PayloadAction<ICreateBoard>) {
   try {
     const { belowId } = action.payload;
     const response = yield* apply(boardService, boardService.create, [action.payload]);
@@ -69,7 +73,7 @@ function* createWorker(action: Action<ICreateBoardRequest>) {
   }
 }
 
-function* removeWorker(action: Action<IRemoveBoardRequest>) {
+function* removeWorker(action: PayloadAction<IRemoveBoard>) {
   try {
     yield* apply(boardService, boardService.remove, [action.payload]);
     yield call(show, 'Board', 'Board removed successfully', ALERT_TYPES.SUCCESS);
@@ -78,7 +82,13 @@ function* removeWorker(action: Action<IRemoveBoardRequest>) {
   }
 }
 
-function* updateWorker(action: Action<IUpdateBoardRequest>) {
+function* updateWorker(action: PayloadAction<
+IUpdateBoardTitle
+& IUpdateBoardDescription
+& IUpdateBoardColor
+& IUpdateBoardCardType
+& IUpdateBoardIcon
+>) {
   try {
     yield* apply(boardService, boardService.update, [action.payload]);
     yield call(show, 'Board', 'Board updated successfully', ALERT_TYPES.SUCCESS);
@@ -87,7 +97,7 @@ function* updateWorker(action: Action<IUpdateBoardRequest>) {
   }
 }
 
-function* updatePositionWorker(action: Action<IUpdateBoardPositionRequest>) {
+function* updatePositionWorker(action: PayloadAction<IUpdateBoardPosition>) {
   try {
     yield* apply(boardService, boardService.updatePosition, [action.payload]);
     yield call(show, 'Board', 'Board position updated successfully', ALERT_TYPES.SUCCESS);
@@ -98,14 +108,14 @@ function* updatePositionWorker(action: Action<IUpdateBoardPositionRequest>) {
 
 export function* watchBoard() {
   yield* all([
-    takeLatest(BoardsActions.Type.FETCH_ALL, fetchWorker),
-    takeLatest(BoardsActions.Type.CREATE, createWorker),
-    takeLatest(BoardsActions.Type.REMOVE, removeWorker),
-    takeLatest(BoardsActions.Type.UPDATE_TITLE, updateWorker),
-    takeLatest(BoardsActions.Type.UPDATE_DESCRIPTION, updateWorker),
-    takeLatest(BoardsActions.Type.UPDATE_COLOR, updateWorker),
-    takeLatest(BoardsActions.Type.UPDATE_CARD_TYPE, updateWorker),
-    takeLatest(BoardsActions.Type.UPDATE_ICON, updateWorker),
-    takeLatest(BoardsActions.Type.UPDATE_POSITION, updatePositionWorker),
+    takeLatest(BoardsActions.fetchAll, fetchWorker),
+    takeLatest(BoardsActions.create, createWorker),
+    takeLatest(BoardsActions.remove, removeWorker),
+    takeLatest(BoardsActions.updateTitle, updateWorker),
+    takeLatest(BoardsActions.updateDescription, updateWorker),
+    takeLatest(BoardsActions.updateColor, updateWorker),
+    takeLatest(BoardsActions.updateCardType, updateWorker),
+    takeLatest(BoardsActions.updateIcon, updateWorker),
+    takeLatest(BoardsActions.updatePosition, updatePositionWorker),
   ]);
 }

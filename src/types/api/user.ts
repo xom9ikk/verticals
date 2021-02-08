@@ -8,14 +8,12 @@ export interface IUpdateUserRequest {
   name?: string,
   surname?: string,
   username?: string,
-  bio?: string,
+  bio?: string | null,
 }
 
 export type IUpdateUserResponse = IServerResponse;
 
-export interface IUploadUserAvatarRequest {
-  avatarFile: File;
-}
+export type IUploadUserAvatarRequest = FormData;
 
 export type IUploadUserAvatarResponse = IServerResponse<{
   avatar: string;

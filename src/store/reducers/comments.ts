@@ -1,7 +1,7 @@
-/* eslint-disable no-return-assign */
-import { handleActions } from 'redux-actions';
+/* eslint-disable no-return-assign,max-len */
 import { IComment, ICommentLike, IComments } from '@/types/entities';
-import { CommentsActions } from '../actions';
+import { createReducer } from '@reduxjs/toolkit';
+import { CommentsActions } from '@/store/actions';
 
 const initialState: IComments = [];
 // const initialState: IComments = [
@@ -174,37 +174,33 @@ const initialState: IComments = [];
 //   },
 // ].map((el) => ({ ...el, id: `comment-${(count += 1).toString()}` }));
 
-export const CommentsReducer = handleActions<IComments, any>({
-  [CommentsActions.Type.SET_ALL]:
-        (state, action) => ([...action.payload]),
-  [CommentsActions.Type.ADD]:
-      (state, action) => ([...state, {
-        id: Math.random().toString(),
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime(),
-        ...action.payload,
-      }]),
-  [CommentsActions.Type.REMOVE]:
-      (state, action) => state.filter((comment: IComment) => comment.id !== action.payload.id),
-  [CommentsActions.Type.UPDATE_TEXT]:
-      (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
-        ? {
-          ...comment,
-          text: action.payload.text,
-          updatedAt: new Date().getTime(),
-        }
-        : comment))),
-  [CommentsActions.Type.UPDATE_LIKE]:
-      (state, action) => (state.map((comment: IComment) => {
-        const { commentId, like, isLiked } = action.payload;
-        const likedUsers = comment.likedUsers ?? [];
-        return comment.id === commentId
-          ? {
-            ...comment,
-            likedUsers: isLiked
-              ? [...likedUsers, like]
-              : likedUsers?.filter((l: ICommentLike) => l.username !== like.username),
-          }
-          : comment;
-      })),
-}, initialState);
+export const CommentsReducer = createReducer(initialState, (builder) => builder
+  .addCase(CommentsActions.setAll, (state, action) => action.payload)
+  .addCase(CommentsActions.add, (state, action) => {
+    state.push({
+      id: Math.random().toString(),
+      createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime(),
+      ...action.payload,
+    });
+  })
+  .addCase(CommentsActions.remove, (state, action) => state.filter((comment: IComment) => comment.id !== action.payload.id))
+  .addCase(CommentsActions.updateText, (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
+    ? {
+      ...comment,
+      text: action.payload.text,
+      updatedAt: new Date().getTime(),
+    }
+    : comment))))
+  .addCase(CommentsActions.updateLike, (state, action) => (state.map((comment: IComment) => {
+    const { commentId, like, isLiked } = action.payload;
+    const likedUsers = comment.likedUsers ?? [];
+    return comment.id === commentId
+      ? {
+        ...comment,
+        likedUsers: isLiked
+          ? [...likedUsers, like]
+          : likedUsers?.filter((l: ICommentLike) => l.username !== like.username),
+      }
+      : comment;
+  }))));

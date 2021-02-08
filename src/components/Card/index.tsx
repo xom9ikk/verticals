@@ -433,9 +433,18 @@ export const Card: FC<ICard> = ({
               <div
                 className="card__toggle-container"
               >
-                {renderIcon(filesCountWithCache, 'files', 'Show Files', (e) => handleToggle(e, EnumToggleType.Files), isShowFiles)}
-                {renderIcon(imagesCountWithCache, 'images', 'Show Gallery', (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery)}
-                {renderIcon(commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`, (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache))}
+                {renderIcon(
+                  filesCountWithCache, 'files', 'Show Files',
+                  (e) => handleToggle(e, EnumToggleType.Files), isShowFiles,
+                )}
+                {renderIcon(
+                  imagesCountWithCache, 'images', 'Show Gallery',
+                  (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery,
+                )}
+                {renderIcon(
+                  commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`,
+                  (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache),
+                )}
               </div>
               <MiniGallery
                 todoId={id}

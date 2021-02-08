@@ -9,3 +9,4 @@ export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-rig
   'smile-2', 'smile-3', 'smile-4', 'smile-5', 'smile-6', 'smile-7', 'smile-8', 'smile-9', 'sound-off',
   'sound-on', 'stop', 'tick', 'tick-2', 'timer', 'usd', 'wallet', 'trash', 'fire', 'twitch', 'youtube',
   'github', 'linkedin', 'twitter', 'facebook', 'instagram', 'snap', 'tik-tok'];
+export const DEFAULT_BOARD_ICON = '/assets/svg/board/item.svg';

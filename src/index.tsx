@@ -9,11 +9,11 @@ import 'swiper/swiper.scss';
 import 'react-notifications-component/dist/theme.css';
 import { Gallery } from '@comp/Gallery';
 import { FormattingHelp } from '@comp/FormattingHelp';
-import { configureStore } from '@/store/configureStore';
+import { configureAppStore } from '@/store';
 import { MainRouter } from '@/router';
 import './styles/scss/main.scss';
 
-const store = configureStore();
+const store = configureAppStore();
 
 ReactDOM.render(
   <Provider store={store}>

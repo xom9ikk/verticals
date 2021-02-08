@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 import {
   ISetSystemIsLoadedBoards,
   ISetSystemIsLoadedColumns,
@@ -21,117 +21,27 @@ import {
   ISetIsOpenFormattingHelp,
 } from '@/types/actions';
 
-enum Type {
-  SET_IS_LOADED_BOARDS = 'SYSTEM/SET_IS_LOADED_BOARDS',
-  SET_IS_LOADED_COLUMNS = 'SYSTEM/SET_IS_LOADED_COLUMNS',
-  SET_IS_LOADED_TODOS = 'SYSTEM/SET_IS_LOADED_TODOS',
-  SET_IS_OPEN_POPUP = 'SYSTEM/SET_IS_OPEN_POPUP',
-  SET_IS_EDITABLE_CARD = 'SYSTEM/SET_IS_EDITABLE_CARD',
-  SET_IS_EDITABLE_COLUMN = 'SYSTEM/SET_IS_EDITABLE_COLUMN',
-  SET_IS_EDITABLE_BOARD = 'SYSTEM/SET_IS_EDITABLE_BOARD',
-  SET_IS_SEARCH_MODE = 'SYSTEM/SET_IS_SEARCH_MODE',
-  SET_LANGUAGE = 'SYSTEM/SET_LANGUAGE',
-  SET_ACTIVE_TODO_ID = 'SYSTEM/SET_ACTIVE_TODO_ID',
-  SET_EDIT_COMMENT_ID = 'SYSTEM/SET_EDIT_COMMENT_ID',
-  SET_REPLY_COMMENT_ID = 'SYSTEM/SET_REPLY_COMMENT_ID',
-  SET_IS_OPEN_PROFILE = 'SYSTEM/SET_IS_OPEN_PROFILE',
-  SET_ACTIVE_BOARD_ID = 'SYSTEM/SET_ACTIVE_BOARD_ID',
-  SET_ACTIVE_BOARD_READABLE_ID = 'SYSTEM/SET_ACTIVE_BOARD_READABLE_ID',
-  SET_ACTIVE_TODO_READABLE_ID = 'SYSTEM/SET_ACTIVE_TODO_READABLE_ID',
-  SET_DROPPED_FILES = 'SYSTEM/SET_DROPPED_FILES',
-  SET_GALLERY_IMAGES_INFO = 'SYSTEM/SET_GALLERY_IMAGES_INFO',
-  SET_IS_OPEN_FORMATTING_HELP = 'SYSTEM/SET_IS_OPEN_FORMATTING_HELP',
-}
-
-const setIsLoadedBoards = createAction(Type.SET_IS_LOADED_BOARDS,
-  (isLoadedBoards: ISetSystemIsLoadedBoards) => ({ isLoadedBoards }));
-
-const setIsLoadedColumns = createAction(Type.SET_IS_LOADED_COLUMNS,
-  (isLoadedColumns: ISetSystemIsLoadedColumns) => ({ isLoadedColumns }));
-
-const setIsLoadedTodos = createAction(Type.SET_IS_LOADED_TODOS,
-  (isLoadedTodos: ISetSystemIsLoadedTodos) => ({ isLoadedTodos }));
-
-const setIsOpenPopup = createAction(Type.SET_IS_OPEN_POPUP,
-  (isOpenPopup: ISetSystemIsOpenPopup) => ({ isOpenPopup }));
-
-const setIsEditableCard = createAction(
-  Type.SET_IS_EDITABLE_CARD,
-  (isEditableCard: ISetSystemIsEditableCard) => ({ isEditableCard }),
-);
-
-const setIsEditableColumn = createAction(
-  Type.SET_IS_EDITABLE_COLUMN,
-  (isEditableColumn: ISetSystemIsEditableColumn) => ({ isEditableColumn }),
-);
-
-const setIsEditableBoard = createAction(
-  Type.SET_IS_EDITABLE_BOARD,
-  (isEditableBoard: ISetSystemIsEditableBoard) => ({ isEditableBoard }),
-);
-
-const setIsSearchMode = createAction(
-  Type.SET_IS_SEARCH_MODE,
-  (isSearchMode: ISetSystemIsSearchMode) => ({ isSearchMode }),
-);
-
-const setLanguage = createAction(
-  Type.SET_LANGUAGE,
-  (language: ISetSystemLanguage) => ({ language }),
-);
-
-const setActiveTodoId = createAction(
-  Type.SET_ACTIVE_TODO_ID,
-  (activeTodoId: ISetSystemActiveTodoId) => ({ activeTodoId }),
-);
-
-const setEditCommentId = createAction(
-  Type.SET_EDIT_COMMENT_ID,
-  (editCommentId: ISetSystemEditCommentId) => ({ editCommentId }),
-);
-
-const setReplyCommentId = createAction(
-  Type.SET_REPLY_COMMENT_ID,
-  (replyCommentId: ISetSystemReplyCommentId) => ({ replyCommentId }),
-);
-
-const setIsOpenProfile = createAction(
-  Type.SET_IS_OPEN_PROFILE,
-  (isOpenProfile: ISetSystemIsOpenProfile) => ({ isOpenProfile }),
-);
-
-const setActiveBoardId = createAction(
-  Type.SET_ACTIVE_BOARD_ID,
-  (activeBoardId: ISetSystemActiveBoardId) => ({ activeBoardId }),
-);
-
-const setActiveBoardReadableId = createAction(
-  Type.SET_ACTIVE_BOARD_READABLE_ID,
-  (activeBoardReadableId: ISetSystemActiveBoardReadableId) => ({ activeBoardReadableId }),
-);
-
-const setActiveTodoReadableId = createAction(
-  Type.SET_ACTIVE_TODO_READABLE_ID,
-  (activeTodoReadableId: ISetSystemActiveTodoReadableId) => ({ activeTodoReadableId }),
-);
-
-const setDroppedFiles = createAction(
-  Type.SET_DROPPED_FILES,
-  (payload: ISetSystemDroppedFiles) => ({ droppedFiles: payload }),
-);
-
-const setGalleryImagesInfo = createAction(
-  Type.SET_GALLERY_IMAGES_INFO,
-  (payload: ISetGalleryImagesInfo) => ({ galleryImagesInfo: payload }),
-);
-
-const setIsOpenFormattingHelp = createAction(
-  Type.SET_IS_OPEN_FORMATTING_HELP,
-  (payload: ISetIsOpenFormattingHelp) => ({ isOpenFormattingHelp: payload }),
-);
+const setIsLoadedBoards = createAction<ISetSystemIsLoadedBoards>('SYSTEM/SET_IS_LOADED_BOARDS');
+const setIsLoadedColumns = createAction<ISetSystemIsLoadedColumns>('SYSTEM/SET_IS_LOADED_COLUMNS');
+const setIsLoadedTodos = createAction<ISetSystemIsLoadedTodos>('SYSTEM/SET_IS_LOADED_TODOS');
+const setIsOpenPopup = createAction<ISetSystemIsOpenPopup>('SYSTEM/SET_IS_OPEN_POPUP');
+const setIsEditableCard = createAction<ISetSystemIsEditableCard>('SYSTEM/SET_IS_EDITABLE_CARD');
+const setIsEditableColumn = createAction<ISetSystemIsEditableColumn>('SYSTEM/SET_IS_EDITABLE_COLUMN');
+const setIsEditableBoard = createAction<ISetSystemIsEditableBoard>('SYSTEM/SET_IS_EDITABLE_BOARD');
+const setIsSearchMode = createAction<ISetSystemIsSearchMode>('SYSTEM/SET_IS_SEARCH_MODE');
+const setLanguage = createAction<ISetSystemLanguage>('SYSTEM/SET_LANGUAGE');
+const setActiveTodoId = createAction<ISetSystemActiveTodoId>('SYSTEM/SET_ACTIVE_TODO_ID');
+const setEditCommentId = createAction<ISetSystemEditCommentId>('SYSTEM/SET_EDIT_COMMENT_ID');
+const setReplyCommentId = createAction<ISetSystemReplyCommentId>('SYSTEM/SET_REPLY_COMMENT_ID');
+const setIsOpenProfile = createAction<ISetSystemIsOpenProfile>('SYSTEM/SET_IS_OPEN_PROFILE');
+const setActiveBoardId = createAction<ISetSystemActiveBoardId>('SYSTEM/SET_ACTIVE_BOARD_ID');
+const setActiveBoardReadableId = createAction<ISetSystemActiveBoardReadableId>('SYSTEM/SET_ACTIVE_BOARD_READABLE_ID');
+const setActiveTodoReadableId = createAction<ISetSystemActiveTodoReadableId>('SYSTEM/SET_ACTIVE_TODO_READABLE_ID');
+const setDroppedFiles = createAction<ISetSystemDroppedFiles>('SYSTEM/SET_DROPPED_FILES');
+const setGalleryImagesInfo = createAction<ISetGalleryImagesInfo>('SYSTEM/SET_GALLERY_IMAGES_INFO');
+const setIsOpenFormattingHelp = createAction<ISetIsOpenFormattingHelp>('SYSTEM/SET_IS_OPEN_FORMATTING_HELP');
 
 export const SystemActions = {
-  Type,
   setIsLoadedBoards,
   setIsLoadedColumns,
   setIsLoadedTodos,

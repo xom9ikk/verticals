@@ -7,7 +7,7 @@ export interface ITodo {
   position: number;
   description?: string;
   status?: EnumTodoStatus;
-  color?: EnumColors;
+  color?: EnumColors | null;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
   belowId?: number;

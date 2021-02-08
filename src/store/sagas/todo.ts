@@ -1,25 +1,29 @@
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { Action } from 'redux-actions';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@/use/alert';
 import { container } from '@/inversify/config';
 import { TYPES } from '@/inversify/types';
 import { IServices } from '@/inversify/interfaces';
 import { SystemActions, TodosActions } from '@/store/actions';
 import {
-  ICreateTodoRequest,
-  IRemoveTodoRequest,
-  IUpdateTodoRequest,
-  IUpdateTodoPositionRequest,
-  IGetTodosByBoardIdRequest,
-  IDuplicateTodoRequest,
-} from '@/types/api';
+  ICreateTodo,
+  IRemoveTodo,
+  IUpdateTodoPosition,
+  IDuplicateTodo,
+  IFetchTodosByBoardId,
+  IUpdateTodoTitle,
+  IUpdateTodoDescription,
+  IUpdateTodoColor,
+  IUpdateTodoCompleteStatus,
+  IUpdateTodoNotificationsEnabled, IUpdateTodoIsArchive,
+} from '@/types/actions';
 
 const { todoService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* fetchByBoardIdWorker(action: Action<IGetTodosByBoardIdRequest>) {
+function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
   try {
     const response = yield* apply(todoService, todoService.getByBoardId, [action.payload]);
     const { todos } = response.data;
@@ -30,7 +34,7 @@ function* fetchByBoardIdWorker(action: Action<IGetTodosByBoardIdRequest>) {
   }
 }
 
-function* createWorker(action: Action<ICreateTodoRequest>) {
+function* createWorker(action: PayloadAction<ICreateTodo>) {
   try {
     const { belowId } = action.payload;
     const response = yield* apply(todoService, todoService.create, [action.payload]);
@@ -55,7 +59,7 @@ function* createWorker(action: Action<ICreateTodoRequest>) {
   }
 }
 
-function* removeWorker(action: Action<IRemoveTodoRequest>) {
+function* removeWorker(action: PayloadAction<IRemoveTodo>) {
   try {
     yield* apply(todoService, todoService.remove, [action.payload]);
     yield call(show, 'Todo', 'Todo removed successfully', ALERT_TYPES.SUCCESS);
@@ -64,7 +68,14 @@ function* removeWorker(action: Action<IRemoveTodoRequest>) {
   }
 }
 
-function* updateWorker(action: Action<IUpdateTodoRequest>) {
+function* updateWorker(action: PayloadAction<
+IUpdateTodoTitle
+& IUpdateTodoDescription
+& IUpdateTodoColor
+& IUpdateTodoCompleteStatus
+& IUpdateTodoIsArchive
+& IUpdateTodoNotificationsEnabled
+>) {
   try {
     yield* apply(todoService, todoService.update, [action.payload]);
     yield call(show, 'Todo', 'Todo updated successfully', ALERT_TYPES.SUCCESS);
@@ -73,7 +84,7 @@ function* updateWorker(action: Action<IUpdateTodoRequest>) {
   }
 }
 
-function* updatePositionWorker(action: Action<IUpdateTodoPositionRequest>) {
+function* updatePositionWorker(action: PayloadAction<IUpdateTodoPosition>) {
   try {
     yield* apply(todoService, todoService.updatePosition, [action.payload]);
     yield call(show, 'Todo', 'Todo position updated successfully', ALERT_TYPES.SUCCESS);
@@ -82,7 +93,7 @@ function* updatePositionWorker(action: Action<IUpdateTodoPositionRequest>) {
   }
 }
 
-function* duplicateWorker(action: Action<IDuplicateTodoRequest>) {
+function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
   try {
     const response = yield* apply(todoService, todoService.duplicate, [action.payload]);
     const { columnId, todoId, ...todo } = response.data;
@@ -99,16 +110,16 @@ function* duplicateWorker(action: Action<IDuplicateTodoRequest>) {
 
 export function* watchTodo() {
   yield* all([
-    takeLatest(TodosActions.Type.FETCH_BY_BOARD_ID, fetchByBoardIdWorker),
-    takeLatest(TodosActions.Type.CREATE, createWorker),
-    takeLatest(TodosActions.Type.REMOVE, removeWorker),
-    takeLatest(TodosActions.Type.UPDATE_TITLE, updateWorker),
-    takeLatest(TodosActions.Type.UPDATE_DESCRIPTION, updateWorker),
-    takeLatest(TodosActions.Type.UPDATE_COLOR, updateWorker),
-    takeLatest(TodosActions.Type.UPDATE_COMPLETE_STATUS, updateWorker),
-    takeLatest(TodosActions.Type.UPDATE_IS_ARCHIVE, updateWorker),
-    takeLatest(TodosActions.Type.UPDATE_NOTIFICATION_ENABLED, updateWorker),
-    takeLatest(TodosActions.Type.UPDATE_POSITION, updatePositionWorker),
-    takeLatest(TodosActions.Type.DUPLICATE, duplicateWorker),
+    takeLatest(TodosActions.fetchByBoardId, fetchByBoardIdWorker),
+    takeLatest(TodosActions.create, createWorker),
+    takeLatest(TodosActions.remove, removeWorker),
+    takeLatest(TodosActions.updateTitle, updateWorker),
+    takeLatest(TodosActions.updateDescription, updateWorker),
+    takeLatest(TodosActions.updateColor, updateWorker),
+    takeLatest(TodosActions.updateCompleteStatus, updateWorker),
+    takeLatest(TodosActions.updateIsArchive, updateWorker),
+    takeLatest(TodosActions.updateNotificationEnabled, updateWorker),
+    takeLatest(TodosActions.updatePosition, updatePositionWorker),
+    takeLatest(TodosActions.duplicate, duplicateWorker),
   ]);
 }

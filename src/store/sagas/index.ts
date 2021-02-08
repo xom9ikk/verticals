@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects';
+import { all } from 'typed-redux-saga';
 import { watchAuth } from '@/store/sagas/auth';
 import { watchUser } from '@/store/sagas/user';
 import { watchBoard } from '@/store/sagas/board';

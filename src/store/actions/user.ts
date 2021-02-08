@@ -1,74 +1,70 @@
-import { createAction } from 'redux-actions';
+/* eslint-disable max-len */
+import { createAction, PrepareAction } from '@reduxjs/toolkit';
 import {
   ISetUserData,
   IUpdateEmail,
-  IUpdateUsername,
+  IUpdateEmailRaw,
   IUpdatePersonalData,
   IUploadAvatar,
+  IUploadAvatarRaw,
   ISetEmail,
+  ISetEmailRaw,
   ISetUsername,
-  ISetPersonalData, ISetAvatar,
+  ISetUsernameRaw,
+  ISetPersonalData,
+  ISetAvatar,
+  ISetAvatarRaw,
+  IUpdateUsername,
+  IUpdateUsernameRaw,
 } from '@/types/actions';
 
-enum Type {
-  FETCH_ME = 'USER/FETCH_ME',
-  SET_USER_DATA = 'USER/SET_USER_DATA',
-  UPDATE_USERNAME = 'USER/UPDATE_USERNAME',
-  UPDATE_EMAIL = 'USER/UPDATE_EMAIL',
-  UPDATE_PERSONAL_DATA = 'USER/UPDATE_PERSONAL_DATA',
-  UPLOAD_AVATAR = 'USER/UPLOAD_AVATAR',
-  REMOVE_AVATAR = 'USER/REMOVE_AVATAR',
-  SET_USERNAME = 'USER/SET_USERNAME',
-  SET_EMAIL = 'USER/SET_EMAIL',
-  SET_PERSONAL_DATA = 'USER/SET_PERSONAL_DATA',
-  SET_AVATAR = 'USER/SET_AVATAR',
-}
+const fetchMe = createAction('USER/FETCH_ME');
+const setUserData = createAction<ISetUserData>('USER/SET_USER_DATA');
+const updateUsername = createAction<PrepareAction<IUpdateUsername>>(
+  'USER/UPDATE_USERNAME',
+  (payload: IUpdateUsernameRaw) => ({ payload: { username: payload } }),
+);
 
-const fetchMe = createAction(Type.FETCH_ME);
-const setUserData = createAction<ISetUserData>(Type.SET_USER_DATA);
-const updateUsername = createAction(
-  Type.UPDATE_USERNAME,
-  (payload: IUpdateUsername) => ({ username: payload }),
+const updateEmail = createAction<PrepareAction<IUpdateEmail>>(
+  'USER/UPDATE_EMAIL',
+  (payload: IUpdateEmailRaw) => ({ payload: { email: payload } }),
 );
-const updateEmail = createAction(
-  Type.UPDATE_EMAIL,
-  (payload: IUpdateEmail) => ({ email: payload }),
+const setUsername = createAction<PrepareAction<ISetUsername>>(
+  'USER/SET_USERNAME',
+  (payload: ISetUsernameRaw) => ({ payload: { username: payload } }),
 );
-const updatePersonalData = createAction<IUpdatePersonalData>(Type.UPDATE_PERSONAL_DATA);
-const uploadAvatar = createAction(
-  Type.UPLOAD_AVATAR,
-  (payload: IUploadAvatar) => {
+const setEmail = createAction<PrepareAction<ISetEmail>>(
+  'USER/SET_EMAIL',
+  (payload: ISetEmailRaw) => ({ payload: { email: payload } }),
+);
+const setAvatar = createAction<PrepareAction<ISetAvatar>>(
+  'USER/SET_AVATAR',
+  (payload: ISetAvatarRaw) => ({ payload: { avatar: payload } }),
+);
+const setPersonalData = createAction<ISetPersonalData>('USER/SET_PERSONAL_DATA');
+const updatePersonalData = createAction<IUpdatePersonalData>('USER/UPDATE_PERSONAL_DATA');
+const uploadAvatar = createAction<PrepareAction<IUploadAvatar>>(
+  'USER/UPLOAD_AVATAR',
+  (payload: IUploadAvatarRaw) => {
     const formData = new FormData();
     formData.append('avatar', payload);
-    return formData;
+    return {
+      payload: formData,
+    };
   },
 );
-const removeAvatar = createAction(Type.REMOVE_AVATAR);
-const setUsername = createAction(
-  Type.SET_USERNAME,
-  (payload: ISetUsername) => ({ username: payload }),
-);
-const setEmail = createAction(
-  Type.SET_EMAIL,
-  (payload: ISetEmail) => ({ email: payload }),
-);
-const setPersonalData = createAction<ISetPersonalData>(Type.SET_PERSONAL_DATA);
-const setAvatar = createAction(
-  Type.SET_AVATAR,
-  (payload: ISetAvatar) => ({ avatar: payload }),
-);
+const removeAvatar = createAction('USER/REMOVE_AVATAR');
 
 export const UserActions = {
-  Type,
   fetchMe,
   setUserData,
   updateUsername,
   updateEmail,
+  setUsername,
+  setEmail,
+  setAvatar,
+  setPersonalData,
   updatePersonalData,
   uploadAvatar,
   removeAvatar,
-  setUsername,
-  setEmail,
-  setPersonalData,
-  setAvatar,
 };

@@ -23,6 +23,6 @@ export interface ISetSystemDroppedFiles {
 }
 export type ISetGalleryImagesInfo = {
   images: ICommentAttachments | null;
-  index?: number;
+  index: number;
 } | null;
 export type ISetIsOpenFormattingHelp = boolean;
