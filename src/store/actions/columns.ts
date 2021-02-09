@@ -2,6 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 import {
   IFetchColumnsByBoardId,
   IAddColumn,
+  IInsertColumn,
   ICreateColumn,
   IDuplicateColumn,
   IRemoveColumn,
@@ -19,7 +20,7 @@ const fetchByBoardId = createAction<IFetchColumnsByBoardId>('COLUMNS/FETCH_BY_BO
 const setAll = createAction<ISetColumns>('COLUMNS/SET_ALL');
 const create = createAction<ICreateColumn>('COLUMNS/CREATE');
 const add = createAction<IAddColumn>('COLUMNS/ADD');
-const insertInPosition = createAction<IAddColumn>('COLUMNS/INSERT_IN_POSITION');
+const insertInPosition = createAction<IInsertColumn>('COLUMNS/INSERT_IN_POSITION');
 const updateTitle = createAction<IUpdateColumnTitle>('COLUMNS/UPDATE_TITLE');
 const updateDescription = createAction<IUpdateColumnDescription>('COLUMNS/UPDATE_DESCRIPTION');
 const updatePosition = createAction<IUpdateColumnPosition>('COLUMNS/UPDATE_POSITION');

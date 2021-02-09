@@ -14,7 +14,7 @@ export const getTodoById = (todoId: number | null) => createSelector(
 export const getCountTodosByBoardId = (boardId: number | null) => createSelector(
   [getColumns, getTodos],
   (columns, todos) => {
-    const filteredColumns = columns.filter((column) => column.boardId === boardId);
+    const filteredColumns = columns.entities.filter((column) => column.boardId === boardId);
     const columnIds = filteredColumns.map((column) => column.id);
     const filteredTodos = todos.filter((todo) => columnIds.includes(todo.columnId));
     return filteredTodos.length;

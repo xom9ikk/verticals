@@ -4,7 +4,7 @@ import { colors, EnumColors } from '@type/entities';
 
 interface IColorPicker {
   onPick: (color: EnumColors) => void;
-  activeColor?: EnumColors;
+  activeColor?: EnumColors | null;
 }
 
 export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {

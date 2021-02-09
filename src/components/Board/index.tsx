@@ -39,7 +39,7 @@ interface IBoard {
   snapshot?: DraggableStateSnapshot,
   belowId?: number;
   icon: string;
-  color?: EnumColors;
+  color?: EnumColors | null;
   title?: string;
   isActive?: boolean;
   description?: string;

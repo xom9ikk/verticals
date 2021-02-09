@@ -45,8 +45,10 @@ function* createWorker(action: PayloadAction<ICreateColumn>) {
     if (belowId) {
       yield put(ColumnsActions.removeTemp());
       yield put(ColumnsActions.insertInPosition({
-        ...action.payload,
-        id: columnId,
+        entity: {
+          ...action.payload,
+          id: columnId,
+        },
         position,
       }));
     } else {
@@ -99,8 +101,11 @@ function* duplicateWorker(action: PayloadAction<IDuplicateColumn>) {
     const response = yield* apply(columnService, columnService.duplicate, [action.payload]);
     const { columnId, todos, ...column } = response.data;
     yield put(ColumnsActions.insertInPosition({
-      id: columnId,
-      ...column,
+      entity: {
+        ...column,
+        id: columnId,
+      },
+      position: column.position,
     }));
     yield all(todos.map((todo: ITodo) => put(TodosActions.add(todo))));
     yield call(show, 'Column', 'Column duplicated successfully', ALERT_TYPES.SUCCESS);

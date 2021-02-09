@@ -39,3 +39,9 @@ export interface ISystem {
   } | null;
   isOpenFormattingHelp: boolean;
 }
+
+export type ID = number;
+
+export interface IPositions {
+  [id: string]: Array<ID>;
+}

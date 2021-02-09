@@ -665,6 +665,7 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
     draft.push(action.payload);
   })
   .addCase(TodosActions.updatePosition, (state, action) => {
+    // TODO: update columnId, if need, reorder positions
     const {
       columnId, sourcePosition, destinationPosition, targetColumnId,
     } = action.payload;

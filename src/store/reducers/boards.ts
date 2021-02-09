@@ -11,27 +11,30 @@ const initialState: IBoards = {
 export const BoardsReducer = createReducer(initialState, (builder) => builder
   .addCase(BoardsActions.setAll, (draft, action) => action.payload)
   .addCase(BoardsActions.add, (draft, action) => {
+    const { id } = action.payload;
+
     draft.entities.push(action.payload);
-    draft.positions.push(action.payload.id);
+    draft.positions.push(id);
   })
   .addCase(BoardsActions.updateTitle, (draft, action) => {
-    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)].title = action.payload.title;
+    const { id, title } = action.payload;
+    draft.entities[draft.entities.findIndex((board) => board.id === id)].title = title;
   })
   .addCase(BoardsActions.updateDescription, (draft, action) => {
-    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
-      .description = action.payload.description;
+    const { id, description } = action.payload;
+    draft.entities[draft.entities.findIndex((board) => board.id === id)].description = description;
   })
   .addCase(BoardsActions.updateColor, (draft, action) => {
-    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
-      .color = action.payload.color;
+    const { id, color } = action.payload;
+    draft.entities[draft.entities.findIndex((board) => board.id === id)].color = color;
   })
   .addCase(BoardsActions.updateCardType, (draft, action) => {
-    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
-      .cardType = action.payload.cardType;
+    const { id, cardType } = action.payload;
+    draft.entities[draft.entities.findIndex((board) => board.id === id)].cardType = cardType;
   })
   .addCase(BoardsActions.updateIcon, (draft, action) => {
-    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
-      .icon = action.payload.icon;
+    const { id, icon } = action.payload;
+    draft.entities[draft.entities.findIndex((board) => board.id === id)].icon = icon;
   })
   .addCase(BoardsActions.updatePosition, (draft, action) => {
     const { sourcePosition, destinationPosition } = action.payload;
@@ -56,6 +59,7 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
     const { belowId } = action.payload;
     const entityIndex = draft.entities.findIndex((board) => board.id === belowId);
     const positionIndex = draft.positions.findIndex((boardId) => boardId === belowId);
+
     draft.entities.splice(entityIndex + 1, 0, {
       id: TEMP_ID,
       belowId,
@@ -63,6 +67,7 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
       icon: DEFAULT_BOARD_ICON,
       cardType: EnumTodoType.Checkboxes,
     });
+
     draft.positions.splice(positionIndex + 1, 0, TEMP_ID);
   })
   .addCase(BoardsActions.removeTemp, (draft) => {

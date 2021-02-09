@@ -15,7 +15,7 @@ import {
   getActiveBoardId,
   getIsLoadedBoards,
   getIsLoadedColumns,
-  getIsSearchMode, getColumnsByBoardId,
+  getIsSearchMode, getOrderedColumnsByBoardId,
 } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 
@@ -28,7 +28,7 @@ export const Columns: FC<IColumns> = () => {
   const isSearchMode = useSelector(getIsSearchMode);
   const todos = useSelector(getTodos);
   const activeBoardId = useSelector(getActiveBoardId);
-  const columns = useSelector(getColumnsByBoardId(activeBoardId));
+  const columns = useSelector(getOrderedColumnsByBoardId(activeBoardId));
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const isLoadedColumns = useSelector(getIsLoadedColumns);
 

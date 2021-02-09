@@ -1,4 +1,6 @@
-import { EnumColors, IColumns } from '@type/entities';
+import {
+  EnumColors, IColumn, IColumns,
+} from '@type/entities';
 
 export interface IFetchColumnsByBoardId {
   boardId: number;
@@ -23,6 +25,11 @@ export interface IAddColumn {
   description?: string;
   color?: EnumColors;
   isCollapsed?: boolean;
+}
+
+export interface IInsertColumn {
+  entity: IColumn;
+  position: number;
 }
 
 export interface IUpdateColumnTitle {

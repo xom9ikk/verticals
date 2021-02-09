@@ -7,7 +7,7 @@ import { useColorClass } from '@use/colorClass';
 interface IRoundedButton {
   icon: string;
   isSpecialIcon?: boolean;
-  color?: EnumColors;
+  color?: EnumColors | null;
   text?: string;
   isActive?: boolean;
   onClick?: (e: React.SyntheticEvent) => void;
