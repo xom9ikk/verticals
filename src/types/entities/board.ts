@@ -4,11 +4,14 @@ export interface IBoard {
   id: number;
   title: string;
   icon: string;
-  position: number;
+  // position: number;
   cardType: EnumTodoType;
   description?: string;
   color?: EnumColors | null;
   belowId?: number;
 }
 
-export type IBoards = Array<IBoard>;
+export interface IBoards {
+  entities: Array<IBoard>;
+  positions: Array<number>;
+}

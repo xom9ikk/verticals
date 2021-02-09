@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import {
   IAddBoard,
+  IInsertBoard,
   ICreateBoard,
   IDrawBoardBelow,
   IRemoveBoard,
@@ -17,7 +18,7 @@ const fetchAll = createAction('BOARDS/FETCH_ALL');
 const setAll = createAction<ISetBoards>('BOARDS/SET_ALL');
 const create = createAction<ICreateBoard>('BOARDS/CREATE');
 const add = createAction<IAddBoard>('BOARDS/ADD');
-const insertInPosition = createAction<IAddBoard>('BOARDS/INSERT_IN_POSITION');
+const insertInPosition = createAction<IInsertBoard>('BOARDS/INSERT_IN_POSITION');
 const updateTitle = createAction<IUpdateBoardTitle>('BOARDS/UPDATE_TITLE');
 const updateDescription = createAction<IUpdateBoardDescription>('BOARDS/UPDATE_DESCRIPTION');
 const updatePosition = createAction<IUpdateBoardPosition>('BOARDS/UPDATE_POSITION');

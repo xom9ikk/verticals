@@ -19,7 +19,7 @@ import {
   getActiveBoardId,
   getIsEditableBoard,
   getIsLoadedBoards,
-  getBoards,
+  getOrderedBoards,
   getUsername,
   getIsSearchMode,
 } from '@store/selectors';
@@ -34,7 +34,7 @@ export const BoardList: FC<IBoardList> = () => {
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
   const username = useSelector(getUsername);
-  const boards = useSelector(getBoards);
+  const boards = useSelector(getOrderedBoards);
   const isSearchMode = useSelector(getIsSearchMode);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const activeBoardId = useSelector(getActiveBoardId);
@@ -135,8 +135,7 @@ export const BoardList: FC<IBoardList> = () => {
                 ref={provided.innerRef}
               >
                 {/* TODO: move to selector */}
-                {[...boards]
-                  .sort((a, b) => a.position - b.position)
+                {boards
                   .map(({
                     id, icon, title, color, belowId,
                   }, index) => (

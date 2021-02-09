@@ -35,7 +35,7 @@ module.exports = {
       '@router': path.resolve(PATHS.src, 'router'),
       '@services': path.resolve(PATHS.src, 'services'),
       '@store': path.resolve(PATHS.src, 'store'),
-      '@type': path.resolve(PATHS.src, 'type'),
+      '@type': path.resolve(PATHS.src, 'types'),
       '@use': path.resolve(PATHS.src, 'use'),
     },
   },

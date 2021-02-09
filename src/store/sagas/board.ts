@@ -36,9 +36,10 @@ function* fetchWorker() {
     const currentBoardId = yield select(getActiveBoardId);
     const username = yield select(getUsername);
     if (currentBoardId === null) {
-      const [board] = boards;
-      if (board) {
-        const { id, title } = board;
+      const firstBoardId = boards.positions[0];
+      const firstBoard = boards.entities.find((board) => board.id === firstBoardId);
+      if (firstBoard) {
+        const { id, title } = firstBoard;
         const readableBoardId = toReadableId(title, id);
         forwardTo(`/${username}/${readableBoardId}`);
       }
@@ -56,15 +57,16 @@ function* createWorker(action: PayloadAction<ICreateBoard>) {
     if (belowId) {
       yield put(BoardsActions.removeTemp());
       yield put(BoardsActions.insertInPosition({
-        ...action.payload,
-        id: boardId,
+        entity: {
+          ...action.payload,
+          id: boardId,
+        },
         position,
       }));
     } else {
       yield put(BoardsActions.add({
         ...action.payload,
         id: boardId,
-        position,
       }));
     }
     yield call(show, 'Board', 'Board created successfully', ALERT_TYPES.SUCCESS);

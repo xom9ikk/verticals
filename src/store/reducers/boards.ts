@@ -1,76 +1,74 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { EnumTodoType, IBoard, IBoards } from '@type/entities';
+import { EnumTodoType, IBoards } from '@type/entities';
 import { BoardsActions } from '@store/actions';
-import { DEFAULT_BOARD_ICON } from '@/constants';
+import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
 
-const initialState: IBoards = [];
+const initialState: IBoards = {
+  entities: [],
+  positions: [],
+};
+
 export const BoardsReducer = createReducer(initialState, (builder) => builder
-  .addCase(BoardsActions.setAll, (state, action) => action.payload)
-  .addCase(BoardsActions.add, (state, action) => { state.push(action.payload); })
-  .addCase(BoardsActions.insertInPosition, (state, action) => {
-    const { position } = action.payload;
-    const { belowId, ...newBoard } = action.payload;
-    const boards: IBoards = [...state].sort((a, b) => a.position - b.position);
-    const spliceIndex = boards.findIndex((board: IBoard) => board.position === position);
-    const normalizedSpliceIndex = spliceIndex === -1 ? boards.length : spliceIndex;
-    boards.splice(normalizedSpliceIndex, 0, newBoard);
-    return boards.map((board: IBoard, index) => ({ ...board, position: index }));
+  .addCase(BoardsActions.setAll, (draft, action) => action.payload)
+  .addCase(BoardsActions.add, (draft, action) => {
+    draft.entities.push(action.payload);
+    draft.positions.push(action.payload.id);
   })
-  .addCase(BoardsActions.updateTitle, (state, action) => (
-    state.map((board: IBoard) => (board.id === action.payload.id ? {
-      ...board,
-      title: action.payload.title,
-    } : board))))
-  .addCase(BoardsActions.updateDescription, (state, action) => (
-    state.map((board: IBoard) => (board.id === action.payload.id ? {
-      ...board,
-      description: action.payload.description,
-    } : board))))
-  .addCase(BoardsActions.updatePosition, (state, action) => {
+  .addCase(BoardsActions.updateTitle, (draft, action) => {
+    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)].title = action.payload.title;
+  })
+  .addCase(BoardsActions.updateDescription, (draft, action) => {
+    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
+      .description = action.payload.description;
+  })
+  .addCase(BoardsActions.updateColor, (draft, action) => {
+    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
+      .color = action.payload.color;
+  })
+  .addCase(BoardsActions.updateCardType, (draft, action) => {
+    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
+      .cardType = action.payload.cardType;
+  })
+  .addCase(BoardsActions.updateIcon, (draft, action) => {
+    draft.entities[draft.entities.findIndex((board) => board.id === action.payload.id)]
+      .icon = action.payload.icon;
+  })
+  .addCase(BoardsActions.updatePosition, (draft, action) => {
     const { sourcePosition, destinationPosition } = action.payload;
-    const boards = [...state];
-    const sourceBoard = state.filter((board) => board.position === sourcePosition)[0];
-    boards.splice(sourcePosition, 1);
-    boards.splice(destinationPosition, 0, { ...sourceBoard, position: destinationPosition });
-    return boards.map((board, index) => ({ ...board, position: index }));
+    draft.positions.splice(destinationPosition, 0, draft.positions.splice(sourcePosition, 1)[0]);
   })
-  .addCase(BoardsActions.updateColor, (state, action) => (
-    state.map((board: IBoard) => (board.id === action.payload.id ? {
-      ...board,
-      color: action.payload.color,
-    } : board))))
-  .addCase(BoardsActions.updateCardType, (state, action) => (
-    state.map((board: IBoard) => (board.id === action.payload.id ? {
-      ...board,
-      cardType: action.payload.cardType,
-    } : board))))
-  .addCase(BoardsActions.updateIcon, (state, action) => (
-    state.map((board: IBoard) => (board.id === action.payload.id ? {
-      ...board,
-      icon: action.payload.icon,
-    } : board))))
-  .addCase(BoardsActions.remove, (state, action) => state
-    .filter((board: IBoard) => board.id !== action.payload.id)
-    .map((board: IBoard, index) => ({
-      ...board,
-      position: index,
-    })))
-  .addCase(BoardsActions.drawBelow, (state, action) => {
+  .addCase(BoardsActions.insertInPosition, (draft, action) => {
+    const { entity, position } = action.payload;
+
+    draft.entities.splice(position, 0, entity);
+    draft.positions.splice(position, 0, entity.id);
+  })
+  .addCase(BoardsActions.remove, (draft, action) => {
+    const { id } = action.payload;
+
+    const entityIndex = draft.entities.findIndex((board) => board.id === id);
+    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+
+    const positionIndex = draft.positions.findIndex((boardId) => boardId === id);
+    if (positionIndex !== -1) draft.positions.splice(positionIndex, 1);
+  })
+  .addCase(BoardsActions.drawBelow, (draft, action) => {
     const { belowId } = action.payload;
-    const boards = [...state].sort((a, b) => a.position - b.position);
-    const spliceIndex = boards.findIndex((board: IBoard) => board.id === belowId);
-    boards.splice(spliceIndex + 1, 0, {
-      id: 0,
+    const entityIndex = draft.entities.findIndex((board) => board.id === belowId);
+    const positionIndex = draft.positions.findIndex((boardId) => boardId === belowId);
+    draft.entities.splice(entityIndex + 1, 0, {
+      id: TEMP_ID,
       belowId,
-      position: spliceIndex,
       title: '',
       icon: DEFAULT_BOARD_ICON,
       cardType: EnumTodoType.Checkboxes,
     });
-    return boards.map((board: IBoard, index) => ({ ...board, position: index }));
+    draft.positions.splice(positionIndex + 1, 0, TEMP_ID);
   })
-  .addCase(BoardsActions.removeTemp, (state) => (
-    state.filter((board: IBoard) => board.id !== 0).map((board: IBoard, index) => ({
-      ...board,
-      position: index,
-    })))));
+  .addCase(BoardsActions.removeTemp, (draft) => {
+    const entityIndex = draft.entities.findIndex((board) => board.id === TEMP_ID);
+    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+
+    const positionIndex = draft.positions.findIndex((boardId) => boardId === TEMP_ID);
+    if (positionIndex !== -1) draft.positions.splice(positionIndex, 1);
+  }));

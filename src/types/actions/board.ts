@@ -1,4 +1,6 @@
-import { EnumColors, EnumTodoType, IBoards } from '@type/entities';
+import {
+  EnumColors, EnumTodoType, IBoards, IBoard,
+} from '@type/entities';
 
 export type ISetBoards = IBoards;
 
@@ -11,14 +13,11 @@ export interface ICreateBoard {
   belowId?: number;
 }
 
-export interface IAddBoard {
-  id: number;
+export type IAddBoard = IBoard;
+
+export interface IInsertBoard {
+  entity: IBoard;
   position: number;
-  icon: string;
-  cardType: EnumTodoType;
-  title: string;
-  description?: string;
-  color?: EnumColors;
 }
 
 export interface IUpdateBoardTitle {

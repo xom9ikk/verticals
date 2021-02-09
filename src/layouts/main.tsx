@@ -14,7 +14,7 @@ import {
   BoardsActions,
   // ColumnsActions,
   // TodosActions,
-  UserActions,
+  UserActions, ColumnsActions, TodosActions,
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
@@ -25,9 +25,13 @@ import { forwardTo } from '@router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 
-// @ts-ignore
+interface IMainLayoutParams {
+  boardId?: string;
+  todoId?: string;
+}
+
 export const MainLayout: FC<{}> = () => {
-  const { boardId, todoId } = useParams();
+  const { boardId, todoId } = useParams<IMainLayoutParams>();
 
   const dispatch = useDispatch();
 
@@ -41,21 +45,25 @@ export const MainLayout: FC<{}> = () => {
   const refUsername = useRef(username);
 
   useEffect(() => {
-    const numericBoardId = boardId === 'trash'
-      ? TRASH_BOARD_ID
-      : boardId !== undefined
-        && !['account', 'profile'].includes(boardId)
-        ? toNumericId(boardId)
-        : null;
-    console.log('numericBoardId', numericBoardId);
-    dispatch(SystemActions.setActiveBoardId(numericBoardId));
-    dispatch(SystemActions.setActiveBoardReadableId(boardId));
+    if (boardId) {
+      const numericBoardId = boardId === 'trash'
+        ? TRASH_BOARD_ID
+        : boardId !== undefined
+          && !['account', 'profile'].includes(boardId)
+          ? toNumericId(boardId)
+          : null;
+      console.log('numericBoardId', numericBoardId);
+      dispatch(SystemActions.setActiveBoardId(numericBoardId));
+      dispatch(SystemActions.setActiveBoardReadableId(boardId));
+    }
   }, [boardId]);
 
   useEffect(() => {
-    const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
-    dispatch(SystemActions.setActiveTodoId(numericTodoId));
-    dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
+    if (todoId) {
+      const numericTodoId = toNumericId(todoId);
+      dispatch(SystemActions.setActiveTodoId(numericTodoId));
+      dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
+    }
   }, [todoId]);
 
   useEffect(() => {
@@ -63,15 +71,19 @@ export const MainLayout: FC<{}> = () => {
     dispatch(BoardsActions.fetchAll());
   }, []);
 
-  const closePopupsAndEditable = () => {
-    console.log('closePopupsAndEditable');
+  const closePopups = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     dispatch(SystemActions.setIsEditableColumn(false));
     dispatch(SystemActions.setIsEditableBoard(false));
-    // dispatch(BoardsActions.removeTemp()); // TODO: fix
-    // dispatch(ColumnsActions.removeTemp()); // TODO: fix
-    // dispatch(TodosActions.removeTemp()); // TODO: fix
+  };
+
+  const closePopupsAndEditable = () => {
+    console.log('closePopupsAndEditable');
+    closePopups();
+    dispatch(BoardsActions.removeTemp());
+    dispatch(ColumnsActions.removeTemp());
+    dispatch(TodosActions.removeTemp());
     const isCardOpened = !!refActiveTodoId.current;
     if (isCardOpened) {
       forwardTo(`/${refUsername.current}/${refBoardId.current}`);
@@ -89,7 +101,7 @@ export const MainLayout: FC<{}> = () => {
   };
 
   const clickHandler = (event: any) => {
-    if (event.isTrusted) closePopupsAndEditable();
+    if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
   };
 
   useEffect(() => {
