@@ -43,7 +43,7 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
   .addCase(BoardsActions.insertInPosition, (draft, action) => {
     const { entity, position } = action.payload;
 
-    draft.entities.splice(position, 0, entity);
+    draft.entities.push(entity);
     draft.positions.splice(position, 0, entity.id);
   })
   .addCase(BoardsActions.remove, (draft, action) => {
@@ -57,10 +57,9 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
   })
   .addCase(BoardsActions.drawBelow, (draft, action) => {
     const { belowId } = action.payload;
-    const entityIndex = draft.entities.findIndex((board) => board.id === belowId);
     const positionIndex = draft.positions.findIndex((boardId) => boardId === belowId);
 
-    draft.entities.splice(entityIndex + 1, 0, {
+    draft.entities.push({
       id: TEMP_ID,
       belowId,
       title: '',

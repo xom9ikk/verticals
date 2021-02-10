@@ -1,10 +1,9 @@
-import { EnumColors } from '@type/entities';
+import { EnumColors, ID, IPositions } from '@type/entities';
 
 export interface ITodo {
-  id: number;
+  id: ID;
   columnId: number;
   title: string;
-  position: number;
   description?: string;
   status?: EnumTodoStatus;
   color?: EnumColors | null;
@@ -16,7 +15,10 @@ export interface ITodo {
   attachmentsCount: number;
 }
 
-export type ITodos = Array<ITodo>;
+export interface ITodos {
+  entities: Array<ITodo>;
+  positions: IPositions;
+}
 
 export enum EnumTodoType {
   Checkboxes,

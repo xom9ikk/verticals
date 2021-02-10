@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
+  EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
 } from '@type/entities';
 import { Card } from '@comp/Card';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { getActiveTodoId, getIsLoadedTodos, getIsSearchMode } from '@store/selectors';
 
 interface ICardsContainer {
-  todos?: ITodos;
+  todos?: Array<ITodo>;
   cardType: EnumTodoType;
   onExitFromEditable: (
     id: number,
@@ -34,11 +34,11 @@ export const CardsContainer: FC<ICardsContainer> = ({
     <>
       {
         todos
-          ?.map((todo) => (
+          ?.map((todo, index) => (
             <Draggable
               key={todo.id}
               draggableId={`todo-${todo.id}`}
-              index={todo.position}
+              index={index}
               isDragDisabled={isSearchMode || todo.belowId !== undefined}
             >
               {(

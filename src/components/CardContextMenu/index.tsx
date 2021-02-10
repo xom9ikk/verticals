@@ -20,7 +20,7 @@ interface ICardContextMenu {
   isActive?: boolean;
   isHover: boolean;
   isNotificationsEnabled?: boolean;
-  color?: EnumColors;
+  color?: EnumColors | null;
   status?: EnumTodoStatus;
   size?: number;
   imageSize?: number;

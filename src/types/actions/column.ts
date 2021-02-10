@@ -17,15 +17,7 @@ export interface ICreateColumn {
   belowId?: number;
 }
 
-export interface IAddColumn {
-  id: number;
-  position: number;
-  boardId: number;
-  title: string;
-  description?: string;
-  color?: EnumColors;
-  isCollapsed?: boolean;
-}
+export type IAddColumn = IColumn;
 
 export interface IInsertColumn {
   entity: IColumn;

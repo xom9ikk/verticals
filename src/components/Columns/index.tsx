@@ -11,7 +11,7 @@ import { ColumnsActions, TodosActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useAutoScroll } from '@use/autoScroll';
 import {
-  getTodos,
+  getTodosEntities,
   getActiveBoardId,
   getIsLoadedBoards,
   getIsLoadedColumns,
@@ -26,7 +26,7 @@ export const Columns: FC<IColumns> = () => {
   const columnsRef = useRef<any>();
 
   const isSearchMode = useSelector(getIsSearchMode);
-  const todos = useSelector(getTodos);
+  const todos = useSelector(getTodosEntities);
   const activeBoardId = useSelector(getActiveBoardId);
   const columns = useSelector(getOrderedColumnsByBoardId(activeBoardId));
   const isLoadedBoards = useSelector(getIsLoadedBoards);

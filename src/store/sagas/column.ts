@@ -55,7 +55,6 @@ function* createWorker(action: PayloadAction<ICreateColumn>) {
       yield put(ColumnsActions.add({
         ...action.payload,
         id: columnId,
-        position,
       }));
     }
     yield call(show, 'Column', 'Column created successfully', ALERT_TYPES.SUCCESS);
@@ -107,7 +106,7 @@ function* duplicateWorker(action: PayloadAction<IDuplicateColumn>) {
       },
       position: column.position,
     }));
-    yield all(todos.map((todo: ITodo) => put(TodosActions.add(todo))));
+    yield all(todos.entities.map((todo: ITodo) => put(TodosActions.add(todo))));
     yield call(show, 'Column', 'Column duplicated successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'Column', error, ALERT_TYPES.DANGER);

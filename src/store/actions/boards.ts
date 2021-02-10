@@ -1,15 +1,15 @@
 import { createAction } from '@reduxjs/toolkit';
 import {
   IAddBoard,
-  IInsertBoard,
   ICreateBoard,
   IDrawBoardBelow,
+  IInsertBoard,
   IRemoveBoard,
   ISetBoards,
   IUpdateBoardCardType,
-  IUpdateBoardIcon,
   IUpdateBoardColor,
   IUpdateBoardDescription,
+  IUpdateBoardIcon,
   IUpdateBoardPosition,
   IUpdateBoardTitle,
 } from '@type/actions';

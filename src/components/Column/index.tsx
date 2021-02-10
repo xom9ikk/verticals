@@ -26,7 +26,7 @@ import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
-  getIsEditableColumn, getBoardCardType, getTodosByColumnId, getIsSearchMode,
+  getIsEditableColumn, getBoardCardType, getOrderedTodosByColumnId, getIsSearchMode, getOrderedArchivedTodosByColumnId,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useColorClass } from '@use/colorClass';
@@ -35,7 +35,7 @@ interface IColumn {
   index: number;
   columnId?: number;
   belowId?: number;
-  color?: EnumColors;
+  color?: EnumColors | null;
   isCollapsed?: boolean;
   boardId?: number | null;
   title?: string;
@@ -73,7 +73,8 @@ export const Column: FC<IColumn> = ({
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const colorClass = useColorClass('column__wrapper', color);
 
-  const todos = useSelector(getTodosByColumnId(columnId));
+  const todos = useSelector(getOrderedTodosByColumnId(columnId));
+  const archivedTodos = useSelector(getOrderedArchivedTodosByColumnId(columnId));
   const cardType = useSelector(getBoardCardType(boardId));
   const isEditableColumn = useSelector(getIsEditableColumn);
   const isSearchMode = useSelector(getIsSearchMode);
@@ -330,7 +331,6 @@ export const Column: FC<IColumn> = ({
   const todoCards = useMemo(() => (
     <CardsContainer
       todos={todos
-        ?.sort((a, b) => a.position - b.position)
         ?.filter((todo: ITodo) => !todo.isArchived)}
       cardType={cardType}
       onExitFromEditable={saveCard}
@@ -476,38 +476,36 @@ export const Column: FC<IColumn> = ({
         <>
           {
             isCollapsed ? (
-              <>
+              <div
+                role="button"
+                tabIndex={0}
+                className={cn('column', 'column--compact', {
+                  'column--dragging': snapshot.isDragging,
+                })}
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                onMouseEnter={() => setIsHoverHeader(true)}
+                onMouseLeave={() => setIsHoverHeader(false)}
+                onClick={handleClick}
+              >
                 <div
-                  role="button"
-                  tabIndex={0}
-                  className={cn('column', 'column--compact', {
-                    'column--dragging': snapshot.isDragging,
+                  className={cn('column__wrapper', 'column__wrapper--compact', {
+                    'column__wrapper--hovered': isHoverHeader && !isEditable,
+                    'column__wrapper--dragging': snapshot.isDragging,
+                    [colorClass]: color !== undefined,
                   })}
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  onMouseEnter={() => setIsHoverHeader(true)}
-                  onMouseLeave={() => setIsHoverHeader(false)}
-                  onClick={handleClick}
+                  {...provided.dragHandleProps}
                 >
-                  <div
-                    className={cn('column__wrapper', 'column__wrapper--compact', {
-                      'column__wrapper--hovered': isHoverHeader && !isEditable,
-                      'column__wrapper--dragging': snapshot.isDragging,
-                      [colorClass]: color !== undefined,
-                    })}
-                    {...provided.dragHandleProps}
-                  >
-                    <div className="column__inner">
-                      <div className="column__counter">
-                        <div className="column__compact-text">
-                          { todos?.length }
-                        </div>
+                  <div className="column__inner">
+                    <div className="column__counter">
+                      <div className="column__compact-text">
+                        { todos?.length }
                       </div>
-                      <div className="column__compact-text">{titleValue}</div>
                     </div>
+                    <div className="column__compact-text">{titleValue}</div>
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
               <div
                 className={cn('column', {
@@ -560,9 +558,7 @@ export const Column: FC<IColumn> = ({
                                 { memoDescription }
                               </div>
                               { isNew && !isEditable && (
-                              <span
-                                className="column__new-overlay"
-                              >
+                              <span className="column__new-overlay">
                                 <img src="/assets/svg/add.svg" alt="add" />
                               </span>
                               ) }
@@ -581,9 +577,7 @@ export const Column: FC<IColumn> = ({
                               ) }
                             </div>
                             <ArchiveContainer
-                              archivedTodos={todos
-                                ?.sort((a, b) => a.position - b.position)
-                                ?.filter((todo: ITodo) => todo.isArchived)}
+                              archivedTodos={archivedTodos}
                               cardType={cardType}
                               onExitFromEditable={saveCard}
                             />

@@ -1,11 +1,14 @@
-/* eslint-disable no-return-assign,no-plusplus,max-len */
 import {
-  ITodo, ITodos,
+  ITodos,
 } from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
+import { TEMP_ID } from '@/constants';
 import { TodosActions } from '../actions';
 
-const initialState: ITodos = [];
+const initialState: ITodos = {
+  entities: [],
+  positions: {},
+};
 // const initialState: ITodos = [
 //   {
 //     id: '',
@@ -644,168 +647,87 @@ const initialState: ITodos = [];
 export const TodosReducer = createReducer(initialState, (builder) => builder
   .addCase(TodosActions.setAll, (state, action) => action.payload)
   .addCase(TodosActions.updateTitle, (draft, action) => {
-    draft[draft.findIndex((todo) => todo.id === action.payload.id)].title = action.payload.title;
+    const { id, title } = action.payload;
+    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].title = title;
   })
   .addCase(TodosActions.updateDescription, (draft, action) => {
-    draft[draft.findIndex((todo) => todo.id === action.payload.id)].description = action.payload.description;
+    const { id, description } = action.payload;
+    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].description = description;
   })
   .addCase(TodosActions.updateCompleteStatus, (draft, action) => {
-    draft[draft.findIndex((todo) => todo.id === action.payload.id)].status = action.payload.status;
+    const { id, status } = action.payload;
+    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].status = status;
   })
   .addCase(TodosActions.updateColor, (draft, action) => {
-    draft[draft.findIndex((todo) => todo.id === action.payload.id)].color = action.payload.color;
+    const { id, color } = action.payload;
+    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].color = color;
   })
   .addCase(TodosActions.updateIsArchive, (draft, action) => {
-    draft[draft.findIndex((todo) => todo.id === action.payload.id)].isArchived = action.payload.isArchived;
+    const { id, isArchived } = action.payload;
+    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].isArchived = isArchived;
   })
   .addCase(TodosActions.updateNotificationEnabled, (draft, action) => {
-    draft[draft.findIndex((todo) => todo.id === action.payload.id)].isNotificationsEnabled = action.payload.isNotificationsEnabled;
+    const { id, isNotificationsEnabled } = action.payload;
+    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].isNotificationsEnabled = isNotificationsEnabled;
   })
   .addCase(TodosActions.add, (draft, action) => {
-    draft.push(action.payload);
-  })
-  .addCase(TodosActions.updatePosition, (state, action) => {
-    // TODO: update columnId, if need, reorder positions
-    const {
-      columnId, sourcePosition, destinationPosition, targetColumnId,
-    } = action.payload;
-    const sourceColumn = state
-      .filter((todo: ITodo) => todo.columnId === columnId)
-      .sort((a, b) => a.position - b.position);
-    const targetColumn = state
-      .filter((todo: ITodo) => todo.columnId === targetColumnId)
-      .sort((a, b) => a.position - b.position);
-    const filterOtherColumn = targetColumnId
-      ? (todo: ITodo) => todo.columnId !== columnId && todo.columnId !== targetColumnId
-      : (todo: ITodo) => todo.columnId !== columnId;
-    const otherColumns = state.filter(filterOtherColumn);
-    const targetTodoIndex = sourceColumn
-      .findIndex((todo: ITodo) => todo.position === sourcePosition);
-    const targetTodo = sourceColumn[targetTodoIndex];
-    sourceColumn.splice(targetTodoIndex, 1);
+    const { id, columnId } = action.payload;
 
-    if (targetColumnId) {
-      targetColumn.splice(destinationPosition, 0, {
-        ...targetTodo,
-        position: destinationPosition,
-        columnId: targetColumnId,
-      });
-    } else {
-      sourceColumn.splice(destinationPosition, 0, {
-        ...targetTodo,
-        position: destinationPosition,
-      });
-    }
+    draft.entities.push(action.payload);
+    draft.positions[columnId].push(id);
+  })
+  .addCase(TodosActions.insertInPosition, (draft, action) => {
+    const { position, entity } = action.payload;
 
-    const newSourceColumn = sourceColumn.map((todo, index) => ({
-      ...todo,
-      position: index,
-    }));
+    draft.entities.push(entity);
+    draft.positions[entity.columnId].splice(position, 0, entity.id);
+  })
+  .addCase(TodosActions.remove, (draft, action) => {
+    const { id } = action.payload;
 
-    if (targetColumnId) {
-      const newTargetColumn = targetColumn.map((todo, index) => ({
-        ...todo,
-        position: index,
-      }));
-      return [
-        ...otherColumns,
-        ...newSourceColumn,
-        ...newTargetColumn,
-      ];
-    }
-    return [
-      ...otherColumns,
-      ...newSourceColumn,
-    ];
+    const entityIndex = draft.entities.findIndex((column) => column.id === id);
+    const { columnId } = draft.entities[entityIndex]; // TODO: try move below
+    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+
+    const positionIndex = draft.positions[columnId].findIndex((todoId) => todoId === id);
+    if (positionIndex !== -1) draft.positions[columnId].splice(positionIndex, 1);
   })
-  .addCase(TodosActions.insertInPosition, (state, action) => {
-    const { position, columnId } = action.payload;
-    const targetColumn = state
-      .filter((todo: ITodo) => todo.columnId === columnId)
-      .sort((a, b) => a.position - b.position);
-    const otherColumns = state
-      .filter((todo: ITodo) => todo.columnId !== columnId);
-    const spliceIndex = targetColumn.findIndex((todo: ITodo) => todo.position === position);
-    const normalizedSpliceIndex = spliceIndex === -1 ? targetColumn.length : spliceIndex;
-    const { belowId, ...newTodo } = action.payload;
-    targetColumn.splice(normalizedSpliceIndex, 0, newTodo);
-    const newTargetColumn = targetColumn.map((todo: ITodo, index) => ({
-      ...todo,
-      position: index,
-    }));
-    return [
-      ...otherColumns,
-      ...newTargetColumn,
-    ];
-  })
-  .addCase(TodosActions.remove, (state, action) => {
-    let columnId: number | null = null;
-    const todosAfterDelete = state.filter((todo: ITodo) => {
-      if (todo.id !== action.payload.id) {
-        return true;
-      }
-      columnId = todo.columnId;
-      return false;
-    });
-    if (columnId) {
-      const todosInColumn = todosAfterDelete
-        .filter((todo: ITodo) => todo.columnId === columnId)
-        .sort((a, b) => a.position - b.position)
-        .map((todo: ITodo, index) => ({
-          ...todo,
-          position: index,
-        }));
-      const otherTodos = [...todosAfterDelete]
-        .filter((todo: ITodo) => todo.columnId !== columnId);
-      return [
-        ...todosInColumn,
-        ...otherTodos,
-      ];
-    }
-    return state;
-  })
-  .addCase(TodosActions.drawBelow, (state, action) => {
+  .addCase(TodosActions.drawBelow, (draft, action) => {
     const { belowId, columnId } = action.payload;
-    const todosInColumn = [...state]
-      .sort((a, b) => a.position - b.position)
-      .filter((todo: ITodo) => todo.columnId === columnId);
-    const otherTodos = [...state]
-      .filter((todo: ITodo) => todo.columnId !== columnId);
-    const spliceIndex = todosInColumn.findIndex((todo: ITodo) => todo.id === belowId);
-    todosInColumn.splice(spliceIndex + 1, 0, {
-      id: 0,
+
+    const positionIndex = draft.positions[columnId].findIndex((todoId) => todoId === belowId);
+
+    draft.entities.push({
+      id: TEMP_ID,
       columnId,
       belowId,
-      position: spliceIndex + 1,
       title: '',
       commentsCount: 0,
       imagesCount: 0,
       attachmentsCount: 0,
     });
-    const sortedTodos = todosInColumn
-      .map((todo: ITodo, index) => ({
-        ...todo,
-        position: index,
-      }));
-    return [
-      ...sortedTodos,
-      ...otherTodos,
-    ];
+
+    draft.positions[columnId].splice(positionIndex + 1, 0, TEMP_ID);
   })
-  .addCase(TodosActions.removeTemp, (state) => {
-    const columnIds = new Set();
-    state.forEach((todo: ITodo) => columnIds.add(todo.columnId));
-    let todos: ITodos = [];
-    columnIds.forEach((columnId) => {
-      const todosInColumn = state
-        .filter((todo: ITodo) => todo.columnId === columnId)
-        .filter((todo: ITodo) => todo.belowId === undefined)
-        .sort((a: ITodo, b: ITodo) => a.position - b.position)
-        .map((todo: ITodo, index) => ({
-          ...todo,
-          position: index,
-        }));
-      todos = [...todos, ...todosInColumn];
-    });
-    return todos;
+  .addCase(TodosActions.updatePosition, (draft, action) => {
+    const {
+      columnId, sourcePosition, destinationPosition, targetColumnId,
+    } = action.payload;
+
+    if (targetColumnId) {
+      const todoId = draft.positions[columnId][sourcePosition];
+      draft.entities[draft.entities.findIndex((todo) => todo.id === todoId)].columnId = targetColumnId;
+      draft.positions[columnId].splice(sourcePosition, 1);
+      draft.positions[columnId].splice(destinationPosition, 0, todoId);
+    } else {
+      draft.positions[columnId].splice(destinationPosition, 0, draft.positions[columnId].splice(sourcePosition, 1)[0]);
+    }
+  })
+  .addCase(TodosActions.removeTemp, (draft) => {
+    const entityIndex = draft.entities.findIndex((todo) => todo.id === TEMP_ID);
+    const { columnId } = draft.entities[entityIndex];
+    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+
+    const positionIndex = draft.positions[columnId].findIndex((todoId) => todoId === TEMP_ID);
+    if (positionIndex !== -1) draft.positions[columnId].splice(positionIndex, 1);
   }));

@@ -1,19 +1,19 @@
 import { createAction } from '@reduxjs/toolkit';
 import {
-  IFetchColumnsByBoardId,
   IAddColumn,
-  IInsertColumn,
   ICreateColumn,
+  IDrawColumnBelow,
   IDuplicateColumn,
+  IFetchColumnsByBoardId,
+  IInsertColumn,
   IRemoveColumn,
+  IReverseColumnOrder,
   ISetColumns,
   IUpdateColumnColor,
   IUpdateColumnDescription,
   IUpdateColumnIsCollapsed,
   IUpdateColumnPosition,
   IUpdateColumnTitle,
-  IDrawColumnBelow,
-  IReverseColumnOrder,
 } from '@type/actions';
 
 const fetchByBoardId = createAction<IFetchColumnsByBoardId>('COLUMNS/FETCH_BY_BOARD_ID');

@@ -5,13 +5,14 @@ import {
   IDrawTodoBelow,
   IDuplicateTodo,
   IFetchTodosByBoardId,
+  IInsertTodo,
   IRemoveTodo,
   ISetTodos,
-  IUpdateTodoNotificationsEnabled,
-  IUpdateTodoIsArchive,
   IUpdateTodoColor,
   IUpdateTodoCompleteStatus,
   IUpdateTodoDescription,
+  IUpdateTodoIsArchive,
+  IUpdateTodoNotificationsEnabled,
   IUpdateTodoPosition,
   IUpdateTodoTitle,
 } from '@type/actions';
@@ -20,7 +21,7 @@ const fetchByBoardId = createAction<IFetchTodosByBoardId>('TODOS/FETCH_BY_BOARD_
 const setAll = createAction<ISetTodos>('TODOS/SET_ALL');
 const create = createAction<ICreateTodo>('TODOS/CREATE');
 const add = createAction<IAddTodo>('TODOS/ADD');
-const insertInPosition = createAction<IAddTodo>('TODOS/INSERT_IN_POSITION');
+const insertInPosition = createAction<IInsertTodo>('TODOS/INSERT_IN_POSITION');
 const updateTitle = createAction<IUpdateTodoTitle>('TODOS/UPDATE_TITLE');
 const updateDescription = createAction<IUpdateTodoDescription>('TODOS/UPDATE_DESCRIPTION');
 const updateCompleteStatus = createAction<IUpdateTodoCompleteStatus>('TODOS/UPDATE_COMPLETE_STATUS');

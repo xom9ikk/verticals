@@ -42,15 +42,22 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
     if (belowId) {
       yield put(TodosActions.removeTemp());
       yield put(TodosActions.insertInPosition({
-        ...action.payload,
-        id: todoId,
+        entity: {
+          ...action.payload,
+          id: todoId,
+          attachmentsCount: 0, // TODO: get from backend
+          commentsCount: 0, // TODO: get from backend
+          imagesCount: 0, // TODO: get from backend
+        },
         position,
       }));
     } else {
       yield put(TodosActions.add({
         ...action.payload,
         id: todoId,
-        position,
+        attachmentsCount: 0, // TODO: get from backend
+        commentsCount: 0, // TODO: get from backend
+        imagesCount: 0, // TODO: get from backend
       }));
     }
     yield call(show, 'Todo', 'Todo created successfully', ALERT_TYPES.SUCCESS);
@@ -98,9 +105,15 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
     const response = yield* apply(todoService, todoService.duplicate, [action.payload]);
     const { columnId, todoId, ...todo } = response.data;
     yield put(TodosActions.insertInPosition({
-      id: todoId,
-      columnId,
-      ...todo,
+      entity: {
+        id: todoId,
+        columnId,
+        ...todo,
+        attachmentsCount: 0, // TODO: get from backend
+        commentsCount: 0, // TODO: get from backend
+        imagesCount: 0, // TODO: get from backend
+      },
+      position: todo.position,
     }));
     yield call(show, 'Todo', 'Todo duplicated successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {

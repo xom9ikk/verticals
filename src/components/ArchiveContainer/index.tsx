@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
+  EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
 } from '@type/entities';
 import { Card } from '@comp/Card';
 
 interface IArchiveContainer {
-  archivedTodos?: ITodos;
+  archivedTodos?: Array<ITodo>;
   cardType: EnumTodoType;
   onExitFromEditable: (
     id: number,

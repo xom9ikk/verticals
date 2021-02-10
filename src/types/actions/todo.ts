@@ -1,4 +1,6 @@
-import { EnumColors, EnumTodoStatus, ITodos } from '@type/entities';
+import {
+  EnumColors, EnumTodoStatus, ITodo, ITodos,
+} from '@type/entities';
 
 export interface IFetchTodosByBoardId {
   boardId: number;
@@ -24,19 +26,17 @@ export interface IUpdateTodoDescription {
   id: number;
   description: string;
 }
+
 export interface IUpdateTodoCompleteStatus {
   id: number;
   status: EnumTodoStatus;
 }
 
-export interface IAddTodo {
-  id: number;
+export type IAddTodo = ITodo;
+
+export interface IInsertTodo {
+  entity: ITodo;
   position: number;
-  columnId: number;
-  title?: string;
-  description?: string;
-  status?: EnumTodoStatus;
-  isArchived?: boolean;
 }
 
 export interface IUpdateTodoPosition {
