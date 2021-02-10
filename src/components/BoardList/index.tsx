@@ -70,10 +70,9 @@ export const BoardList: FC<IBoardList> = () => {
         }));
       }
       if (color !== undefined) {
-        const boardToChange = boards.find((board) => board.id === boardId);
         dispatch(BoardsActions.updateColor({
           id: boardId,
-          color: boardToChange?.color !== color ? color : null,
+          color,
         }));
       }
     } else if (title) {

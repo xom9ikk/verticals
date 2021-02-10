@@ -15,7 +15,7 @@ import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@store/actions';
 import {
-  EnumColors, EnumTodoStatus, ITodo,
+  EnumTodoStatus, IColor, ITodo,
 } from '@type/entities';
 import { useFocus } from '@use/focus';
 import { ColorPicker } from '@comp/ColorPicker';
@@ -35,7 +35,7 @@ interface IColumn {
   index: number;
   columnId?: number;
   belowId?: number;
-  color?: EnumColors | null;
+  color?: IColor;
   isCollapsed?: boolean;
   boardId?: number | null;
   title?: string;
@@ -97,8 +97,8 @@ export const Column: FC<IColumn> = ({
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    newColor?: EnumColors,
-    todoBelowId?: EnumColors,
+    newColor?: IColor,
+    todoBelowId?: number,
   ) => {
     if (id) {
       if (title) {
@@ -111,10 +111,9 @@ export const Column: FC<IColumn> = ({
         dispatch(TodosActions.updateCompleteStatus({ id, status }));
       }
       if (newColor !== undefined) {
-        const todoToChange = todos?.find((todo) => todo.id === id);
         dispatch(TodosActions.updateColor({
           id,
-          color: todoToChange?.color !== newColor ? newColor : null,
+          color: newColor,
         }));
       }
     } else if (title) {
@@ -141,7 +140,7 @@ export const Column: FC<IColumn> = ({
       : undefined,
   });
 
-  const saveColumn = (newColor?: EnumColors) => {
+  const saveColumn = (newColor?: IColor) => {
     const { title, description } = getNewData();
     if (columnId && !belowId) {
       if (title) {
@@ -159,7 +158,7 @@ export const Column: FC<IColumn> = ({
       if (newColor !== undefined) {
         dispatch(ColumnsActions.updateColor({
           id: columnId,
-          color: color !== newColor ? newColor : null,
+          color: newColor,
         }));
       }
     } else if (title) {
@@ -204,7 +203,7 @@ export const Column: FC<IColumn> = ({
     setIsHover(false);
   };
 
-  const colorPickHandler = (newColor: EnumColors) => {
+  const colorPickHandler = (newColor: IColor) => {
     saveColumn(newColor);
     hidePopup();
   };

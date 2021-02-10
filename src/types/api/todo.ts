@@ -1,4 +1,6 @@
-import { EnumColors, EnumTodoStatus, ITodos } from '@type/entities';
+import {
+  EnumTodoStatus, IColor, ITodos,
+} from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllTodosResponse = IServerResponse<{
@@ -17,7 +19,7 @@ export interface ICreateTodoRequest {
   columnId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
   status?: EnumTodoStatus;
   belowId?: number;
@@ -39,7 +41,7 @@ export interface IUpdateTodoRequest {
   // columnId: number;
   title?: string;
   description?: string;
-  color?: EnumColors | null;
+  color?: IColor;
   isCollapsed?: boolean;
 }
 
@@ -63,7 +65,7 @@ export type IDuplicateTodoResponse = IServerResponse<{
   columnId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
 }>;

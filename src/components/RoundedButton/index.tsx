@@ -1,13 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
-import { EnumColors } from '@type/entities';
+import { IColor } from '@type/entities';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { useColorClass } from '@use/colorClass';
 
 interface IRoundedButton {
   icon: string;
   isSpecialIcon?: boolean;
-  color?: EnumColors | null;
+  color?: IColor;
   text?: string;
   isActive?: boolean;
   onClick?: (e: React.SyntheticEvent) => void;

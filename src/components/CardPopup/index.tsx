@@ -233,7 +233,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         onChangeColor={(newColor) => {
                           dispatch(TodosActions.updateColor({
                             id: activeTodo.id,
-                            color: activeTodo.color !== newColor ? newColor : null,
+                            color: newColor,
                           }));
                         }}
                       />

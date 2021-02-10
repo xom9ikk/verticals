@@ -1,5 +1,5 @@
 import {
-  EnumColors, EnumTodoType, IBoards, IBoard,
+  EnumTodoType, IBoards, IBoard, IColor,
 } from '@type/entities';
 
 export type ISetBoards = IBoards;
@@ -9,7 +9,7 @@ export interface ICreateBoard {
   title: string;
   cardType: EnumTodoType;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   belowId?: number;
 }
 
@@ -37,7 +37,7 @@ export interface IUpdateBoardPosition {
 
 export interface IUpdateBoardColor {
   id: number;
-  color: EnumColors | null;
+  color: IColor;
 }
 
 export interface IUpdateBoardCardType {

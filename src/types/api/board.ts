@@ -1,5 +1,5 @@
 import {
-  EnumColors, EnumTodoType, IBoards,
+  EnumTodoType, IBoards, IColor,
 } from '@type/entities';
 import { IServerResponse } from './response';
 
@@ -32,7 +32,7 @@ export interface IUpdateBoardRequest {
   title?: string;
   cardType?: EnumTodoType;
   description?: string;
-  color?: EnumColors | null;
+  color?: IColor;
 }
 
 export type IUpdateBoardResponse = IServerResponse;

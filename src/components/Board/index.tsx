@@ -18,7 +18,7 @@ import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleCli
 import { useFocus } from '@use/focus';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useReadableId } from '@use/readableId';
-import { EnumColors, EnumTodoType } from '@type/entities';
+import { EnumTodoType, IColor } from '@type/entities';
 import {
   getCountTodosByBoardId,
   getIsEditableBoard, getIsSearchMode,
@@ -30,7 +30,7 @@ export interface IExitFromEditable {
   boardId: number,
   title?: string,
   description?: string,
-  color?: EnumColors,
+  color?: IColor,
   belowId?: number,
 }
 
@@ -39,7 +39,7 @@ interface IBoard {
   snapshot?: DraggableStateSnapshot,
   belowId?: number;
   icon: string;
-  color?: EnumColors | null;
+  color?: IColor;
   title?: string;
   isActive?: boolean;
   description?: string;
@@ -110,7 +110,7 @@ export const Board: FC<IBoard> = ({
     setIsHover(false);
   };
 
-  const saveBoard = (newColor?: EnumColors) => {
+  const saveBoard = (newColor?: IColor) => {
     const { newTitle, newDescription } = getNewData();
     onExitFromEditable?.({
       boardId: id!,
@@ -122,7 +122,7 @@ export const Board: FC<IBoard> = ({
     hidePopup();
   };
 
-  const colorPickHandler = (newColor: EnumColors) => {
+  const colorPickHandler = (newColor: IColor) => {
     dispatch(SystemActions.setIsOpenPopup(false));
     saveBoard(newColor);
   };

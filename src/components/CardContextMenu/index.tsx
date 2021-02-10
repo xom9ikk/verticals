@@ -4,7 +4,7 @@ import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
 import { MenuItem } from '@comp/MenuItem';
 import { Submenu } from '@comp/Submenu';
-import { EnumColors, EnumTodoStatus } from '@type/entities';
+import { EnumTodoStatus, IColor } from '@type/entities';
 import { Divider } from '@comp/Divider';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -20,14 +20,14 @@ interface ICardContextMenu {
   isActive?: boolean;
   isHover: boolean;
   isNotificationsEnabled?: boolean;
-  color?: EnumColors | null;
+  color?: IColor;
   status?: EnumTodoStatus;
   size?: number;
   imageSize?: number;
   isPrimary?: boolean;
   isColored?: boolean;
   onStartEdit: () => void;
-  onChangeColor: (newColor: EnumColors) => void;
+  onChangeColor: (newColor: IColor) => void;
   onHidePopup?: () => void;
 }
 

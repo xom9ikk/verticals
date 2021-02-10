@@ -1,4 +1,4 @@
-import { EnumColors } from '@type/entities/colors';
+import { IColor } from '@type/entities/colors';
 import { ID, IPositions } from '@type/entities/system';
 
 export interface IColumn {
@@ -6,7 +6,7 @@ export interface IColumn {
   boardId: number;
   title: string;
   description?: string;
-  color?: EnumColors | null;
+  color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
 }

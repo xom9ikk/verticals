@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
+  EnumTodoStatus, EnumTodoType, IColor, ITodo,
 } from '@type/entities';
 import { Card } from '@comp/Card';
 
@@ -12,7 +12,8 @@ interface IArchiveContainer {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: EnumColors) => void;
+    color?: IColor,
+  ) => void;
 }
 
 export const ArchiveContainer: FC<IArchiveContainer> = ({

@@ -9,7 +9,7 @@ import { CardContextMenu } from '@comp/CardContextMenu';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
 import { useFocus } from '@use/focus';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType,
+  EnumTodoStatus, EnumTodoType, IColor,
 } from '@type/entities';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
@@ -42,7 +42,7 @@ enum EnumToggleType {
 
 interface ISaveTodo {
   newStatus?: EnumTodoStatus;
-  newColor?: EnumColors;
+  newColor?: IColor;
 }
 
 interface ICard {
@@ -53,7 +53,7 @@ interface ICard {
   title?: string;
   description?: string;
   status?: EnumTodoStatus;
-  color?: EnumColors | null;
+  color?: IColor;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
   invertColor?: boolean;
@@ -65,7 +65,7 @@ interface ICard {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: EnumColors,
+    color?: IColor,
     belowId?: number,
   ) => void;
   isActive?: boolean;
@@ -173,7 +173,7 @@ export const Card: FC<ICard> = ({
       : setTitleValue(value);
   };
 
-  const colorPickHandler = (newColor: EnumColors) => {
+  const colorPickHandler = (newColor: IColor) => {
     saveTodo({ newColor });
   };
 

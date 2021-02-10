@@ -1,5 +1,5 @@
 import {
-  EnumColors, IColumn, IColumns,
+  IColor, IColumn, IColumns,
 } from '@type/entities';
 
 export interface IFetchColumnsByBoardId {
@@ -12,7 +12,7 @@ export interface ICreateColumn {
   boardId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
 }
@@ -42,7 +42,7 @@ export interface IUpdateColumnPosition {
 
 export interface IUpdateColumnColor {
   id: number;
-  color: EnumColors | null;
+  color: IColor;
 }
 
 export interface IUpdateColumnIsCollapsed {

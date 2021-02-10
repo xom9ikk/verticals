@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodo,
+  EnumTodoStatus, EnumTodoType, IColor, ITodo,
 } from '@type/entities';
 import { Card } from '@comp/Card';
 import { FallbackLoader } from '@comp/FallbackLoader';
@@ -16,7 +16,7 @@ interface ICardsContainer {
     title?: string,
     description?: string,
     status?: EnumTodoStatus,
-    color?: EnumColors,
+    color?: IColor,
     belowId?: number,
   ) => void;
 }

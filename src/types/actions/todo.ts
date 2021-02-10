@@ -1,5 +1,5 @@
 import {
-  EnumColors, EnumTodoStatus, ITodo, ITodos,
+  EnumTodoStatus, IColor, ITodo, ITodos,
 } from '@type/entities';
 
 export interface IFetchTodosByBoardId {
@@ -12,7 +12,7 @@ export interface ICreateTodo {
   columnId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   status?: EnumTodoStatus;
   belowId?: number;
 }
@@ -48,7 +48,7 @@ export interface IUpdateTodoPosition {
 
 export interface IUpdateTodoColor {
   id: number;
-  color: EnumColors | null;
+  color: IColor;
 }
 
 export interface IDuplicateTodo {

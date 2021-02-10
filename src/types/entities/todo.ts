@@ -1,4 +1,6 @@
-import { EnumColors, ID, IPositions } from '@type/entities';
+import {
+  IColor, ID, IPositions,
+} from '@type/entities';
 
 export interface ITodo {
   id: ID;
@@ -6,7 +8,7 @@ export interface ITodo {
   title: string;
   description?: string;
   status?: EnumTodoStatus;
-  color?: EnumColors | null;
+  color?: IColor;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
   belowId?: number;

@@ -1,10 +1,10 @@
 import React, { FC, useMemo } from 'react';
 import { ColorSelector } from '@comp/ColorSelector';
-import { colors, EnumColors } from '@type/entities';
+import { colors, EnumColors, IColor } from '@type/entities';
 
 interface IColorPicker {
-  onPick: (color: EnumColors) => void;
-  activeColor?: EnumColors | null;
+  onPick: (color: IColor) => void;
+  activeColor?: IColor;
 }
 
 export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {
@@ -13,14 +13,19 @@ export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {
       {
         Object.values(EnumColors)
           .filter((v) => Number.isFinite(v))
-          .map((color, index) => (
-            <ColorSelector
-              key={colors[Number(color)]}
-              color={colors[Number(color)]}
-              isActive={activeColor === index}
-              onClick={() => { onPick(index); }}
-            />
-          ))
+          .map((color, index) => {
+            const isActive = activeColor === index;
+            return (
+              <ColorSelector
+                key={colors[Number(color)]}
+                color={colors[Number(color)]}
+                isActive={isActive}
+                onClick={() => {
+                  onPick(isActive ? null : index);
+                }}
+              />
+            );
+          })
         }
     </div>
   ), [activeColor, onPick]);

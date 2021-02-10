@@ -15,3 +15,5 @@ export enum EnumColors {
   Blue,
   Gray,
 }
+
+export type IColor = EnumColors | null;

@@ -1,6 +1,6 @@
-import { EnumColors } from '@type/entities';
+import { EnumColors, IColor } from '@type/entities';
 
-export const useColorClass = (baseClass: string, color?: EnumColors | null) => {
+export const useColorClass = (baseClass: string, color?: IColor) => {
   if (color === undefined || color === null) {
     return '';
   }
