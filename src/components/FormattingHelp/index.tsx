@@ -65,7 +65,7 @@ export const FormattingHelp: FC<IFormattingHelp> = () => {
   const { renderMarkdown } = useMarkdown();
   const isOpenFormattingHelp = useSelector(getIsOpenFormattingHelp);
 
-  const closeHandler = () => {
+  const handleClose = () => {
     dispatch(SystemActions.setIsOpenFormattingHelp(false));
   };
 
@@ -81,7 +81,7 @@ export const FormattingHelp: FC<IFormattingHelp> = () => {
         right: 0,
         top: 10,
       }}
-      onClick={closeHandler}
+      onClick={handleClose}
     />
     <h1 className="formatting-help__title">Text formatting help</h1>
     <h4 className="formatting-help__subtitle">

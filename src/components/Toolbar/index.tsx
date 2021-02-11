@@ -37,7 +37,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
 
   const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick.svg' : '');
 
-  const menuButtonClickHandler = (action: EnumToolbarActions, payload?: any) => {
+  const handleMenuButtonClick = (action: EnumToolbarActions, payload?: any) => {
     switch (action) {
       case EnumToolbarActions.NewWorkspace: {
         // TODO:
@@ -92,7 +92,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           alt="add"
           isMaxWidth
           isHoverBlock={isHover}
-          onClick={() => menuButtonClickHandler(EnumToolbarActions.NewWorkspace)}
+          onClick={() => handleMenuButtonClick(EnumToolbarActions.NewWorkspace)}
         />
         <Menu
           imageSrc="/assets/svg/filter.svg"
@@ -107,12 +107,12 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           <MenuItem
             text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
             imageSrc="/assets/svg/menu/hide-sidebar.svg"
-            onClick={() => menuButtonClickHandler(EnumToolbarActions.SwitchSidebar)}
+            onClick={() => handleMenuButtonClick(EnumToolbarActions.SwitchSidebar)}
           />
           <MenuItem
             text="Account settings"
             imageSrc="/assets/svg/menu/profile-settings.svg"
-            onClick={() => menuButtonClickHandler(EnumToolbarActions.AccountSettings)}
+            onClick={() => handleMenuButtonClick(EnumToolbarActions.AccountSettings)}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
 
@@ -124,7 +124,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
               text="English"
               hintImageSrc={getTickSvg(EnumLanguage.English)}
               isColoredHintImage
-              onClick={() => menuButtonClickHandler(
+              onClick={() => handleMenuButtonClick(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.English,
               )}
             />
@@ -132,7 +132,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
               text="Русский"
               hintImageSrc={getTickSvg(EnumLanguage.Russian)}
               isColoredHintImage
-              onClick={() => menuButtonClickHandler(
+              onClick={() => handleMenuButtonClick(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.Russian,
               )}
             />
@@ -140,7 +140,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
               text="Français"
               hintImageSrc={getTickSvg(EnumLanguage.French)}
               isColoredHintImage
-              onClick={() => menuButtonClickHandler(
+              onClick={() => handleMenuButtonClick(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.French,
               )}
             />
@@ -148,7 +148,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
               text="Español"
               hintImageSrc={getTickSvg(EnumLanguage.Spanish)}
               isColoredHintImage
-              onClick={() => menuButtonClickHandler(
+              onClick={() => handleMenuButtonClick(
                 EnumToolbarActions.ChangeLanguage, EnumLanguage.Spanish,
               )}
             />
@@ -159,22 +159,22 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           >
             <MenuItem
               text="Write to developer"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.WriteToDeveloper)}
+              onClick={() => handleMenuButtonClick(EnumToolbarActions.WriteToDeveloper)}
             />
             <MenuItem
               text="Terms of Service"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.TermsOfService)}
+              onClick={() => handleMenuButtonClick(EnumToolbarActions.TermsOfService)}
             />
             <MenuItem
               text="Privacy Policy"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.PrivacyPolicy)}
+              onClick={() => handleMenuButtonClick(EnumToolbarActions.PrivacyPolicy)}
             />
           </Submenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuItem
             text="Log out"
             imageSrc="/assets/svg/menu/logout.svg"
-            onClick={() => menuButtonClickHandler(EnumToolbarActions.Logout)}
+            onClick={() => handleMenuButtonClick(EnumToolbarActions.Logout)}
           />
         </Menu>
       </div>

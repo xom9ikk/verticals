@@ -38,15 +38,14 @@ export const SyncInput: FC<ISyncInput> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [validValue, setValidValue] = useState<string>();
 
-  const handlerSubmit = async (valueForUpdate: string) => {
-    console.log('===handlerSubmit', valueForUpdate);
+  const handleSubmit = async (valueForUpdate: string) => {
     setIsLoading(true);
     dispatch(action(valueForUpdate));
     setValidValue(valueForUpdate);
   };
 
   const debounceSubmit = useCallback(
-    debounce(handlerSubmit, 500),
+    debounce(handleSubmit, 500),
     [],
   );
 
@@ -63,12 +62,12 @@ export const SyncInput: FC<ISyncInput> = ({
     }
   }, [initialValue]);
 
-  const outsideClickHandler = () => {
+  const handleOutsideClick = () => {
     setIsLocked(true);
     setIsLoading(false);
   };
 
-  useOutsideHandler(ref, outsideClickHandler);
+  useOutsideHandler(ref, handleOutsideClick);
 
   const handleClick = () => {
     setIsLocked(false);

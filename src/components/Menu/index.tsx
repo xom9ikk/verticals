@@ -87,7 +87,7 @@ export const Menu: FC<IMenu> = ({
   [isOpen, position, sourceRef, isAbsolute, children]);
 
   const button = useMemo(() => {
-    const clickHandler = (event: SyntheticEvent) => {
+    const handleClick = (event: SyntheticEvent) => {
       event.stopPropagation();
       onClick?.(event);
       if (isOpenPopup) {
@@ -120,7 +120,7 @@ export const Menu: FC<IMenu> = ({
         isInvertColor={isInvertColor}
         isPrimary={isPrimary}
         isColored={isColored}
-        onClick={clickHandler}
+        onClick={handleClick}
         onDoubleClick={(e) => e.stopPropagation()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}

@@ -150,7 +150,7 @@ export const Card: FC<ICard> = ({
     setFiles(null);
   };
 
-  const keydownHandler = (event: any) => {
+  const handleKeyDown = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
@@ -166,22 +166,22 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  const changeTextHandler = (event: any, isDescription: boolean) => {
+  const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
   };
 
-  const colorPickHandler = (newColor: IColor) => {
+  const handleColorPick = (newColor: IColor) => {
     saveTodo({ newColor });
   };
 
-  const hidePopupHandler = () => {
+  const handleHidePopup = () => {
     setIsHover(false);
   };
 
-  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
+  const handleChangeStatus = (newStatus: EnumTodoStatus) => {
     saveTodo({ newStatus });
   };
 
@@ -337,7 +337,7 @@ export const Card: FC<ICard> = ({
       <Bullet
         type={cardType}
         status={status}
-        onChangeStatus={changeStatusHandler}
+        onChangeStatus={handleChangeStatus}
         style={{ marginTop: 12 }}
       />
       <div
@@ -359,8 +359,8 @@ export const Card: FC<ICard> = ({
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onKeyDownCapture={(event: any) => keydownHandler(event)}
-                onChange={(event: any) => changeTextHandler(event, false)}
+                onKeyDownCapture={(event: any) => handleKeyDown(event)}
+                onChange={(event: any) => handleChangeText(event, false)}
               />
               <TextArea
                 ref={descriptionInputRef}
@@ -370,8 +370,8 @@ export const Card: FC<ICard> = ({
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onKeyDownCapture={(event: any) => keydownHandler(event)}
-                onChange={(event: any) => changeTextHandler(event, true)}
+                onKeyDownCapture={(event: any) => handleKeyDown(event)}
+                onChange={(event: any) => handleChangeText(event, true)}
               />
               <CommentFormAttachments
                 files={files}
@@ -420,8 +420,8 @@ export const Card: FC<ICard> = ({
                 color={color}
                 status={status}
                 onStartEdit={doubleClickHandler}
-                onChangeColor={colorPickHandler}
-                onHidePopup={hidePopupHandler}
+                onChangeColor={handleColorPick}
+                onHidePopup={handleHidePopup}
               />
               <span
                 className={cn('card__title', {

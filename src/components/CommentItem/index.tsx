@@ -70,7 +70,7 @@ export const CommentItem: FC<ICommentItem> = ({
     dispatch(SystemActions.setIsOpenPopup(false));
   };
 
-  const menuButtonClickHandler = (action: EnumMenuActions) => {
+  const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.Like: {
         const like = { commentId: id };
@@ -103,7 +103,7 @@ export const CommentItem: FC<ICommentItem> = ({
 
   useEffect(() => {
     if (isDoubleClick) {
-      menuButtonClickHandler(EnumMenuActions.Edit);
+      handleMenuButtonClick(EnumMenuActions.Edit);
     }
     const timeout = setTimeout(() => {
       setIsDoubleClick(false);
@@ -113,7 +113,7 @@ export const CommentItem: FC<ICommentItem> = ({
     };
   }, [isDoubleClick]);
 
-  const removeHandler = (fileId: number) => {
+  const handleRemove = (fileId: number) => {
     dispatch(CommentAttachmentsActions.remove({
       id: fileId,
     }));
@@ -138,7 +138,7 @@ export const CommentItem: FC<ICommentItem> = ({
                 name={file.name}
                 path={file.path}
                 extension={file.extension}
-                onRemove={removeHandler}
+                onRemove={handleRemove}
                 isCompact={isCompact}
                 isImage={isImage(file.extension)}
               />
@@ -236,7 +236,7 @@ export const CommentItem: FC<ICommentItem> = ({
               alt="like"
               imageSize={16}
               size={22}
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.Like)}
             />
             <ControlButton
               imageSrc="/assets/svg/reply.svg"
@@ -244,7 +244,7 @@ export const CommentItem: FC<ICommentItem> = ({
               alt="reply"
               imageSize={16}
               size={22}
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.Reply)}
             />
           </div>
           <div className="comment__controls--actions">
@@ -283,23 +283,23 @@ export const CommentItem: FC<ICommentItem> = ({
               <MenuItem
                 text={`${isLikedByMe ? 'Unlike' : 'Like'}`}
                 imageSrc="/assets/svg/like.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
+                onClick={() => handleMenuButtonClick(EnumMenuActions.Like)}
               />
               <MenuItem
                 text="Reply"
                 imageSrc="/assets/svg/reply.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
+                onClick={() => handleMenuButtonClick(EnumMenuActions.Reply)}
               />
               <MenuItem
                 text="Edit"
                 imageSrc="/assets/svg/menu/edit.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
+                onClick={() => handleMenuButtonClick(EnumMenuActions.Edit)}
               />
               <Divider verticalSpacer={7} horizontalSpacer={10} />
               <MenuItem
                 text="Delete"
                 imageSrc="/assets/svg/menu/remove.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
+                onClick={() => handleMenuButtonClick(EnumMenuActions.Delete)}
               />
             </Menu>
           </div>

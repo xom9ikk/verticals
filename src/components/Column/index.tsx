@@ -185,7 +185,7 @@ export const Column: FC<IColumn> = ({
     setIsHover(false);
   };
 
-  const keydownHandler = (event: any) => {
+  const handleKeyDown = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
@@ -195,7 +195,7 @@ export const Column: FC<IColumn> = ({
     }
   };
 
-  const changeHandler = (event: any, isDescription: boolean) => {
+  const handleChange = (event: any, isDescription: boolean) => {
     const { value } = event.target;
     return isDescription
       ? setDescriptionValue(value)
@@ -208,7 +208,7 @@ export const Column: FC<IColumn> = ({
     setIsHover(false);
   };
 
-  const colorPickHandler = (newColor: IColor) => {
+  const handleColorPick = (newColor: IColor) => {
     saveColumn(newColor);
     hidePopup();
   };
@@ -241,7 +241,7 @@ export const Column: FC<IColumn> = ({
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
 
-  const menuButtonClickHandler = (action: EnumMenuActions) => {
+  const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.EditColumn: {
         doubleClickHandler();
@@ -350,40 +350,40 @@ export const Column: FC<IColumn> = ({
       isHoverBlock={isHover}
       position="bottom"
     >
-      <ColorPicker onPick={colorPickHandler} activeColor={color} />
+      <ColorPicker onPick={handleColorPick} activeColor={color} />
       <MenuItem
         text="Edit column"
         imageSrc="/assets/svg/menu/edit.svg"
-        onClick={() => menuButtonClickHandler(EnumMenuActions.EditColumn)}
+        onClick={() => handleMenuButtonClick(EnumMenuActions.EditColumn)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text="Duplicate"
         imageSrc="/assets/svg/menu/duplicate.svg"
-        onClick={() => menuButtonClickHandler(EnumMenuActions.Duplicate)}
+        onClick={() => handleMenuButtonClick(EnumMenuActions.Duplicate)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text="Add card"
         imageSrc="/assets/svg/menu/add-card.svg"
-        onClick={() => menuButtonClickHandler(EnumMenuActions.AddCard)}
+        onClick={() => handleMenuButtonClick(EnumMenuActions.AddCard)}
       />
       <MenuItem
         text="Add heading"
         imageSrc="/assets/svg/menu/add-heading.svg"
-        onClick={() => menuButtonClickHandler(EnumMenuActions.AddHeading)}
+        onClick={() => handleMenuButtonClick(EnumMenuActions.AddHeading)}
       />
       <MenuItem
         text="Add column after"
         imageSrc="/assets/svg/menu/add-column.svg"
-        onClick={() => menuButtonClickHandler(EnumMenuActions.AddColumnAfter)}
+        onClick={() => handleMenuButtonClick(EnumMenuActions.AddColumnAfter)}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text="Delete"
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
-        onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
+        onClick={() => handleMenuButtonClick(EnumMenuActions.Delete)}
       />
     </Menu>
   ), [isHover, color]);
@@ -409,8 +409,8 @@ export const Column: FC<IColumn> = ({
               minRows={1}
               maxRows={4}
               onKeyDown={shiftEnterRestriction}
-              onKeyDownCapture={(event) => keydownHandler(event)}
-              onChange={(event) => changeHandler(event, true)}
+              onKeyDownCapture={(event) => handleKeyDown(event)}
+              onChange={(event) => handleChange(event, true)}
             />
           ) : (
             <span
@@ -443,8 +443,8 @@ export const Column: FC<IColumn> = ({
                 minRows={1}
                 maxRows={4}
                 onKeyDown={shiftEnterRestriction}
-                onKeyDownCapture={(event) => keydownHandler(event)}
-                onChange={(event) => changeHandler(event, false)}
+                onKeyDownCapture={(event) => handleKeyDown(event)}
+                onChange={(event) => handleChange(event, false)}
               />
             ) : (
               <>

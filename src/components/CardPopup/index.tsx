@@ -72,18 +72,18 @@ export const CardPopup: FC<ICardPopup> = ({
     [],
   );
 
-  const changeTextHandler = (event: any, isDescription: boolean) => {
+  const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
   };
 
-  const closeHandler = () => {
+  const handleClose = () => {
     forwardTo(`/${username}/${activeBoardReadableId}`);
   };
 
-  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
+  const handleChangeStatus = (newStatus: EnumTodoStatus) => {
     dispatch(TodosActions.updateCompleteStatus({
       id: activeTodo!.id,
       status: newStatus,
@@ -168,7 +168,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     right: 6,
                     top: 6,
                   }}
-                  onClick={closeHandler}
+                  onClick={handleClose}
                 />
                 <div className="card-popup__header">
                   <div className="card-popup__input-container">
@@ -177,7 +177,7 @@ export const CardPopup: FC<ICardPopup> = ({
                       <Bullet
                         type={cardType}
                         status={activeTodo.status!}
-                        onChangeStatus={changeStatusHandler}
+                        onChangeStatus={handleChangeStatus}
                         size="large"
                         style={{ margin: '5px' }}
                       />
@@ -190,7 +190,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         placeholder="Card Title"
                         value={titleValue}
                         onKeyDown={shiftEnterRestriction}
-                        onChange={(event: any) => changeTextHandler(event, false)}
+                        onChange={(event: any) => handleChangeText(event, false)}
                         minRows={1}
                         maxRows={5}
                       />
@@ -199,7 +199,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         placeholder="Notes"
                         value={descriptionValue}
                         onKeyDown={shiftEnterRestriction}
-                        onChange={(event: any) => changeTextHandler(event, true)}
+                        onChange={(event: any) => handleChangeText(event, true)}
                         minRows={1}
                         maxRows={5}
                       />

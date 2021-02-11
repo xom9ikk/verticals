@@ -49,11 +49,11 @@ export const Modal: FC<IModal> = ({
     onClose();
   };
 
-  const outsideClickHandler = () => {
+  const handleOutsideClick = () => {
     if (isSoftExit) handleClose();
   };
 
-  useOutsideHandler(ref, outsideClickHandler);
+  useOutsideHandler(ref, handleOutsideClick);
 
   const setBlur = (value: number) => {
     root!.style.filter = `blur(${value}px)`;

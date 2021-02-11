@@ -63,7 +63,7 @@ export const CommentForm: FC<ICommentForm> = ({
     }
   }, [commentForReply, commentForEdit]);
 
-  const sendCommentHandler = () => {
+  const handleSendComment = () => {
     if (editCommentId) {
       console.log('1111');
       dispatch(CommentsActions.updateText({
@@ -91,30 +91,30 @@ export const CommentForm: FC<ICommentForm> = ({
     setCommentText('');
   };
 
-  const changeHandler = (event: React.BaseSyntheticEvent) => {
+  const handleChange = (event: React.BaseSyntheticEvent) => {
     if (!shiftPressed) {
       setCommentText(event.target.value);
     }
   };
 
-  const keyUpHandler = (event: React.KeyboardEvent) => {
+  const handleKeyUp = (event: React.KeyboardEvent) => {
     const {
       key, shiftKey,
     } = event;
     if (key === 'Enter' && shiftKey) {
       setShiftPressed(false);
-      sendCommentHandler();
+      handleSendComment();
     }
   };
 
-  const keyDownHandler = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     const { key, shiftKey } = event;
     if (key === 'Enter' && shiftKey) {
       setShiftPressed(true);
     }
   };
 
-  const removeReplyHandler = () => {
+  const handleRemoveReply = () => {
     dispatch(SystemActions.setReplyCommentId(null));
   };
 
@@ -159,7 +159,7 @@ export const CommentForm: FC<ICommentForm> = ({
               alt="remove"
               imageSize={12}
               size={26}
-              onClick={removeReplyHandler}
+              onClick={handleRemoveReply}
               style={{ marginRight: 6 }}
             />
             <div className="comment-form__reply--divider" />
@@ -181,9 +181,9 @@ export const CommentForm: FC<ICommentForm> = ({
               style={{ paddingLeft: 10 }}
               placeholder="Add comment or note"
               value={commentText}
-              onChange={changeHandler}
-              onKeyUp={keyUpHandler}
-              onKeyDown={keyDownHandler}
+              onChange={handleChange}
+              onKeyUp={handleKeyUp}
+              onKeyDown={handleKeyDown}
               onBlur={handleBlurInput}
               minRows={1}
               maxRows={10}
@@ -220,7 +220,7 @@ export const CommentForm: FC<ICommentForm> = ({
                   opacity: isAvailableSend ? 1 : 0,
                   padding: isAvailableSend ? '8px 10px' : '8px 0',
                 }}
-                onClick={sendCommentHandler}
+                onClick={handleSendComment}
               />
             </div>
           </div>

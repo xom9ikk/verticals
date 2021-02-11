@@ -122,7 +122,7 @@ export const Board: FC<IBoard> = ({
     hidePopup();
   };
 
-  const colorPickHandler = (newColor: IColor) => {
+  const handleColorPick = (newColor: IColor) => {
     dispatch(SystemActions.setIsOpenPopup(false));
     saveBoard(newColor);
   };
@@ -131,7 +131,7 @@ export const Board: FC<IBoard> = ({
     focus(titleInputRef);
   }, [isEditable]);
 
-  const keyDownHandler = (event: any) => {
+  const handleKeyDown = (event: any) => {
     const {
       key, ctrlKey, shiftKey,
     } = event;
@@ -141,7 +141,7 @@ export const Board: FC<IBoard> = ({
     }
   };
 
-  const changeHandler = (event: any, isDescription: boolean) => {
+  const handleChange = (event: any, isDescription: boolean) => {
     const { value } = event.target;
     return isDescription
       ? setDescriptionValue(value)
@@ -198,7 +198,7 @@ export const Board: FC<IBoard> = ({
     }
   }, []);
 
-  const menuButtonClickHandler = (action: EnumMenuActions, payload?: any) => {
+  const handleMenuButtonClick = (action: EnumMenuActions, payload?: any) => {
     switch (action) {
       case EnumMenuActions.EditBoard: {
         doubleClickHandler();
@@ -255,12 +255,12 @@ export const Board: FC<IBoard> = ({
             isAbsolute={false}
             isInvertColor={isActive}
           >
-            <ColorPicker onPick={colorPickHandler} activeColor={color} />
+            <ColorPicker onPick={handleColorPick} activeColor={color} />
             <MenuItem
               text="Edit board"
               imageSrc="/assets/svg/menu/edit.svg"
               hintText="E"
-              onClick={() => menuButtonClickHandler(EnumMenuActions.EditBoard)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.EditBoard)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <Submenu
@@ -270,34 +270,34 @@ export const Board: FC<IBoard> = ({
               <MenuItem
                 text="Checkboxes"
                 imageSrc="/assets/svg/menu/square.svg"
-                onClick={() => menuButtonClickHandler(
+                onClick={() => handleMenuButtonClick(
                   EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
                 )}
               />
               <MenuItem
                 text="Arrows"
                 imageSrc="/assets/svg/menu/arrow.svg"
-                onClick={() => menuButtonClickHandler(
+                onClick={() => handleMenuButtonClick(
                   EnumMenuActions.CardStyle, EnumTodoType.Arrows,
                 )}
               />
               <MenuItem
                 text="Dots"
                 imageSrc="/assets/svg/menu/circle.svg"
-                onClick={() => menuButtonClickHandler(
+                onClick={() => handleMenuButtonClick(
                   EnumMenuActions.CardStyle, EnumTodoType.Dots,
                 )}
               />
               <MenuItem
                 text="Dashes"
                 imageSrc="/assets/svg/menu/dash.svg"
-                onClick={() => menuButtonClickHandler(
+                onClick={() => handleMenuButtonClick(
                   EnumMenuActions.CardStyle, EnumTodoType.Dashes,
                 )}
               />
               <MenuItem
                 text="Nothing"
-                onClick={() => menuButtonClickHandler(
+                onClick={() => handleMenuButtonClick(
                   EnumMenuActions.CardStyle, EnumTodoType.Nothing,
                 )}
               />
@@ -330,12 +330,12 @@ export const Board: FC<IBoard> = ({
             <MenuItem
               text="Reverse column order"
               imageSrc="/assets/svg/menu/reverse.svg"
-              onClick={() => menuButtonClickHandler(EnumMenuActions.ReverseColumnOrder)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.ReverseColumnOrder)}
             />
             <CopyToClipboard
               text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle!, id!)}`}
               onCopy={() => {
-                menuButtonClickHandler(EnumMenuActions.CopyLink);
+                handleMenuButtonClick(EnumMenuActions.CopyLink);
               }}
             >
               <MenuItem
@@ -347,14 +347,14 @@ export const Board: FC<IBoard> = ({
             <MenuItem
               text="Add board below"
               imageSrc="/assets/svg/menu/add-board.svg"
-              onClick={() => menuButtonClickHandler(EnumMenuActions.AddBoardBelow)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.AddBoardBelow)}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuItem
               text="Delete"
               imageSrc="/assets/svg/menu/remove.svg"
               hintText="⌫"
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.Delete)}
             />
           </Menu>
         </div>
@@ -400,8 +400,8 @@ export const Board: FC<IBoard> = ({
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onChange={(event: any) => changeHandler(event, false)}
-                onKeyDownCapture={(event: any) => keyDownHandler(event)}
+                onChange={(event: any) => handleChange(event, false)}
+                onKeyDownCapture={(event: any) => handleKeyDown(event)}
               />
               <TextArea
                 ref={descriptionInputRef}
@@ -411,8 +411,8 @@ export const Board: FC<IBoard> = ({
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onChange={(event: any) => changeHandler(event, true)}
-                onKeyDownCapture={(event: any) => keyDownHandler(event)}
+                onChange={(event: any) => handleChange(event, true)}
+                onKeyDownCapture={(event: any) => handleKeyDown(event)}
               />
             </div>
           </div>

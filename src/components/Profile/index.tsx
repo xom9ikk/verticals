@@ -38,11 +38,11 @@ export const Profile: FC<IProfile> = ({
     dispatch(SystemActions.setIsOpenPopup(false));
   };
 
-  const closeHandler = () => {
+  const handleClose = () => {
     dispatch(SystemActions.setIsOpenProfile(false));
   };
 
-  const menuButtonClickHandler = (action: EnumMenuActions) => {
+  const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.OpenProfile: {
         dispatch(SystemActions.setIsOpenProfile(!isOpenProfile));
@@ -81,7 +81,7 @@ export const Profile: FC<IProfile> = ({
         right: 10,
         top: 10,
       }}
-      onClick={closeHandler}
+      onClick={handleClose}
     />
     <Avatar
       size={180}
@@ -101,7 +101,7 @@ export const Profile: FC<IProfile> = ({
     >
       <Avatar
         onClick={() => {
-          menuButtonClickHandler(EnumMenuActions.OpenProfile);
+          handleMenuButtonClick(EnumMenuActions.OpenProfile);
         }}
       />
       <Menu
@@ -117,14 +117,14 @@ export const Profile: FC<IProfile> = ({
           text="My Profile"
           imageSrc="/assets/svg/menu/my-profile.svg"
           onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.OpenProfile);
+            handleMenuButtonClick(EnumMenuActions.OpenProfile);
           }}
         />
         <MenuItem
           text="Profile Settings"
           imageSrc="/assets/svg/menu/profile-settings.svg"
           onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.ProfileSettings);
+            handleMenuButtonClick(EnumMenuActions.ProfileSettings);
           }}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
@@ -133,13 +133,13 @@ export const Profile: FC<IProfile> = ({
           imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
           onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.AddBoard);
+            handleMenuButtonClick(EnumMenuActions.AddBoard);
           }}
         />
         <CopyToClipboard
           text={`verticals.xom9ik.com/${username}`} // TODO move to env
           onCopy={() => {
-            menuButtonClickHandler(EnumMenuActions.CopyLink);
+            handleMenuButtonClick(EnumMenuActions.CopyLink);
           }}
         >
           <MenuItem

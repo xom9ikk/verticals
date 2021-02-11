@@ -91,7 +91,7 @@ export const MainLayout: FC<{}> = () => {
     }
   };
 
-  const keydownHandler = (event: any) => {
+  const handleKeyDown = (event: any) => {
     switch (event.code) {
       case 'Escape': {
         closePopupsAndEditable();
@@ -101,16 +101,16 @@ export const MainLayout: FC<{}> = () => {
     }
   };
 
-  const clickHandler = (event: any) => {
+  const handleClick = (event: any) => {
     if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', keydownHandler);
-    window.addEventListener('click', clickHandler);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('click', handleClick);
     return () => {
-      window.removeEventListener('keydown', keydownHandler);
-      window.removeEventListener('click', clickHandler);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('click', handleClick);
     };
   }, []);
 
