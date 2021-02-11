@@ -1,4 +1,7 @@
 import { IRootState } from '@store/reducers';
+import { createSelector } from '@reduxjs/toolkit';
+import { getBoards } from '@store/selectors/boards';
+import { getTodos } from '@store/selectors/todos';
 
 export const getIsLoadedBoards = (state: IRootState) => state.system.isLoadedBoards;
 export const getIsLoadedColumns = (state: IRootState) => state.system.isLoadedColumns;
@@ -14,6 +17,20 @@ export const getEditCommentId = (state: IRootState) => state.system.editCommentI
 export const getReplyCommentId = (state: IRootState) => state.system.replyCommentId;
 export const getIsOpenProfile = (state: IRootState) => state.system.isOpenProfile;
 export const getActiveBoardId = (state: IRootState) => state.system.activeBoardId;
+export const getActiveBoardTitle = createSelector(
+  [getActiveBoardId, getBoards], (activeBoardId, boards) => {
+    if (!activeBoardId) return;
+    const activeBoard = boards.entities.find((board) => board.id === activeBoardId);
+    return activeBoard?.title;
+  },
+);
+export const getActiveTodoTitle = createSelector(
+  [getActiveTodoId, getTodos], (activeTodoId, todos) => {
+    if (!activeTodoId) return;
+    const activeTodo = todos.entities.find((todo) => todo.id === activeTodoId);
+    return activeTodo?.title;
+  },
+);
 export const getActiveBoardReadableId = (state: IRootState) => state.system.activeBoardReadableId;
 export const getActiveTodoReadableId = (state: IRootState) => state.system.activeTodoReadableId;
 export const getDroppedFiles = (state: IRootState) => state.system.droppedFiles;

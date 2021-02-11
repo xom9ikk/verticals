@@ -21,9 +21,10 @@ import {
   getIsLoadedBoards,
   getOrderedBoards,
   getUsername,
-  getIsSearchMode,
+  getIsSearchMode, getActiveBoardTitle, getActiveTodoTitle,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
+import { useTitle } from '@use/title';
 
 interface IBoardList {}
 
@@ -38,7 +39,11 @@ export const BoardList: FC<IBoardList> = () => {
   const isSearchMode = useSelector(getIsSearchMode);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const activeBoardId = useSelector(getActiveBoardId);
+  const activeBoardTitle = useSelector(getActiveBoardTitle);
+  const activeTodoTitle = useSelector(getActiveTodoTitle);
   const isEditableBoard = useSelector(getIsEditableBoard);
+
+  useTitle(activeTodoTitle || activeBoardTitle);
 
   // useEffect(() => {
   //   if (boards.length) {
