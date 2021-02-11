@@ -15,7 +15,7 @@ import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@store/actions';
 import {
-  EnumTodoStatus, IColor, ITodo,
+  EnumTodoStatus, IColor,
 } from '@type/entities';
 import { useFocus } from '@use/focus';
 import { ColorPicker } from '@comp/ColorPicker';
@@ -26,7 +26,11 @@ import { CardPopup } from '@comp/CardPopup';
 import { TextArea } from '@comp/TextArea';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
-  getIsEditableColumn, getBoardCardType, getOrderedTodosByColumnId, getIsSearchMode, getOrderedArchivedTodosByColumnId,
+  getIsEditableColumn,
+  getBoardCardType,
+  getIsSearchMode,
+  getOrderedArchivedTodosByColumnId,
+  getOrderedNonArchivedTodosByColumnId, getTodosCountByColumnId,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useColorClass } from '@use/colorClass';
@@ -73,8 +77,9 @@ export const Column: FC<IColumn> = ({
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const colorClass = useColorClass('column__wrapper', color);
 
-  const todos = useSelector(getOrderedTodosByColumnId(columnId));
+  const todosCount = useSelector(getTodosCountByColumnId(columnId));
   const archivedTodos = useSelector(getOrderedArchivedTodosByColumnId(columnId));
+  const nonArchivedTodos = useSelector(getOrderedNonArchivedTodosByColumnId(columnId));
   const cardType = useSelector(getBoardCardType(boardId));
   const isEditableColumn = useSelector(getIsEditableColumn);
   const isSearchMode = useSelector(getIsSearchMode);
@@ -309,13 +314,13 @@ export const Column: FC<IColumn> = ({
         alt="add"
         text="Add card"
         isInvisible
-        isHoverBlock={(isTopHover && !isDraggingCard) || todos?.length === 0}
+        isHoverBlock={(isTopHover && !isDraggingCard) || todosCount === 0}
         isMaxWidth
         onClick={() => setIsOpenNewCard(true)}
       />
     </>
     )
-  ), [isTopHover, isDraggingCard, todos, isOpenNewCard, isNew]);
+  ), [isTopHover, isDraggingCard, todosCount, isOpenNewCard, isNew]);
 
   const newCard = useMemo(() => (
     isOpenNewCard && (
@@ -329,12 +334,11 @@ export const Column: FC<IColumn> = ({
 
   const todoCards = useMemo(() => (
     <CardsContainer
-      todos={todos
-        ?.filter((todo: ITodo) => !todo.isArchived)}
+      todos={nonArchivedTodos}
       cardType={cardType}
       onExitFromEditable={saveCard}
     />
-  ), [todos, columnId, isOpenNewCard]);
+  ), [nonArchivedTodos, columnId, isOpenNewCard]);
 
   const contextMenu = useMemo(() => (
     <Menu
@@ -452,7 +456,7 @@ export const Column: FC<IColumn> = ({
                   {titleValue || 'New column'}
                 </span>
                 {
-                  ((titleValue || descriptionValue || todos?.length) && !isDeleted)
+                  ((titleValue || descriptionValue || todosCount) && !isDeleted)
                     ? contextMenu
                     : null
                 }
@@ -463,7 +467,7 @@ export const Column: FC<IColumn> = ({
         )
         }
     </>
-  ), [isEditable, titleValue, descriptionValue, todos, contextMenu, color]);
+  ), [isEditable, titleValue, descriptionValue, todosCount, contextMenu, color]);
 
   const memoColumn = useMemo(() => (
     <Draggable
@@ -498,7 +502,7 @@ export const Column: FC<IColumn> = ({
                   <div className="column__inner">
                     <div className="column__counter">
                       <div className="column__compact-text">
-                        { todos?.length }
+                        { todosCount }
                       </div>
                     </div>
                     <div className="column__compact-text">{titleValue}</div>
@@ -596,7 +600,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, todos, color, colorClass, columnId, isHover,
+    index, todosCount, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, isCollapsed,
     isTopHover, isDraggingCard, isNew, isSearchMode,

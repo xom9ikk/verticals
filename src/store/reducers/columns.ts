@@ -121,11 +121,13 @@ export const ColumnsReducer = createReducer(initialState, (builder) => builder
   })
   .addCase(ColumnsActions.removeTemp, (draft) => {
     const entityIndex = draft.entities.findIndex((column) => column.id === TEMP_ID);
-    const { boardId } = draft.entities[entityIndex];
-    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+    if (entityIndex !== -1) {
+      draft.entities.splice(entityIndex, 1);
+      const { boardId } = draft.entities[entityIndex];
 
-    const positionIndex = draft.positions[boardId].findIndex((columnId) => columnId === TEMP_ID);
-    if (positionIndex !== -1) draft.positions[boardId].splice(positionIndex, 1);
+      const positionIndex = draft.positions[boardId].findIndex((columnId) => columnId === TEMP_ID);
+      if (positionIndex !== -1) draft.positions[boardId].splice(positionIndex, 1);
+    }
   })
   .addCase(ColumnsActions.reverseOrder, (draft, action) => {
     const { boardId } = action.payload;

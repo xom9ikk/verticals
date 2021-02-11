@@ -59,11 +59,12 @@ export const MainLayout: FC<{}> = () => {
   }, [boardId]);
 
   useEffect(() => {
+    let numericTodoId = null;
     if (todoId) {
-      const numericTodoId = toNumericId(todoId);
-      dispatch(SystemActions.setActiveTodoId(numericTodoId));
+      numericTodoId = toNumericId(todoId);
       dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
     }
+    dispatch(SystemActions.setActiveTodoId(numericTodoId));
   }, [todoId]);
 
   useEffect(() => {

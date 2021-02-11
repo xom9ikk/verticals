@@ -10,6 +10,7 @@ import {
 } from '@store/actions';
 import debounce from 'lodash.debounce';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 interface ISearch {
 }
@@ -40,6 +41,10 @@ export const Search: FC<ISearch> = () => {
     }
   }, [query, isSearchMode]);
 
+  const handleClear = () => {
+    setQuery('');
+  };
+
   return (
     <div className="search">
       <Input
@@ -51,6 +56,18 @@ export const Search: FC<ISearch> = () => {
         style={{ height: 33, paddingLeft: 33 }}
       >
         <img src="/assets/svg/search.svg" alt="search" />
+        <ControlButton
+          imageSrc="/assets/svg/close.svg"
+          alt="clear"
+          imageSize={10}
+          size={21}
+          style={{
+            position: 'absolute',
+            right: 4,
+            top: 6,
+          }}
+          onClick={handleClear}
+        />
       </Input>
     </div>
   );

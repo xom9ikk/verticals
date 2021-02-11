@@ -39,6 +39,9 @@
     border-radius: 20px;
     padding: 3px 5px 3px 5px;
     font-size: 14px;
+    &--active {
+      background: $white !important;
+    }
     img {
       width: 16px;
       height: 16px;

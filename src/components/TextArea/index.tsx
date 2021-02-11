@@ -69,7 +69,6 @@ const TextAreaComponent = ({
     });
     resizeObserver.observe(internalRef.current!);
     return () => {
-      console.log('unmount', internalRef.current);
       resizeObserver.unobserve(internalRef.current!);
     };
   }, []);
@@ -96,7 +95,6 @@ const TextAreaComponent = ({
 
   useEffect(() => {
     if (internalRef.current) {
-      console.log('call 1 resize HTMLTextAreaElement', internalRef.current);
       resize(internalRef.current!);
     }
   }, [value]);

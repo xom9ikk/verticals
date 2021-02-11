@@ -363,11 +363,14 @@ export const Board: FC<IBoard> = ({
   }, [id, isHover, isActive, color, username, isCopied]);
 
   const memoCounter = useMemo(() => (
-    <div className="board-item__counter">
-      <img src="/assets/svg/board/search.svg" alt="" />
+    <div className={cn('board-item__counter', {
+      'board-item__counter--active': isActive,
+    })}
+    >
+      <img src="/assets/svg/board/search.svg" alt="search" />
       {countTodos}
     </div>
-  ), [countTodos]);
+  ), [countTodos, isActive]);
 
   const boardItem = useMemo(() => (
     <div

@@ -24,7 +24,7 @@ export interface IComment {
   text?: string;
   createdAt: number;
   updatedAt: number | null;
-  replyCommentId: number;
+  replyCommentId?: number;
   likedUsers?: Array<ICommentLike>;
 }
 

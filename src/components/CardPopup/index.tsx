@@ -79,7 +79,9 @@ export const CardPopup: FC<ICardPopup> = ({
       : setTitleValue(value);
   };
 
-  const closeHandler = () => forwardTo(`/${username}/${activeBoardReadableId}`);
+  const closeHandler = () => {
+    forwardTo(`/${username}/${activeBoardReadableId}`);
+  };
 
   const changeStatusHandler = (newStatus: EnumTodoStatus) => {
     dispatch(TodosActions.updateCompleteStatus({
@@ -159,12 +161,12 @@ export const CardPopup: FC<ICardPopup> = ({
                 <ControlButton
                   imageSrc="/assets/svg/close.svg"
                   alt="close"
-                  imageSize={24}
-                  size={30}
+                  imageSize={16}
+                  size={32}
                   style={{
                     position: 'absolute',
-                    right: 10,
-                    top: 10,
+                    right: 6,
+                    top: 6,
                   }}
                   onClick={closeHandler}
                 />
@@ -227,6 +229,7 @@ export const CardPopup: FC<ICardPopup> = ({
                         imageSize={24}
                         isPrimary
                         isColored
+                        isTransformedPosition={false}
                         onStartEdit={() => {
                           titleInputRef.current?.focus();
                         }}

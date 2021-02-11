@@ -1,4 +1,6 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, {
+  FC, useMemo, useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
@@ -29,6 +31,7 @@ interface ICardContextMenu {
   onStartEdit: () => void;
   onChangeColor: (newColor: IColor) => void;
   onHidePopup?: () => void;
+  isTransformedPosition?: boolean;
 }
 
 enum EnumCardActions {
@@ -62,6 +65,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   onStartEdit,
   onChangeColor,
   onHidePopup,
+  isTransformedPosition = true,
 }) => {
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
@@ -169,13 +173,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
           isInvertColor={isActive}
           isHoverBlock={isHover}
           position="right"
-          style={{
-            // marginTop: 7,
-            // marginRight: 8,
-            // marginBottom: 5,
+          style={isTransformedPosition ? {
             transform: 'translateY(-2px)',
             float: 'right',
-          }}
+          } : {}}
         >
           <ColorPicker
             onPick={(newColor) => menuButtonClickHandler(EnumCardActions.ChangeColor, newColor)}

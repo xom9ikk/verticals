@@ -31,9 +31,17 @@ export const getOrderedTodosByColumnId = (columnId?: number) => createSelector(
     return orderedColumns;
   },
 );
+export const getTodosCountByColumnId = (columnId?: number) => createSelector(
+  [getOrderedTodosByColumnId(columnId)],
+  (todos) => todos.length,
+);
 export const getOrderedArchivedTodosByColumnId = (columnId?: number) => createSelector(
   [getOrderedTodosByColumnId(columnId)],
   (todos) => todos?.filter((todo: ITodo) => todo.isArchived),
+);
+export const getOrderedNonArchivedTodosByColumnId = (columnId?: number) => createSelector(
+  [getOrderedTodosByColumnId(columnId)],
+  (todos) => todos?.filter((todo: ITodo) => !todo.isArchived),
 );
 export const getCountTodosByBoardId = (boardId: number | null) => createSelector(
   [getColumns, getTodos],

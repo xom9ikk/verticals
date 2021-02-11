@@ -138,6 +138,10 @@ export const CommentForm: FC<ICommentForm> = ({
     dispatch(SystemActions.setIsOpenFormattingHelp(true));
   };
 
+  const handleBlurInput = () => {
+    dispatch(SystemActions.setEditCommentId(null));
+  };
+
   const isAvailableSend = commentText?.length || files?.length;
 
   return (
@@ -153,10 +157,10 @@ export const CommentForm: FC<ICommentForm> = ({
             <ControlButton
               imageSrc="/assets/svg/close.svg"
               alt="remove"
-              imageSize={24}
+              imageSize={12}
               size={26}
               onClick={removeReplyHandler}
-              style={{ marginRight: 2 }}
+              style={{ marginRight: 6 }}
             />
             <div className="comment-form__reply--divider" />
             <div className="comment-form__reply--name">
@@ -180,6 +184,7 @@ export const CommentForm: FC<ICommentForm> = ({
               onChange={changeHandler}
               onKeyUp={keyUpHandler}
               onKeyDown={keyDownHandler}
+              onBlur={handleBlurInput}
               minRows={1}
               maxRows={10}
               onChangeHeight={onChangeTextAreaHeight}

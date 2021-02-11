@@ -6,12 +6,10 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column } from '@comp/Column';
-import { ITodo } from '@type/entities';
 import { ColumnsActions, TodosActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useAutoScroll } from '@use/autoScroll';
 import {
-  getTodosEntities,
   getActiveBoardId,
   getIsLoadedBoards,
   getIsLoadedColumns,
@@ -26,7 +24,7 @@ export const Columns: FC<IColumns> = () => {
   const columnsRef = useRef<any>();
 
   const isSearchMode = useSelector(getIsSearchMode);
-  const todos = useSelector(getTodosEntities);
+  // const todos = useSelector(getTodosEntities);
   const activeBoardId = useSelector(getActiveBoardId);
   const columns = useSelector(getOrderedColumnsByBoardId(activeBoardId));
   const isLoadedBoards = useSelector(getIsLoadedBoards);
@@ -71,13 +69,15 @@ export const Columns: FC<IColumns> = () => {
     }
 
     const sourceColumnId = Number(source.droppableId.split('column-')[1]);
-    const currentTodos: ITodo[] = todos.filter((todo) => todo.columnId === sourceColumnId);
 
-    const target: ITodo = currentTodos[source.index];
+    // TODO: need?
+    // const currentTodos: ITodo[] = todos.filter((todo) => todo.columnId === sourceColumnId);
 
-    if (!target) {
-      return;
-    }
+    // const target: ITodo = currentTodos[source.index];
+
+    // if (!target) {
+    //   return;
+    // }
 
     // moving to same list
     const sourcePosition = source.index;
@@ -183,7 +183,7 @@ export const Columns: FC<IColumns> = () => {
       </Droppable>
     </DragDropContext>
   ), [isLoadedBoards, isLoadedColumns,
-    activeBoardId, columns, todos, isSearchMode]); // , query
+    activeBoardId, columns, isSearchMode]); // todos, query
 
   return (
     <>
