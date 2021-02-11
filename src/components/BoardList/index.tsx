@@ -25,13 +25,14 @@ import {
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
+import { useHover } from '@use/hover';
 
 interface IBoardList {}
 
 export const BoardList: FC<IBoardList> = () => {
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { isHovering, hoveringProps } = useHover();
   const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
   const username = useSelector(getUsername);
@@ -212,18 +213,17 @@ export const BoardList: FC<IBoardList> = () => {
       alt="add"
       text="Add board"
       isInvisible
-      isHoverBlock={isHover}
+      isHoverBlock={isHovering}
       isMaxWidth
       onClick={addNewBoard}
     />
   ),
-  [isHover, isOpenNewBoard]);
+  [isHovering, isOpenNewBoard]);
 
   return (
     <div
       className="board-list"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      {...hoveringProps}
     >
       { profile }
       { boardItems }

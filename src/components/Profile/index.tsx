@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { forwardTo } from '@router/history';
 import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
+import { useHover } from '@use/hover';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -30,7 +31,7 @@ export const Profile: FC<IProfile> = ({
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
 
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { isHovering, hoveringProps } = useHover();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const hidePopup = () => {
@@ -93,13 +94,10 @@ export const Profile: FC<IProfile> = ({
   </div>
   ), [isOpenProfile]);
 
-  console.log('isCopied', isCopied);
-
   return (
     <div
       className="profile"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      {...hoveringProps}
     >
       <Avatar
         onClick={() => {
@@ -111,7 +109,7 @@ export const Profile: FC<IProfile> = ({
         alt="add"
         imageSize={22}
         size={24}
-        isHoverBlock={isHover}
+        isHoverBlock={isHovering}
         position="bottom"
         isAbsolute={false}
       >

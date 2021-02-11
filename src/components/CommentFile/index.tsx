@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormat } from '@use/format';
 import { useDownload } from '@use/download';
 import { ControlButton } from '@comp/ControlButton';
+import { useHover } from '@use/hover';
 // import { SystemActions } from '@store/actions';
 // import { useDispatch } from 'react-redux';
 
@@ -29,7 +30,7 @@ export const CommentFile: FC<ICommentFile> = ({
 }) => {
   const { formatSize } = useFormat();
   const { download } = useDownload();
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { isHovering, hoveringProps } = useHover();
 
   const styleImage = isImage ? {
     backgroundImage: `url('${path}')`,
@@ -56,8 +57,7 @@ export const CommentFile: FC<ICommentFile> = ({
         'comment-file--image': isImage,
         'comment-file--compact': isCompact,
       })}
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      {...hoveringProps}
       onClick={handleOpenGallery}
     >
       <div
@@ -82,7 +82,7 @@ export const CommentFile: FC<ICommentFile> = ({
           imageSize={22}
           size={24}
           isInvisible
-          isHoverBlock={isHover}
+          isHoverBlock={isHovering}
           onClick={() => onRemove(id)}
           style={{ position: 'absolute', right: 5, top: 5 }}
         />
