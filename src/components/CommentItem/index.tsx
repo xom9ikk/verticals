@@ -195,7 +195,7 @@ export const CommentItem: FC<ICommentItem> = ({
       {
         text && (
           <div
-            className="comment__text"
+            className="comment__text markdown"
             onDoubleClick={(e) => e.stopPropagation()}
             dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
           />

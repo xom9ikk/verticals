@@ -136,7 +136,7 @@ export const BoardList: FC<IBoardList> = () => {
                 {/* TODO: move to selector */}
                 {boards
                   .map(({
-                    id, icon, title, color, belowId,
+                    id, icon, title, description, color, belowId,
                   }, index) => (
                     <Draggable
                       key={`board-${id}`}
@@ -158,6 +158,7 @@ export const BoardList: FC<IBoardList> = () => {
                             icon={icon}
                             color={color}
                             title={title}
+                            description={description}
                             isActive={activeBoardId === id}
                             onExitFromEditable={saveBoard}
                             onClick={handleClick}
