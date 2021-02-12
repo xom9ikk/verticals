@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM, { createPortal } from 'react-dom';
 import { Provider } from 'react-redux';
-// @ts-ignore
 import ReactNotification from 'react-notifications-component';
 import ReactTooltip from 'react-tooltip';
 

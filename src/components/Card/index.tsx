@@ -14,7 +14,7 @@ import {
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { TextArea } from '@comp/TextArea';
 import { Bullet } from '@comp/Bullet';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { useReadableId } from '@use/readableId';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
@@ -193,7 +193,7 @@ export const Card: FC<ICard> = ({
   };
 
   const handleClickUnwrapped = () => {
-    forwardTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
+    redirectTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
   };
 
   const {

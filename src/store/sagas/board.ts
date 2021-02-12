@@ -11,7 +11,7 @@ import {
 } from '@store/actions';
 import { getActiveBoardId, getUsername } from '@store/selectors';
 import { useReadableId } from '@use/readableId';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import {
   ICreateBoard,
   IRemoveBoard,
@@ -41,7 +41,7 @@ function* fetchWorker() {
       if (firstBoard) {
         const { id, title } = firstBoard;
         const readableBoardId = toReadableId(title, id);
-        forwardTo(`/${username}/${readableBoardId}`);
+        redirectTo(`/${username}/${readableBoardId}`);
       }
     }
   } catch (error) {

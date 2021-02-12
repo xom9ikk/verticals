@@ -1,5 +1,4 @@
-/* eslint-disable no-return-assign,max-len */
-import { IComment, ICommentLike, IComments } from '@type/entities';
+import { IComments } from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
 import { CommentsActions } from '@store/actions';
 
@@ -15,23 +14,23 @@ export const CommentsReducer = createReducer(initialState, (builder) => builder
       ...action.payload,
     });
   })
-  .addCase(CommentsActions.remove, (state, action) => state.filter((comment: IComment) => comment.id !== action.payload.id))
-  .addCase(CommentsActions.updateText, (state, action) => (state.map((comment: IComment) => (comment.id === action.payload.id
-    ? {
-      ...comment,
-      text: action.payload.text,
-      updatedAt: new Date().getTime(),
-    }
-    : comment))))
-  .addCase(CommentsActions.updateLike, (state, action) => (state.map((comment: IComment) => {
+  .addCase(CommentsActions.remove, (draft, action) => {
+    const { id } = action.payload;
+    console.log('id', id);
+    const index = draft.findIndex((comment) => comment.id === id);
+    if (index !== -1) draft.splice(index, 1);
+  })
+  .addCase(CommentsActions.updateText, (draft, action) => {
+    const { id, text } = action.payload;
+    const index = draft.findIndex((comment) => comment.id === id);
+    draft[index].text = text;
+    draft[index].updatedAt = new Date().getTime();
+  })
+  .addCase(CommentsActions.updateLike, (draft, action) => {
     const { commentId, like, isLiked } = action.payload;
-    const likedUsers = comment.likedUsers ?? [];
-    return comment.id === commentId
-      ? {
-        ...comment,
-        likedUsers: isLiked
-          ? [...likedUsers, like]
-          : likedUsers?.filter((l: ICommentLike) => l.username !== like.username),
-      }
-      : comment;
-  }))));
+    const index = draft.findIndex((comment) => comment.id === commentId);
+    const likedUsers = draft[index].likedUsers ?? [];
+    draft[index].likedUsers = isLiked
+      ? [...likedUsers, like]
+      : likedUsers.filter((l) => l.username !== like.username);
+  }));

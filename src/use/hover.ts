@@ -12,12 +12,12 @@ export const useHover = () => {
       onMouseLeave: () => {
         setIsHovering(false);
       },
-      onMouseOver: () => {
-        setIsHovering(true);
-      },
-      onMouseOut: () => {
-        setIsHovering(false);
-      },
+      // onMouseOver: () => {
+      //   setIsHovering(true);
+      // },
+      // onMouseOut: () => {
+      //   setIsHovering(false);
+      // },
     },
   };
 };

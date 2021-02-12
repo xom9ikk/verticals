@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useEffect, useMemo, useRef,
+  FC, useEffect, useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useParams } from 'react-router-dom';
@@ -12,19 +12,20 @@ import { Profile } from '@pages/settings/Profile';
 import {
   SystemActions,
   BoardsActions,
-  // ColumnsActions,
-  // TodosActions,
-  UserActions, ColumnsActions, TodosActions,
+  UserActions,
+  ColumnsActions,
+  TodosActions,
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@use/readableId';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 import { useEventListener } from '@use/event-listener';
+import { useValueRef } from '@use/valueRef';
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -40,9 +41,9 @@ export const MainLayout: FC<{}> = () => {
   const activeTodoId = useSelector(getActiveTodoId);
   const username = useSelector(getUsername);
 
-  const refBoardId = useRef(boardId);
-  const refActiveTodoId = useRef(activeTodoId);
-  const refUsername = useRef(username);
+  const refBoardId = useValueRef(boardId);
+  const refActiveTodoId = useValueRef(activeTodoId);
+  const refUsername = useValueRef(username);
 
   const { toNumericId } = useReadableId();
 
@@ -60,7 +61,7 @@ export const MainLayout: FC<{}> = () => {
     dispatch(TodosActions.removeTemp());
     const isCardOpened = !!refActiveTodoId.current;
     if (isCardOpened) {
-      forwardTo(`/${refUsername.current}/${refBoardId.current}`);
+      redirectTo(`/${refUsername.current}/${refBoardId.current}`);
     }
   };
 

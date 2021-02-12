@@ -13,7 +13,7 @@ import {
 } from '@type/entities';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@use/readableId';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { Link } from 'react-router-dom';
 import {
   getActiveBoardId,
@@ -51,7 +51,7 @@ export const BoardList: FC<IBoardList> = () => {
   //     console.log('boards change');
   //     if (activeBoardId === null) {
   //       const { id, title } = boards[0];
-  //       forwardTo(`/userId/${toReadableId(title, id)}`);
+  //       redirectTo(`/userId/${toReadableId(title, id)}`);
   //     }
   //   }
   // }, [boards]);
@@ -119,7 +119,7 @@ export const BoardList: FC<IBoardList> = () => {
       dispatch(SystemActions.setIsLoadedColumns(false));
       dispatch(SystemActions.setIsLoadedTodos(false));
     }
-    forwardTo(`/${username}/${toReadableId(title, id)}`);
+    redirectTo(`/${username}/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {

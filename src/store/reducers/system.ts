@@ -1,4 +1,3 @@
-/* eslint-disable max-len,no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
 import { EnumLanguage, ISystem } from '@type/entities';
 import { SystemActions } from '@store/actions';

@@ -40,6 +40,9 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
     const { id, columnId } = action.payload;
 
     draft.entities.push(action.payload);
+    if (!draft.positions[columnId]) {
+      draft.positions[columnId] = [];
+    }
     draft.positions[columnId].push(id);
   })
   .addCase(TodosActions.insertInPosition, (draft, action) => {

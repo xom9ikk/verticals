@@ -238,7 +238,6 @@ export const Board: FC<IBoard> = ({
     if (id !== -1) {
       return (
         <div className="board-item__menu">
-          {/* {JSON.stringify({ isHover })} */}
           <Menu
             imageSrc="/assets/svg/dots.svg"
             alt="menu"

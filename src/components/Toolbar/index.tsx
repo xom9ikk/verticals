@@ -6,7 +6,7 @@ import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
 import { AuthActions, SystemActions } from '@store/actions';
 import { EnumLanguage } from '@type/entities';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { getLanguage } from '@store/selectors';
 
 interface IToolbar {
@@ -51,7 +51,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.AccountSettings: {
-        forwardTo('/settings/account');
+        redirectTo('/settings/account');
         break;
       }
       case EnumToolbarActions.ChangeLanguage: {

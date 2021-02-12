@@ -15,7 +15,7 @@ import { Loader } from '@comp/Loader';
 import { CardContextMenu } from '@comp/CardContextMenu';
 import { TextArea } from '@comp/TextArea';
 import { Comments } from '@comp/Comments';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
   getActiveBoardReadableId,
@@ -80,7 +80,7 @@ export const CardPopup: FC<ICardPopup> = ({
   };
 
   const handleClose = () => {
-    forwardTo(`/${username}/${activeBoardReadableId}`);
+    redirectTo(`/${username}/${activeBoardReadableId}`);
   };
 
   const handleChangeStatus = (newStatus: EnumTodoStatus) => {

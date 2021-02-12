@@ -6,7 +6,7 @@ import { container } from '@inversify/config';
 import { TYPES } from '@inversify/types';
 import { IServices } from '@inversify/interfaces';
 import { storage } from '@plugins/storage';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { AuthActions } from '@store/actions';
 import {
   IChangePassword,
@@ -28,7 +28,7 @@ function* signUpWorker(action: PayloadAction<ISignUp>) {
       token,
       refreshToken,
     }));
-    yield call(forwardTo, '/');
+    yield call(redirectTo, '/');
     yield call(show, 'Success', 'Registration completed successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'Error', error, ALERT_TYPES.DANGER);
@@ -44,7 +44,7 @@ function* signInWorker(action: PayloadAction<ISignIn>) {
       refreshToken,
     }));
     yield call(show, 'Success', 'Successful login', ALERT_TYPES.SUCCESS);
-    yield call(forwardTo, '/');
+    yield call(redirectTo, '/');
   } catch (error) {
     yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }
@@ -71,7 +71,7 @@ function* logoutWorker() {
       token: '',
       refreshToken: '',
     }));
-    yield call(forwardTo, '/');
+    yield call(redirectTo, '/');
   }
 }
 
@@ -79,7 +79,7 @@ function* resetPasswordWorker(action: PayloadAction<IResetPassword>) {
   try {
     yield* apply(authService, authService.reset, [action.payload]);
     yield call(show, 'Success', 'Successful reset password', ALERT_TYPES.SUCCESS);
-    yield call(forwardTo, '/auth/login');
+    yield call(redirectTo, '/auth/login');
   } catch (error) {
     yield call(show, 'Error', error, ALERT_TYPES.DANGER);
   }

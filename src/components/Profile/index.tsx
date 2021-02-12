@@ -7,7 +7,7 @@ import { Divider } from '@comp/Divider';
 import { Avatar } from '@comp/Avatar';
 import { SystemActions } from '@store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { forwardTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useHover } from '@use/hover';
@@ -49,7 +49,7 @@ export const Profile: FC<IProfile> = ({
         break;
       }
       case EnumMenuActions.ProfileSettings: {
-        forwardTo('/settings/profile');
+        redirectTo('/settings/profile');
         break;
       }
       case EnumMenuActions.AddBoard: {
