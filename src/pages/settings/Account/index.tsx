@@ -23,7 +23,7 @@ const initialState = {
   newPassword: '',
 };
 
-export const Account: FC<{ }> = () => {
+export const Account: FC = () => {
   const dispatch = useDispatch();
   const email = useSelector(getEmail);
 

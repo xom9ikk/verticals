@@ -41,7 +41,7 @@ function* fetchWorker() {
       if (firstBoard) {
         const { id, title } = firstBoard;
         const readableBoardId = toReadableId(title, id);
-        redirectTo(`/${username}/${readableBoardId}`);
+        yield call(redirectTo, `/${username}/${readableBoardId}`);
       }
     }
   } catch (error) {

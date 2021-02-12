@@ -23,7 +23,7 @@ interface IFormValidatedState {
   bio: string;
 }
 
-export const Profile: FC<{ }> = () => {
+export const Profile: FC = () => {
   const dispatch = useDispatch();
   const { openFiles } = useOpenFiles();
 

@@ -32,7 +32,7 @@ interface IMainLayoutURLParams {
   todoId?: string;
 }
 
-export const MainLayout: FC<{}> = () => {
+export const MainLayout: FC = () => {
   const { boardId, todoId } = useParams<IMainLayoutURLParams>();
 
   const dispatch = useDispatch();

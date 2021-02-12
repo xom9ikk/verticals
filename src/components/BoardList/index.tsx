@@ -1,5 +1,5 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,9 +8,7 @@ import {
 import { Board, IExitFromEditable } from '@comp/Board';
 import { Profile } from '@comp/Profile';
 import { BoardsActions, SystemActions } from '@store/actions';
-import {
-  EnumTodoType,
-} from '@type/entities';
+import { EnumTodoType } from '@type/entities';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
@@ -26,10 +24,9 @@ import {
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
 import { useHover } from '@use/hover';
+import { useAutoScroll } from '@use/autoScroll';
 
-interface IBoardList {}
-
-export const BoardList: FC<IBoardList> = () => {
+export const BoardList: FC = () => {
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const { isHovering, hoveringProps } = useHover();
@@ -46,21 +43,13 @@ export const BoardList: FC<IBoardList> = () => {
 
   useTitle(activeTodoTitle || activeBoardTitle);
 
-  // useEffect(() => {
-  //   if (boards.length) {
-  //     console.log('boards change');
-  //     if (activeBoardId === null) {
-  //       const { id, title } = boards[0];
-  //       redirectTo(`/userId/${toReadableId(title, id)}`);
-  //     }
-  //   }
-  // }, [boards]);
+  const boardContainerRef = useRef<any>(null);
 
-  const saveBoard = (
-    {
-      boardId, title, description, color, belowId,
-    }: IExitFromEditable,
-  ) => {
+  const { scrollToBottom } = useAutoScroll(boardContainerRef);
+
+  const saveBoard = ({
+    boardId, title, description, color, belowId,
+  }: IExitFromEditable) => {
     setIsOpenNewBoard(false);
     if (boardId && !belowId) {
       if (title) {
@@ -83,6 +72,7 @@ export const BoardList: FC<IBoardList> = () => {
       }
     } else if (title) {
       setTimeout(() => setIsOpenNewBoard(true));
+      setTimeout(scrollToBottom, 500);
       dispatch(BoardsActions.create({
         icon: '/assets/svg/board/item.svg',
         title,
@@ -110,7 +100,8 @@ export const BoardList: FC<IBoardList> = () => {
   };
 
   const addNewBoard = () => {
-    setIsOpenNewBoard((prev) => !prev);
+    requestAnimationFrame(scrollToBottom);
+    setIsOpenNewBoard(true);
     dispatch(SystemActions.setIsEditableBoard(true));
   };
 
@@ -222,6 +213,7 @@ export const BoardList: FC<IBoardList> = () => {
     <div
       className="board-list"
       {...hoveringProps}
+      ref={boardContainerRef}
     >
       { profile }
       { boardItems }

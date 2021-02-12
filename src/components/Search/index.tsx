@@ -10,7 +10,7 @@ import {
 } from '@store/actions';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 
-export const Search: FC<{}> = () => {
+export const Search: FC = () => {
   const dispatch = useDispatch();
 
   const [query, setQuery] = useState<string>('');

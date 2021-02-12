@@ -310,9 +310,7 @@ export const Column: FC<IColumn> = ({
   }, [isEditableColumn]);
 
   const handleAddCard = () => {
-    setTimeout(() => {
-      scrollToBottom();
-    });
+    requestAnimationFrame(scrollToBottom);
     setIsOpenNewCard(true);
   };
 

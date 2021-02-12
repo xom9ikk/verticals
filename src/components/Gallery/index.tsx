@@ -16,7 +16,7 @@ import { useEventListener } from '@use/event-listener';
 
 SwiperCore.use([Pagination, Keyboard]);
 
-export const Gallery: FC<{ }> = () => {
+export const Gallery: FC = () => {
   const dispatch = useDispatch();
   const { images, index = 0 } = useSelector(getGalleryImagesInfo) || {};
 
