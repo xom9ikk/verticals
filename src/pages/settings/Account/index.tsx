@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Button } from '@comp/Button';
 import { SyncInput } from '@comp/SyncInput';
-import { useDispatch, useSelector } from 'react-redux';
 import { getEmail } from '@store/selectors';
 import { AuthActions, UserActions } from '@store/actions';
 import validator from '@helpers/validator';
 import { Modal } from '@comp/Modal';
 import { Form } from '@comp/Form';
 import { Input } from '@comp/Input';
-import { IFormValues, useForm } from '@use/form';
-import { validatorChangePasswordForm } from '@helpers/validatorChangePasswordForm';
+import { useForm } from '@use/form';
+import { validatorChangePasswordForm } from '@helpers/validator/form/changePassword';
 
-interface IAccount {
-
+interface IFormValidatedState {
+  oldPassword: string;
+  newPassword: string;
 }
 
 const initialState = {
@@ -21,7 +23,7 @@ const initialState = {
   newPassword: '',
 };
 
-export const Account: FC<IAccount> = () => {
+export const Account: FC<{ }> = () => {
   const dispatch = useDispatch();
   const email = useSelector(getEmail);
 
@@ -43,17 +45,13 @@ export const Account: FC<IAccount> = () => {
     setIsOpenModal(false);
   };
 
-  const handleSubmitForm = ({ oldPassword, newPassword }: IFormValues) => {
-    console.log('===handleSubmitForm', oldPassword, newPassword);
-    dispatch(AuthActions.changePassword({
-      oldPassword: oldPassword!,
-      newPassword: newPassword!,
-    }));
-  };
-
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorChangePasswordForm);
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [AuthActions.changePassword]),
+    validatorChangePasswordForm,
+  );
 
   return (
     <>
@@ -95,9 +93,7 @@ export const Account: FC<IAccount> = () => {
         onClose={handleClose}
         type="submit"
         renderWrapper={(children) => (
-          <Form
-            handleSubmit={handleSubmit}
-          >
+          <Form handleSubmit={handleSubmit}>
             {children}
           </Form>
         )}

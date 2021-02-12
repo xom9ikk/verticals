@@ -1,25 +1,29 @@
-/* eslint-disable @typescript-eslint/no-use-before-define,no-shadow,@typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@use/form';
-import { validatorProfileForm } from '@helpers/validatorProfileForm';
-import { SyncInput } from '@comp/SyncInput';
 import { Avatar } from '@comp/Avatar';
-import { useDispatch, useSelector } from 'react-redux';
+import { SyncInput } from '@comp/SyncInput';
+
+import { useForm } from '@use/form';
+import { useOpenFiles } from '@use/openFiles';
 import {
   getBio, getName, getSurname, getUsername,
 } from '@store/selectors';
 import { UserActions } from '@store/actions';
 import validator from '@helpers/validator';
-import { useOpenFiles } from '@use/openFiles';
+import { validatorProfileForm } from '@helpers/validator/form/profile';
 
-interface IProfile {
-
+interface IFormValidatedState {
+  name: string;
+  surname: string;
+  bio: string;
 }
 
-export const Profile: FC<IProfile> = () => {
+export const Profile: FC<{ }> = () => {
   const dispatch = useDispatch();
   const { openFiles } = useOpenFiles();
 
@@ -34,14 +38,13 @@ export const Profile: FC<IProfile> = () => {
     bio,
   };
 
-  const handleSubmitForm = ({ name, surname, bio }: IFormValues) => {
-    console.log('Profile handlerSubmit', values);
-    dispatch(UserActions.updatePersonalData({
-      name: name!,
-      surname: surname!,
-      bio: bio!,
-    }));
-  };
+  const {
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [UserActions.updatePersonalData]),
+    validatorProfileForm,
+  );
 
   const handleClick = async () => {
     const [file] = await openFiles('image/x-png,image/jpeg', false) || [];
@@ -50,13 +53,8 @@ export const Profile: FC<IProfile> = () => {
 
   const handleDelete = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    console.log('handleDelete');
     dispatch(UserActions.removeAvatar());
   };
-
-  const {
-    handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorProfileForm);
 
   return (
     <>
@@ -67,12 +65,8 @@ export const Profile: FC<IProfile> = () => {
           alignItems="left"
           isMaxWidth
         >
-          <div
-            className="profile-avatar"
-          >
-            <Avatar
-              size={150}
-            />
+          <div className="profile-avatar">
+            <Avatar size={150} />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
                 <div

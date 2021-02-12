@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@use/form';
-import { validatorResetForm } from '@helpers/validatorResetForm';
+import { useForm } from '@use/form';
 import { AuthActions } from '@store/actions';
-import { useDispatch } from 'react-redux';
+import { validatorResetForm } from '@helpers/validator/form/reset';
+
+interface IFormValidatedState {
+  email: string;
+}
 
 const initialState = {
   email: '',
@@ -15,15 +20,13 @@ const initialState = {
 export const Reset: FC = () => {
   const dispatch = useDispatch();
 
-  const handleSubmitForm = ({ email }: IFormValues) => {
-    dispatch(AuthActions.reset({
-      email: email!,
-    }));
-  };
-
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorResetForm);
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [AuthActions.reset]),
+    validatorResetForm,
+  );
 
   return (
     <Form

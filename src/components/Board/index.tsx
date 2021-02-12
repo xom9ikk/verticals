@@ -167,7 +167,7 @@ export const Board: FC<IBoard> = ({
     }
   }, [isEditableBoard]);
 
-  const doubleClickHandler = () => {
+  const handleDoubleClickUnwrapped = () => {
     if (isEditableBoard) {
       dispatch(SystemActions.setIsEditableBoard(false));
       // dispatch(BoardsActions.removeTemp());
@@ -175,7 +175,7 @@ export const Board: FC<IBoard> = ({
     setIsDoubleClicked(true);
   };
 
-  const clickHandler = () => {
+  const handleClickUnwrapped = () => {
     if (!isEditable && !isMenuClick) {
       onClick?.(initialTitle!, id!);
     }
@@ -184,24 +184,24 @@ export const Board: FC<IBoard> = ({
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
+  } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, true);
 
   useEffect(() => {
     if (isEditableDefault) {
-      doubleClickHandler();
+      handleDoubleClickUnwrapped();
     }
   }, [isEditableDefault]);
 
   useEffect(() => {
     if (belowId) {
-      doubleClickHandler();
+      handleDoubleClickUnwrapped();
     }
   }, []);
 
   const handleMenuButtonClick = (action: EnumMenuActions, payload?: any) => {
     switch (action) {
       case EnumMenuActions.EditBoard: {
-        doubleClickHandler();
+        handleDoubleClickUnwrapped();
         break;
       }
       case EnumMenuActions.CardStyle: {

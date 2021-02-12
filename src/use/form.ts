@@ -22,9 +22,9 @@ interface IValidators {
   [key: string]: IUseValidatorResult;
 }
 
-type IUseForm = (
+type IUseForm = <T>(
   initialValues: IFormValues,
-  callback:(data: IFormValues) => void,
+  callback:(data: T) => void,
   formValidator: IFormValidator,
 ) => {
   handleChange: (event: React.BaseSyntheticEvent) => void;
@@ -83,7 +83,7 @@ export const useForm: IUseForm = (
     const isValidForm = errorsKeys.every((key) => !errors[key]);
 
     if (isValidForm) {
-      callback(values);
+      callback(values as any);
     }
   };
 

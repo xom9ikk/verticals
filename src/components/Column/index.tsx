@@ -213,7 +213,7 @@ export const Column: FC<IColumn> = ({
     hidePopup();
   };
 
-  const doubleClickHandler = () => {
+  const handleDoubleClickUnwrapped = () => {
     if (isDeleted) return;
     if (isEditableColumn) {
       dispatch(SystemActions.setIsEditableColumn(false));
@@ -221,7 +221,7 @@ export const Column: FC<IColumn> = ({
     setIsDoubleClicked(true);
   };
 
-  const clickHandler = (event: SyntheticEvent) => {
+  const handleClickUnwrapped = (event: SyntheticEvent) => {
     if (isDeleted) return;
     if (isEditable) {
       event.stopPropagation();
@@ -232,19 +232,19 @@ export const Column: FC<IColumn> = ({
         isCollapsed: !isCollapsed,
       }));
     } else {
-      doubleClickHandler();
+      handleDoubleClickUnwrapped();
     }
   };
 
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, isEditable);
+  } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, isEditable);
 
   const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.EditColumn: {
-        doubleClickHandler();
+        handleDoubleClickUnwrapped();
         break;
       }
       case EnumMenuActions.Duplicate: {
@@ -284,7 +284,7 @@ export const Column: FC<IColumn> = ({
 
   useEffect(() => {
     if (belowId) {
-      doubleClickHandler();
+      handleDoubleClickUnwrapped();
     }
   }, []);
 

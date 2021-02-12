@@ -2,12 +2,18 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@use/form';
-import { validatorLoginForm } from '@helpers/validatorLoginForm';
+import { useForm } from '@use/form';
 import { AuthActions } from '@store/actions';
+import { validatorLoginForm } from '@helpers/validator/form/login';
+
+interface IFormValidatedState {
+  email: string;
+  password: string;
+}
 
 const initialState = {
   email: '',
@@ -17,16 +23,13 @@ const initialState = {
 export const Login: FC = () => {
   const dispatch = useDispatch();
 
-  const handleSubmitForm = ({ email, password }: IFormValues) => {
-    dispatch(AuthActions.signIn({
-      email: email!,
-      password: password!,
-    }));
-  };
-
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorLoginForm);
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [AuthActions.signIn]),
+    validatorLoginForm,
+  );
 
   return (
     <Form

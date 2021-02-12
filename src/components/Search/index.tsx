@@ -1,23 +1,20 @@
-/* eslint-disable no-shadow */
 import React, {
   FC, useCallback, useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input } from '@comp/Input';
-import {
-  BoardsActions, ColumnsActions,
-  SearchActions, SystemActions, TodosActions,
-} from '@store/actions';
 import debounce from 'lodash.debounce';
-import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
+import { Input } from '@comp/Input';
 import { ControlButton } from '@comp/ControlButton';
+import {
+  BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
+} from '@store/actions';
+import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 
-interface ISearch {
-}
-
-export const Search: FC<ISearch> = () => {
+export const Search: FC<{}> = () => {
   const dispatch = useDispatch();
+
   const [query, setQuery] = useState<string>('');
+
   const activeBoardId = useSelector(getActiveBoardId);
   const isSearchMode = useSelector(getIsSearchMode);
 
@@ -31,12 +28,11 @@ export const Search: FC<ISearch> = () => {
   useEffect(() => {
     if (query) {
       debounceSearch(query);
-    } else {
+    }
+    if (!query && isSearchMode) {
       dispatch(BoardsActions.fetchAll());
       dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId! }));
-    }
-    if (!query && isSearchMode) {
       dispatch(SystemActions.setIsSearchMode(false));
     }
   }, [query, isSearchMode]);
@@ -59,6 +55,7 @@ export const Search: FC<ISearch> = () => {
         <ControlButton
           imageSrc="/assets/svg/close.svg"
           alt="clear"
+          isHide={query.length === 0}
           imageSize={10}
           size={21}
           style={{

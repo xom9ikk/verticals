@@ -1,9 +1,8 @@
-import validator from './validator';
+import validator from '@helpers/validator';
 
-export const validatorRegisterForm = ({
+export const validatorProfileForm = {
   name: validator.text({ min: 2, name: 'First name' }),
   surname: validator.text({ min: 2, name: 'Last name' }),
-  email: validator.email({ max: 64 }),
   username: validator.text({ min: 2, name: 'Username' }),
-  password: validator.password({ min: 5, max: 36 }),
-});
+  bio: validator.text({ min: 0, max: 255, name: 'Bio' }),
+};

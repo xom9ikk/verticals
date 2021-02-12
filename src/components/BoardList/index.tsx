@@ -139,40 +139,38 @@ export const BoardList: FC<IBoardList> = () => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {/* TODO: move to selector */}
-                {boards
-                  .map(({
-                    id, icon, title, description, color, belowId,
-                  }, index) => (
-                    <Draggable
-                      key={`board-${id}`}
-                      draggableId={`board-${id}`}
-                      index={index}
-                      isDragDisabled={isSearchMode}
-                    >
-                      {(draggableProvided, draggableSnapshot) => (
-                        <div
-                          ref={draggableProvided.innerRef}
-                          {...draggableProvided.draggableProps}
-                          {...draggableProvided.dragHandleProps}
-                        >
-                          <Board
-                            snapshot={draggableSnapshot}
-                            key={id}
-                            id={id}
-                            belowId={belowId}
-                            icon={icon}
-                            color={color}
-                            title={title}
-                            description={description}
-                            isActive={activeBoardId === id}
-                            onExitFromEditable={saveBoard}
-                            onClick={handleClick}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                {boards.map(({
+                  id, icon, title, description, color, belowId,
+                }, index) => (
+                  <Draggable
+                    key={`board-${id}`}
+                    draggableId={`board-${id}`}
+                    index={index}
+                    isDragDisabled={isSearchMode}
+                  >
+                    {(draggableProvided, draggableSnapshot) => (
+                      <div
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.draggableProps}
+                        {...draggableProvided.dragHandleProps}
+                      >
+                        <Board
+                          snapshot={draggableSnapshot}
+                          key={id}
+                          id={id}
+                          belowId={belowId}
+                          icon={icon}
+                          color={color}
+                          title={title}
+                          description={description}
+                          isActive={activeBoardId === id}
+                          onExitFromEditable={saveBoard}
+                          onClick={handleClick}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
                 {provided.placeholder}
               </div>
             )}

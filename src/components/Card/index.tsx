@@ -185,21 +185,21 @@ export const Card: FC<ICard> = ({
     saveTodo({ newStatus });
   };
 
-  const doubleClickHandler = () => {
+  const handleDoubleClickUnwrapped = () => {
     if (isEditableCard) {
       dispatch(SystemActions.setIsEditableCard(false));
     }
     setIsDoubleClicked(true);
   };
 
-  const clickHandler = () => {
+  const handleClickUnwrapped = () => {
     forwardTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
   };
 
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
+  } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, true);
 
   useEffect(() => {
     if (isDoubleClicked) {
@@ -222,13 +222,13 @@ export const Card: FC<ICard> = ({
 
   useEffect(() => {
     if (belowId) {
-      doubleClickHandler();
+      handleDoubleClickUnwrapped();
     }
   }, []);
 
   useEffect(() => {
     if (isEditableDefault) {
-      doubleClickHandler();
+      handleDoubleClickUnwrapped();
     }
   }, [isEditableDefault]);
 
@@ -419,7 +419,7 @@ export const Card: FC<ICard> = ({
                 isNotificationsEnabled={isNotificationsEnabled}
                 color={color}
                 status={status}
-                onStartEdit={doubleClickHandler}
+                onStartEdit={handleDoubleClickUnwrapped}
                 onChangeColor={handleColorPick}
                 onHidePopup={handleHidePopup}
               />

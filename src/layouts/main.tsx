@@ -24,14 +24,15 @@ import { useReadableId } from '@use/readableId';
 import { forwardTo } from '@router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
+import { useEventListener } from '@use/event-listener';
 
-interface IMainLayoutParams {
+interface IMainLayoutURLParams {
   boardId?: string;
   todoId?: string;
 }
 
 export const MainLayout: FC<{}> = () => {
-  const { boardId, todoId } = useParams<IMainLayoutParams>();
+  const { boardId, todoId } = useParams<IMainLayoutURLParams>();
 
   const dispatch = useDispatch();
 
@@ -39,10 +40,36 @@ export const MainLayout: FC<{}> = () => {
   const activeTodoId = useSelector(getActiveTodoId);
   const username = useSelector(getUsername);
 
-  const { toNumericId } = useReadableId();
   const refBoardId = useRef(boardId);
   const refActiveTodoId = useRef(activeTodoId);
   const refUsername = useRef(username);
+
+  const { toNumericId } = useReadableId();
+
+  const closePopups = () => {
+    dispatch(SystemActions.setIsOpenPopup(false));
+    dispatch(SystemActions.setIsEditableCard(false));
+    dispatch(SystemActions.setIsEditableColumn(false));
+    dispatch(SystemActions.setIsEditableBoard(false));
+  };
+
+  const closePopupsAndEditable = () => {
+    closePopups();
+    dispatch(BoardsActions.removeTemp());
+    dispatch(ColumnsActions.removeTemp());
+    dispatch(TodosActions.removeTemp());
+    const isCardOpened = !!refActiveTodoId.current;
+    if (isCardOpened) {
+      forwardTo(`/${refUsername.current}/${refBoardId.current}`);
+    }
+  };
+
+  const handleClick = (event: any) => {
+    if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
+  };
+
+  useEventListener('keydown', closePopupsAndEditable, 'Escape');
+  useEventListener('click', handleClick);
 
   useEffect(() => {
     if (boardId) {
@@ -72,48 +99,6 @@ export const MainLayout: FC<{}> = () => {
     dispatch(BoardsActions.fetchAll());
   }, []);
 
-  const closePopups = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-    dispatch(SystemActions.setIsEditableCard(false));
-    dispatch(SystemActions.setIsEditableColumn(false));
-    dispatch(SystemActions.setIsEditableBoard(false));
-  };
-
-  const closePopupsAndEditable = () => {
-    console.log('closePopupsAndEditable');
-    closePopups();
-    dispatch(BoardsActions.removeTemp());
-    dispatch(ColumnsActions.removeTemp());
-    dispatch(TodosActions.removeTemp());
-    const isCardOpened = !!refActiveTodoId.current;
-    if (isCardOpened) {
-      forwardTo(`/${refUsername.current}/${refBoardId.current}`);
-    }
-  };
-
-  const handleKeyDown = (event: any) => {
-    switch (event.code) {
-      case 'Escape': {
-        closePopupsAndEditable();
-        break;
-      }
-      default: break;
-    }
-  };
-
-  const handleClick = (event: any) => {
-    if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('click', handleClick);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('click', handleClick);
-    };
-  }, []);
-
   const memoSidebar = useMemo(() => (
     <Sidebar>
       <Search />
@@ -127,16 +112,12 @@ export const MainLayout: FC<{}> = () => {
         path="/settings/account"
         layout={SettingsLayout}
         component={() => <SuspenseWrapper component={Account} />}
-        isPrivate
-        redirectPath="/auth/login"
         exact
       />
       <RouteWrapper
         path="/settings/profile"
         layout={SettingsLayout}
         component={() => <SuspenseWrapper component={Profile} />}
-        isPrivate
-        redirectPath="/auth/login"
         exact
       />
       <Route
