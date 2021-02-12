@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 interface IButton {
   type: 'button' | 'submit' | 'reset',
@@ -11,29 +12,21 @@ interface IButton {
 export const Button: FC<IButton> = ({
   type, modificator,
   onClick, isMaxWidth, style, children, ...attrs
-}) => {
-  const classes = ['button'];
-
-  if (modificator) {
-    classes.push(`button--${modificator}`);
-  }
-  if (isMaxWidth) {
-    classes.push('button--max');
-  }
-
-  return (
-    <button
-      {...attrs}
-      className={classes.join(' ')}
-      type={type}
-      onClick={onClick}
-      style={style}
+}) => (
+  <button
+    {...attrs}
+    className={cn('button', {
+      [`button--${modificator}`]: modificator,
+      'button--max': isMaxWidth,
+    })}
+    type={type}
+    onClick={onClick}
+    style={style}
+  >
+    <span
+      className="button__content"
     >
-      <span
-        className="button__content"
-      >
-        {children}
-      </span>
-    </button>
-  );
-};
+      {children}
+    </span>
+  </button>
+);

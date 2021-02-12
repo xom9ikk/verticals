@@ -112,12 +112,14 @@ export const MainLayout: FC<{}> = () => {
         path="/settings/account"
         layout={SettingsLayout}
         component={() => <SuspenseWrapper component={Account} />}
+        isPrivate
         exact
       />
       <RouteWrapper
         path="/settings/profile"
         layout={SettingsLayout}
         component={() => <SuspenseWrapper component={Profile} />}
+        isPrivate
         exact
       />
       <Route

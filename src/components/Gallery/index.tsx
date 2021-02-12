@@ -1,27 +1,22 @@
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { createPortal } from 'react-dom';
-
+import cn from 'classnames';
 import SwiperCore, { Pagination, Keyboard } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// import 'swiper/swiper.scss';
-// import 'swiper/components/navigation/navigation.scss';
-// import 'swiper/components/pagination/pagination.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { getGalleryImagesInfo } from '@store/selectors';
-import { SystemActions } from '@store/actions';
-import { ControlButton } from '@comp/ControlButton';
 import CopyToClipboard from 'react-copy-to-clipboard';
+
+import { ControlButton } from '@comp/ControlButton';
+import { SystemActions } from '@store/actions';
+import { getGalleryImagesInfo } from '@store/selectors';
 import { useDownload } from '@use/download';
+import { useEventListener } from '@use/event-listener';
 
 SwiperCore.use([Pagination, Keyboard]);
 
-interface IGallery {
-}
-
-export const Gallery: FC<IGallery> = () => {
+export const Gallery: FC<{ }> = () => {
   const dispatch = useDispatch();
   const { images, index = 0 } = useSelector(getGalleryImagesInfo) || {};
 
@@ -36,6 +31,8 @@ export const Gallery: FC<IGallery> = () => {
   const handleClose = () => {
     dispatch(SystemActions.setGalleryImagesInfo(null));
   };
+
+  useEventListener('keydown', handleClose, 'Escape');
 
   const handleDownload = () => {
     const link = images?.[activeIndex].path;
@@ -65,19 +62,9 @@ export const Gallery: FC<IGallery> = () => {
     root!.style.filter = `blur(${value}px)`;
   };
 
-  const classes = ['gallery'];
-  if (images?.length) {
-    setBlur(5);
-    classes.push('gallery--is-open');
-    document.body.onkeydown = (e) => {
-      if (e.code === 'Escape') {
-        handleClose();
-      }
-    };
-  } else {
-    setBlur(0);
-    document.body.onkeydown = null;
-  }
+  useEffect(() => {
+    setBlur(images?.length ? 5 : 0);
+  }, [images]);
 
   useEffect(() => {
     swiperController?.slideTo(index + 1, 0, false);
@@ -115,7 +102,10 @@ export const Gallery: FC<IGallery> = () => {
   ), [images]);
 
   const gallery = (
-    <div className={classes.join(' ')}>
+    <div className={cn('gallery', {
+      'gallery--is-open': images?.length,
+    })}
+    >
       <ControlButton
         imageSrc="/assets/svg/close.svg"
         alt="close"

@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
 import React, { FC, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import cn from 'classnames';
 import { useOutsideHandler } from '@use/outsideHandler';
 import { ControlButton } from '@comp/ControlButton';
 import { Button } from '../Button';
@@ -59,10 +59,8 @@ export const Modal: FC<IModal> = ({
     root!.style.filter = `blur(${value}px)`;
   };
 
-  const classes = ['dialog'];
   if (isOpen) {
     setBlur(5);
-    classes.push('dialog--is-open');
     if (isSoftExit) {
       document.body.onkeydown = (e) => {
         if (e.code === 'Escape') {
@@ -76,25 +74,27 @@ export const Modal: FC<IModal> = ({
   }
 
   const modal = (
-    <>
-      <div className={classes.join(' ')}>
-        <div
-          ref={ref}
-          className={`dialog__wrap dialog__wrap--${size}`}
-        >
-          <ControlButton
-            imageSrc="/assets/svg/close.svg"
-            alt="close"
-            imageSize={24}
-            size={30}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 10,
-            }}
-            onClick={handleClose}
-          />
-          {
+    <div className={cn('dialog', {
+      'dialog--is-open': isOpen,
+    })}
+    >
+      <div
+        ref={ref}
+        className={`dialog__wrap dialog__wrap--${size}`}
+      >
+        <ControlButton
+          imageSrc="/assets/svg/close.svg"
+          alt="close"
+          imageSize={24}
+          size={30}
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 10,
+          }}
+          onClick={handleClose}
+        />
+        {
             renderWrapper(
               <>
                 {children}
@@ -126,9 +126,8 @@ export const Modal: FC<IModal> = ({
               </>,
             )
           }
-        </div>
       </div>
-    </>
+    </div>
   );
 
   return createPortal(modal, document.querySelector('#modal-root')!);
