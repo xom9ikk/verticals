@@ -134,12 +134,15 @@
 
   &__container {
     position: relative;
-    height: 100vh; // Break draggable
-    padding-bottom: 102px;
-    overflow-y: scroll;
 
-    &::-webkit-scrollbar {
-      width: 0;
+    &-inner {
+      height: 100vh; // Break draggable
+      padding-bottom: 102px;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: 0;
+      }
     }
   }
 

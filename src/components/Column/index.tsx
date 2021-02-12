@@ -34,6 +34,7 @@ import {
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useColorClass } from '@use/colorClass';
+import { useAutoScroll } from '@use/autoScroll';
 
 interface IColumn {
   index: number;
@@ -96,6 +97,9 @@ export const Column: FC<IColumn> = ({
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
+  const columnContainerRef = useRef<any>(null);
+
+  const { scrollToBottom } = useAutoScroll(columnContainerRef);
 
   const saveCard = (
     id?: number,
@@ -125,6 +129,7 @@ export const Column: FC<IColumn> = ({
       setTimeout(() => {
         setIsOpenNewCard(true);
       });
+      setTimeout(scrollToBottom, 200);
       dispatch(TodosActions.create({
         columnId: columnId!,
         title,
@@ -186,9 +191,7 @@ export const Column: FC<IColumn> = ({
   };
 
   const handleKeyDown = (event: any) => {
-    const {
-      key, ctrlKey, shiftKey,
-    } = event;
+    const { key, ctrlKey, shiftKey } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
       setIsEditable(false);
       saveColumn();
@@ -306,6 +309,13 @@ export const Column: FC<IColumn> = ({
     }
   }, [isEditableColumn]);
 
+  const handleAddCard = () => {
+    setTimeout(() => {
+      scrollToBottom();
+    });
+    setIsOpenNewCard(true);
+  };
+
   const addCard = useMemo(() => (
     (!isOpenNewCard && !isNew) && (
     <>
@@ -316,7 +326,7 @@ export const Column: FC<IColumn> = ({
         isInvisible
         isHoverBlock={(isTopHover && !isDraggingCard) || todosCount === 0}
         isMaxWidth
-        onClick={() => setIsOpenNewCard(true)}
+        onClick={handleAddCard}
       />
     </>
     )
@@ -540,44 +550,49 @@ export const Column: FC<IColumn> = ({
                             ref={dropProvided.innerRef}
                           >
                             <div
-                              style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}
+                              className="column__container-inner"
+                              ref={columnContainerRef}
                               onMouseEnter={() => setIsTopHover(true)}
                               onMouseLeave={() => setIsTopHover(false)}
                             >
                               <div
-                                role="button"
-                                tabIndex={0}
-                                className={cn('column__header', {
-                                  'column__header--editable': isEditable,
-                                  [colorClass]: color !== undefined,
-                                })}
-                                {...provided.dragHandleProps}
-                                onMouseEnter={() => setIsHoverHeader(true)}
-                                onMouseLeave={() => setIsHoverHeader(false)}
-                                onClick={handleClick}
-                                onDoubleClick={handleDoubleClick}
+                                style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}
                               >
-                                { memoTitle }
-                                { memoDescription }
+                                <div
+                                  role="button"
+                                  tabIndex={0}
+                                  className={cn('column__header', {
+                                    'column__header--editable': isEditable,
+                                    [colorClass]: color !== undefined,
+                                  })}
+                                  {...provided.dragHandleProps}
+                                  onMouseEnter={() => setIsHoverHeader(true)}
+                                  onMouseLeave={() => setIsHoverHeader(false)}
+                                  onClick={handleClick}
+                                  onDoubleClick={handleDoubleClick}
+                                >
+                                  { memoTitle }
+                                  { memoDescription }
+                                </div>
+                                { isNew && !isEditable && (
+                                <span className="column__new-overlay">
+                                  <img src="/assets/svg/add.svg" alt="add" />
+                                </span>
+                                ) }
+                                { !isNew && (
+                                <>
+                                  { todoCards }
+                                  {
+                                    !isDeleted && (
+                                    <>
+                                      {newCard}
+                                      {addCard}
+                                    </>
+                                    )
+                                  }
+                                </>
+                                ) }
                               </div>
-                              { isNew && !isEditable && (
-                              <span className="column__new-overlay">
-                                <img src="/assets/svg/add.svg" alt="add" />
-                              </span>
-                              ) }
-                              { !isNew && (
-                              <>
-                                { todoCards }
-                                {
-                                  !isDeleted && (
-                                  <>
-                                    { newCard }
-                                    { addCard }
-                                  </>
-                                  )
-                                }
-                              </>
-                              ) }
                             </div>
                             <ArchiveContainer
                               archivedTodos={archivedTodos}

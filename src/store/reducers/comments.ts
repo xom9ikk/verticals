@@ -16,7 +16,6 @@ export const CommentsReducer = createReducer(initialState, (builder) => builder
   })
   .addCase(CommentsActions.remove, (draft, action) => {
     const { id } = action.payload;
-    console.log('id', id);
     const index = draft.findIndex((comment) => comment.id === id);
     if (index !== -1) draft.splice(index, 1);
   })

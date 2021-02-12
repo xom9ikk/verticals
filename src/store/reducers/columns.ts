@@ -31,8 +31,9 @@ export const ColumnsReducer = createReducer(initialState, (builder) => builder
 
     draft.entities.push(action.payload);
     if (!draft.positions[boardId]) {
-      draft.positions[boardId].push(id);
+      draft.positions[boardId] = [];
     }
+    draft.positions[boardId].push(id);
   })
   .addCase(ColumnsActions.updatePosition, (draft, action) => {
     const { boardId, sourcePosition, destinationPosition } = action.payload;

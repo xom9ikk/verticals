@@ -59,10 +59,8 @@ const TextAreaComponent = ({
   };
 
   useLayoutEffect(() => {
-    console.log('internalRef', internalRef);
     if (!internalRef.current) return;
     const resizeObserver = new ResizeObserver(() => {
-      console.log('call 2 resize HTMLTextAreaElement', internalRef.current);
       if (internalRef.current) {
         resize(internalRef.current!);
       }

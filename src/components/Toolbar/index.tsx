@@ -8,6 +8,7 @@ import { AuthActions, SystemActions } from '@store/actions';
 import { EnumLanguage } from '@type/entities';
 import { redirectTo } from '@router/history';
 import { getLanguage } from '@store/selectors';
+import { ControlButton } from '@comp/ControlButton';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -86,7 +87,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
       onMouseOut={() => setIsHover(false)}
     >
       <div className="toolbar__inner">
-        <Menu
+        <ControlButton
           imageSrc="/assets/svg/add.svg"
           text="New workspace"
           alt="add"
