@@ -24,7 +24,7 @@ import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
-import { useEventListener } from '@use/event-listener';
+import { useEventListener } from '@use/eventListener';
 import { useValueRef } from '@use/valueRef';
 
 interface IMainLayoutURLParams {

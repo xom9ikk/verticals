@@ -29,6 +29,9 @@ export const Search: FC = () => {
     if (query) {
       debounceSearch(query);
     }
+  }, [query]);
+
+  useEffect(() => {
     if (!query && isSearchMode) {
       dispatch(BoardsActions.fetchAll());
       dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId! }));

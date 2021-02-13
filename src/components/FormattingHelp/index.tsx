@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-// @ts-ignore
 import { SystemActions } from '@store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIsOpenFormattingHelp } from '@store/selectors';

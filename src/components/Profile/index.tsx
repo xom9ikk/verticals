@@ -1,6 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
-// @ts-ignore
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
@@ -74,8 +73,8 @@ export const Profile: FC<IProfile> = ({
     <ControlButton
       imageSrc="/assets/svg/close.svg"
       alt="close"
-      imageSize={24}
-      size={30}
+      imageSize={16}
+      size={32}
       style={{
         position: 'absolute',
         right: 10,
@@ -83,9 +82,7 @@ export const Profile: FC<IProfile> = ({
       }}
       onClick={handleClose}
     />
-    <Avatar
-      size={180}
-    />
+    <Avatar size={180} />
     <h1 className="profile__popup-title">{fullName}</h1>
     <h4 className="profile__popup-subtitle">
       @
@@ -137,7 +134,7 @@ export const Profile: FC<IProfile> = ({
           }}
         />
         <CopyToClipboard
-          text={`verticals.xom9ik.com/${username}`} // TODO move to env
+          text={`verticals.xom9ik.com/${username}`} // TODO: move to env
           onCopy={() => {
             handleMenuButtonClick(EnumMenuActions.CopyLink);
           }}

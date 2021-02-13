@@ -1,4 +1,3 @@
-// @ts-ignore
 import { store } from 'react-notifications-component';
 
 const defaultPreferences = {

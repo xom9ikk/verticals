@@ -15,6 +15,7 @@ import { useOpenFiles } from '@use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
+import { useOutsideHandler } from '@use/outsideHandler';
 
 interface ICommentForm {
   todoId: number | null;
@@ -34,6 +35,7 @@ export const CommentForm: FC<ICommentForm> = ({
   const { openFiles } = useOpenFiles();
   const { merge, filter } = useFileList();
   const commentInputRef = useRef<any>();
+  const commentFormRef = useRef<any>(null);
 
   const fullName = useSelector(getFullName);
   const editCommentId = useSelector(getEditCommentId);
@@ -65,7 +67,6 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const handleSendComment = () => {
     if (editCommentId) {
-      console.log('1111');
       dispatch(CommentsActions.updateText({
         id: editCommentId,
         text: commentText,
@@ -78,7 +79,6 @@ export const CommentForm: FC<ICommentForm> = ({
       }
       dispatch(SystemActions.setEditCommentId(null));
     } else if (files?.length || commentText) {
-      console.log('222', files);
       dispatch(CommentsActions.create({
         todoId: todoId!,
         text: commentText,
@@ -98,9 +98,7 @@ export const CommentForm: FC<ICommentForm> = ({
   };
 
   const handleKeyUp = (event: React.KeyboardEvent) => {
-    const {
-      key, shiftKey,
-    } = event;
+    const { key, shiftKey } = event;
     if (key === 'Enter' && shiftKey) {
       setShiftPressed(false);
       handleSendComment();
@@ -138,14 +136,16 @@ export const CommentForm: FC<ICommentForm> = ({
     dispatch(SystemActions.setIsOpenFormattingHelp(true));
   };
 
-  const handleBlurInput = () => {
+  const isAvailableSend = commentText?.length || files?.length;
+
+  const handleOutsideClick = () => {
     dispatch(SystemActions.setEditCommentId(null));
   };
 
-  const isAvailableSend = commentText?.length || files?.length;
+  useOutsideHandler(commentFormRef, handleOutsideClick);
 
   return (
-    <div className="comment-form">
+    <div className="comment-form" ref={commentFormRef}>
       <div className="comment-form__wrapper">
         <Avatar />
         <div className="comment-form__input-wrapper">
@@ -184,7 +184,6 @@ export const CommentForm: FC<ICommentForm> = ({
               onChange={handleChange}
               onKeyUp={handleKeyUp}
               onKeyDown={handleKeyDown}
-              onBlur={handleBlurInput}
               minRows={1}
               maxRows={10}
               onChangeHeight={onChangeTextAreaHeight}

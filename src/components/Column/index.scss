@@ -36,9 +36,10 @@
 
   &__wrapper {
     //position: relative;
+    overflow: hidden;
     height: 100%;
     border-radius: 6px;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
     transition: background .1s ease-in-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
 
     &--editable {

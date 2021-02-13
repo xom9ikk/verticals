@@ -39,9 +39,3 @@ setInterval(() => {
   // console.log('rebuild');
   ReactTooltip.rebuild(); // TODO: move to data-tip update hook
 }, 2000);
-
-// @ts-ignore
-// if (module.hot) {
-//   // @ts-ignore
-//   module.hot.accept();
-// }

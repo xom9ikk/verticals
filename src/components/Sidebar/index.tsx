@@ -3,10 +3,7 @@ import cn from 'classnames';
 import { Toolbar } from '@comp/Toolbar';
 import { ControlButton } from '@comp/ControlButton';
 
-interface ISidebar {
-}
-
-export const Sidebar: FC<ISidebar> = ({ children }) => {
+export const Sidebar: FC = ({ children }) => {
   const [isPinnedSidebar, setIsPinnedSidebar] = useState<boolean>(true);
   const [isHover, setIsHover] = useState<boolean>(false);
 

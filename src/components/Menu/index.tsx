@@ -100,7 +100,6 @@ export const Menu: FC<IMenu> = ({
         setIsClicked(true);
         setIsOpen(true);
       }
-      // setIsOpen((prev) => !prev);
     };
 
     return (

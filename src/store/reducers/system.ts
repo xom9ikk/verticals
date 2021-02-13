@@ -41,6 +41,9 @@ export const SystemReducer = createReducer(initialState, (builder) => builder
   .addCase(SystemActions.setActiveBoardId, (draft, action) => { draft.activeBoardId = action.payload; })
   .addCase(SystemActions.setActiveBoardReadableId, (draft, action) => { draft.activeBoardReadableId = action.payload; })
   .addCase(SystemActions.setActiveTodoReadableId, (draft, action) => { draft.activeTodoReadableId = action.payload; })
-  .addCase(SystemActions.setDroppedFiles, (draft, action) => { draft.droppedFiles = action.payload; })
+  .addCase(SystemActions.setDroppedFiles, (state, action) => ({
+    ...state,
+    droppedFiles: action.payload,
+  }))
   .addCase(SystemActions.setGalleryImagesInfo, (draft, action) => { draft.galleryImagesInfo = action.payload; })
   .addCase(SystemActions.setIsOpenFormattingHelp, (draft, action) => { draft.isOpenFormattingHelp = action.payload; }));

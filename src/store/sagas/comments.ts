@@ -50,7 +50,7 @@ function* createWorker(action: PayloadAction<ICreateComment>) {
     }
     yield call(show, 'Comment', 'Comment added successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, 'Comment', error.message || error, ALERT_TYPES.DANGER);
   }
 }
 

@@ -12,7 +12,7 @@ import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { getGalleryImagesInfo } from '@store/selectors';
 import { useDownload } from '@use/download';
-import { useEventListener } from '@use/event-listener';
+import { useEventListener } from '@use/eventListener';
 
 SwiperCore.use([Pagination, Keyboard]);
 

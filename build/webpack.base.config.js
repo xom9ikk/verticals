@@ -87,7 +87,8 @@ module.exports = {
       ],
     }),
     new HTMLWebpackPlugin({
-      title: 'App title',
+      title: 'Verticals — checklist with vertical separation',
+      description: 'TODO Checklist With Vertical Separation',
       favicon: path.resolve(PATHS.static, 'favicon.ico'),
       template: path.resolve(PATHS.static, 'index.html'),
       filename: 'index.html',

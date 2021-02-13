@@ -310,7 +310,7 @@ export const Column: FC<IColumn> = ({
   }, [isEditableColumn]);
 
   const handleAddCard = () => {
-    requestAnimationFrame(scrollToBottom);
+    setTimeout(scrollToBottom);
     setIsOpenNewCard(true);
   };
 
@@ -399,7 +399,7 @@ export const Column: FC<IColumn> = ({
   const cardToolbar = useMemo(() => (
     <CardToolbar
       isHoverBlock={isHover && !isHoverHeader && !isEditable}
-      onClickCard={() => setIsOpenNewCard(true)}
+      onClickCard={handleAddCard}
       onClickHeading={() => console.log('open heading')}
     />
   ), [isHover, isHoverHeader, isEditable]);
@@ -554,7 +554,9 @@ export const Column: FC<IColumn> = ({
                               onMouseLeave={() => setIsTopHover(false)}
                             >
                               <div
-                                style={{ paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}` }}
+                                style={{
+                                  paddingBottom: `${dropSnapshot.isDraggingOver ? '36px' : '0px'}`,
+                                }}
                               >
                                 <div
                                   role="button"
@@ -613,7 +615,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    index, todosCount, color, colorClass, columnId, isHover,
+    index, todosCount, nonArchivedTodos, color, colorClass, columnId, isHover,
     isHoverHeader, isOpenNewCard, isEditable,
     titleValue, descriptionValue, isCollapsed,
     isTopHover, isDraggingCard, isNew, isSearchMode,

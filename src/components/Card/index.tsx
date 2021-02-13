@@ -160,8 +160,8 @@ export const Card: FC<ICard> = ({
       // focus(descriptionInputRef);
       // } else {
       saveTodo();
-      setIsEditable(false);
       saveAttachments(files);
+      setIsEditable(false);
       // }
     }
   };
