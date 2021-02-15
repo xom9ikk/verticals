@@ -1,8 +1,9 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
-import { useOutsideHandler } from '@use/outsideHandler';
 import { ControlButton } from '@comp/ControlButton';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import useKeys from '@rooks/use-keys';
 import { Button } from '../Button';
 
 interface IModal {
@@ -11,10 +12,10 @@ interface IModal {
   isSoftExit?: boolean,
   negative?: string,
   positive: string,
-  onPositive: Function,
-  onNegative?: Function,
+  onPositive: () => void,
+  onNegative?: () => void,
   renderWrapper?: (children: React.ReactChild) => React.ReactChild,
-  onClose: Function,
+  onClose: () => void,
   size?: string,
 }
 
@@ -31,29 +32,11 @@ export const Modal: FC<IModal> = ({
   size = 'small',
   children,
 }) => {
-  const ref = useRef<any>();
   const root: HTMLDivElement | null = document.querySelector('#root');
 
-  const handlePositive = () => {
-    onPositive();
-  };
-
-  const handleNegative = () => {
-    if (onNegative) {
-      onNegative();
-    }
-  };
-
-  const handleClose = () => {
-    console.log('handleClose');
-    onClose();
-  };
-
   const handleOutsideClick = () => {
-    if (isSoftExit) handleClose();
+    if (isSoftExit) onClose();
   };
-
-  useOutsideHandler(ref, handleOutsideClick);
 
   const setBlur = (value: number) => {
     root!.style.filter = `blur(${value}px)`;
@@ -61,17 +44,19 @@ export const Modal: FC<IModal> = ({
 
   if (isOpen) {
     setBlur(5);
-    if (isSoftExit) {
-      document.body.onkeydown = (e) => {
-        if (e.code === 'Escape') {
-          handleClose();
-        }
-      };
-    }
   } else {
     setBlur(0);
-    document.body.onkeydown = null;
   }
+
+  const handleEscape = () => {
+    if (isOpen && isSoftExit) {
+      onClose();
+    }
+  };
+
+  useKeys(['Escape'], handleEscape);
+
+  const [modalRef] = useOutsideClickRef(handleOutsideClick, isOpen);
 
   const modal = (
     <div className={cn('dialog', {
@@ -79,46 +64,40 @@ export const Modal: FC<IModal> = ({
     })}
     >
       <div
-        ref={ref}
+        ref={modalRef}
         className={`dialog__wrap dialog__wrap--${size}`}
       >
         <ControlButton
           imageSrc="/assets/svg/close.svg"
           alt="close"
-          imageSize={24}
-          size={30}
+          imageSize={16}
+          size={32}
           style={{
             position: 'absolute',
             right: 10,
             top: 10,
           }}
-          onClick={handleClose}
+          onClick={onClose}
         />
         {
             renderWrapper(
               <>
                 {children}
-                {
-                !renderWrapper ? children : null
-              }
-                <div
-                  className="dialog__prompt"
-                >
-                  {
-                  negative && (
+                {!renderWrapper ? children : null}
+                <div className="dialog__prompt">
+                  {negative && (
                   <Button
                     type="button"
                     modificator="transparent"
-                    onClick={handleNegative}
+                    onClick={onNegative}
                   >
                     {negative}
                   </Button>
-                  )
-                }
+                  )}
                   <Button
                     type={type}
                     modificator="primary"
-                    onClick={handlePositive}
+                    onClick={onPositive}
                   >
                     {positive}
                   </Button>

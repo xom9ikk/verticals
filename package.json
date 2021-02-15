@@ -29,6 +29,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@reduxjs/toolkit": "^1.5.0",
+    "@rooks/use-keys": "^4.9.1",
+    "@rooks/use-outside-click-ref": "^4.9.1",
     "@sindresorhus/slugify": "^1.1.0",
     "@types/markdown-it": "^10.0.3",
     "axios": "^0.21.0",

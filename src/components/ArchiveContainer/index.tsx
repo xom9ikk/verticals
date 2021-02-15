@@ -23,6 +23,10 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
 }) => {
   const [isOpenArchived, setIsOpenArchived] = useState<boolean>(false);
 
+  const handleClick = () => {
+    setIsOpenArchived((prev) => !prev);
+  };
+
   return (
     <>
       {
@@ -32,7 +36,7 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
           >
             <div
               className="archive-container__title"
-              onClick={() => setIsOpenArchived((prev) => !prev)}
+              onClick={handleClick}
             >
               <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
               {archivedTodos.length}

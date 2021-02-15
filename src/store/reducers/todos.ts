@@ -87,7 +87,12 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
       const todoId = draft.positions[columnId][sourcePosition];
       draft.entities[draft.entities.findIndex((todo) => todo.id === todoId)].columnId = targetColumnId;
       draft.positions[columnId].splice(sourcePosition, 1);
-      draft.positions[targetColumnId].splice(destinationPosition, 0, todoId);
+      if (draft.positions[targetColumnId]) {
+        draft.positions[targetColumnId].splice(destinationPosition, 0, todoId);
+      } else {
+        draft.positions[targetColumnId] = [];
+        draft.positions[targetColumnId].push(todoId);
+      }
     } else {
       draft.positions[columnId].splice(destinationPosition, 0, draft.positions[columnId].splice(sourcePosition, 1)[0]);
     }
@@ -95,8 +100,8 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
   .addCase(TodosActions.removeTemp, (draft) => {
     const entityIndex = draft.entities.findIndex((todo) => todo.id === TEMP_ID);
     if (entityIndex !== -1) {
-      draft.entities.splice(entityIndex, 1);
       const { columnId } = draft.entities[entityIndex];
+      draft.entities.splice(entityIndex, 1);
 
       const positionIndex = draft.positions[columnId].findIndex((todoId) => todoId === TEMP_ID);
       if (positionIndex !== -1) draft.positions[columnId].splice(positionIndex, 1);

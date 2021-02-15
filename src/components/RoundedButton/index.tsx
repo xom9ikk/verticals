@@ -37,9 +37,8 @@ export const RoundedButton: FC<IRoundedButton> = ({
 
   const roundedButton = useMemo(() => (
     <div
-      className={cn('rounded-button', {
+      className={cn('rounded-button', colorClass, {
         'rounded-button--active': isActive,
-        [colorClass]: color !== undefined,
       })}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}

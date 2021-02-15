@@ -1,14 +1,14 @@
 import React, { FC, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
-import { MenuItem } from '@comp/MenuItem';
-import { Divider } from '@comp/Divider';
 import { Avatar } from '@comp/Avatar';
+import { Divider } from '@comp/Divider';
+import { MenuItem } from '@comp/MenuItem';
+import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
-import { useDispatch, useSelector } from 'react-redux';
 import { redirectTo } from '@router/history';
 import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
 import { useHover } from '@use/hover';
 
 enum EnumMenuActions {
@@ -106,6 +106,7 @@ export const Profile: FC<IProfile> = ({
         alt="add"
         imageSize={22}
         size={24}
+        isInvisible
         isHoverBlock={isHovering}
         position="bottom"
         isAbsolute={false}

@@ -8,7 +8,7 @@ const initialState: ISystem = {
   isLoadedTodos: false,
   isOpenPopup: false,
   isEditableCard: false,
-  isEditableColumn: false,
+  editableColumnId: null,
   isEditableBoard: false,
   isSearchMode: false,
   language: EnumLanguage.English,
@@ -30,7 +30,7 @@ export const SystemReducer = createReducer(initialState, (builder) => builder
   .addCase(SystemActions.setIsLoadedTodos, (draft, action) => { draft.isLoadedTodos = action.payload; })
   .addCase(SystemActions.setIsOpenPopup, (draft, action) => { draft.isOpenPopup = action.payload; })
   .addCase(SystemActions.setIsEditableCard, (draft, action) => { draft.isEditableCard = action.payload; })
-  .addCase(SystemActions.setIsEditableColumn, (draft, action) => { draft.isEditableColumn = action.payload; })
+  .addCase(SystemActions.setEditableColumnId, (draft, action) => { draft.editableColumnId = action.payload; })
   .addCase(SystemActions.setIsEditableBoard, (draft, action) => { draft.isEditableBoard = action.payload; })
   .addCase(SystemActions.setIsSearchMode, (draft, action) => { draft.isSearchMode = action.payload; })
   .addCase(SystemActions.setLanguage, (draft, action) => { draft.language = action.payload; })

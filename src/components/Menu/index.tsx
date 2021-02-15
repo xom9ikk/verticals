@@ -112,6 +112,7 @@ export const Menu: FC<IMenu> = ({
         size={size}
         style={style}
         text={text}
+        animationDuration={0}
         isHide={isHide}
         isInvisible={isInvisible}
         isHoverBlock={isHoverBlock}

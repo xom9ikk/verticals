@@ -1,14 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useCallback, useEffect, useRef, useState,
+  FC, useCallback, useEffect, useState,
 } from 'react';
+import { useDispatch } from 'react-redux';
+import debounce from 'lodash.debounce';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { Input } from '@comp/Input';
-import { useOutsideHandler } from '@use/outsideHandler';
 import { Loader } from '@comp/Loader';
 import { useValidator } from '@use/validator';
 import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
-import { useDispatch } from 'react-redux';
-import debounce from 'lodash.debounce';
 
 interface ISyncInput {
   type: string,
@@ -33,7 +33,6 @@ export const SyncInput: FC<ISyncInput> = ({
   ...attrs
 }) => {
   const dispatch = useDispatch();
-  const ref = useRef<HTMLInputElement>(null);
   const [isLocked, setIsLocked] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [validValue, setValidValue] = useState<string>();
@@ -54,7 +53,6 @@ export const SyncInput: FC<ISyncInput> = ({
   } = useValidator(initialValue, validator, debounceSubmit);
 
   useEffect(() => {
-    console.log('initialValue', initialValue, 'validValue', validValue);
     if (initialValue === validValue) {
       setTimeout(() => {
         setIsLoading(false);
@@ -67,16 +65,10 @@ export const SyncInput: FC<ISyncInput> = ({
     setIsLoading(false);
   };
 
-  useOutsideHandler(ref, handleOutsideClick);
+  const [ref] = useOutsideClickRef(handleOutsideClick, !isLocked);
 
   const handleClick = () => {
     setIsLocked(false);
-    // setTimeout(() => {
-    //   // handleChange(e);
-    //   // ref.current?.focus();
-    //   // ref.current?.blur();
-    //   // ref.current?.focus();
-    // }, 1000);
   };
 
   return (

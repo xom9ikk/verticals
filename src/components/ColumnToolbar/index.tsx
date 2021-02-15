@@ -2,30 +2,32 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { ControlButton } from '@comp/ControlButton';
 
-interface ICardToolbar {
+interface IColumnToolbar {
+  isEnabled: boolean;
   isHoverBlock: boolean;
-  onClickCard: () => void;
-  onClickHeading: () => void;
+  onAddCard: () => void;
+  onAddHeading: () => void;
 }
 
-export const CardToolbar: FC<ICardToolbar> = ({
+export const ColumnToolbar: FC<IColumnToolbar> = ({
+  isEnabled,
   isHoverBlock,
-  onClickCard,
-  onClickHeading,
-}) => (
+  onAddCard,
+  onAddHeading,
+}) => (isEnabled ? (
   <div
-    className={cn('card-toolbar', {
-      'card-toolbar--invisible': !isHoverBlock,
+    className={cn('column-toolbar', {
+      'column-toolbar--invisible': !isHoverBlock,
     })}
   >
-    <div className="card-toolbar__inner">
+    <div className="column-toolbar__inner">
       <ControlButton
         imageSrc="/assets/svg/add.svg"
         text="Add card"
         alt="add"
         isHoverBlock={isHoverBlock}
         isMaxWidth
-        onClick={onClickCard}
+        onClick={onAddCard}
       />
       <ControlButton
         imageSrc="/assets/svg/add-head.svg"
@@ -33,8 +35,8 @@ export const CardToolbar: FC<ICardToolbar> = ({
         isHoverBlock={isHoverBlock}
         imageSize={24}
         size={36}
-        onClick={onClickHeading}
+        onClick={onAddHeading}
       />
     </div>
   </div>
-);
+) : null);

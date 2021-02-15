@@ -25,7 +25,12 @@ const CommentListComponent = ({
             comments.map((comment: IComment) => (
               <CommentItem
                 key={comment.id}
-                {...comment}
+                id={comment.id}
+                text={comment.text}
+                createdAt={comment.createdAt}
+                updatedAt={comment.updatedAt}
+                replyCommentId={comment.replyCommentId}
+                likedUsers={comment.likedUsers}
               />
             ))
           }

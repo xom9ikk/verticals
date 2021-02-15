@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { IComment } from '@type/entities';
+import { ICommentLike } from '@type/entities';
 import { MenuItem } from '@comp/MenuItem';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
@@ -25,7 +25,14 @@ import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
 import { useMarkdown } from '@use/markdown';
 
-type ICommentItem = IComment;
+interface ICommentItem {
+  id: number;
+  text?: string;
+  createdAt: number;
+  updatedAt: number | null;
+  replyCommentId?: number;
+  likedUsers?: Array<ICommentLike>;
+}
 
 enum EnumMenuActions {
   Like,

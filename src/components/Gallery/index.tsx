@@ -7,12 +7,12 @@ import cn from 'classnames';
 import SwiperCore, { Pagination, Keyboard } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import useKeys from '@rooks/use-keys';
 
 import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { getGalleryImagesInfo } from '@store/selectors';
 import { useDownload } from '@use/download';
-import { useEventListener } from '@use/eventListener';
 
 SwiperCore.use([Pagination, Keyboard]);
 
@@ -32,7 +32,7 @@ export const Gallery: FC = () => {
     dispatch(SystemActions.setGalleryImagesInfo(null));
   };
 
-  useEventListener('keydown', handleClose, 'Escape');
+  useKeys(['Escape'], handleClose);
 
   const handleDownload = () => {
     const link = images?.[activeIndex].path;
@@ -109,7 +109,7 @@ export const Gallery: FC = () => {
       <ControlButton
         imageSrc="/assets/svg/close.svg"
         alt="close"
-        imageSize={26}
+        imageSize={16}
         size={32}
         style={{
           position: 'absolute',

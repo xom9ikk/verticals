@@ -7,7 +7,7 @@ import {
   ISetSystemEditCommentId,
   ISetSystemIsEditableBoard,
   ISetSystemIsEditableCard,
-  ISetSystemIsEditableColumn,
+  ISetSystemEditableColumnId,
   ISetSystemIsOpenPopup,
   ISetSystemLanguage,
   ISetSystemIsSearchMode,
@@ -26,7 +26,7 @@ const setIsLoadedColumns = createAction<ISetSystemIsLoadedColumns>('SYSTEM/SET_I
 const setIsLoadedTodos = createAction<ISetSystemIsLoadedTodos>('SYSTEM/SET_IS_LOADED_TODOS');
 const setIsOpenPopup = createAction<ISetSystemIsOpenPopup>('SYSTEM/SET_IS_OPEN_POPUP');
 const setIsEditableCard = createAction<ISetSystemIsEditableCard>('SYSTEM/SET_IS_EDITABLE_CARD');
-const setIsEditableColumn = createAction<ISetSystemIsEditableColumn>('SYSTEM/SET_IS_EDITABLE_COLUMN');
+const setEditableColumnId = createAction<ISetSystemEditableColumnId>('SYSTEM/SET_EDITABLE_COLUMN_ID');
 const setIsEditableBoard = createAction<ISetSystemIsEditableBoard>('SYSTEM/SET_IS_EDITABLE_BOARD');
 const setIsSearchMode = createAction<ISetSystemIsSearchMode>('SYSTEM/SET_IS_SEARCH_MODE');
 const setLanguage = createAction<ISetSystemLanguage>('SYSTEM/SET_LANGUAGE');
@@ -47,7 +47,7 @@ export const SystemActions = {
   setIsLoadedTodos,
   setIsOpenPopup,
   setIsEditableCard,
-  setIsEditableColumn,
+  setEditableColumnId,
   setIsEditableBoard,
   setIsSearchMode,
   setLanguage,

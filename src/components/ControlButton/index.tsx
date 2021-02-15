@@ -17,6 +17,7 @@ interface IControlButton {
   isColored?: boolean;
   isTextable?: boolean;
   isStopPropagation?: boolean;
+  animationDuration?: number;
   style?: React.CSSProperties;
   onClick?: (event: React.SyntheticEvent) => void;
   onDoubleClick?: (event: React.SyntheticEvent) => void;
@@ -40,52 +41,63 @@ const ControlButtonComponent = ({
   isColored,
   isTextable,
   isStopPropagation = true,
+  animationDuration = 100,
   style,
   onClick,
   onDoubleClick,
   onMouseEnter,
   onMouseLeave,
-}: IControlButton, ref: any) => (
-  <button
-    ref={ref}
-    className={cn('control-button', {
-      'control-button--hidden': isHide,
-      'control-button--invisible': isInvisible && !isHoverBlock,
-      'control-button--hover-block': isHoverBlock,
-      'control-button--primary': isPrimary,
-      'control-button--max-width': isMaxWidth,
-      'control-button--invert': isInvertColor,
-      'control-button--colored': isColored,
-      'control-button--textable': isTextable,
-    })}
-    onClick={(e) => {
-      if (isStopPropagation) {
-        e.stopPropagation();
-      }
-      onClick?.(e);
-    }}
-    onDoubleClick={onDoubleClick}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    style={size ? { height: size, width: size, ...style } : { ...style }}
-    data-for="tooltip"
-    data-tip={tooltip}
-  >
-    <img
-      src={imageSrc}
-      alt={alt}
-      style={{ width: style?.width || imageSize, height: imageSize }}
-    />
-    {
-      (text || isTextable) && (
-        <span className="control-button__text">
-          &nbsp;
-          {text}
-          &nbsp;
-        </span>
-      )
-     }
-  </button>
-);
+}: IControlButton, ref: any) => {
+  const defaultTransition = {
+    transition: `background ${animationDuration}ms ease-out, 
+    opacity ${animationDuration}ms ease-in-out, 
+    width ${animationDuration}ms ease-in-out, 
+    padding ${animationDuration}ms ease-in-out`,
+  };
+  return (
+    <button
+      ref={ref}
+      className={cn('control-button', {
+        'control-button--hidden': isHide,
+        'control-button--invisible': isInvisible && !isHoverBlock,
+        'control-button--hover-block': isHoverBlock,
+        'control-button--primary': isPrimary,
+        'control-button--max-width': isMaxWidth,
+        'control-button--invert': isInvertColor,
+        'control-button--colored': isColored,
+        'control-button--textable': isTextable,
+      })}
+      onClick={(e) => {
+        if (isStopPropagation) {
+          e.stopPropagation();
+        }
+        onClick?.(e);
+      }}
+      onDoubleClick={onDoubleClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      style={size ? {
+        height: size, width: size, ...defaultTransition, ...style,
+      } : { ...defaultTransition, ...style }}
+      data-for="tooltip"
+      data-tip={tooltip}
+    >
+      <img
+        src={imageSrc}
+        alt={alt}
+        style={{ width: style?.width || imageSize, height: imageSize }}
+      />
+      {
+          (text || isTextable) && (
+          <span className="control-button__text">
+            &nbsp;
+            {text}
+            &nbsp;
+          </span>
+          )
+        }
+    </button>
+  );
+};
 
 export const ControlButton = forwardRef(ControlButtonComponent);

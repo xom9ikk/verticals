@@ -15,7 +15,7 @@ import { useOpenFiles } from '@use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
-import { useOutsideHandler } from '@use/outsideHandler';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
 
 interface ICommentForm {
   todoId: number | null;
@@ -35,7 +35,6 @@ export const CommentForm: FC<ICommentForm> = ({
   const { openFiles } = useOpenFiles();
   const { merge, filter } = useFileList();
   const commentInputRef = useRef<any>();
-  const commentFormRef = useRef<any>(null);
 
   const fullName = useSelector(getFullName);
   const editCommentId = useSelector(getEditCommentId);
@@ -139,10 +138,11 @@ export const CommentForm: FC<ICommentForm> = ({
   const isAvailableSend = commentText?.length || files?.length;
 
   const handleOutsideClick = () => {
+    console.log('handleOutsideClick');
     dispatch(SystemActions.setEditCommentId(null));
   };
 
-  useOutsideHandler(commentFormRef, handleOutsideClick);
+  const [commentFormRef] = useOutsideClickRef(handleOutsideClick);
 
   return (
     <div className="comment-form" ref={commentFormRef}>

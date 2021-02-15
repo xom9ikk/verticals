@@ -1,4 +1,5 @@
 export const TRASH_BOARD_ID = -1;
+export const NEW_COLUMN_ID = -1;
 export const TEMP_ID = 0;
 export const MAX_FILES_IN_COMMENT_PREVIEW = 3;
 export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',

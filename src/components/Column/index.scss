@@ -5,23 +5,31 @@
   flex-direction: column;
   max-width: $column-width;
   min-width: $column-width;
-  height: 100vh;
+  //height: 100vh;
   padding: 23px 10px;
   border-right: 1px solid rgb(242, 242, 242);
+  height: calc(100vh - 15px);
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 
   &__new-overlay {
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     position: absolute;
     top: 0;
-    bottom: 46px;
+    bottom: 0;
     left: 0;
     right: 0;
     border-radius: 6px;
-    transition: background .1s ease-in-out;
+    transition: background .1s ease-out;
     filter: grayscale(1) brightness(1.4);
+    z-index: 1;
 
     &:hover {
       background: $primary-light;
@@ -35,18 +43,19 @@
   }
 
   &__wrapper {
-    //position: relative;
-    overflow: hidden;
-    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
     border-radius: 6px;
-    margin-bottom: 35px;
-    transition: background .1s ease-in-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
+    transition: background .1s ease-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
 
     &--editable {
       box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
     }
 
     &--dragging {
+      overflow: hidden;
       background: $primary-light;
       transform: scale(1.02);
       box-shadow: 10px 10px 30px rgba(210, 227, 253, 0.4),
@@ -61,10 +70,6 @@
       }
     }
 
-    &--pressed {
-      background: $primary-light !important;
-    }
-
     &--hovered {
       background: $hover-color;
 
@@ -76,13 +81,10 @@
         background: $hover-color;
       }
     }
+  }
 
-    &--compact {
-      padding-top: 30px;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 0px;
-    }
+  &__inner {
+    padding-bottom: 45px;
 
     &--red {
       background: #feeae7;
@@ -135,15 +137,16 @@
 
   &__container {
     position: relative;
+    height: 100%;
 
     &-inner {
-      height: 100vh; // Break draggable
-      padding-bottom: 102px;
-      overflow-y: scroll;
+      //max-height: 100vh; // Break draggable
+      //padding-bottom: 102px;
+      //overflow-y: scroll;
 
-      &::-webkit-scrollbar {
-        width: 0;
-      }
+      //&::-webkit-scrollbar {
+      //  width: 0;
+      //}
     }
   }
 
@@ -156,15 +159,16 @@
     border: none;
     outline: none;
     letter-spacing: 0;
-    transition: background .1s ease-in-out, border .2s ease-in-out;
+    transition: background .1s ease-out, border .2s ease-in-out;
 
     &--editable {
       //box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
-      min-width: $column-width - 27;
-      max-width: $column-width - 27;
+      //min-width: $column-width - 27;
+      //max-width: $column-width - 27;
       margin: 3px;
       padding: 14px 9px 10px 7px;
-      border-radius: 6px;
+      //border-radius: 6px;
+      background: none;
     }
   }
 
@@ -173,6 +177,7 @@
     margin-bottom: 10px;
     justify-content: space-between;
     align-items: center;
+    margin-right: 16px;
   }
 
   &__title {
@@ -200,7 +205,7 @@
   &__description {
     padding: 0;
     margin: 0;
-    min-height: 38px;
+    min-height: 19px;
     outline: none;
     border: none;
     resize: none;
@@ -220,51 +225,7 @@
     }
   }
 
-  &__inner {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    transform: rotate(-90deg);
-  }
-
-  &__counter {
-    //font-size: 14px;
-    //color: $text-light;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    //min-width: 23px;
-    //min-height: 20px;
-    border: 1px solid $text-very-light;
-    border-radius: 3px;
-    padding: 1px 5px;
-    margin-left: 10px;
-
-    #{$block}__compact-text {
-      font-size: 12px;
-      font-family: "Nunito Medium", sans-serif;
-    }
-
-    //transform: rotate(-90deg);
-  }
-
-  &__compact-text {
-    display: flex;
-    font-size: 15px;
-    color: $text-very-light;
-    //transform: rotate(-90deg);
-    flex-shrink: 0;
-  }
-
   &--dragging {
     border-right: none;
-  }
-
-  &--compact {
-    height: 100%;
-    min-width: 36px;
-    max-width: 36px;
-    overflow: hidden;
-    padding: 23px 5px 8px;
   }
 }

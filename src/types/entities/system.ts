@@ -18,7 +18,7 @@ export interface ISystem {
   isLoadedTodos: boolean;
   isOpenPopup: boolean;
   isEditableCard: boolean;
-  isEditableColumn: boolean;
+  editableColumnId: number | null;
   isEditableBoard: boolean;
   isSearchMode: boolean;
   language: EnumLanguage;

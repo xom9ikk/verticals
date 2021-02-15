@@ -33,9 +33,7 @@ export const Account: FC = () => {
     setIsOpenModal(true);
   };
 
-  const handlePositive = () => {
-    // console.log('===vakues', values);
-  };
+  const handlePositive = () => { };
 
   const handleNegative = () => {
     setIsOpenModal(false);
@@ -73,7 +71,7 @@ export const Account: FC = () => {
               <span className="input__label">Password</span>
               <div className="input__holder">
                 <Button
-                  type="submit"
+                  type="button"
                   isMaxWidth
                   onClick={handleClick}
                 >

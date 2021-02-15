@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, {
   FC, useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -48,7 +47,7 @@ interface ISaveTodo {
 interface ICard {
   cardType: EnumTodoType;
   id?: number;
-  columnId?: number;
+  columnId: number;
   belowId?: number;
   title?: string;
   description?: string;
@@ -94,6 +93,8 @@ export const Card: FC<ICard> = ({
   provided,
   snapshot,
 }) => {
+  // console.log('TODO: optimize me');
+
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const { merge, filter } = useFileList();
@@ -348,9 +349,7 @@ export const Card: FC<ICard> = ({
       >
         {
           isEditable ? (
-            <div
-              className="card__editable-content"
-            >
+            <div className="card__editable-content">
               <TextArea
                 ref={titleInputRef}
                 className="card__textarea"
@@ -378,12 +377,8 @@ export const Card: FC<ICard> = ({
                 onRemove={handleRemoveFile}
                 isListView
               />
-              <div
-                className="card__editable-container"
-              >
-                <div
-                  className="card__editable-controls"
-                >
+              <div className="card__editable-container">
+                <div className="card__editable-controls">
                   <ControlButton
                     imageSrc="/assets/svg/calendar-dots.svg"
                     tooltip="Add Date"
@@ -406,9 +401,7 @@ export const Card: FC<ICard> = ({
               </div>
             </div>
           ) : (
-            <div
-              className="card__inner"
-            >
+            <div className="card__inner">
               <CardContextMenu
                 id={id}
                 title={initialTitle}
@@ -475,17 +468,16 @@ export const Card: FC<ICard> = ({
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
       className="card"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}
     >
       <div
-        className={cn('card__content', {
+        className={cn('card__content', colorClass, {
           'card__content--editable': isEditable,
           'card__content--invert': invertColor,
           'card__content--pressed': isMouseDown || isActive,
           'card__content--dragging': snapshot?.isDragging,
-          [colorClass]: color !== undefined,
         })}
       >
         <DropZone

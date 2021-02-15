@@ -24,30 +24,38 @@ export interface IInsertColumn {
   position: number;
 }
 
-export interface IUpdateColumnTitle {
+export interface IUpdateColumn {
   id: number;
-  title: string;
+  title?: string;
+  description?: string;
+  color?: IColor;
+  isCollapsed?: boolean;
 }
+//
+// export interface IUpdateColumnTitle {
+//   id: number;
+//   title: string;
+// }
+//
+// export interface IUpdateColumnDescription {
+//   id: number;
+//   description?: string;
+// }
 
-export interface IUpdateColumnDescription {
-  id: number;
-  description: string;
-}
+// export interface IUpdateColumnColor {
+//   id: number;
+//   color: IColor;
+// }
+//
+// export interface IUpdateColumnIsCollapsed {
+//   id: number;
+//   isCollapsed: boolean;
+// }
 
 export interface IUpdateColumnPosition {
   sourcePosition: number;
   destinationPosition: number;
   boardId: number;
-}
-
-export interface IUpdateColumnColor {
-  id: number;
-  color: IColor;
-}
-
-export interface IUpdateColumnIsCollapsed {
-  id: number;
-  isCollapsed: boolean;
 }
 
 export interface IRemoveColumn {

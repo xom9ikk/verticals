@@ -16,10 +16,11 @@ import {
   IUpdateColumnPosition,
   IDuplicateColumn,
   IReverseColumnOrder,
-  IUpdateColumnTitle,
-  IUpdateColumnDescription,
-  IUpdateColumnColor,
-  IUpdateColumnIsCollapsed,
+  IUpdateColumn,
+  // IUpdateColumnTitle,
+  // IUpdateColumnDescription,
+  // IUpdateColumnColor,
+  // IUpdateColumnIsCollapsed,
 } from '@type/actions';
 import { ITodo } from '@type/entities';
 
@@ -39,14 +40,14 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchColumnsByBoardId>) {
 
 function* createWorker(action: PayloadAction<ICreateColumn>) {
   try {
-    const { belowId } = action.payload;
+    const { belowId, ...board } = action.payload;
     const response = yield* apply(columnService, columnService.create, [action.payload]);
     const { columnId, position } = response.data;
     if (belowId) {
       yield put(ColumnsActions.removeTemp());
       yield put(ColumnsActions.insertInPosition({
         entity: {
-          ...action.payload,
+          ...board,
           id: columnId,
         },
         position,
@@ -72,12 +73,7 @@ function* removeWorker(action: PayloadAction<IRemoveColumn>) {
   }
 }
 
-function* updateWorker(action: PayloadAction<
-IUpdateColumnTitle
-& IUpdateColumnDescription
-& IUpdateColumnColor
-& IUpdateColumnIsCollapsed
->) {
+function* updateWorker(action: PayloadAction<IUpdateColumn>) {
   try {
     yield* apply(columnService, columnService.update, [action.payload]);
     yield call(show, 'Column', 'Column updated successfully', ALERT_TYPES.SUCCESS);
@@ -127,10 +123,11 @@ export function* watchColumn() {
     takeLatest(ColumnsActions.fetchByBoardId, fetchByBoardIdWorker),
     takeLatest(ColumnsActions.create, createWorker),
     takeLatest(ColumnsActions.remove, removeWorker),
-    takeLatest(ColumnsActions.updateTitle, updateWorker),
-    takeLatest(ColumnsActions.updateDescription, updateWorker),
-    takeLatest(ColumnsActions.updateColor, updateWorker),
-    takeLatest(ColumnsActions.updateIsCollapsed, updateWorker),
+    takeLatest(ColumnsActions.update, updateWorker),
+    // takeLatest(ColumnsActions.updateTitle, updateWorker),
+    // takeLatest(ColumnsActions.updateDescription, updateWorker),
+    // takeLatest(ColumnsActions.updateColor, updateWorker),
+    // takeLatest(ColumnsActions.updateIsCollapsed, updateWorker),
     takeLatest(ColumnsActions.updatePosition, updatePositionWorker),
     takeLatest(ColumnsActions.duplicate, duplicateWorker),
     takeLatest(ColumnsActions.reverseOrder, reverseOrderWorker),

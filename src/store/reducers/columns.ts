@@ -10,22 +10,30 @@ const initialState: IColumns = {
 
 export const ColumnsReducer = createReducer(initialState, (builder) => builder
   .addCase(ColumnsActions.setAll, (state, action) => action.payload)
-  .addCase(ColumnsActions.updateTitle, (draft, action) => {
-    const { id, title } = action.payload;
-    draft.entities[draft.entities.findIndex((column) => column.id === id)].title = title;
+  .addCase(ColumnsActions.update, (draft, action) => {
+    const { id } = action.payload;
+    const index = draft.entities.findIndex((column) => column.id === id);
+    draft.entities[index] = {
+      ...draft.entities[index],
+      ...action.payload,
+    };
   })
-  .addCase(ColumnsActions.updateDescription, (draft, action) => {
-    const { id, description } = action.payload;
-    draft.entities[draft.entities.findIndex((column) => column.id === id)].description = description;
-  })
-  .addCase(ColumnsActions.updateColor, (draft, action) => {
-    const { id, color } = action.payload;
-    draft.entities[draft.entities.findIndex((column) => column.id === id)].color = color;
-  })
-  .addCase(ColumnsActions.updateIsCollapsed, (draft, action) => {
-    const { id, isCollapsed } = action.payload;
-    draft.entities[draft.entities.findIndex((column) => column.id === id)].isCollapsed = isCollapsed;
-  })
+  // .addCase(ColumnsActions.updateTitle, (draft, action) => {
+  //   const { id, title } = action.payload;
+  //   draft.entities[draft.entities.findIndex((column) => column.id === id)].title = title;
+  // })
+  // .addCase(ColumnsActions.updateDescription, (draft, action) => {
+  //   const { id, description } = action.payload;
+  //   draft.entities[draft.entities.findIndex((column) => column.id === id)].description = description;
+  // })
+  // .addCase(ColumnsActions.updateColor, (draft, action) => {
+  //   const { id, color } = action.payload;
+  //   draft.entities[draft.entities.findIndex((column) => column.id === id)].color = color;
+  // })
+  // .addCase(ColumnsActions.updateIsCollapsed, (draft, action) => {
+  //   const { id, isCollapsed } = action.payload;
+  //   draft.entities[draft.entities.findIndex((column) => column.id === id)].isCollapsed = isCollapsed;
+  // })
   .addCase(ColumnsActions.add, (draft, action) => {
     const { id, boardId } = action.payload;
 
@@ -72,8 +80,8 @@ export const ColumnsReducer = createReducer(initialState, (builder) => builder
   .addCase(ColumnsActions.removeTemp, (draft) => {
     const entityIndex = draft.entities.findIndex((column) => column.id === TEMP_ID);
     if (entityIndex !== -1) {
-      draft.entities.splice(entityIndex, 1);
       const { boardId } = draft.entities[entityIndex];
+      draft.entities.splice(entityIndex, 1);
 
       const positionIndex = draft.positions[boardId].findIndex((columnId) => columnId === TEMP_ID);
       if (positionIndex !== -1) draft.positions[boardId].splice(positionIndex, 1);

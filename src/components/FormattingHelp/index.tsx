@@ -73,8 +73,8 @@ export const FormattingHelp: FC<IFormattingHelp> = () => {
     <ControlButton
       imageSrc="/assets/svg/close.svg"
       alt="close"
-      imageSize={24}
-      size={30}
+      imageSize={16}
+      size={32}
       style={{
         position: 'absolute',
         right: 0,

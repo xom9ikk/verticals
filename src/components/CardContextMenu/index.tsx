@@ -17,7 +17,7 @@ import { useOpenFiles } from '@use/openFiles';
 interface ICardContextMenu {
   id?: number;
   title?: string;
-  columnId?: number;
+  columnId: number;
   isArchived?: boolean;
   isActive?: boolean;
   isHover: boolean;

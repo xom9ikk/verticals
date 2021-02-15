@@ -127,8 +127,8 @@ export const BoardList: FC = () => {
           <Droppable droppableId="droppable">
             {(provided) => (
               <div
-                {...provided.droppableProps}
                 ref={provided.innerRef}
+                {...provided.droppableProps}
               >
                 {boards.map(({
                   id, icon, title, description, color, belowId,

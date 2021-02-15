@@ -24,8 +24,8 @@ import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import { getActiveBoardId, getActiveTodoId, getUsername } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
-import { useEventListener } from '@use/eventListener';
 import { useValueRef } from '@use/valueRef';
+import useKeys from '@rooks/use-keys';
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -50,7 +50,7 @@ export const MainLayout: FC = () => {
   const closePopups = () => {
     dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
-    dispatch(SystemActions.setIsEditableColumn(false));
+    // dispatch(SystemActions.setEditableColumnId(null));
     dispatch(SystemActions.setIsEditableBoard(false));
   };
 
@@ -65,12 +65,11 @@ export const MainLayout: FC = () => {
     }
   };
 
-  const handleClick = (event: any) => {
-    if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
-  };
+  // const handleClick = (event: any) => {
+  //   if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
+  // };
 
-  useEventListener('keydown', closePopupsAndEditable, 'Escape');
-  useEventListener('click', handleClick);
+  useKeys(['Escape'], closePopupsAndEditable);
 
   useEffect(() => {
     if (boardId) {
