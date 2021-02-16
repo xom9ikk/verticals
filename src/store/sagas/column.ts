@@ -40,14 +40,14 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchColumnsByBoardId>) {
 
 function* createWorker(action: PayloadAction<ICreateColumn>) {
   try {
-    const { belowId, ...board } = action.payload;
+    const { belowId, ...column } = action.payload;
     const response = yield* apply(columnService, columnService.create, [action.payload]);
     const { columnId, position } = response.data;
     if (belowId) {
       yield put(ColumnsActions.removeTemp());
       yield put(ColumnsActions.insertInPosition({
         entity: {
-          ...board,
+          ...column,
           id: columnId,
         },
         position,

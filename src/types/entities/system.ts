@@ -19,7 +19,7 @@ export interface ISystem {
   activePopupId: string | null;
   isEditableCard: boolean;
   editableColumnId: number | null;
-  isEditableBoard: boolean;
+  editableBoardId: number | null;
   isSearchMode: boolean;
   language: EnumLanguage;
   activeTodoId: number | null;

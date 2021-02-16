@@ -15,12 +15,8 @@ import { redirectTo } from '@router/history';
 import {
   ICreateBoard,
   IRemoveBoard,
-  IUpdateBoardCardType,
-  IUpdateBoardColor,
-  IUpdateBoardDescription,
-  IUpdateBoardIcon,
+  IUpdateBoard,
   IUpdateBoardPosition,
-  IUpdateBoardTitle,
 } from '@type/actions';
 
 const { boardService } = container.get<IServices>(TYPES.Services);
@@ -51,14 +47,14 @@ function* fetchWorker() {
 
 function* createWorker(action: PayloadAction<ICreateBoard>) {
   try {
-    const { belowId } = action.payload;
+    const { belowId, ...board } = action.payload;
     const response = yield* apply(boardService, boardService.create, [action.payload]);
     const { boardId, position } = response.data;
     if (belowId) {
       yield put(BoardsActions.removeTemp());
       yield put(BoardsActions.insertInPosition({
         entity: {
-          ...action.payload,
+          ...board,
           id: boardId,
         },
         position,
@@ -84,13 +80,7 @@ function* removeWorker(action: PayloadAction<IRemoveBoard>) {
   }
 }
 
-function* updateWorker(action: PayloadAction<
-IUpdateBoardTitle
-& IUpdateBoardDescription
-& IUpdateBoardColor
-& IUpdateBoardCardType
-& IUpdateBoardIcon
->) {
+function* updateWorker(action: PayloadAction<IUpdateBoard>) {
   try {
     yield* apply(boardService, boardService.update, [action.payload]);
     yield call(show, 'Board', 'Board updated successfully', ALERT_TYPES.SUCCESS);
@@ -113,11 +103,7 @@ export function* watchBoard() {
     takeLatest(BoardsActions.fetchAll, fetchWorker),
     takeLatest(BoardsActions.create, createWorker),
     takeLatest(BoardsActions.remove, removeWorker),
-    takeLatest(BoardsActions.updateTitle, updateWorker),
-    takeLatest(BoardsActions.updateDescription, updateWorker),
-    takeLatest(BoardsActions.updateColor, updateWorker),
-    takeLatest(BoardsActions.updateCardType, updateWorker),
-    takeLatest(BoardsActions.updateIcon, updateWorker),
+    takeLatest(BoardsActions.update, updateWorker),
     takeLatest(BoardsActions.updatePosition, updatePositionWorker),
   ]);
 }

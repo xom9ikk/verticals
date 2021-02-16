@@ -1,36 +1,37 @@
 import React, {
-  FC, useMemo, useRef, useState,
+  FC, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
-import { Board, IExitFromEditable } from '@comp/Board';
+import { Board } from '@comp/Board';
 import { Profile } from '@comp/Profile';
 import { BoardsActions, SystemActions } from '@store/actions';
-import { EnumTodoType } from '@type/entities';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import { Link } from 'react-router-dom';
 import {
   getActiveBoardId,
-  getIsEditableBoard,
+  getEditableBoardId,
   getIsLoadedBoards,
   getOrderedBoards,
   getUsername,
-  getIsSearchMode, getActiveBoardTitle, getActiveTodoTitle,
+  getIsSearchMode,
+  getActiveBoardTitle,
+  getActiveTodoTitle,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
 import { useHover } from '@use/hover';
 import { useAutoScroll } from '@use/autoScroll';
+import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 
 export const BoardList: FC = () => {
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const { isHovering, hoveringProps } = useHover();
-  const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
 
   const username = useSelector(getUsername);
   const boards = useSelector(getOrderedBoards);
@@ -39,49 +40,13 @@ export const BoardList: FC = () => {
   const activeBoardId = useSelector(getActiveBoardId);
   const activeBoardTitle = useSelector(getActiveBoardTitle);
   const activeTodoTitle = useSelector(getActiveTodoTitle);
-  const isEditableBoard = useSelector(getIsEditableBoard);
+  const editableBoardId = useSelector(getEditableBoardId);
 
   useTitle(activeTodoTitle || activeBoardTitle);
 
   const boardContainerRef = useRef<any>(null);
 
   const { scrollToBottom } = useAutoScroll(boardContainerRef);
-
-  const saveBoard = ({
-    boardId, title, description, color, belowId,
-  }: IExitFromEditable) => {
-    setIsOpenNewBoard(false);
-    if (boardId && !belowId) {
-      if (title) {
-        dispatch(BoardsActions.updateTitle({
-          id: boardId,
-          title,
-        }));
-      }
-      if (description) {
-        dispatch(BoardsActions.updateDescription({
-          id: boardId,
-          description,
-        }));
-      }
-      if (color !== undefined) {
-        dispatch(BoardsActions.updateColor({
-          id: boardId,
-          color,
-        }));
-      }
-    } else if (title) {
-      setTimeout(() => setIsOpenNewBoard(true));
-      setTimeout(scrollToBottom, 500);
-      dispatch(BoardsActions.create({
-        icon: '/assets/svg/board/item.svg',
-        title,
-        description: description || undefined,
-        cardType: EnumTodoType.Checkboxes,
-        belowId,
-      }));
-    }
-  };
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -101,8 +66,7 @@ export const BoardList: FC = () => {
 
   const addNewBoard = () => {
     requestAnimationFrame(scrollToBottom);
-    setIsOpenNewBoard(true);
-    dispatch(SystemActions.setIsEditableBoard(true));
+    dispatch(SystemActions.setEditableBoardId(NEW_BOARD_ID));
   };
 
   const handleClick = (title: string, id: number) => {
@@ -118,7 +82,7 @@ export const BoardList: FC = () => {
     return (
       <div
         onClick={(e) => {
-          if (isEditableBoard) {
+          if (editableBoardId) {
             e.stopPropagation();
           }
         }}
@@ -148,14 +112,15 @@ export const BoardList: FC = () => {
                         <Board
                           snapshot={draggableSnapshot}
                           key={id}
-                          id={id}
+                          boardId={id}
                           belowId={belowId}
                           icon={icon}
                           color={color}
                           title={title}
                           description={description}
                           isActive={activeBoardId === id}
-                          onExitFromEditable={saveBoard}
+                          isEditable={editableBoardId === id}
+                          scrollToBottom={scrollToBottom}
                           onClick={handleClick}
                         />
                       </div>
@@ -169,34 +134,18 @@ export const BoardList: FC = () => {
         </DragDropContext>
         <Link to={`/${username}/trash`}>
           <Board
-            key={-1}
-            id={-1}
+            boardId={TRASH_BOARD_ID}
             icon="/assets/svg/board/trash.svg"
             title="Trash"
-            isActive={activeBoardId === -1}
+            isEditable={false}
+            isActive={activeBoardId === TRASH_BOARD_ID}
           />
         </Link>
       </div>
     );
-  }, [boards, activeBoardId, isSearchMode, isEditableBoard, username]);
+  }, [boards, activeBoardId, isSearchMode, editableBoardId, username]);
 
-  const profile = useMemo(() => (
-    <Profile
-      onAddNewBoard={addNewBoard}
-    />
-  ), []);
-
-  const memoNewBoard = useMemo(() => (
-    isOpenNewBoard && (
-    <Board
-      icon="/assets/svg/board/item.svg"
-      isEditableDefault
-      onExitFromEditable={saveBoard}
-    />
-    )
-  ), [isOpenNewBoard]);
-
-  const memoMenu = useMemo(() => !isOpenNewBoard && (
+  const memoAddNewBoard = useMemo(() => (
     <ControlButton
       imageSrc="/assets/svg/add.svg"
       alt="add"
@@ -207,7 +156,7 @@ export const BoardList: FC = () => {
       onClick={addNewBoard}
     />
   ),
-  [isHovering, isOpenNewBoard]);
+  [isHovering, editableBoardId]);
 
   return (
     <div
@@ -215,10 +164,19 @@ export const BoardList: FC = () => {
       {...hoveringProps}
       ref={boardContainerRef}
     >
-      { profile }
+      <Profile onAddNewBoard={addNewBoard} />
       { boardItems }
-      { memoMenu }
-      { memoNewBoard }
+      { editableBoardId !== NEW_BOARD_ID && memoAddNewBoard }
+      {
+        editableBoardId === NEW_BOARD_ID && (
+        <Board
+          boardId={NEW_BOARD_ID}
+          icon="/assets/svg/board/item.svg"
+          isEditable={editableBoardId === NEW_BOARD_ID}
+          scrollToBottom={scrollToBottom}
+        />
+        )
+      }
       <FallbackLoader
         backgroundColor="#fafafa"
         isAbsolute

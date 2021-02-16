@@ -51,7 +51,7 @@ export const MainLayout: FC = () => {
     // dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     // dispatch(SystemActions.setEditableColumnId(null));
-    dispatch(SystemActions.setIsEditableBoard(false));
+    // dispatch(SystemActions.setEditableBoardId(false));
   };
 
   const closePopupsAndEditable = () => {

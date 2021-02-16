@@ -179,9 +179,7 @@ export const ColumnWide: FC<IColumnWide> = ({
                     ref={dropProvided.innerRef}
                     className="column__container"
                   >
-                    <div
-                      ref={columnContainerRef}
-                    >
+                    <div ref={columnContainerRef}>
                       <ColumnHeader
                         provided={provided}
                         boardId={boardId}

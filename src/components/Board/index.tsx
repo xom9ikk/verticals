@@ -1,41 +1,29 @@
+/* eslint-disable no-nested-ternary */
 import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { Menu } from '@comp/Menu';
-import { MenuItem } from '@comp/MenuItem';
-import { Divider } from '@comp/Divider';
-import { ColorPicker } from '@comp/ColorPicker';
-import { Submenu } from '@comp/Submenu';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
-import { ControlButton } from '@comp/ControlButton';
-import { BoardsActions, ColumnsActions, SystemActions } from '@store/actions';
+import { BoardsActions, SystemActions } from '@store/actions';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { useFocus } from '@use/focus';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { useReadableId } from '@use/readableId';
 import { EnumTodoType, IColor } from '@type/entities';
 import {
   getCountTodosByBoardId,
-  getIsEditableBoard, getIsSearchMode,
+  getIsSearchMode,
   getUsername,
 } from '@store/selectors';
-import { ICONS } from '@/constants';
-
-export interface IExitFromEditable {
-  boardId: number,
-  title?: string,
-  description?: string,
-  color?: IColor,
-  belowId?: number,
-}
+import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
+import { BoardContextMenu } from '@comp/BoardContextMenu';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import useKeys from '@rooks/use-keys';
 
 interface IBoard {
-  id?: number;
+  boardId: number;
   snapshot?: DraggableStateSnapshot,
   belowId?: number;
   icon: string;
@@ -43,93 +31,83 @@ interface IBoard {
   title?: string;
   isActive?: boolean;
   description?: string;
-  isEditableDefault?: boolean;
-  onExitFromEditable?: ({
-    boardId,
-    title,
-    description,
-    color,
-    belowId,
-  }: IExitFromEditable) => void;
-  onClick?: (title: string, id: number) => void;
-}
-
-enum EnumMenuActions {
-  EditBoard,
-  CardStyle,
-  ReverseColumnOrder,
-  CopyLink,
-  AddBoardBelow,
-  Delete,
+  isEditable: boolean;
+  onClick?: (title: string, boardId: number) => void;
+  scrollToBottom?: () => void;
 }
 
 export const Board: FC<IBoard> = ({
-  id = 0,
+  boardId,
   snapshot,
   belowId,
   icon,
   color,
-  title: initialTitle = '',
-  description: initialDescription = '',
-  isEditableDefault,
-  onExitFromEditable,
+  title = '',
+  description = '',
+  isEditable,
   isActive = false,
   onClick,
+  scrollToBottom,
 }) => {
   const dispatch = useDispatch();
   const { focus } = useFocus();
-  const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
-  const [isHover, setIsHover] = useState<boolean>(false);
-  const [isMenuClick, setIsMenuClick] = useState<boolean>(false);
-  const [isEditable, setIsEditable] = useState<boolean>(false);
-  const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
-  const [titleValue, setTitleValue] = useState<string | undefined>(initialTitle);
-  const [descriptionValue, setDescriptionValue] = useState<string | undefined>(initialDescription);
-  const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const isEditableBoard = useSelector(getIsEditableBoard);
   const username = useSelector(getUsername);
   const isSearchMode = useSelector(getIsSearchMode);
-  const countTodos = useSelector(getCountTodosByBoardId(id));
+  const countTodos = useSelector(getCountTodosByBoardId(boardId));
+
+  const [isHover, setIsHover] = useState<boolean>(false);
+  const [titleValue, setTitleValue] = useState<string>(title);
+  const [descriptionValue, setDescriptionValue] = useState<string>(description);
 
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
 
-  const getNewData = () => ({
-    newTitle: initialTitle !== titleValue
-      ? titleValue?.trim()
-      : undefined,
-    newDescription: initialDescription !== descriptionValue
-      ? descriptionValue?.trim()
-      : undefined,
-  });
+  const saveBoard = () => {
+    if (!isEditable) return;
+    const normalizedTitleValue = titleValue.trim();
+    const normalizedDescriptionValue = descriptionValue?.trim() || undefined;
 
-  const saveBoard = (newColor?: IColor) => {
-    const { newTitle, newDescription } = getNewData();
-    onExitFromEditable?.({
-      boardId: id!,
-      title: newTitle,
-      description: newDescription,
-      color: newColor,
-      belowId,
-    });
+    if (boardId !== NEW_BOARD_ID && belowId === undefined) {
+      if (normalizedTitleValue) {
+        dispatch(BoardsActions.update({
+          id: boardId,
+          title: normalizedTitleValue,
+          description: normalizedDescriptionValue,
+        }));
+      } else {
+        setTitleValue(title);
+        setDescriptionValue(description);
+      }
+      dispatch(SystemActions.setEditableBoardId(null));
+    } else {
+      if (normalizedTitleValue) {
+        dispatch(BoardsActions.create({
+          icon: '/assets/svg/board/item.svg',
+          title: normalizedTitleValue,
+          description: normalizedDescriptionValue || undefined,
+          cardType: EnumTodoType.Checkboxes,
+          belowId,
+        }));
+      } else {
+        dispatch(SystemActions.setEditableBoardId(null));
+      }
+      if (belowId !== undefined) {
+        dispatch(SystemActions.setEditableBoardId(null));
+      } else {
+        setTitleValue('');
+        setDescriptionValue('');
+        setTimeout(() => {
+          scrollToBottom?.();
+        }, 200);
+      }
+    }
   };
-
-  const handleColorPick = (newColor: IColor) => {
-    saveBoard(newColor);
-  };
-
-  useEffect(() => {
-    focus(titleInputRef);
-  }, [isEditable]);
 
   const handleKeyDown = (event: any) => {
-    const {
-      key, ctrlKey, shiftKey,
-    } = event;
+    const { key, ctrlKey, shiftKey } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      setIsEditable(false);
       saveBoard();
     }
   };
@@ -141,219 +119,47 @@ export const Board: FC<IBoard> = ({
       : setTitleValue(value);
   };
 
-  useEffect(() => {
-    if (isDoubleClicked) {
-      setIsDoubleClicked(false);
-      dispatch(SystemActions.setIsEditableBoard(true));
-      if (!isEditableBoard && isDoubleClicked) {
-        // console.log('setIsEditable true');
-        setIsEditable(true);
-      }
-    }
-  }, [isDoubleClicked]);
+  const handleEsc = () => {
+    dispatch(SystemActions.setEditableBoardId(null));
+    saveBoard();
+  };
 
-  useEffect(() => {
-    if (isDoubleClicked === false && !isEditableBoard && isEditable) {
-      setIsEditable(false);
-      saveBoard();
-      setIsDoubleClicked(undefined);
-    }
-  }, [isEditableBoard]);
+  const [boardRef] = useOutsideClickRef(saveBoard);
+
+  useKeys(['Escape'], handleEsc, {
+    // @ts-ignore
+    target: boardRef,
+    when: isEditable,
+  });
 
   const handleDoubleClickUnwrapped = () => {
-    if (isEditableBoard) {
-      dispatch(SystemActions.setIsEditableBoard(false));
-    }
-    setIsDoubleClicked(true);
+    dispatch(SystemActions.setEditableBoardId(boardId));
   };
 
   const handleClickUnwrapped = () => {
-    if (!isEditable && !isMenuClick) {
-      onClick?.(initialTitle!, id!);
+    if (!isEditable) {
+      onClick?.(title, boardId!);
     }
   };
 
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, true);
-
-  useEffect(() => {
-    if (isEditableDefault) {
-      handleDoubleClickUnwrapped();
-    }
-  }, [isEditableDefault]);
+  } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, isEditable);
 
   useEffect(() => {
     if (belowId) {
-      handleDoubleClickUnwrapped();
+      dispatch(SystemActions.setEditableBoardId(boardId));
     }
   }, []);
 
-  const handleMenuButtonClick = (action: EnumMenuActions, payload?: any) => {
-    console.log('handleMenuButtonClick', action, payload);
-    switch (action) {
-      case EnumMenuActions.EditBoard: {
-        handleDoubleClickUnwrapped();
-        break;
-      }
-      case EnumMenuActions.CardStyle: {
-        dispatch(BoardsActions.updateCardType({ id: id!, cardType: payload }));
-        break;
-      }
-      case EnumMenuActions.ReverseColumnOrder: {
-        dispatch(ColumnsActions.reverseOrder({ boardId: id! }));
-        break;
-      }
-      case EnumMenuActions.CopyLink: {
-        setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-          dispatch(SystemActions.setActivePopupId(null));
-        }, 1000);
-        return;
-      }
-      case EnumMenuActions.AddBoardBelow: {
-        dispatch(BoardsActions.removeTemp());
-        dispatch(BoardsActions.drawBelow({ belowId: id! }));
-        break;
-      }
-      case EnumMenuActions.Delete: {
-        dispatch(BoardsActions.remove({ id: id! }));
-        break;
-      }
-      default: break;
-    }
-  };
-
-  const memoMenu = useMemo(() => {
-    if (id !== -1) {
-      return (
-        <div className="board-item__menu">
-          <Menu
-            onSelect={handleMenuButtonClick}
-            id={`board-${id}`}
-            imageSrc="/assets/svg/dots.svg"
-            alt="menu"
-            imageSize={22}
-            size={24}
-            isInvisible
-            isHoverBlock={isHover}
-            onClick={() => {
-              setIsMenuClick(true);
-            }}
-            onMouseEnter={() => setIsMenuClick(true)}
-            onMouseLeave={() => setIsMenuClick(false)}
-            position="right"
-            isAbsolute={false}
-            isInvertColor={isActive}
-          >
-            <ColorPicker onPick={handleColorPick} activeColor={color} />
-            <MenuItem
-              text="Edit board"
-              imageSrc="/assets/svg/menu/edit.svg"
-              hintText="E"
-              action={EnumMenuActions.EditBoard}
-            />
-            <Divider verticalSpacer={7} horizontalSpacer={10} />
-            <Submenu
-              text="Card style"
-              imageSrc="/assets/svg/menu/rect.svg"
-            >
-              <MenuItem
-                text="Checkboxes"
-                imageSrc="/assets/svg/menu/square.svg"
-                action={EnumMenuActions.CardStyle}
-                payload={EnumTodoType.Checkboxes}
-              />
-              <MenuItem
-                text="Arrows"
-                imageSrc="/assets/svg/menu/arrow.svg"
-                action={EnumMenuActions.CardStyle}
-                payload={EnumTodoType.Arrows}
-              />
-              <MenuItem
-                text="Dots"
-                imageSrc="/assets/svg/menu/circle.svg"
-                action={EnumMenuActions.CardStyle}
-                payload={EnumTodoType.Dots}
-              />
-              <MenuItem
-                text="Dashes"
-                imageSrc="/assets/svg/menu/dash.svg"
-                action={EnumMenuActions.CardStyle}
-                payload={EnumTodoType.Dashes}
-              />
-              <MenuItem
-                text="Nothing"
-                action={EnumMenuActions.CardStyle}
-                payload={EnumTodoType.Nothing}
-              />
-            </Submenu>
-            <Submenu
-              text="Icon"
-              imageSrc="/assets/svg/menu/icon.svg"
-            >
-              <div className="menu-item__icons-container">
-                {
-                  ICONS.map((filename) => {
-                    const link = `/assets/svg/board/${filename}.svg`;
-                    return (
-                      <ControlButton
-                        key={filename}
-                        imageSrc={link}
-                        alt={filename}
-                        imageSize={24}
-                        size={36}
-                        onClick={(e: React.SyntheticEvent) => {
-                          e.stopPropagation();
-                          dispatch(BoardsActions.updateIcon({ id: id!, icon: link }));
-                        }}
-                      />
-                    );
-                  })
-              }
-              </div>
-            </Submenu>
-            <MenuItem
-              text="Reverse column order"
-              imageSrc="/assets/svg/menu/reverse.svg"
-              action={EnumMenuActions.ReverseColumnOrder}
-            />
-            <CopyToClipboard
-              text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle!, id!)}`} // TODO: move to env
-              onCopy={() => {
-                handleMenuButtonClick(EnumMenuActions.CopyLink);
-              }}
-            >
-              <MenuItem
-                text={isCopied ? 'Copied!' : 'Copy link'}
-                imageSrc="/assets/svg/menu/copy-link.svg"
-                isAutoClose={false}
-              />
-            </CopyToClipboard>
-            <Divider verticalSpacer={7} horizontalSpacer={10} />
-            <MenuItem
-              text="Add board below"
-              imageSrc="/assets/svg/menu/add-board.svg"
-              action={EnumMenuActions.AddBoardBelow}
-            />
-            <Divider verticalSpacer={7} horizontalSpacer={10} />
-            <MenuItem
-              text="Delete"
-              imageSrc="/assets/svg/menu/remove.svg"
-              hintText="⌫"
-              action={EnumMenuActions.Delete}
-            />
-          </Menu>
-        </div>
-      );
-    }
-  }, [id, isHover, isActive, color, username, isCopied]);
+  useEffect(() => {
+    focus(titleInputRef);
+  }, [isEditable]);
 
   const memoCounter = useMemo(() => (
-    <div className={cn('board-item__counter', {
-      'board-item__counter--active': isActive,
+    <div className={cn('board__counter', {
+      'board__counter--active': isActive,
     })}
     >
       <img src="/assets/svg/board/search.svg" alt="search" />
@@ -361,25 +167,21 @@ export const Board: FC<IBoard> = ({
     </div>
   ), [countTodos, isActive]);
 
-  const boardItem = useMemo(() => (
+  return useMemo(() => (
     <div
-      className={cn('board-item', {
-        'board-item--editable': isEditable,
-        'board-item--dragging': snapshot?.isDragging,
-        'board-item--active': isActive,
+      ref={boardRef}
+      className={cn('board', {
+        'board--editable': isEditable,
+        'board--dragging': snapshot?.isDragging,
+        'board--active': isActive,
       })}
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       {
         isEditable ? (
-          <div
-            className="card__block-wrapper card__block-wrapper--editable"
-          >
-            <img
-              src={icon}
-              alt="ico"
-            />
+          <div className="card__block-wrapper card__block-wrapper--editable">
+            <img src={icon} alt="ico" />
             <div className="card__editable-content">
               <TextArea
                 ref={titleInputRef}
@@ -415,18 +217,26 @@ export const Board: FC<IBoard> = ({
             onClick={handleClick}
             onDoubleClick={handleDoubleClick}
           >
-            { isSearchMode ? memoCounter : memoMenu }
+            { isSearchMode
+              ? memoCounter
+              : boardId === TRASH_BOARD_ID
+                ? null
+                : (
+                  <BoardContextMenu
+                    boardId={boardId}
+                    title={title}
+                    color={color}
+                    isActive={isActive}
+                    isHover={isHover}
+                  />
+                )}
           </RoundedButton>
         )
       }
     </div>
   ), [
-    isHover, isActive, isMenuClick,
-    isEditable, titleValue, descriptionValue,
-    snapshot, color, countTodos, icon, username, isCopied, isSearchMode,
+    isHover, isActive, isEditable,
+    titleValue, descriptionValue, snapshot,
+    color, countTodos, icon, username, isSearchMode,
   ]);
-
-  return (
-    <>{ boardItem }</>
-  );
 };

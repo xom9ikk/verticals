@@ -16,26 +16,34 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
     draft.entities.push(action.payload);
     draft.positions.push(id);
   })
-  .addCase(BoardsActions.updateTitle, (draft, action) => {
-    const { id, title } = action.payload;
-    draft.entities[draft.entities.findIndex((board) => board.id === id)].title = title;
+  .addCase(BoardsActions.update, (draft, action) => {
+    const { id } = action.payload;
+    const index = draft.entities.findIndex((board) => board.id === id);
+    draft.entities[index] = {
+      ...draft.entities[index],
+      ...action.payload,
+    };
   })
-  .addCase(BoardsActions.updateDescription, (draft, action) => {
-    const { id, description } = action.payload;
-    draft.entities[draft.entities.findIndex((board) => board.id === id)].description = description;
-  })
-  .addCase(BoardsActions.updateColor, (draft, action) => {
-    const { id, color } = action.payload;
-    draft.entities[draft.entities.findIndex((board) => board.id === id)].color = color;
-  })
-  .addCase(BoardsActions.updateCardType, (draft, action) => {
-    const { id, cardType } = action.payload;
-    draft.entities[draft.entities.findIndex((board) => board.id === id)].cardType = cardType;
-  })
-  .addCase(BoardsActions.updateIcon, (draft, action) => {
-    const { id, icon } = action.payload;
-    draft.entities[draft.entities.findIndex((board) => board.id === id)].icon = icon;
-  })
+  // .addCase(BoardsActions.updateTitle, (draft, action) => {
+  //   const { id, title } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].title = title;
+  // })
+  // .addCase(BoardsActions.updateDescription, (draft, action) => {
+  //   const { id, description } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].description = description;
+  // })
+  // .addCase(BoardsActions.updateColor, (draft, action) => {
+  //   const { id, color } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].color = color;
+  // })
+  // .addCase(BoardsActions.updateCardType, (draft, action) => {
+  //   const { id, cardType } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].cardType = cardType;
+  // })
+  // .addCase(BoardsActions.updateIcon, (draft, action) => {
+  //   const { id, icon } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].icon = icon;
+  // })
   .addCase(BoardsActions.updatePosition, (draft, action) => {
     const { sourcePosition, destinationPosition } = action.payload;
     draft.positions.splice(destinationPosition, 0, draft.positions.splice(sourcePosition, 1)[0]);

@@ -81,7 +81,7 @@ export const Menu: FC<IMenu> = ({
     when: isActive,
   });
 
-  const wrapping = (child) => (
+  const wrapping = (child: ReactElement) => (
     React.cloneElement(
       child, {
         ...child.props,
@@ -103,7 +103,8 @@ export const Menu: FC<IMenu> = ({
       {React.Children.map(children, (child: ReactElement) => {
         if (child.type.name === 'MenuItem') {
           return wrapping(child);
-        } if (child.type.name === 'Submenu') {
+        }
+        if (child.type.name === 'Submenu') {
           return React.cloneElement(
             child, {
               ...child.props,
