@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { SystemActions } from '@store/actions';
+import { useDispatch } from 'react-redux';
 
 interface IMenuItem {
   text: string;
@@ -7,7 +9,10 @@ interface IMenuItem {
   hintText?: string;
   hintImageSrc?: string;
   isColoredHintImage?: boolean;
+  isAutoClose?: boolean;
   onClick?: () => void;
+  action?: number;
+  payload?: any;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -18,52 +23,65 @@ export const MenuItem: FC<IMenuItem> = ({
   hintText,
   hintImageSrc,
   isColoredHintImage,
+  isAutoClose = true,
   onClick,
+  // action,
   onMouseEnter,
   onMouseLeave,
   children,
-}) => (
-  <button
-    type="button"
-    className="menu-item"
-    onClick={onClick}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-  >
-    <div className="menu-item__block">
-      <div className="menu-item__row">
-        {
-          imageSrc ? (
-            <img
-              src={imageSrc}
-              alt="ico"
-              className="menu-item__icon"
-            />
-          ) : (
-            <span className="menu-item__icon" />
-          )
-        }
-        <div className="menu-item__content">
-          {text}
+}) => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    if (isAutoClose) {
+      dispatch(SystemActions.setActivePopupId(null));
+    }
+    onClick?.();
+  };
+
+  return (
+    <button
+      type="button"
+      className="menu-item"
+      onClick={handleClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className="menu-item__block">
+        <div className="menu-item__row">
+          {
+              imageSrc ? (
+                <img
+                  src={imageSrc}
+                  alt="ico"
+                  className="menu-item__icon"
+                />
+              ) : (
+                <span className="menu-item__icon" />
+              )
+            }
+          <div className="menu-item__content">
+            {text}
+          </div>
+        </div>
+        <div className="menu-item__additional-content">
+          {children}
         </div>
       </div>
-      <div className="menu-item__additional-content">
-        {children}
-      </div>
-    </div>
-    {
-      hintText ? <span>{hintText}</span> : null
-    }
-    {
-      hintImageSrc ? (
-        <img
-          src={hintImageSrc}
-          alt="hint"
-          className={cn('menu-item__hint-icon', {
-            'menu-item__hint-icon--colored': isColoredHintImage,
-          })}
-        />
-      ) : null
-    }
-  </button>
-);
+      {
+          hintText ? <span>{hintText}</span> : null
+        }
+      {
+          hintImageSrc ? (
+            <img
+              src={hintImageSrc}
+              alt="hint"
+              className={cn('menu-item__hint-icon', {
+                'menu-item__hint-icon--colored': isColoredHintImage,
+              })}
+            />
+          ) : null
+        }
+    </button>
+  );
+};

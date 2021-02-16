@@ -8,7 +8,9 @@ interface ISubmenu {
 }
 
 export const Submenu: FC<ISubmenu> = ({
-  text, imageSrc, children,
+  text,
+  imageSrc,
+  children,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const sourceRef = useRef<any>(null);
@@ -32,6 +34,7 @@ export const Submenu: FC<ISubmenu> = ({
       <MenuItem
         text={text}
         imageSrc={imageSrc}
+        isAutoClose={false}
         hintImageSrc="/assets/svg/menu/right-chevron.svg"
       />
     </span>

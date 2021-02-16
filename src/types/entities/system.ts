@@ -16,7 +16,7 @@ export interface ISystem {
   isLoadedBoards: boolean;
   isLoadedColumns: boolean;
   isLoadedTodos: boolean;
-  isOpenPopup: boolean;
+  activePopupId: string | null;
   isEditableCard: boolean;
   editableColumnId: number | null;
   isEditableBoard: boolean;

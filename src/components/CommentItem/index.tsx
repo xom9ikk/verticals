@@ -73,10 +73,6 @@ export const CommentItem: FC<ICommentItem> = ({
     }
   }, [editCommentId]);
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-  };
-
   const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.Like: {
@@ -105,7 +101,6 @@ export const CommentItem: FC<ICommentItem> = ({
       default:
         break;
     }
-    hidePopup();
   };
 
   useEffect(() => {
@@ -280,33 +275,35 @@ export const CommentItem: FC<ICommentItem> = ({
               }
             </div>
             <Menu
+              id={`comment-${id}`}
               imageSrc="/assets/svg/dots.svg"
               tooltip="More"
               alt="menu"
               imageSize={16}
               size={22}
               position="top"
+              onSelect={handleMenuButtonClick}
             >
               <MenuItem
                 text={`${isLikedByMe ? 'Unlike' : 'Like'}`}
                 imageSrc="/assets/svg/like.svg"
-                onClick={() => handleMenuButtonClick(EnumMenuActions.Like)}
+                action={EnumMenuActions.Like}
               />
               <MenuItem
                 text="Reply"
                 imageSrc="/assets/svg/reply.svg"
-                onClick={() => handleMenuButtonClick(EnumMenuActions.Reply)}
+                action={EnumMenuActions.Reply}
               />
               <MenuItem
                 text="Edit"
                 imageSrc="/assets/svg/menu/edit.svg"
-                onClick={() => handleMenuButtonClick(EnumMenuActions.Edit)}
+                action={EnumMenuActions.Edit}
               />
               <Divider verticalSpacer={7} horizontalSpacer={10} />
               <MenuItem
                 text="Delete"
                 imageSrc="/assets/svg/menu/remove.svg"
-                onClick={() => handleMenuButtonClick(EnumMenuActions.Delete)}
+                action={EnumMenuActions.Delete}
               />
             </Menu>
           </div>

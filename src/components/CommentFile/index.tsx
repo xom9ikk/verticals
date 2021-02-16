@@ -46,7 +46,6 @@ export const CommentFile: FC<ICommentFile> = ({
 
   const handleOpenGallery = () => {
     if (isImage) {
-      // dispatch(SystemActions.setActiveGalleryId(id)); // calculate images for id by
       console.log(id);
     }
   };

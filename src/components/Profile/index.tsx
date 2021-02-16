@@ -33,10 +33,6 @@ export const Profile: FC<IProfile> = ({
   const { isHovering, hoveringProps } = useHover();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-  };
-
   const handleClose = () => {
     dispatch(SystemActions.setIsOpenProfile(false));
   };
@@ -59,13 +55,12 @@ export const Profile: FC<IProfile> = ({
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
-          hidePopup();
+          dispatch(SystemActions.setActivePopupId(null));
         }, 1000);
-        return;
+        break;
       }
       default: break;
     }
-    hidePopup();
   };
 
   const profile = useMemo(() => isOpenProfile && (
@@ -102,6 +97,7 @@ export const Profile: FC<IProfile> = ({
         }}
       />
       <Menu
+        id="profile"
         imageSrc="/assets/svg/dots.svg"
         alt="add"
         imageSize={22}
@@ -110,29 +106,24 @@ export const Profile: FC<IProfile> = ({
         isHoverBlock={isHovering}
         position="bottom"
         isAbsolute={false}
+        onSelect={handleMenuButtonClick}
       >
         <MenuItem
           text="My Profile"
           imageSrc="/assets/svg/menu/my-profile.svg"
-          onClick={() => {
-            handleMenuButtonClick(EnumMenuActions.OpenProfile);
-          }}
+          action={EnumMenuActions.OpenProfile}
         />
         <MenuItem
           text="Profile Settings"
           imageSrc="/assets/svg/menu/profile-settings.svg"
-          onClick={() => {
-            handleMenuButtonClick(EnumMenuActions.ProfileSettings);
-          }}
+          action={EnumMenuActions.ProfileSettings}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuItem
           text="Add board"
           imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
-          onClick={() => {
-            handleMenuButtonClick(EnumMenuActions.AddBoard);
-          }}
+          action={EnumMenuActions.AddBoard}
         />
         <CopyToClipboard
           text={`verticals.xom9ik.com/${username}`} // TODO: move to env
@@ -143,6 +134,7 @@ export const Profile: FC<IProfile> = ({
           <MenuItem
             text={isCopied ? 'Copied!' : 'Copy link'}
             imageSrc="/assets/svg/menu/copy-link.svg"
+            isAutoClose={false}
           />
         </CopyToClipboard>
       </Menu>

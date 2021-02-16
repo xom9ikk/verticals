@@ -135,9 +135,9 @@ export const CardPopup: FC<ICardPopup> = ({
       className={cn('card-popup', {
         'card-popup--open': activeTodo,
       })}
-      onClick={() => {
-        dispatch(SystemActions.setIsOpenPopup(false));
-      }}
+      // onClick={() => {
+      //   dispatch(SystemActions.setIsOpenPopup(false));
+      // }}
     >
       <div
         className={cn('card-popup__inner', {

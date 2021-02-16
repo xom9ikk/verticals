@@ -4,7 +4,7 @@ import { ICommentAttachments } from '@type/entities/comment-attachment';
 export type ISetSystemIsLoadedBoards = boolean;
 export type ISetSystemIsLoadedColumns = boolean;
 export type ISetSystemIsLoadedTodos = boolean;
-export type ISetSystemIsOpenPopup = boolean;
+export type ISetSystemActivePopupId = string | null;
 export type ISetSystemIsEditableCard = boolean;
 export type ISetSystemEditableColumnId = number | null;
 export type ISetSystemIsEditableBoard = boolean;

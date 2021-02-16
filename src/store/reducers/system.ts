@@ -6,7 +6,7 @@ const initialState: ISystem = {
   isLoadedBoards: false,
   isLoadedColumns: false,
   isLoadedTodos: false,
-  isOpenPopup: false,
+  activePopupId: null,
   isEditableCard: false,
   editableColumnId: null,
   isEditableBoard: false,
@@ -28,7 +28,7 @@ export const SystemReducer = createReducer(initialState, (builder) => builder
   .addCase(SystemActions.setIsLoadedBoards, (draft, action) => { draft.isLoadedBoards = action.payload; })
   .addCase(SystemActions.setIsLoadedColumns, (draft, action) => { draft.isLoadedColumns = action.payload; })
   .addCase(SystemActions.setIsLoadedTodos, (draft, action) => { draft.isLoadedTodos = action.payload; })
-  .addCase(SystemActions.setIsOpenPopup, (draft, action) => { draft.isOpenPopup = action.payload; })
+  .addCase(SystemActions.setActivePopupId, (draft, action) => { draft.activePopupId = action.payload; })
   .addCase(SystemActions.setIsEditableCard, (draft, action) => { draft.isEditableCard = action.payload; })
   .addCase(SystemActions.setEditableColumnId, (draft, action) => { draft.editableColumnId = action.payload; })
   .addCase(SystemActions.setIsEditableBoard, (draft, action) => { draft.isEditableBoard = action.payload; })

@@ -78,11 +78,11 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
       }
       default: break;
     }
-    dispatch(SystemActions.setIsOpenPopup(false));
   };
 
   return useMemo(() => (isEnabled ? (
     <Menu
+      id={`column-${columnId}`}
       imageSrc="/assets/svg/dots.svg"
       alt="menu"
       imageSize={22}
@@ -96,43 +96,44 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
         top: 23,
         right: 10,
       }}
+      onSelect={handleMenuButtonClick}
     >
       <ColorPicker onPick={handleColorPick} activeColor={color} />
       <MenuItem
         text="Edit column"
         imageSrc="/assets/svg/menu/edit.svg"
-        onClick={() => handleMenuButtonClick(EnumMenuActions.EditColumn)}
+        action={EnumMenuActions.EditColumn}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text="Duplicate"
         imageSrc="/assets/svg/menu/duplicate.svg"
-        onClick={() => handleMenuButtonClick(EnumMenuActions.Duplicate)}
+        action={EnumMenuActions.Duplicate}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text="Add card"
         imageSrc="/assets/svg/menu/add-card.svg"
-        onClick={() => handleMenuButtonClick(EnumMenuActions.AddCard)}
+        action={EnumMenuActions.AddCard}
       />
       <MenuItem
         text="Add heading"
         imageSrc="/assets/svg/menu/add-heading.svg"
-        onClick={() => handleMenuButtonClick(EnumMenuActions.AddHeading)}
+        action={EnumMenuActions.AddHeading}
       />
       <MenuItem
         text="Add column after"
         imageSrc="/assets/svg/menu/add-column.svg"
-        onClick={() => handleMenuButtonClick(EnumMenuActions.AddColumnAfter)}
+        action={EnumMenuActions.AddColumnAfter}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text="Delete"
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
-        onClick={() => handleMenuButtonClick(EnumMenuActions.Delete)}
+        action={EnumMenuActions.Delete}
       />
     </Menu>
   ) : null),
-  [isEnabled, isHide, isHover, color]);
+  [columnId, isEnabled, isHide, isHover, color]);
 };

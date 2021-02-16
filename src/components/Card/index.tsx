@@ -178,10 +178,6 @@ export const Card: FC<ICard> = ({
     saveTodo({ newColor });
   };
 
-  const handleHidePopup = () => {
-    setIsHover(false);
-  };
-
   const handleChangeStatus = (newStatus: EnumTodoStatus) => {
     saveTodo({ newStatus });
   };
@@ -414,7 +410,6 @@ export const Card: FC<ICard> = ({
                 status={status}
                 onStartEdit={handleDoubleClickUnwrapped}
                 onChangeColor={handleColorPick}
-                onHidePopup={handleHidePopup}
               />
               <span
                 className={cn('card__title', {

@@ -6,7 +6,7 @@ import { getTodos } from '@store/selectors/todos';
 export const getIsLoadedBoards = (state: IRootState) => state.system.isLoadedBoards;
 export const getIsLoadedColumns = (state: IRootState) => state.system.isLoadedColumns;
 export const getIsLoadedTodos = (state: IRootState) => state.system.isLoadedTodos;
-export const getIsOpenPopup = (state: IRootState) => state.system.isOpenPopup;
+export const getActivePopupId = (state: IRootState) => state.system.activePopupId;
 export const getIsEditableCard = (state: IRootState) => state.system.isEditableCard;
 export const getEditableColumnId = (state: IRootState) => state.system.editableColumnId;
 export const getIsEditableBoard = (state: IRootState) => state.system.isEditableBoard;

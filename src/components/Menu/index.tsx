@@ -1,13 +1,17 @@
 import React, {
-  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
+  FC, ReactElement, SyntheticEvent, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';
 import { SystemActions } from '@store/actions';
-import { getIsOpenPopup } from '@store/selectors';
+import { getActivePopupId } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import useKeys from '@rooks/use-keys';
 
 interface IMenu {
+  id: string;
+  onSelect: (action: any, payload: any) => void;
   imageSrc: string;
   text?: string;
   alt: string;
@@ -30,7 +34,9 @@ interface IMenu {
 }
 
 export const Menu: FC<IMenu> = ({
+  id,
   imageSrc,
+  onSelect,
   text,
   alt,
   tooltip,
@@ -52,91 +58,112 @@ export const Menu: FC<IMenu> = ({
   children,
 }) => {
   const dispatch = useDispatch();
-  const isOpenPopup = useSelector(getIsOpenPopup);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const activePopupId = useSelector(getActivePopupId);
   const sourceRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (isClicked) {
-      setIsClicked(false);
-      dispatch(SystemActions.setIsOpenPopup(true));
-      if (!isOpenPopup && isClicked) {
-        setIsOpen(true);
-      }
-    }
-  }, [isClicked]);
+  const isActive = activePopupId === id;
 
-  useEffect(() => {
-    if (!isClicked && !isOpenPopup) {
-      setIsOpen(false);
+  const switchPopup = () => {
+    if (isActive) {
+      dispatch(SystemActions.setActivePopupId(null));
+    } else {
+      dispatch(SystemActions.setActivePopupId(id));
     }
-  }, [isOpenPopup]);
+  };
+
+  const handleClick = (event: SyntheticEvent) => {
+    event.stopPropagation();
+    onClick?.(event);
+    switchPopup();
+  };
+
+  useKeys(['Escape'], switchPopup, {
+    when: isActive,
+  });
+
+  const wrapping = (child) => (
+    React.cloneElement(
+      child, {
+        ...child.props,
+        onClick: () => {
+          onSelect(child.props.action, child.props.payload);
+        },
+      },
+    )
+  );
 
   const popup = useMemo(() => (
     <Popup
-      isOpen={isOpen}
+      isOpen={isActive}
       position={position}
       sourceRef={sourceRef}
       isAbsolute={isAbsolute}
       style={{ zIndex: 2 }}
     >
-      {children}
+      {React.Children.map(children, (child: ReactElement) => {
+        if (child.type.name === 'MenuItem') {
+          return wrapping(child);
+        } if (child.type.name === 'Submenu') {
+          return React.cloneElement(
+            child, {
+              ...child.props,
+              children: React.Children.map(child.props.children, wrapping),
+            },
+          );
+        }
+        return (
+          React.cloneElement(
+            child, {
+              ...child.props,
+            },
+          )
+        );
+      })}
     </Popup>
   ),
-  [isOpen, position, sourceRef, isAbsolute, children]);
+  [isActive, position, sourceRef, isAbsolute, children]);
 
-  const button = useMemo(() => {
-    const handleClick = (event: SyntheticEvent) => {
-      event.stopPropagation();
-      onClick?.(event);
-      if (isOpenPopup) {
-        dispatch(SystemActions.setIsOpenPopup(false));
-        if (isOpen) {
-          setIsOpen(false);
-        }
-      }
-      if (!isOpen) {
-        setIsClicked(true);
-        setIsOpen(true);
-      }
-    };
-
-    return (
-      <ControlButton
-        ref={sourceRef}
-        imageSrc={imageSrc}
-        alt={alt}
-        imageSize={imageSize}
-        tooltip={tooltip}
-        size={size}
-        style={style}
-        text={text}
-        animationDuration={0}
-        isHide={isHide}
-        isInvisible={isInvisible}
-        isHoverBlock={isHoverBlock}
-        isMaxWidth={isMaxWidth}
-        isInvertColor={isInvertColor}
-        isPrimary={isPrimary}
-        isColored={isColored}
-        onClick={handleClick}
-        onDoubleClick={(e) => e.stopPropagation()}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      />
-    );
-  }, [
+  const button = useMemo(() => (
+    <ControlButton
+      ref={sourceRef}
+      imageSrc={imageSrc}
+      alt={alt}
+      imageSize={imageSize}
+      tooltip={tooltip}
+      size={size}
+      style={style}
+      text={text}
+      animationDuration={0}
+      isHide={isHide}
+      isInvisible={isInvisible}
+      isHoverBlock={isHoverBlock}
+      isMaxWidth={isMaxWidth}
+      isInvertColor={isInvertColor}
+      isPrimary={isPrimary}
+      isColored={isColored}
+      isStopPropagation={false}
+      onClick={handleClick}
+      onDoubleClick={(e) => e.stopPropagation()}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    />
+  ), [
     isHide, isHoverBlock, isMaxWidth,
     isInvertColor, size, imageSrc,
-    alt, text, isOpen,
-    isOpenPopup, style,
+    alt, text,
+    activePopupId, style,
   ]);
 
+  const handleOutsideClick = () => {
+    dispatch(SystemActions.setActivePopupId(null));
+  };
+
+  const [ref] = useOutsideClickRef(handleOutsideClick, !!activePopupId);
+
   return (
-    <>
+    <div ref={ref}>
       {button}
       {popup}
-    </>
+    </div>
   );
 };

@@ -89,5 +89,7 @@ export const ColumnsReducer = createReducer(initialState, (builder) => builder
   })
   .addCase(ColumnsActions.reverseOrder, (draft, action) => {
     const { boardId } = action.payload;
-    draft.positions[boardId].reverse();
+    if (draft.positions[boardId]) {
+      draft.positions[boardId].reverse();
+    }
   }));

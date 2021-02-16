@@ -105,11 +105,6 @@ export const Board: FC<IBoard> = ({
       : undefined,
   });
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-    setIsHover(false);
-  };
-
   const saveBoard = (newColor?: IColor) => {
     const { newTitle, newDescription } = getNewData();
     onExitFromEditable?.({
@@ -119,11 +114,9 @@ export const Board: FC<IBoard> = ({
       color: newColor,
       belowId,
     });
-    hidePopup();
   };
 
   const handleColorPick = (newColor: IColor) => {
-    dispatch(SystemActions.setIsOpenPopup(false));
     saveBoard(newColor);
   };
 
@@ -170,7 +163,6 @@ export const Board: FC<IBoard> = ({
   const handleDoubleClickUnwrapped = () => {
     if (isEditableBoard) {
       dispatch(SystemActions.setIsEditableBoard(false));
-      // dispatch(BoardsActions.removeTemp());
     }
     setIsDoubleClicked(true);
   };
@@ -199,6 +191,7 @@ export const Board: FC<IBoard> = ({
   }, []);
 
   const handleMenuButtonClick = (action: EnumMenuActions, payload?: any) => {
+    console.log('handleMenuButtonClick', action, payload);
     switch (action) {
       case EnumMenuActions.EditBoard: {
         handleDoubleClickUnwrapped();
@@ -216,7 +209,7 @@ export const Board: FC<IBoard> = ({
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
-          hidePopup();
+          dispatch(SystemActions.setActivePopupId(null));
         }, 1000);
         return;
       }
@@ -231,7 +224,6 @@ export const Board: FC<IBoard> = ({
       }
       default: break;
     }
-    hidePopup();
   };
 
   const memoMenu = useMemo(() => {
@@ -239,6 +231,8 @@ export const Board: FC<IBoard> = ({
       return (
         <div className="board-item__menu">
           <Menu
+            onSelect={handleMenuButtonClick}
+            id={`board-${id}`}
             imageSrc="/assets/svg/dots.svg"
             alt="menu"
             imageSize={22}
@@ -259,7 +253,7 @@ export const Board: FC<IBoard> = ({
               text="Edit board"
               imageSrc="/assets/svg/menu/edit.svg"
               hintText="E"
-              onClick={() => handleMenuButtonClick(EnumMenuActions.EditBoard)}
+              action={EnumMenuActions.EditBoard}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <Submenu
@@ -269,36 +263,31 @@ export const Board: FC<IBoard> = ({
               <MenuItem
                 text="Checkboxes"
                 imageSrc="/assets/svg/menu/square.svg"
-                onClick={() => handleMenuButtonClick(
-                  EnumMenuActions.CardStyle, EnumTodoType.Checkboxes,
-                )}
+                action={EnumMenuActions.CardStyle}
+                payload={EnumTodoType.Checkboxes}
               />
               <MenuItem
                 text="Arrows"
                 imageSrc="/assets/svg/menu/arrow.svg"
-                onClick={() => handleMenuButtonClick(
-                  EnumMenuActions.CardStyle, EnumTodoType.Arrows,
-                )}
+                action={EnumMenuActions.CardStyle}
+                payload={EnumTodoType.Arrows}
               />
               <MenuItem
                 text="Dots"
                 imageSrc="/assets/svg/menu/circle.svg"
-                onClick={() => handleMenuButtonClick(
-                  EnumMenuActions.CardStyle, EnumTodoType.Dots,
-                )}
+                action={EnumMenuActions.CardStyle}
+                payload={EnumTodoType.Dots}
               />
               <MenuItem
                 text="Dashes"
                 imageSrc="/assets/svg/menu/dash.svg"
-                onClick={() => handleMenuButtonClick(
-                  EnumMenuActions.CardStyle, EnumTodoType.Dashes,
-                )}
+                action={EnumMenuActions.CardStyle}
+                payload={EnumTodoType.Dashes}
               />
               <MenuItem
                 text="Nothing"
-                onClick={() => handleMenuButtonClick(
-                  EnumMenuActions.CardStyle, EnumTodoType.Nothing,
-                )}
+                action={EnumMenuActions.CardStyle}
+                payload={EnumTodoType.Nothing}
               />
             </Submenu>
             <Submenu
@@ -329,10 +318,10 @@ export const Board: FC<IBoard> = ({
             <MenuItem
               text="Reverse column order"
               imageSrc="/assets/svg/menu/reverse.svg"
-              onClick={() => handleMenuButtonClick(EnumMenuActions.ReverseColumnOrder)}
+              action={EnumMenuActions.ReverseColumnOrder}
             />
             <CopyToClipboard
-              text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle!, id!)}`}
+              text={`verticals.xom9ik.com/${username}/${toReadableId(initialTitle!, id!)}`} // TODO: move to env
               onCopy={() => {
                 handleMenuButtonClick(EnumMenuActions.CopyLink);
               }}
@@ -340,20 +329,21 @@ export const Board: FC<IBoard> = ({
               <MenuItem
                 text={isCopied ? 'Copied!' : 'Copy link'}
                 imageSrc="/assets/svg/menu/copy-link.svg"
+                isAutoClose={false}
               />
             </CopyToClipboard>
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuItem
               text="Add board below"
               imageSrc="/assets/svg/menu/add-board.svg"
-              onClick={() => handleMenuButtonClick(EnumMenuActions.AddBoardBelow)}
+              action={EnumMenuActions.AddBoardBelow}
             />
             <Divider verticalSpacer={7} horizontalSpacer={10} />
             <MenuItem
               text="Delete"
               imageSrc="/assets/svg/menu/remove.svg"
               hintText="⌫"
-              onClick={() => handleMenuButtonClick(EnumMenuActions.Delete)}
+              action={EnumMenuActions.Delete}
             />
           </Menu>
         </div>

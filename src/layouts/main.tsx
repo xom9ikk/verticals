@@ -48,7 +48,7 @@ export const MainLayout: FC = () => {
   const { toNumericId } = useReadableId();
 
   const closePopups = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
+    // dispatch(SystemActions.setIsOpenPopup(false));
     dispatch(SystemActions.setIsEditableCard(false));
     // dispatch(SystemActions.setEditableColumnId(null));
     dispatch(SystemActions.setIsEditableBoard(false));
