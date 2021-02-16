@@ -167,7 +167,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
           isHoverBlock={isHover}
           position="right"
           style={isTransformedPosition ? {
-            transform: 'translateY(-2px)',
             float: 'right',
           } : {}}
           onSelect={handleMenuButtonClick}

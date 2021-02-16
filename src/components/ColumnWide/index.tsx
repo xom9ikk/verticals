@@ -181,7 +181,6 @@ export const ColumnWide: FC<IColumnWide> = ({
                   >
                     <div
                       ref={columnContainerRef}
-                      className="column__container-inner"
                     >
                       <ColumnHeader
                         provided={provided}

@@ -411,13 +411,13 @@ export const Card: FC<ICard> = ({
                 onStartEdit={handleDoubleClickUnwrapped}
                 onChangeColor={handleColorPick}
               />
-              <span
+              <div
                 className={cn('card__title', {
                   'card__title--cross-out': status === EnumTodoStatus.Canceled,
                 })}
               >
                 {titleValue}
-              </span>
+              </div>
               <div
                 className="card__toggle-container"
               >

@@ -16,7 +16,6 @@
   &__content {
     display: flex;
     flex: 1;
-    padding: 1px 0;
     transition: background .1s ease-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
     border-radius: 6px;
     flex-direction: column;
@@ -45,6 +44,7 @@
       #{$block}__block {
         padding-top: 12px;
       }
+
       #{$block}__block-wrapper {
         padding: 0 7px;
       }
@@ -121,7 +121,7 @@
 
   &__block {
     display: flex;
-    padding: 8px 10px 6px 2px;
+    padding: 6px 10px 6px 2px;
     justify-content: center;
     align-items: center;
     flex: 1;
@@ -130,10 +130,12 @@
 
   &__title {
     display: inline;
-    font-size: 15px;
+    position: relative;
+    top: 2px;
     margin: 0 5px 0 0;
     max-height: 440px;
     max-width: $column-width - 100;
+    font-size: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -185,23 +187,26 @@
     &-content {
       padding-left: 2px;
     }
+
     &-container {
       display: flex;
       justify-content: space-between;
       margin-top: 8px;
+
       span {
         font-family: 'Nunito Light', sans-serif;
         font-size: 14px;
         color: $text-very-light;
       }
     }
+
     &-controls {
       display: flex;
       justify-content: space-between;
     }
   }
+
   &__toggle-container {
     display: inline-block;
-    transform: translateY(-2px);
   }
 }
