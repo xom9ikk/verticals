@@ -5,22 +5,23 @@ import React, {
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
+import useKeys from '@rooks/use-keys';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import { EnumTodoType, IColor } from '@type/entities';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
 import { BoardsActions, SystemActions } from '@store/actions';
-import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { useFocus } from '@use/focus';
+import { useNewValues } from '@use/newValues';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { EnumTodoType, IColor } from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import {
   getCountTodosByBoardId,
   getIsSearchMode,
   getUsername,
 } from '@store/selectors';
-import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { BoardContextMenu } from '@comp/BoardContextMenu';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import useKeys from '@rooks/use-keys';
+import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 
 interface IBoard {
   boardId: number;
@@ -51,6 +52,7 @@ export const Board: FC<IBoard> = ({
 }) => {
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const { isNewValues } = useNewValues();
 
   const username = useSelector(getUsername);
   const isSearchMode = useSelector(getIsSearchMode);
@@ -67,10 +69,15 @@ export const Board: FC<IBoard> = ({
   const saveBoard = () => {
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
-    const normalizedDescriptionValue = descriptionValue?.trim() || undefined;
+    const normalizedDescriptionValue = descriptionValue?.trim();
+
+    console.log('description', description);
+    console.log('descriptionValue', descriptionValue);
+    console.log('normalizedDescriptionValue', normalizedDescriptionValue);
 
     if (boardId !== NEW_BOARD_ID && belowId === undefined) {
-      if (normalizedTitleValue) {
+      const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
+      if (normalizedTitleValue && isNew) {
         dispatch(BoardsActions.update({
           id: boardId,
           title: normalizedTitleValue,
@@ -86,7 +93,7 @@ export const Board: FC<IBoard> = ({
         dispatch(BoardsActions.create({
           icon: '/assets/svg/board/item.svg',
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue,
+          description: normalizedDescriptionValue || undefined,
           cardType: EnumTodoType.Checkboxes,
           belowId,
         }));
@@ -124,7 +131,7 @@ export const Board: FC<IBoard> = ({
     saveBoard();
   };
 
-  const [boardRef] = useOutsideClickRef(saveBoard);
+  const [boardRef] = useOutsideClickRef(saveBoard, isEditable);
 
   useKeys(['Escape'], handleEsc, {
     // @ts-ignore

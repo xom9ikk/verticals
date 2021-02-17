@@ -114,7 +114,10 @@ export const ColumnWide: FC<IColumnWide> = ({
 
   return useMemo(() => (
     <div
-      ref={provided.innerRef}
+      ref={(ref) => {
+        columnContainerRef.current = ref;
+        provided.innerRef(ref);
+      }}
       className={cn('column', {
         'column--dragging': snapshot.isDragging,
       })}
@@ -143,7 +146,7 @@ export const ColumnWide: FC<IColumnWide> = ({
                     ref={dropProvided.innerRef}
                     className="column__container"
                   >
-                    <div ref={columnContainerRef}>
+                    <div>
                       <ColumnHeader
                         provided={provided}
                         boardId={boardId}

@@ -6,7 +6,7 @@ import { useAlert } from '@use/alert';
 import { container } from '@inversify/config';
 import { TYPES } from '@inversify/types';
 import { IServices } from '@inversify/interfaces';
-import { SystemActions, TodosActions } from '@store/actions';
+import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   ICreateTodo,
   IRemoveTodo,
@@ -32,9 +32,16 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
 
 function* createWorker(action: PayloadAction<ICreateTodo>) {
   try {
-    const { belowId, ...entity } = action.payload;
+    const { belowId, files, ...entity } = action.payload;
     const response = yield* apply(todoService, todoService.create, [action.payload]);
     const { todoId, position } = response.data;
+    if (files?.length) {
+      yield put(CommentsActions.create({
+        todoId,
+        text: '',
+        files,
+      }));
+    }
     if (belowId) {
       yield put(TodosActions.removeTemp());
       yield put(TodosActions.insertInPosition({

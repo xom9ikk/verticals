@@ -15,6 +15,7 @@ export interface ICreateTodo {
   color?: IColor;
   status?: EnumTodoStatus;
   belowId?: number;
+  files: FileList | null;
 }
 
 export type IAddTodo = ITodo;

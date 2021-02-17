@@ -9,7 +9,9 @@ import { IServices } from '@inversify/interfaces';
 import {
   BoardsActions, SystemActions,
 } from '@store/actions';
-import { getActiveBoardId, getUsername } from '@store/selectors';
+import {
+  getActiveBoardId, getUsername,
+} from '@store/selectors';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import {
@@ -84,6 +86,7 @@ function* updateWorker(action: PayloadAction<IUpdateBoard>) {
   try {
     yield* apply(boardService, boardService.update, [action.payload]);
     yield call(show, 'Board', 'Board updated successfully', ALERT_TYPES.SUCCESS);
+    yield put(BoardsActions.updateEntity(action.payload));
   } catch (error) {
     yield call(show, 'Board', error, ALERT_TYPES.DANGER);
   }

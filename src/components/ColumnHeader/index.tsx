@@ -11,6 +11,7 @@ import { IColor } from '@type/entities';
 import { ColumnsActions, SystemActions } from '@store/actions';
 import { useDispatch } from 'react-redux';
 import { useFocus } from '@use/focus';
+import { useNewValues } from '@use/newValues';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import useKeys from '@rooks/use-keys';
 
@@ -47,6 +48,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
 }) => {
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const { isNewValues } = useNewValues();
   const colorClass = useColorClass('column__inner', color);
 
   const [titleValue, setTitleValue] = useState<string>(title);
@@ -59,10 +61,11 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   const saveColumnHeader = () => {
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
-    const normalizedDescriptionValue = descriptionValue?.trim() || undefined;
+    const normalizedDescriptionValue = descriptionValue?.trim();
 
     if (mode === EnumColumnMode.Normal && belowId === undefined) {
-      if (normalizedTitleValue) {
+      const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
+      if (normalizedTitleValue && isNew) {
         dispatch(ColumnsActions.update({
           id: columnId,
           title: normalizedTitleValue,
@@ -78,7 +81,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       if (normalizedTitleValue) {
         dispatch(ColumnsActions.create({
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue,
+          description: normalizedDescriptionValue || undefined,
           boardId,
           belowId,
         }));
@@ -102,7 +105,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
     saveColumnHeader();
   };
 
-  const [headerRef] = useOutsideClickRef(saveColumnHeader);
+  const [headerRef] = useOutsideClickRef(saveColumnHeader, isEditable);
 
   useKeys(['Escape'], handleEsc, {
     // @ts-ignore

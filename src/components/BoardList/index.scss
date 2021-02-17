@@ -2,7 +2,7 @@
   max-height: calc(100vh - 140px);
   margin-top: 90px;
   padding: 0 18px 30px 18px;
-  overflow-x: scroll;
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     width: 0;

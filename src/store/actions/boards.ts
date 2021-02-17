@@ -21,6 +21,7 @@ const create = createAction<ICreateBoard>('BOARDS/CREATE');
 const add = createAction<IAddBoard>('BOARDS/ADD');
 const insertInPosition = createAction<IInsertBoard>('BOARDS/INSERT_IN_POSITION');
 const update = createAction<IUpdateBoard>('BOARDS/UPDATE');
+const updateEntity = createAction<IUpdateBoard>('BOARDS/UPDATE_ENTITY');
 // const updateTitle = createAction<IUpdateBoardTitle>('BOARDS/UPDATE_TITLE');
 // const updateDescription = createAction<IUpdateBoardDescription>('BOARDS/UPDATE_DESCRIPTION');
 // const updateColor = createAction<IUpdateBoardColor>('BOARDS/UPDATE_COLOR');
@@ -38,6 +39,7 @@ export const BoardsActions = {
   add,
   insertInPosition,
   update,
+  updateEntity,
   // updateTitle,
   // updateDescription,
   // updateColor,

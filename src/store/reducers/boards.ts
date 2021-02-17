@@ -16,7 +16,7 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
     draft.entities.push(action.payload);
     draft.positions.push(id);
   })
-  .addCase(BoardsActions.update, (draft, action) => {
+  .addCase(BoardsActions.updateEntity, (draft, action) => {
     const { id } = action.payload;
     const index = draft.entities.findIndex((board) => board.id === id);
     draft.entities[index] = {

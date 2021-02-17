@@ -29,6 +29,7 @@ import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleCli
 import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
 import { NEW_TODO_ID } from '@/constants';
 import { useDebounce } from '@use/debounce';
+import { useNewValues } from '@use/newValues';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -78,6 +79,7 @@ export const Card: FC<ICard> = ({
   const { openFiles } = useOpenFiles();
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const { isNewValues } = useNewValues();
   const colorClass = useColorClass('card__content', color);
 
   const username = useSelector(getUsername);
@@ -133,23 +135,21 @@ export const Card: FC<ICard> = ({
   const saveAttachments = (attachedFiles: FileList | null) => {
     if (attachedFiles?.length) {
       dispatch(CommentsActions.create({
-        todoId: todoId!, // TODO: break if new card
+        todoId,
         text: '',
         files: attachedFiles,
       }));
     }
-    setFiles(null);
   };
 
   const saveTodo = () => {
-    saveAttachments(files);
-
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
-    const normalizedDescriptionValue = descriptionValue?.trim() || undefined;
+    const normalizedDescriptionValue = descriptionValue?.trim();
 
     if (`${columnId}-${todoId}` !== `${columnId}-${NEW_TODO_ID}` && belowId === undefined) {
-      if (normalizedTitleValue) {
+      const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
+      if (normalizedTitleValue && isNew) {
         dispatch(TodosActions.update({
           id: todoId,
           title: normalizedTitleValue,
@@ -159,14 +159,16 @@ export const Card: FC<ICard> = ({
         setTitleValue(title);
         setDescriptionValue(description);
       }
+      saveAttachments(files);
       dispatch(SystemActions.setEditableCardId(null));
     } else {
       if (normalizedTitleValue) {
         dispatch(TodosActions.create({
           columnId,
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue,
+          description: normalizedDescriptionValue || undefined,
           belowId,
+          files,
         }));
       } else {
         dispatch(SystemActions.setEditableCardId(null));
@@ -181,6 +183,7 @@ export const Card: FC<ICard> = ({
         }, 200);
       }
     }
+    setFiles(new DataTransfer().files);
   };
 
   const handleKeyDown = (event: any) => {
@@ -195,7 +198,11 @@ export const Card: FC<ICard> = ({
     saveTodo();
   };
 
-  const [todoRef] = useOutsideClickRef(saveTodo);
+  const [todoRef] = useOutsideClickRef((e) => {
+    if (e.isTrusted) {
+      saveTodo();
+    }
+  }, isEditable);
 
   useKeys(['Escape'], handleEsc, {
     // @ts-ignore
@@ -237,12 +244,16 @@ export const Card: FC<ICard> = ({
       })}
       onClick={(e) => !isEditable && handleClick(e)}
     >
-      <Bullet
-        type={cardType}
-        status={status}
-        onChangeStatus={handleChangeStatus}
-        style={{ marginTop: 12 }}
-      />
+      {
+        todoId !== NEW_TODO_ID && (
+        <Bullet
+          type={cardType}
+          status={status}
+          onChangeStatus={handleChangeStatus}
+          style={{ marginTop: 12 }}
+        />
+        )
+      }
       <div
         className="card__block"
         onMouseDown={() => debouncePress(true)}
