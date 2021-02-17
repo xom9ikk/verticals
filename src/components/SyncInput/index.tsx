@@ -1,14 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useCallback, useEffect, useState,
+  FC, useEffect, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import debounce from 'lodash.debounce';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { Input } from '@comp/Input';
 import { Loader } from '@comp/Loader';
 import { useValidator } from '@use/validator';
 import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
+import { useDebounce } from '@use/debounce';
 
 interface ISyncInput {
   type: string,
@@ -43,10 +43,7 @@ export const SyncInput: FC<ISyncInput> = ({
     setValidValue(valueForUpdate);
   };
 
-  const debounceSubmit = useCallback(
-    debounce(handleSubmit, 500),
-    [],
-  );
+  const debounceSubmit = useDebounce(handleSubmit, 500);
 
   const {
     handleChange, value, error,

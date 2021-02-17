@@ -1,14 +1,14 @@
 import React, {
-  FC, useCallback, useEffect, useState,
+  FC, useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import debounce from 'lodash.debounce';
 import { Input } from '@comp/Input';
 import { ControlButton } from '@comp/ControlButton';
 import {
   BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
+import { useDebounce } from '@use/debounce';
 
 export const Search: FC = () => {
   const dispatch = useDispatch();
@@ -18,12 +18,9 @@ export const Search: FC = () => {
   const activeBoardId = useSelector(getActiveBoardId);
   const isSearchMode = useSelector(getIsSearchMode);
 
-  const debounceSearch = useCallback(
-    debounce((queryString: string) => {
-      dispatch(SearchActions.searchByTodoTitle({ query: queryString }));
-    }, 100),
-    [],
-  );
+  const debounceSearch = useDebounce((queryString: string) => {
+    dispatch(SearchActions.searchByTodoTitle({ query: queryString }));
+  }, 100);
 
   useEffect(() => {
     if (query) {

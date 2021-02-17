@@ -1,9 +1,8 @@
 import React, {
-  FC, useCallback, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import debounce from 'lodash.debounce';
 import {
   EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
 } from '@type/entities';
@@ -26,6 +25,7 @@ import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
 import { useColorClass } from '@use/colorClass';
+import { useDebounce } from '@use/debounce';
 
 interface ICardPopup {
   columnId: number;
@@ -52,24 +52,21 @@ export const CardPopup: FC<ICardPopup> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
 
-  const debounceSave = useCallback(
-    debounce((id: number, { newTitle, newDescription } : any) => {
-      setIsProgress(true);
-      if (newTitle) {
-        dispatch(TodosActions.update({
-          id,
-          title: newTitle,
-        }));
-      }
-      if (newDescription) {
-        dispatch(TodosActions.update({
-          id,
-          description: newDescription,
-        }));
-      }
-    }, 500),
-    [],
-  );
+  const debounceSave = useDebounce((id: number, { newTitle, newDescription } : any) => {
+    setIsProgress(true);
+    if (newTitle) {
+      dispatch(TodosActions.update({
+        id,
+        title: newTitle,
+      }));
+    }
+    if (newDescription) {
+      dispatch(TodosActions.update({
+        id,
+        description: newDescription,
+      }));
+    }
+  }, 500);
 
   const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;

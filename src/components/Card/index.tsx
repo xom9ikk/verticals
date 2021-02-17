@@ -1,9 +1,8 @@
 import React, {
-  FC, useCallback, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import cn from 'classnames';
 import useKeys from '@rooks/use-keys';
-import debounce from 'lodash.debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
@@ -29,6 +28,7 @@ import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
 import { NEW_TODO_ID } from '@/constants';
+import { useDebounce } from '@use/debounce';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -215,7 +215,11 @@ export const Card: FC<ICard> = ({
     }
   }, [snapshot?.isDragging]);
 
-  const debouncePress = useCallback(debounce(setIsMouseDown, 300), []);
+  const debouncePress = useDebounce((value) => {
+    if (!isEditable) {
+      setIsMouseDown(value);
+    }
+  }, 300);
 
   const handleDropFiles = (droppedFiles: FileList) => {
     const mergedFiles = merge(files, droppedFiles);
@@ -241,8 +245,8 @@ export const Card: FC<ICard> = ({
       />
       <div
         className="card__block"
-        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
+        onMouseDown={() => debouncePress(true)}
+        onMouseUp={() => debouncePress(false)}
         onDoubleClick={!isEditable ? handleDoubleClick : () => {}}
       >
         {
