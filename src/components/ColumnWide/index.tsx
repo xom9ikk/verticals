@@ -4,22 +4,22 @@ import React, {
 import cn from 'classnames';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumTodoStatus, IColor } from '@type/entities';
+import { IColor } from '@type/entities';
 import { EnumColumnMode } from '@comp/Column';
 import { ColumnHeader } from '@comp/ColumnHeader';
 import { ColumnToolbar } from '@comp/ColumnToolbar';
 import { ColumnContextMenu } from '@comp/ColumnContextMenu';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
-import { SystemActions, TodosActions } from '@store/actions';
+import { SystemActions } from '@store/actions';
 import {
-  getBoardCardType,
+  getBoardCardType, getEditableCardId,
   getOrderedArchivedTodosByColumnId,
   getOrderedNonArchivedTodosByColumnId,
 } from '@store/selectors';
 import { useAutoScroll } from '@use/autoScroll';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { NEW_COLUMN_ID } from '@/constants';
+import { NEW_COLUMN_ID, NEW_TODO_ID } from '@/constants';
 
 interface IColumnWide {
   snapshot: DraggableStateSnapshot;
@@ -52,11 +52,11 @@ export const ColumnWide: FC<IColumnWide> = ({
 }) => {
   const dispatch = useDispatch();
 
+  const editableCardId = useSelector(getEditableCardId);
   const archivedTodos = useSelector(getOrderedArchivedTodosByColumnId(columnId));
   const nonArchivedTodos = useSelector(getOrderedNonArchivedTodosByColumnId(columnId));
   const cardType = useSelector(getBoardCardType(boardId));
 
-  const [isOpenNewCard, setIsOpenNewCard] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isDraggingCard, setIsDraggingCard] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
@@ -64,42 +64,6 @@ export const ColumnWide: FC<IColumnWide> = ({
   const columnContainerRef = useRef<any>(null);
 
   const { scrollToBottom } = useAutoScroll(columnContainerRef);
-
-  const saveCard = (
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    id?: number, title?: string, description?: string, status?: EnumTodoStatus, newColor?: IColor, todoBelowId?: number,
-  ) => {
-    if (id) {
-      if (title) {
-        dispatch(TodosActions.updateTitle({ id, title }));
-      }
-      if (description) {
-        dispatch(TodosActions.updateDescription({ id, description }));
-      }
-      if (status !== undefined) {
-        dispatch(TodosActions.updateCompleteStatus({ id, status }));
-      }
-      if (newColor !== undefined) {
-        dispatch(TodosActions.updateColor({
-          id,
-          color: newColor,
-        }));
-      }
-    } else if (title) {
-      setTimeout(() => {
-        setIsOpenNewCard(true);
-      });
-      setTimeout(scrollToBottom, 200);
-      dispatch(TodosActions.create({
-        columnId: columnId!,
-        title,
-        description: description || undefined,
-        status,
-        belowId: todoBelowId,
-      }));
-    }
-    setIsOpenNewCard(false);
-  };
 
   const handleColumnClick = (event: SyntheticEvent) => {
     if (mode === EnumColumnMode.New) {
@@ -110,7 +74,7 @@ export const ColumnWide: FC<IColumnWide> = ({
 
   const handleAddCard = () => {
     setTimeout(scrollToBottom);
-    setIsOpenNewCard(true);
+    dispatch(SystemActions.setEditableCardId(`${columnId}-${NEW_TODO_ID}`));
   };
 
   const handleDoubleClickUnwrapped = () => {
@@ -141,12 +105,12 @@ export const ColumnWide: FC<IColumnWide> = ({
       todos={nonArchivedTodos}
       cardType={cardType}
       mode={mode}
-      isOpenNewCard={isOpenNewCard}
+      isOpenNewCard={editableCardId === `${columnId}-${NEW_TODO_ID}`}
       isDraggingCard={isDraggingCard}
-      onExitFromEditable={saveCard}
       onAddCard={handleAddCard}
+      scrollToBottom={scrollToBottom}
     />
-  ), [columnId, nonArchivedTodos, cardType, mode, isOpenNewCard, isDraggingCard]);
+  ), [columnId, nonArchivedTodos, cardType, mode, editableCardId, isDraggingCard]);
 
   return useMemo(() => (
     <div
@@ -208,7 +172,6 @@ export const ColumnWide: FC<IColumnWide> = ({
                       <ArchiveContainer
                         archivedTodos={archivedTodos}
                         cardType={cardType}
-                        onExitFromEditable={saveCard}
                       />
                     </div>
                     {dropProvided.placeholder}
@@ -235,5 +198,5 @@ export const ColumnWide: FC<IColumnWide> = ({
   [isEditable, isHoverHeader, isHover,
     boardId, columnId, belowId,
     title, description, color, mode,
-    nonArchivedTodos, archivedTodos, cardType, isOpenNewCard]);
+    nonArchivedTodos, archivedTodos, cardType]);
 };

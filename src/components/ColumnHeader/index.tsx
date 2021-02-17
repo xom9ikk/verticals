@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useMemo, useRef, useState,
 } from 'react';
 import cn from 'classnames';
 import { useColorClass } from '@use/colorClass';
@@ -46,7 +46,6 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   scrollToRight,
 }) => {
   const dispatch = useDispatch();
-  const { focus } = useFocus();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const colorClass = useColorClass('column__inner', color);
 
@@ -54,7 +53,8 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>(description);
 
   const titleInputRef = useRef<any>(null);
-  const descriptionInputRef = useRef<any>(null);
+
+  useFocus(titleInputRef, [isEditable]);
 
   const saveColumnHeader = () => {
     if (!isEditable) return;
@@ -124,10 +124,6 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       : setTitleValue(value);
   };
 
-  useEffect(() => {
-    focus(titleInputRef);
-  }, [isEditable]);
-
   const memoTitle = useMemo(() => (
     (mode !== EnumColumnMode.New || isEditable) && (
       <div className="column__header-container">
@@ -157,7 +153,6 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   const memoDescription = useMemo(() => (mode !== EnumColumnMode.New || isEditable) && (
     isEditable ? (
       <TextArea
-        ref={descriptionInputRef}
         className="column__description column__description--editable"
         value={descriptionValue}
         placeholder="Notes"

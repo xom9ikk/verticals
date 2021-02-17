@@ -38,10 +38,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
   const dispatch = useDispatch();
 
   const handleColorPick = (newColor: IColor) => {
-    dispatch(ColumnsActions.update({
-      id: columnId,
-      color: newColor,
-    }));
+    dispatch(ColumnsActions.update({ id: columnId, color: newColor }));
   };
 
   const handleMenuButtonClick = (action: EnumMenuActions) => {

@@ -13,11 +13,7 @@ import {
   IUpdateTodoPosition,
   IDuplicateTodo,
   IFetchTodosByBoardId,
-  IUpdateTodoTitle,
-  IUpdateTodoDescription,
-  IUpdateTodoColor,
-  IUpdateTodoCompleteStatus,
-  IUpdateTodoNotificationsEnabled, IUpdateTodoIsArchive,
+  IUpdateTodo,
 } from '@type/actions';
 
 const { todoService } = container.get<IServices>(TYPES.Services);
@@ -36,14 +32,14 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
 
 function* createWorker(action: PayloadAction<ICreateTodo>) {
   try {
-    const { belowId } = action.payload;
+    const { belowId, ...entity } = action.payload;
     const response = yield* apply(todoService, todoService.create, [action.payload]);
     const { todoId, position } = response.data;
     if (belowId) {
       yield put(TodosActions.removeTemp());
       yield put(TodosActions.insertInPosition({
         entity: {
-          ...action.payload,
+          ...entity,
           id: todoId,
           attachmentsCount: 0, // TODO: get from backend
           commentsCount: 0, // TODO: get from backend
@@ -53,7 +49,7 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
       }));
     } else {
       yield put(TodosActions.add({
-        ...action.payload,
+        ...entity,
         id: todoId,
         attachmentsCount: 0, // TODO: get from backend
         commentsCount: 0, // TODO: get from backend
@@ -75,14 +71,7 @@ function* removeWorker(action: PayloadAction<IRemoveTodo>) {
   }
 }
 
-function* updateWorker(action: PayloadAction<
-IUpdateTodoTitle
-& IUpdateTodoDescription
-& IUpdateTodoColor
-& IUpdateTodoCompleteStatus
-& IUpdateTodoIsArchive
-& IUpdateTodoNotificationsEnabled
->) {
+function* updateWorker(action: PayloadAction<IUpdateTodo>) {
   try {
     yield* apply(todoService, todoService.update, [action.payload]);
     yield call(show, 'Todo', 'Todo updated successfully', ALERT_TYPES.SUCCESS);
@@ -126,12 +115,7 @@ export function* watchTodo() {
     takeLatest(TodosActions.fetchByBoardId, fetchByBoardIdWorker),
     takeLatest(TodosActions.create, createWorker),
     takeLatest(TodosActions.remove, removeWorker),
-    takeLatest(TodosActions.updateTitle, updateWorker),
-    takeLatest(TodosActions.updateDescription, updateWorker),
-    takeLatest(TodosActions.updateColor, updateWorker),
-    takeLatest(TodosActions.updateCompleteStatus, updateWorker),
-    takeLatest(TodosActions.updateIsArchive, updateWorker),
-    takeLatest(TodosActions.updateNotificationEnabled, updateWorker),
+    takeLatest(TodosActions.update, updateWorker),
     takeLatest(TodosActions.updatePosition, updatePositionWorker),
     takeLatest(TodosActions.duplicate, duplicateWorker),
   ]);

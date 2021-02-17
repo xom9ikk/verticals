@@ -12,29 +12,13 @@ const initialState: ITodos = {
 
 export const TodosReducer = createReducer(initialState, (builder) => builder
   .addCase(TodosActions.setAll, (state, action) => action.payload)
-  .addCase(TodosActions.updateTitle, (draft, action) => {
-    const { id, title } = action.payload;
-    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].title = title;
-  })
-  .addCase(TodosActions.updateDescription, (draft, action) => {
-    const { id, description } = action.payload;
-    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].description = description;
-  })
-  .addCase(TodosActions.updateCompleteStatus, (draft, action) => {
-    const { id, status } = action.payload;
-    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].status = status;
-  })
-  .addCase(TodosActions.updateColor, (draft, action) => {
-    const { id, color } = action.payload;
-    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].color = color;
-  })
-  .addCase(TodosActions.updateIsArchive, (draft, action) => {
-    const { id, isArchived } = action.payload;
-    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].isArchived = isArchived;
-  })
-  .addCase(TodosActions.updateNotificationEnabled, (draft, action) => {
-    const { id, isNotificationsEnabled } = action.payload;
-    draft.entities[draft.entities.findIndex((todo) => todo.id === id)].isNotificationsEnabled = isNotificationsEnabled;
+  .addCase(TodosActions.update, (draft, action) => {
+    const { id } = action.payload;
+    const index = draft.entities.findIndex((todo) => todo.id === id);
+    draft.entities[index] = {
+      ...draft.entities[index],
+      ...action.payload,
+    };
   })
   .addCase(TodosActions.add, (draft, action) => {
     const { id, columnId } = action.payload;

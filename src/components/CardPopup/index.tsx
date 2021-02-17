@@ -56,13 +56,13 @@ export const CardPopup: FC<ICardPopup> = ({
     debounce((id: number, { newTitle, newDescription } : any) => {
       setIsProgress(true);
       if (newTitle) {
-        dispatch(TodosActions.updateTitle({
+        dispatch(TodosActions.update({
           id,
           title: newTitle,
         }));
       }
       if (newDescription) {
-        dispatch(TodosActions.updateDescription({
+        dispatch(TodosActions.update({
           id,
           description: newDescription,
         }));
@@ -83,7 +83,7 @@ export const CardPopup: FC<ICardPopup> = ({
   };
 
   const handleChangeStatus = (newStatus: EnumTodoStatus) => {
-    dispatch(TodosActions.updateCompleteStatus({
+    dispatch(TodosActions.update({
       id: activeTodo!.id,
       status: newStatus,
     }));
@@ -211,7 +211,8 @@ export const CardPopup: FC<ICardPopup> = ({
                   isColored
                 />
                 <CardContextMenu
-                  id={activeTodo.id}
+                  menuId="popup"
+                  todoId={activeTodo.id}
                   title={activeTodo.title}
                   columnId={activeTodo.columnId}
                   isArchived={activeTodo.isArchived}
@@ -229,7 +230,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     titleInputRef.current?.focus();
                   }}
                   onChangeColor={(newColor) => {
-                    dispatch(TodosActions.updateColor({
+                    dispatch(TodosActions.update({
                       id: activeTodo.id,
                       color: newColor,
                     }));
@@ -247,7 +248,7 @@ export const CardPopup: FC<ICardPopup> = ({
                   justifySelf: 'flex-end',
                 }}
                 onClick={() => {
-                  dispatch(TodosActions.updateNotificationEnabled({
+                  dispatch(TodosActions.update({
                     id: activeTodo.id,
                     isNotificationsEnabled: !activeTodo.isNotificationsEnabled,
                   }));

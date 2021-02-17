@@ -24,13 +24,15 @@ export interface IInsertColumn {
   position: number;
 }
 
-export interface IUpdateColumn {
+export type IUpdateColumn = {
   id: number;
-  title?: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
-}
+} & (
+  { title: string }
+  | { description: string }
+  | { color: IColor }
+  | { isCollapsed: boolean }
+);
+
 //
 // export interface IUpdateColumnTitle {
 //   id: number;

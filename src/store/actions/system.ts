@@ -6,8 +6,8 @@ import {
   ISetSystemActiveTodoId,
   ISetSystemEditCommentId,
   ISetSystemEditableBoardId,
-  ISetSystemIsEditableCard,
   ISetSystemEditableColumnId,
+  ISetSystemEditableCardId,
   ISetSystemActivePopupId,
   ISetSystemLanguage,
   ISetSystemIsSearchMode,
@@ -25,9 +25,9 @@ const setIsLoadedBoards = createAction<ISetSystemIsLoadedBoards>('SYSTEM/SET_IS_
 const setIsLoadedColumns = createAction<ISetSystemIsLoadedColumns>('SYSTEM/SET_IS_LOADED_COLUMNS');
 const setIsLoadedTodos = createAction<ISetSystemIsLoadedTodos>('SYSTEM/SET_IS_LOADED_TODOS');
 const setActivePopupId = createAction<ISetSystemActivePopupId>('SYSTEM/SET_ACTIVE_POPUP_ID');
-const setIsEditableCard = createAction<ISetSystemIsEditableCard>('SYSTEM/SET_IS_EDITABLE_CARD');
 const setEditableBoardId = createAction<ISetSystemEditableBoardId>('SYSTEM/SET_EDITABLE_BOARD_ID');
 const setEditableColumnId = createAction<ISetSystemEditableColumnId>('SYSTEM/SET_EDITABLE_COLUMN_ID');
+const setEditableCardId = createAction<ISetSystemEditableCardId>('SYSTEM/SET_EDITABLE_CARD_ID');
 const setIsSearchMode = createAction<ISetSystemIsSearchMode>('SYSTEM/SET_IS_SEARCH_MODE');
 const setLanguage = createAction<ISetSystemLanguage>('SYSTEM/SET_LANGUAGE');
 const setActiveTodoId = createAction<ISetSystemActiveTodoId>('SYSTEM/SET_ACTIVE_TODO_ID');
@@ -46,9 +46,9 @@ export const SystemActions = {
   setIsLoadedColumns,
   setIsLoadedTodos,
   setActivePopupId,
-  setIsEditableCard,
   setEditableBoardId,
   setEditableColumnId,
+  setEditableCardId,
   setIsSearchMode,
   setLanguage,
   setActiveTodoId,

@@ -282,6 +282,9 @@ export const CommentItem: FC<ICommentItem> = ({
               imageSize={16}
               size={22}
               position="top"
+              style={{
+                marginTop: 3,
+              }}
               onSelect={handleMenuButtonClick}
             >
               <MenuItem

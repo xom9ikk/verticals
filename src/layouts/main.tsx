@@ -49,7 +49,7 @@ export const MainLayout: FC = () => {
 
   const closePopups = () => {
     // dispatch(SystemActions.setIsOpenPopup(false));
-    dispatch(SystemActions.setIsEditableCard(false));
+    // dispatch(SystemActions.setEditableCardId(false));
     // dispatch(SystemActions.setEditableColumnId(null));
     // dispatch(SystemActions.setEditableBoardId(false));
   };

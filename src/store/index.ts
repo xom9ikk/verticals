@@ -6,9 +6,11 @@ import { rootReducer } from '@store/reducers';
 const sagaMiddleware = createSagaMiddleware();
 
 export const configureAppStore = () => {
-  const middleware = [...getDefaultMiddleware({
-    thunk: false,
-  }), sagaMiddleware];
+  const middleware = [
+    ...getDefaultMiddleware({
+      thunk: false,
+    }),
+    sagaMiddleware];
 
   const store = configureStore({
     reducer: rootReducer,

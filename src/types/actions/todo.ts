@@ -17,21 +17,6 @@ export interface ICreateTodo {
   belowId?: number;
 }
 
-export interface IUpdateTodoTitle {
-  id: number;
-  title: string;
-}
-
-export interface IUpdateTodoDescription {
-  id: number;
-  description: string;
-}
-
-export interface IUpdateTodoCompleteStatus {
-  id: number;
-  status: EnumTodoStatus;
-}
-
 export type IAddTodo = ITodo;
 
 export interface IInsertTodo {
@@ -39,16 +24,22 @@ export interface IInsertTodo {
   position: number;
 }
 
+export type IUpdateTodo = {
+  id: number;
+} & (
+  { title: string }
+  | { description: string }
+  | { status: EnumTodoStatus }
+  | { color: IColor }
+  | { isArchived: boolean }
+  | { isNotificationsEnabled: boolean }
+);
+
 export interface IUpdateTodoPosition {
   sourcePosition: number;
   destinationPosition: number;
   columnId: number;
   targetColumnId?: number;
-}
-
-export interface IUpdateTodoColor {
-  id: number;
-  color: IColor;
 }
 
 export interface IDuplicateTodo {
@@ -62,14 +53,4 @@ export interface IRemoveTodo {
 export interface IDrawTodoBelow {
   columnId: number;
   belowId: number;
-}
-
-export interface IUpdateTodoIsArchive {
-  id: number;
-  isArchived: boolean;
-}
-
-export interface IUpdateTodoNotificationsEnabled {
-  id: number;
-  isNotificationsEnabled: boolean;
 }

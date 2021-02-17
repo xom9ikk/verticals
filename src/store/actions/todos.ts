@@ -8,13 +8,8 @@ import {
   IInsertTodo,
   IRemoveTodo,
   ISetTodos,
-  IUpdateTodoColor,
-  IUpdateTodoCompleteStatus,
-  IUpdateTodoDescription,
-  IUpdateTodoIsArchive,
-  IUpdateTodoNotificationsEnabled,
+  IUpdateTodo,
   IUpdateTodoPosition,
-  IUpdateTodoTitle,
 } from '@type/actions';
 
 const fetchByBoardId = createAction<IFetchTodosByBoardId>('TODOS/FETCH_BY_BOARD_ID');
@@ -22,13 +17,8 @@ const setAll = createAction<ISetTodos>('TODOS/SET_ALL');
 const create = createAction<ICreateTodo>('TODOS/CREATE');
 const add = createAction<IAddTodo>('TODOS/ADD');
 const insertInPosition = createAction<IInsertTodo>('TODOS/INSERT_IN_POSITION');
-const updateTitle = createAction<IUpdateTodoTitle>('TODOS/UPDATE_TITLE');
-const updateDescription = createAction<IUpdateTodoDescription>('TODOS/UPDATE_DESCRIPTION');
-const updateCompleteStatus = createAction<IUpdateTodoCompleteStatus>('TODOS/UPDATE_COMPLETE_STATUS');
+const update = createAction<IUpdateTodo>('TODOS/UPDATE');
 const updatePosition = createAction<IUpdateTodoPosition>('TODOS/UPDATE_POSITION');
-const updateColor = createAction<IUpdateTodoColor>('TODOS/UPDATE_COLOR');
-const updateIsArchive = createAction<IUpdateTodoIsArchive>('TODOS/UPDATE_IS_ARCHIVE');
-const updateNotificationEnabled = createAction<IUpdateTodoNotificationsEnabled>('TODOS/UPDATE_NOTIFICATION_ENABLED');
 const remove = createAction<IRemoveTodo>('TODOS/REMOVE');
 const duplicate = createAction<IDuplicateTodo>('TODOS/DUPLICATE');
 const drawBelow = createAction<IDrawTodoBelow>('TODOS/DRAW_BELOW');
@@ -40,13 +30,8 @@ export const TodosActions = {
   create,
   add,
   insertInPosition,
-  updateTitle,
-  updateDescription,
-  updateCompleteStatus,
+  update,
   updatePosition,
-  updateColor,
-  updateIsArchive,
-  updateNotificationEnabled,
   remove,
   duplicate,
   drawBelow,

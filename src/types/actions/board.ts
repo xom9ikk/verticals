@@ -20,14 +20,15 @@ export interface IInsertBoard {
   position: number;
 }
 
-export interface IUpdateBoard {
+export type IUpdateBoard = {
   id: number;
-  title?: string;
-  description?: string;
-  color?: IColor;
-  cardType?: EnumTodoType;
-  icon?: string;
-}
+} & (
+  { title: string }
+  | { description: string }
+  | { color: IColor }
+  | { cardType: EnumTodoType }
+  | { icon: string }
+);
 
 // export interface IUpdateBoardTitle {
 //   id: number;

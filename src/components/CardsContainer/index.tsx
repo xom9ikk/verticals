@@ -2,14 +2,17 @@ import React, { FC, useMemo } from 'react';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import {
-  EnumTodoStatus, EnumTodoType, IColor, ITodo,
+  EnumTodoType, ITodo,
 } from '@type/entities';
 import { Card } from '@comp/Card';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { getActiveTodoId, getIsLoadedTodos, getIsSearchMode } from '@store/selectors';
+import {
+  getActiveTodoId, getEditableCardId, getIsLoadedTodos, getIsSearchMode,
+} from '@store/selectors';
 import { EnumColumnMode } from '@comp/Column';
 import { ControlButton } from '@comp/ControlButton';
 import { useHover } from '@use/hover';
+import { NEW_TODO_ID } from '@/constants';
 
 interface ICardsContainer {
   columnId: number;
@@ -18,15 +21,8 @@ interface ICardsContainer {
   mode: EnumColumnMode;
   isOpenNewCard: boolean;
   isDraggingCard: boolean;
-  onExitFromEditable: (
-    id?: number,
-    title?: string,
-    description?: string,
-    status?: EnumTodoStatus,
-    color?: IColor,
-    belowId?: number,
-  ) => void;
   onAddCard: () => void;
+  scrollToBottom: () => void;
 }
 
 export const CardsContainer: FC<ICardsContainer> = ({
@@ -36,14 +32,15 @@ export const CardsContainer: FC<ICardsContainer> = ({
   mode,
   isOpenNewCard,
   isDraggingCard,
-  onExitFromEditable,
   onAddCard,
+  scrollToBottom,
 }) => {
   const { isHovering, hoveringProps } = useHover();
 
   const activeTodoId = useSelector(getActiveTodoId);
   const isLoadedTodos = useSelector(getIsLoadedTodos);
   const isSearchMode = useSelector(getIsSearchMode);
+  const editableCardId = useSelector(getEditableCardId);
 
   const todosCount = todos?.length;
 
@@ -63,12 +60,13 @@ export const CardsContainer: FC<ICardsContainer> = ({
 
   const memoNewCard = useMemo(() => (
     <Card
+      todoId={NEW_TODO_ID}
       columnId={columnId}
       cardType={cardType}
-      isEditableDefault
-      onExitFromEditable={(t, d, isDone) => onExitFromEditable(undefined, t, d, isDone)}
+      isEditable
+      scrollToBottom={scrollToBottom}
     />
-  ), [isOpenNewCard]);
+  ), [editableCardId]);
 
   return (
     <div
@@ -92,7 +90,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   provided={dragProvided}
                   snapshot={dragSnapshot}
                   key={todo.id}
-                  id={todo.id}
+                  todoId={todo.id}
                   columnId={todo.columnId}
                   belowId={todo.belowId}
                   title={todo.title}
@@ -104,8 +102,9 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   commentsCount={todo.commentsCount}
                   imagesCount={todo.imagesCount}
                   attachmentsCount={todo.attachmentsCount}
-                  onExitFromEditable={(...rest) => onExitFromEditable(todo.id, ...rest)}
                   isActive={activeTodoId === todo.id}
+                  isEditable={todo.id === editableCardId}
+                  scrollToBottom={scrollToBottom}
                 />
               )}
             </Draggable>

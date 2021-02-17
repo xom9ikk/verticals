@@ -50,7 +50,6 @@ export const Board: FC<IBoard> = ({
   scrollToBottom,
 }) => {
   const dispatch = useDispatch();
-  const { focus } = useFocus();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
   const username = useSelector(getUsername);
@@ -62,7 +61,8 @@ export const Board: FC<IBoard> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>(description);
 
   const titleInputRef = useRef<any>(null);
-  const descriptionInputRef = useRef<any>(null);
+
+  useFocus(titleInputRef, [isEditable]);
 
   const saveBoard = () => {
     if (!isEditable) return;
@@ -86,7 +86,7 @@ export const Board: FC<IBoard> = ({
         dispatch(BoardsActions.create({
           icon: '/assets/svg/board/item.svg',
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue || undefined,
+          description: normalizedDescriptionValue,
           cardType: EnumTodoType.Checkboxes,
           belowId,
         }));
@@ -153,10 +153,6 @@ export const Board: FC<IBoard> = ({
     }
   }, []);
 
-  useEffect(() => {
-    focus(titleInputRef);
-  }, [isEditable]);
-
   const memoCounter = useMemo(() => (
     <div className={cn('board__counter', {
       'board__counter--active': isActive,
@@ -195,7 +191,6 @@ export const Board: FC<IBoard> = ({
                 onKeyDownCapture={(event: any) => handleKeyDown(event)}
               />
               <TextArea
-                ref={descriptionInputRef}
                 className="card__textarea card__textarea--description"
                 value={descriptionValue}
                 placeholder="Notes"

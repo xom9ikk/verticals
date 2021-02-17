@@ -7,9 +7,9 @@ const initialState: ISystem = {
   isLoadedColumns: false,
   isLoadedTodos: false,
   activePopupId: null,
-  isEditableCard: false,
-  editableColumnId: null,
   editableBoardId: null,
+  editableColumnId: null,
+  editableCardId: null,
   isSearchMode: false,
   language: EnumLanguage.English,
   activeTodoId: null,
@@ -29,9 +29,9 @@ export const SystemReducer = createReducer(initialState, (builder) => builder
   .addCase(SystemActions.setIsLoadedColumns, (draft, action) => { draft.isLoadedColumns = action.payload; })
   .addCase(SystemActions.setIsLoadedTodos, (draft, action) => { draft.isLoadedTodos = action.payload; })
   .addCase(SystemActions.setActivePopupId, (draft, action) => { draft.activePopupId = action.payload; })
-  .addCase(SystemActions.setIsEditableCard, (draft, action) => { draft.isEditableCard = action.payload; })
-  .addCase(SystemActions.setEditableColumnId, (draft, action) => { draft.editableColumnId = action.payload; })
   .addCase(SystemActions.setEditableBoardId, (draft, action) => { draft.editableBoardId = action.payload; })
+  .addCase(SystemActions.setEditableColumnId, (draft, action) => { draft.editableColumnId = action.payload; })
+  .addCase(SystemActions.setEditableCardId, (draft, action) => { draft.editableCardId = action.payload; })
   .addCase(SystemActions.setIsSearchMode, (draft, action) => { draft.isSearchMode = action.payload; })
   .addCase(SystemActions.setLanguage, (draft, action) => { draft.language = action.payload; })
   .addCase(SystemActions.setActiveTodoId, (draft, action) => { draft.activeTodoId = action.payload; })
