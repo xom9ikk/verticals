@@ -349,7 +349,7 @@ export const Card: FC<ICard> = ({
     </div>
   ),
   [
-    status, isEditable,
+    status, isEditable, color,
     titleValue, descriptionValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,

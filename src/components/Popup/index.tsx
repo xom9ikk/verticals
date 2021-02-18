@@ -10,6 +10,7 @@ interface IPopup {
   isAbsolute: boolean;
   sourceRef: MutableRefObject<any>;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
+  width?: number;
   style?: React.CSSProperties;
 }
 
@@ -26,6 +27,7 @@ export const Popup: FC<IPopup> = ({
   isSubMenu,
   isAbsolute,
   position = 'top',
+  width: defaultWidth = 240,
   style,
   children,
 }) => {
@@ -47,6 +49,7 @@ export const Popup: FC<IPopup> = ({
         className={cn('popup__inner', {
           'popup__inner--submenu': isSubMenu,
         })}
+        style={{ width: defaultWidth }}
       >
         {children}
       </div>

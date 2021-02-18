@@ -1,5 +1,5 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
@@ -13,6 +13,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@use/readableId';
 import { getActiveBoardReadableId, getUsername } from '@store/selectors';
 import { useOpenFiles } from '@use/openFiles';
+import { DatePicker } from '@comp/DatePicker';
 
 interface ICardContextMenu {
   menuId: string;
@@ -75,6 +76,9 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
 
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [isOpenDatePicker, setIsOpenDatePicker] = useState<boolean>(false);
+
+  const menuButtonRef = useRef<any>();
 
   const handleUploadFiles = async () => {
     const openedFiles = await openFiles('*', true);
@@ -102,6 +106,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       }
       case EnumCardActions.AddDate: {
         // TODO:
+        setIsOpenDatePicker(true);
         break;
       }
       case EnumCardActions.CompleteStatus: {
@@ -154,137 +159,152 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
     }
   };
 
+  const handleSelectDate = (date?: Date) => {
+    console.log(date);
+    setIsOpenDatePicker(false);
+  };
+
   return useMemo(() => (todoId && title ? (
-    <Menu
-      id={`${menuId}-card-${todoId}`}
-      imageSrc={`/assets/svg/dots${isPrimary ? '-primary' : ''}.svg`}
-      alt="menu"
-      imageSize={imageSize || 22}
-      size={size || 24}
-      isInvisible
-      isColored={isColored}
-      isInvertColor={isActive}
-      isHoverBlock={isHover}
-      position="right"
-      style={isTransformedPosition ? {
-        float: 'right',
-      } : {}}
-      onSelect={handleMenuButtonClick}
-    >
-      <ColorPicker
-        onPick={(newColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor)}
-        activeColor={color}
+
+    <>
+      <DatePicker
+        isOpen={isOpenDatePicker}
+        position="right"
+        sourceRef={menuButtonRef}
+        onSelectDate={handleSelectDate}
       />
-      <MenuItem
-        text="Edit card"
-        imageSrc="/assets/svg/menu/edit.svg"
-        action={EnumCardActions.EditCard}
-      />
-      <MenuItem
-        text="Attach file"
-        imageSrc="/assets/svg/menu/attach.svg"
-        action={EnumCardActions.AttachFile}
-      />
-      <MenuItem
-        text="Add date"
-        imageSrc="/assets/svg/menu/add-date.svg"
-        action={EnumCardActions.AddDate}
-      />
-      <Submenu
-        text="Complete"
-        imageSrc="/assets/svg/menu/complete.svg"
+      <Menu
+        ref={menuButtonRef}
+        id={`${menuId}-card-${todoId}`}
+        imageSrc={`/assets/svg/dots${isPrimary ? '-primary' : ''}.svg`}
+        alt="menu"
+        imageSize={imageSize || 22}
+        size={size || 24}
+        isInvisible
+        isColored={isColored}
+        isInvertColor={isActive}
+        isHoverBlock={isHover}
+        position="right"
+        style={isTransformedPosition ? {
+          float: 'right',
+        } : {}}
+        onSelect={handleMenuButtonClick}
       >
-        <MenuItem
-          text="Mark as to do"
-          imageSrc="/assets/svg/menu/rounded-square.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Todo ? '/assets/svg/menu/tick.svg' : ''}`}
-          isColoredHintImage
-          action={EnumCardActions.CompleteStatus}
-          payload={EnumTodoStatus.Todo}
+        <ColorPicker
+          onPick={(newColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor)}
+          activeColor={color}
         />
         <MenuItem
-          text="Mark as doing"
-          imageSrc="/assets/svg/menu/rounded-square-half-filled.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Doing ? '/assets/svg/menu/tick.svg' : ''}`}
-          isColoredHintImage
-          action={EnumCardActions.CompleteStatus}
-          payload={EnumTodoStatus.Doing}
+          text="Edit card"
+          imageSrc="/assets/svg/menu/edit.svg"
+          action={EnumCardActions.EditCard}
+        />
+        <MenuItem
+          text="Attach file"
+          imageSrc="/assets/svg/menu/attach.svg"
+          action={EnumCardActions.AttachFile}
+        />
+        <MenuItem
+          text="Add date"
+          imageSrc="/assets/svg/menu/add-date.svg"
+          action={EnumCardActions.AddDate}
+        />
+        <Submenu
+          text="Complete"
+          imageSrc="/assets/svg/menu/complete.svg"
         >
-          <span>Alt</span>
-          +
-          <span>Click</span>
-          on a checkbox to mark as doing
-        </MenuItem>
+          <MenuItem
+            text="Mark as to do"
+            imageSrc="/assets/svg/menu/rounded-square.svg"
+            hintImageSrc={`${status === EnumTodoStatus.Todo ? '/assets/svg/menu/tick.svg' : ''}`}
+            isColoredHintImage
+            action={EnumCardActions.CompleteStatus}
+            payload={EnumTodoStatus.Todo}
+          />
+          <MenuItem
+            text="Mark as doing"
+            imageSrc="/assets/svg/menu/rounded-square-half-filled.svg"
+            hintImageSrc={`${status === EnumTodoStatus.Doing ? '/assets/svg/menu/tick.svg' : ''}`}
+            isColoredHintImage
+            action={EnumCardActions.CompleteStatus}
+            payload={EnumTodoStatus.Doing}
+          >
+            <span>Alt</span>
+            +
+            <span>Click</span>
+            on a checkbox to mark as doing
+          </MenuItem>
+          <MenuItem
+            text="Mark as done"
+            imageSrc="/assets/svg/menu/rounded-square-check.svg"
+            hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick.svg' : ''}`}
+            isColoredHintImage
+            action={EnumCardActions.CompleteStatus}
+            payload={EnumTodoStatus.Done}
+          />
+          <MenuItem
+            text="Mark as canceled"
+            imageSrc="/assets/svg/menu/rounded-square-canceled.svg"
+            hintImageSrc={`${status === EnumTodoStatus.Canceled ? '/assets/svg/menu/tick.svg' : ''}`}
+            isColoredHintImage
+            action={EnumCardActions.CompleteStatus}
+            payload={EnumTodoStatus.Canceled}
+          >
+            <span>Shift</span>
+            +
+            <span>Click</span>
+            on a checkbox to mark as canceled
+          </MenuItem>
+        </Submenu>
+        <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuItem
-          text="Mark as done"
-          imageSrc="/assets/svg/menu/rounded-square-check.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick.svg' : ''}`}
+          text="Notifications"
+          imageSrc="/assets/svg/menu/notifications.svg"
+          hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick.svg' : ''}`}
           isColoredHintImage
-          action={EnumCardActions.CompleteStatus}
-          payload={EnumTodoStatus.Done}
+          action={EnumCardActions.Notifications}
         />
-        <MenuItem
-          text="Mark as canceled"
-          imageSrc="/assets/svg/menu/rounded-square-canceled.svg"
-          hintImageSrc={`${status === EnumTodoStatus.Canceled ? '/assets/svg/menu/tick.svg' : ''}`}
-          isColoredHintImage
-          action={EnumCardActions.CompleteStatus}
-          payload={EnumTodoStatus.Canceled}
+        <CopyToClipboard
+          text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(
+            title, todoId,
+          )}`} // TODO: move to env
+          onCopy={() => {
+            handleMenuButtonClick(EnumCardActions.CopyLink);
+          }}
         >
-          <span>Shift</span>
-          +
-          <span>Click</span>
-          on a checkbox to mark as canceled
-        </MenuItem>
-      </Submenu>
-      <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <MenuItem
-        text="Notifications"
-        imageSrc="/assets/svg/menu/notifications.svg"
-        hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick.svg' : ''}`}
-        isColoredHintImage
-        action={EnumCardActions.Notifications}
-      />
-      <CopyToClipboard
-        text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(
-          title, todoId,
-        )}`} // TODO: move to env
-        onCopy={() => {
-          handleMenuButtonClick(EnumCardActions.CopyLink);
-        }}
-      >
+          <MenuItem
+            text={isCopied ? 'Copied!' : 'Copy link'}
+            imageSrc="/assets/svg/menu/copy-link.svg"
+            isAutoClose={false}
+          />
+        </CopyToClipboard>
         <MenuItem
-          text={isCopied ? 'Copied!' : 'Copy link'}
-          imageSrc="/assets/svg/menu/copy-link.svg"
-          isAutoClose={false}
+          text="Duplicate"
+          imageSrc="/assets/svg/menu/duplicate.svg"
+          action={EnumCardActions.Duplicate}
         />
-      </CopyToClipboard>
-      <MenuItem
-        text="Duplicate"
-        imageSrc="/assets/svg/menu/duplicate.svg"
-        action={EnumCardActions.Duplicate}
-      />
-      <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <MenuItem
-        text="Add card below"
-        imageSrc="/assets/svg/menu/add-card.svg"
-        action={EnumCardActions.AddCardBelow}
-      />
-      <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <MenuItem
-        text={isArchived ? 'Unarchive' : 'Archive'}
-        imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
-        action={EnumCardActions.Archive}
-      />
-      <MenuItem
-        text="Delete"
-        imageSrc="/assets/svg/menu/remove.svg"
-        hintText="⌫"
-        action={EnumCardActions.Delete}
-      />
-    </Menu>
+        <Divider verticalSpacer={7} horizontalSpacer={10} />
+        <MenuItem
+          text="Add card below"
+          imageSrc="/assets/svg/menu/add-card.svg"
+          action={EnumCardActions.AddCardBelow}
+        />
+        <Divider verticalSpacer={7} horizontalSpacer={10} />
+        <MenuItem
+          text={isArchived ? 'Unarchive' : 'Archive'}
+          imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
+          action={EnumCardActions.Archive}
+        />
+        <MenuItem
+          text="Delete"
+          imageSrc="/assets/svg/menu/remove.svg"
+          hintText="⌫"
+          action={EnumCardActions.Delete}
+        />
+      </Menu>
+    </>
   ) : null),
   [isHover, color,
     isNotificationsEnabled,
-    isArchived, status, username, isCopied]);
+    isArchived, status, username, isCopied, isOpenDatePicker]);
 };

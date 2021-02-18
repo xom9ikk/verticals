@@ -1,0 +1,42 @@
+.calendar-day {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding-top: 4px;
+  margin: 1px 6px;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 100;
+  color: $black;
+  font-family: 'Nunito Regular', sans-serif;
+
+  &:hover {
+    background: $hover-color;
+    color: $black;
+  }
+
+  &--weekend {
+    color: $text;
+  }
+
+  &--past {
+    color: $text-very-light;
+  }
+
+  &--today {
+    background: $primary-light;
+    color: $black;
+  }
+
+  &--highlighted {
+    background: $hover-color;
+    color: $black;
+  }
+
+  &--selected {
+    background: $primary !important;
+    color: $white !important;
+  }
+}

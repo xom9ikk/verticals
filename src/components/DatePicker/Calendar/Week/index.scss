@@ -1,0 +1,78 @@
+.calendar-week {
+  display: flex;
+  flex-wrap: nowrap;
+  &__day {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    padding-top: 4px;
+    margin: 1px 6px;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+    color: $black;
+    font-family: 'Nunito Light', sans-serif;
+    &:hover {
+      background: $hover-color;
+      color: $black;
+    }
+    &--weekend {
+      color: $text;
+    }
+    &--past {
+      color: $text-very-light;
+    }
+    &--today {
+      background: $primary-light;
+      color: $black;
+    }
+    &--selected {
+      background: $primary;
+      color: $white;
+    }
+    &--highlighted {
+      background: $hover-color;
+      color: $black;
+    }
+  }
+  &__month {
+    width: 120px;
+    text-align: center;
+    position: absolute;
+    transform: translate(-20px, 150px) rotate(-90deg);
+    transform-origin: left top;
+    font-family: 'Nunito Bold', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+  &__year {
+    font-family: 'Nunito Light', sans-serif;
+    margin-left: 5px;
+  }
+  &__divider {
+    position: absolute;
+    &--0 {
+      transform: translate(-40px, -1px);
+    }
+    &--1 {
+      transform: translate(-360px, -1px);
+    }
+    &--2 {
+      transform: translate(-320px, -1px);
+    }
+    &--3 {
+      transform: translate(-280px, -1px);
+    }
+    &--4 {
+      transform: translate(-240px, -1px);
+    }
+    &--5 {
+      transform: translate(-200px, -1px);
+    }
+    &--6 {
+      transform: translate(-160px, -1px);
+    }
+  }
+}

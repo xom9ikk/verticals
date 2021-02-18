@@ -1,5 +1,5 @@
 import React, {
-  FC, ReactComponentElement, ReactElement, SyntheticEvent, useMemo, useRef,
+  forwardRef, ReactComponentElement, ReactElement, SyntheticEvent, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';
@@ -33,9 +33,10 @@ interface IMenu {
   isPrimary?: boolean;
   isColored?: boolean;
   style?: React.CSSProperties;
+  children?: any;
 }
 
-export const Menu: FC<IMenu> = ({
+const MenuComponent = ({
   id,
   imageSrc,
   onSelect,
@@ -58,10 +59,10 @@ export const Menu: FC<IMenu> = ({
   isColored,
   style,
   children,
-}) => {
+}: IMenu, ref: any) => {
   const dispatch = useDispatch();
   const activePopupId = useSelector(getActivePopupId);
-  const sourceRef = useRef<any>(null);
+  const sourceRef = ref || useRef<any>(null);
 
   const isActive = activePopupId === id;
 
@@ -161,12 +162,14 @@ export const Menu: FC<IMenu> = ({
     dispatch(SystemActions.setActivePopupId(null));
   };
 
-  const [ref] = useOutsideClickRef(handleOutsideClick, !!activePopupId);
+  const [wrapperRef] = useOutsideClickRef(handleOutsideClick, !!activePopupId);
 
   return (
-    <div ref={ref}>
+    <div ref={wrapperRef}>
       {button}
       {popup}
     </div>
   );
 };
+
+export const Menu = forwardRef(MenuComponent);

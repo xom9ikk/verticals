@@ -1,0 +1,10 @@
+.calendar {
+  height: 300px;
+  overflow: hidden scroll;
+  position: relative;
+  padding: 20px 2px 60px 24px;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

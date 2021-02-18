@@ -1,0 +1,17 @@
+.datepicker-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  height: 28px;
+  padding: 6px 4px 6px 8px;
+  background-color: $primary-light;
+  border-radius: 4px;
+  margin: 7px 0 0 2px;
+
+  &__wrapper {
+    padding: 0 0 0 10px;
+    height: 48px;
+    display: flex;
+  }
+}
