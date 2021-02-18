@@ -11,7 +11,7 @@ export type IGetCommentAttachmentsByTodoIdResponse = IServerResponse<{
 
 export interface IUploadCommentAttachmentRequest {
   commentId: number;
-  file: File;
+  file: FormData;
 }
 
 export type IUploadCommentAttachmentResponse = IServerResponse<ICommentAttachment>;

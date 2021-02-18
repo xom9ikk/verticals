@@ -1,5 +1,5 @@
 import React, {
-  FC, ReactElement, SyntheticEvent, useMemo, useRef,
+  FC, ReactComponentElement, ReactElement, SyntheticEvent, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';
@@ -8,6 +8,8 @@ import { getActivePopupId } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import useKeys from '@rooks/use-keys';
+import { MenuItem } from '@comp/MenuItem';
+import { Submenu } from '@comp/Submenu';
 
 interface IMenu {
   id: string;
@@ -100,7 +102,7 @@ export const Menu: FC<IMenu> = ({
       isAbsolute={isAbsolute}
       style={{ zIndex: 2 }}
     >
-      {React.Children.map(children, (child: ReactElement) => {
+      {React.Children.map(children, (child: ReactComponentElement<typeof MenuItem | typeof Submenu>) => {
         if (child.type.name === 'MenuItem') {
           return wrapping(child);
         }
