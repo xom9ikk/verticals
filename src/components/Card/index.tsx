@@ -30,6 +30,7 @@ import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
 import { NEW_TODO_ID } from '@/constants';
 import { useDebounce } from '@use/debounce';
 import { useNewValues } from '@use/newValues';
+import { DateBadge } from '@comp/DateBadge';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -335,6 +336,7 @@ export const Card: FC<ICard> = ({
               >
                 {titleValue}
               </div>
+              <DateBadge date={new Date(2021, 1, 18)} />
               <CardAttachmentsPreview
                 todoId={todoId!}
                 isActive={isActive}

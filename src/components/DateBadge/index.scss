@@ -1,0 +1,54 @@
+.date-badge {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  height: 18px;
+  padding: 0 5px 0 1px;
+  border-radius: 4px;
+  color: $text;
+  transform: translateY(4px);
+  cursor: pointer;
+  letter-spacing: 0;
+
+  &:hover {
+    background: $white;
+    filter: none;
+    img {
+      filter: none;
+    }
+  }
+
+  &--yellow {
+    background: #fee930 !important;
+    color: $black;
+    &:hover {
+      filter: brightness(0.95);
+      img {
+        filter: grayscale(1) brightness(1.4);
+      }
+    }
+  }
+
+  &--red {
+    background: #ff6a56 !important;
+    color: $white;
+    &:hover {
+      filter: saturate(2);
+    }
+    img {
+      filter: grayscale(1) brightness(3) !important;
+    }
+  }
+
+  span {
+    //margin-top: 1px;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+    //margin-right: 2px;
+    filter: grayscale(1) brightness(1.4);
+  }
+}
