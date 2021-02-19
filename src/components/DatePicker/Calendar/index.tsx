@@ -15,10 +15,10 @@ interface ICalendar {
   onSelectDate: (date: Date) => void;
 }
 
-const WEEKS_RANGE = 4 * 36;
+const WEEKS_RANGE = 4 * 12;
 const weekHeight = 30;
 const monthHeight = weekHeight * 4;
-const oneYearHeight = monthHeight * 12;
+const halfYearHeight = monthHeight * 6;
 
 export const Calendar: FC<ICalendar> = ({
   selectedDates,
@@ -48,7 +48,9 @@ export const Calendar: FC<ICalendar> = ({
 
   useEffect(() => {
     setTimeout(() => {
-      containerRef.current.scrollTop = weekHeight * WEEKS_RANGE - 1.5 * weekHeight;
+      if (containerRef.current) {
+        containerRef.current.scrollTop = weekHeight * WEEKS_RANGE - 1.5 * weekHeight;
+      }
     });
 
     recalculateCalendar();
@@ -61,14 +63,16 @@ export const Calendar: FC<ICalendar> = ({
   const handleScroll = useDebounce((e) => {
     const { scrollTop: currentPosition, scrollHeight: max } = e.target;
 
-    const minThreshold = oneYearHeight;
-    const maxThreshold = max - oneYearHeight;
+    const minThreshold = halfYearHeight;
+    const maxThreshold = max - halfYearHeight;
 
     if (currentPosition < minThreshold) {
       setStartDate(subWeeks(startDate, WEEKS_RANGE));
+      setEndDate(subWeeks(endDate, WEEKS_RANGE));
     }
 
     if (currentPosition > maxThreshold) {
+      setStartDate(addWeeks(startDate, WEEKS_RANGE));
       setEndDate(addWeeks(endDate, WEEKS_RANGE));
     }
   }, 100, [startDate, endDate]);

@@ -9,23 +9,25 @@ import {
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
 } from '@store/actions';
-import { Loader } from '@comp/Loader';
-import { CardContextMenu } from '@comp/CardContextMenu';
-import { TextArea } from '@comp/TextArea';
-import { Comments } from '@comp/Comments';
 import { redirectTo } from '@router/history';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import {
   getActiveBoardReadableId,
   getActiveTodoId,
   getTodoById,
   getUsername,
 } from '@store/selectors';
+import { Loader } from '@comp/Loader';
 import { Bullet } from '@comp/Bullet';
+import { TextArea } from '@comp/TextArea';
+import { Comments } from '@comp/Comments';
 import { DropZone } from '@comp/DropZone';
+import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
-import { useColorClass } from '@use/colorClass';
+import { CardContextMenu } from '@comp/CardContextMenu';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useDebounce } from '@use/debounce';
+import { useColorClass } from '@use/colorClass';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 
 interface ICardPopup {
   columnId: number;
@@ -39,6 +41,7 @@ export const CardPopup: FC<ICardPopup> = ({
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
+  const buttonRef = useRef<any>(null);
   const titleInputRef = useRef<any>(null);
 
   const activeTodoId = useSelector(getActiveTodoId);
@@ -91,6 +94,11 @@ export const CardPopup: FC<ICardPopup> = ({
       type: EnumDroppedZoneType.CardPopup,
       files,
     }));
+  };
+
+  const handleSelectDate = (date?: Date) => {
+    console.log(date);
+    dispatch(SystemActions.setActivePopupId(null));
   };
 
   useEffect(() => {
@@ -175,6 +183,17 @@ export const CardPopup: FC<ICardPopup> = ({
                 />
                 )
               }
+              <DateBadge
+                popupId="card-popup"
+                position="bottom"
+                todoId={activeTodoId!}
+                style={{
+                  position: 'absolute',
+                  top: 5,
+                  left: 25,
+                }}
+                date={new Date(2021, 1, 18)}
+              />
               <div className="card-popup__textarea-inner">
                 <TextArea
                   ref={titleInputRef}
@@ -200,12 +219,18 @@ export const CardPopup: FC<ICardPopup> = ({
             <div className="card-popup__toolbar">
               <div>
                 <ControlButton
+                  ref={buttonRef}
                   imageSrc="/assets/svg/calendar.svg"
                   tooltip="Date"
                   alt="date"
                   imageSize={24}
                   size={36}
                   isColored
+                />
+                <DatePickerPopup
+                  popupId={`card-popup-${activeTodoId}`}
+                  sourceRef={buttonRef}
+                  onSelectDate={handleSelectDate}
                 />
                 <CardContextMenu
                   menuId="popup"

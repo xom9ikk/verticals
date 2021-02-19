@@ -336,7 +336,11 @@ export const Card: FC<ICard> = ({
               >
                 {titleValue}
               </div>
-              <DateBadge date={new Date(2021, 1, 18)} />
+              <DateBadge
+                popupId="card"
+                todoId={todoId}
+                date={new Date(2021, 1, 18)}
+              />
               <CardAttachmentsPreview
                 todoId={todoId!}
                 isActive={isActive}

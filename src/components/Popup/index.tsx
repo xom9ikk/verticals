@@ -27,7 +27,7 @@ export const Popup: FC<IPopup> = ({
   isSubMenu,
   isAbsolute,
   position = 'top',
-  width: defaultWidth = 240,
+  width: defaultWidth,
   style,
   children,
 }) => {

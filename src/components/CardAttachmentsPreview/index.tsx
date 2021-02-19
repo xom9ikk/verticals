@@ -65,6 +65,9 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
     onDoubleClick={(e) => e.stopPropagation()}
     isColored={isColored}
     isStopPropagation={false}
+    style={{
+      borderRadius: 4,
+    }}
   />
   );
 

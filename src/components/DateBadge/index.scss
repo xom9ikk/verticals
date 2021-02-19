@@ -10,6 +10,7 @@
   transform: translateY(4px);
   cursor: pointer;
   letter-spacing: 0;
+  white-space: nowrap;
 
   &:hover {
     background: $white;

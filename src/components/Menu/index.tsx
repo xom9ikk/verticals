@@ -33,6 +33,7 @@ interface IMenu {
   isPrimary?: boolean;
   isColored?: boolean;
   style?: React.CSSProperties;
+  width?: number;
   children?: any;
 }
 
@@ -58,6 +59,7 @@ const MenuComponent = ({
   isPrimary,
   isColored,
   style,
+  width = 240,
   children,
 }: IMenu, ref: any) => {
   const dispatch = useDispatch();
@@ -102,6 +104,7 @@ const MenuComponent = ({
       sourceRef={sourceRef}
       isAbsolute={isAbsolute}
       style={{ zIndex: 2 }}
+      width={width}
     >
       {React.Children.map(children, (child: ReactComponentElement<typeof MenuItem | typeof Submenu>) => {
         if (child.type.name === 'MenuItem') {
@@ -111,6 +114,7 @@ const MenuComponent = ({
           return React.cloneElement(
             child, {
               ...child.props,
+              // @ts-ignore
               children: React.Children.map(child.props.children, wrapping),
             },
           );
