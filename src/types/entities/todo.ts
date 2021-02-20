@@ -10,6 +10,7 @@ export interface ITodo {
   status?: EnumTodoStatus;
   color?: IColor;
   isArchived?: boolean;
+  isRemoved?: boolean;
   isNotificationsEnabled?: boolean;
   expirationDate?: Date | null;
   belowId?: number;

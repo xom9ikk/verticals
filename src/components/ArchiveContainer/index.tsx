@@ -53,6 +53,7 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
               color={todo.color}
               isArchived={todo.isArchived}
               isNotificationsEnabled={todo.isNotificationsEnabled}
+              isRemoved={todo.isRemoved}
               expirationDate={todo.expirationDate}
               commentsCount={todo.commentsCount}
               imagesCount={todo.imagesCount}

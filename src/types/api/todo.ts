@@ -15,6 +15,10 @@ export type IGetTodosByBoardIdResponse = IServerResponse<{
   todos: ITodos;
 }>;
 
+export type IGetRemovedTodosResponse = IServerResponse<{
+  todos: ITodos;
+}>;
+
 export interface ICreateTodoRequest {
   columnId: number;
   title: string;

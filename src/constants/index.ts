@@ -3,7 +3,6 @@ export const TRASH_BOARD_ID = -1;
 export const NEW_BOARD_ID = -2;
 export const NEW_COLUMN_ID = -3;
 export const NEW_TODO_ID = -4;
-export const MAX_FILES_IN_COMMENT_PREVIEW = 3;
 export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'calendar-2', 'card', 'carrot', 'chair', 'change', 'cheese',
   'circle', 'coffee', 'croissant', 'cross', 'file', 'flag', 'foot', 'gallery', 'geo', 'heart', 'help', 'home', 'item',
@@ -14,3 +13,4 @@ export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-rig
   'sound-on', 'stop', 'tick', 'tick-2', 'timer', 'usd', 'wallet', 'trash', 'fire', 'twitch', 'youtube',
   'github', 'linkedin', 'twitter', 'facebook', 'instagram', 'snap', 'tik-tok'];
 export const DEFAULT_BOARD_ICON = '/assets/svg/board/item.svg';
+export const MAX_FILES_IN_COMMENT_PREVIEW = 3;

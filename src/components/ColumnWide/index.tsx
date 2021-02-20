@@ -13,9 +13,11 @@ import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
 import { SystemActions } from '@store/actions';
 import {
-  getBoardCardType, getEditableCardId,
+  getBoardCardType,
+  getEditableCardId,
   getOrderedArchivedTodosByColumnId,
   getOrderedNonArchivedTodosByColumnId,
+  getTodosEntities,
 } from '@store/selectors';
 import { useAutoScroll } from '@use/autoScroll';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
@@ -55,7 +57,10 @@ export const ColumnWide: FC<IColumnWide> = ({
   const editableCardId = useSelector(getEditableCardId);
   const archivedTodos = useSelector(getOrderedArchivedTodosByColumnId(columnId));
   const nonArchivedTodos = useSelector(getOrderedNonArchivedTodosByColumnId(columnId));
+  const allTodos = useSelector(getTodosEntities);
   const cardType = useSelector(getBoardCardType(boardId));
+
+  const todos = mode === EnumColumnMode.Deleted ? allTodos : nonArchivedTodos;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isDraggingCard, setIsDraggingCard] = useState<boolean>(false);
@@ -102,7 +107,7 @@ export const ColumnWide: FC<IColumnWide> = ({
   const memoCardContainer = useMemo(() => (
     <CardsContainer
       columnId={columnId}
-      todos={nonArchivedTodos}
+      todos={todos}
       cardType={cardType}
       mode={mode}
       isOpenNewCard={editableCardId === `${columnId}-${NEW_TODO_ID}`}
@@ -110,7 +115,7 @@ export const ColumnWide: FC<IColumnWide> = ({
       onAddCard={handleAddCard}
       scrollToBottom={scrollToBottom}
     />
-  ), [columnId, nonArchivedTodos, cardType, mode, editableCardId, isDraggingCard]);
+  ), [columnId, todos, cardType, mode, editableCardId, isDraggingCard]);
 
   return useMemo(() => (
     <div
@@ -171,7 +176,7 @@ export const ColumnWide: FC<IColumnWide> = ({
                         isHide={isEditable}
                         onAddCard={handleAddCard}
                       />
-                      { mode === EnumColumnMode.Normal && memoCardContainer }
+                      { mode !== EnumColumnMode.New && memoCardContainer }
                       <ArchiveContainer
                         archivedTodos={archivedTodos}
                         cardType={cardType}
@@ -201,5 +206,5 @@ export const ColumnWide: FC<IColumnWide> = ({
   [isEditable, isHoverHeader, isHover,
     boardId, columnId, belowId,
     title, description, color, mode,
-    nonArchivedTodos, archivedTodos, cardType]);
+    todos, archivedTodos, cardType]);
 };

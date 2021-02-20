@@ -35,15 +35,15 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
     draft.entities.push(entity);
     draft.positions[entity.columnId].splice(position, 0, entity.id);
   })
-  .addCase(TodosActions.remove, (draft, action) => {
+  .addCase(TodosActions.removeEntity, (draft, action) => {
     const { id } = action.payload;
 
     const entityIndex = draft.entities.findIndex((column) => column.id === id);
     const { columnId } = draft.entities[entityIndex]; // TODO: try move below
     if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
 
-    const positionIndex = draft.positions[columnId].findIndex((todoId) => todoId === id);
-    if (positionIndex !== -1) draft.positions[columnId].splice(positionIndex, 1);
+    const positionIndex = draft.positions[columnId]?.findIndex((todoId) => todoId === id);
+    if (positionIndex !== -1) draft.positions[columnId]?.splice(positionIndex, 1);
   })
   .addCase(TodosActions.drawBelow, (draft, action) => {
     const { belowId, columnId } = action.payload;

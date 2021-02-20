@@ -30,6 +30,18 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
   }
 }
 
+function* fetchRemovedWorker() {
+  try {
+    const response = yield* apply(todoService, todoService.getRemoved, []);
+    const { todos } = response.data;
+    yield put(TodosActions.setAll(todos));
+    yield put(SystemActions.setIsLoadedColumns(true));
+    yield put(SystemActions.setIsLoadedTodos(true));
+  } catch (error) {
+    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+  }
+}
+
 function* createWorker(action: PayloadAction<ICreateTodo>) {
   try {
     const { belowId, files, ...entity } = action.payload;
@@ -48,9 +60,9 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
         entity: {
           ...entity,
           id: todoId,
-          attachmentsCount: 0, // TODO: get from backend
-          commentsCount: 0, // TODO: get from backend
-          imagesCount: 0, // TODO: get from backend
+          attachmentsCount: 0,
+          commentsCount: 0,
+          imagesCount: 0,
         },
         position,
       }));
@@ -58,9 +70,9 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
       yield put(TodosActions.add({
         ...entity,
         id: todoId,
-        attachmentsCount: 0, // TODO: get from backend
-        commentsCount: 0, // TODO: get from backend
-        imagesCount: 0, // TODO: get from backend
+        attachmentsCount: 0,
+        commentsCount: 0,
+        imagesCount: 0,
       }));
     }
     yield call(show, 'Todo', 'Todo created successfully', ALERT_TYPES.SUCCESS);
@@ -71,7 +83,9 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
 
 function* removeWorker(action: PayloadAction<IRemoveTodo>) {
   try {
+    const { id } = action.payload;
     yield* apply(todoService, todoService.remove, [action.payload]);
+    yield put(TodosActions.removeEntity({ id }));
     yield call(show, 'Todo', 'Todo removed successfully', ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
@@ -105,9 +119,9 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
         id: todoId,
         columnId,
         ...todo,
-        attachmentsCount: 0, // TODO: get from backend
-        commentsCount: 0, // TODO: get from backend
-        imagesCount: 0, // TODO: get from backend
+        attachmentsCount: 0,
+        commentsCount: 0,
+        imagesCount: 0,
       },
       position: todo.position,
     }));
@@ -120,6 +134,7 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
 export function* watchTodo() {
   yield* all([
     takeLatest(TodosActions.fetchByBoardId, fetchByBoardIdWorker),
+    takeLatest(TodosActions.fetchRemoved, fetchRemovedWorker),
     takeLatest(TodosActions.create, createWorker),
     takeLatest(TodosActions.remove, removeWorker),
     takeLatest(TodosActions.update, updateWorker),

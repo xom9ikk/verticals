@@ -6,6 +6,7 @@ import {
   IGetAllTodosResponse,
   IGetTodosByBoardIdRequest,
   IGetTodosByBoardIdResponse,
+  IGetRemovedTodosResponse,
   IRemoveTodoRequest,
   IRemoveTodoResponse,
   IUpdateTodoPositionRequest,
@@ -17,6 +18,7 @@ import {
 export interface ITodoService {
   getAll(): Promise<IGetAllTodosResponse>;
   getByBoardId(body: IGetTodosByBoardIdRequest): Promise<IGetTodosByBoardIdResponse>;
+  getRemoved(): Promise<IGetRemovedTodosResponse>;
   create(body: ICreateTodoRequest): Promise<ICreateTodoResponse>;
   remove(body: IRemoveTodoRequest): Promise<IRemoveTodoResponse>;
   update(body: IUpdateTodoRequest): Promise<IUpdateTodoResponse>;

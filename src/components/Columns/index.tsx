@@ -39,8 +39,10 @@ export const Columns: FC<IColumns> = () => {
       const timeout = setTimeout(() => {
         if (activeBoardId !== TRASH_BOARD_ID) {
           dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
+          dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
+        } else {
+          dispatch(TodosActions.fetchRemoved());
         }
-        dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
       }, 100);
       return () => {
         clearTimeout(timeout);

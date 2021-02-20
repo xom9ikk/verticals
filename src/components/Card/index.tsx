@@ -45,6 +45,7 @@ interface ICard {
   color?: IColor;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
+  isRemoved?: boolean;
   expirationDate?: Date | null;
   invertColor?: boolean;
   isEditable: boolean;
@@ -68,6 +69,7 @@ export const Card: FC<ICard> = ({
   color,
   isArchived,
   isNotificationsEnabled,
+  isRemoved,
   expirationDate,
   invertColor,
   isEditable,
@@ -326,6 +328,7 @@ export const Card: FC<ICard> = ({
                 isActive={isActive}
                 isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
+                isRemoved={isRemoved}
                 expirationDate={expirationDate}
                 color={color}
                 status={status}
@@ -362,7 +365,7 @@ export const Card: FC<ICard> = ({
     titleValue, descriptionValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,
-    isNotificationsEnabled, expirationDate,
+    isNotificationsEnabled, isArchived, isRemoved, expirationDate,
   ]);
 
   return (

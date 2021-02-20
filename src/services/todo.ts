@@ -8,7 +8,7 @@ import {
   IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
   IGetAllTodosResponse,
   IGetTodosByBoardIdRequest, IGetTodosByBoardIdResponse,
-  IDuplicateTodoRequest, IDuplicateTodoResponse,
+  IDuplicateTodoRequest, IDuplicateTodoResponse, IGetRemovedTodosResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { ITodoService } from '@inversify/interfaces/services';
@@ -31,6 +31,10 @@ export class TodoService implements ITodoService {
     return this.httpClient.get<IGetTodosByBoardIdResponse>('/todo', {
       params: body,
     });
+  }
+
+  getRemoved() {
+    return this.httpClient.get<IGetRemovedTodosResponse>('/todo/trash');
   }
 
   create(body: ICreateTodoRequest) {

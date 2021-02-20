@@ -27,7 +27,7 @@ export const Submenu: FC<ISubmenu> = ({
         sourceRef={sourceRef}
         position="right"
         isAbsolute={false}
-        style={{ marginLeft: 0, marginTop: -7 }}
+        style={{ marginLeft: -10, marginTop: -7 }}
       >
         {children}
       </Popup>

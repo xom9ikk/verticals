@@ -9,6 +9,9 @@
   border-radius: 8px;
   transition: opacity .1s ease-in-out;
   z-index: 3;
+  &--submenu {
+    padding-left: 10px;
+  }
   &__inner {
     //position: relative;
     display: flex;
@@ -20,9 +23,6 @@
     border-radius: 8px;
     //transition: opacity .1s ease-in-out;
     //z-index: 3;
-    &--submenu {
-      margin-left: 10px;
-    }
   }
   &--top {
     transform: translate(37%, -60%);

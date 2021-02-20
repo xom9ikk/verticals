@@ -27,7 +27,7 @@ export const Popup: FC<IPopup> = ({
   isSubMenu,
   isAbsolute,
   position = 'top',
-  width: defaultWidth,
+  width: defaultWidth = 240,
   style,
   children,
 }) => {
@@ -40,15 +40,14 @@ export const Popup: FC<IPopup> = ({
     <div
       className={cn('popup', {
         [`popup--${position}`]: isSubMenu,
+        'popup--submenu': isSubMenu,
       })}
       style={style}
       onClick={(e) => e.stopPropagation()}
       onDoubleClick={(e) => e.stopPropagation()}
     >
       <div
-        className={cn('popup__inner', {
-          'popup__inner--submenu': isSubMenu,
-        })}
+        className="popup__inner"
         style={{ width: defaultWidth }}
       >
         {children}
