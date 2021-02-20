@@ -11,7 +11,7 @@ import { useDebounce } from '@use/debounce';
 
 interface ICalendar {
   selectedDates?: Array<Date>;
-  highlightDate?: Date;
+  highlightDate?: Date | null;
   onSelectDate: (date: Date) => void;
 }
 
@@ -22,7 +22,7 @@ const halfYearHeight = monthHeight * 6;
 
 export const Calendar: FC<ICalendar> = ({
   selectedDates,
-  highlightDate,
+  highlightDate = null,
   onSelectDate,
 }) => {
   const [startDate, setStartDate] = useState<Date>(new Date());

@@ -24,6 +24,7 @@ interface ICardContextMenu {
   isActive?: boolean;
   isHover: boolean;
   isNotificationsEnabled?: boolean;
+  expirationDate?: Date | null;
   color?: IColor;
   status?: EnumTodoStatus;
   size?: number;
@@ -58,6 +59,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   isActive,
   isHover,
   isNotificationsEnabled,
+  expirationDate,
   color,
   status,
   size,
@@ -165,9 +167,12 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
     setIsOpenDatePicker(false);
   }, [activePopupId]);
 
-  const handleSelectDate = (selectedDate?: Date) => {
-    console.log(selectedDate);
+  const handleSelectDate = (selectedDate: Date | null) => {
     dispatch(SystemActions.setActivePopupId(null));
+    dispatch(TodosActions.update({
+      id: todoId!,
+      expirationDate: selectedDate,
+    }));
   };
 
   return useMemo(() => (todoId && title ? (
@@ -194,30 +199,36 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
           isOpenDatePicker ? (
             <DatePicker
               isOpen={isOpenDatePicker}
+              selectedDate={expirationDate}
               onSelectDate={handleSelectDate}
             />
           ) : (
             [<ColorPicker
+              key={0}
               onPick={(newColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor)}
               activeColor={color}
             />,
               <MenuItem
+                key={1}
                 text="Edit card"
                 imageSrc="/assets/svg/menu/edit.svg"
                 action={EnumCardActions.EditCard}
               />,
               <MenuItem
+                key={2}
                 text="Attach file"
                 imageSrc="/assets/svg/menu/attach.svg"
                 action={EnumCardActions.AttachFile}
               />,
               <MenuItem
+                key={3}
                 text="Add date"
                 imageSrc="/assets/svg/menu/add-date.svg"
                 action={EnumCardActions.AddDate}
                 isAutoClose={false}
               />,
               <Submenu
+                key={4}
                 text="Complete"
                 imageSrc="/assets/svg/menu/complete.svg"
               >
@@ -243,6 +254,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                   on a checkbox to mark as doing
                 </MenuItem>
                 <MenuItem
+                  key={5}
                   text="Mark as done"
                   imageSrc="/assets/svg/menu/rounded-square-check.svg"
                   hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -251,6 +263,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                   payload={EnumTodoStatus.Done}
                 />
                 <MenuItem
+                  key={6}
                   text="Mark as canceled"
                   imageSrc="/assets/svg/menu/rounded-square-canceled.svg"
                   hintImageSrc={`${status === EnumTodoStatus.Canceled ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -264,8 +277,13 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                   on a checkbox to mark as canceled
                 </MenuItem>
               </Submenu>,
-              <Divider verticalSpacer={7} horizontalSpacer={10} />,
+              <Divider
+                key={7}
+                verticalSpacer={7}
+                horizontalSpacer={10}
+              />,
               <MenuItem
+                key={8}
                 text="Notifications"
                 imageSrc="/assets/svg/menu/notifications.svg"
                 hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick.svg' : ''}`}
@@ -273,6 +291,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                 action={EnumCardActions.Notifications}
               />,
               <CopyToClipboard
+                key={9}
                 text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(
                   title, todoId,
                 )}`} // TODO: move to env
@@ -287,23 +306,35 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
                 />
               </CopyToClipboard>,
               <MenuItem
+                key={10}
                 text="Duplicate"
                 imageSrc="/assets/svg/menu/duplicate.svg"
                 action={EnumCardActions.Duplicate}
               />,
-              <Divider verticalSpacer={7} horizontalSpacer={10} />,
+              <Divider
+                key={11}
+                verticalSpacer={7}
+                horizontalSpacer={10}
+              />,
               <MenuItem
+                key={12}
                 text="Add card below"
                 imageSrc="/assets/svg/menu/add-card.svg"
                 action={EnumCardActions.AddCardBelow}
               />,
-              <Divider verticalSpacer={7} horizontalSpacer={10} />,
+              <Divider
+                key={13}
+                verticalSpacer={7}
+                horizontalSpacer={10}
+              />,
               <MenuItem
+                key={14}
                 text={isArchived ? 'Unarchive' : 'Archive'}
                 imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
                 action={EnumCardActions.Archive}
               />,
               <MenuItem
+                key={15}
                 text="Delete"
                 imageSrc="/assets/svg/menu/remove.svg"
                 hintText="⌫"
@@ -317,5 +348,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   ) : null),
   [isHover, color,
     isNotificationsEnabled,
-    isArchived, status, username, isCopied, isOpenDatePicker]);
+    isArchived, status, username, isCopied,
+    isOpenDatePicker, expirationDate]);
 };

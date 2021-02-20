@@ -264,6 +264,7 @@ export const CommentItem: FC<ICommentItem> = ({
               {
                 likedUsers && likedUsers?.length > 0 && likedUsers.map((user) => (
                   <Avatar
+                    key={user.username}
                     size={16}
                     onClick={handleClickOnLikedUser}
                     borderSize="small"

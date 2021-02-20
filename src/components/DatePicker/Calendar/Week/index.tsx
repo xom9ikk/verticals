@@ -27,14 +27,14 @@ const months = [
 interface ICalendarWeek {
   startDate: Date;
   selectedDates?: Array<Date>;
-  highlightDate?: Date;
+  highlightDate?: Date | null;
   onSelectDate: (date: Date) => void;
 }
 
 export const CalendarWeek: FC<ICalendarWeek> = ({
   startDate,
   selectedDates,
-  highlightDate,
+  highlightDate = null,
   onSelectDate,
 }) => {
   const year = startDate.getFullYear();
@@ -48,7 +48,7 @@ export const CalendarWeek: FC<ICalendarWeek> = ({
   }), [startDate, endDate]);
 
   const lastDay = useMemo(() => lastDayOfMonth(startDate), [startDate]);
-  const isShowYear = useMemo(() => !isThisYear(startDate), [startDate]);
+  const isShowYear = useMemo(() => !isThisYear(endDate), [endDate]);
 
   const isNewMonthInWeek = useMemo(() => days.some((day) => !isSameMonth(day, lastDay)), [days, lastDay]);
   const isLastDayInMonth = useMemo(() => isSameDay(days[6], lastDay), [days, lastDay]);

@@ -96,9 +96,12 @@ export const CardPopup: FC<ICardPopup> = ({
     }));
   };
 
-  const handleSelectDate = (date?: Date) => {
-    console.log(date);
+  const handleSelectDate = (selectedDate: Date | null) => {
     dispatch(SystemActions.setActivePopupId(null));
+    dispatch(TodosActions.update({
+      id: activeTodo!.id,
+      expirationDate: selectedDate,
+    }));
   };
 
   useEffect(() => {
@@ -192,14 +195,14 @@ export const CardPopup: FC<ICardPopup> = ({
                   top: 5,
                   left: 25,
                 }}
-                date={new Date(2021, 1, 18)}
+                date={activeTodo.expirationDate}
               />
               <div className="card-popup__textarea-inner">
                 <TextArea
                   ref={titleInputRef}
                   className="card__textarea card-popup__textarea"
                   placeholder="Card Title"
-                  value={titleValue}
+                  value={titleValue || ''}
                   onKeyDown={shiftEnterRestriction}
                   onChange={(event: any) => handleChangeText(event, false)}
                   minRows={1}
@@ -208,7 +211,7 @@ export const CardPopup: FC<ICardPopup> = ({
                 <TextArea
                   className="card__textarea card-popup__textarea card-popup__textarea--description"
                   placeholder="Notes"
-                  value={descriptionValue}
+                  value={descriptionValue || ''}
                   onKeyDown={shiftEnterRestriction}
                   onChange={(event: any) => handleChangeText(event, true)}
                   minRows={1}
@@ -231,6 +234,7 @@ export const CardPopup: FC<ICardPopup> = ({
                   popupId={`card-popup-${activeTodoId}`}
                   sourceRef={buttonRef}
                   onSelectDate={handleSelectDate}
+                  selectedDate={activeTodo.expirationDate}
                 />
                 <CardContextMenu
                   menuId="popup"
@@ -241,6 +245,7 @@ export const CardPopup: FC<ICardPopup> = ({
                   isActive={false}
                   isHover
                   isNotificationsEnabled={activeTodo.isNotificationsEnabled}
+                  expirationDate={activeTodo.expirationDate}
                   color={activeTodo.color}
                   status={activeTodo.status}
                   size={36}

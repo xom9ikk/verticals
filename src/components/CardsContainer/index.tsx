@@ -99,6 +99,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
                   color={todo.color}
                   isArchived={todo.isArchived}
                   isNotificationsEnabled={todo.isNotificationsEnabled}
+                  expirationDate={todo.expirationDate}
                   commentsCount={todo.commentsCount}
                   imagesCount={todo.imagesCount}
                   attachmentsCount={todo.attachmentsCount}

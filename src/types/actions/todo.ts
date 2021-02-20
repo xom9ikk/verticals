@@ -34,6 +34,7 @@ export type IUpdateTodo = {
   | { color: IColor }
   | { isArchived: boolean }
   | { isNotificationsEnabled: boolean }
+  | { expirationDate: Date | null }
 );
 
 export interface IUpdateTodoPosition {

@@ -11,6 +11,7 @@ export interface ITodo {
   color?: IColor;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
+  expirationDate?: Date | null;
   belowId?: number;
   commentsCount: number;
   imagesCount: number;

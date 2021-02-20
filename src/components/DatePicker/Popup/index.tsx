@@ -10,15 +10,15 @@ import { DatePicker } from '@comp/DatePicker';
 interface IDatePickerPopup {
   popupId: string;
   sourceRef: any;
-  selectedDate?: Date;
-  onSelectDate: (payload: Date | undefined) => void;
+  selectedDate?: Date | null;
+  onSelectDate: (payload: Date | null) => void;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
 }
 
 export const DatePickerPopup: FC<IDatePickerPopup> = ({
   popupId,
   sourceRef,
-  selectedDate,
+  selectedDate = null,
   onSelectDate,
   position = 'right',
 }) => {

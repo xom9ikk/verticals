@@ -8,14 +8,14 @@ import isToday from 'date-fns/isToday';
 interface ICalendarDay {
   date: Date;
   isSelected: boolean;
-  highlightDate?: Date;
+  highlightDate?: Date | null;
   onSelectDate: (date: Date) => void;
 }
 
 export const CalendarDay: FC<ICalendarDay> = ({
   date,
   isSelected,
-  highlightDate,
+  highlightDate = null,
   onSelectDate,
 }) => useMemo(() => (
   <div

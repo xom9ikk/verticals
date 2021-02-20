@@ -11,17 +11,17 @@ import useKeys from '@rooks/use-keys';
 
 interface IDatePicker {
   isOpen: boolean;
-  selectedDate?: Date;
-  onSelectDate: (payload: Date | undefined) => void;
+  selectedDate?: Date | null;
+  onSelectDate: (payload: Date | null) => void;
 }
 
 export const DatePicker: FC<IDatePicker> = ({
   isOpen,
-  selectedDate,
+  selectedDate = null,
   onSelectDate,
 }) => {
-  const [date, setDate] = useState<Date | undefined>(selectedDate);
-  const [highlightDate, setHighlightDate] = useState<Date>();
+  const [date, setDate] = useState<Date | null>(selectedDate);
+  const [highlightDate, setHighlightDate] = useState<Date | null>(null);
 
   const handleSelectDate = (d: Date) => {
     setDate(d);
@@ -34,15 +34,15 @@ export const DatePicker: FC<IDatePicker> = ({
   };
 
   const handleRemove = () => {
-    setDate(undefined);
-    onSelectDate(undefined);
+    setDate(null);
+    onSelectDate(null);
   };
 
   const handleSubmit = () => {
-    if (isValid(highlightDate)) {
+    if (highlightDate !== undefined && isValid(highlightDate)) {
       setDate(highlightDate);
       onSelectDate(highlightDate);
-      setHighlightDate(undefined);
+      setHighlightDate(null);
     }
   };
 

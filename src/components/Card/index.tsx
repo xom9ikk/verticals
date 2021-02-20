@@ -45,6 +45,7 @@ interface ICard {
   color?: IColor;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
+  expirationDate?: Date | null;
   invertColor?: boolean;
   isEditable: boolean;
   commentsCount?: number;
@@ -67,6 +68,7 @@ export const Card: FC<ICard> = ({
   color,
   isArchived,
   isNotificationsEnabled,
+  expirationDate,
   invertColor,
   isEditable,
   commentsCount,
@@ -324,6 +326,7 @@ export const Card: FC<ICard> = ({
                 isActive={isActive}
                 isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
+                expirationDate={expirationDate}
                 color={color}
                 status={status}
                 onStartEdit={handleDoubleClickUnwrapped}
@@ -339,7 +342,7 @@ export const Card: FC<ICard> = ({
               <DateBadge
                 popupId="card"
                 todoId={todoId}
-                date={new Date(2021, 1, 18)}
+                date={expirationDate}
               />
               <CardAttachmentsPreview
                 todoId={todoId!}
@@ -359,6 +362,7 @@ export const Card: FC<ICard> = ({
     titleValue, descriptionValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,
+    isNotificationsEnabled, expirationDate,
   ]);
 
   return (

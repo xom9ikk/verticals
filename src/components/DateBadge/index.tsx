@@ -6,13 +6,13 @@ import isToday from 'date-fns/isToday';
 import isFuture from 'date-fns/isFuture';
 import isThisYear from 'date-fns/isThisYear';
 import isTomorrow from 'date-fns/isTomorrow';
-import { SystemActions } from '@store/actions';
+import { SystemActions, TodosActions } from '@store/actions';
 import { DatePickerPopup } from '@comp/DatePicker/Popup';
 
 interface IDateBadge {
   popupId: string;
   todoId: number;
-  date?: Date;
+  date?: Date | null;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   style?: React.CSSProperties;
 }
@@ -20,7 +20,7 @@ interface IDateBadge {
 export const DateBadge: FC<IDateBadge> = ({
   popupId,
   todoId,
-  date,
+  date = null,
   position = 'right',
   style,
 }) => {
@@ -40,9 +40,12 @@ export const DateBadge: FC<IDateBadge> = ({
   const formattedYear = isThisYear(date) ? '' : `'${format(date, 'yy')}`;
   const formattedDate = `${format(date, 'LLL dd')}${formattedYear}`;
 
-  const handleSelectDate = (selectedDate?: Date) => {
-    console.log(selectedDate);
+  const handleSelectDate = (selectedDate: Date | null) => {
     dispatch(SystemActions.setActivePopupId(null));
+    dispatch(TodosActions.update({
+      id: todoId!,
+      expirationDate: selectedDate,
+    }));
   };
 
   return (
@@ -52,6 +55,7 @@ export const DateBadge: FC<IDateBadge> = ({
         popupId={`date-badge-${popupId}-${todoId}`}
         sourceRef={badgeRef}
         onSelectDate={handleSelectDate}
+        selectedDate={date}
       />
       <div
         ref={badgeRef}
