@@ -9,6 +9,7 @@ import {
   getCommentImageAttachmentsByTodoId,
   getCommentsByTodoId,
 } from '@store/selectors';
+import { useTranslation } from 'react-i18next';
 
 enum EnumToggleType {
   Files,
@@ -31,6 +32,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
   imagesCount,
   attachmentsCount,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const comments = useSelector(getCommentsByTodoId(todoId));
@@ -101,15 +103,15 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
     <>
       <div className="card__toggle-container">
         {renderIcon(
-          filesCountWithCache, 'files', 'Show Files',
+          filesCountWithCache, 'files', t('Show Files'),
           (e) => handleToggle(e, EnumToggleType.Files), isShowFiles,
         )}
         {renderIcon(
-          imagesCountWithCache, 'images', 'Show Gallery',
+          imagesCountWithCache, 'images', t('Show Gallery'),
           (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery,
         )}
         {renderIcon(
-          commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`,
+          commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`, // TODO: i18n
           (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache),
         )}
       </div>

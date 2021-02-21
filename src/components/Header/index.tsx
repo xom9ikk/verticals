@@ -1,21 +1,21 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@comp/Button';
+import { useTranslation } from 'react-i18next';
 
-interface IHeader {
-}
+export const Header: FC = () => {
+  const { t } = useTranslation();
 
-export const Header: FC<IHeader> = () => {
   const { pathname } = useLocation();
   const [linkText, setLinkText] = useState<string>('');
   const [link, setLink] = useState<string>('');
 
   useEffect(() => {
     if (pathname === '/auth/register') {
-      setLinkText('Sign In');
+      setLinkText(t('Sign In'));
       setLink('/auth/login');
     } else {
-      setLinkText('Sign Up');
+      setLinkText(t('Sign Up'));
       setLink('/auth/register');
     }
   }, [pathname]);

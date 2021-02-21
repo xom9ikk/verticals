@@ -41,24 +41,14 @@ export const InputComponent = ({
   ...attrs
 }: IInput, ref: any) => {
   const isError = (touched && !!error);
-  console.log('isError', isError);
   const isSuccess = !error;
 
-  const inputClasses = [
-    'input__field',
-  ];
-  if (isError) {
-    inputClasses.push('input__field--invalid');
-  }
-  if (isSuccess) {
-    inputClasses.push('input__field--valid');
-  }
-  if (isDisable) {
-    inputClasses.push('input__field--disabled');
-  }
-  if (children || isLight) {
-    inputClasses.push('input__field--light-border');
-  }
+  const className = cn('input__field', {
+    'input__field--invalid': isError,
+    'input__field--valid': isSuccess,
+    'input__field--disabled': isDisable,
+    'input__field--light-border': children || isLight,
+  });
 
   return (
     <div className="input" style={{ width: `${width}px` }}>
@@ -74,7 +64,7 @@ export const InputComponent = ({
                 <TextArea
                   {...attrs}
                   ref={ref}
-                  className={inputClasses.join(' ')}
+                  className={className}
                   name={name}
                   value={value || ''}
                   placeholder={placeholder}
@@ -89,7 +79,7 @@ export const InputComponent = ({
                 <input
                   {...attrs}
                   ref={ref}
-                  className={inputClasses.join(' ')}
+                  className={className}
                   type={type}
                   name={name}
                   value={value || ''}

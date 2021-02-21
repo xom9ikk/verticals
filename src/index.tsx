@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM, { createPortal } from 'react-dom';
 import { Provider } from 'react-redux';
 import ReactNotification from 'react-notifications-component';
@@ -11,26 +11,30 @@ import { FormattingHelp } from '@comp/FormattingHelp';
 import { configureAppStore } from '@/store';
 import { MainRouter } from '@/router';
 import './styles/scss/main.scss';
+import i18n from '@/i18n';
 
+console.log('i18n', i18n); // TODO: webpack delete unused code
 const store = configureAppStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    {createPortal(
-      <ReactNotification />,
-      document.getElementById('notification-root')!,
-    )}
-    <MainRouter />
-    <ReactTooltip
-      id="tooltip"
-      place="top"
-      effect="solid"
-      multiline
-      arrowColor="transparent"
-      overridePosition={({ left, top }) => ({ left, top })}
-    />
-    <Gallery />
-    <FormattingHelp />
+    <Suspense fallback={<></>}>
+      {createPortal(
+        <ReactNotification />,
+        document.getElementById('notification-root')!,
+      )}
+      <MainRouter />
+      <ReactTooltip
+        id="tooltip"
+        place="top"
+        effect="solid"
+        multiline
+        arrowColor="transparent"
+        overridePosition={({ left, top }) => ({ left, top })}
+      />
+      <Gallery />
+      <FormattingHelp />
+    </Suspense>
   </Provider>,
   document.getElementById('root'),
 );

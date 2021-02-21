@@ -14,6 +14,7 @@ import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import useKeys from '@rooks/use-keys';
+import { useTranslation } from 'react-i18next';
 
 interface IColumnHeader {
   provided: DraggableProvided;
@@ -46,6 +47,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   onDoubleClick,
   scrollToRight,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
@@ -136,7 +138,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
               ref={titleInputRef}
               className="column__title column__title--editable"
               value={titleValue}
-              placeholder="New column"
+              placeholder={t('New column')}
               minRows={1}
               maxRows={4}
               onKeyDown={shiftEnterRestriction}
@@ -145,7 +147,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
             />
           ) : (
             <span className={cn('column__title', { 'column__title--empty': !titleValue })}>
-              {titleValue || 'New column'}
+              {titleValue || t('New column')}
             </span>
           )
         }
@@ -158,7 +160,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       <TextArea
         className="column__description column__description--editable"
         value={descriptionValue}
-        placeholder="Notes"
+        placeholder={t('Notes')}
         minRows={1}
         maxRows={4}
         onKeyDown={shiftEnterRestriction}
@@ -171,7 +173,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
           'column__description--empty': !descriptionValue,
         })}
       >
-        {descriptionValue || 'Notes'}
+        {descriptionValue || t('Notes')}
       </span>
     )
   ),

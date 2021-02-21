@@ -4,6 +4,8 @@ import React, {
 } from 'react';
 import { RoundedButton } from '@comp/RoundedButton';
 import { NavLink } from '@comp/NavLink';
+import i18n from '@/i18n';
+import { useTranslation } from 'react-i18next';
 
 enum EnumMenu {
   Account='account',
@@ -12,11 +14,11 @@ enum EnumMenu {
 
 const menuItems = [{
   icon: '/assets/svg/account.svg',
-  text: 'Account',
+  text: i18n.t('Account'),
   type: EnumMenu.Account,
 }, {
   icon: '/assets/svg/profile.svg',
-  text: 'Profile',
+  text: i18n.t('Profile'),
   type: EnumMenu.Profile,
 }];
 
@@ -25,6 +27,8 @@ interface ISettings {
 }
 
 export const SettingsLayout: FC<ISettings> = ({ children }) => {
+  const { t } = useTranslation();
+
   const drawMenu = useMemo(() => menuItems.map((menuItem) => (
     <NavLink
       key={menuItem.type}
@@ -46,7 +50,7 @@ export const SettingsLayout: FC<ISettings> = ({ children }) => {
     <>
       <div className="settings">
         <div className="settings__sidebar">
-          <h1 className="settings__title">Settings</h1>
+          <h1 className="settings__title">{t('Settings')}</h1>
           <div>
             { drawMenu }
           </div>

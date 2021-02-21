@@ -9,6 +9,7 @@ import { useForm } from '@use/form';
 import { Divider } from '@comp/Divider';
 import { AuthActions } from '@store/actions';
 import { validatorRegisterForm } from '@helpers/validator/form/register';
+import { useTranslation } from 'react-i18next';
 
 interface IFormValidatedState {
   name: string;
@@ -27,6 +28,7 @@ const initialState = {
 };
 
 export const Register: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const {
@@ -39,13 +41,13 @@ export const Register: FC = () => {
 
   return (
     <Form
-      title="Hi there!"
-      subtitle="Please create your account."
+      title={t('Hi there!')}
+      subtitle={t('Please create your account.')}
       handleSubmit={handleSubmit}
     >
       <Input
         type="text"
-        placeholder="First name"
+        placeholder={t('First name')}
         touched={touches.name}
         error={errors.name}
         name="name"
@@ -55,7 +57,7 @@ export const Register: FC = () => {
       />
       <Input
         type="text"
-        placeholder="Last name"
+        placeholder={t('Last name')}
         touched={touches.surname}
         error={errors.surname}
         name="surname"
@@ -65,7 +67,7 @@ export const Register: FC = () => {
       />
       <Input
         type="text"
-        placeholder="Enter your email..."
+        placeholder={t('Enter your email...')}
         touched={touches.email}
         error={errors.email}
         name="email"
@@ -75,7 +77,7 @@ export const Register: FC = () => {
       />
       <Input
         type="text"
-        placeholder="Username"
+        placeholder={t('Username')}
         touched={touches.username}
         error={errors.username}
         name="username"
@@ -85,7 +87,7 @@ export const Register: FC = () => {
       />
       <Input
         type="password"
-        placeholder="Password"
+        placeholder={t('Password')}
         touched={touches.password}
         error={errors.password}
         name="password"
@@ -107,7 +109,7 @@ export const Register: FC = () => {
       >
         <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
-        Sign in with Google
+        {t('Sign in with Google')}
       </Button>
     </Form>
   );

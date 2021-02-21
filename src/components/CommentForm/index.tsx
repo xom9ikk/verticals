@@ -16,6 +16,7 @@ import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import { useTranslation } from 'react-i18next';
 
 interface ICommentForm {
   todoId: number | null;
@@ -30,6 +31,7 @@ export const CommentForm: FC<ICommentForm> = ({
   isScrolledToBottom,
   onScrollToBottom,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const { openFiles } = useOpenFiles();
@@ -179,7 +181,7 @@ export const CommentForm: FC<ICommentForm> = ({
               ref={commentInputRef}
               className="card__textarea comment-form__textarea"
               style={{ paddingLeft: 10 }}
-              placeholder="Add comment or note"
+              placeholder={t('Add comment or note')}
               value={commentText}
               onChange={handleChange}
               onKeyUp={handleKeyUp}
@@ -191,7 +193,7 @@ export const CommentForm: FC<ICommentForm> = ({
             <div className="comment-form__controls">
               <ControlButton
                 imageSrc="/assets/svg/gallery.svg"
-                tooltip="Add an image"
+                tooltip={t('Add an image')}
                 alt="image"
                 imageSize={24}
                 size={26}
@@ -200,7 +202,7 @@ export const CommentForm: FC<ICommentForm> = ({
               />
               <ControlButton
                 imageSrc="/assets/svg/attach.svg"
-                tooltip="Attach a file"
+                tooltip={t('Attach a file')}
                 alt="file"
                 imageSize={24}
                 size={26}
@@ -209,7 +211,7 @@ export const CommentForm: FC<ICommentForm> = ({
               />
               <ControlButton
                 imageSrc="/assets/svg/arrow-up.svg"
-                tooltip={`${commentText?.length ? 'Add comment' : ''}`}
+                tooltip={`${commentText?.length ? t('Add comment') : ''}`}
                 alt="send"
                 imageSize={isAvailableSend ? 24 : 0}
                 size={30}

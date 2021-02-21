@@ -24,6 +24,7 @@ import {
 import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
 import { useMarkdown } from '@use/markdown';
+import { useTranslation } from 'react-i18next';
 
 interface ICommentItem {
   id: number;
@@ -49,9 +50,10 @@ export const CommentItem: FC<ICommentItem> = ({
   replyCommentId,
   likedUsers,
 }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { formatDate } = useFormat();
   const { renderMarkdown } = useMarkdown();
-  const dispatch = useDispatch();
 
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
@@ -149,19 +151,16 @@ export const CommentItem: FC<ICommentItem> = ({
       }
       {
         attachments.length > MAX_FILES_IN_COMMENT_PREVIEW
-        && !isShowMore
-        && (
+        && !isShowMore && (
         <div
           className="comment-file comment-file--compact"
           onClick={() => { setIsShowMore(true); }}
         >
-          <div
-            className="comment-file__overlay"
-          />
+          <div className="comment-file__overlay" />
           <span className="comment-file__show-more">
             {attachments.length - MAX_FILES_IN_COMMENT_PREVIEW}
             {' '}
-            more items...
+            {t('more items...')}
           </span>
         </div>
         )
@@ -170,9 +169,7 @@ export const CommentItem: FC<ICommentItem> = ({
   ), [attachments]);
 
   const memoComment = useMemo(() => (
-    <div
-      className="comment__content"
-    >
+    <div className="comment__content">
       <div
         className={cn('comment__header', {
           'comment__header--replied': replyCommentId,
@@ -181,9 +178,7 @@ export const CommentItem: FC<ICommentItem> = ({
         {
           replyCommentId && (
           <>
-            <div
-              className="comment-form__reply--divider"
-            />
+            <div className="comment-form__reply--divider" />
             <div className="comment-form__reply--name">
               {fullName}
               <span className="comment-form__reply--text">
@@ -242,7 +237,7 @@ export const CommentItem: FC<ICommentItem> = ({
             />
             <ControlButton
               imageSrc="/assets/svg/reply.svg"
-              tooltip="Reply"
+              tooltip={t('Reply')}
               alt="reply"
               imageSize={16}
               size={22}
@@ -253,7 +248,9 @@ export const CommentItem: FC<ICommentItem> = ({
             {
               updatedAt !== createdAt ? (
                 <span>
-                  Edited (
+                  {t('Edited')}
+                  {' '}
+                  (
                   {formatDate(new Date(updatedAt!))}
                   )&nbsp;·&nbsp;
                 </span>
@@ -278,7 +275,7 @@ export const CommentItem: FC<ICommentItem> = ({
             <Menu
               id={`comment-${id}`}
               imageSrc="/assets/svg/dots.svg"
-              tooltip="More"
+              tooltip={t('More')}
               alt="menu"
               imageSize={16}
               size={22}
@@ -294,18 +291,18 @@ export const CommentItem: FC<ICommentItem> = ({
                 action={EnumMenuActions.Like}
               />
               <MenuItem
-                text="Reply"
+                text={t('Reply')}
                 imageSrc="/assets/svg/reply.svg"
                 action={EnumMenuActions.Reply}
               />
               <MenuItem
-                text="Edit"
+                text={t('Edit')}
                 imageSrc="/assets/svg/menu/edit.svg"
                 action={EnumMenuActions.Edit}
               />
               <Divider verticalSpacer={7} horizontalSpacer={10} />
               <MenuItem
-                text="Delete"
+                text={t('Delete')}
                 imageSrc="/assets/svg/menu/remove.svg"
                 action={EnumMenuActions.Delete}
               />

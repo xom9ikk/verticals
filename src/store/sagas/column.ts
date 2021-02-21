@@ -23,6 +23,7 @@ import {
   // IUpdateColumnIsCollapsed,
 } from '@type/actions';
 import { ITodo } from '@type/entities';
+import i18n from '@/i18n';
 
 const { columnService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -34,7 +35,7 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchColumnsByBoardId>) {
     yield put(ColumnsActions.setAll(columns));
     yield put(SystemActions.setIsLoadedColumns(true));
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -58,36 +59,36 @@ function* createWorker(action: PayloadAction<ICreateColumn>) {
         id: columnId,
       }));
     }
-    yield call(show, 'Column', 'Column created successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Column'), i18n.t('Column created successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* removeWorker(action: PayloadAction<IRemoveColumn>) {
   try {
     yield* apply(columnService, columnService.remove, [action.payload]);
-    yield call(show, 'Column', 'Column removed successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Column'), i18n.t('Column removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updateWorker(action: PayloadAction<IUpdateColumn>) {
   try {
     yield* apply(columnService, columnService.update, [action.payload]);
-    yield call(show, 'Column', 'Column updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Column'), i18n.t('Column updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updatePositionWorker(action: PayloadAction<IUpdateColumnPosition>) {
   try {
     yield* apply(columnService, columnService.updatePosition, [action.payload]);
-    yield call(show, 'Column', 'Column position updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Column'), i18n.t('Column position updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -103,18 +104,18 @@ function* duplicateWorker(action: PayloadAction<IDuplicateColumn>) {
       position: column.position,
     }));
     yield all(todos.entities.map((todo: ITodo) => put(TodosActions.add(todo))));
-    yield call(show, 'Column', 'Column duplicated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Column'), i18n.t('Column duplicated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* reverseOrderWorker(action: PayloadAction<IReverseColumnOrder>) {
   try {
     yield* apply(columnService, columnService.reverseOrder, [action.payload]);
-    yield call(show, 'Column', 'Reverse successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Column'), i18n.t('Reverse successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Column', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
   }
 }
 

@@ -13,6 +13,7 @@ import {
   IUploadCommentAttachmentsFile,
   IUploadCommentAttachmentsFiles,
 } from '@type/actions';
+import i18n from '@/i18n';
 
 const { commentAttachmentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -25,7 +26,7 @@ function* fetchByTodoIdWorker(action: PayloadAction<IFetchCommentAttachmentsByTo
     const { attachments } = response.data;
     yield put(CommentAttachmentsActions.merge(attachments));
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Attachments'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -40,7 +41,7 @@ function* uploadFilesWorker(action: PayloadAction<IUploadCommentAttachmentsFiles
       }));
     }
   } catch (error) {
-    yield call(show, 'Attachments', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Attachments'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -52,16 +53,16 @@ function* uploadFileWorker(action: PayloadAction<IUploadCommentAttachmentsFile>)
     const { data } = response;
     yield put(CommentAttachmentsActions.add(data));
   } catch (error) {
-    yield call(show, 'Attachments', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Attachments'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* removeWorker(action: PayloadAction<IRemoveCommentAttachment>) {
   try {
     yield* apply(commentAttachmentService, commentAttachmentService.remove, [action.payload]);
-    yield call(show, 'Attachments', 'Attachment removed successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Attachments'), i18n.t('Attachment removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Attachments', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Attachments'), error, ALERT_TYPES.DANGER);
   }
 }
 

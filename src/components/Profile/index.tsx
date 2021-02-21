@@ -10,6 +10,7 @@ import { SystemActions } from '@store/actions';
 import { redirectTo } from '@router/history';
 import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
 import { useHover } from '@use/hover';
+import { useTranslation } from 'react-i18next';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -25,6 +26,7 @@ interface IProfile {
 export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const isOpenProfile = useSelector(getIsOpenProfile);
   const fullName = useSelector(getFullName);
@@ -109,18 +111,18 @@ export const Profile: FC<IProfile> = ({
         onSelect={handleMenuButtonClick}
       >
         <MenuItem
-          text="My Profile"
+          text={t('My Profile')}
           imageSrc="/assets/svg/menu/my-profile.svg"
           action={EnumMenuActions.OpenProfile}
         />
         <MenuItem
-          text="Profile Settings"
+          text={t('Profile Settings')}
           imageSrc="/assets/svg/menu/profile-settings.svg"
           action={EnumMenuActions.ProfileSettings}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuItem
-          text="Add board"
+          text={t('Add board')}
           imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
           action={EnumMenuActions.AddBoard}
@@ -132,7 +134,7 @@ export const Profile: FC<IProfile> = ({
           }}
         >
           <MenuItem
-            text={isCopied ? 'Copied!' : 'Copy link'}
+            text={isCopied ? t('Copied!') : t('Copy link')}
             imageSrc="/assets/svg/menu/copy-link.svg"
             isAutoClose={false}
           />

@@ -12,6 +12,7 @@ import { Form } from '@comp/Form';
 import { Input } from '@comp/Input';
 import { useForm } from '@use/form';
 import { validatorChangePasswordForm } from '@helpers/validator/form/changePassword';
+import { useTranslation } from 'react-i18next';
 
 interface IFormValidatedState {
   oldPassword: string;
@@ -24,6 +25,7 @@ const initialState = {
 };
 
 export const Account: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const email = useSelector(getEmail);
 
@@ -53,12 +55,12 @@ export const Account: FC = () => {
 
   return (
     <>
-      <h1 className="settings__title">Account</h1>
+      <h1 className="settings__title">{t('Account')}</h1>
       <div>
         <SyncInput
           type="email"
           name="email"
-          label="Email"
+          label={t('Email')}
           isLight
           initialValue={email}
           action={UserActions.updateEmail}
@@ -68,14 +70,14 @@ export const Account: FC = () => {
         <div className="input">
           <div className="input__wrapper">
             <div className="input__inner">
-              <span className="input__label">Password</span>
+              <span className="input__label">{t('Password')}</span>
               <div className="input__holder">
                 <Button
                   type="button"
                   isMaxWidth
                   onClick={handleClick}
                 >
-                  Change password
+                  {t('Change password')}
                 </Button>
               </div>
             </div>
@@ -84,8 +86,8 @@ export const Account: FC = () => {
       </div>
       <Modal
         isOpen={isOpenModal}
-        negative="Cancel"
-        positive="Change Password"
+        negative={t('Cancel')}
+        positive={t('Change Password')}
         onPositive={handlePositive}
         onNegative={handleNegative}
         onClose={handleClose}
@@ -97,11 +99,11 @@ export const Account: FC = () => {
         )}
       >
         <h1 className="dialog__title">
-          Change password
+          {t('Change password')}
         </h1>
         <Input
           type="password"
-          placeholder="Old password"
+          placeholder={t('Old password')}
           touched={touches.oldPassword}
           error={errors.oldPassword}
           name="oldPassword"
@@ -112,7 +114,7 @@ export const Account: FC = () => {
         />
         <Input
           type="password"
-          placeholder="New password"
+          placeholder={t('New password')}
           touched={touches.newPassword}
           error={errors.newPassword}
           name="newPassword"

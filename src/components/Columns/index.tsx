@@ -17,10 +17,12 @@ import {
   getOrderedColumnsByBoardId,
 } from '@store/selectors';
 import { NEW_COLUMN_ID, TRASH_BOARD_ID } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
 interface IColumns { }
 
 export const Columns: FC<IColumns> = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const columnsRef = useRef<any>();
 
@@ -142,8 +144,8 @@ export const Columns: FC<IColumns> = () => {
       boardId={activeBoardId!}
       isEditable={false}
       mode={EnumColumnMode.Deleted}
-      title="Deleted cards"
-      description="Restore deleted cards"
+      title={t('Deleted cards')}
+      description={t('Restore deleted cards')}
     />
   ), [activeBoardId]);
 

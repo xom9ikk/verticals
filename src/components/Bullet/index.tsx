@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions,no-nested-ternary */
+/* eslint-disable no-nested-ternary */
 import React, { FC } from 'react';
 import { Checkbox } from '@comp/Checkbox';
 import { EnumTodoStatus, EnumTodoType } from '@type/entities';
@@ -68,12 +68,8 @@ export const Bullet: FC<IBullet> = ({
           />
         );
       case EnumTodoType.Nothing:
-        return (
-          <></>
-        );
-      default: return (
-        <></>
-      );
+        return null;
+      default: return null;
     }
   };
 

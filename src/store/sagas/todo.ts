@@ -15,6 +15,7 @@ import {
   IFetchTodosByBoardId,
   IUpdateTodo,
 } from '@type/actions';
+import i18n from '@/i18n';
 
 const { todoService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -26,7 +27,7 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
     yield put(TodosActions.setAll(todos));
     yield put(SystemActions.setIsLoadedTodos(true));
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -38,7 +39,7 @@ function* fetchRemovedWorker() {
     yield put(SystemActions.setIsLoadedColumns(true));
     yield put(SystemActions.setIsLoadedTodos(true));
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -75,9 +76,9 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
         imagesCount: 0,
       }));
     }
-    yield call(show, 'Todo', 'Todo created successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Todo'), i18n.t('Todo created successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -86,27 +87,27 @@ function* removeWorker(action: PayloadAction<IRemoveTodo>) {
     const { id } = action.payload;
     yield* apply(todoService, todoService.remove, [action.payload]);
     yield put(TodosActions.removeEntity({ id }));
-    yield call(show, 'Todo', 'Todo removed successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Todo'), i18n.t('Todo removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updateWorker(action: PayloadAction<IUpdateTodo>) {
   try {
     yield* apply(todoService, todoService.update, [action.payload]);
-    yield call(show, 'Todo', 'Todo updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Todo'), i18n.t('Todo updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updatePositionWorker(action: PayloadAction<IUpdateTodoPosition>) {
   try {
     yield* apply(todoService, todoService.updatePosition, [action.payload]);
-    yield call(show, 'Todo', 'Todo position updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Todo'), i18n.t('Todo position updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -125,9 +126,9 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
       },
       position: todo.position,
     }));
-    yield call(show, 'Todo', 'Todo duplicated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Todo'), i18n.t('Todo duplicated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Todo', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
 }
 

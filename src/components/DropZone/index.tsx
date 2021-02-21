@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
 import { useFileList } from '@use/fileList';
+import { useTranslation } from 'react-i18next';
 
 const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE);
 
@@ -16,6 +17,7 @@ export const DropZone: FC<IDropZone> = ({
   accept = '*',
   children,
 }) => {
+  const { t } = useTranslation();
   const { restrictFileSize } = useFileList();
   const [isDrag, setIsDrag] = useState<boolean>(false);
 
@@ -25,17 +27,19 @@ export const DropZone: FC<IDropZone> = ({
     setIsDrag(false);
   };
 
+  const handleDrag = (event: React.DragEvent) => {
+    if (event?.dataTransfer?.items?.length) {
+      const items = [...event?.dataTransfer?.items];
+      const isContainsFile = items.some((item) => item.kind === 'file');
+      if (isContainsFile) {
+        setIsDrag(true);
+      }
+    }
+  };
+
   return (
     <div
-      onDragEnter={(event: React.DragEvent) => {
-        if (event?.dataTransfer?.items?.length) {
-          const items = [...event?.dataTransfer?.items];
-          const isContainsFile = items.some((item) => item.kind === 'file');
-          if (isContainsFile) {
-            setIsDrag(true);
-          }
-        }
-      }}
+      onDragEnter={handleDrag}
       className="drop-zone"
     >
       {children}
@@ -47,7 +51,7 @@ export const DropZone: FC<IDropZone> = ({
           setIsDrag(false);
         }}
       >
-        <h3>Drop files here</h3>
+        <h3>{t('Drop files here')}</h3>
         <input
           type="file"
           accept={accept}

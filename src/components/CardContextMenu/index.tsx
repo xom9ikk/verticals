@@ -14,11 +14,12 @@ import { useReadableId } from '@use/readableId';
 import { getActiveBoardReadableId, getActivePopupId, getUsername } from '@store/selectors';
 import { useOpenFiles } from '@use/openFiles';
 import { DatePicker } from '@comp/DatePicker';
+import { useTranslation } from 'react-i18next';
 
 interface ICardContextMenu {
   menuId: string;
-  todoId?: number;
-  title?: string;
+  todoId: number;
+  title: string;
   columnId: number;
   isArchived?: boolean;
   isActive?: boolean;
@@ -73,6 +74,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   onChangeColor,
   isTransformedPosition = true,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const { openFiles } = useOpenFiles();
@@ -106,12 +108,9 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       }
       case EnumCardActions.AttachFile: {
         handleUploadFiles();
-        // TODO:
         break;
       }
       case EnumCardActions.AddDate: {
-        // TODO:
-        console.log('AddDate');
         setIsOpenDatePicker(true);
         break;
       }
@@ -187,7 +186,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   const buttons = isRemoved ? [
     <MenuItem
       key={15}
-      text="Restore"
+      text={t('Restore')}
       imageSrc="/assets/svg/menu/restore.svg"
       action={EnumCardActions.Restore}
     />] : [<ColorPicker
@@ -197,30 +196,30 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
     />,
       <MenuItem
         key={1}
-        text="Edit card"
+        text={t('Edit card')}
         imageSrc="/assets/svg/menu/edit.svg"
         action={EnumCardActions.EditCard}
       />,
       <MenuItem
         key={2}
-        text="Attach file"
+        text={t('Attach file')}
         imageSrc="/assets/svg/menu/attach.svg"
         action={EnumCardActions.AttachFile}
       />,
       <MenuItem
         key={3}
-        text="Add date"
+        text={t('Add date')}
         imageSrc="/assets/svg/menu/add-date.svg"
         action={EnumCardActions.AddDate}
         isAutoClose={false}
       />,
       <Submenu
         key={4}
-        text="Complete"
+        text={t('Complete')}
         imageSrc="/assets/svg/menu/complete.svg"
       >
         <MenuItem
-          text="Mark as to do"
+          text={t('Mark as to do')}
           imageSrc="/assets/svg/menu/rounded-square.svg"
           hintImageSrc={`${status === EnumTodoStatus.Todo ? '/assets/svg/menu/tick.svg' : ''}`}
           isColoredHintImage
@@ -228,7 +227,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
           payload={EnumTodoStatus.Todo}
         />
         <MenuItem
-          text="Mark as doing"
+          text={t('Mark as doing')}
           imageSrc="/assets/svg/menu/rounded-square-half-filled.svg"
           hintImageSrc={`${status === EnumTodoStatus.Doing ? '/assets/svg/menu/tick.svg' : ''}`}
           isColoredHintImage
@@ -237,12 +236,13 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         >
           <span>Alt</span>
           +
+          {/* // TODO: 18n span in trans */}
           <span>Click</span>
           on a checkbox to mark as doing
         </MenuItem>
         <MenuItem
           key={5}
-          text="Mark as done"
+          text={t('Mark as done')}
           imageSrc="/assets/svg/menu/rounded-square-check.svg"
           hintImageSrc={`${status === EnumTodoStatus.Done ? '/assets/svg/menu/tick.svg' : ''}`}
           isColoredHintImage
@@ -251,7 +251,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         />
         <MenuItem
           key={6}
-          text="Mark as canceled"
+          text={t('Mark as canceled')}
           imageSrc="/assets/svg/menu/rounded-square-canceled.svg"
           hintImageSrc={`${status === EnumTodoStatus.Canceled ? '/assets/svg/menu/tick.svg' : ''}`}
           isColoredHintImage
@@ -260,6 +260,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         >
           <span>Shift</span>
           +
+          {/* // TODO: 18n span in trans */}
           <span>Click</span>
           on a checkbox to mark as canceled
         </MenuItem>
@@ -271,7 +272,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       />,
       <MenuItem
         key={8}
-        text="Notifications"
+        text={t('Notifications')}
         imageSrc="/assets/svg/menu/notifications.svg"
         hintImageSrc={`${isNotificationsEnabled ? '/assets/svg/menu/tick.svg' : ''}`}
         isColoredHintImage
@@ -287,14 +288,14 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         }}
       >
         <MenuItem
-          text={isCopied ? 'Copied!' : 'Copy link'}
+          text={isCopied ? t('Copied!') : t('Copy link')}
           imageSrc="/assets/svg/menu/copy-link.svg"
           isAutoClose={false}
         />
       </CopyToClipboard>,
       <MenuItem
         key={10}
-        text="Duplicate"
+        text={t('Duplicate')}
         imageSrc="/assets/svg/menu/duplicate.svg"
         action={EnumCardActions.Duplicate}
       />,
@@ -305,7 +306,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       />,
       <MenuItem
         key={12}
-        text="Add card below"
+        text={t('Add card below')}
         imageSrc="/assets/svg/menu/add-card.svg"
         action={EnumCardActions.AddCardBelow}
       />,
@@ -316,13 +317,13 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       />,
       <MenuItem
         key={14}
-        text={isArchived ? 'Unarchive' : 'Archive'}
+        text={isArchived ? t('Unarchive') : t('Archive')}
         imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
         action={EnumCardActions.Archive}
       />,
       <MenuItem
         key={15}
-        text="Delete"
+        text={t('Delete')}
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
         action={EnumCardActions.Delete}

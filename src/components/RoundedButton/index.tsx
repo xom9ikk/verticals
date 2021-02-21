@@ -35,7 +35,7 @@ export const RoundedButton: FC<IRoundedButton> = ({
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(onClick, onDoubleClick, false);
 
-  const roundedButton = useMemo(() => (
+  return useMemo(() => (
     <div
       className={cn('rounded-button', colorClass, {
         'rounded-button--active': isActive,
@@ -64,8 +64,4 @@ export const RoundedButton: FC<IRoundedButton> = ({
     icon,
     children,
   ]);
-
-  return (
-    <>{ roundedButton }</>
-  );
 };

@@ -31,6 +31,7 @@ import { NEW_TODO_ID } from '@/constants';
 import { useDebounce } from '@use/debounce';
 import { useNewValues } from '@use/newValues';
 import { DateBadge } from '@comp/DateBadge';
+import { useTranslation } from 'react-i18next';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -79,6 +80,7 @@ export const Card: FC<ICard> = ({
   isActive,
   scrollToBottom,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { merge, filter } = useFileList();
   const { openFiles } = useOpenFiles();
@@ -272,7 +274,7 @@ export const Card: FC<ICard> = ({
                 ref={titleInputRef}
                 className="card__textarea"
                 value={titleValue}
-                placeholder="New Card"
+                placeholder={t('New Card')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
@@ -282,7 +284,7 @@ export const Card: FC<ICard> = ({
               <TextArea
                 className="card__textarea card__textarea--description"
                 value={descriptionValue}
-                placeholder="Notes"
+                placeholder={t('Notes')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
@@ -298,7 +300,7 @@ export const Card: FC<ICard> = ({
                 <div className="card__editable-controls">
                   <ControlButton
                     imageSrc="/assets/svg/calendar-dots.svg"
-                    tooltip="Add Date"
+                    tooltip={t('Add Date')}
                     alt="date"
                     imageSize={16}
                     size={20}
@@ -306,7 +308,7 @@ export const Card: FC<ICard> = ({
                   />
                   <ControlButton
                     imageSrc="/assets/svg/attach.svg"
-                    tooltip="Attach a file"
+                    tooltip={t('Attach a file')}
                     alt="file"
                     imageSize={16}
                     size={20}
@@ -314,7 +316,7 @@ export const Card: FC<ICard> = ({
                     isColored
                   />
                 </div>
-                <span>Drop files here</span>
+                <span>{t('Drop files here')}</span>
               </div>
             </div>
           ) : (

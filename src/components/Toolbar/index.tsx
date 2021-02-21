@@ -9,6 +9,7 @@ import { EnumLanguage } from '@type/entities';
 import { redirectTo } from '@router/history';
 import { getLanguage } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
+import { useTranslation } from 'react-i18next';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -26,6 +27,7 @@ enum EnumToolbarActions {
 }
 
 export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isPinSidebar, setIsPinSidebar] = useState<boolean>(true);
@@ -83,7 +85,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
       <div className="toolbar__inner">
         <ControlButton
           imageSrc="/assets/svg/add.svg"
-          text="New workspace"
+          text={t('New workspace')}
           alt="add"
           isMaxWidth
           isHoverBlock={isHover}
@@ -93,7 +95,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           id="preferences"
           imageSrc="/assets/svg/filter.svg"
           alt="preferences"
-          tooltip="Preferences"
+          tooltip={t('Preferences')}
           isHoverBlock={isHover}
           imageSize={24}
           size={36}
@@ -102,19 +104,18 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           onSelect={handleMenuButtonClick}
         >
           <MenuItem
-            text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
+            text={`${isPinSidebar ? t('Unpin Sidebar') : t('Pin Sidebar')}`}
             imageSrc="/assets/svg/menu/hide-sidebar.svg"
             action={EnumToolbarActions.SwitchSidebar}
           />
           <MenuItem
-            text="Account settings"
+            text={t('Account settings')}
             imageSrc="/assets/svg/menu/profile-settings.svg"
             action={EnumToolbarActions.AccountSettings}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-
           <Submenu
-            text="Language: English"
+            text={`${t('Language')}: CURRENT_LANGUAGE`} // TODO: switcher
             imageSrc="/assets/svg/menu/language.svg"
           >
             <MenuItem
@@ -147,25 +148,25 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             />
           </Submenu>
           <Submenu
-            text="More"
+            text={t('More')}
             imageSrc="/assets/svg/dots.svg"
           >
             <MenuItem
-              text="Write to developer"
+              text={t('Write to developer')}
               action={EnumToolbarActions.WriteToDeveloper}
             />
             <MenuItem
-              text="Terms of Service"
+              text={t('Terms of Service')}
               action={EnumToolbarActions.TermsOfService}
             />
             <MenuItem
-              text="Privacy Policy"
+              text={t('Privacy Policy')}
               action={EnumToolbarActions.PrivacyPolicy}
             />
           </Submenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuItem
-            text="Log out"
+            text={t('Logout')}
             imageSrc="/assets/svg/menu/logout.svg"
             action={EnumToolbarActions.Logout}
           />

@@ -18,6 +18,7 @@ import {
   IRemoveCommentLike,
   IUpdateCommentText,
 } from '@type/actions';
+import i18n from '@/i18n';
 
 const { commentService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -29,7 +30,7 @@ function* fetchByTodoIdWorker(action: PayloadAction<IFetchCommentsByTodoId>) {
     yield put(CommentsActions.setAll(comments));
     // yield put(SystemActions.setIsLoadedComments(true));
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -48,27 +49,27 @@ function* createWorker(action: PayloadAction<ICreateComment>) {
         files,
       }));
     }
-    yield call(show, 'Comment', 'Comment added successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Comment'), i18n.t('Comment added successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Comment', error.message || error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error.message || error, ALERT_TYPES.DANGER);
   }
 }
 
 function* removeWorker(action: PayloadAction<IRemoveComment>) {
   try {
     yield* apply(commentService, commentService.remove, [action.payload]);
-    yield call(show, 'Comment', 'Comment removed successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Comment'), i18n.t('Comment removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updateWorker(action: PayloadAction<IUpdateCommentText>) {
   try {
     yield* apply(commentService, commentService.update, [action.payload]);
-    yield call(show, 'Comment', 'Comment updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Comment'), i18n.t('Comment updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -91,7 +92,7 @@ function* addLikeWorker(action: PayloadAction<IAddCommentLike>) {
       isLiked: true,
     }));
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -114,7 +115,7 @@ function* removeLikeWorker(action: PayloadAction<IRemoveCommentLike>) {
       isLiked: false,
     }));
   } catch (error) {
-    yield call(show, 'Comment', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 

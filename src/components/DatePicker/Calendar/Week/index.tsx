@@ -8,20 +8,21 @@ import isThisYear from 'date-fns/isThisYear';
 import lastDayOfMonth from 'date-fns/lastDayOfMonth';
 import addMonths from 'date-fns/addMonths';
 import { CalendarDay } from '@comp/DatePicker/Calendar/Day';
+import i18n from '@/i18n';
 
 const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  i18n.t('January'),
+  i18n.t('February'),
+  i18n.t('March'),
+  i18n.t('April'),
+  i18n.t('May'),
+  i18n.t('June'),
+  i18n.t('July'),
+  i18n.t('August'),
+  i18n.t('September'),
+  i18n.t('October'),
+  i18n.t('November'),
+  i18n.t('December'),
 ];
 
 interface ICalendarWeek {

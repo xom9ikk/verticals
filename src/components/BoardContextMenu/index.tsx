@@ -12,6 +12,7 @@ import { useReadableId } from '@use/readableId';
 import { EnumTodoType, IColor } from '@type/entities';
 import { getUsername } from '@store/selectors';
 import { ICONS } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
 interface IBoard {
   boardId: number;
@@ -37,6 +38,7 @@ export const BoardContextMenu: FC<IBoard> = ({
   isActive,
   isHover,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -102,48 +104,48 @@ export const BoardContextMenu: FC<IBoard> = ({
     >
       <ColorPicker onPick={handleColorPick} activeColor={color} />
       <MenuItem
-        text="Edit board"
+        text={t('Edit board')}
         imageSrc="/assets/svg/menu/edit.svg"
         hintText="E"
         action={EnumMenuActions.EditBoard}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <Submenu
-        text="Card style"
+        text={t('Card style')}
         imageSrc="/assets/svg/menu/rect.svg"
       >
         <MenuItem
-          text="Checkboxes"
+          text={t('Checkboxes')}
           imageSrc="/assets/svg/menu/square.svg"
           action={EnumMenuActions.CardStyle}
           payload={EnumTodoType.Checkboxes}
         />
         <MenuItem
-          text="Arrows"
+          text={t('Arrows')}
           imageSrc="/assets/svg/menu/arrow.svg"
           action={EnumMenuActions.CardStyle}
           payload={EnumTodoType.Arrows}
         />
         <MenuItem
-          text="Dots"
+          text={t('Dots')}
           imageSrc="/assets/svg/menu/circle.svg"
           action={EnumMenuActions.CardStyle}
           payload={EnumTodoType.Dots}
         />
         <MenuItem
-          text="Dashes"
+          text={t('Dashes')}
           imageSrc="/assets/svg/menu/dash.svg"
           action={EnumMenuActions.CardStyle}
           payload={EnumTodoType.Dashes}
         />
         <MenuItem
-          text="Nothing"
+          text={t('Nothing')}
           action={EnumMenuActions.CardStyle}
           payload={EnumTodoType.Nothing}
         />
       </Submenu>
       <Submenu
-        text="Icon"
+        text={t('Icon')}
         imageSrc="/assets/svg/menu/icon.svg"
       >
         <div className="menu-item__icons-container">
@@ -167,7 +169,7 @@ export const BoardContextMenu: FC<IBoard> = ({
         </div>
       </Submenu>
       <MenuItem
-        text="Reverse column order"
+        text={t('Reverse column order')}
         imageSrc="/assets/svg/menu/reverse.svg"
         action={EnumMenuActions.ReverseColumnOrder}
       />
@@ -178,20 +180,20 @@ export const BoardContextMenu: FC<IBoard> = ({
         }}
       >
         <MenuItem
-          text={isCopied ? 'Copied!' : 'Copy link'}
+          text={isCopied ? t('Copied!') : t('Copy link')}
           imageSrc="/assets/svg/menu/copy-link.svg"
           isAutoClose={false}
         />
       </CopyToClipboard>
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
-        text="Add board below"
+        text={t('Add board below')}
         imageSrc="/assets/svg/menu/add-board.svg"
         action={EnumMenuActions.AddBoardBelow}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
-        text="Delete"
+        text={t('Delete')}
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
         action={EnumMenuActions.Delete}

@@ -22,6 +22,7 @@ import {
 } from '@store/selectors';
 import { BoardContextMenu } from '@comp/BoardContextMenu';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
 interface IBoard {
   boardId: number;
@@ -50,7 +51,9 @@ export const Board: FC<IBoard> = ({
   onClick,
   scrollToBottom,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
 
@@ -70,10 +73,6 @@ export const Board: FC<IBoard> = ({
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
     const normalizedDescriptionValue = descriptionValue?.trim();
-
-    console.log('description', description);
-    console.log('descriptionValue', descriptionValue);
-    console.log('normalizedDescriptionValue', normalizedDescriptionValue);
 
     if (boardId !== NEW_BOARD_ID && belowId === undefined) {
       const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
@@ -190,7 +189,7 @@ export const Board: FC<IBoard> = ({
                 ref={titleInputRef}
                 className="card__textarea"
                 value={titleValue}
-                placeholder="New Board"
+                placeholder={t('New Board')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
@@ -200,7 +199,7 @@ export const Board: FC<IBoard> = ({
               <TextArea
                 className="card__textarea card__textarea--description"
                 value={descriptionValue}
-                placeholder="Notes"
+                placeholder={t('Notes')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}

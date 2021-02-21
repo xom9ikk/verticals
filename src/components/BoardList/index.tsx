@@ -27,8 +27,10 @@ import { useTitle } from '@use/title';
 import { useHover } from '@use/hover';
 import { useAutoScroll } from '@use/autoScroll';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
 export const BoardList: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const { isHovering, hoveringProps } = useHover();
@@ -136,7 +138,7 @@ export const BoardList: FC = () => {
           <Board
             boardId={TRASH_BOARD_ID}
             icon="/assets/svg/board/trash.svg"
-            title="Trash"
+            title={t('Trash')}
             isEditable={false}
             isActive={activeBoardId === TRASH_BOARD_ID}
           />
@@ -149,7 +151,7 @@ export const BoardList: FC = () => {
     <ControlButton
       imageSrc="/assets/svg/add.svg"
       alt="add"
-      text="Add board"
+      text={t('Add board')}
       isInvisible
       isHoverBlock={isHovering}
       isMaxWidth

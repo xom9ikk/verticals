@@ -9,8 +9,10 @@ import {
 } from '@store/actions';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 import { useDebounce } from '@use/debounce';
+import { useTranslation } from 'react-i18next';
 
 export const Search: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [query, setQuery] = useState<string>('');
@@ -45,7 +47,7 @@ export const Search: FC = () => {
     <div className="search">
       <Input
         type="text"
-        placeholder="Search"
+        placeholder={t('Search')}
         name="search"
         value={query}
         onChange={(e: any) => setQuery(e.target.value)}

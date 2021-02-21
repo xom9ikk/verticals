@@ -13,10 +13,12 @@ import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { getGalleryImagesInfo } from '@store/selectors';
 import { useDownload } from '@use/download';
+import { useTranslation } from 'react-i18next';
 
 SwiperCore.use([Pagination, Keyboard]);
 
 export const Gallery: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { images, index = 0 } = useSelector(getGalleryImagesInfo) || {};
 
@@ -127,7 +129,7 @@ export const Gallery: FC = () => {
             alt="download"
             imageSize={24}
             onClick={handleDownload}
-            text="Download"
+            text={t('Download')}
             isMaxWidth
             isHoverBlock
           />
@@ -141,7 +143,7 @@ export const Gallery: FC = () => {
               imageSrc="/assets/svg/copy-link.svg"
               alt="copy"
               imageSize={24}
-              text={isCopied ? 'Copied!' : 'Copy link'}
+              text={isCopied ? t('Copied!') : t('Copy link')}
               isMaxWidth
               isHoverBlock
             />

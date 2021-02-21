@@ -16,6 +16,7 @@ import {
 import { UserActions } from '@store/actions';
 import validator from '@helpers/validator';
 import { validatorProfileForm } from '@helpers/validator/form/profile';
+import { useTranslation } from 'react-i18next';
 
 interface IFormValidatedState {
   name: string;
@@ -24,6 +25,7 @@ interface IFormValidatedState {
 }
 
 export const Profile: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { openFiles } = useOpenFiles();
 
@@ -58,7 +60,7 @@ export const Profile: FC = () => {
 
   return (
     <>
-      <h1 className="settings__title">Profile</h1>
+      <h1 className="settings__title">{t('Profile')}</h1>
       <div>
         <Form
           handleSubmit={handleSubmit}
@@ -77,7 +79,7 @@ export const Profile: FC = () => {
                     src="/assets/svg/upload.svg"
                     alt="upload"
                   />
-                  Click to update
+                  {t('Click to update')}
                 </div>
                 <button
                   className="profile-avatar__button-delete"
@@ -94,15 +96,15 @@ export const Profile: FC = () => {
           <SyncInput
             type="text"
             name="username"
-            label="Username"
+            label={t('Username')}
             isLight
             initialValue={username}
             action={UserActions.updateUsername}
-            validator={validator.text({ min: 2, name: 'Username' })}
+            validator={validator.text({ min: 2, name: t('Username') })}
           />
           <Input
             type="text"
-            label="First name"
+            label={t('First name')}
             touched={touches.name}
             error={errors.name}
             name="name"
@@ -113,7 +115,7 @@ export const Profile: FC = () => {
           />
           <Input
             type="text"
-            label="Last name"
+            label={t('Last name')}
             touched={touches.surname}
             error={errors.surname}
             name="surname"
@@ -124,7 +126,7 @@ export const Profile: FC = () => {
           />
           <Input
             type="text"
-            label="Bio"
+            label={t('Bio')}
             touched={touches.bio}
             error={errors.bio}
             name="bio"
@@ -140,7 +142,7 @@ export const Profile: FC = () => {
               modificator="primary"
               isMaxWidth
             >
-              Save changes
+              {t('Save changes')}
             </Button>
           </div>
         </Form>

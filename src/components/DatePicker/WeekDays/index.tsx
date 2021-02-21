@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import i18n from '@/i18n';
 
 const days = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
+  i18n.t('Sun'),
+  i18n.t('Mon'),
+  i18n.t('Tue'),
+  i18n.t('Wed'),
+  i18n.t('Thu'),
+  i18n.t('Fri'),
+  i18n.t('Sat'),
 ];
 
 const weekend = [0, 6];

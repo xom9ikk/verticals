@@ -13,6 +13,7 @@ import { EnumColumnMode } from '@comp/Column';
 import { ControlButton } from '@comp/ControlButton';
 import { useHover } from '@use/hover';
 import { NEW_TODO_ID } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
 interface ICardsContainer {
   columnId: number;
@@ -35,6 +36,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
   onAddCard,
   scrollToBottom,
 }) => {
+  const { t } = useTranslation();
   const { isHovering, hoveringProps } = useHover();
 
   const activeTodoId = useSelector(getActiveTodoId);
@@ -49,7 +51,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
       <ControlButton
         imageSrc="/assets/svg/add.svg"
         alt="add"
-        text="Add card"
+        text={t('Add card')}
         isInvisible
         isMaxWidth
         isHoverBlock={isHovering || todosCount === 0}
@@ -120,14 +122,8 @@ export const CardsContainer: FC<ICardsContainer> = ({
       {
         mode !== EnumColumnMode.Deleted && (
         <>
-          {
-            isOpenNewCard ? memoNewCard : memoAddCard
-          }
-          {
-            isDraggingCard && (
-            <div style={{ height: 78 }} />
-            )
-          }
+          {isOpenNewCard ? memoNewCard : memoAddCard}
+          {isDraggingCard && <div style={{ height: 78 }} />}
         </>
         )
       }

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IDatePickerInput {
   onChange: (e: React.BaseSyntheticEvent) => void;
@@ -6,12 +7,16 @@ interface IDatePickerInput {
 
 export const DatePickerInput: FC<IDatePickerInput> = (
   { onChange }: IDatePickerInput,
-) => (
-  <div className="datepicker-input__wrapper">
-    <input
-      className="datepicker-input"
-      placeholder="When"
-      onChange={onChange}
-    />
-  </div>
-);
+) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="datepicker-input__wrapper">
+      <input
+        className="datepicker-input"
+        placeholder={t('When')}
+        onChange={onChange}
+      />
+    </div>
+  );
+};

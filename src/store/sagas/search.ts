@@ -10,6 +10,7 @@ import {
   BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { ISearchByTodoTitle } from '@type/actions';
+import i18n from '@/i18n';
 
 const { searchService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -23,7 +24,7 @@ function* searchByTodoTitleWorker(action: PayloadAction<ISearchByTodoTitle>) {
     yield put(TodosActions.setAll(todos));
     yield put(SystemActions.setIsSearchMode(true));
   } catch (error) {
-    yield call(show, 'Search', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Search'), error, ALERT_TYPES.DANGER);
   }
 }
 

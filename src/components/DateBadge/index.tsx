@@ -8,6 +8,7 @@ import isThisYear from 'date-fns/isThisYear';
 import isTomorrow from 'date-fns/isTomorrow';
 import { SystemActions, TodosActions } from '@store/actions';
 import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import { useTranslation } from 'react-i18next';
 
 interface IDateBadge {
   popupId: string;
@@ -27,6 +28,7 @@ export const DateBadge: FC<IDateBadge> = ({
   if (!date) {
     return null;
   }
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const badgeRef = useRef<any>();
@@ -66,8 +68,8 @@ export const DateBadge: FC<IDateBadge> = ({
         style={style}
       >
         <img src={`/assets/svg/board/${img}.svg`} alt="badge" />
-        {today && <span>Today</span>}
-        {tomorrow && <span>Tomorrow</span>}
+        {today && <span>{t('Today')}</span>}
+        {tomorrow && <span>{t('Tomorrow')}</span>}
         {!today && !tomorrow && <span>{formattedDate}</span>}
       </div>
     </>

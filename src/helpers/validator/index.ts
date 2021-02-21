@@ -1,5 +1,6 @@
 // @ts-ignore
 import is from 'is_js';
+import i18n from '@/i18n';
 
 export type IValidatorPayload = string | null;
 
@@ -23,15 +24,15 @@ const email = (
   const length = payload?.length ?? 0;
 
   if (!isValid) {
-    message = 'Invalid email address';
+    message = i18n.t('Invalid email address');
   }
 
   if (length > max) {
-    message = 'Email is too long';
+    message = i18n.t('Email is too long');
   }
 
   if (length === 0) {
-    message = 'Can\'t be blank';
+    message = i18n.t('Can\'t be blank');
   }
 
   return {
@@ -48,15 +49,15 @@ const password = (
   const length = payload?.length ?? 0;
 
   if (length < min) {
-    message = 'Password is short';
+    message = i18n.t('Password is short');
   }
 
   if (length > max) {
-    message = `${name || 'Entered value'} is too long`;
+    message = `${name || i18n.t('Entered value')} ${i18n.t('is too long')}`;
   }
 
   if (length === 0) {
-    message = 'Can\'t be blank';
+    message = i18n.t('Can\'t be blank');
   }
 
   return {
@@ -79,15 +80,15 @@ const text = (
   let message = '';
 
   if (length < min) {
-    message = `${name || 'Entered value'} is short`;
+    message = `${name || i18n.t('Entered value')} ${i18n.t('is short')}`;
   }
 
   if (length > max) {
-    message = `${name || 'Entered value'} is too long`;
+    message = `${name || i18n.t('Entered value')} ${i18n.t('is too long')}`;
   }
 
   if (length === 0) {
-    message = 'Can\'t be blank';
+    message = i18n.t('Can\'t be blank');
   }
 
   return {

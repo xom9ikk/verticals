@@ -70,18 +70,18 @@ export const MenuItem: FC<IMenuItem> = ({
       </div>
       {
           hintText ? <span>{hintText}</span> : null
-        }
+      }
       {
-          hintImageSrc ? (
-            <img
-              src={hintImageSrc}
-              alt="hint"
-              className={cn('menu-item__hint-icon', {
-                'menu-item__hint-icon--colored': isColoredHintImage,
-              })}
-            />
-          ) : null
-        }
+        hintImageSrc ? (
+          <img
+            src={hintImageSrc}
+            alt="hint"
+            className={cn('menu-item__hint-icon', {
+              'menu-item__hint-icon--colored': isColoredHintImage,
+            })}
+          />
+        ) : null
+      }
     </button>
   );
 };

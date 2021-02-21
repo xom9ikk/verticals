@@ -20,6 +20,7 @@ import {
   IUpdateBoard,
   IUpdateBoardPosition,
 } from '@type/actions';
+import i18n from '@/i18n';
 
 const { boardService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -43,7 +44,7 @@ function* fetchWorker() {
       }
     }
   } catch (error) {
-    yield call(show, 'Board', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Board'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -67,37 +68,37 @@ function* createWorker(action: PayloadAction<ICreateBoard>) {
         id: boardId,
       }));
     }
-    yield call(show, 'Board', 'Board created successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Board'), i18n.t('Board created successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Board', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Board'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* removeWorker(action: PayloadAction<IRemoveBoard>) {
   try {
     yield* apply(boardService, boardService.remove, [action.payload]);
-    yield call(show, 'Board', 'Board removed successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Board'), i18n.t('Board removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Board', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Board'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updateWorker(action: PayloadAction<IUpdateBoard>) {
   try {
     yield* apply(boardService, boardService.update, [action.payload]);
-    yield call(show, 'Board', 'Board updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Board'), i18n.t('Board updated successfully'), ALERT_TYPES.SUCCESS);
     yield put(BoardsActions.updateEntity(action.payload));
   } catch (error) {
-    yield call(show, 'Board', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Board'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* updatePositionWorker(action: PayloadAction<IUpdateBoardPosition>) {
   try {
     yield* apply(boardService, boardService.updatePosition, [action.payload]);
-    yield call(show, 'Board', 'Board position updated successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Board'), i18n.t('Board position updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Board', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Board'), error, ALERT_TYPES.DANGER);
   }
 }
 

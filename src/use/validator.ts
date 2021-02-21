@@ -49,7 +49,6 @@ export const useValidator: IUseValidator = (
   useEffect(() => {
     const isValid = error?.isValid;
     if (isValid && value !== null && value !== undefined && isChanged) {
-      console.log('===callback', error);
       callback?.(value);
     }
   }, [error]);

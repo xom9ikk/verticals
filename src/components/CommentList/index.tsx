@@ -19,23 +19,17 @@ const CommentListComponent = ({
     })}
   >
     {
-      comments.length > 0 ? (
-        <>
-          {
-            comments.map((comment: IComment) => (
-              <CommentItem
-                key={comment.id}
-                id={comment.id}
-                text={comment.text}
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-                replyCommentId={comment.replyCommentId}
-                likedUsers={comment.likedUsers}
-              />
-            ))
-          }
-        </>
-      ) : (
+      comments.length > 0 ? comments.map((comment: IComment) => (
+        <CommentItem
+          key={comment.id}
+          id={comment.id}
+          text={comment.text}
+          createdAt={comment.createdAt}
+          updatedAt={comment.updatedAt}
+          replyCommentId={comment.replyCommentId}
+          likedUsers={comment.likedUsers}
+        />
+      )) : (
         <>
           <img src="/assets/svg/comments-empty.svg" alt="empty" />
           <div>Drop files here</div>

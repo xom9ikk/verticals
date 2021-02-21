@@ -28,6 +28,7 @@ import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useDebounce } from '@use/debounce';
 import { useColorClass } from '@use/colorClass';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useTranslation } from 'react-i18next';
 
 interface ICardPopup {
   columnId: number;
@@ -38,6 +39,7 @@ export const CardPopup: FC<ICardPopup> = ({
   columnId,
   cardType,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
@@ -201,21 +203,21 @@ export const CardPopup: FC<ICardPopup> = ({
                 <TextArea
                   ref={titleInputRef}
                   className="card__textarea card-popup__textarea"
-                  placeholder="Card Title"
+                  placeholder={t('Card Title')}
                   value={titleValue || ''}
                   onKeyDown={shiftEnterRestriction}
                   onChange={(event: any) => handleChangeText(event, false)}
                   minRows={1}
-                  maxRows={5}
+                  maxRows={3}
                 />
                 <TextArea
                   className="card__textarea card-popup__textarea card-popup__textarea--description"
-                  placeholder="Notes"
+                  placeholder={t('Notes')}
                   value={descriptionValue || ''}
                   onKeyDown={shiftEnterRestriction}
                   onChange={(event: any) => handleChangeText(event, true)}
                   minRows={1}
-                  maxRows={5}
+                  maxRows={3}
                 />
               </div>
             </div>
@@ -224,7 +226,7 @@ export const CardPopup: FC<ICardPopup> = ({
                 <ControlButton
                   ref={buttonRef}
                   imageSrc="/assets/svg/calendar.svg"
-                  tooltip="Date"
+                  tooltip={t('Date')}
                   alt="date"
                   imageSize={24}
                   size={36}
@@ -267,7 +269,9 @@ export const CardPopup: FC<ICardPopup> = ({
               </div>
               <ControlButton
                 imageSrc={`/assets/svg/bell${activeTodo.isNotificationsEnabled ? '-active' : ''}.svg`}
-                tooltip={`Turn ${activeTodo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
+                tooltip={`${activeTodo.isNotificationsEnabled
+                  ? t('Turn off')
+                  : t('Turn on')} ${t('card notifications')}`}
                 alt="notification"
                 imageSize={24}
                 size={36}

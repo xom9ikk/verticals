@@ -6,6 +6,7 @@ import { Divider } from '@comp/Divider';
 import { IColor } from '@type/entities';
 import { ColumnsActions, SystemActions } from '@store/actions';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 interface IColumnContextMenu {
   isEnabled?: boolean;
@@ -35,6 +36,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
   isHover,
   onAddCard,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const handleColorPick = (newColor: IColor) => {
@@ -97,35 +99,35 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
     >
       <ColorPicker onPick={handleColorPick} activeColor={color} />
       <MenuItem
-        text="Edit column"
+        text={t('Edit column')}
         imageSrc="/assets/svg/menu/edit.svg"
         action={EnumMenuActions.EditColumn}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
-        text="Duplicate"
+        text={t('Duplicate')}
         imageSrc="/assets/svg/menu/duplicate.svg"
         action={EnumMenuActions.Duplicate}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
-        text="Add card"
+        text={t('Add card')}
         imageSrc="/assets/svg/menu/add-card.svg"
         action={EnumMenuActions.AddCard}
       />
       <MenuItem
-        text="Add heading"
+        text={t('Add heading')}
         imageSrc="/assets/svg/menu/add-heading.svg"
         action={EnumMenuActions.AddHeading}
       />
       <MenuItem
-        text="Add column after"
+        text={t('Add column after')}
         imageSrc="/assets/svg/menu/add-column.svg"
         action={EnumMenuActions.AddColumnAfter}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
-        text="Delete"
+        text={t('Delete')}
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
         action={EnumMenuActions.Delete}

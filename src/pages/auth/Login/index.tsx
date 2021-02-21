@@ -9,6 +9,7 @@ import { Form } from '@comp/Form';
 import { useForm } from '@use/form';
 import { AuthActions } from '@store/actions';
 import { validatorLoginForm } from '@helpers/validator/form/login';
+import { useTranslation } from 'react-i18next';
 
 interface IFormValidatedState {
   email: string;
@@ -21,6 +22,7 @@ const initialState = {
 };
 
 export const Login: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const {
@@ -33,13 +35,13 @@ export const Login: FC = () => {
 
   return (
     <Form
-      title="Sign in"
-      subtitle="Welcome back to Verticals."
+      title={t('Sign in')}
+      subtitle={t('Welcome back to Verticals.')}
       handleSubmit={handleSubmit}
     >
       <Input
         type="text"
-        placeholder="Email"
+        placeholder={t('Email')}
         touched={touches.email}
         error={errors.email}
         name="email"
@@ -49,7 +51,7 @@ export const Login: FC = () => {
       />
       <Input
         type="password"
-        placeholder="Password"
+        placeholder={t('Password')}
         touched={touches.password}
         error={errors.password}
         name="password"
@@ -70,21 +72,23 @@ export const Login: FC = () => {
       >
         <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
-        Sign in with Google
       </Button>
       <Link
         to="/auth/reset"
         className="link"
       >
-        Forgot your password?
+        {t('Forgot your password?')}
       </Link>
       <div>
-        <span className="text">New to Verticals?&nbsp;</span>
+        <span className="text">
+          {t('New to Verticals?')}
+          &nbsp;
+        </span>
         <Link
           to="/auth/register"
           className="link"
         >
-          Create an account.
+          {t('Create an account.')}
         </Link>
       </div>
     </Form>

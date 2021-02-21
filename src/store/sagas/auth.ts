@@ -16,6 +16,7 @@ import {
   ISetAuthInfo,
 } from '@type/actions';
 import { PayloadAction } from '@reduxjs/toolkit';
+import i18n from '@/i18n';
 
 const { authService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
@@ -29,9 +30,9 @@ function* signUpWorker(action: PayloadAction<ISignUp>) {
       refreshToken,
     }));
     yield call(redirectTo, '/');
-    yield call(show, 'Success', 'Registration completed successfully', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Success'), i18n.t('Registration completed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -43,10 +44,11 @@ function* signInWorker(action: PayloadAction<ISignIn>) {
       token,
       refreshToken,
     }));
-    yield call(show, 'Success', 'Successful login', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Success'), i18n.t('Successful login'), ALERT_TYPES.SUCCESS);
     yield call(redirectTo, '/');
   } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+    console.log('error', error);
+    yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   }
 }
 
@@ -56,16 +58,16 @@ function* setAuthInfoWorker(action: PayloadAction<ISetAuthInfo>) {
     yield call(storage.setToken, token);
     yield call(storage.setRefreshToken, refreshToken);
   } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* logoutWorker() {
   try {
     yield apply(authService, authService.logout, []);
-    yield call(show, 'Success', 'Successful logout', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Success'), i18n.t('Successful logout'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   } finally {
     yield put(AuthActions.setAuthInfo({
       token: '',
@@ -78,19 +80,19 @@ function* logoutWorker() {
 function* resetPasswordWorker(action: PayloadAction<IResetPassword>) {
   try {
     yield* apply(authService, authService.reset, [action.payload]);
-    yield call(show, 'Success', 'Successful reset password', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Success'), i18n.t('Successful reset password'), ALERT_TYPES.SUCCESS);
     yield call(redirectTo, '/auth/login');
   } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* changePasswordWorker(action: PayloadAction<IChangePassword>) {
   try {
     yield* apply(authService, authService.change, [action.payload]);
-    yield call(show, 'Success', 'Successful change password', ALERT_TYPES.SUCCESS);
+    yield call(show, i18n.t('Success'), i18n.t('Successful change password'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, 'Error', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   }
 }
 
