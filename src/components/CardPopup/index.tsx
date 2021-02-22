@@ -167,7 +167,7 @@ export const CardPopup: FC<ICardPopup> = ({
             imageSrc="/assets/svg/close.svg"
             alt="close"
             imageSize={16}
-            size={32}
+            size={26}
             style={{
               position: 'absolute',
               right: 6,

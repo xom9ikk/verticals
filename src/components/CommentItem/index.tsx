@@ -3,12 +3,12 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import format from 'date-fns/format';
 import { ICommentLike } from '@type/entities';
 import { MenuItem } from '@comp/MenuItem';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
 import { CommentFile } from '@comp/CommentFile';
-import { useFormat } from '@use/format';
 import { Avatar } from '@comp/Avatar';
 import {
   CommentAttachmentsActions,
@@ -52,7 +52,6 @@ export const CommentItem: FC<ICommentItem> = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { formatDate } = useFormat();
   const { renderMarkdown } = useMarkdown();
 
   const fullName = useSelector(getFullName);
@@ -251,12 +250,12 @@ export const CommentItem: FC<ICommentItem> = ({
                   {t('Edited')}
                   {' '}
                   (
-                  {formatDate(new Date(updatedAt!))}
+                  {format(new Date(updatedAt!), 'dd MMM, hh:mm')}
                   )&nbsp;·&nbsp;
                 </span>
               ) : null
             }
-            <div className="comment__date">{formatDate(new Date(createdAt))}</div>
+            <div className="comment__date">{format(new Date(createdAt), 'dd MMM, hh:mm')}</div>
             <div className="comment__like-bubbles">
               {
                 likedUsers && likedUsers?.length > 0 && likedUsers.map((user) => (

@@ -51,6 +51,7 @@ export const DatePickerPopup: FC<IDatePickerPopup> = ({
       position={position}
       sourceRef={sourceRef}
       style={{ zIndex: 2 }}
+      width={328}
     >
       <DatePicker
         isOpen={isOpen.current}

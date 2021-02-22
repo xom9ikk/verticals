@@ -87,7 +87,6 @@
     }
     #{$block}__text {
       padding-left: 0;
-      margin-left: -1px;
       font-size: 9px;
       color: $primary;
       filter: grayscale(1) brightness(1.4);
