@@ -101,7 +101,7 @@ export const FormattingHelp: FC = () => {
       />
     </div>
   </div>
-  ), [isOpenFormattingHelp]);
+  ), [t, isOpenFormattingHelp]);
 
   return (
     <div className="formatting-help">

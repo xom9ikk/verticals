@@ -7,6 +7,7 @@ import { watchTodo } from '@store/sagas/todo';
 import { watchComment } from '@store/sagas/comments';
 import { watchCommentAttachments } from '@store/sagas/comment-attachments';
 import { watchSearch } from '@store/sagas/search';
+import { watchSystem } from './system';
 
 export function* rootSaga() {
   yield all([
@@ -18,5 +19,6 @@ export function* rootSaga() {
     watchComment(),
     watchCommentAttachments(),
     watchSearch(),
+    watchSystem(),
   ]);
 }

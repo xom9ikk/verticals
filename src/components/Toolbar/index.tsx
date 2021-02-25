@@ -10,6 +10,7 @@ import { redirectTo } from '@router/history';
 import { getLanguage } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useTranslation } from 'react-i18next';
+import { LANGUAGES } from '@/constants';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -115,37 +116,20 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <Submenu
-            text={`${t('Language')}: CURRENT_LANGUAGE`} // TODO: switcher
+            text={`${t('Language')}: ${LANGUAGES[language]}`}
             imageSrc="/assets/svg/menu/language.svg"
           >
-            <MenuItem
-              text="English"
-              hintImageSrc={getTickSvg(EnumLanguage.English)}
-              isColoredHintImage
-              action={EnumToolbarActions.ChangeLanguage}
-              payload={EnumLanguage.English}
-            />
-            <MenuItem
-              text="Русский"
-              hintImageSrc={getTickSvg(EnumLanguage.Russian)}
-              isColoredHintImage
-              action={EnumToolbarActions.ChangeLanguage}
-              payload={EnumLanguage.Russian}
-            />
-            <MenuItem
-              text="Français"
-              hintImageSrc={getTickSvg(EnumLanguage.French)}
-              isColoredHintImage
-              action={EnumToolbarActions.ChangeLanguage}
-              payload={EnumLanguage.French}
-            />
-            <MenuItem
-              text="Español"
-              hintImageSrc={getTickSvg(EnumLanguage.Spanish)}
-              isColoredHintImage
-              action={EnumToolbarActions.ChangeLanguage}
-              payload={EnumLanguage.Spanish}
-            />
+            {
+              LANGUAGES.map((lng, index) => (
+                <MenuItem
+                  text={lng}
+                  hintImageSrc={getTickSvg(index)}
+                  isColoredHintImage
+                  action={EnumToolbarActions.ChangeLanguage}
+                  payload={index}
+                />
+              ))
+            }
           </Submenu>
           <Submenu
             text={t('More')}

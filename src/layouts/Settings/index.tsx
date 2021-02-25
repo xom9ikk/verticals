@@ -4,7 +4,6 @@ import React, {
 } from 'react';
 import { RoundedButton } from '@comp/RoundedButton';
 import { NavLink } from '@comp/NavLink';
-import i18n from '@/i18n';
 import { useTranslation } from 'react-i18next';
 
 enum EnumMenu {
@@ -12,22 +11,18 @@ enum EnumMenu {
   Profile='profile',
 }
 
-const menuItems = [{
-  icon: '/assets/svg/account.svg',
-  text: i18n.t('Account'),
-  type: EnumMenu.Account,
-}, {
-  icon: '/assets/svg/profile.svg',
-  text: i18n.t('Profile'),
-  type: EnumMenu.Profile,
-}];
-
-interface ISettings {
-
-}
-
-export const SettingsLayout: FC<ISettings> = ({ children }) => {
+export const SettingsLayout: FC = ({ children }) => {
   const { t } = useTranslation();
+
+  const menuItems = [{
+    icon: '/assets/svg/account.svg',
+    text: t('Account'),
+    type: EnumMenu.Account,
+  }, {
+    icon: '/assets/svg/profile.svg',
+    text: t('Profile'),
+    type: EnumMenu.Profile,
+  }];
 
   const drawMenu = useMemo(() => menuItems.map((menuItem) => (
     <NavLink

@@ -145,7 +145,7 @@ export const BoardList: FC = () => {
         </Link>
       </div>
     );
-  }, [boards, activeBoardId, isSearchMode, editableBoardId, username]);
+  }, [t, boards, activeBoardId, isSearchMode, editableBoardId, username]);
 
   const memoAddNewBoard = useMemo(() => (
     <ControlButton
@@ -158,7 +158,7 @@ export const BoardList: FC = () => {
       onClick={addNewBoard}
     />
   ),
-  [isHovering, editableBoardId]);
+  [t, isHovering, editableBoardId]);
 
   return (
     <div

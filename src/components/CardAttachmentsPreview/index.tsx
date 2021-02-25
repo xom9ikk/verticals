@@ -111,7 +111,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
           (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery,
         )}
         {renderIcon(
-          commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`, // TODO: i18n
+          commentsCountWithCache, 'bubble', t('{{count}} comment', { count: commentsCountWithCache }),
           (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache),
         )}
       </div>

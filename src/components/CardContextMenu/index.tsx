@@ -236,9 +236,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         >
           <span>Alt</span>
           +
-          {/* // TODO: 18n span in trans */}
-          <span>Click</span>
-          on a checkbox to mark as doing
+          <span>{t('Click')}</span>
+          {t('on a checkbox to mark as doing')}
         </MenuItem>
         <MenuItem
           key={5}
@@ -260,9 +259,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         >
           <span>Shift</span>
           +
-          {/* // TODO: 18n span in trans */}
-          <span>Click</span>
-          on a checkbox to mark as canceled
+          <span>{t('Click')}</span>
+          {t('on a checkbox to mark as canceled')}
         </MenuItem>
       </Submenu>,
       <Divider
@@ -331,26 +329,25 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   ];
 
   return useMemo(() => (todoId && title ? (
-    <>
-      <Menu
-        ref={menuButtonRef}
-        id={`${menuId}-card-${todoId}`}
-        imageSrc={`/assets/svg/dots${isPrimary ? '-primary' : ''}.svg`}
-        alt="menu"
-        imageSize={imageSize || 22}
-        size={size || 24}
-        isInvisible
-        isColored={isColored}
-        isInvertColor={isActive}
-        isHoverBlock={isHover}
-        position="right"
-        style={isTransformedPosition ? {
-          float: 'right',
-        } : {}}
-        width={isOpenDatePicker ? 328 : undefined}
-        onSelect={handleMenuButtonClick}
-      >
-        {
+    <Menu
+      ref={menuButtonRef}
+      id={`${menuId}-card-${todoId}`}
+      imageSrc={`/assets/svg/dots${isPrimary ? '-primary' : ''}.svg`}
+      alt="menu"
+      imageSize={imageSize || 22}
+      size={size || 24}
+      isInvisible
+      isColored={isColored}
+      isInvertColor={isActive}
+      isHoverBlock={isHover}
+      position="right"
+      style={isTransformedPosition ? {
+        float: 'right',
+      } : {}}
+      width={isOpenDatePicker ? 328 : undefined}
+      onSelect={handleMenuButtonClick}
+    >
+      {
           isOpenDatePicker ? (
             <DatePicker
               isOpen={isOpenDatePicker}
@@ -359,8 +356,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
             />
           ) : buttons
         }
-      </Menu>
-    </>
+    </Menu>
   ) : null),
   [isHover, color,
     isNotificationsEnabled,

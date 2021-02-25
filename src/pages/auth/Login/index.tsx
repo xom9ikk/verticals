@@ -64,7 +64,7 @@ export const Login: FC = () => {
         modificator="primary"
         isMaxWidth
       >
-        Sign In
+        {t('Sign In')}
       </Button>
       <Button
         type="submit"

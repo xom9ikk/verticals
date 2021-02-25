@@ -153,7 +153,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
         }
       </div>
     )
-  ), [mode, isEditable, titleValue]);
+  ), [t, mode, isEditable, titleValue]);
 
   const memoDescription = useMemo(() => (mode !== EnumColumnMode.New || isEditable) && (
     isEditable ? (
@@ -177,7 +177,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       </span>
     )
   ),
-  [isEditable, descriptionValue]);
+  [t, isEditable, descriptionValue, t]);
 
   return (
     <div

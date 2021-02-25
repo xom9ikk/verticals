@@ -14,3 +14,15 @@ export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-rig
   'github', 'linkedin', 'twitter', 'facebook', 'instagram', 'snap', 'tik-tok'];
 export const DEFAULT_BOARD_ICON = '/assets/svg/board/item.svg';
 export const MAX_FILES_IN_COMMENT_PREVIEW = 3;
+export const LANGUAGES = [
+  'English',
+  'Русский',
+  'Français',
+  'Español',
+];
+export const LANGUAGE_CODES = [
+  'en',
+  'ru',
+  'fr',
+  'es',
+];

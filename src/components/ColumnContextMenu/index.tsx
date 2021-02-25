@@ -134,5 +134,5 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
       />
     </Menu>
   ) : null),
-  [columnId, isEnabled, isHide, isHover, color]);
+  [t, columnId, isEnabled, isHide, isHover, color]);
 };

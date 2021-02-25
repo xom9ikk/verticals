@@ -236,7 +236,7 @@ export const Board: FC<IBoard> = ({
       }
     </div>
   ), [
-    isHover, isActive, isEditable,
+    t, isHover, isActive, isEditable,
     titleValue, descriptionValue, snapshot,
     color, countTodos, icon, username, isSearchMode,
   ]);

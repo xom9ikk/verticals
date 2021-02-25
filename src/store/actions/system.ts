@@ -30,6 +30,7 @@ const setEditableColumnId = createAction<ISetSystemEditableColumnId>('SYSTEM/SET
 const setEditableCardId = createAction<ISetSystemEditableCardId>('SYSTEM/SET_EDITABLE_CARD_ID');
 const setIsSearchMode = createAction<ISetSystemIsSearchMode>('SYSTEM/SET_IS_SEARCH_MODE');
 const setLanguage = createAction<ISetSystemLanguage>('SYSTEM/SET_LANGUAGE');
+const fetchLanguage = createAction('SYSTEM/FETCH_LANGUAGE');
 const setActiveTodoId = createAction<ISetSystemActiveTodoId>('SYSTEM/SET_ACTIVE_TODO_ID');
 const setEditCommentId = createAction<ISetSystemEditCommentId>('SYSTEM/SET_EDIT_COMMENT_ID');
 const setReplyCommentId = createAction<ISetSystemReplyCommentId>('SYSTEM/SET_REPLY_COMMENT_ID');
@@ -51,6 +52,7 @@ export const SystemActions = {
   setEditableCardId,
   setIsSearchMode,
   setLanguage,
+  fetchLanguage,
   setActiveTodoId,
   setEditCommentId,
   setReplyCommentId,

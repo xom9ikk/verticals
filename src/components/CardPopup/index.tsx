@@ -297,6 +297,7 @@ export const CardPopup: FC<ICardPopup> = ({
     <div className="card-popup" />
   )),
   [
+    t,
     activeTodo,
     titleValue,
     descriptionValue,

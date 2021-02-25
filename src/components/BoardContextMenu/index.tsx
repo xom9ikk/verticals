@@ -199,5 +199,5 @@ export const BoardContextMenu: FC<IBoard> = ({
         action={EnumMenuActions.Delete}
       />
     </Menu>
-  ), [boardId, isHover, isActive, color, username, isCopied]);
+  ), [t, boardId, isHover, isActive, color, username, isCopied]);
 };

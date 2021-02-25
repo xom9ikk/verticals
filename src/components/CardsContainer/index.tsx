@@ -58,7 +58,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
         onClick={onAddCard}
       />
     )
-  ), [isHovering, isDraggingCard, isOpenNewCard, mode, todosCount]);
+  ), [t, isHovering, isDraggingCard, isOpenNewCard, mode, todosCount]);
 
   const memoNewCard = useMemo(() => (
     <Card

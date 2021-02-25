@@ -147,7 +147,7 @@ export const Columns: FC<IColumns> = () => {
       title={t('Deleted cards')}
       description={t('Restore deleted cards')}
     />
-  ), [activeBoardId]);
+  ), [t, activeBoardId]);
 
   const memoColumnsContainer = useMemo(() => (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -187,7 +187,7 @@ export const Columns: FC<IColumns> = () => {
       </Droppable>
     </DragDropContext>
   ), [
-    isLoadedBoards, isLoadedColumns, isSearchMode,
+    t, isLoadedBoards, isLoadedColumns, isSearchMode,
     activeBoardId, editableColumnId, columns,
   ]);
 

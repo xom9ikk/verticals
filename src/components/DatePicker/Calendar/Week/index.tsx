@@ -8,22 +8,7 @@ import isThisYear from 'date-fns/isThisYear';
 import lastDayOfMonth from 'date-fns/lastDayOfMonth';
 import addMonths from 'date-fns/addMonths';
 import { CalendarDay } from '@comp/DatePicker/Calendar/Day';
-import i18n from '@/i18n';
-
-const months = [
-  i18n.t('January'),
-  i18n.t('February'),
-  i18n.t('March'),
-  i18n.t('April'),
-  i18n.t('May'),
-  i18n.t('June'),
-  i18n.t('July'),
-  i18n.t('August'),
-  i18n.t('September'),
-  i18n.t('October'),
-  i18n.t('November'),
-  i18n.t('December'),
-];
+import { useTranslation } from 'react-i18next';
 
 interface ICalendarWeek {
   startDate: Date;
@@ -38,6 +23,23 @@ export const CalendarWeek: FC<ICalendarWeek> = ({
   highlightDate = null,
   onSelectDate,
 }) => {
+  const { t } = useTranslation();
+
+  const months = useMemo(() => [
+    t('January'),
+    t('February'),
+    t('March'),
+    t('April'),
+    t('May'),
+    t('June'),
+    t('July'),
+    t('August'),
+    t('September'),
+    t('October'),
+    t('November'),
+    t('December'),
+  ], [t]);
+
   const year = startDate.getFullYear();
   const nextMonth = useMemo(() => addMonths(startDate, 1), [startDate]);
   const month = months[nextMonth.getMonth()];

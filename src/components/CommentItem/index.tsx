@@ -165,7 +165,7 @@ export const CommentItem: FC<ICommentItem> = ({
         )
       }
     </div>
-  ), [attachments]);
+  ), [t, attachments]);
 
   const memoComment = useMemo(() => (
     <div className="comment__content">
@@ -200,6 +200,7 @@ export const CommentItem: FC<ICommentItem> = ({
       { memoAttachments }
     </div>
   ), [
+    t,
     replyCommentId,
     replyComment,
     fullName,

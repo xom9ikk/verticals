@@ -6,9 +6,10 @@ import { Card } from '@comp/Card';
 import { useSelector } from 'react-redux';
 import { getActiveTodoId, getEditableCardId } from '@store/selectors';
 import { Divider } from '@comp/Divider';
+import { useTranslation } from 'react-i18next';
 
 interface IArchiveContainer {
-  archivedTodos?: Array<ITodo>;
+  archivedTodos: Array<ITodo>;
   cardType: EnumTodoType;
 }
 
@@ -16,6 +17,8 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
   archivedTodos,
   cardType,
 }) => {
+  const { t } = useTranslation();
+
   const activeTodoId = useSelector(getActiveTodoId);
   const editableCardId = useSelector(getEditableCardId);
 
@@ -25,16 +28,14 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
     setIsOpenArchived((prev) => !prev);
   };
 
-  return archivedTodos && archivedTodos?.length > 0 ? (
+  return archivedTodos.length > 0 ? (
     <div className="archive-container">
       <div
         className="archive-container__title"
         onClick={handleClick}
       >
         <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
-        {archivedTodos.length}
-        {' '}
-        cards archived
+        {t('{{count}} cards archived', { count: archivedTodos.length })}
       </div>
       {
       isOpenArchived && (

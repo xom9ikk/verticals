@@ -1,4 +1,4 @@
-/* eslint-disable no-plusplus */
+/* eslint-disable import/no-extraneous-dependencies */
 const fs = require('fs');
 const chalk = require('chalk');
 const typescriptTransform = require('i18next-scanner-typescript');
@@ -10,11 +10,9 @@ const languages = [
   'fr', // French
   'it', // Italian
   'ja', // Japanese
-  'nl', // Netherlands
   'pl', // Polish
-  'pt', // Portuguese
   'ru', // Russian
-  'ua', // Russian
+  'uk', // Ukrainian
   'tr', // Turkish
   'zh-tw', // Traditional Chinese
 ];
@@ -31,14 +29,14 @@ module.exports = {
     debug: true,
     removeUnusedKeys: true,
     func: {
-      list: ['i18next.t', 'i18n.t', 't'],
-      extensions: ['.ts', '.tsx'],
+      list: ['i18n.t', 't'],
+      extensions: ['.js', '.jsx'],
     },
     trans: {
       component: 'Trans',
       i18nKey: 'i18nKey',
       defaultsKey: 'defaults',
-      extensions: ['.ts', '.tsx'],
+      extensions: ['.js', '.jsx'],
       fallbackKey: (ns, value) => value,
       acorn: {
         ecmaVersion: 10,
@@ -52,7 +50,8 @@ module.exports = {
     ],
     defaultLng: languages[0],
     defaultNs: 'translation',
-    defaultValue(lng, ns, key) {
+    defaultValue: (lng, ns, key) => {
+      return key;
       if (lng === languages[0]) {
         return key;
       }
@@ -85,7 +84,7 @@ module.exports = {
         nsSeparator: false,
         keySeparator: false,
       });
-      ++count;
+      count += 1;
     });
 
     if (count > 0) {

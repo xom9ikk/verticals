@@ -22,6 +22,8 @@
   "Drop files here": "Drop files here",
   "Show Files": "Show Files",
   "Show Gallery": "Show Gallery",
+  "{{count}} comment": "{{count}} comment",
+  "{{count}} comment_plural": "{{count}} comment",
   "Restore": "Restore",
   "Edit card": "Edit card",
   "Attach file": "Attach file",
@@ -29,8 +31,11 @@
   "Complete": "Complete",
   "Mark as to do": "Mark as to do",
   "Mark as doing": "Mark as doing",
+  "Click": "Click",
+  "on a checkbox to mark as doing": "on a checkbox to mark as doing",
   "Mark as done": "Mark as done",
   "Mark as canceled": "Mark as canceled",
+  "on a checkbox to mark as canceled": "on a checkbox to mark as canceled",
   "Notifications": "Notifications",
   "Duplicate": "Duplicate",
   "Add card below": "Add card below",
@@ -171,5 +176,8 @@
   "Avatar successfully uploaded": "Avatar successfully uploaded",
   "Avatar removed successfully": "Avatar removed successfully",
   "File": "File",
-  "exceeds the maximum allowed size": "exceeds the maximum allowed size"
+  "exceeds the maximum allowed size": "exceeds the maximum allowed size",
+  "{{count}} cards archived": "{{count}} cards archived",
+  "{{count}} cards archived_plural": "{{count}} cards archived",
+  "System": "System"
 }
