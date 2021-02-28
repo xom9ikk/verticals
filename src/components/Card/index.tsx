@@ -391,6 +391,7 @@ export const Card: FC<ICard> = ({
                 onSelectDate={handleSelectDateAndUpdate}
               />
               <CardAttachmentsPreview
+                columnId={columnId}
                 todoId={todoId!}
                 isActive={isActive}
                 commentsCount={commentsCount}
@@ -404,7 +405,7 @@ export const Card: FC<ICard> = ({
     </div>
   ),
   [
-    t, status, isEditable, color,
+    t, todoId, columnId, status, isEditable, color,
     titleValue, descriptionValue, expirationDateValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,

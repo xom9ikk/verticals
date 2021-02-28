@@ -27,13 +27,15 @@
       width: auto !important;
     }
     &-wrapper {
-      max-width: calc(100% - 70px);
-      //max-width: $column-width - 70;
+      //max-width: calc(100% - 70px);
+      max-width: $column-width - 70;
+      //max-width: calc(var(--mini-gallery-width) - 70px);
       margin-bottom: -5px;
       //margin-right: -5px;
       img {
         //width: calc(100% - 70px + 2px);
-        width: $column-width - 70 + 2;
+        //width: $column-width - 70 + 2;
+        width: calc(var(--mini-gallery-width) - 70px + 2px);
       }
     }
     &-pagination {

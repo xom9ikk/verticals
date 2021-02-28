@@ -7,10 +7,11 @@ import { useDispatch } from 'react-redux';
 import {
   getCommentFileAttachmentsByTodoId,
   getCommentImageAttachmentsByTodoId,
-  getCommentsByTodoId,
+  getCommentsByTodoId, getWidthByColumnId,
 } from '@store/selectors';
 import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
+import { DEFAULT_COLUMN_WIDTH } from '@/constants';
 
 enum EnumToggleType {
   Files,
@@ -19,6 +20,7 @@ enum EnumToggleType {
 }
 
 interface ICardAttachmentsPreview {
+  columnId: number;
   todoId: number;
   isActive?: boolean;
   commentsCount?: number;
@@ -27,6 +29,7 @@ interface ICardAttachmentsPreview {
 }
 
 export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
+  columnId,
   todoId,
   isActive,
   commentsCount,
@@ -39,6 +42,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
   const comments = useParamSelector(getCommentsByTodoId, todoId);
   const imageAttachments = useParamSelector(getCommentImageAttachmentsByTodoId, todoId);
   const fileAttachments = useParamSelector(getCommentFileAttachmentsByTodoId, todoId);
+  const columnWidth = useParamSelector(getWidthByColumnId, columnId);
 
   const commentsCountWithCache = comments?.length || commentsCount;
   const imagesCountWithCache = imageAttachments?.length || imagesCount;
@@ -119,6 +123,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
       <MiniGallery
         todoId={todoId}
         isCollapse={!isShowGallery}
+        width={columnWidth === null ? DEFAULT_COLUMN_WIDTH : columnWidth}
       />
       <CardAttachments
         todoId={todoId}

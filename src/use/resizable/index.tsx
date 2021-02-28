@@ -30,6 +30,12 @@ export const useResizable = (option: IResizableOption) => {
   }, [option.size, group]);
 
   useEffect(() => {
+    if (state.isMove && state.size !== undefined) {
+      option.onResize?.(state.size);
+    }
+  }, [state.size, state.isMove]);
+
+  useEffect(() => {
     const handleEvent = (event: MouseEvent | TouchEvent) => {
       if (event.type.includes('move')) {
         dispatch(actions.move({

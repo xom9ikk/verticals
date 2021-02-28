@@ -24,3 +24,11 @@ export const getOrderedColumnsByBoardId = (boardId: number | null) => createSele
     return orderedColumns;
   },
 );
+
+export const getWidthByColumnId = (columnId: number) => createSelector(
+  [getColumns],
+  (columns) => {
+    const targetColumn = columns.entities.find((column) => column.id === columnId);
+    return targetColumn?.width ?? null;
+  },
+);

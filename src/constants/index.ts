@@ -3,6 +3,7 @@ export const TRASH_BOARD_ID = -1;
 export const NEW_BOARD_ID = -2;
 export const NEW_COLUMN_ID = -3;
 export const NEW_TODO_ID = -4;
+export const DEFAULT_COLUMN_WIDTH = 280;
 export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'calendar-2', 'card', 'carrot', 'chair', 'change', 'cheese',
   'circle', 'coffee', 'croissant', 'cross', 'file', 'flag', 'foot', 'gallery', 'geo', 'heart', 'help', 'home', 'item',

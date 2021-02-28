@@ -7,6 +7,7 @@ export interface IResizableOption {
   size?: number;
   minSize?: number;
   maxSize?: number;
+  onResize?: (size: number) => void;
 }
 
 export interface IResizableState extends IResizableOption {

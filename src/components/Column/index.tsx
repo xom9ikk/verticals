@@ -27,6 +27,7 @@ interface IColumn {
   description?: string;
   scrollToRight?: () => void;
   mode?: EnumColumnMode;
+  width: number | null;
 }
 
 export const Column: FC<IColumn> = ({
@@ -41,6 +42,7 @@ export const Column: FC<IColumn> = ({
   description,
   scrollToRight,
   mode = EnumColumnMode.Normal,
+  width,
 }) => {
   const dispatch = useDispatch();
 
@@ -86,6 +88,7 @@ export const Column: FC<IColumn> = ({
             title={title}
             description={description}
             mode={mode}
+            width={width}
             cardType={cardType}
             isEditable={isEditable}
             scrollToRight={scrollToRight}
@@ -97,7 +100,7 @@ export const Column: FC<IColumn> = ({
   [
     draggableId, index, isDragDisabled, cardType,
     color, boardId, columnId, belowId, title, description,
-    isCollapsed, isEditable, mode, isSearchMode,
+    isCollapsed, isEditable, mode, width, isSearchMode,
   ]);
 
   return (

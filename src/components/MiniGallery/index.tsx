@@ -9,8 +9,6 @@ import { useCollapse } from '@use/animationHeight';
 import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// import 'swiper/swiper.scss';
-// import 'swiper/components/pagination/pagination.scss';
 import { SystemActions } from '@store/actions';
 import { useParamSelector } from '@use/paramSelector';
 
@@ -18,11 +16,13 @@ SwiperCore.use([Pagination]);
 
 interface IMiniGallery {
   todoId?: number,
+  width: number,
   isCollapse: boolean,
 }
 
 export const MiniGallery: FC<IMiniGallery> = ({
   todoId,
+  width,
   isCollapse: initialIsCollapse,
 }) => {
   const dispatch = useDispatch();
@@ -36,7 +36,6 @@ export const MiniGallery: FC<IMiniGallery> = ({
 
   const handleClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation();
-    console.log('handleClick activeIndex', activeIndex);
     dispatch(SystemActions.setGalleryImagesInfo({
       images,
       index: activeIndex,
@@ -54,11 +53,16 @@ export const MiniGallery: FC<IMiniGallery> = ({
   useEffect(() => {
     if (images && images.length) {
       const timeout = setTimeout(() => {
+        swiperController?.slideReset();
         setIsCollapse(initialIsCollapse);
       }, 100);
       return () => clearTimeout(timeout);
     }
   }, [initialIsCollapse, images]);
+
+  useEffect(() => {
+    swiperController?.update();
+  }, [width]);
 
   const handleNext = (e: React.SyntheticEvent) => {
     e.stopPropagation();
@@ -70,7 +74,7 @@ export const MiniGallery: FC<IMiniGallery> = ({
     swiperController?.slidePrev();
   };
 
-  const memoSwiper = useMemo(() => (images && images.length ? (
+  const memoSwiper = useMemo(() => (images.length ? (
     <div className="mini-gallery__wrapper">
       <Swiper
         slidesPerView={1}
@@ -81,10 +85,11 @@ export const MiniGallery: FC<IMiniGallery> = ({
         setWrapperSize
         autoHeight
         pagination={{ type: 'fraction' }}
+          // @ts-ignore
+        style={{ '--mini-gallery-width': `${width}px` }}
         onSwiper={setSwiperController}
         onSlideChangeTransitionEnd={(swiper) => {
           const newActiveIndex = swiper.activeIndex - 1;
-          console.log('newActiveIndex', newActiveIndex);
           setActiveIndex(newActiveIndex);
         }}
       >
@@ -100,7 +105,7 @@ export const MiniGallery: FC<IMiniGallery> = ({
       <button className="swiper-button-next" onClick={handleNext} />
     </div>
   ) : null),
-  [images]);
+  [images, width, swiperController]);
 
   return (
     <div

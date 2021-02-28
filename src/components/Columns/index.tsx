@@ -125,6 +125,7 @@ export const Columns: FC<IColumns> = () => {
         belowId={column.belowId}
         title={column.title}
         description={column.description}
+        width={column.width}
       />
     )), [columns, activeBoardId, editableColumnId]);
 

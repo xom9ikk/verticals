@@ -22,6 +22,7 @@ export interface ICreateColumnRequest {
   color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
+  width?: number;
 }
 
 export type ICreateColumnResponse = IServerResponse<{
@@ -41,6 +42,7 @@ export interface IUpdateColumnRequest {
   description?: string;
   color?: IColor;
   isCollapsed?: boolean;
+  width?: number;
 }
 
 export type IUpdateColumnResponse = IServerResponse;
@@ -65,6 +67,7 @@ export type IDuplicateColumnResponse = IServerResponse<{
   color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
+  width?: number;
   todos: ITodos;
 }>;
 

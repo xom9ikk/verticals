@@ -15,6 +15,7 @@ export interface ICreateColumn {
   color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
+  width?: number;
 }
 
 export type IAddColumn = IColumn;
@@ -31,6 +32,7 @@ export type IUpdateColumn = {
   | { description: string }
   | { color: IColor }
   | { isCollapsed: boolean }
+  | { width: number }
 );
 
 //

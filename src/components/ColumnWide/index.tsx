@@ -133,6 +133,7 @@ export const ColumnWide: FC<IColumnWide> = ({
         }}
         className={cn('column', {
           'column--dragging': snapshot.isDragging,
+          'column--new': mode === EnumColumnMode.New,
         })}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
@@ -210,20 +211,24 @@ export const ColumnWide: FC<IColumnWide> = ({
           onAddCard={handleAddCard}
           onAddHeading={() => console.log('open heading')}
         />
-        <div
-          style={{
-            position: 'absolute',
-            height: '100%',
-            width: 10,
-            right: -5,
-            top: 0,
-            zIndex: 1,
-            cursor: 'ew-resize',
-          }}
-          aria-hidden
-          onMouseDown={onResize}
-          onTouchStart={onResize}
-        />
+        {
+          mode === EnumColumnMode.Normal && (
+          <div
+            style={{
+              position: 'absolute',
+              height: '100%',
+              width: 10,
+              right: -5,
+              top: 0,
+              zIndex: 1,
+              cursor: 'ew-resize',
+            }}
+            aria-hidden
+            onMouseDown={onResize}
+            onTouchStart={onResize}
+          />
+          )
+        }
       </div>
     );
   },

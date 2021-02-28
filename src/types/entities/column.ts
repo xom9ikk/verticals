@@ -9,6 +9,7 @@ export interface IColumn {
   color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
+  width: number | null;
 }
 
 export interface IColumns {

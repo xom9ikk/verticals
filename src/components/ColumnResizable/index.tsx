@@ -4,6 +4,10 @@ import { useResizable } from '@use/resizable';
 import { EnumTodoType, IColor } from '@type/entities';
 import { EnumColumnMode } from '@comp/Column';
 import { ColumnWide } from '@comp/ColumnWide';
+import { useDebounce } from '@use/debounce';
+import { ColumnsActions } from '@store/actions';
+import { useDispatch } from 'react-redux';
+import { DEFAULT_COLUMN_WIDTH } from '@/constants';
 
 interface IColumnResizable {
   snapshot: DraggableStateSnapshot;
@@ -15,6 +19,7 @@ interface IColumnResizable {
   title?: string;
   description?: string;
   mode: EnumColumnMode;
+  width: number | null;
   cardType: EnumTodoType;
   isEditable: boolean;
   scrollToRight?: () => void;
@@ -23,16 +28,26 @@ interface IColumnResizable {
 
 export const ColumnResizable: FC<IColumnResizable> = ({
   snapshot,
+  columnId,
+  width = DEFAULT_COLUMN_WIDTH,
   ...props
 }) => {
+  const dispatch = useDispatch();
+
+  const debounceUpdateWidth = useDebounce((newWidth: number) => {
+    dispatch(ColumnsActions.update({ id: columnId, width: newWidth }));
+  }, 1000);
+
   const { size, handler } = useResizable({
-    size: 280,
+    size: width === null ? DEFAULT_COLUMN_WIDTH : width,
     minSize: 280,
     maxSize: 700,
     direction: 'right',
+    onResize: debounceUpdateWidth,
   });
 
-  console.log(size);
+  console.log('width', width);
+  console.log('size', size);
 
   return (
     <div style={{
@@ -41,8 +56,9 @@ export const ColumnResizable: FC<IColumnResizable> = ({
     }}
     >
       <ColumnWide
-        snapshot={snapshot}
         {...props}
+        columnId={columnId}
+        snapshot={snapshot}
         onResize={handler}
       />
     </div>
