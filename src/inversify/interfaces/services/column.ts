@@ -14,7 +14,7 @@ import {
   IUpdateColumnPositionResponse,
   IUpdateColumnRequest,
   IUpdateColumnResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface IColumnService {
   getAll(): Promise<IGetAllColumnsResponse>;

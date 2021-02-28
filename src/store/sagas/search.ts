@@ -1,20 +1,21 @@
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { Action } from 'redux-actions';
-import { useAlert } from '@/use/alert';
-import { container } from '@/inversify/config';
-import { TYPES } from '@/inversify/types';
-import { IServices } from '@/inversify/interfaces';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { useAlert } from '@use/alert';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IServices } from '@inversify/interfaces';
 import {
   BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
-} from '@/store/actions';
-import { ISearchByTodoTitleRequest } from '@/types/api';
+} from '@store/actions';
+import { ISearchByTodoTitle } from '@type/actions';
+import i18n from '@/i18n';
 
 const { searchService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* searchByTodoTitleWorker(action: Action<ISearchByTodoTitleRequest>) {
+function* searchByTodoTitleWorker(action: PayloadAction<ISearchByTodoTitle>) {
   try {
     const response = yield* apply(searchService, searchService.searchByTodoTitle, [action.payload]);
     const { todos, columns, boards } = response.data;
@@ -23,12 +24,12 @@ function* searchByTodoTitleWorker(action: Action<ISearchByTodoTitleRequest>) {
     yield put(TodosActions.setAll(todos));
     yield put(SystemActions.setIsSearchMode(true));
   } catch (error) {
-    yield call(show, 'Search', error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Search'), error, ALERT_TYPES.DANGER);
   }
 }
 
 export function* watchSearch() {
   yield* all([
-    takeLatest(SearchActions.Type.SEARCH_BY_TODO_TITLE, searchByTodoTitleWorker),
+    takeLatest(SearchActions.searchByTodoTitle, searchByTodoTitleWorker),
   ]);
 }

@@ -1,4 +1,6 @@
-import { EnumColors, EnumTodoStatus, ITodos } from '@/types/entities';
+import {
+  EnumTodoStatus, IColor, ITodo, ITodos,
+} from '@type/entities';
 
 export interface IFetchTodosByBoardId {
   boardId: number;
@@ -10,45 +12,38 @@ export interface ICreateTodo {
   columnId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   status?: EnumTodoStatus;
   belowId?: number;
+  expirationDate?: Date;
+  files: FileList | null;
 }
 
-export interface IUpdateTodoTitle {
-  id: number;
-  title: string;
-}
+export type IAddTodo = ITodo;
 
-export interface IUpdateTodoDescription {
-  id: number;
-  description: string;
-}
-export interface IUpdateTodoCompleteStatus {
-  id: number;
-  status: EnumTodoStatus;
-}
-
-export interface IAddTodo {
-  id: number;
+export interface IInsertTodo {
+  entity: ITodo;
   position: number;
-  columnId: number;
-  title?: string;
-  description?: string;
-  status?: EnumTodoStatus;
-  isArchived?: boolean;
 }
+
+export type IUpdateTodo = {
+  id: number;
+} & (
+  { title: string }
+  | { description: string }
+  | { status: EnumTodoStatus }
+  | { color: IColor }
+  | { isArchived: boolean }
+  | { isRemoved: boolean }
+  | { isNotificationsEnabled: boolean }
+  | { expirationDate: Date | null }
+);
 
 export interface IUpdateTodoPosition {
   sourcePosition: number;
   destinationPosition: number;
   columnId: number;
   targetColumnId?: number;
-}
-
-export interface IUpdateTodoColor {
-  id: number;
-  color: EnumColors | null;
 }
 
 export interface IDuplicateTodo {
@@ -62,14 +57,4 @@ export interface IRemoveTodo {
 export interface IDrawTodoBelow {
   columnId: number;
   belowId: number;
-}
-
-export interface IUpdateIsArchive {
-  id: number;
-  isArchived: boolean;
-}
-
-export interface IUpdateTodoNotificationsEnabled {
-  id: number;
-  isNotificationsEnabled: boolean;
 }

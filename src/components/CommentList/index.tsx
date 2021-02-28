@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { CommentItem } from '@comp/CommentItem';
-import { IComment, IComments } from '@/types/entities';
+import { IComment, IComments } from '@type/entities';
 
 interface ICommentList {
   comments: IComments
@@ -19,18 +19,17 @@ const CommentListComponent = ({
     })}
   >
     {
-      comments.length > 0 ? (
-        <>
-          {
-            comments.map((comment: IComment) => (
-              <CommentItem
-                key={comment.id}
-                {...comment}
-              />
-            ))
-          }
-        </>
-      ) : (
+      comments.length > 0 ? comments.map((comment: IComment) => (
+        <CommentItem
+          key={comment.id}
+          id={comment.id}
+          text={comment.text}
+          createdAt={comment.createdAt}
+          updatedAt={comment.updatedAt}
+          replyCommentId={comment.replyCommentId}
+          likedUsers={comment.likedUsers}
+        />
+      )) : (
         <>
           <img src="/assets/svg/comments-empty.svg" alt="empty" />
           <div>Drop files here</div>

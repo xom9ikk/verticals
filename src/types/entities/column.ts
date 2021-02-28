@@ -1,25 +1,18 @@
-import { ITodo } from '@/types/entities/todo';
+import { IColor } from '@type/entities/colors';
+import { ID, IPositions } from '@type/entities/system';
 
 export interface IColumn {
-  id: number;
+  id: ID;
   boardId: number;
   title: string;
-  position: number;
   description?: string;
-  color?: number;
+  color?: IColor;
   isCollapsed?: boolean;
   belowId?: number;
+  width: number | null;
 }
 
-export type IColumns = Array<IColumn>;
-
-export interface ColumnsMap {
-  [key: string]: {
-    todos: ITodo[],
-    title: string;
-    description?: string;
-    color?: number;
-    isCollapsed?: boolean;
-    belowId?: number;
-  },
+export interface IColumns {
+  entities: Array<IColumn>;
+  positions: IPositions;
 }

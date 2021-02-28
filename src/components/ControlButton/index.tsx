@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import cn from 'classnames';
 
 interface IControlButton {
   imageSrc: string;
@@ -16,6 +17,7 @@ interface IControlButton {
   isColored?: boolean;
   isTextable?: boolean;
   isStopPropagation?: boolean;
+  animationDuration?: number;
   style?: React.CSSProperties;
   onClick?: (event: React.SyntheticEvent) => void;
   onDoubleClick?: (event: React.SyntheticEvent) => void;
@@ -39,42 +41,32 @@ const ControlButtonComponent = ({
   isColored,
   isTextable,
   isStopPropagation = true,
+  animationDuration = 100,
   style,
   onClick,
   onDoubleClick,
   onMouseEnter,
   onMouseLeave,
 }: IControlButton, ref: any) => {
-  const classes = ['control-button'];
-  if (isHide) {
-    classes.push('control-button--hidden');
-  }
-  if (isInvisible && !isHoverBlock) {
-    classes.push('control-button--invisible');
-  }
-  if (isHoverBlock) {
-    classes.push('control-button--hover-block');
-  }
-  if (isPrimary) {
-    classes.push('control-button--primary');
-  }
-  if (isMaxWidth) {
-    classes.push('control-button--max-width');
-  }
-  if (isInvertColor) {
-    classes.push('control-button--invert');
-  }
-  if (isColored) {
-    classes.push('control-button--colored');
-  }
-  if (isTextable) {
-    classes.push('control-button--textable');
-  }
-
+  const defaultTransition = {
+    transition: `background ${animationDuration}ms ease-out, 
+    opacity ${animationDuration}ms ease-in-out, 
+    width ${animationDuration}ms ease-in-out, 
+    padding ${animationDuration}ms ease-in-out`,
+  };
   return (
     <button
       ref={ref}
-      className={classes.join(' ')}
+      className={cn('control-button', {
+        'control-button--hidden': isHide,
+        'control-button--invisible': isInvisible && !isHoverBlock,
+        'control-button--hover-block': isHoverBlock,
+        'control-button--primary': isPrimary,
+        'control-button--max-width': isMaxWidth,
+        'control-button--invert': isInvertColor,
+        'control-button--colored': isColored,
+        'control-button--textable': isTextable,
+      })}
       onClick={(e) => {
         if (isStopPropagation) {
           e.stopPropagation();
@@ -84,7 +76,9 @@ const ControlButtonComponent = ({
       onDoubleClick={onDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      style={size ? { height: size, width: size, ...style } : { ...style }}
+      style={size ? {
+        height: size, width: size, ...defaultTransition, ...style,
+      } : { ...defaultTransition, ...style }}
       data-for="tooltip"
       data-tip={tooltip}
     >
@@ -101,7 +95,7 @@ const ControlButtonComponent = ({
           &nbsp;
         </span>
         )
-       }
+      }
     </button>
   );
 };

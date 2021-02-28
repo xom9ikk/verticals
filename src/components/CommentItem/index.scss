@@ -44,7 +44,14 @@
     padding: 0 5px 0;
 
     &--replied {
-      padding-top: 8px;
+      margin: 8px 0 10px;
+    }
+  }
+
+  &__text {
+    margin-left: 5px;
+    p {
+      margin: 0;
     }
   }
 

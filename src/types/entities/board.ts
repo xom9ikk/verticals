@@ -1,14 +1,18 @@
-import { EnumColors, EnumTodoType } from '@/types/entities';
+import {
+  EnumTodoType, IColor, ID,
+} from '@type/entities';
 
 export interface IBoard {
-  id: number;
+  id: ID;
   title: string;
   icon: string;
-  position: number;
   cardType: EnumTodoType;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   belowId?: number;
 }
 
-export type IBoards = Array<IBoard>;
+export interface IBoards {
+  entities: Array<IBoard>;
+  positions: Array<ID>;
+}

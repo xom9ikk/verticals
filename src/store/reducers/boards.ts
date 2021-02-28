@@ -1,111 +1,86 @@
-import { handleActions } from 'redux-actions';
-import { EnumTodoType, IBoard, IBoards } from '@/types/entities';
-import { BoardsActions } from '../actions';
+import { createReducer } from '@reduxjs/toolkit';
+import { EnumTodoType, IBoards } from '@type/entities';
+import { BoardsActions } from '@store/actions';
+import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
 
-const initialState: IBoards = [];
+const initialState: IBoards = {
+  entities: [],
+  positions: [],
+};
 
-export const BoardsReducer = handleActions<IBoards, any>({
-  [BoardsActions.Type.SET_ALL]:
-        (state, action) => ([...action.payload]),
-  [BoardsActions.Type.UPDATE_TITLE]:
-      (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
-        ? {
-          ...board,
-          title: action.payload.title,
-        }
-        : board))),
-  [BoardsActions.Type.UPDATE_DESCRIPTION]:
-      (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
-        ? {
-          ...board,
-          description: action.payload.description,
-        }
-        : board))),
-  [BoardsActions.Type.ADD]:
-      (state, action) => ([...state, {
-        id: Math.random().toString(),
-        position: state.length,
-        ...action.payload,
-      }]),
-  [BoardsActions.Type.INSERT_IN_POSITION]:
-      (state, action) => {
-        const { position } = action.payload;
-        const boards = [...state].sort((a, b) => a.position - b.position);
-        const spliceIndex = boards.findIndex((board: IBoard) => board.position === position);
-        const normalizedSpliceIndex = spliceIndex === -1 ? boards.length : spliceIndex;
-        const { belowId, ...newBoard } = action.payload;
-        boards.splice(normalizedSpliceIndex, 0, newBoard);
-        return boards.map((board: IBoard, index) => ({
-          ...board,
-          position: index,
-        }));
-      },
-  [BoardsActions.Type.UPDATE_POSITION]:
-        (state, action) => {
-          const { sourcePosition, destinationPosition } = action.payload;
-          const boards = [...state];
-          const sourceBoard = state
-            .filter((board) => board.position === sourcePosition)[0];
-          boards.splice(sourcePosition, 1);
-          boards.splice(destinationPosition, 0, {
-            ...sourceBoard, position: destinationPosition,
-          });
-          return boards.map((board, index) => ({
-            ...board,
-            position: index,
-          }));
-        },
-  [BoardsActions.Type.UPDATE_COLOR]:
-        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
-          ? {
-            ...board,
-            color: action.payload.color,
-          }
-          : board))),
-  [BoardsActions.Type.UPDATE_CARD_TYPE]:
-        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
-          ? {
-            ...board,
-            cardType: action.payload.cardType,
-          }
-          : board))),
-  [BoardsActions.Type.UPDATE_ICON]:
-        (state, action) => (state.map((board: IBoard) => (board.id === action.payload.id
-          ? {
-            ...board,
-            icon: action.payload.icon,
-          }
-          : board))),
-  [BoardsActions.Type.REMOVE]:
-        (state, action) => state
-          .filter((board: IBoard) => board.id !== action.payload.id)
-          .map((board: IBoard, index) => ({
-            ...board,
-            position: index,
-          })),
-  [BoardsActions.Type.DRAW_BELOW]:
-        (state, action) => {
-          const { belowId } = action.payload;
-          const boards = [...state].sort((a, b) => a.position - b.position);
-          const spliceIndex = boards.findIndex((board: IBoard) => board.id === belowId);
-          boards.splice(spliceIndex + 1, 0, {
-            id: 0,
-            belowId,
-            position: spliceIndex,
-            title: '',
-            icon: '/assets/svg/board/item.svg',
-            cardType: EnumTodoType.Checkboxes,
-          });
-          return boards.map((board: IBoard, index) => ({
-            ...board,
-            position: index,
-          }));
-        },
-  [BoardsActions.Type.REMOVE_TEMP]:
-        (state) => (state
-          .filter((board: IBoard) => board.id !== 0)
-          .map((board: IBoard, index) => ({
-            ...board,
-            position: index,
-          }))),
-}, initialState);
+export const BoardsReducer = createReducer(initialState, (builder) => builder
+  .addCase(BoardsActions.setAll, (draft, action) => action.payload)
+  .addCase(BoardsActions.add, (draft, action) => {
+    const { id } = action.payload;
+
+    draft.entities.push(action.payload);
+    draft.positions.push(id);
+  })
+  .addCase(BoardsActions.updateEntity, (draft, action) => {
+    const { id } = action.payload;
+    const index = draft.entities.findIndex((board) => board.id === id);
+    draft.entities[index] = {
+      ...draft.entities[index],
+      ...action.payload,
+    };
+  })
+  // .addCase(BoardsActions.updateTitle, (draft, action) => {
+  //   const { id, title } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].title = title;
+  // })
+  // .addCase(BoardsActions.updateDescription, (draft, action) => {
+  //   const { id, description } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].description = description;
+  // })
+  // .addCase(BoardsActions.updateColor, (draft, action) => {
+  //   const { id, color } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].color = color;
+  // })
+  // .addCase(BoardsActions.updateCardType, (draft, action) => {
+  //   const { id, cardType } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].cardType = cardType;
+  // })
+  // .addCase(BoardsActions.updateIcon, (draft, action) => {
+  //   const { id, icon } = action.payload;
+  //   draft.entities[draft.entities.findIndex((board) => board.id === id)].icon = icon;
+  // })
+  .addCase(BoardsActions.updatePosition, (draft, action) => {
+    const { sourcePosition, destinationPosition } = action.payload;
+    draft.positions.splice(destinationPosition, 0, draft.positions.splice(sourcePosition, 1)[0]);
+  })
+  .addCase(BoardsActions.insertInPosition, (draft, action) => {
+    const { entity, position } = action.payload;
+
+    draft.entities.push(entity);
+    draft.positions.splice(position, 0, entity.id);
+  })
+  .addCase(BoardsActions.remove, (draft, action) => {
+    const { id } = action.payload;
+
+    const entityIndex = draft.entities.findIndex((board) => board.id === id);
+    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+
+    const positionIndex = draft.positions.findIndex((boardId) => boardId === id);
+    if (positionIndex !== -1) draft.positions.splice(positionIndex, 1);
+  })
+  .addCase(BoardsActions.drawBelow, (draft, action) => {
+    const { belowId } = action.payload;
+    const positionIndex = draft.positions.findIndex((boardId) => boardId === belowId);
+
+    draft.entities.push({
+      id: TEMP_ID,
+      belowId,
+      title: '',
+      icon: DEFAULT_BOARD_ICON,
+      cardType: EnumTodoType.Checkboxes,
+    });
+
+    draft.positions.splice(positionIndex + 1, 0, TEMP_ID);
+  })
+  .addCase(BoardsActions.removeTemp, (draft) => {
+    const entityIndex = draft.entities.findIndex((board) => board.id === TEMP_ID);
+    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+
+    const positionIndex = draft.positions.findIndex((boardId) => boardId === TEMP_ID);
+    if (positionIndex !== -1) draft.positions.splice(positionIndex, 1);
+  }));

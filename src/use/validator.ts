@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IValidatorPayload, IValidatorResult } from '@/helpers/validator';
+import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
 
 export interface IUseValidatorResult {
   handleChange: (event: React.BaseSyntheticEvent) => void;
@@ -49,7 +49,6 @@ export const useValidator: IUseValidator = (
   useEffect(() => {
     const isValid = error?.isValid;
     if (isValid && value !== null && value !== undefined && isChanged) {
-      console.log('===callback', error);
       callback?.(value);
     }
   }, [error]);

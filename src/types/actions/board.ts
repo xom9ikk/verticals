@@ -1,4 +1,6 @@
-import { EnumColors, EnumTodoType, IBoards } from '@/types/entities';
+import {
+  EnumTodoType, IBoards, IBoard, IColor,
+} from '@type/entities';
 
 export type ISetBoards = IBoards;
 
@@ -7,48 +9,55 @@ export interface ICreateBoard {
   title: string;
   cardType: EnumTodoType;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   belowId?: number;
 }
 
-export interface IAddBoard {
-  id: number;
+export type IAddBoard = IBoard;
+
+export interface IInsertBoard {
+  entity: IBoard;
   position: number;
-  icon: string;
-  cardType: EnumTodoType;
-  title?: string;
-  description?: string;
-  color?: EnumColors;
 }
 
-export interface IUpdateBoardTitle {
+export type IUpdateBoard = {
   id: number;
-  title: string;
-}
+} & (
+  { title: string }
+  | { description: string }
+  | { color: IColor }
+  | { cardType: EnumTodoType }
+  | { icon: string }
+);
 
-export interface IUpdateBoardDescription {
-  id: number;
-  description: string;
-}
+// export interface IUpdateBoardTitle {
+//   id: number;
+//   title: string;
+// }
+//
+// export interface IUpdateBoardDescription {
+//   id: number;
+//   description: string;
+// }
+//
+// export interface IUpdateBoardColor {
+//   id: number;
+//   color: IColor;
+// }
+//
+// export interface IUpdateBoardCardType {
+//   id: number;
+//   cardType: EnumTodoType;
+// }
+//
+// export interface IUpdateBoardIcon {
+//   id: number;
+//   icon: string;
+// }
 
 export interface IUpdateBoardPosition {
   sourcePosition: number;
   destinationPosition: number;
-}
-
-export interface IUpdateBoardColor {
-  id: number;
-  color: EnumColors | null;
-}
-
-export interface IUpdateBoardCardType {
-  id: number;
-  cardType: EnumTodoType;
-}
-
-export interface IUpdateBoardIcon {
-  id: number;
-  icon: string;
 }
 
 export interface IRemoveBoard {

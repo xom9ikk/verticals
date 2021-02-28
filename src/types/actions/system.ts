@@ -1,13 +1,13 @@
-import { EnumDroppedZoneType, EnumLanguage } from '@/types/entities';
-import { ICommentAttachments } from '@/types/entities/comment-attachment';
+import { EnumDroppedZoneType, EnumLanguage } from '@type/entities';
+import { ICommentAttachments } from '@type/entities/comment-attachment';
 
 export type ISetSystemIsLoadedBoards = boolean;
 export type ISetSystemIsLoadedColumns = boolean;
 export type ISetSystemIsLoadedTodos = boolean;
-export type ISetSystemIsOpenPopup = boolean;
-export type ISetSystemIsEditableCard = boolean;
-export type ISetSystemIsEditableColumn = boolean;
-export type ISetSystemIsEditableBoard = boolean;
+export type ISetSystemActivePopupId = string | null;
+export type ISetSystemEditableBoardId = number | null;
+export type ISetSystemEditableColumnId = number | null;
+export type ISetSystemEditableCardId = number | string | null;
 export type ISetSystemIsSearchMode = boolean;
 export type ISetSystemLanguage = EnumLanguage;
 export type ISetSystemActiveTodoId = number | null;
@@ -23,6 +23,6 @@ export interface ISetSystemDroppedFiles {
 }
 export type ISetGalleryImagesInfo = {
   images: ICommentAttachments | null;
-  index?: number;
+  index: number;
 } | null;
 export type ISetIsOpenFormattingHelp = boolean;

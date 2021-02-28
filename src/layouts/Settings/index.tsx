@@ -3,28 +3,27 @@ import React, {
   FC, useMemo,
 } from 'react';
 import { RoundedButton } from '@comp/RoundedButton';
-import { NavLink } from '@/components/NavLink';
+import { NavLink } from '@comp/NavLink';
+import { useTranslation } from 'react-i18next';
 
 enum EnumMenu {
   Account='account',
   Profile='profile',
 }
 
-const menuItems = [{
-  icon: '/assets/svg/account.svg',
-  text: 'Account',
-  type: EnumMenu.Account,
-}, {
-  icon: '/assets/svg/profile.svg',
-  text: 'Profile',
-  type: EnumMenu.Profile,
-}];
+export const SettingsLayout: FC = ({ children }) => {
+  const { t } = useTranslation();
 
-interface ISettings {
+  const menuItems = [{
+    icon: '/assets/svg/account.svg',
+    text: t('Account'),
+    type: EnumMenu.Account,
+  }, {
+    icon: '/assets/svg/profile.svg',
+    text: t('Profile'),
+    type: EnumMenu.Profile,
+  }];
 
-}
-
-export const SettingsLayout: FC<ISettings> = ({ children }) => {
   const drawMenu = useMemo(() => menuItems.map((menuItem) => (
     <NavLink
       key={menuItem.type}
@@ -46,7 +45,7 @@ export const SettingsLayout: FC<ISettings> = ({ children }) => {
     <>
       <div className="settings">
         <div className="settings__sidebar">
-          <h1 className="settings__title">Settings</h1>
+          <h1 className="settings__title">{t('Settings')}</h1>
           <div>
             { drawMenu }
           </div>

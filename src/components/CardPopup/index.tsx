@@ -1,32 +1,34 @@
-/* eslint-disable no-nested-ternary */
 import React, {
-  FC, useCallback, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import debounce from 'lodash.debounce';
 import {
   EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
-} from '@/types/entities';
+} from '@type/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
-} from '@/store/actions';
-import { Loader } from '@comp/Loader';
-import { CardContextMenu } from '@comp/CardContextMenu';
-import { TextArea } from '@comp/TextArea';
-import { Comments } from '@comp/Comments';
-import { forwardTo } from '@/router/history';
-import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
+} from '@store/actions';
+import { redirectTo } from '@router/history';
 import {
   getActiveBoardReadableId,
   getActiveTodoId,
   getTodoById,
   getUsername,
-} from '@/store/selectors';
+} from '@store/selectors';
+import { Loader } from '@comp/Loader';
 import { Bullet } from '@comp/Bullet';
+import { TextArea } from '@comp/TextArea';
+import { Comments } from '@comp/Comments';
 import { DropZone } from '@comp/DropZone';
+import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
-import { useColorClass } from '@/use/colorClass';
+import { CardContextMenu } from '@comp/CardContextMenu';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import { useDebounce } from '@use/debounce';
+import { useColorClass } from '@use/colorClass';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useTranslation } from 'react-i18next';
 
 interface ICardPopup {
   columnId: number;
@@ -37,9 +39,11 @@ export const CardPopup: FC<ICardPopup> = ({
   columnId,
   cardType,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
 
+  const buttonRef = useRef<any>(null);
   const titleInputRef = useRef<any>(null);
 
   const activeTodoId = useSelector(getActiveTodoId);
@@ -53,36 +57,35 @@ export const CardPopup: FC<ICardPopup> = ({
   const [descriptionValue, setDescriptionValue] = useState<string>();
   const [isProgress, setIsProgress] = useState<boolean>(false);
 
-  const debounceSave = useCallback(
-    debounce((id: number, { newTitle, newDescription } : any) => {
-      setIsProgress(true);
-      if (newTitle) {
-        dispatch(TodosActions.updateTitle({
-          id,
-          title: newTitle,
-        }));
-      }
-      if (newDescription) {
-        dispatch(TodosActions.updateDescription({
-          id,
-          description: newDescription,
-        }));
-      }
-    }, 500),
-    [],
-  );
+  const debounceSave = useDebounce((id: number, { newTitle, newDescription } : any) => {
+    setIsProgress(true);
+    if (newTitle) {
+      dispatch(TodosActions.update({
+        id,
+        title: newTitle,
+      }));
+    }
+    if (newDescription) {
+      dispatch(TodosActions.update({
+        id,
+        description: newDescription,
+      }));
+    }
+  }, 500);
 
-  const changeTextHandler = (event: any, isDescription: boolean) => {
+  const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
   };
 
-  const closeHandler = () => forwardTo(`/${username}/${activeBoardReadableId}`);
+  const handleClose = () => {
+    redirectTo(`/${username}/${activeBoardReadableId}`);
+  };
 
-  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
-    dispatch(TodosActions.updateCompleteStatus({
+  const handleChangeStatus = (newStatus: EnumTodoStatus) => {
+    dispatch(TodosActions.update({
       id: activeTodo!.id,
       status: newStatus,
     }));
@@ -92,6 +95,14 @@ export const CardPopup: FC<ICardPopup> = ({
     dispatch(SystemActions.setDroppedFiles({
       type: EnumDroppedZoneType.CardPopup,
       files,
+    }));
+  };
+
+  const handleSelectDate = (selectedDate: Date | null) => {
+    dispatch(SystemActions.setActivePopupId(null));
+    dispatch(TodosActions.update({
+      id: activeTodo!.id,
+      expirationDate: selectedDate,
     }));
   };
 
@@ -129,156 +140,169 @@ export const CardPopup: FC<ICardPopup> = ({
     });
   }, [descriptionValue]);
 
-  const memoCardPopup = useMemo(() => (
-    <>
-      {
-        activeTodo && activeTodo.columnId === columnId ? (
-          <div
-            className={cn('card-popup', {
-              'card-popup--open': activeTodo,
-            })}
-            onClick={(e) => {
-              e.stopPropagation();
-              dispatch(SystemActions.setIsOpenPopup(false));
+  return useMemo(() => (activeTodo && activeTodo.columnId === columnId ? (
+    <div
+      className={cn('card-popup', {
+        'card-popup--open': activeTodo,
+      })}
+      // onClick={() => {
+      //   dispatch(SystemActions.setIsOpenPopup(false));
+      // }}
+    >
+      <div
+        className={cn('card-popup__inner', {
+          [colorClass]: colorClass,
+        })}
+      >
+        <DropZone onOpen={handleDropFiles}>
+          <Loader
+            isOpen={isProgress}
+            style={{
+              position: 'absolute',
+              right: 40,
+              top: 12,
             }}
-          >
-            <div
-              className={cn('card-popup__inner', {
-                [colorClass]: colorClass,
-              })}
-            >
-              <DropZone onOpen={handleDropFiles}>
-                <Loader
-                  isOpen={isProgress}
-                  style={{
-                    position: 'absolute',
-                    right: 40,
-                    top: 12,
-                  }}
+          />
+          <ControlButton
+            imageSrc="/assets/svg/close.svg"
+            alt="close"
+            imageSize={16}
+            size={26}
+            style={{
+              position: 'absolute',
+              right: 6,
+              top: 6,
+            }}
+            onClick={handleClose}
+          />
+          <div className="card-popup__header">
+            <div className="card-popup__input-container">
+              {
+                cardType === EnumTodoType.Checkboxes && (
+                <Bullet
+                  type={cardType}
+                  status={activeTodo.status!}
+                  onChangeStatus={handleChangeStatus}
+                  size="large"
+                  style={{ margin: '5px' }}
                 />
-                <ControlButton
-                  imageSrc="/assets/svg/close.svg"
-                  alt="close"
-                  imageSize={24}
-                  size={30}
-                  style={{
-                    position: 'absolute',
-                    right: 10,
-                    top: 10,
-                  }}
-                  onClick={closeHandler}
+                )
+              }
+              <DateBadge
+                popupId="card-popup"
+                position="bottom"
+                todoId={activeTodoId!}
+                style={{
+                  position: 'absolute',
+                  top: 5,
+                  left: 25,
+                }}
+                date={activeTodo.expirationDate}
+                onSelectDate={handleSelectDate}
+              />
+              <div className="card-popup__textarea-inner">
+                <TextArea
+                  ref={titleInputRef}
+                  className="card__textarea card-popup__textarea"
+                  placeholder={t('Card Title')}
+                  value={titleValue || ''}
+                  onKeyDown={shiftEnterRestriction}
+                  onChange={(event: any) => handleChangeText(event, false)}
+                  minRows={1}
+                  maxRows={3}
                 />
-                <div className="card-popup__header">
-                  <div className="card-popup__input-container">
-                    {
-                      cardType === EnumTodoType.Checkboxes && (
-                      <Bullet
-                        type={cardType}
-                        status={activeTodo.status!}
-                        onChangeStatus={changeStatusHandler}
-                        size="large"
-                        style={{ margin: '5px' }}
-                      />
-                      )
-                    }
-                    <div className="card-popup__textarea-inner">
-                      <TextArea
-                        ref={titleInputRef}
-                        className="card__textarea card-popup__textarea"
-                        placeholder="Card Title"
-                        value={titleValue}
-                        onKeyDown={shiftEnterRestriction}
-                        onChange={(event: any) => changeTextHandler(event, false)}
-                        minRows={1}
-                        maxRows={5}
-                      />
-                      <TextArea
-                        className="card__textarea card-popup__textarea card-popup__textarea--description"
-                        placeholder="Notes"
-                        value={descriptionValue}
-                        onKeyDown={shiftEnterRestriction}
-                        onChange={(event: any) => changeTextHandler(event, true)}
-                        minRows={1}
-                        maxRows={5}
-                      />
-                    </div>
-                  </div>
-                  <div className="card-popup__toolbar">
-                    <div>
-                      <ControlButton
-                        imageSrc="/assets/svg/calendar.svg"
-                        tooltip="Date"
-                        alt="date"
-                        imageSize={24}
-                        size={36}
-                        isColored
-                      />
-                      <CardContextMenu
-                        id={activeTodo.id}
-                        title={activeTodo.title}
-                        columnId={activeTodo.columnId}
-                        isArchived={activeTodo.isArchived}
-                        isActive={false}
-                        isHover
-                        isNotificationsEnabled={activeTodo.isNotificationsEnabled}
-                        color={activeTodo.color}
-                        status={activeTodo.status}
-                        size={36}
-                        imageSize={24}
-                        isPrimary
-                        isColored
-                        onStartEdit={() => {
-                          titleInputRef.current?.focus();
-                        }}
-                        onChangeColor={(newColor) => {
-                          dispatch(TodosActions.updateColor({
-                            id: activeTodo.id,
-                            color: activeTodo.color !== newColor ? newColor : null,
-                          }));
-                        }}
-                      />
-                    </div>
-                    <ControlButton
-                      imageSrc={`/assets/svg/bell${activeTodo.isNotificationsEnabled ? '-active' : ''}.svg`}
-                      tooltip={`Turn ${activeTodo.isNotificationsEnabled ? 'off' : 'on'} card notifications`}
-                      alt="notification"
-                      imageSize={24}
-                      size={36}
-                      isColored
-                      style={{
-                        justifySelf: 'flex-end',
-                      }}
-                      onClick={() => {
-                        dispatch(TodosActions.updateNotificationEnabled({
-                          id: activeTodo.id,
-                          isNotificationsEnabled: !activeTodo.isNotificationsEnabled,
-                        }));
-                      }}
-                    />
-                  </div>
-                  <hr />
-                </div>
-                <Comments />
-              </DropZone>
+                <TextArea
+                  className="card__textarea card-popup__textarea card-popup__textarea--description"
+                  placeholder={t('Notes')}
+                  value={descriptionValue || ''}
+                  onKeyDown={shiftEnterRestriction}
+                  onChange={(event: any) => handleChangeText(event, true)}
+                  minRows={1}
+                  maxRows={3}
+                />
+              </div>
             </div>
+            <div className="card-popup__toolbar">
+              <div>
+                <ControlButton
+                  ref={buttonRef}
+                  imageSrc="/assets/svg/calendar.svg"
+                  tooltip={t('Date')}
+                  alt="date"
+                  imageSize={24}
+                  size={36}
+                  isColored
+                />
+                <DatePickerPopup
+                  popupId={`card-popup-${activeTodoId}`}
+                  sourceRef={buttonRef}
+                  onSelectDate={handleSelectDate}
+                  selectedDate={activeTodo.expirationDate}
+                />
+                <CardContextMenu
+                  menuId="popup"
+                  todoId={activeTodo.id}
+                  title={activeTodo.title}
+                  columnId={activeTodo.columnId}
+                  isArchived={activeTodo.isArchived}
+                  isActive={false}
+                  isHover
+                  isNotificationsEnabled={activeTodo.isNotificationsEnabled}
+                  isRemoved={activeTodo.isRemoved}
+                  expirationDate={activeTodo.expirationDate}
+                  color={activeTodo.color}
+                  status={activeTodo.status}
+                  size={36}
+                  imageSize={24}
+                  isPrimary
+                  isColored
+                  isTransformedPosition={false}
+                  onStartEdit={() => {
+                    titleInputRef.current?.focus();
+                  }}
+                  onChangeColor={(newColor) => {
+                    dispatch(TodosActions.update({
+                      id: activeTodo.id,
+                      color: newColor,
+                    }));
+                  }}
+                />
+              </div>
+              <ControlButton
+                imageSrc={`/assets/svg/bell${activeTodo.isNotificationsEnabled ? '-active' : ''}.svg`}
+                tooltip={`${activeTodo.isNotificationsEnabled
+                  ? t('Turn off')
+                  : t('Turn on')} ${t('card notifications')}`}
+                alt="notification"
+                imageSize={24}
+                size={36}
+                isColored
+                style={{
+                  justifySelf: 'flex-end',
+                }}
+                onClick={() => {
+                  dispatch(TodosActions.update({
+                    id: activeTodo.id,
+                    isNotificationsEnabled: !activeTodo.isNotificationsEnabled,
+                  }));
+                }}
+              />
+            </div>
+            <hr />
           </div>
-        ) : (
-          <div className="card-popup" />
-        )
-      }
-    </>
-  ),
+          <Comments />
+        </DropZone>
+      </div>
+    </div>
+  ) : (
+    <div className="card-popup" />
+  )),
   [
+    t,
     activeTodo,
     titleValue,
     descriptionValue,
     isProgress,
     cardType,
   ]);
-
-  return (
-    <>
-      { memoCardPopup }
-    </>
-  );
 };

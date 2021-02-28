@@ -1,13 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
-import { EnumColors } from '@/types/entities';
-import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
-import { useColorClass } from '@/use/colorClass';
+import { IColor } from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { useColorClass } from '@use/colorClass';
 
 interface IRoundedButton {
   icon: string;
   isSpecialIcon?: boolean;
-  color?: EnumColors;
+  color?: IColor;
   text?: string;
   isActive?: boolean;
   onClick?: (e: React.SyntheticEvent) => void;
@@ -35,11 +35,10 @@ export const RoundedButton: FC<IRoundedButton> = ({
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(onClick, onDoubleClick, false);
 
-  const roundedButton = useMemo(() => (
+  return useMemo(() => (
     <div
-      className={cn('rounded-button', {
+      className={cn('rounded-button', colorClass, {
         'rounded-button--active': isActive,
-        [colorClass]: color !== undefined,
       })}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
@@ -65,8 +64,4 @@ export const RoundedButton: FC<IRoundedButton> = ({
     icon,
     children,
   ]);
-
-  return (
-    <>{ roundedButton }</>
-  );
 };

@@ -1,248 +1,236 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, {
-  FC, useCallback, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 import cn from 'classnames';
+import useKeys from '@rooks/use-keys';
 import { useDispatch, useSelector } from 'react-redux';
-import debounce from 'lodash.debounce';
-import { CardContextMenu } from '@comp/CardContextMenu';
-import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
-import { useFocus } from '@/use/focus';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { redirectTo } from '@router/history';
+import { EnumTodoStatus, EnumTodoType, IColor } from '@type/entities';
+import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType,
-} from '@/types/entities';
-import { useClickPreventionOnDoubleClick } from '@/use/clickPreventionOnDoubleClick';
-import { TextArea } from '@comp/TextArea';
-import { Bullet } from '@comp/Bullet';
-import { forwardTo } from '@/router/history';
-import { useReadableId } from '@/use/readableId';
-import { useShiftEnterRestriction } from '@/use/shiftEnterRestriction';
-import {
-  getActiveBoardReadableId,
-  getCommentImageAttachmentsByTodoId,
-  getCommentFileAttachmentsByTodoId,
-  getCommentsByTodoId,
-  getIsEditableCard,
   getUsername,
-} from '@/store/selectors';
+  getActiveBoardReadableId,
+} from '@store/selectors';
+import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
+import { TextArea } from '@comp/TextArea';
 import { ControlButton } from '@comp/ControlButton';
-import { useFileList } from '@/use/fileList';
+import { CardContextMenu } from '@comp/CardContextMenu';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
-import { useOpenFiles } from '@/use/openFiles';
-import { CardAttachments } from '@comp/CardAttachments';
-import { MiniGallery } from '@comp/MiniGallery';
-import { useColorClass } from '@/use/colorClass';
-
-enum EnumToggleType {
-  Files,
-  Gallery,
-  Comments,
-}
-
-interface ISaveTodo {
-  newStatus?: EnumTodoStatus;
-  newColor?: EnumColors;
-}
+import { useFocus } from '@use/focus';
+import { useFileList } from '@use/fileList';
+import { useOpenFiles } from '@use/openFiles';
+import { useReadableId } from '@use/readableId';
+import { useColorClass } from '@use/colorClass';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
+import { NEW_TODO_ID } from '@/constants';
+import { useDebounce } from '@use/debounce';
+import { useNewValues } from '@use/newValues';
+import { DateBadge } from '@comp/DateBadge';
+import { useTranslation } from 'react-i18next';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
 
 interface ICard {
+  provided?: DraggableProvided;
+  snapshot?: DraggableStateSnapshot;
+  todoId: number;
+  columnId: number;
   cardType: EnumTodoType;
-  id?: number;
-  columnId?: number;
   belowId?: number;
   title?: string;
   description?: string;
   status?: EnumTodoStatus;
-  color?: EnumColors;
+  color?: IColor;
   isArchived?: boolean;
   isNotificationsEnabled?: boolean;
+  isRemoved?: boolean;
+  expirationDate?: Date | null;
   invertColor?: boolean;
-  isEditableDefault?: boolean;
+  isEditable: boolean;
   commentsCount?: number;
   imagesCount?: number;
   attachmentsCount?: number;
-  onExitFromEditable?: (
-    title?: string,
-    description?: string,
-    status?: EnumTodoStatus,
-    color?: EnumColors,
-    belowId?: number,
-  ) => void;
   isActive?: boolean;
-  provided?: any;
-  snapshot?: any;
+  scrollToBottom?: () => void;
 }
 
 export const Card: FC<ICard> = ({
-  id,
+  provided,
+  snapshot,
+  todoId,
   columnId,
-  belowId,
   cardType,
-  title: initialTitle = '',
-  description: initialDescription = '',
+  belowId,
+  title = '',
+  description = '',
   status = EnumTodoStatus.Todo,
   color,
   isArchived,
   isNotificationsEnabled,
+  isRemoved,
+  expirationDate,
   invertColor,
-  isEditableDefault,
+  isEditable,
   commentsCount,
   imagesCount,
   attachmentsCount,
-  onExitFromEditable,
   isActive,
-  provided,
-  snapshot,
+  scrollToBottom,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { focus } = useFocus();
   const { merge, filter } = useFileList();
   const { openFiles } = useOpenFiles();
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
+  const { isNewValues } = useNewValues();
   const colorClass = useColorClass('card__content', color);
 
   const username = useSelector(getUsername);
-  const isEditableCard = useSelector(getIsEditableCard);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
-  const comments = useSelector(getCommentsByTodoId(id || null));
-  const imageAttachments = useSelector(getCommentImageAttachmentsByTodoId(id || null));
-  const fileAttachments = useSelector(getCommentFileAttachmentsByTodoId(id || null));
-
-  const commentsCountWithCache = comments?.length || commentsCount;
-  const imagesCountWithCache = imageAttachments?.length || imagesCount;
-  const filesCountWithCache = fileAttachments?.length || attachmentsCount;
 
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [isEditable, setIsEditable] = useState<boolean>(false);
-  const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>();
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const [titleValue, setTitleValue] = useState<string>(initialTitle);
-  const [descriptionValue, setDescriptionValue] = useState<string>(initialDescription);
+  const [titleValue, setTitleValue] = useState<string>(title);
+  const [descriptionValue, setDescriptionValue] = useState<string>(description);
+  const [expirationDateValue, setExpirationDateValue] = useState<Date | null>(expirationDate || null);
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
-  const [isShowFiles, setIsShowFiles] = useState<boolean>(false);
-  const [isShowGallery, setIsShowGallery] = useState<boolean>(false);
 
+  const buttonRef = useRef<any>(null);
   const titleInputRef = useRef<any>(null);
-  const descriptionInputRef = useRef<any>(null);
 
-  const getNewData = () => ({
-    newTitle: initialTitle !== titleValue ? titleValue.trim() : undefined,
-    newDescription: initialDescription !== descriptionValue ? descriptionValue.trim() : undefined,
-  });
+  useFocus(titleInputRef, [isEditable]);
 
-  const saveTodo = (data?: ISaveTodo) => {
-    console.log('save todo');
-    const { newStatus, newColor } = data || {};
-    const { newTitle, newDescription } = getNewData();
-    onExitFromEditable?.(newTitle, newDescription, newStatus, newColor, belowId);
-    setIsHover(false);
-  };
-
-  const saveAttachments = (attachedFiles: FileList | null) => {
-    if (attachedFiles?.length) {
-      dispatch(CommentsActions.create({
-        todoId: id!,
-        text: '',
-        files: attachedFiles,
-      }));
-    }
-    setFiles(null);
-  };
-
-  const keydownHandler = (event: any) => {
-    const {
-      key, ctrlKey, shiftKey,
-    } = event;
-    if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      // if (!isDescription) {
-      // setTitleValue(titleValue.trim());
-      // focus(descriptionInputRef);
-      // } else {
-      saveTodo();
-      setIsEditable(false);
-      saveAttachments(files);
-      // }
-    }
-  };
-
-  const changeTextHandler = (event: any, isDescription: boolean) => {
+  const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;
     return isDescription
       ? setDescriptionValue(value)
       : setTitleValue(value);
   };
 
-  const colorPickHandler = (newColor: EnumColors) => {
-    saveTodo({ newColor });
+  const handleColorPick = (newColor: IColor) => {
+    dispatch(TodosActions.update({ id: todoId!, color: newColor }));
   };
 
-  const hidePopupHandler = () => {
-    setIsHover(false);
+  const handleChangeStatus = (newStatus: EnumTodoStatus) => {
+    dispatch(TodosActions.update({ id: todoId!, status: newStatus }));
   };
 
-  const changeStatusHandler = (newStatus: EnumTodoStatus) => {
-    saveTodo({ newStatus });
+  const handleClickUnwrapped = () => {
+    redirectTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(title, todoId!)}`);
   };
 
-  const doubleClickHandler = () => {
-    if (isEditableCard) {
-      dispatch(SystemActions.setIsEditableCard(false));
-    }
-    setIsDoubleClicked(true);
-  };
-
-  const clickHandler = () => {
-    forwardTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(initialTitle, id!)}`);
+  const handleDoubleClickUnwrapped = () => {
+    dispatch(SystemActions.setEditableCardId(todoId));
   };
 
   const {
     handleClick,
     handleDoubleClick,
-  } = useClickPreventionOnDoubleClick(clickHandler, doubleClickHandler, true);
+  } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, isEditable);
 
-  useEffect(() => {
-    if (isDoubleClicked) {
-      setIsDoubleClicked(false);
-      dispatch(SystemActions.setIsEditableCard(true));
-      if (!isEditableCard && isDoubleClicked) {
-        setIsEditable(true);
+  const handleUploadFile = async () => {
+    const openedFiles = await openFiles('*', true);
+    setFiles((prev) => merge(prev, openedFiles));
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setFiles((prev) => filter(prev, (file, i) => i !== index));
+  };
+
+  const saveAttachments = (attachedFiles: FileList | null) => {
+    if (attachedFiles?.length) {
+      dispatch(CommentsActions.create({
+        todoId,
+        text: '',
+        files: attachedFiles,
+      }));
+    }
+  };
+
+  const saveTodo = () => {
+    if (!isEditable) return;
+    const normalizedTitleValue = titleValue.trim();
+    const normalizedDescriptionValue = descriptionValue?.trim();
+
+    if (`${columnId}-${todoId}` !== `${columnId}-${NEW_TODO_ID}` && belowId === undefined) {
+      const isNew = isNewValues(
+        [title, normalizedTitleValue],
+        [description, normalizedDescriptionValue],
+        [expirationDate, expirationDateValue],
+      );
+      if (normalizedTitleValue && isNew) {
+        dispatch(TodosActions.update({
+          id: todoId,
+          title: normalizedTitleValue,
+          description: normalizedDescriptionValue,
+          expirationDate: expirationDateValue,
+        }));
+      } else {
+        setTitleValue(title);
+        setDescriptionValue(description);
+      }
+      saveAttachments(files);
+      dispatch(SystemActions.setEditableCardId(null));
+    } else {
+      if (normalizedTitleValue) {
+        dispatch(TodosActions.create({
+          columnId,
+          title: normalizedTitleValue,
+          description: normalizedDescriptionValue || undefined,
+          expirationDate: expirationDateValue || undefined,
+          belowId,
+          files,
+        }));
+      } else {
+        dispatch(SystemActions.setEditableCardId(null));
+      }
+      if (belowId !== undefined) {
+        dispatch(SystemActions.setEditableCardId(null));
+      } else {
+        setTitleValue('');
+        setDescriptionValue('');
+        setTimeout(() => {
+          scrollToBottom?.();
+        }, 200);
       }
     }
-  }, [isDoubleClicked, isEditableCard]);
+    setFiles(new DataTransfer().files);
+  };
 
-  useEffect(() => {
-    if (isDoubleClicked === false && !isEditableCard && isEditable) {
-      setIsEditable(false);
+  const handleKeyDown = (event: any) => {
+    const { key, ctrlKey, shiftKey } = event;
+    if (key === 'Enter' && !ctrlKey && !shiftKey) {
       saveTodo();
-      saveAttachments(files);
-      setIsDoubleClicked(undefined);
     }
-  }, [isEditableCard]);
+  };
+
+  const handleEsc = () => {
+    dispatch(SystemActions.setEditableCardId(null));
+    saveTodo();
+  };
+
+  const [todoRef] = useOutsideClickRef((e) => {
+    if (e.isTrusted) {
+      saveTodo();
+    }
+  }, isEditable);
+
+  useKeys(['Escape'], handleEsc, {
+    // @ts-ignore
+    target: todoRef,
+    when: isEditable,
+  });
 
   useEffect(() => {
     if (belowId) {
-      doubleClickHandler();
+      dispatch(SystemActions.setEditableCardId(todoId));
     }
   }, []);
-
-  useEffect(() => {
-    if (isEditableDefault) {
-      doubleClickHandler();
-    }
-  }, [isEditableDefault]);
-
-  useEffect(() => {
-    focus(titleInputRef);
-  }, [isEditable]);
-
-  useEffect(() => {
-    setTitleValue(initialTitle);
-  }, [initialTitle]);
-
-  useEffect(() => {
-    setDescriptionValue(initialDescription);
-  }, [initialDescription]);
 
   useEffect(() => {
     if (!snapshot?.isDragging) {
@@ -250,10 +238,24 @@ export const Card: FC<ICard> = ({
     }
   }, [snapshot?.isDragging]);
 
-  const debouncePress = useCallback(
-    debounce((isPress: boolean) => setIsMouseDown(isPress), 300),
-    [],
-  );
+  const debouncePress = useDebounce((value) => {
+    if (!isEditable) {
+      setIsMouseDown(value);
+    }
+  }, 300);
+
+  const handleSelectDate = (selectedDate: Date | null) => {
+    dispatch(SystemActions.setActivePopupId(null));
+    setExpirationDateValue(selectedDate);
+  };
+
+  const handleSelectDateAndUpdate = (selectedDate: Date | null) => {
+    dispatch(SystemActions.setActivePopupId(null));
+    dispatch(TodosActions.update({
+      id: todoId,
+      expirationDate: selectedDate,
+    }));
+  };
 
   const handleDropFiles = (droppedFiles: FileList) => {
     const mergedFiles = merge(files, droppedFiles);
@@ -264,69 +266,6 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  const handleUploadFile = async () => {
-    const openedFiles = await openFiles('*', true);
-    console.log('openedFiles', openedFiles);
-    setFiles((prev) => merge(prev, openedFiles));
-  };
-
-  const handleRemoveFile = (index: number) => {
-    setFiles((prev) => filter(prev, (file, i) => i !== index));
-  };
-
-  const renderIcon = (
-    count: number | undefined,
-    name: string,
-    tooltip: string,
-    onClick: (e: React.SyntheticEvent) => void,
-    isColored: boolean,
-    text?: string,
-  ) => count !== undefined && count > 0 && (
-    <ControlButton
-      imageSrc={`/assets/svg/${name}.svg`}
-      tooltip={tooltip}
-      alt={name}
-      imageSize={16}
-      size={20}
-      isInvertColor={isActive}
-      isTextable
-      text={text}
-      onClick={onClick}
-      onDoubleClick={(e) => e.stopPropagation()}
-      isColored={isColored}
-      isStopPropagation={false}
-    />
-  );
-
-  const handleToggle = (
-    event: React.SyntheticEvent,
-    type: EnumToggleType,
-  ) => {
-    switch (type) {
-      case EnumToggleType.Files: {
-        event.stopPropagation();
-        setTimeout(() => setIsShowFiles((prev) => {
-          if (!prev) {
-            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: id! }));
-          }
-          return !prev;
-        }), 400);
-        setIsShowGallery(false); break;
-      }
-      case EnumToggleType.Gallery: {
-        event.stopPropagation();
-        setTimeout(() => setIsShowGallery((prev) => {
-          if (!prev) {
-            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: id! }));
-          }
-          return !prev;
-        }), 300);
-        setIsShowFiles(false); break;
-      }
-      default: break;
-    }
-  };
-
   const card = useMemo(() => (
     <div
       className={cn('card__block-wrapper', {
@@ -334,67 +273,83 @@ export const Card: FC<ICard> = ({
       })}
       onClick={(e) => !isEditable && handleClick(e)}
     >
-      <Bullet
-        type={cardType}
-        status={status}
-        onChangeStatus={changeStatusHandler}
-        style={{ marginTop: 12 }}
-      />
+      {
+        todoId !== NEW_TODO_ID && (
+        <Bullet
+          type={cardType}
+          status={status}
+          onChangeStatus={handleChangeStatus}
+          style={{ marginTop: 12 }}
+        />
+        )
+      }
       <div
         className="card__block"
-        onMouseDown={() => (!isEditable ? debouncePress(true) : null)}
-        onMouseUp={() => (!isEditable ? debouncePress(false) : null)}
-        onDoubleClick={!isEditableDefault ? handleDoubleClick : () => {}}
+        onMouseDown={() => debouncePress(true)}
+        onMouseUp={() => debouncePress(false)}
+        onDoubleClick={!isEditable ? handleDoubleClick : () => {}}
       >
         {
           isEditable ? (
-            <div
-              className="card__editable-content"
-            >
+            <div className="card__editable-content">
               <TextArea
                 ref={titleInputRef}
                 className="card__textarea"
                 value={titleValue}
-                placeholder="New Card"
+                placeholder={t('New Card')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onKeyDownCapture={(event: any) => keydownHandler(event)}
-                onChange={(event: any) => changeTextHandler(event, false)}
+                onKeyDownCapture={handleKeyDown}
+                onChange={(event: any) => handleChangeText(event, false)}
               />
               <TextArea
-                ref={descriptionInputRef}
                 className="card__textarea card__textarea--description"
                 value={descriptionValue}
-                placeholder="Notes"
+                placeholder={t('Notes')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onKeyDownCapture={(event: any) => keydownHandler(event)}
-                onChange={(event: any) => changeTextHandler(event, true)}
+                onKeyDownCapture={handleKeyDown}
+                onChange={(event: any) => handleChangeText(event, true)}
               />
+              <div>
+                {expirationDateValue && (
+                <DateBadge
+                  popupId="card"
+                  position="bottom"
+                  todoId={todoId}
+                  // style={{ maxWidth: 55 }}
+                  date={expirationDateValue}
+                  onSelectDate={handleSelectDate}
+                />
+                )}
+              </div>
               <CommentFormAttachments
                 files={files}
                 onRemove={handleRemoveFile}
                 isListView
               />
-              <div
-                className="card__editable-container"
-              >
-                <div
-                  className="card__editable-controls"
-                >
+              <div className="card__editable-container">
+                <div className="card__editable-controls">
                   <ControlButton
+                    ref={buttonRef}
                     imageSrc="/assets/svg/calendar-dots.svg"
-                    tooltip="Add Date"
+                    tooltip={t('Add Date')}
                     alt="date"
                     imageSize={16}
                     size={20}
                     isColored
                   />
+                  <DatePickerPopup
+                    popupId={`card-${todoId}`}
+                    sourceRef={buttonRef}
+                    onSelectDate={handleSelectDate}
+                    selectedDate={expirationDateValue}
+                  />
                   <ControlButton
                     imageSrc="/assets/svg/attach.svg"
-                    tooltip="Attach a file"
+                    tooltip={t('Attach a file')}
                     alt="file"
                     imageSize={16}
                     size={20}
@@ -402,48 +357,47 @@ export const Card: FC<ICard> = ({
                     isColored
                   />
                 </div>
-                <span>Drop files here</span>
+                <span>{t('Drop files here')}</span>
               </div>
             </div>
           ) : (
-            <div
-              className="card__inner"
-            >
+            <div className="card__inner">
               <CardContextMenu
-                id={id}
-                title={initialTitle}
+                menuId="card"
+                todoId={todoId}
+                title={title}
                 columnId={columnId}
                 isArchived={isArchived}
                 isActive={isActive}
                 isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
+                isRemoved={isRemoved}
+                expirationDate={expirationDate}
                 color={color}
                 status={status}
-                onStartEdit={doubleClickHandler}
-                onChangeColor={colorPickHandler}
-                onHidePopup={hidePopupHandler}
+                onStartEdit={handleDoubleClickUnwrapped}
+                onChangeColor={handleColorPick}
               />
-              <span
+              <div
                 className={cn('card__title', {
                   'card__title--cross-out': status === EnumTodoStatus.Canceled,
                 })}
               >
                 {titleValue}
-              </span>
-              <div
-                className="card__toggle-container"
-              >
-                {renderIcon(filesCountWithCache, 'files', 'Show Files', (e) => handleToggle(e, EnumToggleType.Files), isShowFiles)}
-                {renderIcon(imagesCountWithCache, 'images', 'Show Gallery', (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery)}
-                {renderIcon(commentsCountWithCache, 'bubble', `${commentsCountWithCache} comments`, (e) => handleToggle(e, EnumToggleType.Comments), false, String(commentsCountWithCache))}
               </div>
-              <MiniGallery
-                todoId={id}
-                isCollapse={!isShowGallery}
+              <DateBadge
+                popupId="card"
+                todoId={todoId}
+                date={expirationDate}
+                onSelectDate={handleSelectDateAndUpdate}
               />
-              <CardAttachments
-                todoId={id}
-                isCollapse={!isShowFiles}
+              <CardAttachmentsPreview
+                columnId={columnId}
+                todoId={todoId!}
+                isActive={isActive}
+                commentsCount={commentsCount}
+                imagesCount={imagesCount}
+                attachmentsCount={attachmentsCount}
               />
             </div>
           )
@@ -452,31 +406,32 @@ export const Card: FC<ICard> = ({
     </div>
   ),
   [
-    status, isEditable, isEditableCard, isEditableDefault,
-    titleInputRef, titleValue,
-    descriptionInputRef, descriptionValue, cardType,
+    t, todoId, columnId, status, isEditable, color,
+    titleValue, descriptionValue, expirationDateValue, cardType,
     isActive, files, isHover,
-    commentsCountWithCache, imagesCountWithCache, filesCountWithCache,
-    isShowFiles, isShowGallery,
+    commentsCount, imagesCount, attachmentsCount,
+    isNotificationsEnabled, isArchived, isRemoved, expirationDate,
   ]);
 
   return (
     <div
-      ref={provided?.innerRef}
+      ref={(ref) => {
+        provided?.innerRef(ref);
+        todoRef(ref);
+      }}
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
       className="card"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}
     >
       <div
-        className={cn('card__content', {
+        className={cn('card__content', colorClass, {
           'card__content--editable': isEditable,
           'card__content--invert': invertColor,
           'card__content--pressed': isMouseDown || isActive,
           'card__content--dragging': snapshot?.isDragging,
-          [colorClass]: color !== undefined,
         })}
       >
         <DropZone

@@ -1,4 +1,4 @@
-import { IUser } from '@/types/entities';
+import { IUser } from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetMeResponse = IServerResponse<IUser>;
@@ -8,14 +8,12 @@ export interface IUpdateUserRequest {
   name?: string,
   surname?: string,
   username?: string,
-  bio?: string,
+  bio?: string | null,
 }
 
 export type IUpdateUserResponse = IServerResponse;
 
-export interface IUploadUserAvatarRequest {
-  avatarFile: File;
-}
+export type IUploadUserAvatarRequest = FormData;
 
 export type IUploadUserAvatarResponse = IServerResponse<{
   avatar: string;

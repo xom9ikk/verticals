@@ -64,7 +64,17 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@comp/*": ["src/components/*"]
+      "@comp/*": ["src/components/*"],
+      "@helpers/*": ["src/helpers/*"],
+      "@inversify/*": ["src/inversify/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@router/*": ["src/router/*"],
+      "@services/*": ["src/services/*"],
+      "@store/*": ["src/store/*"],
+      "@type/*": ["src/types/*"],
+      "@use/*": ["src/use/*"]
     }
   }
 }

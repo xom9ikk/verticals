@@ -1,4 +1,6 @@
-import { EnumColors, IColumns, ITodos } from '@/types/entities';
+import {
+  IColor, IColumns, ITodos,
+} from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllColumnsResponse = IServerResponse<{
@@ -17,9 +19,10 @@ export interface ICreateColumnRequest {
   boardId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
-  belowId?: string;
+  belowId?: number;
+  width?: number;
 }
 
 export type ICreateColumnResponse = IServerResponse<{
@@ -28,18 +31,18 @@ export type ICreateColumnResponse = IServerResponse<{
 }>;
 
 export interface IRemoveColumnRequest {
-  id: string;
+  id: number;
 }
 
 export type IRemoveColumnResponse = IServerResponse;
 
 export interface IUpdateColumnRequest {
-  id: string;
-  boardId: number;
+  id: number;
   title?: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
+  width?: number;
 }
 
 export type IUpdateColumnResponse = IServerResponse;
@@ -61,9 +64,10 @@ export type IDuplicateColumnResponse = IServerResponse<{
   boardId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
-  belowId?: string;
+  belowId?: number;
+  width?: number;
   todos: ITodos;
 }>;
 

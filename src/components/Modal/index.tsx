@@ -1,8 +1,9 @@
-/* eslint-disable no-undef */
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import { createPortal } from 'react-dom';
-import { useOutsideHandler } from '@/use/outsideHandler';
+import cn from 'classnames';
 import { ControlButton } from '@comp/ControlButton';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import useKeys from '@rooks/use-keys';
 import { Button } from '../Button';
 
 interface IModal {
@@ -11,10 +12,10 @@ interface IModal {
   isSoftExit?: boolean,
   negative?: string,
   positive: string,
-  onPositive: Function,
-  onNegative?: Function,
+  onPositive: () => void,
+  onNegative?: () => void,
   renderWrapper?: (children: React.ReactChild) => React.ReactChild,
-  onClose: Function,
+  onClose: () => void,
   size?: string,
 }
 
@@ -31,94 +32,72 @@ export const Modal: FC<IModal> = ({
   size = 'small',
   children,
 }) => {
-  const ref = useRef<any>();
   const root: HTMLDivElement | null = document.querySelector('#root');
 
-  const handlePositive = () => {
-    onPositive();
+  const handleOutsideClick = () => {
+    if (isSoftExit) onClose();
   };
-
-  const handleNegative = () => {
-    if (onNegative) {
-      onNegative();
-    }
-  };
-
-  const handleClose = () => {
-    console.log('handleClose');
-    onClose();
-  };
-
-  const outsideClickHandler = () => {
-    if (isSoftExit) handleClose();
-  };
-
-  useOutsideHandler(ref, outsideClickHandler);
 
   const setBlur = (value: number) => {
     root!.style.filter = `blur(${value}px)`;
   };
 
-  const classes = ['dialog'];
   if (isOpen) {
     setBlur(5);
-    classes.push('dialog--is-open');
-    if (isSoftExit) {
-      document.body.onkeydown = (e) => {
-        if (e.code === 'Escape') {
-          handleClose();
-        }
-      };
-    }
   } else {
     setBlur(0);
-    document.body.onkeydown = null;
   }
 
+  const handleEscape = () => {
+    if (isOpen && isSoftExit) {
+      onClose();
+    }
+  };
+
+  useKeys(['Escape'], handleEscape);
+
+  const [modalRef] = useOutsideClickRef(handleOutsideClick, isOpen);
+
   const modal = (
-    <>
-      <div className={classes.join(' ')}>
-        <div
-          ref={ref}
-          className={`dialog__wrap dialog__wrap--${size}`}
-        >
-          <ControlButton
-            imageSrc="/assets/svg/close.svg"
-            alt="close"
-            imageSize={24}
-            size={30}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 10,
-            }}
-            onClick={handleClose}
-          />
-          {
+    <div className={cn('dialog', {
+      'dialog--is-open': isOpen,
+    })}
+    >
+      <div
+        ref={modalRef}
+        className={`dialog__wrap dialog__wrap--${size}`}
+      >
+        <ControlButton
+          imageSrc="/assets/svg/close.svg"
+          alt="close"
+          imageSize={16}
+          size={32}
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 10,
+          }}
+          onClick={onClose}
+        />
+        {
             renderWrapper(
               <>
                 {children}
-                {
-                !renderWrapper ? children : null
-              }
-                <div
-                  className="dialog__prompt"
-                >
-                  {
-                  negative && (
+                {!renderWrapper ? children : null}
+                <div className="dialog__prompt">
+                  {negative && (
                   <Button
                     type="button"
                     modificator="transparent"
-                    onClick={handleNegative}
+                    onClick={onNegative}
                   >
                     {negative}
                   </Button>
-                  )
-                }
+                  )}
                   <Button
                     type={type}
                     modificator="primary"
-                    onClick={handlePositive}
+                    onClick={onPositive}
                   >
                     {positive}
                   </Button>
@@ -126,9 +105,8 @@ export const Modal: FC<IModal> = ({
               </>,
             )
           }
-        </div>
       </div>
-    </>
+    </div>
   );
 
   return createPortal(modal, document.querySelector('#modal-root')!);

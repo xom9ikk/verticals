@@ -1,14 +1,10 @@
 import React, { FC, useMemo } from 'react';
-// @ts-ignore
-import { SystemActions } from '@/store/actions';
+import { SystemActions } from '@store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIsOpenFormattingHelp } from '@/store/selectors';
+import { getIsOpenFormattingHelp } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
-import { useMarkdown } from '@/use/markdown';
-
-interface IFormattingHelp {
-
-}
+import { useMarkdown } from '@use/markdown';
+import { useTranslation } from 'react-i18next';
 
 const strings = [
   '# Header 1 8-)',
@@ -60,12 +56,13 @@ console.log(\`Today you will eat at $\{placeForEatToday}, ofc\`); // Today you w
 | ext    | extension to be used for dest files. |`,
 ];
 
-export const FormattingHelp: FC<IFormattingHelp> = () => {
+export const FormattingHelp: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { renderMarkdown } = useMarkdown();
   const isOpenFormattingHelp = useSelector(getIsOpenFormattingHelp);
 
-  const closeHandler = () => {
+  const handleClose = () => {
     dispatch(SystemActions.setIsOpenFormattingHelp(false));
   };
 
@@ -74,26 +71,24 @@ export const FormattingHelp: FC<IFormattingHelp> = () => {
     <ControlButton
       imageSrc="/assets/svg/close.svg"
       alt="close"
-      imageSize={24}
-      size={30}
+      imageSize={16}
+      size={32}
       style={{
         position: 'absolute',
         right: 0,
         top: 10,
       }}
-      onClick={closeHandler}
+      onClick={handleClose}
     />
-    <h1 className="formatting-help__title">Text formatting help</h1>
+    <h1 className="formatting-help__title">{t('Text formatting help')}</h1>
     <h4 className="formatting-help__subtitle">
-      App supports markdown for text formatting in the comments. Try some examples below.
+      {t('App supports markdown for text formatting in the comments. Try some examples below.')}
     </h4>
     <div className="formatting-help__content">
       <div className="formatting-help__original">
         {
         strings.map((string) => (
-          <div
-            dangerouslySetInnerHTML={{ __html: string }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: string }} />
         ))
       }
       </div>
@@ -106,12 +101,10 @@ export const FormattingHelp: FC<IFormattingHelp> = () => {
       />
     </div>
   </div>
-  ), [isOpenFormattingHelp]);
+  ), [t, isOpenFormattingHelp]);
 
   return (
-    <div
-      className="formatting-help"
-    >
+    <div className="formatting-help">
       {formattingHelp}
     </div>
   );

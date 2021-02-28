@@ -2,11 +2,10 @@ import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { Toolbar } from '@comp/Toolbar';
 import { ControlButton } from '@comp/ControlButton';
+import { useTranslation } from 'react-i18next';
 
-interface ISidebar {
-}
-
-export const Sidebar: FC<ISidebar> = ({ children }) => {
+export const Sidebar: FC = ({ children }) => {
+  const { t } = useTranslation();
   const [isPinnedSidebar, setIsPinnedSidebar] = useState<boolean>(true);
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -33,7 +32,7 @@ export const Sidebar: FC<ISidebar> = ({ children }) => {
           <div className="sidebar__toggle">
             <ControlButton
               imageSrc={`/assets/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
-              tooltip={`${isPinnedSidebar ? 'Hide sidebar' : 'Show sidebar'}`}
+              tooltip={`${isPinnedSidebar ? t('Hide sidebar') : t('Show sidebar')}`}
               alt="add"
               imageSize={16}
               size={20}

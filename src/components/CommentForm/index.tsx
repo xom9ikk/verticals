@@ -4,17 +4,20 @@ import React, {
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@comp/Avatar';
-import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@/store/actions';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
 import { TextArea } from '@comp/TextArea';
-import { useFocus } from '@/use/focus';
-import { useFileList } from '@/use/fileList';
+import { useFocus } from '@use/focus';
+import { useFileList } from '@use/fileList';
 import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
-} from '@/store/selectors';
-import { useOpenFiles } from '@/use/openFiles';
+} from '@store/selectors';
+import { useOpenFiles } from '@use/openFiles';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
-import { EnumDroppedZoneType } from '@/types/entities';
+import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICommentForm {
   todoId: number | null;
@@ -29,6 +32,7 @@ export const CommentForm: FC<ICommentForm> = ({
   isScrolledToBottom,
   onScrollToBottom,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const { openFiles } = useOpenFiles();
@@ -38,8 +42,8 @@ export const CommentForm: FC<ICommentForm> = ({
   const fullName = useSelector(getFullName);
   const editCommentId = useSelector(getEditCommentId);
   const replyCommentId = useSelector(getReplyCommentId);
-  const commentForReply = useSelector(getCommentById(replyCommentId));
-  const commentForEdit = useSelector(getCommentById(editCommentId));
+  const commentForReply = useParamSelector(getCommentById, replyCommentId);
+  const commentForEdit = useParamSelector(getCommentById, editCommentId);
   const droppedFiles = useSelector(getDroppedFiles);
 
   const [commentText, setCommentText] = useState<string>('');
@@ -63,9 +67,8 @@ export const CommentForm: FC<ICommentForm> = ({
     }
   }, [commentForReply, commentForEdit]);
 
-  const sendCommentHandler = () => {
+  const handleSendComment = () => {
     if (editCommentId) {
-      console.log('1111');
       dispatch(CommentsActions.updateText({
         id: editCommentId,
         text: commentText,
@@ -78,7 +81,6 @@ export const CommentForm: FC<ICommentForm> = ({
       }
       dispatch(SystemActions.setEditCommentId(null));
     } else if (files?.length || commentText) {
-      console.log('222', files);
       dispatch(CommentsActions.create({
         todoId: todoId!,
         text: commentText,
@@ -91,30 +93,28 @@ export const CommentForm: FC<ICommentForm> = ({
     setCommentText('');
   };
 
-  const changeHandler = (event: React.BaseSyntheticEvent) => {
+  const handleChange = (event: React.BaseSyntheticEvent) => {
     if (!shiftPressed) {
       setCommentText(event.target.value);
     }
   };
 
-  const keyUpHandler = (event: React.KeyboardEvent) => {
-    const {
-      key, shiftKey,
-    } = event;
+  const handleKeyUp = (event: React.KeyboardEvent) => {
+    const { key, shiftKey } = event;
     if (key === 'Enter' && shiftKey) {
       setShiftPressed(false);
-      sendCommentHandler();
+      handleSendComment();
     }
   };
 
-  const keyDownHandler = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     const { key, shiftKey } = event;
     if (key === 'Enter' && shiftKey) {
       setShiftPressed(true);
     }
   };
 
-  const removeReplyHandler = () => {
+  const handleRemoveReply = () => {
     dispatch(SystemActions.setReplyCommentId(null));
   };
 
@@ -140,8 +140,15 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const isAvailableSend = commentText?.length || files?.length;
 
+  const handleOutsideClick = () => {
+    console.log('handleOutsideClick');
+    dispatch(SystemActions.setEditCommentId(null));
+  };
+
+  const [commentFormRef] = useOutsideClickRef(handleOutsideClick);
+
   return (
-    <div className="comment-form">
+    <div className="comment-form" ref={commentFormRef}>
       <div className="comment-form__wrapper">
         <Avatar />
         <div className="comment-form__input-wrapper">
@@ -153,10 +160,10 @@ export const CommentForm: FC<ICommentForm> = ({
             <ControlButton
               imageSrc="/assets/svg/close.svg"
               alt="remove"
-              imageSize={24}
+              imageSize={12}
               size={26}
-              onClick={removeReplyHandler}
-              style={{ marginRight: 2 }}
+              onClick={handleRemoveReply}
+              style={{ marginRight: 6 }}
             />
             <div className="comment-form__reply--divider" />
             <div className="comment-form__reply--name">
@@ -175,11 +182,11 @@ export const CommentForm: FC<ICommentForm> = ({
               ref={commentInputRef}
               className="card__textarea comment-form__textarea"
               style={{ paddingLeft: 10 }}
-              placeholder="Add comment or note"
+              placeholder={t('Add comment or note')}
               value={commentText}
-              onChange={changeHandler}
-              onKeyUp={keyUpHandler}
-              onKeyDown={keyDownHandler}
+              onChange={handleChange}
+              onKeyUp={handleKeyUp}
+              onKeyDown={handleKeyDown}
               minRows={1}
               maxRows={10}
               onChangeHeight={onChangeTextAreaHeight}
@@ -187,7 +194,7 @@ export const CommentForm: FC<ICommentForm> = ({
             <div className="comment-form__controls">
               <ControlButton
                 imageSrc="/assets/svg/gallery.svg"
-                tooltip="Add an image"
+                tooltip={t('Add an image')}
                 alt="image"
                 imageSize={24}
                 size={26}
@@ -196,7 +203,7 @@ export const CommentForm: FC<ICommentForm> = ({
               />
               <ControlButton
                 imageSrc="/assets/svg/attach.svg"
-                tooltip="Attach a file"
+                tooltip={t('Attach a file')}
                 alt="file"
                 imageSize={24}
                 size={26}
@@ -205,7 +212,7 @@ export const CommentForm: FC<ICommentForm> = ({
               />
               <ControlButton
                 imageSrc="/assets/svg/arrow-up.svg"
-                tooltip={`${commentText?.length ? 'Add comment' : ''}`}
+                tooltip={`${commentText?.length ? t('Add comment') : ''}`}
                 alt="send"
                 imageSize={isAvailableSend ? 24 : 0}
                 size={30}
@@ -215,7 +222,7 @@ export const CommentForm: FC<ICommentForm> = ({
                   opacity: isAvailableSend ? 1 : 0,
                   padding: isAvailableSend ? '8px 10px' : '8px 0',
                 }}
-                onClick={sendCommentHandler}
+                onClick={handleSendComment}
               />
             </div>
           </div>
@@ -226,10 +233,10 @@ export const CommentForm: FC<ICommentForm> = ({
       })}
       >
         <button onClick={handleOpenFormattingHelp}>
-          Formatting help
+          {t('Formatting help')}
         </button>
         <span>
-          Shift+Enter to send
+          {t('Shift+Enter to send')}
         </span>
       </div>
 

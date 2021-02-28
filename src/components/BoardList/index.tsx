@@ -1,92 +1,54 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
 } from 'react-beautiful-dnd';
-import { Board, IExitFromEditable } from '@comp/Board';
+import { Board } from '@comp/Board';
 import { Profile } from '@comp/Profile';
-import { BoardsActions, SystemActions } from '@/store/actions';
-import {
-  EnumTodoType,
-} from '@/types/entities';
+import { BoardsActions, SystemActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { useReadableId } from '@/use/readableId';
-import { forwardTo } from '@/router/history';
+import { useReadableId } from '@use/readableId';
+import { redirectTo } from '@router/history';
 import { Link } from 'react-router-dom';
 import {
   getActiveBoardId,
-  getIsEditableBoard,
+  getEditableBoardId,
   getIsLoadedBoards,
-  getBoards,
+  getOrderedBoards,
   getUsername,
   getIsSearchMode,
-} from '@/store/selectors';
+  getActiveBoardTitle,
+  getActiveTodoTitle,
+} from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
+import { useTitle } from '@use/title';
+import { useHover } from '@use/hover';
+import { useAutoScroll } from '@use/autoScroll';
+import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
-interface IBoardList {}
-
-export const BoardList: FC<IBoardList> = () => {
+export const BoardList: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
-  const [isHover, setIsHover] = useState<boolean>(false);
-  const [isOpenNewBoard, setIsOpenNewBoard] = useState<boolean>(false);
+  const { isHovering, hoveringProps } = useHover();
 
   const username = useSelector(getUsername);
-  const boards = useSelector(getBoards);
+  const boards = useSelector(getOrderedBoards);
   const isSearchMode = useSelector(getIsSearchMode);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const activeBoardId = useSelector(getActiveBoardId);
-  const isEditableBoard = useSelector(getIsEditableBoard);
+  const activeBoardTitle = useSelector(getActiveBoardTitle);
+  const activeTodoTitle = useSelector(getActiveTodoTitle);
+  const editableBoardId = useSelector(getEditableBoardId);
 
-  // useEffect(() => {
-  //   if (boards.length) {
-  //     console.log('boards change');
-  //     if (activeBoardId === null) {
-  //       const { id, title } = boards[0];
-  //       forwardTo(`/userId/${toReadableId(title, id)}`);
-  //     }
-  //   }
-  // }, [boards]);
+  useTitle(activeTodoTitle || activeBoardTitle);
 
-  const saveBoard = (
-    {
-      boardId, title, description, color, belowId,
-    }: IExitFromEditable,
-  ) => {
-    setIsOpenNewBoard(false);
-    if (boardId && !belowId) {
-      if (title) {
-        dispatch(BoardsActions.updateTitle({
-          id: boardId,
-          title,
-        }));
-      }
-      if (description) {
-        dispatch(BoardsActions.updateDescription({
-          id: boardId,
-          description,
-        }));
-      }
-      if (color !== undefined) {
-        const boardToChange = boards.find((board) => board.id === boardId);
-        dispatch(BoardsActions.updateColor({
-          id: boardId,
-          color: boardToChange?.color !== color ? color : null,
-        }));
-      }
-    } else if (title) {
-      setTimeout(() => setIsOpenNewBoard(true));
-      dispatch(BoardsActions.create({
-        icon: '/assets/svg/board/item.svg',
-        title,
-        description: description || undefined,
-        cardType: EnumTodoType.Checkboxes,
-        belowId,
-      }));
-    }
-  };
+  const boardContainerRef = useRef<any>(null);
+
+  const { scrollToBottom } = useAutoScroll(boardContainerRef);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -94,8 +56,8 @@ export const BoardList: FC<IBoardList> = () => {
     }
     const { source, destination } = result;
     const sourcePosition = source.index;
-    const destinationPosition = destination.index;
-    if (sourcePosition === destinationPosition) {
+    const destinationPosition = destination?.index;
+    if (destinationPosition === undefined || sourcePosition === destinationPosition) {
       return;
     }
     dispatch(BoardsActions.updatePosition({
@@ -105,8 +67,8 @@ export const BoardList: FC<IBoardList> = () => {
   };
 
   const addNewBoard = () => {
-    setIsOpenNewBoard((prev) => !prev);
-    dispatch(SystemActions.setIsEditableBoard(true));
+    requestAnimationFrame(scrollToBottom);
+    dispatch(SystemActions.setEditableBoardId(NEW_BOARD_ID));
   };
 
   const handleClick = (title: string, id: number) => {
@@ -114,15 +76,15 @@ export const BoardList: FC<IBoardList> = () => {
       dispatch(SystemActions.setIsLoadedColumns(false));
       dispatch(SystemActions.setIsLoadedTodos(false));
     }
-    forwardTo(`/${username}/${toReadableId(title, id)}`);
+    redirectTo(`/${username}/${toReadableId(title, id)}`);
   };
 
   const boardItems = useMemo(() => {
-    console.log('boards redraw');
+    console.log('boards redraw', boards);
     return (
       <div
         onClick={(e) => {
-          if (isEditableBoard) {
+          if (editableBoardId) {
             e.stopPropagation();
           }
         }}
@@ -131,42 +93,42 @@ export const BoardList: FC<IBoardList> = () => {
           <Droppable droppableId="droppable">
             {(provided) => (
               <div
-                {...provided.droppableProps}
                 ref={provided.innerRef}
+                {...provided.droppableProps}
               >
-                {boards
-                  .sort((a, b) => a.position - b.position)
-                  .map(({
-                    id, icon, title, color, belowId,
-                  }, index) => (
-                    <Draggable
-                      key={`board-${id}`}
-                      draggableId={`board-${id}`}
-                      index={index}
-                      isDragDisabled={isSearchMode}
-                    >
-                      {(draggableProvided, draggableSnapshot) => (
-                        <div
-                          ref={draggableProvided.innerRef}
-                          {...draggableProvided.draggableProps}
-                          {...draggableProvided.dragHandleProps}
-                        >
-                          <Board
-                            snapshot={draggableSnapshot}
-                            key={id}
-                            id={id}
-                            belowId={belowId}
-                            icon={icon}
-                            color={color}
-                            title={title}
-                            isActive={activeBoardId === id}
-                            onExitFromEditable={saveBoard}
-                            onClick={handleClick}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                {boards.map(({
+                  id, icon, title, description, color, belowId,
+                }, index) => (
+                  <Draggable
+                    key={`board-${id}`}
+                    draggableId={`board-${id}`}
+                    index={index}
+                    isDragDisabled={isSearchMode}
+                  >
+                    {(draggableProvided, draggableSnapshot) => (
+                      <div
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.draggableProps}
+                        {...draggableProvided.dragHandleProps}
+                      >
+                        <Board
+                          snapshot={draggableSnapshot}
+                          key={id}
+                          boardId={id}
+                          belowId={belowId}
+                          icon={icon}
+                          color={color}
+                          title={title}
+                          description={description}
+                          isActive={activeBoardId === id}
+                          isEditable={editableBoardId === id}
+                          scrollToBottom={scrollToBottom}
+                          onClick={handleClick}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
                 {provided.placeholder}
               </div>
             )}
@@ -174,56 +136,49 @@ export const BoardList: FC<IBoardList> = () => {
         </DragDropContext>
         <Link to={`/${username}/trash`}>
           <Board
-            key={-1}
-            id={-1}
+            boardId={TRASH_BOARD_ID}
             icon="/assets/svg/board/trash.svg"
-            title="Trash"
-            isActive={activeBoardId === -1}
+            title={t('Trash')}
+            isEditable={false}
+            isActive={activeBoardId === TRASH_BOARD_ID}
           />
         </Link>
       </div>
     );
-  }, [boards, activeBoardId, isSearchMode, isEditableBoard, username]);
+  }, [t, boards, activeBoardId, isSearchMode, editableBoardId, username]);
 
-  const profile = useMemo(() => (
-    <Profile
-      onAddNewBoard={addNewBoard}
-    />
-  ), []);
-
-  const memoNewBoard = useMemo(() => (
-    isOpenNewBoard && (
-    <Board
-      icon="/assets/svg/board/item.svg"
-      isEditableDefault
-      onExitFromEditable={saveBoard}
-    />
-    )
-  ), [isOpenNewBoard]);
-
-  const memoMenu = useMemo(() => !isOpenNewBoard && (
+  const memoAddNewBoard = useMemo(() => (
     <ControlButton
       imageSrc="/assets/svg/add.svg"
       alt="add"
-      text="Add board"
+      text={t('Add board')}
       isInvisible
-      isHoverBlock={isHover}
+      isHoverBlock={isHovering}
       isMaxWidth
       onClick={addNewBoard}
     />
   ),
-  [isHover, isOpenNewBoard]);
+  [t, isHovering, editableBoardId]);
 
   return (
     <div
       className="board-list"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      {...hoveringProps}
+      ref={boardContainerRef}
     >
-      { profile }
+      <Profile onAddNewBoard={addNewBoard} />
       { boardItems }
-      { memoMenu }
-      { memoNewBoard }
+      { editableBoardId !== NEW_BOARD_ID && memoAddNewBoard }
+      {
+        editableBoardId === NEW_BOARD_ID && (
+        <Board
+          boardId={NEW_BOARD_ID}
+          icon="/assets/svg/board/item.svg"
+          isEditable={editableBoardId === NEW_BOARD_ID}
+          scrollToBottom={scrollToBottom}
+        />
+        )
+      }
       <FallbackLoader
         backgroundColor="#fafafa"
         isAbsolute

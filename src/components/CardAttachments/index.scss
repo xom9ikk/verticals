@@ -26,6 +26,8 @@
   padding: 10px 18px 10px 16px;
   min-height: 50px;
   background: $hover-color;
+  max-width: 100%;
+
   &:hover {
     background: $primary-light;
   }
@@ -44,6 +46,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: $column-width - 134px;
+    max-width: 100%;
   }
 }

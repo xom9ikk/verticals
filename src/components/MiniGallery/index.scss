@@ -22,18 +22,20 @@
     }
   }
 
-
-
   & .swiper {
     &-slide-active {
       width: auto !important;
     }
     &-wrapper {
+      //max-width: calc(100% - 70px);
       max-width: $column-width - 70;
+      //max-width: calc(var(--mini-gallery-width) - 70px);
       margin-bottom: -5px;
       //margin-right: -5px;
       img {
-        width: $column-width - 70 + 2;
+        //width: calc(100% - 70px + 2px);
+        //width: $column-width - 70 + 2;
+        width: calc(var(--mini-gallery-width) - 70px + 2px);
       }
     }
     &-pagination {
@@ -72,7 +74,7 @@
         height: 24px;
         width: 24px;
         top: 8px;
-        right: 36px;
+        right: 38px;
         left: auto;
         border-radius: 6px;
         background-color: rgba(0, 0, 0, 0.2);
@@ -99,7 +101,7 @@
         height: 24px;
         width: 24px;
         top: 8px;
-        right: 6px;
+        right: 8px;
         border-radius: 6px;
         background-color: rgba(0, 0, 0, 0.2);
         padding: 8px;

@@ -1,5 +1,6 @@
-import { useAlert } from '@/use/alert';
-import { useFormat } from '@/use/format';
+import { useAlert } from '@use/alert';
+import { useFormat } from '@use/format';
+import i18n from '@/i18n';
 
 export const useFileList = () => {
   const { show, ALERT_TYPES } = useAlert();
@@ -42,7 +43,11 @@ export const useFileList = () => {
     if (file.size < maxBytes) {
       return true;
     }
-    show('Attachments', `File ${file.name} exceeds the maximum allowed size ${formatSize(maxBytes)}`, ALERT_TYPES.DANGER);
+    show(
+      i18n.t('Attachments'),
+      `${i18n.t('File')} ${file.name} ${i18n.t('exceeds the maximum allowed size')} ${formatSize(maxBytes)}`,
+      ALERT_TYPES.DANGER,
+    );
     return false;
   });
 

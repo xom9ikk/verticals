@@ -1,15 +1,16 @@
 import React, { FC, useMemo, useState } from 'react';
-// @ts-ignore
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Menu } from '@comp/Menu';
-import { MenuItem } from '@comp/MenuItem';
-import { Divider } from '@comp/Divider';
-import { Avatar } from '@comp/Avatar';
-import { SystemActions } from '@/store/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { forwardTo } from '@/router/history';
-import { getFullName, getIsOpenProfile, getUsername } from '@/store/selectors';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { Menu } from '@comp/Menu';
+import { Avatar } from '@comp/Avatar';
+import { Divider } from '@comp/Divider';
+import { MenuItem } from '@comp/MenuItem';
 import { ControlButton } from '@comp/ControlButton';
+import { SystemActions } from '@store/actions';
+import { redirectTo } from '@router/history';
+import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
+import { useHover } from '@use/hover';
+import { useTranslation } from 'react-i18next';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -25,30 +26,27 @@ interface IProfile {
 export const Profile: FC<IProfile> = ({
   onAddNewBoard,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const isOpenProfile = useSelector(getIsOpenProfile);
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
 
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { isHovering, hoveringProps } = useHover();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-  };
-
-  const closeHandler = () => {
+  const handleClose = () => {
     dispatch(SystemActions.setIsOpenProfile(false));
   };
 
-  const menuButtonClickHandler = (action: EnumMenuActions) => {
+  const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.OpenProfile: {
         dispatch(SystemActions.setIsOpenProfile(!isOpenProfile));
         break;
       }
       case EnumMenuActions.ProfileSettings: {
-        forwardTo('/settings/profile');
+        redirectTo('/settings/profile');
         break;
       }
       case EnumMenuActions.AddBoard: {
@@ -59,13 +57,12 @@ export const Profile: FC<IProfile> = ({
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
-          hidePopup();
+          dispatch(SystemActions.setActivePopupId(null));
         }, 1000);
-        return;
+        break;
       }
       default: break;
     }
-    hidePopup();
   };
 
   const profile = useMemo(() => isOpenProfile && (
@@ -73,18 +70,16 @@ export const Profile: FC<IProfile> = ({
     <ControlButton
       imageSrc="/assets/svg/close.svg"
       alt="close"
-      imageSize={24}
-      size={30}
+      imageSize={16}
+      size={32}
       style={{
         position: 'absolute',
         right: 10,
         top: 10,
       }}
-      onClick={closeHandler}
+      onClick={handleClose}
     />
-    <Avatar
-      size={180}
-    />
+    <Avatar size={180} />
     <h1 className="profile__popup-title">{fullName}</h1>
     <h4 className="profile__popup-subtitle">
       @
@@ -93,60 +88,55 @@ export const Profile: FC<IProfile> = ({
   </div>
   ), [isOpenProfile]);
 
-  console.log('isCopied', isCopied);
-
   return (
     <div
       className="profile"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
+      {...hoveringProps}
     >
       <Avatar
         onClick={() => {
-          menuButtonClickHandler(EnumMenuActions.OpenProfile);
+          handleMenuButtonClick(EnumMenuActions.OpenProfile);
         }}
       />
       <Menu
+        id="profile"
         imageSrc="/assets/svg/dots.svg"
         alt="add"
         imageSize={22}
         size={24}
-        isHoverBlock={isHover}
+        isInvisible
+        isHoverBlock={isHovering}
         position="bottom"
         isAbsolute={false}
+        onSelect={handleMenuButtonClick}
       >
         <MenuItem
-          text="My Profile"
+          text={t('My Profile')}
           imageSrc="/assets/svg/menu/my-profile.svg"
-          onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.OpenProfile);
-          }}
+          action={EnumMenuActions.OpenProfile}
         />
         <MenuItem
-          text="Profile Settings"
+          text={t('Profile Settings')}
           imageSrc="/assets/svg/menu/profile-settings.svg"
-          onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.ProfileSettings);
-          }}
+          action={EnumMenuActions.ProfileSettings}
         />
         <Divider verticalSpacer={7} horizontalSpacer={10} />
         <MenuItem
-          text="Add board"
+          text={t('Add board')}
           imageSrc="/assets/svg/menu/add-board.svg"
           hintText="N"
-          onClick={() => {
-            menuButtonClickHandler(EnumMenuActions.AddBoard);
-          }}
+          action={EnumMenuActions.AddBoard}
         />
         <CopyToClipboard
-          text={`verticals.xom9ik.com/${username}`} // TODO move to env
+          text={`verticals.xom9ik.com/${username}`} // TODO: move to env
           onCopy={() => {
-            menuButtonClickHandler(EnumMenuActions.CopyLink);
+            handleMenuButtonClick(EnumMenuActions.CopyLink);
           }}
         >
           <MenuItem
-            text={isCopied ? 'Copied!' : 'Copy link'}
+            text={isCopied ? t('Copied!') : t('Copy link')}
             imageSrc="/assets/svg/menu/copy-link.svg"
+            isAutoClose={false}
           />
         </CopyToClipboard>
       </Menu>

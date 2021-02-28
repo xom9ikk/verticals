@@ -1,39 +1,44 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorResetForm } from '@/helpers/validatorResetForm';
-import { AuthActions } from '@/store/actions';
-import { useDispatch } from 'react-redux';
+import { useForm } from '@use/form';
+import { AuthActions } from '@store/actions';
+import { validatorResetForm } from '@helpers/validator/form/reset';
+import { useTranslation } from 'react-i18next';
+
+interface IFormValidatedState {
+  email: string;
+}
 
 const initialState = {
   email: '',
 };
 
 export const Reset: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const handleSubmitForm = ({ email }: IFormValues) => {
-    dispatch(AuthActions.reset({
-      email: email!,
-    }));
-  };
 
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorResetForm);
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [AuthActions.reset]),
+    validatorResetForm,
+  );
 
   return (
     <Form
-      title="What’s your email?"
-      subtitle="Enter your mail to reset your password."
+      title={t("What's your email?")}
+      subtitle={t('Enter your mail to reset your password.')}
       handleSubmit={handleSubmit}
     >
       <Input
         type="text"
-        placeholder="Enter your email..."
+        placeholder={t('Enter your email...')}
         touched={touches.email}
         error={errors.email}
         name="email"
@@ -46,7 +51,7 @@ export const Reset: FC = () => {
         modificator="primary"
         isMaxWidth
       >
-        Send a password reset email
+        {t('Send a password reset email')}
       </Button>
     </Form>
   );

@@ -27,6 +27,16 @@ module.exports = {
     alias: {
       '@': PATHS.src,
       '@comp': path.resolve(PATHS.src, 'components'),
+      '@helpers': path.resolve(PATHS.src, 'helpers'),
+      '@inversify': path.resolve(PATHS.src, 'inversify'),
+      '@layouts': path.resolve(PATHS.src, 'layouts'),
+      '@pages': path.resolve(PATHS.src, 'pages'),
+      '@plugins': path.resolve(PATHS.src, 'plugins'),
+      '@router': path.resolve(PATHS.src, 'router'),
+      '@services': path.resolve(PATHS.src, 'services'),
+      '@store': path.resolve(PATHS.src, 'store'),
+      '@type': path.resolve(PATHS.src, 'types'),
+      '@use': path.resolve(PATHS.src, 'use'),
     },
   },
   module: {
@@ -77,7 +87,8 @@ module.exports = {
       ],
     }),
     new HTMLWebpackPlugin({
-      title: 'App title',
+      title: 'Verticals — checklist with vertical separation',
+      description: 'TODO Checklist With Vertical Separation',
       favicon: path.resolve(PATHS.static, 'favicon.ico'),
       template: path.resolve(PATHS.static, 'index.html'),
       filename: 'index.html',

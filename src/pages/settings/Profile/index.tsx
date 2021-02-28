@@ -1,25 +1,31 @@
-/* eslint-disable @typescript-eslint/no-use-before-define,no-shadow,@typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorProfileForm } from '@/helpers/validatorProfileForm';
-import { SyncInput } from '@comp/SyncInput';
 import { Avatar } from '@comp/Avatar';
-import { useDispatch, useSelector } from 'react-redux';
+import { SyncInput } from '@comp/SyncInput';
+
+import { useForm } from '@use/form';
+import { useOpenFiles } from '@use/openFiles';
 import {
   getBio, getName, getSurname, getUsername,
-} from '@/store/selectors';
-import { UserActions } from '@/store/actions';
-import validator from '@/helpers/validator';
-import { useOpenFiles } from '@/use/openFiles';
+} from '@store/selectors';
+import { UserActions } from '@store/actions';
+import validator from '@helpers/validator';
+import { validatorProfileForm } from '@helpers/validator/form/profile';
+import { useTranslation } from 'react-i18next';
 
-interface IProfile {
-
+interface IFormValidatedState {
+  name: string;
+  surname: string;
+  bio: string;
 }
 
-export const Profile: FC<IProfile> = () => {
+export const Profile: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { openFiles } = useOpenFiles();
 
@@ -34,14 +40,13 @@ export const Profile: FC<IProfile> = () => {
     bio,
   };
 
-  const handleSubmitForm = ({ name, surname, bio }: IFormValues) => {
-    console.log('Profile handlerSubmit', values);
-    dispatch(UserActions.updatePersonalData({
-      name: name!,
-      surname: surname!,
-      bio: bio!,
-    }));
-  };
+  const {
+    handleChange, handleSubmit, handleBlur, values, errors, touches,
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [UserActions.updatePersonalData]),
+    validatorProfileForm,
+  );
 
   const handleClick = async () => {
     const [file] = await openFiles('image/x-png,image/jpeg', false) || [];
@@ -50,29 +55,20 @@ export const Profile: FC<IProfile> = () => {
 
   const handleDelete = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    console.log('handleDelete');
     dispatch(UserActions.removeAvatar());
   };
 
-  const {
-    handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorProfileForm);
-
   return (
     <>
-      <h1 className="settings__title">Profile</h1>
+      <h1 className="settings__title">{t('Profile')}</h1>
       <div>
         <Form
           handleSubmit={handleSubmit}
           alignItems="left"
           isMaxWidth
         >
-          <div
-            className="profile-avatar"
-          >
-            <Avatar
-              size={150}
-            />
+          <div className="profile-avatar">
+            <Avatar size={150} />
             <div className="profile-avatar__controls">
               <div className="profile-avatar__controls-wrapper">
                 <div
@@ -83,7 +79,7 @@ export const Profile: FC<IProfile> = () => {
                     src="/assets/svg/upload.svg"
                     alt="upload"
                   />
-                  Click to update
+                  {t('Click to update')}
                 </div>
                 <button
                   className="profile-avatar__button-delete"
@@ -100,15 +96,15 @@ export const Profile: FC<IProfile> = () => {
           <SyncInput
             type="text"
             name="username"
-            label="Username"
+            label={t('Username')}
             isLight
             initialValue={username}
             action={UserActions.updateUsername}
-            validator={validator.text({ min: 2, name: 'Username' })}
+            validator={validator.text({ min: 2, name: t('Username') })}
           />
           <Input
             type="text"
-            label="First name"
+            label={t('First name')}
             touched={touches.name}
             error={errors.name}
             name="name"
@@ -119,7 +115,7 @@ export const Profile: FC<IProfile> = () => {
           />
           <Input
             type="text"
-            label="Last name"
+            label={t('Last name')}
             touched={touches.surname}
             error={errors.surname}
             name="surname"
@@ -130,7 +126,7 @@ export const Profile: FC<IProfile> = () => {
           />
           <Input
             type="text"
-            label="Bio"
+            label={t('Bio')}
             touched={touches.bio}
             error={errors.bio}
             name="bio"
@@ -146,7 +142,7 @@ export const Profile: FC<IProfile> = () => {
               modificator="primary"
               isMaxWidth
             >
-              Save changes
+              {t('Save changes')}
             </Button>
           </div>
         </Form>

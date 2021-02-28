@@ -3,29 +3,38 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { IComment } from '@/types/entities';
+import format from 'date-fns/format';
+import { ICommentLike } from '@type/entities';
 import { MenuItem } from '@comp/MenuItem';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
 import { CommentFile } from '@comp/CommentFile';
-import { useFormat } from '@/use/format';
 import { Avatar } from '@comp/Avatar';
 import {
   CommentAttachmentsActions,
   CommentsActions, SystemActions,
-} from '@/store/actions';
+} from '@store/actions';
 import {
   getFullName,
   getCommentById,
   getEditCommentId,
   getUsername,
   getCommentAttachmentsByCommentId,
-} from '@/store/selectors';
+} from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
-import { useMarkdown } from '@/use/markdown';
+import { useMarkdown } from '@use/markdown';
+import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
-type ICommentItem = IComment;
+interface ICommentItem {
+  id: number;
+  text?: string;
+  createdAt: number;
+  updatedAt: number | null;
+  replyCommentId?: number;
+  likedUsers?: Array<ICommentLike>;
+}
 
 enum EnumMenuActions {
   Like,
@@ -42,15 +51,15 @@ export const CommentItem: FC<ICommentItem> = ({
   replyCommentId,
   likedUsers,
 }) => {
-  const { formatDate } = useFormat();
-  const { renderMarkdown } = useMarkdown();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { renderMarkdown } = useMarkdown();
 
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
-  const replyComment = useSelector(getCommentById(replyCommentId));
+  const replyComment = useParamSelector(getCommentById, replyCommentId);
   const editCommentId = useSelector(getEditCommentId);
-  const attachments = useSelector(getCommentAttachmentsByCommentId(id));
+  const attachments = useParamSelector(getCommentAttachmentsByCommentId, id);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isShowMore, setIsShowMore] = useState<boolean>(false);
@@ -66,11 +75,7 @@ export const CommentItem: FC<ICommentItem> = ({
     }
   }, [editCommentId]);
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-  };
-
-  const menuButtonClickHandler = (action: EnumMenuActions) => {
+  const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
       case EnumMenuActions.Like: {
         const like = { commentId: id };
@@ -98,12 +103,11 @@ export const CommentItem: FC<ICommentItem> = ({
       default:
         break;
     }
-    hidePopup();
   };
 
   useEffect(() => {
     if (isDoubleClick) {
-      menuButtonClickHandler(EnumMenuActions.Edit);
+      handleMenuButtonClick(EnumMenuActions.Edit);
     }
     const timeout = setTimeout(() => {
       setIsDoubleClick(false);
@@ -113,7 +117,7 @@ export const CommentItem: FC<ICommentItem> = ({
     };
   }, [isDoubleClick]);
 
-  const removeHandler = (fileId: number) => {
+  const handleRemove = (fileId: number) => {
     dispatch(CommentAttachmentsActions.remove({
       id: fileId,
     }));
@@ -138,7 +142,7 @@ export const CommentItem: FC<ICommentItem> = ({
                 name={file.name}
                 path={file.path}
                 extension={file.extension}
-                onRemove={removeHandler}
+                onRemove={handleRemove}
                 isCompact={isCompact}
                 isImage={isImage(file.extension)}
               />
@@ -147,30 +151,25 @@ export const CommentItem: FC<ICommentItem> = ({
       }
       {
         attachments.length > MAX_FILES_IN_COMMENT_PREVIEW
-        && !isShowMore
-        && (
+        && !isShowMore && (
         <div
           className="comment-file comment-file--compact"
           onClick={() => { setIsShowMore(true); }}
         >
-          <div
-            className="comment-file__overlay"
-          />
+          <div className="comment-file__overlay" />
           <span className="comment-file__show-more">
             {attachments.length - MAX_FILES_IN_COMMENT_PREVIEW}
             {' '}
-            more items...
+            {t('more items...')}
           </span>
         </div>
         )
       }
     </div>
-  ), [attachments]);
+  ), [t, attachments]);
 
   const memoComment = useMemo(() => (
-    <div
-      className="comment__content"
-    >
+    <div className="comment__content">
       <div
         className={cn('comment__header', {
           'comment__header--replied': replyCommentId,
@@ -179,9 +178,7 @@ export const CommentItem: FC<ICommentItem> = ({
         {
           replyCommentId && (
           <>
-            <div
-              className="comment-form__reply--divider"
-            />
+            <div className="comment-form__reply--divider" />
             <div className="comment-form__reply--name">
               {fullName}
               <span className="comment-form__reply--text">
@@ -195,7 +192,7 @@ export const CommentItem: FC<ICommentItem> = ({
       {
         text && (
           <div
-            className="comment__text"
+            className="comment__text markdown"
             onDoubleClick={(e) => e.stopPropagation()}
             dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
           />
@@ -204,6 +201,7 @@ export const CommentItem: FC<ICommentItem> = ({
       { memoAttachments }
     </div>
   ), [
+    t,
     replyCommentId,
     replyComment,
     fullName,
@@ -236,32 +234,35 @@ export const CommentItem: FC<ICommentItem> = ({
               alt="like"
               imageSize={16}
               size={22}
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.Like)}
             />
             <ControlButton
               imageSrc="/assets/svg/reply.svg"
-              tooltip="Reply"
+              tooltip={t('Reply')}
               alt="reply"
               imageSize={16}
               size={22}
-              onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
+              onClick={() => handleMenuButtonClick(EnumMenuActions.Reply)}
             />
           </div>
           <div className="comment__controls--actions">
             {
               updatedAt !== createdAt ? (
                 <span>
-                  Edited (
-                  {formatDate(new Date(updatedAt!))}
+                  {t('Edited')}
+                  {' '}
+                  (
+                  {format(new Date(updatedAt!), 'dd MMM, hh:mm')}
                   )&nbsp;·&nbsp;
                 </span>
               ) : null
             }
-            <div className="comment__date">{formatDate(new Date(createdAt))}</div>
+            <div className="comment__date">{format(new Date(createdAt), 'dd MMM, hh:mm')}</div>
             <div className="comment__like-bubbles">
               {
                 likedUsers && likedUsers?.length > 0 && likedUsers.map((user) => (
                   <Avatar
+                    key={user.username}
                     size={16}
                     onClick={handleClickOnLikedUser}
                     borderSize="small"
@@ -273,33 +274,38 @@ export const CommentItem: FC<ICommentItem> = ({
               }
             </div>
             <Menu
+              id={`comment-${id}`}
               imageSrc="/assets/svg/dots.svg"
-              tooltip="More"
+              tooltip={t('More')}
               alt="menu"
               imageSize={16}
               size={22}
               position="top"
+              style={{
+                marginTop: 3,
+              }}
+              onSelect={handleMenuButtonClick}
             >
               <MenuItem
                 text={`${isLikedByMe ? 'Unlike' : 'Like'}`}
                 imageSrc="/assets/svg/like.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Like)}
+                action={EnumMenuActions.Like}
               />
               <MenuItem
-                text="Reply"
+                text={t('Reply')}
                 imageSrc="/assets/svg/reply.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Reply)}
+                action={EnumMenuActions.Reply}
               />
               <MenuItem
-                text="Edit"
+                text={t('Edit')}
                 imageSrc="/assets/svg/menu/edit.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Edit)}
+                action={EnumMenuActions.Edit}
               />
               <Divider verticalSpacer={7} horizontalSpacer={10} />
               <MenuItem
-                text="Delete"
+                text={t('Delete')}
                 imageSrc="/assets/svg/menu/remove.svg"
-                onClick={() => menuButtonClickHandler(EnumMenuActions.Delete)}
+                action={EnumMenuActions.Delete}
               />
             </Menu>
           </div>

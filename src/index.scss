@@ -13,10 +13,9 @@
 @import 'components/Board';
 @import 'components/Profile';
 @import 'components/Columns';
-@import 'components/Column';
 @import 'components/Card';
 @import 'components/Checkbox';
-@import 'components/CardToolbar';
+@import 'components/ColumnToolbar';
 @import 'components/Popup';
 @import 'components/MenuItem';
 @import 'components/ColorPicker';
@@ -43,3 +42,14 @@
 @import 'components/MiniGallery';
 @import 'components/Gallery';
 @import 'components/FormattingHelp';
+@import 'components/ColumnWide';
+@import 'components/ColumnCompact';
+@import 'components/ColumnHeader';
+@import 'components/DatePicker';
+@import 'components/DatePicker/Input';
+@import 'components/DatePicker/WeekDays';
+@import 'components/DatePicker/Tag';
+@import 'components/DatePicker/Calendar';
+@import 'components/DatePicker/Calendar/Week';
+@import 'components/DatePicker/Calendar/Day';
+@import 'components/DateBadge';

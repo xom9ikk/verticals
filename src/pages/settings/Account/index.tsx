@@ -1,19 +1,22 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Button } from '@comp/Button';
 import { SyncInput } from '@comp/SyncInput';
-import { useDispatch, useSelector } from 'react-redux';
-import { getEmail } from '@/store/selectors';
-import { AuthActions, UserActions } from '@/store/actions';
-import validator from '@/helpers/validator';
+import { getEmail } from '@store/selectors';
+import { AuthActions, UserActions } from '@store/actions';
+import validator from '@helpers/validator';
 import { Modal } from '@comp/Modal';
 import { Form } from '@comp/Form';
 import { Input } from '@comp/Input';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorChangePasswordForm } from '@/helpers/validatorChangePasswordForm';
+import { useForm } from '@use/form';
+import { validatorChangePasswordForm } from '@helpers/validator/form/changePassword';
+import { useTranslation } from 'react-i18next';
 
-interface IAccount {
-
+interface IFormValidatedState {
+  oldPassword: string;
+  newPassword: string;
 }
 
 const initialState = {
@@ -21,7 +24,8 @@ const initialState = {
   newPassword: '',
 };
 
-export const Account: FC<IAccount> = () => {
+export const Account: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const email = useSelector(getEmail);
 
@@ -31,9 +35,7 @@ export const Account: FC<IAccount> = () => {
     setIsOpenModal(true);
   };
 
-  const handlePositive = () => {
-    // console.log('===vakues', values);
-  };
+  const handlePositive = () => { };
 
   const handleNegative = () => {
     setIsOpenModal(false);
@@ -43,26 +45,22 @@ export const Account: FC<IAccount> = () => {
     setIsOpenModal(false);
   };
 
-  const handleSubmitForm = ({ oldPassword, newPassword }: IFormValues) => {
-    console.log('===handleSubmitForm', oldPassword, newPassword);
-    dispatch(AuthActions.changePassword({
-      oldPassword: oldPassword!,
-      newPassword: newPassword!,
-    }));
-  };
-
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorChangePasswordForm);
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [AuthActions.changePassword]),
+    validatorChangePasswordForm,
+  );
 
   return (
     <>
-      <h1 className="settings__title">Account</h1>
+      <h1 className="settings__title">{t('Account')}</h1>
       <div>
         <SyncInput
           type="email"
           name="email"
-          label="Email"
+          label={t('Email')}
           isLight
           initialValue={email}
           action={UserActions.updateEmail}
@@ -72,14 +70,14 @@ export const Account: FC<IAccount> = () => {
         <div className="input">
           <div className="input__wrapper">
             <div className="input__inner">
-              <span className="input__label">Password</span>
+              <span className="input__label">{t('Password')}</span>
               <div className="input__holder">
                 <Button
-                  type="submit"
+                  type="button"
                   isMaxWidth
                   onClick={handleClick}
                 >
-                  Change password
+                  {t('Change password')}
                 </Button>
               </div>
             </div>
@@ -88,26 +86,24 @@ export const Account: FC<IAccount> = () => {
       </div>
       <Modal
         isOpen={isOpenModal}
-        negative="Cancel"
-        positive="Change Password"
+        negative={t('Cancel')}
+        positive={t('Change Password')}
         onPositive={handlePositive}
         onNegative={handleNegative}
         onClose={handleClose}
         type="submit"
         renderWrapper={(children) => (
-          <Form
-            handleSubmit={handleSubmit}
-          >
+          <Form handleSubmit={handleSubmit}>
             {children}
           </Form>
         )}
       >
         <h1 className="dialog__title">
-          Change password
+          {t('Change password')}
         </h1>
         <Input
           type="password"
-          placeholder="Old password"
+          placeholder={t('Old password')}
           touched={touches.oldPassword}
           error={errors.oldPassword}
           name="oldPassword"
@@ -118,7 +114,7 @@ export const Account: FC<IAccount> = () => {
         />
         <Input
           type="password"
-          placeholder="New password"
+          placeholder={t('New password')}
           touched={touches.newPassword}
           error={errors.newPassword}
           name="newPassword"

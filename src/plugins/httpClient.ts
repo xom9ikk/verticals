@@ -2,8 +2,8 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { IRefreshResponse } from '@/types/api';
-import { IHttpClient } from '@/inversify/interfaces/httpClient';
+import { IRefreshResponse } from '@type/api';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { storage } from './storage';
 
 const { API_URL } = process.env;
@@ -17,7 +17,6 @@ interface IPairTokens {
   token: string;
   refreshToken: string;
 }
-
 @injectable()
 export class HttpClient implements IHttpClient {
   client: AxiosInstance;
@@ -127,6 +126,9 @@ export class HttpClient implements IHttpClient {
   private static shouldRetry(error: any) {
     const token = storage.getToken();
     if (!token) {
+      return false;
+    }
+    if (!error.response) {
       return false;
     }
     const rejectedToken = error?.response?.config?.headers?.Authorization?.replace(AUTH_PREFIX, '');

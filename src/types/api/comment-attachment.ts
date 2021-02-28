@@ -1,8 +1,8 @@
-import { ICommentAttachment, ICommentAttachments } from '@/types/entities';
+import { ICommentAttachment, ICommentAttachments } from '@type/entities';
 import { IServerResponse } from './response';
 
 export interface IGetCommentAttachmentsByTodoIdRequest {
-  columnId: number;
+  todoId: number;
 }
 
 export type IGetCommentAttachmentsByTodoIdResponse = IServerResponse<{
@@ -11,7 +11,7 @@ export type IGetCommentAttachmentsByTodoIdResponse = IServerResponse<{
 
 export interface IUploadCommentAttachmentRequest {
   commentId: number;
-  file: File;
+  file: FormData;
 }
 
 export type IUploadCommentAttachmentResponse = IServerResponse<ICommentAttachment>;

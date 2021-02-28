@@ -1,4 +1,4 @@
-import { IComments } from '@/types/entities';
+import { IComments } from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllCommentsResponse = IServerResponse<{
@@ -16,8 +16,7 @@ export type IGetCommentsByTodoIdResponse = IServerResponse<{
 export interface ICreateCommentRequest {
   todoId: number;
   text: string;
-  replyCommentId: number;
-  files?: FileList | null;
+  replyCommentId?: number;
 }
 
 export type ICreateCommentResponse = IServerResponse<{
@@ -25,13 +24,13 @@ export type ICreateCommentResponse = IServerResponse<{
 }>;
 
 export interface IRemoveCommentRequest {
-  id: string;
+  id: number;
 }
 
 export type IRemoveCommentResponse = IServerResponse;
 
 export interface IUpdateCommentRequest {
-  id: string;
+  id: number;
   text?: string;
 }
 

@@ -5,10 +5,12 @@
   transition: background .1s ease-in-out;
   cursor: pointer;
   font-size: 14px;
+
   &__title {
     display: flex;
-    padding: 10px;
-    color: $text-light;
+    padding: 10px 10px 10px;
+    color: $text;
+
     img {
       width: 18px;
       height: 18px;
@@ -16,15 +18,12 @@
       filter: grayscale(1) brightness(1.4);
     }
   }
+
   &__inner {
-    hr {
-      margin: 0 10px 5px;
-      border: 1px solid rgba(0,0,0,0.06);
-    }
     padding: 0 10px 10px;
   }
+
   &:hover {
     background: $hover-color;
   }
-
 }

@@ -1,13 +1,23 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
+import useWith from 'ramda/src/useWith';
 import { Input } from '@comp/Input';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { IFormValues, useForm } from '@/use/form';
-import { validatorRegisterForm } from '@/helpers/validatorRegisterForm';
+import { useForm } from '@use/form';
 import { Divider } from '@comp/Divider';
-import { AuthActions } from '@/store/actions';
+import { AuthActions } from '@store/actions';
+import { validatorRegisterForm } from '@helpers/validator/form/register';
+import { useTranslation } from 'react-i18next';
+
+interface IFormValidatedState {
+  name: string;
+  surname: string;
+  email: string;
+  username: string;
+  password: string;
+}
 
 const initialState = {
   name: '',
@@ -18,33 +28,26 @@ const initialState = {
 };
 
 export const Register: FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const handleSubmitForm = ({
-    name, surname, email, username, password,
-  } : IFormValues) => {
-    dispatch(AuthActions.signUp({
-      name: name!,
-      surname: surname!,
-      email: email!,
-      username: username!,
-      password: password!,
-    }));
-  };
 
   const {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
-  } = useForm(initialState, handleSubmitForm, validatorRegisterForm);
+  } = useForm<IFormValidatedState>(
+    initialState,
+    useWith(dispatch, [AuthActions.signUp]),
+    validatorRegisterForm,
+  );
 
   return (
     <Form
-      title="Hi there!"
-      subtitle="Please create your account."
+      title={t('Hi there!')}
+      subtitle={t('Please create your account.')}
       handleSubmit={handleSubmit}
     >
       <Input
         type="text"
-        placeholder="First name"
+        placeholder={t('First name')}
         touched={touches.name}
         error={errors.name}
         name="name"
@@ -54,7 +57,7 @@ export const Register: FC = () => {
       />
       <Input
         type="text"
-        placeholder="Last name"
+        placeholder={t('Last name')}
         touched={touches.surname}
         error={errors.surname}
         name="surname"
@@ -64,7 +67,7 @@ export const Register: FC = () => {
       />
       <Input
         type="text"
-        placeholder="Enter your email..."
+        placeholder={t('Enter your email...')}
         touched={touches.email}
         error={errors.email}
         name="email"
@@ -74,7 +77,7 @@ export const Register: FC = () => {
       />
       <Input
         type="text"
-        placeholder="Username"
+        placeholder={t('Username')}
         touched={touches.username}
         error={errors.username}
         name="username"
@@ -84,7 +87,7 @@ export const Register: FC = () => {
       />
       <Input
         type="password"
-        placeholder="Password"
+        placeholder={t('Password')}
         touched={touches.password}
         error={errors.password}
         name="password"
@@ -106,7 +109,7 @@ export const Register: FC = () => {
       >
         <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
-        Sign in with Google
+        {t('Sign in with Google')}
       </Button>
     </Form>
   );

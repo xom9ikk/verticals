@@ -1,7 +1,7 @@
 import {
   ISearchByTodoTitleRequest,
   ISearchByTodoTitleResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface ISearchService {
   searchByTodoTitle(body: ISearchByTodoTitleRequest): Promise<ISearchByTodoTitleResponse>;

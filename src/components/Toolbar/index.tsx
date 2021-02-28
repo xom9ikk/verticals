@@ -4,10 +4,13 @@ import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { Submenu } from '@comp/Submenu';
-import { AuthActions, SystemActions } from '@/store/actions';
-import { EnumLanguage } from '@/types/entities';
-import { forwardTo } from '@/router/history';
-import { getLanguage } from '@/store/selectors';
+import { AuthActions, SystemActions } from '@store/actions';
+import { EnumLanguage } from '@type/entities';
+import { redirectTo } from '@router/history';
+import { getLanguage } from '@store/selectors';
+import { ControlButton } from '@comp/ControlButton';
+import { useTranslation } from 'react-i18next';
+import { LANGUAGES } from '@/constants';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;
@@ -25,19 +28,15 @@ enum EnumToolbarActions {
 }
 
 export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isPinSidebar, setIsPinSidebar] = useState<boolean>(true);
   const language = useSelector(getLanguage);
 
-  const hidePopup = () => {
-    dispatch(SystemActions.setIsOpenPopup(false));
-    setIsHover(false);
-  };
-
   const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick.svg' : '');
 
-  const menuButtonClickHandler = (action: EnumToolbarActions, payload?: any) => {
+  const handleMenuButtonClick = (action: EnumToolbarActions, payload?: any) => {
     switch (action) {
       case EnumToolbarActions.NewWorkspace: {
         // TODO:
@@ -51,7 +50,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.AccountSettings: {
-        forwardTo('/settings/account');
+        redirectTo('/settings/account');
         break;
       }
       case EnumToolbarActions.ChangeLanguage: {
@@ -76,7 +75,6 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
       }
       default: break;
     }
-    hidePopup();
   };
 
   return (
@@ -86,95 +84,75 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
       onMouseOut={() => setIsHover(false)}
     >
       <div className="toolbar__inner">
-        <Menu
+        <ControlButton
           imageSrc="/assets/svg/add.svg"
-          text="New workspace"
+          text={t('New workspace')}
           alt="add"
           isMaxWidth
           isHoverBlock={isHover}
-          onClick={() => menuButtonClickHandler(EnumToolbarActions.NewWorkspace)}
+          onClick={() => handleMenuButtonClick(EnumToolbarActions.NewWorkspace)}
         />
         <Menu
+          id="preferences"
           imageSrc="/assets/svg/filter.svg"
           alt="preferences"
-          tooltip="Preferences"
+          tooltip={t('Preferences')}
           isHoverBlock={isHover}
           imageSize={24}
           size={36}
           position="top"
           isAbsolute={false}
+          onSelect={handleMenuButtonClick}
         >
           <MenuItem
-            text={`${isPinSidebar ? 'Unpin' : 'Pin'} Sidebar`}
+            text={`${isPinSidebar ? t('Unpin Sidebar') : t('Pin Sidebar')}`}
             imageSrc="/assets/svg/menu/hide-sidebar.svg"
-            onClick={() => menuButtonClickHandler(EnumToolbarActions.SwitchSidebar)}
+            action={EnumToolbarActions.SwitchSidebar}
           />
           <MenuItem
-            text="Account settings"
+            text={t('Account settings')}
             imageSrc="/assets/svg/menu/profile-settings.svg"
-            onClick={() => menuButtonClickHandler(EnumToolbarActions.AccountSettings)}
+            action={EnumToolbarActions.AccountSettings}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-
           <Submenu
-            text="Language: English"
+            text={`${t('Language')}: ${LANGUAGES[language]}`}
             imageSrc="/assets/svg/menu/language.svg"
           >
-            <MenuItem
-              text="English"
-              hintImageSrc={getTickSvg(EnumLanguage.English)}
-              isColoredHintImage
-              onClick={() => menuButtonClickHandler(
-                EnumToolbarActions.ChangeLanguage, EnumLanguage.English,
-              )}
-            />
-            <MenuItem
-              text="Русский"
-              hintImageSrc={getTickSvg(EnumLanguage.Russian)}
-              isColoredHintImage
-              onClick={() => menuButtonClickHandler(
-                EnumToolbarActions.ChangeLanguage, EnumLanguage.Russian,
-              )}
-            />
-            <MenuItem
-              text="Français"
-              hintImageSrc={getTickSvg(EnumLanguage.French)}
-              isColoredHintImage
-              onClick={() => menuButtonClickHandler(
-                EnumToolbarActions.ChangeLanguage, EnumLanguage.French,
-              )}
-            />
-            <MenuItem
-              text="Español"
-              hintImageSrc={getTickSvg(EnumLanguage.Spanish)}
-              isColoredHintImage
-              onClick={() => menuButtonClickHandler(
-                EnumToolbarActions.ChangeLanguage, EnumLanguage.Spanish,
-              )}
-            />
+            {
+              LANGUAGES.map((lng, index) => (
+                <MenuItem
+                  text={lng}
+                  hintImageSrc={getTickSvg(index)}
+                  isColoredHintImage
+                  action={EnumToolbarActions.ChangeLanguage}
+                  payload={index}
+                />
+              ))
+            }
           </Submenu>
           <Submenu
-            text="More"
+            text={t('More')}
             imageSrc="/assets/svg/dots.svg"
           >
             <MenuItem
-              text="Write to developer"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.WriteToDeveloper)}
+              text={t('Write to developer')}
+              action={EnumToolbarActions.WriteToDeveloper}
             />
             <MenuItem
-              text="Terms of Service"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.TermsOfService)}
+              text={t('Terms of Service')}
+              action={EnumToolbarActions.TermsOfService}
             />
             <MenuItem
-              text="Privacy Policy"
-              onClick={() => menuButtonClickHandler(EnumToolbarActions.PrivacyPolicy)}
+              text={t('Privacy Policy')}
+              action={EnumToolbarActions.PrivacyPolicy}
             />
           </Submenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuItem
-            text="Log out"
+            text={t('Logout')}
             imageSrc="/assets/svg/menu/logout.svg"
-            onClick={() => menuButtonClickHandler(EnumToolbarActions.Logout)}
+            action={EnumToolbarActions.Logout}
           />
         </Menu>
       </div>

@@ -1,5 +1,5 @@
-import { createSelector } from 'reselect';
-import { IRootState } from '@/store/state';
+import { createSelector } from '@reduxjs/toolkit';
+import { IRootState } from '@store/reducers';
 
 export const getUsername = (state: IRootState) => state.user.username;
 export const getEmail = (state: IRootState) => state.user.email;

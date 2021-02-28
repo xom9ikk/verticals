@@ -1,33 +1,43 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useEffect, useMemo, useRef,
+  FC, useEffect, useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useParams } from 'react-router-dom';
-import { RouteWrapper } from '@/router/router';
-import { SettingsLayout } from '@/layouts/Settings';
+import { RouteWrapper } from '@router/router';
+import { SettingsLayout } from '@layouts/Settings';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
-import { Account } from '@/pages/settings/Account';
-import { Profile } from '@/pages/settings/Profile';
+import { Account } from '@pages/settings/Account';
+import { Profile } from '@pages/settings/Profile';
 import {
   SystemActions,
   BoardsActions,
-  // ColumnsActions,
-  // TodosActions,
   UserActions,
-} from '@/store/actions';
+  ColumnsActions,
+  TodosActions,
+} from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
-import { useReadableId } from '@/use/readableId';
-import { forwardTo } from '@/router/history';
-import { getActiveBoardId, getActiveTodoId, getUsername } from '@/store/selectors';
+import { useReadableId } from '@use/readableId';
+import { redirectTo } from '@router/history';
+import {
+  getActiveBoardId,
+  getActiveTodoId,
+  getUsername,
+} from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
+import { useValueRef } from '@use/valueRef';
+import useKeys from '@rooks/use-keys';
 
-// @ts-ignore
-export const MainLayout: FC<{}> = () => {
-  const { boardId, todoId } = useParams();
+interface IMainLayoutURLParams {
+  boardId?: string;
+  todoId?: string;
+}
+
+export const MainLayout: FC = () => {
+  const { boardId, todoId } = useParams<IMainLayoutURLParams>();
 
   const dispatch = useDispatch();
 
@@ -35,70 +45,62 @@ export const MainLayout: FC<{}> = () => {
   const activeTodoId = useSelector(getActiveTodoId);
   const username = useSelector(getUsername);
 
+  const refBoardId = useValueRef(boardId);
+  const refActiveTodoId = useValueRef(activeTodoId);
+  const refUsername = useValueRef(username);
+
   const { toNumericId } = useReadableId();
-  const refBoardId = useRef(boardId);
-  const refActiveTodoId = useRef(activeTodoId);
-  const refUsername = useRef(username);
+
+  const closePopups = () => {
+    // dispatch(SystemActions.setIsOpenPopup(false));
+    // dispatch(SystemActions.setEditableCardId(false));
+    // dispatch(SystemActions.setEditableColumnId(null));
+    // dispatch(SystemActions.setEditableBoardId(false));
+  };
+
+  const closePopupsAndEditable = () => {
+    closePopups();
+    dispatch(BoardsActions.removeTemp());
+    dispatch(ColumnsActions.removeTemp());
+    dispatch(TodosActions.removeTemp());
+    const isCardOpened = !!refActiveTodoId.current;
+    if (isCardOpened) {
+      redirectTo(`/${refUsername.current}/${refBoardId.current}`);
+    }
+  };
+
+  // const handleClick = (event: any) => {
+  //   if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
+  // };
+
+  useKeys(['Escape'], closePopupsAndEditable); // TODO: uncomment
 
   useEffect(() => {
-    const numericBoardId = boardId === 'trash'
-      ? TRASH_BOARD_ID
-      : boardId !== undefined
-        && !['account', 'profile'].includes(boardId)
-        ? toNumericId(boardId)
-        : null;
-    console.log('numericBoardId', numericBoardId);
-    dispatch(SystemActions.setActiveBoardId(numericBoardId));
-    dispatch(SystemActions.setActiveBoardReadableId(boardId));
+    if (boardId) {
+      const numericBoardId = boardId === 'trash'
+        ? TRASH_BOARD_ID
+        : boardId !== undefined
+          && !['account', 'profile'].includes(boardId)
+          ? toNumericId(boardId)
+          : null;
+      console.log('numericBoardId', numericBoardId);
+      dispatch(SystemActions.setActiveBoardId(numericBoardId));
+      dispatch(SystemActions.setActiveBoardReadableId(boardId));
+    }
   }, [boardId]);
 
   useEffect(() => {
-    const numericTodoId = todoId !== undefined ? toNumericId(todoId) : null;
+    let numericTodoId = null;
+    if (todoId) {
+      numericTodoId = toNumericId(todoId);
+      dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
+    }
     dispatch(SystemActions.setActiveTodoId(numericTodoId));
-    dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
   }, [todoId]);
 
   useEffect(() => {
     dispatch(UserActions.fetchMe());
     dispatch(BoardsActions.fetchAll());
-  }, []);
-
-  const closePopupsAndEditable = () => {
-    console.log('closePopupsAndEditable');
-    dispatch(SystemActions.setIsOpenPopup(false));
-    dispatch(SystemActions.setIsEditableCard(false));
-    dispatch(SystemActions.setIsEditableColumn(false));
-    dispatch(SystemActions.setIsEditableBoard(false));
-    // dispatch(BoardsActions.removeTemp()); // TODO: fix
-    // dispatch(ColumnsActions.removeTemp()); // TODO: fix
-    // dispatch(TodosActions.removeTemp()); // TODO: fix
-    const isCardOpened = !!refActiveTodoId.current;
-    if (isCardOpened) {
-      forwardTo(`/${refUsername.current}/${refBoardId.current}`);
-    }
-  };
-
-  const keydownHandler = (event: any) => {
-    switch (event.code) {
-      case 'Escape': {
-        closePopupsAndEditable();
-        break;
-      }
-      default: break;
-    }
-  };
-
-  const clickHandler = (event: any) => {
-    if (event.isTrusted) closePopupsAndEditable();
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', keydownHandler);
-    window.addEventListener('click', clickHandler);
-    return () => {
-      window.removeEventListener('keydown', keydownHandler);
-      window.removeEventListener('click', clickHandler);
-    };
   }, []);
 
   const memoSidebar = useMemo(() => (
@@ -115,7 +117,6 @@ export const MainLayout: FC<{}> = () => {
         layout={SettingsLayout}
         component={() => <SuspenseWrapper component={Account} />}
         isPrivate
-        redirectPath="/auth/login"
         exact
       />
       <RouteWrapper
@@ -123,7 +124,6 @@ export const MainLayout: FC<{}> = () => {
         layout={SettingsLayout}
         component={() => <SuspenseWrapper component={Profile} />}
         isPrivate
-        redirectPath="/auth/login"
         exact
       />
       <Route

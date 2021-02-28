@@ -1,6 +1,6 @@
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import React, { FC } from 'react';
-import { storage } from '@/plugins/storage';
+import { storage } from '@plugins/storage';
 
 interface IRoutePropsWrapper extends RouteProps {
   component?: React.FC;

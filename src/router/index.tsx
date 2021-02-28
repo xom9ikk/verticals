@@ -2,23 +2,19 @@ import React, { FC } from 'react';
 import {
   Router, Switch,
 } from 'react-router-dom';
-import { lazy } from '@/router/lazy';
-import { history } from '@/router/history';
-import { RouteWrapper } from '@/router/router';
+import { lazy } from '@router/lazy';
+import { history } from '@router/history';
+import { RouteWrapper } from '@router/router';
 import { suspense } from '@comp/SuspenseWrapper';
-import { NotFound } from '@/pages/404';
-import { AuthLayout } from '@/layouts/auth';
-// import { Main } from '@/pages/DELETED_main';
-// import { MainLayout } from '@/layouts/main';
-// import { SettingsLayout } from '@/layouts/Settings';
+import { NotFound } from '@pages/404';
+import { AuthLayout } from '@layouts/auth';
 
-export const MainLayout = lazy(() => import('@/layouts/main'), (module) => module.MainLayout);
-// export const Main = lazy(() => import('@/pages/main'), (module) => module.Main);
-export const Register = lazy(() => import('@/pages/auth/Register'), (module) => module.Register);
-export const Login = lazy(() => import('@/pages/auth/Login'), (module) => module.Login);
-export const Reset = lazy(() => import('@/pages/auth/Reset'), (module) => module.Reset);
-export const Account = lazy(() => import('@/pages/settings/Account'), (module) => module.Account);
-export const Profile = lazy(() => import('@/pages/settings/Profile'), (module) => module.Profile);
+export const MainLayout = lazy(() => import('@layouts/main'), (module) => module.MainLayout);
+export const Register = lazy(() => import('@pages/auth/Register'), (module) => module.Register);
+export const Login = lazy(() => import('@pages/auth/Login'), (module) => module.Login);
+export const Reset = lazy(() => import('@pages/auth/Reset'), (module) => module.Reset);
+export const Account = lazy(() => import('@pages/settings/Account'), (module) => module.Account);
+export const Profile = lazy(() => import('@pages/settings/Profile'), (module) => module.Profile);
 
 export const MainRouter: FC = () => (
   <Router history={history}>
@@ -47,19 +43,9 @@ export const MainRouter: FC = () => (
       <RouteWrapper
         path="/:userId?/:boardId?/(card)?/:todoId?"
         layout={suspense(MainLayout)}
-          // component={() => <SuspenseWrapper component={Main} />}
         isPrivate
         redirectPath="/auth/login"
-          // exact
       />
-      {/* <RouteWrapper */}
-      {/*  path="/" */}
-      {/*  layout={suspense(MainLayout)} */}
-      {/*    // component={() => <SuspenseWrapper component={Main} />} */}
-      {/*  isPrivate */}
-      {/*  redirectPath="/auth/login" */}
-      {/*    // exact */}
-      {/* /> */}
       <RouteWrapper
         layout={AuthLayout}
         component={NotFound}

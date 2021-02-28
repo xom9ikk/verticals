@@ -1,42 +1,35 @@
-import { createAction } from 'redux-actions';
+import { createAction, PrepareAction } from '@reduxjs/toolkit';
 import {
   IFetchCommentAttachmentsByTodoId,
   ISetCommentAttachments,
   IAddCommentAttachment,
   IUploadCommentAttachmentsFiles,
   IUploadCommentAttachmentsFile,
+  IUploadCommentAttachmentsFileRaw,
   IRemoveCommentAttachment,
-} from '@/types/actions';
+} from '@type/actions';
 
-enum Type {
-  FETCH_BY_TODO_ID = 'COMMENT_ATTACHMENTS/FETCH_BY_TODO_ID',
-  MERGE = 'COMMENT_ATTACHMENTS/MERGE',
-  ADD = 'COMMENT_ATTACHMENTS/ADD',
-  UPLOAD_FILES = 'COMMENT_ATTACHMENTS/UPLOAD_FILES',
-  UPLOAD_FILE = 'COMMENT_ATTACHMENTS/UPLOAD_FILE',
-  REMOVE = 'COMMENT_ATTACHMENTS/REMOVE',
-}
-
-const fetchByTodoId = createAction<IFetchCommentAttachmentsByTodoId>(Type.FETCH_BY_TODO_ID);
-const merge = createAction<ISetCommentAttachments>(Type.MERGE);
-const add = createAction<IAddCommentAttachment>(Type.ADD);
-const uploadFiles = createAction<IUploadCommentAttachmentsFiles>(Type.UPLOAD_FILES);
-const uploadFile = createAction(
-  Type.UPLOAD_FILE,
-  (payload: IUploadCommentAttachmentsFile) => {
+const fetchByTodoId = createAction<IFetchCommentAttachmentsByTodoId>('COMMENT_ATTACHMENTS/FETCH_BY_TODO_ID');
+const merge = createAction<ISetCommentAttachments>('COMMENT_ATTACHMENTS/MERGE');
+const add = createAction<IAddCommentAttachment>('COMMENT_ATTACHMENTS/ADD');
+const uploadFiles = createAction<IUploadCommentAttachmentsFiles>('COMMENT_ATTACHMENTS/UPLOAD_FILES');
+const uploadFile = createAction<PrepareAction<IUploadCommentAttachmentsFile>>(
+  'COMMENT_ATTACHMENTS/UPLOAD_FILE',
+  (payload: IUploadCommentAttachmentsFileRaw) => { // TODO: move to saga?
     const { commentId, file } = payload;
     const formData = new FormData();
     formData.append(file.name, file);
     return {
-      commentId,
-      file: formData,
+      payload: {
+        commentId,
+        file: formData,
+      },
     };
   },
 );
-const remove = createAction<IRemoveCommentAttachment>(Type.REMOVE);
+const remove = createAction<IRemoveCommentAttachment>('COMMENT_ATTACHMENTS/REMOVE');
 
 export const CommentAttachmentsActions = {
-  Type,
   fetchByTodoId,
   merge,
   add,

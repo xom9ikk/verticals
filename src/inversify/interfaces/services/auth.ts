@@ -8,7 +8,7 @@ import {
   ISignInResponse,
   ISignUpRequest,
   ISignUpResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface IAuthService {
   signUp(body: ISignUpRequest): Promise<ISignUpResponse>;

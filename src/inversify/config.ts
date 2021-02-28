@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
-import { HttpClient } from '@/plugins/httpClient';
-import { IServices } from '@/inversify/interfaces';
+import { HttpClient } from '@plugins/httpClient';
+import { IServices } from '@inversify/interfaces';
 import {
   IAuthService,
   IBoardService,
@@ -10,18 +10,18 @@ import {
   ISearchService,
   ITodoService,
   IUserService,
-} from '@/inversify/interfaces/services';
-import { IHttpClient } from '@/inversify/interfaces/httpClient';
+} from '@inversify/interfaces/services';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { Services } from '@/services';
-import { AuthService } from '@/services/auth';
-import { UserService } from '@/services/user';
-import { BoardService } from '@/services/board';
-import { ColumnService } from '@/services/column';
-import { TodoService } from '@/services/todo';
-import { CommentService } from '@/services/comment';
-import { CommentAttachmentService } from '@/services/comment-attachment';
-import { SearchService } from '@/services/search';
-import { TYPES } from './types';
+import { AuthService } from '@services/auth';
+import { UserService } from '@services/user';
+import { BoardService } from '@services/board';
+import { ColumnService } from '@services/column';
+import { TodoService } from '@services/todo';
+import { CommentService } from '@services/comment';
+import { CommentAttachmentService } from '@services/comment-attachment';
+import { SearchService } from '@services/search';
+import { TYPES } from '@inversify/types';
 
 const container = new Container();
 

@@ -1,4 +1,6 @@
-import { EnumColors, ITodos } from '@/types/entities';
+import {
+  EnumTodoStatus, IColor, ITodos,
+} from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllTodosResponse = IServerResponse<{
@@ -6,10 +8,14 @@ export type IGetAllTodosResponse = IServerResponse<{
 }>;
 
 export interface IGetTodosByBoardIdRequest {
-  columnId: number;
+  boardId: number;
 }
 
 export type IGetTodosByBoardIdResponse = IServerResponse<{
+  todos: ITodos;
+}>;
+
+export type IGetRemovedTodosResponse = IServerResponse<{
   todos: ITodos;
 }>;
 
@@ -17,9 +23,11 @@ export interface ICreateTodoRequest {
   columnId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
-  belowId?: string;
+  status?: EnumTodoStatus;
+  expirationDate?: Date;
+  belowId?: number;
 }
 
 export type ICreateTodoResponse = IServerResponse<{
@@ -28,17 +36,17 @@ export type ICreateTodoResponse = IServerResponse<{
 }>;
 
 export interface IRemoveTodoRequest {
-  id: string;
+  id: number;
 }
 
 export type IRemoveTodoResponse = IServerResponse;
 
 export interface IUpdateTodoRequest {
-  id: string;
-  columnId: number;
+  id: number;
+  // columnId: number;
   title?: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
 }
 
@@ -62,7 +70,7 @@ export type IDuplicateTodoResponse = IServerResponse<{
   columnId: number;
   title: string;
   description?: string;
-  color?: EnumColors;
+  color?: IColor;
   isCollapsed?: boolean;
-  belowId?: string;
+  belowId?: number;
 }>;

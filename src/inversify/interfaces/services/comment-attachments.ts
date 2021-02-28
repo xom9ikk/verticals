@@ -6,7 +6,7 @@ import {
   IRemoveCommentAttachmentResponse,
   IUploadCommentAttachmentRequest,
   IUploadCommentAttachmentResponse,
-} from '@/types/api';
+} from '@type/api';
 
 export interface ICommentAttachmentService {
   getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest): Promise<IGetCommentAttachmentsByTodoIdResponse>;

@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+import { useHover } from '@use/hover';
 
 interface IColorSelector {
   color: string;
@@ -7,21 +8,20 @@ interface IColorSelector {
 }
 
 export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) => {
-  const [isHover, setIsHover] = useState<boolean>(false);
+  const { isHovering, hoveringProps } = useHover();
   return (
     <button
+      {...hoveringProps}
       className="color-picker__selector"
       style={{
         background: color,
-        boxShadow: isHover || isActive
+        boxShadow: isHovering || isActive
           ? '#ffffff 0 0 0 2px, $ 0 0 0 4px'.replace('$', color)
           : '',
       }}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
       onClick={() => onClick(color)}
     >
-      { isActive && isHover && <img src="/assets/svg/menu/cross.svg" alt="cross" /> }
+      { isActive && isHovering && <img src="/assets/svg/menu/cross.svg" alt="cross" /> }
     </button>
   );
 };

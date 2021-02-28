@@ -1,4 +1,4 @@
-import { ICommentAttachments } from '@/types/entities/comment-attachment';
+import { ICommentAttachments } from '@type/entities/comment-attachment';
 
 export enum EnumLanguage {
   English,
@@ -16,10 +16,10 @@ export interface ISystem {
   isLoadedBoards: boolean;
   isLoadedColumns: boolean;
   isLoadedTodos: boolean;
-  isOpenPopup: boolean;
-  isEditableCard: boolean;
-  isEditableColumn: boolean;
-  isEditableBoard: boolean;
+  activePopupId: string | null;
+  editableBoardId: number | null;
+  editableColumnId: number | null;
+  editableCardId: number | string | null;
   isSearchMode: boolean;
   language: EnumLanguage;
   activeTodoId: number | null;
@@ -38,4 +38,10 @@ export interface ISystem {
     index: number;
   } | null;
   isOpenFormattingHelp: boolean;
+}
+
+export type ID = number;
+
+export interface IPositions {
+  [id: string]: Array<ID>;
 }

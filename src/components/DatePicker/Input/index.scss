@@ -1,0 +1,20 @@
+.datepicker-input {
+  outline: none;
+  border: none;
+
+  line-height: 20rem;
+  letter-spacing: -0.5px;
+  width: 100%;
+  padding: 0 10px;
+  height: 44px;
+  font-size: 16px;
+
+  &::placeholder {
+    opacity: 0.5;
+  }
+
+  &__wrapper {
+    padding: 0 0 0 10px;
+    height: 48px;
+  }
+}

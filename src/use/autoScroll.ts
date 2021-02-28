@@ -19,19 +19,27 @@ export const useAutoScroll = (
   const [isLimit, setIsLimit] = useState<any>(true);
 
   const scrollToTop = () => {
-    ref.current.scrollTop = 0;
+    if (ref.current) {
+      ref.current.scrollTop = 0;
+    }
   };
 
   const scrollToBottom = () => {
-    ref.current.scrollTop = ref.current.scrollHeight;
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
   };
 
   const scrollToRight = () => {
-    ref.current.scrollLeft = ref.current.scrollWidth;
+    if (ref.current) {
+      ref.current.scrollLeft = ref.current.scrollWidth;
+    }
   };
 
   const scrollToLeft = () => {
-    ref.current.scrollLeft = 0;
+    if (ref.current) {
+      ref.current.scrollLeft = 0;
+    }
   };
 
   const handleScroll = () => {

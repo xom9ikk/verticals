@@ -1,4 +1,6 @@
 /* eslint-disable class-methods-use-this */
+import { EnumLanguage } from '@type/entities';
+
 interface IStorage {
   setToken(token: string): void;
   getToken(): string;
@@ -7,6 +9,16 @@ interface IStorage {
 }
 
 class Storage implements IStorage {
+  setLanguage(language: EnumLanguage) {
+    console.log('set lss lang', language);
+    return Storage.set('language', language);
+  }
+
+  getLanguage(): EnumLanguage {
+    const languageString = Storage.get('language');
+    return parseInt(languageString, 10);
+  }
+
   setToken(token: string) {
     return Storage.set('token', token);
   }

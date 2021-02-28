@@ -1,78 +1,73 @@
 import React, { FC, useState } from 'react';
 import {
-  EnumColors, EnumTodoStatus, EnumTodoType, ITodos,
-} from '@/types/entities';
+  EnumTodoType, ITodo,
+} from '@type/entities';
 import { Card } from '@comp/Card';
+import { useSelector } from 'react-redux';
+import { getActiveTodoId, getEditableCardId } from '@store/selectors';
+import { Divider } from '@comp/Divider';
+import { useTranslation } from 'react-i18next';
 
 interface IArchiveContainer {
-  archivedTodos?: ITodos;
+  archivedTodos: Array<ITodo>;
   cardType: EnumTodoType;
-  onExitFromEditable: (
-    id: number,
-    title?: string,
-    description?: string,
-    status?: EnumTodoStatus,
-    color?: EnumColors) => void;
 }
 
 export const ArchiveContainer: FC<IArchiveContainer> = ({
   archivedTodos,
   cardType,
-  onExitFromEditable,
 }) => {
+  const { t } = useTranslation();
+
+  const activeTodoId = useSelector(getActiveTodoId);
+  const editableCardId = useSelector(getEditableCardId);
+
   const [isOpenArchived, setIsOpenArchived] = useState<boolean>(false);
 
-  return (
-    <>
+  const handleClick = () => {
+    setIsOpenArchived((prev) => !prev);
+  };
+
+  return archivedTodos.length > 0 ? (
+    <div className="archive-container">
+      <div
+        className="archive-container__title"
+        onClick={handleClick}
+      >
+        <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
+        {t('{{count}} cards archived', { count: archivedTodos.length })}
+      </div>
       {
-        archivedTodos && archivedTodos?.length > 0 && (
-          <div
-            className="archive-container"
-          >
-            <div
-              className="archive-container__title"
-              onClick={() => setIsOpenArchived((prev) => !prev)}
-            >
-              <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
-              {archivedTodos.length}
-              {' '}
-              cards archived
-            </div>
-            {
-              isOpenArchived && (
-              <div className="archive-container__inner">
-                <hr />
-                {
-                  archivedTodos
-                    ?.map((todo) => (
-                      <Card
-                        cardType={cardType}
-                        key={todo.id}
-                        id={todo.id}
-                        title={todo.title}
-                        description={todo.description}
-                        status={todo.status}
-                        color={todo.color}
-                        isArchived={todo.isArchived}
-                        commentsCount={todo.commentsCount}
-                        imagesCount={todo.imagesCount}
-                        attachmentsCount={todo.attachmentsCount}
-                        invertColor
-                        onExitFromEditable={
-                          (newTitle, newDescription,
-                            newStatus, newColor) => onExitFromEditable(
-                            todo.id, newTitle, newDescription, newStatus, newColor,
-                          )
-                        }
-                      />
-                    ))
-                }
-              </div>
-              )
-            }
-          </div>
-        )
-      }
-    </>
-  );
+      isOpenArchived && (
+      <div className="archive-container__inner">
+        <Divider verticalSpacer={0} horizontalSpacer={0} style={{ marginBottom: 10 }} />
+        {
+          archivedTodos?.map((todo) => (
+            <Card
+              key={todo.id}
+              todoId={todo.id}
+              columnId={todo.columnId}
+              cardType={cardType}
+              title={todo.title}
+              description={todo.description}
+              status={todo.status}
+              color={todo.color}
+              isArchived={todo.isArchived}
+              isNotificationsEnabled={todo.isNotificationsEnabled}
+              isRemoved={todo.isRemoved}
+              expirationDate={todo.expirationDate}
+              commentsCount={todo.commentsCount}
+              imagesCount={todo.imagesCount}
+              attachmentsCount={todo.attachmentsCount}
+              isActive={todo.id === activeTodoId}
+              isEditable={todo.id === editableCardId}
+              invertColor
+            />
+          ))
+        }
+      </div>
+      )
+    }
+    </div>
+  ) : null;
 };

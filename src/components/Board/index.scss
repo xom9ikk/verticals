@@ -1,4 +1,4 @@
-.board-item {
+.board {
   $block: &;
 
   display: flex;
@@ -14,21 +14,6 @@
   //margin: 0 0 0 6px;
   border-radius: 6px;
   transition: background .1s ease-in-out;
-  &__menu {
-    position: absolute;
-    right: 6px;
-  }
-  &__text {
-    font-family: 'Nunito Regular', sans-serif;
-    font-size: 16px;
-    margin-left: 10px;
-    color: rgba(0,0,0,0.8);
-    line-height: 24px;
-    white-space: nowrap;
-    max-width: $column-width - 120;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
   &__counter {
     display: flex;
     justify-content: center;
@@ -39,6 +24,9 @@
     border-radius: 20px;
     padding: 3px 5px 3px 5px;
     font-size: 14px;
+    &--active {
+      background: $white !important;
+    }
     img {
       width: 16px;
       height: 16px;
@@ -58,8 +46,8 @@
   &--editable {
     background: $white !important;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 6px;
-    margin : 0 0 8px 0;
-    padding: 6px 10px 6px 10px;
+    margin : 1px 0 8px 0;
+    padding: 6px 10px 6px 6px;
     cursor: pointer;
     border-radius: 6px;
     border: none;

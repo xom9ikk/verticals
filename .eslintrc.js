@@ -8,6 +8,8 @@ module.exports = {
     'project': './tsconfig.json'
   },
   rules: {
+    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['draft'] }],
+    'max-len': ["error", { "code": 120 }],
     'import/extensions': 'off',
     'semi': [2, 'always'],
     'no-console': 'warn',

@@ -5,11 +5,12 @@ import cn from 'classnames';
 import { createPortal } from 'react-dom';
 
 interface IPopup {
-  isOpen: boolean
-  isSubMenu?: boolean
-  isAbsolute: boolean
-  sourceRef: MutableRefObject<any>
+  isOpen: boolean;
+  isSubMenu?: boolean;
+  isAbsolute: boolean;
+  sourceRef: MutableRefObject<any>;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
+  width?: number;
   style?: React.CSSProperties;
 }
 
@@ -26,6 +27,7 @@ export const Popup: FC<IPopup> = ({
   isSubMenu,
   isAbsolute,
   position = 'top',
+  width: defaultWidth = 240,
   style,
   children,
 }) => {
@@ -38,15 +40,15 @@ export const Popup: FC<IPopup> = ({
     <div
       className={cn('popup', {
         [`popup--${position}`]: isSubMenu,
+        'popup--submenu': isSubMenu,
       })}
       style={style}
       onClick={(e) => e.stopPropagation()}
       onDoubleClick={(e) => e.stopPropagation()}
     >
       <div
-        className={cn('popup__inner', {
-          'popup__inner--submenu': isSubMenu,
-        })}
+        className="popup__inner"
+        style={{ width: defaultWidth }}
       >
         {children}
       </div>
@@ -64,7 +66,7 @@ export const Popup: FC<IPopup> = ({
     const coordinates: ICoordinates = {};
     const margin = 6;
 
-    if (observed) {
+    if (observed && sourceRef.current) {
       const {
         top, bottom, left, right, width, height,
       } = sourceRef.current.getBoundingClientRect();
@@ -113,6 +115,7 @@ export const Popup: FC<IPopup> = ({
       zIndex: `${isAbsolute ? 2 : 3}`,
       ...coordinates,
     } as React.CSSProperties;
+
     const content = (
       <div
         ref={((el) => setObserved(el))}
