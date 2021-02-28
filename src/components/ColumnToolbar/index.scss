@@ -1,24 +1,27 @@
 .column-toolbar {
   $block: &;
 
+  position: absolute;
   display: flex;
   flex: 1;
   align-items: center;
-  width: $column-width - 20;
+  width: calc(100% - 20px);
   height: 40px;
-  position: absolute;
   bottom: 0;
   z-index: 1;
   background: $white;
   transition: opacity .1s ease-in-out;
+
   &--invisible {
     opacity: 0;
   }
+
   &__inner {
     display: flex;
     flex: 1;
     justify-content: space-between;
     padding-top: 3px;
+
     &:hover {
       #{$block}__add {
         span {
@@ -27,6 +30,7 @@
       }
     }
   }
+
   &__add {
     display: flex;
     justify-content: center;
@@ -38,20 +42,25 @@
     padding: 8px 10px 8px 10px;
     border-radius: 6px;
     transition: background .1s ease-in-out;
+
     img {
       height: 12px;
       width: 12px;
     }
+
     span {
       color: transparent;
       padding-left: 10px;
       transition: color .1s ease-in-out;
     }
+
     &:hover {
       background: $primary-light;
+
       img {
         filter: sepia(100%) contrast(50%) saturate(400%) hue-rotate(170deg)
       }
+
       span {
         color: $black !important;
       }

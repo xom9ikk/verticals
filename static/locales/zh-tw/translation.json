@@ -177,5 +177,7 @@
   "File": "File",
   "exceeds the maximum allowed size": "exceeds the maximum allowed size",
   "{{count}} cards archived_0": "{{count}} cards archived",
-  "System": "System"
+  "System": "System",
+  "Formatting help": "Formatting help",
+  "Shift+Enter to send": "Shift+Enter to send"
 }

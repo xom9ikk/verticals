@@ -3,13 +3,14 @@ import { MiniGallery } from '@comp/MiniGallery';
 import { CardAttachments } from '@comp/CardAttachments';
 import { ControlButton } from '@comp/ControlButton';
 import { CommentAttachmentsActions } from '@store/actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   getCommentFileAttachmentsByTodoId,
   getCommentImageAttachmentsByTodoId,
   getCommentsByTodoId,
 } from '@store/selectors';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 enum EnumToggleType {
   Files,
@@ -35,9 +36,9 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const comments = useSelector(getCommentsByTodoId(todoId));
-  const imageAttachments = useSelector(getCommentImageAttachmentsByTodoId(todoId));
-  const fileAttachments = useSelector(getCommentFileAttachmentsByTodoId(todoId));
+  const comments = useParamSelector(getCommentsByTodoId, todoId);
+  const imageAttachments = useParamSelector(getCommentImageAttachmentsByTodoId, todoId);
+  const fileAttachments = useParamSelector(getCommentFileAttachmentsByTodoId, todoId);
 
   const commentsCountWithCache = comments?.length || commentsCount;
   const imagesCountWithCache = imageAttachments?.length || imagesCount;

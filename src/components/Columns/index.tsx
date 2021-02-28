@@ -18,6 +18,7 @@ import {
 } from '@store/selectors';
 import { NEW_COLUMN_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 interface IColumns { }
 
@@ -29,7 +30,7 @@ export const Columns: FC<IColumns> = () => {
   const isSearchMode = useSelector(getIsSearchMode);
   // const todos = useSelector(getTodosEntities);
   const activeBoardId = useSelector(getActiveBoardId);
-  const columns = useSelector(getOrderedColumnsByBoardId(activeBoardId));
+  const columns = useParamSelector(getOrderedColumnsByBoardId, activeBoardId);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const isLoadedColumns = useSelector(getIsLoadedColumns);
   const editableColumnId = useSelector(getEditableColumnId);

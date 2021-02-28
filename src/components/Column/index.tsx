@@ -6,7 +6,8 @@ import { ColumnsActions } from '@store/actions';
 import { getBoardCardType, getIsSearchMode } from '@store/selectors';
 import { CardPopup } from '@comp/CardPopup';
 import { ColumnCompact } from '@comp/ColumnCompact';
-import { ColumnWide } from '@comp/ColumnWide';
+import { ColumnResizable } from '@comp/ColumnResizable';
+import { useParamSelector } from '@use/paramSelector';
 
 export enum EnumColumnMode {
   Normal,
@@ -43,7 +44,7 @@ export const Column: FC<IColumn> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const cardType = useSelector(getBoardCardType(boardId));
+  const cardType = useParamSelector(getBoardCardType, boardId);
   const isSearchMode = useSelector(getIsSearchMode);
 
   const handleClick = () => {
@@ -75,7 +76,7 @@ export const Column: FC<IColumn> = ({
             onClick={handleClick}
           />
         ) : (
-          <ColumnWide
+          <ColumnResizable
             snapshot={snapshot}
             provided={provided}
             boardId={boardId}
@@ -85,6 +86,7 @@ export const Column: FC<IColumn> = ({
             title={title}
             description={description}
             mode={mode}
+            cardType={cardType}
             isEditable={isEditable}
             scrollToRight={scrollToRight}
             onClick={handleClick}
@@ -93,7 +95,7 @@ export const Column: FC<IColumn> = ({
     </Draggable>
   ),
   [
-    draggableId, index, isDragDisabled,
+    draggableId, index, isDragDisabled, cardType,
     color, boardId, columnId, belowId, title, description,
     isCollapsed, isEditable, mode, isSearchMode,
   ]);

@@ -17,7 +17,6 @@ interface IPairTokens {
   token: string;
   refreshToken: string;
 }
-
 @injectable()
 export class HttpClient implements IHttpClient {
   client: AxiosInstance;
@@ -127,6 +126,9 @@ export class HttpClient implements IHttpClient {
   private static shouldRetry(error: any) {
     const token = storage.getToken();
     if (!token) {
+      return false;
+    }
+    if (!error.response) {
       return false;
     }
     const rejectedToken = error?.response?.config?.headers?.Authorization?.replace(AUTH_PREFIX, '');

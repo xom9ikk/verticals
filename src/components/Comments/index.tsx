@@ -6,13 +6,14 @@ import { CommentForm } from '@comp/CommentForm';
 import { useAutoScroll, ScrollDirection } from '@use/autoScroll';
 import { useSelector } from 'react-redux';
 import { getActiveTodoId, getCommentsByTodoId } from '@store/selectors';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICommentsWrapper {
 }
 
 export const Comments: FC<ICommentsWrapper> = () => {
   const activeTodoId = useSelector(getActiveTodoId);
-  const comments = useSelector(getCommentsByTodoId(activeTodoId));
+  const comments = useParamSelector(getCommentsByTodoId, activeTodoId);
 
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const [commentsMaxCounter, setCommentsMaxCounter] = useState<number>(0);

@@ -16,13 +16,13 @@ import { useNewValues } from '@use/newValues';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import {
-  getCountTodosByBoardId,
   getIsSearchMode,
   getUsername,
 } from '@store/selectors';
 import { BoardContextMenu } from '@comp/BoardContextMenu';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
+import { BoardCounter } from '@comp/BoardCounter';
 
 interface IBoard {
   boardId: number;
@@ -58,8 +58,8 @@ export const Board: FC<IBoard> = ({
   const { isNewValues } = useNewValues();
 
   const username = useSelector(getUsername);
+
   const isSearchMode = useSelector(getIsSearchMode);
-  const countTodos = useSelector(getCountTodosByBoardId(boardId));
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useState<string>(title);
@@ -159,16 +159,6 @@ export const Board: FC<IBoard> = ({
     }
   }, []);
 
-  const memoCounter = useMemo(() => (
-    <div className={cn('board__counter', {
-      'board__counter--active': isActive,
-    })}
-    >
-      <img src="/assets/svg/board/search.svg" alt="search" />
-      {countTodos}
-    </div>
-  ), [countTodos, isActive]);
-
   return useMemo(() => (
     <div
       ref={boardRef}
@@ -219,7 +209,7 @@ export const Board: FC<IBoard> = ({
             onDoubleClick={handleDoubleClick}
           >
             { isSearchMode
-              ? memoCounter
+              ? <BoardCounter boardId={boardId} isActive={isActive} />
               : boardId === TRASH_BOARD_ID
                 ? null
                 : (
@@ -238,6 +228,6 @@ export const Board: FC<IBoard> = ({
   ), [
     t, isHover, isActive, isEditable,
     titleValue, descriptionValue, snapshot,
-    color, countTodos, icon, username, isSearchMode,
+    color, icon, username, isSearchMode,
   ]);
 };

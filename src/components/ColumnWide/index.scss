@@ -3,44 +3,18 @@
 
   display: flex;
   flex-direction: column;
-  max-width: $column-width;
-  min-width: $column-width;
+  //max-width: $column-width;
+  //min-width: $column-width;
   //height: 100vh;
   padding: 23px 10px;
   border-right: 1px solid rgb(242, 242, 242);
   height: calc(100vh - 15px);
-  overflow-y: scroll;
+  position: relative;
+  //overflow-y: scroll;
+  //&::-webkit-scrollbar {
+  //  width: 0;
+  //}
 
-  &::-webkit-scrollbar {
-    width: 0;
-  }
-
-  &__new-overlay {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 6px;
-    transition: background .1s ease-out;
-    filter: grayscale(1) brightness(1.4);
-    z-index: 1;
-
-    &:hover {
-      background: $primary-light;
-      filter: none;
-    }
-
-    img {
-      height: 12px;
-      width: 12px;
-    }
-  }
 
   &__wrapper {
     position: relative;
@@ -49,6 +23,11 @@
     flex: 1 1 0%;
     border-radius: 6px;
     transition: background .1s ease-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
 
     &--editable {
       box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
@@ -138,6 +117,33 @@
   &__container {
     position: relative;
     height: 100%;
+  }
+
+  &__new-overlay {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 6px;
+    transition: background .1s ease-out;
+    filter: grayscale(1) brightness(1.4);
+    z-index: 1;
+
+    &:hover {
+      background: $primary-light;
+      filter: none;
+    }
+
+    img {
+      height: 12px;
+      width: 12px;
+    }
   }
 
   &--dragging {

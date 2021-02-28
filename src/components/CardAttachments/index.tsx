@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
 import { useDownload } from '@use/download';
 import { getCommentFileAttachmentsByTodoId } from '@store/selectors';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICardAttachments {
   todoId?: number,
@@ -14,7 +14,7 @@ export const CardAttachments: FC<ICardAttachments> = ({
   isCollapse,
 }) => {
   const { download } = useDownload();
-  const attachments = useSelector(getCommentFileAttachmentsByTodoId(todoId));
+  const attachments = useParamSelector(getCommentFileAttachmentsByTodoId, todoId);
 
   return attachments && attachments.length ? (
     <div className={cn('card-attachments', {

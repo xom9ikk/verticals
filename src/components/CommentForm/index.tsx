@@ -17,6 +17,7 @@ import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICommentForm {
   todoId: number | null;
@@ -41,8 +42,8 @@ export const CommentForm: FC<ICommentForm> = ({
   const fullName = useSelector(getFullName);
   const editCommentId = useSelector(getEditCommentId);
   const replyCommentId = useSelector(getReplyCommentId);
-  const commentForReply = useSelector(getCommentById(replyCommentId));
-  const commentForEdit = useSelector(getCommentById(editCommentId));
+  const commentForReply = useParamSelector(getCommentById, replyCommentId);
+  const commentForEdit = useParamSelector(getCommentById, editCommentId);
   const droppedFiles = useSelector(getDroppedFiles);
 
   const [commentText, setCommentText] = useState<string>('');
@@ -232,10 +233,10 @@ export const CommentForm: FC<ICommentForm> = ({
       })}
       >
         <button onClick={handleOpenFormattingHelp}>
-          Formatting help
+          {t('Formatting help')}
         </button>
         <span>
-          Shift+Enter to send
+          {t('Shift+Enter to send')}
         </span>
       </div>
 

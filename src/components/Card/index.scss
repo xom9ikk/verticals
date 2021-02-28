@@ -16,6 +16,7 @@
   &__content {
     display: flex;
     flex: 1;
+    max-width: 100%;
     transition: background .1s ease-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
     border-radius: 6px;
     flex-direction: column;
@@ -113,6 +114,7 @@
     display: flex;
     flex: 1;
     padding-left: 10px;
+    max-width: 100%;
 
     &--editable {
       padding-left: 0;
@@ -126,6 +128,8 @@
     align-items: center;
     flex: 1;
     line-height: 20px;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   &__title {
@@ -134,7 +138,7 @@
     top: 2px;
     margin: 0 5px 0 0;
     max-height: 440px;
-    max-width: $column-width - 100;
+    //max-width: $column-width - 100;
     font-size: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -167,6 +171,7 @@
 
     &--description {
       font-size: 14px;
+      margin: 2px 0;
       color: $text-dark;
     }
 
@@ -185,6 +190,9 @@
 
   &__editable {
     &-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
       padding-left: 2px;
     }
 

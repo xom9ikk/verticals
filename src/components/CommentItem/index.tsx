@@ -25,6 +25,7 @@ import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
 import { useMarkdown } from '@use/markdown';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICommentItem {
   id: number;
@@ -56,9 +57,9 @@ export const CommentItem: FC<ICommentItem> = ({
 
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
-  const replyComment = useSelector(getCommentById(replyCommentId));
+  const replyComment = useParamSelector(getCommentById, replyCommentId);
   const editCommentId = useSelector(getEditCommentId);
-  const attachments = useSelector(getCommentAttachmentsByCommentId(id));
+  const attachments = useParamSelector(getCommentAttachmentsByCommentId, id);
   const [isDoubleClick, setIsDoubleClick] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isShowMore, setIsShowMore] = useState<boolean>(false);

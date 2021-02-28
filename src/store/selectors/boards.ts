@@ -20,5 +20,8 @@ export const getOrderedBoards = createSelector(
 );
 export const getBoardCardType = (boardId?: number | null) => createSelector( // TODO: remove null
   [getBoards],
-  (boards) => boards.entities.find((board) => board.id === boardId)?.cardType ?? EnumTodoType.Checkboxes,
+  (boards) => {
+    console.log('TODO: getBoardCardType');
+    return boards.entities.find((board) => board.id === boardId)?.cardType ?? EnumTodoType.Checkboxes;
+  },
 );

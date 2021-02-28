@@ -32,6 +32,7 @@ import { useDebounce } from '@use/debounce';
 import { useNewValues } from '@use/newValues';
 import { DateBadge } from '@comp/DateBadge';
 import { useTranslation } from 'react-i18next';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -96,8 +97,10 @@ export const Card: FC<ICard> = ({
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const [titleValue, setTitleValue] = useState<string>(title);
   const [descriptionValue, setDescriptionValue] = useState<string>(description);
+  const [expirationDateValue, setExpirationDateValue] = useState<Date | null>(expirationDate || null);
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
+  const buttonRef = useRef<any>(null);
   const titleInputRef = useRef<any>(null);
 
   useFocus(titleInputRef, [isEditable]);
@@ -155,12 +158,18 @@ export const Card: FC<ICard> = ({
     const normalizedDescriptionValue = descriptionValue?.trim();
 
     if (`${columnId}-${todoId}` !== `${columnId}-${NEW_TODO_ID}` && belowId === undefined) {
-      const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
+      const isNew = isNewValues(
+        [title, normalizedTitleValue],
+        [description, normalizedDescriptionValue],
+        [expirationDate, expirationDateValue],
+      );
       if (normalizedTitleValue && isNew) {
+        console.log('expirationDateValue', expirationDateValue);
         dispatch(TodosActions.update({
           id: todoId,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
+          expirationDate: expirationDateValue,
         }));
       } else {
         setTitleValue(title);
@@ -174,6 +183,7 @@ export const Card: FC<ICard> = ({
           columnId,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue || undefined,
+          expirationDate: expirationDateValue || undefined,
           belowId,
           files,
         }));
@@ -235,6 +245,19 @@ export const Card: FC<ICard> = ({
     }
   }, 300);
 
+  const handleSelectDate = (selectedDate: Date | null) => {
+    dispatch(SystemActions.setActivePopupId(null));
+    setExpirationDateValue(selectedDate);
+  };
+
+  const handleSelectDateAndUpdate = (selectedDate: Date | null) => {
+    dispatch(SystemActions.setActivePopupId(null));
+    dispatch(TodosActions.update({
+      id: todoId,
+      expirationDate: selectedDate,
+    }));
+  };
+
   const handleDropFiles = (droppedFiles: FileList) => {
     const mergedFiles = merge(files, droppedFiles);
     if (!isEditable) {
@@ -291,6 +314,16 @@ export const Card: FC<ICard> = ({
                 onKeyDownCapture={handleKeyDown}
                 onChange={(event: any) => handleChangeText(event, true)}
               />
+              {expirationDateValue && (
+              <DateBadge
+                popupId="card"
+                position="bottom"
+                todoId={todoId}
+                style={{ maxWidth: 55 }}
+                date={expirationDateValue}
+                onSelectDate={handleSelectDate}
+              />
+              )}
               <CommentFormAttachments
                 files={files}
                 onRemove={handleRemoveFile}
@@ -299,12 +332,19 @@ export const Card: FC<ICard> = ({
               <div className="card__editable-container">
                 <div className="card__editable-controls">
                   <ControlButton
+                    ref={buttonRef}
                     imageSrc="/assets/svg/calendar-dots.svg"
                     tooltip={t('Add Date')}
                     alt="date"
                     imageSize={16}
                     size={20}
                     isColored
+                  />
+                  <DatePickerPopup
+                    popupId={`card-${todoId}`}
+                    sourceRef={buttonRef}
+                    onSelectDate={handleSelectDate}
+                    selectedDate={expirationDateValue}
                   />
                   <ControlButton
                     imageSrc="/assets/svg/attach.svg"
@@ -348,6 +388,7 @@ export const Card: FC<ICard> = ({
                 popupId="card"
                 todoId={todoId}
                 date={expirationDate}
+                onSelectDate={handleSelectDateAndUpdate}
               />
               <CardAttachmentsPreview
                 todoId={todoId!}
@@ -364,7 +405,7 @@ export const Card: FC<ICard> = ({
   ),
   [
     t, status, isEditable, color,
-    titleValue, descriptionValue, cardType,
+    titleValue, descriptionValue, expirationDateValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,
     isNotificationsEnabled, isArchived, isRemoved, expirationDate,

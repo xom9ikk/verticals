@@ -198,6 +198,7 @@ export const CardPopup: FC<ICardPopup> = ({
                   left: 25,
                 }}
                 date={activeTodo.expirationDate}
+                onSelectDate={handleSelectDate}
               />
               <div className="card-popup__textarea-inner">
                 <TextArea

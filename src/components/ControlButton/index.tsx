@@ -88,14 +88,14 @@ const ControlButtonComponent = ({
         style={{ width: style?.width || imageSize, height: imageSize }}
       />
       {
-          (text || isTextable) && (
-          <span className="control-button__text">
-            &nbsp;
-            {text}
-            &nbsp;
-          </span>
-          )
-        }
+        (text || isTextable) && (
+        <span className="control-button__text">
+          &nbsp;
+          {text}
+          &nbsp;
+        </span>
+        )
+      }
     </button>
   );
 };

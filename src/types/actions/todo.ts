@@ -15,6 +15,7 @@ export interface ICreateTodo {
   color?: IColor;
   status?: EnumTodoStatus;
   belowId?: number;
+  expirationDate?: Date;
   files: FileList | null;
 }
 

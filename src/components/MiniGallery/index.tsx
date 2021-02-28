@@ -2,7 +2,7 @@ import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getCommentImageAttachmentsByTodoId } from '@store/selectors';
 import { useCollapse } from '@use/animationHeight';
 
@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // import 'swiper/swiper.scss';
 // import 'swiper/components/pagination/pagination.scss';
 import { SystemActions } from '@store/actions';
+import { useParamSelector } from '@use/paramSelector';
 
 SwiperCore.use([Pagination]);
 
@@ -31,7 +32,7 @@ export const MiniGallery: FC<IMiniGallery> = ({
   const [activeIndex, setActiveIndex] = useState<number>(1);
   const [swiperController, setSwiperController] = useState<SwiperCore>();
 
-  const images = useSelector(getCommentImageAttachmentsByTodoId(todoId || null));
+  const images = useParamSelector(getCommentImageAttachmentsByTodoId, todoId || null);
 
   const handleClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation();
