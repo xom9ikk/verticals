@@ -46,7 +46,7 @@ export const DatePicker: FC<IDatePicker> = ({
     }
   };
 
-  useKeys(['Enter'], handleSubmit, {
+  useKeys(['Escape'], handleSubmit, {
     when: isOpen,
   });
 

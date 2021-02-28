@@ -85,9 +85,9 @@ export const Calendar: FC<ICalendar> = ({
     >
       {weeks.map((start) => (
         <CalendarWeek
+          key={start.getTime()}
           highlightDate={highlightDate}
           selectedDates={selectedDates}
-          key={start.getTime()}
           startDate={start}
           onSelectDate={onSelectDate}
         />

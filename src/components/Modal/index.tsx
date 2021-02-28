@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
-// import useKeys from '@rooks/use-keys';
+import useKeys from '@rooks/use-keys';
 import { Button } from '../Button';
 
 interface IModal {
@@ -48,13 +48,13 @@ export const Modal: FC<IModal> = ({
     setBlur(0);
   }
 
-  // const handleEscape = () => {
-  //   if (isOpen && isSoftExit) {
-  //     onClose();
-  //   }
-  // };
+  const handleEscape = () => {
+    if (isOpen && isSoftExit) {
+      onClose();
+    }
+  };
 
-  // useKeys(['Escape'], handleEscape);
+  useKeys(['Escape'], handleEscape);
 
   const [modalRef] = useOutsideClickRef(handleOutsideClick, isOpen);
 

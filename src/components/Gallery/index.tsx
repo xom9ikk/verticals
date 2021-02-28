@@ -7,7 +7,7 @@ import cn from 'classnames';
 import SwiperCore, { Pagination, Keyboard } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-// import useKeys from '@rooks/use-keys';
+import useKeys from '@rooks/use-keys';
 
 import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
@@ -34,7 +34,7 @@ export const Gallery: FC = () => {
     dispatch(SystemActions.setGalleryImagesInfo(null));
   };
 
-  // useKeys(['Escape'], handleClose);
+  useKeys(['Escape'], handleClose);
 
   const handleDownload = () => {
     const link = images?.[activeIndex].path;

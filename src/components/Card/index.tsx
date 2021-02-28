@@ -164,7 +164,6 @@ export const Card: FC<ICard> = ({
         [expirationDate, expirationDateValue],
       );
       if (normalizedTitleValue && isNew) {
-        console.log('expirationDateValue', expirationDateValue);
         dispatch(TodosActions.update({
           id: todoId,
           title: normalizedTitleValue,
@@ -314,16 +313,18 @@ export const Card: FC<ICard> = ({
                 onKeyDownCapture={handleKeyDown}
                 onChange={(event: any) => handleChangeText(event, true)}
               />
-              {expirationDateValue && (
-              <DateBadge
-                popupId="card"
-                position="bottom"
-                todoId={todoId}
-                style={{ maxWidth: 55 }}
-                date={expirationDateValue}
-                onSelectDate={handleSelectDate}
-              />
-              )}
+              <div>
+                {expirationDateValue && (
+                <DateBadge
+                  popupId="card"
+                  position="bottom"
+                  todoId={todoId}
+                  // style={{ maxWidth: 55 }}
+                  date={expirationDateValue}
+                  onSelectDate={handleSelectDate}
+                />
+                )}
+              </div>
               <CommentFormAttachments
                 files={files}
                 onRemove={handleRemoveFile}

@@ -13,23 +13,23 @@ import {
   SystemActions,
   BoardsActions,
   UserActions,
-  // ColumnsActions,
-  // TodosActions,
+  ColumnsActions,
+  TodosActions,
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
 import { BoardList } from '@comp/BoardList';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@use/readableId';
-// import { redirectTo } from '@router/history';
+import { redirectTo } from '@router/history';
 import {
   getActiveBoardId,
-  // getActiveTodoId,
-  // getUsername,
+  getActiveTodoId,
+  getUsername,
 } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
-// import { useValueRef } from '@use/valueRef';
-// import useKeys from '@rooks/use-keys';
+import { useValueRef } from '@use/valueRef';
+import useKeys from '@rooks/use-keys';
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -42,38 +42,38 @@ export const MainLayout: FC = () => {
   const dispatch = useDispatch();
 
   const activeBoardId = useSelector(getActiveBoardId);
-  // const activeTodoId = useSelector(getActiveTodoId);
-  // const username = useSelector(getUsername);
+  const activeTodoId = useSelector(getActiveTodoId);
+  const username = useSelector(getUsername);
 
-  // const refBoardId = useValueRef(boardId);
-  // const refActiveTodoId = useValueRef(activeTodoId);
-  // const refUsername = useValueRef(username);
+  const refBoardId = useValueRef(boardId);
+  const refActiveTodoId = useValueRef(activeTodoId);
+  const refUsername = useValueRef(username);
 
   const { toNumericId } = useReadableId();
 
-  // const closePopups = () => {
-  // dispatch(SystemActions.setIsOpenPopup(false));
-  // dispatch(SystemActions.setEditableCardId(false));
-  // dispatch(SystemActions.setEditableColumnId(null));
-  // dispatch(SystemActions.setEditableBoardId(false));
-  // };
+  const closePopups = () => {
+    // dispatch(SystemActions.setIsOpenPopup(false));
+    // dispatch(SystemActions.setEditableCardId(false));
+    // dispatch(SystemActions.setEditableColumnId(null));
+    // dispatch(SystemActions.setEditableBoardId(false));
+  };
 
-  // const closePopupsAndEditable = () => {
-  //   closePopups();
-  //   dispatch(BoardsActions.removeTemp());
-  //   dispatch(ColumnsActions.removeTemp());
-  //   dispatch(TodosActions.removeTemp());
-  //   const isCardOpened = !!refActiveTodoId.current;
-  //   if (isCardOpened) {
-  //     redirectTo(`/${refUsername.current}/${refBoardId.current}`);
-  //   }
-  // };
+  const closePopupsAndEditable = () => {
+    closePopups();
+    dispatch(BoardsActions.removeTemp());
+    dispatch(ColumnsActions.removeTemp());
+    dispatch(TodosActions.removeTemp());
+    const isCardOpened = !!refActiveTodoId.current;
+    if (isCardOpened) {
+      redirectTo(`/${refUsername.current}/${refBoardId.current}`);
+    }
+  };
 
   // const handleClick = (event: any) => {
   //   if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
   // };
 
-  // useKeys(['Escape'], closePopupsAndEditable); // TODO: uncomment
+  useKeys(['Escape'], closePopupsAndEditable); // TODO: uncomment
 
   useEffect(() => {
     if (boardId) {

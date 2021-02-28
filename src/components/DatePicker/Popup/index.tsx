@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getActivePopupId } from '@store/selectors';
 import { SystemActions } from '@store/actions';
 import { DatePicker } from '@comp/DatePicker';
+import useKeys from '@rooks/use-keys';
 
 interface IDatePickerPopup {
   popupId: string;
@@ -36,6 +37,14 @@ export const DatePickerPopup: FC<IDatePickerPopup> = ({
       dispatch(SystemActions.setActivePopupId(popupId));
     }
   };
+
+  const handleEscape = () => {
+    dispatch(SystemActions.setActivePopupId(null));
+  };
+
+  useKeys(['Escape'], handleEscape, {
+    when: isOpen.current,
+  });
 
   useEffect(() => {
     sourceRef.current?.addEventListener('click', handleClick);
