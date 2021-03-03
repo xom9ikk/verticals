@@ -1,5 +1,5 @@
 import {
-  EnumTodoStatus, IColor, ITodo, ITodos,
+  EnumTodoStatus, IColor, ID, ITodo, ITodos,
 } from '@type/entities';
 
 export interface IFetchTodosByBoardId {
@@ -15,7 +15,7 @@ export interface ICreateTodo {
   color?: IColor;
   status?: EnumTodoStatus;
   belowId?: number;
-  expirationDate?: Date;
+  expirationDate?: Date | null;
   files: FileList | null;
 }
 
@@ -29,7 +29,7 @@ export interface IInsertTodo {
 export type IUpdateTodo = {
   id: number;
 } & (
-  { title: string }
+  | { title: string }
   | { description: string }
   | { status: EnumTodoStatus }
   | { color: IColor }
@@ -39,11 +39,16 @@ export type IUpdateTodo = {
   | { expirationDate: Date | null }
 );
 
-export interface IUpdateTodoPosition {
+export interface IMoveTodo {
   sourcePosition: number;
   destinationPosition: number;
   columnId: number;
   targetColumnId?: number;
+}
+
+export interface ISetTodoPositionsByColumnId {
+  positions: Array<ID>;
+  columnId: ID;
 }
 
 export interface IDuplicateTodo {

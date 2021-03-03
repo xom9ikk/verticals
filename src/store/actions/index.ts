@@ -7,3 +7,4 @@ export * from './todos';
 export * from './comments';
 export * from './comment-attachments';
 export * from './search';
+export * from './updates';

@@ -7,6 +7,7 @@ import {
   ISearchService,
   ITodoService,
   IUserService,
+  IUpdateService,
 } from '@inversify/interfaces/services';
 
 export interface IServices {
@@ -18,4 +19,5 @@ export interface IServices {
   commentService: ICommentService;
   commentAttachmentService: ICommentAttachmentService;
   searchService: ISearchService;
+  updateService: IUpdateService;
 }

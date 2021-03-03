@@ -1,5 +1,5 @@
 import {
-  IColor, IColumn, IColumns,
+  IColor, IColumn, IColumns, ID,
 } from '@type/entities';
 
 export interface IFetchColumnsByBoardId {
@@ -35,31 +35,15 @@ export type IUpdateColumn = {
   | { width: number }
 );
 
-//
-// export interface IUpdateColumnTitle {
-//   id: number;
-//   title: string;
-// }
-//
-// export interface IUpdateColumnDescription {
-//   id: number;
-//   description?: string;
-// }
-
-// export interface IUpdateColumnColor {
-//   id: number;
-//   color: IColor;
-// }
-//
-// export interface IUpdateColumnIsCollapsed {
-//   id: number;
-//   isCollapsed: boolean;
-// }
-
-export interface IUpdateColumnPosition {
+export interface IMoveColumn {
   sourcePosition: number;
   destinationPosition: number;
   boardId: number;
+}
+
+export interface ISetColumnPositionsByBoardId {
+  positions: Array<ID>;
+  boardId: ID;
 }
 
 export interface IRemoveColumn {

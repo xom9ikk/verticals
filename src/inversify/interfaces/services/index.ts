@@ -6,3 +6,4 @@ export * from './comment-attachments';
 export * from './search';
 export * from './todo';
 export * from './user';
+export * from './update';

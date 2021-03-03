@@ -12,7 +12,11 @@ const initialState: ITodos = {
 
 export const TodosReducer = createReducer(initialState, (builder) => builder
   .addCase(TodosActions.setAll, (state, action) => action.payload)
-  .addCase(TodosActions.update, (draft, action) => {
+  .addCase(TodosActions.setPositionsByColumnId, (draft, action) => {
+    const { columnId, positions } = action.payload;
+    draft.positions[columnId] = positions;
+  })
+  .addCase(TodosActions.updateEntity, (draft, action) => {
     const { id } = action.payload;
     const index = draft.entities.findIndex((todo) => todo.id === id);
     draft.entities[index] = {
@@ -23,27 +27,35 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
   .addCase(TodosActions.add, (draft, action) => {
     const { id, columnId } = action.payload;
 
-    draft.entities.push(action.payload);
     if (!draft.positions[columnId]) {
       draft.positions[columnId] = [];
     }
-    draft.positions[columnId].push(id);
+
+    const isAlreadyExistId = draft.positions[columnId].includes(id);
+    if (!isAlreadyExistId) {
+      draft.entities.push(action.payload);
+      draft.positions[columnId].push(id);
+    }
   })
   .addCase(TodosActions.insertInPosition, (draft, action) => {
     const { position, entity } = action.payload;
-
-    draft.entities.push(entity);
-    draft.positions[entity.columnId].splice(position, 0, entity.id);
+    const isAlreadyExistId = draft.positions[entity.columnId].includes(entity.id);
+    if (!isAlreadyExistId) {
+      draft.entities.push(entity);
+      draft.positions[entity.columnId].splice(position, 0, entity.id);
+    }
   })
-  .addCase(TodosActions.removeEntity, (draft, action) => {
+  .addCase(TodosActions.remove, (draft, action) => {
     const { id } = action.payload;
 
     const entityIndex = draft.entities.findIndex((column) => column.id === id);
-    const { columnId } = draft.entities[entityIndex]; // TODO: try move below
-    if (entityIndex !== -1) draft.entities.splice(entityIndex, 1);
+    if (entityIndex !== -1) {
+      const { columnId } = draft.entities[entityIndex];
+      draft.entities.splice(entityIndex, 1);
 
-    const positionIndex = draft.positions[columnId]?.findIndex((todoId) => todoId === id);
-    if (positionIndex !== -1) draft.positions[columnId]?.splice(positionIndex, 1);
+      const positionIndex = draft.positions[columnId]?.findIndex((todoId) => todoId === id);
+      if (positionIndex !== -1) draft.positions[columnId]?.splice(positionIndex, 1);
+    }
   })
   .addCase(TodosActions.drawBelow, (draft, action) => {
     const { belowId, columnId } = action.payload;
@@ -62,7 +74,7 @@ export const TodosReducer = createReducer(initialState, (builder) => builder
 
     draft.positions[columnId].splice(positionIndex + 1, 0, TEMP_ID);
   })
-  .addCase(TodosActions.updatePosition, (draft, action) => {
+  .addCase(TodosActions.move, (draft, action) => {
     const {
       columnId, sourcePosition, destinationPosition, targetColumnId,
     } = action.payload;

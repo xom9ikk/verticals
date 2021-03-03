@@ -4,49 +4,29 @@ import {
   ICreateBoard,
   IDrawBoardBelow,
   IInsertBoard,
+  IMoveBoard,
   IRemoveBoard,
   ISetBoards,
+  ISetBoardPositions,
   IUpdateBoard,
-  // IUpdateBoardTitle,
-  // IUpdateBoardCardType,
-  // IUpdateBoardColor,
-  // IUpdateBoardDescription,
-  // IUpdateBoardIcon,
-  IUpdateBoardPosition,
 } from '@type/actions';
 
-const fetchAll = createAction('BOARDS/FETCH_ALL');
-const setAll = createAction<ISetBoards>('BOARDS/SET_ALL');
-const create = createAction<ICreateBoard>('BOARDS/CREATE');
-const add = createAction<IAddBoard>('BOARDS/ADD');
-const insertInPosition = createAction<IInsertBoard>('BOARDS/INSERT_IN_POSITION');
-const update = createAction<IUpdateBoard>('BOARDS/UPDATE');
-const updateEntity = createAction<IUpdateBoard>('BOARDS/UPDATE_ENTITY');
-// const updateTitle = createAction<IUpdateBoardTitle>('BOARDS/UPDATE_TITLE');
-// const updateDescription = createAction<IUpdateBoardDescription>('BOARDS/UPDATE_DESCRIPTION');
-// const updateColor = createAction<IUpdateBoardColor>('BOARDS/UPDATE_COLOR');
-// const updateCardType = createAction<IUpdateBoardCardType>('BOARDS/UPDATE_CARD_TYPE');
-// const updateIcon = createAction<IUpdateBoardIcon>('BOARDS/UPDATE_ICON');
-const updatePosition = createAction<IUpdateBoardPosition>('BOARDS/UPDATE_POSITION');
-const remove = createAction<IRemoveBoard>('BOARDS/REMOVE');
-const drawBelow = createAction<IDrawBoardBelow>('BOARDS/DRAW_BELOW');
-const removeTemp = createAction('BOARDS/REMOVE_TEMP');
-
 export const BoardsActions = {
-  fetchAll,
-  setAll,
-  create,
-  add,
-  insertInPosition,
-  update,
-  updateEntity,
-  // updateTitle,
-  // updateDescription,
-  // updateColor,
-  // updateCardType,
-  // updateIcon,
-  updatePosition,
-  remove,
-  drawBelow,
-  removeTemp,
+  effect: {
+    fetchAll: createAction('BOARDS-EFFECT/FETCH_ALL'),
+    create: createAction<ICreateBoard>('BOARDS-EFFECT/CREATE'),
+    update: createAction<IUpdateBoard>('BOARDS-EFFECT/UPDATE'),
+    remove: createAction<IRemoveBoard>('BOARDS-EFFECT/REMOVE'),
+    move: createAction<IMoveBoard>('BOARDS-EFFECT/MOVE'),
+  },
+  setAll: createAction<ISetBoards>('BOARDS/SET_ALL'),
+  add: createAction<IAddBoard>('BOARDS/ADD'),
+  insertInPosition: createAction<IInsertBoard>('BOARDS/INSERT_IN_POSITION'),
+  updateEntity: createAction<IUpdateBoard>('BOARDS/UPDATE_ENTITY'),
+  // setPositions
+  move: createAction<IMoveBoard>('BOARDS/MOVE'),
+  setPositions: createAction<ISetBoardPositions>('BOARDS/SET_POSITIONS'),
+  remove: createAction<IRemoveBoard>('BOARDS/REMOVE'),
+  drawBelow: createAction<IDrawBoardBelow>('BOARDS/DRAW_BELOW'),
+  removeTemp: createAction('BOARDS/REMOVE_TEMP'),
 };

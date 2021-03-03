@@ -40,7 +40,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
   const dispatch = useDispatch();
 
   const handleColorPick = (newColor: IColor) => {
-    dispatch(ColumnsActions.update({ id: columnId, color: newColor }));
+    dispatch(ColumnsActions.effect.update({ id: columnId, color: newColor }));
   };
 
   const handleMenuButtonClick = (action: EnumMenuActions) => {
@@ -50,7 +50,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
         break;
       }
       case EnumMenuActions.Duplicate: {
-        dispatch(ColumnsActions.duplicate({
+        dispatch(ColumnsActions.effect.duplicate({
           columnId: columnId!,
         }));
         break;
@@ -72,7 +72,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(ColumnsActions.remove({ id: columnId }));
+        dispatch(ColumnsActions.effect.remove({ id: columnId }));
         break;
       }
       default: break;

@@ -69,7 +69,7 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const handleSendComment = () => {
     if (editCommentId) {
-      dispatch(CommentsActions.updateText({
+      dispatch(CommentsActions.effects.updateText({
         id: editCommentId,
         text: commentText,
       }));
@@ -81,7 +81,7 @@ export const CommentForm: FC<ICommentForm> = ({
       }
       dispatch(SystemActions.setEditCommentId(null));
     } else if (files?.length || commentText) {
-      dispatch(CommentsActions.create({
+      dispatch(CommentsActions.effects.create({
         todoId: todoId!,
         text: commentText,
         replyCommentId: replyCommentId || undefined,

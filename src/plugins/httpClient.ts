@@ -17,6 +17,7 @@ interface IPairTokens {
   token: string;
   refreshToken: string;
 }
+
 @injectable()
 export class HttpClient implements IHttpClient {
   client: AxiosInstance;

@@ -9,35 +9,27 @@ import {
   IRemoveTodo,
   ISetTodos,
   IUpdateTodo,
-  IUpdateTodoPosition,
+  IMoveTodo,
+  ISetTodoPositionsByColumnId,
 } from '@type/actions';
 
-const fetchByBoardId = createAction<IFetchTodosByBoardId>('TODOS/FETCH_BY_BOARD_ID');
-const fetchRemoved = createAction('TODOS/FETCH_REMOVED');
-const setAll = createAction<ISetTodos>('TODOS/SET_ALL');
-const create = createAction<ICreateTodo>('TODOS/CREATE');
-const add = createAction<IAddTodo>('TODOS/ADD');
-const insertInPosition = createAction<IInsertTodo>('TODOS/INSERT_IN_POSITION');
-const update = createAction<IUpdateTodo>('TODOS/UPDATE');
-const updatePosition = createAction<IUpdateTodoPosition>('TODOS/UPDATE_POSITION');
-const remove = createAction<IRemoveTodo>('TODOS/REMOVE');
-const removeEntity = createAction<IRemoveTodo>('TODOS/REMOVE_ENTITY');
-const duplicate = createAction<IDuplicateTodo>('TODOS/DUPLICATE');
-const drawBelow = createAction<IDrawTodoBelow>('TODOS/DRAW_BELOW');
-const removeTemp = createAction('TODOS/REMOVE_TEMP');
-
 export const TodosActions = {
-  fetchByBoardId,
-  fetchRemoved,
-  setAll,
-  create,
-  add,
-  insertInPosition,
-  update,
-  updatePosition,
-  remove,
-  removeEntity,
-  duplicate,
-  drawBelow,
-  removeTemp,
+  effect: {
+    fetchByBoardId: createAction<IFetchTodosByBoardId>('TODOS-EFFECT/FETCH_BY_BOARD_ID'),
+    fetchRemoved: createAction('TODOS-EFFECT/FETCH_REMOVED'),
+    create: createAction<ICreateTodo>('TODOS-EFFECT/CREATE'),
+    update: createAction<IUpdateTodo>('TODOS-EFFECT/UPDATE'),
+    remove: createAction<IRemoveTodo>('TODOS-EFFECT/REMOVE'),
+    move: createAction<IMoveTodo>('TODOS-EFFECT/MOVE'),
+    duplicate: createAction<IDuplicateTodo>('TODOS-EFFECT/DUPLICATE'),
+  },
+  setAll: createAction<ISetTodos>('TODOS/SET_ALL'),
+  add: createAction<IAddTodo>('TODOS/ADD'),
+  insertInPosition: createAction<IInsertTodo>('TODOS/INSERT_IN_POSITION'),
+  updateEntity: createAction<IUpdateTodo>('TODOS/UPDATE'),
+  move: createAction<IMoveTodo>('TODOS/MOVE'),
+  setPositionsByColumnId: createAction<ISetTodoPositionsByColumnId>('TODOS/SET_POSITIONS_BY_COLUMN_ID'),
+  remove: createAction<IRemoveTodo>('TODOS/REMOVE'),
+  drawBelow: createAction<IDrawTodoBelow>('TODOS/DRAW_BELOW'),
+  removeTemp: createAction('TODOS/REMOVE_TEMP'),
 };

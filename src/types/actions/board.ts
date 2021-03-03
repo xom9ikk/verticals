@@ -1,5 +1,5 @@
 import {
-  EnumTodoType, IBoards, IBoard, IColor,
+  EnumTodoType, IBoards, IBoard, IColor, ID,
 } from '@type/entities';
 
 export type ISetBoards = IBoards;
@@ -21,7 +21,7 @@ export interface IInsertBoard {
 }
 
 export type IUpdateBoard = {
-  id: number;
+  id: ID;
 } & (
   { title: string }
   | { description: string }
@@ -30,35 +30,12 @@ export type IUpdateBoard = {
   | { icon: string }
 );
 
-// export interface IUpdateBoardTitle {
-//   id: number;
-//   title: string;
-// }
-//
-// export interface IUpdateBoardDescription {
-//   id: number;
-//   description: string;
-// }
-//
-// export interface IUpdateBoardColor {
-//   id: number;
-//   color: IColor;
-// }
-//
-// export interface IUpdateBoardCardType {
-//   id: number;
-//   cardType: EnumTodoType;
-// }
-//
-// export interface IUpdateBoardIcon {
-//   id: number;
-//   icon: string;
-// }
-
-export interface IUpdateBoardPosition {
+export interface IMoveBoard {
   sourcePosition: number;
   destinationPosition: number;
 }
+
+export type ISetBoardPositions = Array<ID>;
 
 export interface IRemoveBoard {
   id: number;

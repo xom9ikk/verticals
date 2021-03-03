@@ -19,7 +19,7 @@ interface IColumnResizable {
   title?: string;
   description?: string;
   mode: EnumColumnMode;
-  width: number | null;
+  width?: number | null;
   cardType: EnumTodoType;
   isEditable: boolean;
   scrollToRight?: () => void;
@@ -35,7 +35,7 @@ export const ColumnResizable: FC<IColumnResizable> = ({
   const dispatch = useDispatch();
 
   const debounceUpdateWidth = useDebounce((newWidth: number) => {
-    dispatch(ColumnsActions.update({ id: columnId, width: newWidth }));
+    dispatch(ColumnsActions.effect.update({ id: columnId, width: newWidth }));
   }, 1000);
 
   const { size, handler } = useResizable({

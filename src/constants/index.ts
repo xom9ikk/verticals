@@ -5,7 +5,7 @@ export const NEW_COLUMN_ID = -3;
 export const NEW_TODO_ID = -4;
 export const DEFAULT_COLUMN_WIDTH = 280;
 export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
-  'ball', 'bell', 'book', 'bookmark', 'calendar', 'calendar-2', 'card', 'carrot', 'chair', 'change', 'cheese',
+  'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese',
   'circle', 'coffee', 'croissant', 'cross', 'file', 'flag', 'foot', 'gallery', 'geo', 'heart', 'help', 'home', 'item',
   'keyboard', 'light-bulb', 'link', 'lock', 'mail', 'message', 'music', 'phone', 'player',
   'preferences', 'preferences-2', 'profile', 'profiles', 'raspberry', 'restart', 'restart-2', 'rocket', 'scissors',

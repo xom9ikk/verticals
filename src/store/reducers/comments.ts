@@ -5,14 +5,18 @@ import { CommentsActions } from '@store/actions';
 const initialState: IComments = [];
 
 export const CommentsReducer = createReducer(initialState, (builder) => builder
-  .addCase(CommentsActions.setAll, (state, action) => action.payload)
-  .addCase(CommentsActions.add, (state, action) => {
-    state.push({
-      createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
-      userId: 1,
-      ...action.payload,
-    });
+  .addCase(CommentsActions.setAll, (draft, action) => action.payload)
+  .addCase(CommentsActions.add, (draft, action) => {
+    const { id } = action.payload;
+    const isAlreadyExist = draft.some((comment) => comment.id === id);
+    if (!isAlreadyExist) {
+      draft.push({
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime(),
+        userId: 1,
+        ...action.payload,
+      });
+    }
   })
   .addCase(CommentsActions.remove, (draft, action) => {
     const { id } = action.payload;

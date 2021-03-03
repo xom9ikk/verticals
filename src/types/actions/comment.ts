@@ -42,8 +42,3 @@ export interface IUpdateCommentText {
   id: number;
   text: string;
 }
-
-export interface IRemoveCommentFile {
-  id: number;
-  fileId: number;
-}

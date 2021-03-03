@@ -13,6 +13,14 @@ export const useResizable = (option: IResizableOption) => {
   const [state, dispatch] = useReducer<Reducer<IResizableState, any>>(resizableReducer, option);
   const group = directionMap[state.direction];
 
+  useEffect(() => {
+    if (option.size) {
+      dispatch(actions.init({
+        size: option.size,
+      }));
+    }
+  }, [option.size]);
+
   const handleStartMove = useCallback((event: React.MouseEvent | React.TouchEvent) => {
     dispatch(actions.start({
       position: getPositionFromMouseOrTouch(group, event.nativeEvent),

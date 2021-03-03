@@ -1,5 +1,5 @@
 import React, {
-  FC, useMemo, useRef, useState,
+  FC, useMemo, useRef,
 } from 'react';
 import cn from 'classnames';
 import { useColorClass } from '@use/colorClass';
@@ -15,6 +15,7 @@ import { useNewValues } from '@use/newValues';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import useKeys from '@rooks/use-keys';
 import { useTranslation } from 'react-i18next';
+import { useEffectState } from '@use/effectState';
 
 interface IColumnHeader {
   provided: DraggableProvided;
@@ -53,8 +54,8 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   const { isNewValues } = useNewValues();
   const colorClass = useColorClass('column__inner', color);
 
-  const [titleValue, setTitleValue] = useState<string>(title);
-  const [descriptionValue, setDescriptionValue] = useState<string>(description);
+  const [titleValue, setTitleValue] = useEffectState<string>(title);
+  const [descriptionValue, setDescriptionValue] = useEffectState<string>(description);
 
   const titleInputRef = useRef<any>(null);
 
@@ -68,7 +69,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
     if (mode === EnumColumnMode.Normal && belowId === undefined) {
       const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
       if (normalizedTitleValue && isNew) {
-        dispatch(ColumnsActions.update({
+        dispatch(ColumnsActions.effect.update({
           id: columnId,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
@@ -81,9 +82,9 @@ export const ColumnHeader: FC<IColumnHeader> = ({
     }
     if (mode === EnumColumnMode.New || belowId !== undefined) {
       if (normalizedTitleValue) {
-        dispatch(ColumnsActions.create({
+        dispatch(ColumnsActions.effect.create({
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue || undefined,
+          description: normalizedDescriptionValue,
           boardId,
           belowId,
         }));

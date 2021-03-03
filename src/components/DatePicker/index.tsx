@@ -8,6 +8,8 @@ import { Divider } from '@comp/Divider';
 import { Calendar } from '@comp/DatePicker/Calendar';
 import { DatePickerTag } from '@comp/DatePicker/Tag';
 import useKeys from '@rooks/use-keys';
+import { useEffectState } from '@use/effectState';
+import { useNormalizeDate } from '@use/normalizeDate';
 
 interface IDatePicker {
   isOpen: boolean;
@@ -20,12 +22,18 @@ export const DatePicker: FC<IDatePicker> = ({
   selectedDate = null,
   onSelectDate,
 }) => {
-  const [date, setDate] = useState<Date | null>(selectedDate);
+  const { normalizeDate } = useNormalizeDate();
+  const [date, setDate] = useEffectState<Date | null>(selectedDate);
   const [highlightDate, setHighlightDate] = useState<Date | null>(null);
+
+  const postHandlerSelectDate = (d: Date | null) => {
+    const normalizedDate = normalizeDate(d);
+    onSelectDate(normalizedDate);
+  };
 
   const handleSelectDate = (d: Date) => {
     setDate(d);
-    onSelectDate(d);
+    postHandlerSelectDate(d);
   };
 
   const handleInput = (e: React.BaseSyntheticEvent) => {
@@ -35,18 +43,19 @@ export const DatePicker: FC<IDatePicker> = ({
 
   const handleRemove = () => {
     setDate(null);
-    onSelectDate(null);
+    postHandlerSelectDate(null);
   };
 
   const handleSubmit = () => {
+    console.log(highlightDate);
     if (highlightDate !== undefined && isValid(highlightDate)) {
       setDate(highlightDate);
-      onSelectDate(highlightDate);
+      postHandlerSelectDate(highlightDate);
       setHighlightDate(null);
     }
   };
 
-  useKeys(['Escape'], handleSubmit, {
+  useKeys(['Enter'], handleSubmit, {
     when: isOpen,
   });
 
@@ -60,6 +69,7 @@ export const DatePicker: FC<IDatePicker> = ({
           />
         ) : (
           <DatePickerInput
+            isOpen={isOpen}
             onChange={handleInput}
           />
         )

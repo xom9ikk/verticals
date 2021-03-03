@@ -21,7 +21,7 @@ export interface IComment {
   id: number;
   userId: number;
   todoId: number;
-  text?: string;
+  text: string;
   createdAt: number;
   updatedAt: number | null;
   replyCommentId?: number;

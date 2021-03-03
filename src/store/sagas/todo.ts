@@ -10,7 +10,7 @@ import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   ICreateTodo,
   IRemoveTodo,
-  IUpdateTodoPosition,
+  IMoveTodo,
   IDuplicateTodo,
   IFetchTodosByBoardId,
   IUpdateTodo,
@@ -49,7 +49,7 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
     const response = yield* apply(todoService, todoService.create, [action.payload]);
     const { todoId, position } = response.data;
     if (files?.length) {
-      yield put(CommentsActions.create({
+      yield put(CommentsActions.effects.create({
         todoId,
         text: '',
         files,
@@ -84,9 +84,8 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
 
 function* removeWorker(action: PayloadAction<IRemoveTodo>) {
   try {
-    const { id } = action.payload;
+    yield put(TodosActions.remove(action.payload));
     yield* apply(todoService, todoService.remove, [action.payload]);
-    yield put(TodosActions.removeEntity({ id }));
     yield call(show, i18n.t('Todo'), i18n.t('Todo removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
@@ -95,6 +94,7 @@ function* removeWorker(action: PayloadAction<IRemoveTodo>) {
 
 function* updateWorker(action: PayloadAction<IUpdateTodo>) {
   try {
+    yield put(TodosActions.updateEntity(action.payload));
     yield* apply(todoService, todoService.update, [action.payload]);
     yield call(show, i18n.t('Todo'), i18n.t('Todo updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -102,8 +102,9 @@ function* updateWorker(action: PayloadAction<IUpdateTodo>) {
   }
 }
 
-function* updatePositionWorker(action: PayloadAction<IUpdateTodoPosition>) {
+function* moveWorker(action: PayloadAction<IMoveTodo>) {
   try {
+    yield put(TodosActions.move(action.payload));
     yield* apply(todoService, todoService.updatePosition, [action.payload]);
     yield call(show, i18n.t('Todo'), i18n.t('Todo position updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -134,12 +135,12 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
 
 export function* watchTodo() {
   yield* all([
-    takeLatest(TodosActions.fetchByBoardId, fetchByBoardIdWorker),
-    takeLatest(TodosActions.fetchRemoved, fetchRemovedWorker),
-    takeLatest(TodosActions.create, createWorker),
-    takeLatest(TodosActions.remove, removeWorker),
-    takeLatest(TodosActions.update, updateWorker),
-    takeLatest(TodosActions.updatePosition, updatePositionWorker),
-    takeLatest(TodosActions.duplicate, duplicateWorker),
+    takeLatest(TodosActions.effect.fetchByBoardId, fetchByBoardIdWorker),
+    takeLatest(TodosActions.effect.fetchRemoved, fetchRemovedWorker),
+    takeLatest(TodosActions.effect.create, createWorker),
+    takeLatest(TodosActions.effect.remove, removeWorker),
+    takeLatest(TodosActions.effect.update, updateWorker),
+    takeLatest(TodosActions.effect.move, moveWorker),
+    takeLatest(TodosActions.effect.duplicate, duplicateWorker),
   ]);
 }

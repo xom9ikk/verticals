@@ -60,7 +60,7 @@ export const BoardList: FC = () => {
     if (destinationPosition === undefined || sourcePosition === destinationPosition) {
       return;
     }
-    dispatch(BoardsActions.updatePosition({
+    dispatch(BoardsActions.effect.move({
       sourcePosition,
       destinationPosition,
     }));

@@ -38,11 +38,11 @@ export const DatePickerPopup: FC<IDatePickerPopup> = ({
     }
   };
 
-  const handleEscape = () => {
+  const handleEsc = () => {
     dispatch(SystemActions.setActivePopupId(null));
   };
 
-  useKeys(['Escape'], handleEscape, {
+  useKeys(['Escape'], handleEsc, {
     when: isOpen.current,
   });
 

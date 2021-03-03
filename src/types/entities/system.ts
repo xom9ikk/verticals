@@ -43,5 +43,5 @@ export interface ISystem {
 export type ID = number;
 
 export interface IPositions {
-  [id: string]: Array<ID>;
+  [id: number]: Array<ID>;
 }

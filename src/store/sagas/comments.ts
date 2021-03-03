@@ -57,6 +57,7 @@ function* createWorker(action: PayloadAction<ICreateComment>) {
 
 function* removeWorker(action: PayloadAction<IRemoveComment>) {
   try {
+    yield put(CommentsActions.remove(action.payload));
     yield* apply(commentService, commentService.remove, [action.payload]);
     yield call(show, i18n.t('Comment'), i18n.t('Comment removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -66,6 +67,7 @@ function* removeWorker(action: PayloadAction<IRemoveComment>) {
 
 function* updateWorker(action: PayloadAction<IUpdateCommentText>) {
   try {
+    yield put(CommentsActions.updateText(action.payload));
     yield* apply(commentService, commentService.update, [action.payload]);
     yield call(show, i18n.t('Comment'), i18n.t('Comment updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -121,11 +123,11 @@ function* removeLikeWorker(action: PayloadAction<IRemoveCommentLike>) {
 
 export function* watchComment() {
   yield* all([
-    takeLatest(CommentsActions.fetchByTodoId, fetchByTodoIdWorker),
-    takeLatest(CommentsActions.create, createWorker),
-    takeLatest(CommentsActions.remove, removeWorker),
-    takeLatest(CommentsActions.updateText, updateWorker),
-    takeLeading(CommentsActions.addLike, addLikeWorker),
-    takeLeading(CommentsActions.removeLike, removeLikeWorker),
+    takeLatest(CommentsActions.effects.fetchByTodoId, fetchByTodoIdWorker),
+    takeLatest(CommentsActions.effects.create, createWorker),
+    takeLatest(CommentsActions.effects.remove, removeWorker),
+    takeLatest(CommentsActions.effects.updateText, updateWorker),
+    takeLeading(CommentsActions.effects.addLike, addLikeWorker),
+    takeLeading(CommentsActions.effects.removeLike, removeLikeWorker),
   ]);
 }
