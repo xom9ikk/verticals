@@ -1,4 +1,4 @@
-import { all } from 'typed-redux-saga';
+import { all, fork } from 'typed-redux-saga';
 import { watchAuth } from '@store/sagas/auth';
 import { watchUser } from '@store/sagas/user';
 import { watchBoard } from '@store/sagas/board';
@@ -12,15 +12,15 @@ import { watchUpdate } from '@store/sagas/update';
 
 export function* rootSaga() {
   yield all([
-    watchAuth(),
-    watchUser(),
-    watchBoard(),
-    watchColumn(),
-    watchTodo(),
-    watchComment(),
-    watchCommentAttachments(),
-    watchSearch(),
-    watchSystem(),
-    watchUpdate(),
+    yield fork(watchAuth),
+    yield fork(watchUser),
+    yield fork(watchBoard),
+    yield fork(watchColumn),
+    yield fork(watchTodo),
+    yield fork(watchComment),
+    yield fork(watchCommentAttachments),
+    yield fork(watchSearch),
+    yield fork(watchSystem),
+    yield fork(watchUpdate),
   ]);
 }

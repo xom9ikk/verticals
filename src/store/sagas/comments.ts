@@ -122,7 +122,7 @@ function* removeLikeWorker(action: PayloadAction<IRemoveCommentLike>) {
 }
 
 export function* watchComment() {
-  yield* all([
+  yield all([
     takeLatest(CommentsActions.effects.fetchByTodoId, fetchByTodoIdWorker),
     takeLatest(CommentsActions.effects.create, createWorker),
     takeLatest(CommentsActions.effects.remove, removeWorker),

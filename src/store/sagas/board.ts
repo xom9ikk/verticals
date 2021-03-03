@@ -105,7 +105,7 @@ function* moveWorker(action: PayloadAction<IMoveBoard>) {
 }
 
 export function* watchBoard() {
-  yield* all([
+  yield all([
     takeLatest(BoardsActions.effect.fetchAll, fetchWorker),
     takeLatest(BoardsActions.effect.create, createWorker),
     takeLatest(BoardsActions.effect.remove, removeWorker),

@@ -120,7 +120,7 @@ function* reverseOrderWorker(action: PayloadAction<IReverseColumnOrder>) {
 }
 
 export function* watchColumn() {
-  yield* all([
+  yield all([
     takeLatest(ColumnsActions.effect.fetchByBoardId, fetchByBoardIdWorker),
     takeLatest(ColumnsActions.effect.create, createWorker),
     takeLatest(ColumnsActions.effect.remove, removeWorker),

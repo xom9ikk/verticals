@@ -134,7 +134,7 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
 }
 
 export function* watchTodo() {
-  yield* all([
+  yield all([
     takeLatest(TodosActions.effect.fetchByBoardId, fetchByBoardIdWorker),
     takeLatest(TodosActions.effect.fetchRemoved, fetchRemovedWorker),
     takeLatest(TodosActions.effect.create, createWorker),

@@ -88,7 +88,7 @@ function* removeAvatarWorker() {
 }
 
 export function* watchUser() {
-  yield* all([
+  yield all([
     takeLatest(UserActions.fetchMe, fetchMeWorker),
     takeLatest(UserActions.updateUsername, updateUsernameWorker),
     takeLatest(UserActions.updateEmail, updateEmailWorker),
