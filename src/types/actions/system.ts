@@ -18,11 +18,11 @@ export type ISetSystemActiveBoardId = number | null;
 export type ISetSystemActiveBoardReadableId = string | null;
 export type ISetSystemActiveTodoReadableId = string | null;
 export interface ISetSystemDroppedFiles {
-  type: EnumDroppedZoneType;
-  files: FileList;
+  readonly type: EnumDroppedZoneType;
+  readonly files: FileList;
 }
 export type ISetGalleryImagesInfo = {
-  images: ICommentAttachments | null;
-  index: number;
+  readonly images: ICommentAttachments | null;
+  readonly index: number;
 } | null;
 export type ISetIsOpenFormattingHelp = boolean;

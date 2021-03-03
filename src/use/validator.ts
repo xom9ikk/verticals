@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
 
 export interface IUseValidatorResult {
-  handleChange: (event: React.BaseSyntheticEvent) => void;
-  value: IValidatorPayload;
-  error?: IValidatorResult;
+  readonly handleChange: (event: React.BaseSyntheticEvent) => void;
+  readonly value: IValidatorPayload;
+  readonly error?: IValidatorResult;
 }
 
 type IUseValidator = (

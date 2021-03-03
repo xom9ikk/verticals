@@ -3,16 +3,16 @@ import {
 } from '@type/entities';
 
 export interface IBoard {
-  id: ID;
-  title: string;
-  icon: string;
-  cardType: EnumTodoType;
-  description?: string;
-  color?: IColor;
-  belowId?: number;
+  readonly id: ID;
+  readonly title: string;
+  readonly icon: string;
+  readonly cardType: EnumTodoType;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly belowId?: number;
 }
 
 export interface IBoards {
-  entities: Array<IBoard>;
-  positions: Array<ID>;
+  readonly entities: Array<IBoard>;
+  readonly positions: Array<ID>;
 }

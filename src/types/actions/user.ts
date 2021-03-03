@@ -4,36 +4,36 @@ export type ISetUserData = IUser;
 
 export type IUpdateUsernameRaw = string;
 export interface IUpdateUsername {
-  username: IUpdateUsernameRaw;
+  readonly username: IUpdateUsernameRaw;
 }
 
 export type IUpdateEmailRaw = string;
 export interface IUpdateEmail{
-  email: IUpdateEmailRaw;
+  readonly email: IUpdateEmailRaw;
 }
 
 export type ISetUsernameRaw = string;
 export interface ISetUsername {
-  username: IUpdateEmailRaw;
+  readonly username: IUpdateEmailRaw;
 }
 
 export type ISetEmailRaw = string;
 export interface ISetEmail {
-  email: ISetEmailRaw;
+  readonly email: ISetEmailRaw;
 }
 
 export type ISetAvatarRaw = string | null;
 export interface ISetAvatar {
-  avatar: ISetAvatarRaw;
+  readonly avatar: ISetAvatarRaw;
 }
 
 export type IUploadAvatarRaw = File;
 export type IUploadAvatar = FormData;
 
 export interface IUpdatePersonalData {
-  name: string;
-  surname: string;
-  bio: string | null;
+  readonly name: string;
+  readonly surname: string;
+  readonly bio: string | null;
 }
 
 export type ISetPersonalData = IUpdatePersonalData;

@@ -1,8 +1,8 @@
 export interface IUser {
-  email: string | null,
-  name: string | null,
-  surname: string | null,
-  username: string | null,
-  bio: string | null,
-  avatar: string | null,
+  readonly email: string | null,
+  readonly name: string | null,
+  readonly surname: string | null,
+  readonly username: string | null,
+  readonly bio: string | null,
+  readonly avatar: string | null,
 }

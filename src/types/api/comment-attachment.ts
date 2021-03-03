@@ -2,22 +2,22 @@ import { ICommentAttachment, ICommentAttachments } from '@type/entities';
 import { IServerResponse } from './response';
 
 export interface IGetCommentAttachmentsByTodoIdRequest {
-  todoId: number;
+  readonly todoId: number;
 }
 
 export type IGetCommentAttachmentsByTodoIdResponse = IServerResponse<{
-  attachments: ICommentAttachments;
+  readonly attachments: ICommentAttachments;
 }>;
 
 export interface IUploadCommentAttachmentRequest {
-  commentId: number;
-  file: FormData;
+  readonly commentId: number;
+  readonly file: FormData;
 }
 
 export type IUploadCommentAttachmentResponse = IServerResponse<ICommentAttachment>;
 
 export interface IRemoveCommentAttachmentRequest {
-  id: number;
+  readonly id: number;
 }
 
 export type IRemoveCommentAttachmentResponse = IServerResponse;

@@ -4,11 +4,11 @@ import { IServerResponse } from './response';
 export type IGetMeResponse = IServerResponse<IUser>;
 
 export interface IUpdateUserRequest {
-  email?: string,
-  name?: string,
-  surname?: string,
-  username?: string,
-  bio?: string | null,
+  readonly email?: string,
+  readonly name?: string,
+  readonly surname?: string,
+  readonly username?: string,
+  readonly bio?: string | null,
 }
 
 export type IUpdateUserResponse = IServerResponse;
@@ -16,7 +16,7 @@ export type IUpdateUserResponse = IServerResponse;
 export type IUploadUserAvatarRequest = FormData;
 
 export type IUploadUserAvatarResponse = IServerResponse<{
-  avatar: string;
+  readonly avatar: string;
 }>;
 
 export type IRemoveUserAvatarResponse = IServerResponse;

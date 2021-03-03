@@ -1,4 +1,4 @@
 export interface IServerResponse<T = {}> {
-  message: string
-  data: T
+  readonly message: string
+  readonly data: T
 }

@@ -1,43 +1,43 @@
 import { IServerResponse } from './response';
 
 export interface ISignUpRequest {
-  email: string;
-  password: string;
-  name: string;
-  surname: string;
-  username: string;
+  readonly email: string;
+  readonly password: string;
+  readonly name: string;
+  readonly surname: string;
+  readonly username: string;
 }
 
 export type ISignUpResponse = IServerResponse<{
-  token: string;
-  refreshToken: string;
+  readonly token: string;
+  readonly refreshToken: string;
 }>;
 
 export type ISignInRequest = {
-  password: string;
-} & ({ username: string } | { email: string });
+  readonly password: string;
+} & ({ readonly username: string } | { readonly email: string });
 
 export type ISignInResponse = IServerResponse<{
-  token: string;
-  refreshToken: string;
+  readonly token: string;
+  readonly refreshToken: string;
 }>;
 
 export type IRefreshResponse = IServerResponse<{
-  token: string;
-  refreshToken: string;
+  readonly token: string;
+  readonly refreshToken: string;
 }>;
 
 export type ILogoutResponse = IServerResponse;
 
 export interface IResetPasswordRequest {
-  email: string;
+  readonly email: string;
 }
 
 export type IResetPasswordResponse = IServerResponse;
 
 export interface IChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
+  readonly oldPassword: string;
+  readonly newPassword: string;
 }
 
 export type IChangePasswordResponse = IServerResponse;

@@ -3,25 +3,25 @@ import {
 } from '@type/entities';
 
 export interface ITodo {
-  id: ID;
-  columnId: number;
-  title: string;
-  description?: string;
-  status?: EnumTodoStatus;
-  color?: IColor;
-  isArchived?: boolean;
-  isRemoved?: boolean;
-  isNotificationsEnabled?: boolean;
-  expirationDate?: Date | null;
-  belowId?: number;
-  commentsCount: number;
-  imagesCount: number;
-  attachmentsCount: number;
+  readonly id: ID;
+  readonly columnId: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly status?: EnumTodoStatus;
+  readonly color?: IColor;
+  readonly isArchived?: boolean;
+  readonly isRemoved?: boolean;
+  readonly isNotificationsEnabled?: boolean;
+  readonly expirationDate?: Date | null;
+  readonly belowId?: number;
+  readonly commentsCount: number;
+  readonly imagesCount: number;
+  readonly attachmentsCount: number;
 }
 
 export interface ITodos {
-  entities: Array<ITodo>;
-  positions: IPositions;
+  readonly entities: Array<ITodo>;
+  readonly positions: IPositions;
 }
 
 export enum EnumTodoType {

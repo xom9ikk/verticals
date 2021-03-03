@@ -3,19 +3,19 @@ import { IUseValidatorResult, useValidator } from '@use/validator';
 import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
 
 export interface IFormValues {
-  [key: string]: IValidatorPayload;
+  readonly [key: string]: IValidatorPayload;
 }
 
 interface IFormErrors {
-  [key: string]: string;
+  readonly [key: string]: string;
 }
 
 interface IFormTouched {
-  [key: string]: boolean;
+  readonly [key: string]: boolean;
 }
 
 interface IFormValidator {
-  [key: string]: (payload: IValidatorPayload) => IValidatorResult;
+  readonly [key: string]: (payload: IValidatorPayload) => IValidatorResult;
 }
 
 interface IValidators {
@@ -27,12 +27,12 @@ type IUseForm = <T>(
   callback:(data: T) => void,
   formValidator: IFormValidator,
 ) => {
-  handleChange: (event: React.BaseSyntheticEvent) => void;
-  handleBlur: (event: React.BaseSyntheticEvent) => void;
-  handleSubmit: (event: React.BaseSyntheticEvent) => void;
-  values: IFormValues;
-  errors: IFormErrors;
-  touches: IFormTouched;
+  readonly handleChange: (event: React.BaseSyntheticEvent) => void;
+  readonly handleBlur: (event: React.BaseSyntheticEvent) => void;
+  readonly handleSubmit: (event: React.BaseSyntheticEvent) => void;
+  readonly values: IFormValues;
+  readonly errors: IFormErrors;
+  readonly touches: IFormTouched;
 };
 
 const validators: IValidators = {};

@@ -11,13 +11,13 @@ import {
 } from '@inversify/interfaces/services';
 
 export interface IServices {
-  authService: IAuthService;
-  userService: IUserService;
-  boardService: IBoardService;
-  columnService: IColumnService;
-  todoService: ITodoService;
-  commentService: ICommentService;
-  commentAttachmentService: ICommentAttachmentService;
-  searchService: ISearchService;
-  updateService: IUpdateService;
+  readonly authService: IAuthService;
+  readonly userService: IUserService;
+  readonly boardService: IBoardService;
+  readonly columnService: IColumnService;
+  readonly todoService: ITodoService;
+  readonly commentService: ICommentService;
+  readonly commentAttachmentService: ICommentAttachmentService;
+  readonly searchService: ISearchService;
+  readonly updateService: IUpdateService;
 }

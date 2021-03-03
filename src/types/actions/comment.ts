@@ -1,44 +1,44 @@
 import { ICommentLike, IComments } from '@type/entities';
 
 export interface IFetchCommentsByTodoId {
-  todoId: number;
+  readonly todoId: number;
 }
 
 export type ISetComments = IComments;
 
 export interface ICreateComment {
-  todoId: number;
-  text: string;
-  replyCommentId?: number;
-  files: FileList | null;
+  readonly todoId: number;
+  readonly text: string;
+  readonly replyCommentId?: number;
+  readonly files: FileList | null;
 }
 
 export interface IAddComment {
-  id: number;
-  todoId: number;
-  text: string;
-  replyCommentId?: number;
+  readonly id: number;
+  readonly todoId: number;
+  readonly text: string;
+  readonly replyCommentId?: number;
 }
 
 export interface IRemoveComment {
-  id: number;
+  readonly id: number;
 }
 
 export interface IAddCommentLike {
-  commentId: number;
+  readonly commentId: number;
 }
 
 export interface IRemoveCommentLike {
-  commentId: number;
+  readonly commentId: number;
 }
 
 export interface IUpdateCommentLike {
-  commentId: number;
-  like: ICommentLike;
-  isLiked: boolean;
+  readonly commentId: number;
+  readonly like: ICommentLike;
+  readonly isLiked: boolean;
 }
 
 export interface IUpdateCommentText {
-  id: number;
-  text: string;
+  readonly id: number;
+  readonly text: string;
 }

@@ -9,7 +9,7 @@ export enum EnumOperations {
 }
 
 export interface IOperation {
-  operation: EnumOperations
+  readonly operation: EnumOperations
 }
 
 export type IBoardUpdateResponse = IBoard & IOperation;
@@ -19,18 +19,18 @@ export type IColumnUpdateResponse = IColumn & IOperation;
 export type ITodoUpdateResponse = ITodo & IOperation;
 
 export type IBoardPositionsUpdateResponse = {
-  userId: ID,
-  order: Array<ID>;
+  readonly userId: ID,
+  readonly order: Array<ID>;
 } & IOperation;
 
 export type IColumnPositionsUpdateResponse = {
-  boardId: ID,
-  order: Array<ID>;
+  readonly boardId: ID,
+  readonly order: Array<ID>;
 } & IOperation;
 
 export type ITodoPositionsUpdateResponse = {
-  columnId: ID,
-  order: Array<ID>;
+  readonly columnId: ID,
+  readonly order: Array<ID>;
 } & IOperation;
 
 export type ICommentUpdateResponse = IComment & IOperation;

@@ -2,48 +2,48 @@ import { IComments } from '@type/entities';
 import { IServerResponse } from './response';
 
 export type IGetAllCommentsResponse = IServerResponse<{
-  todos: IComments;
+  readonly todos: IComments;
 }>;
 
 export interface IGetCommentsByTodoIdRequest {
-  todoId: number;
+  readonly todoId: number;
 }
 
 export type IGetCommentsByTodoIdResponse = IServerResponse<{
-  comments: IComments;
+  readonly comments: IComments;
 }>;
 
 export interface ICreateCommentRequest {
-  todoId: number;
-  text: string;
-  replyCommentId?: number;
+  readonly todoId: number;
+  readonly text: string;
+  readonly replyCommentId?: number;
 }
 
 export type ICreateCommentResponse = IServerResponse<{
-  commentId: number;
+  readonly commentId: number;
 }>;
 
 export interface IRemoveCommentRequest {
-  id: number;
+  readonly id: number;
 }
 
 export type IRemoveCommentResponse = IServerResponse;
 
 export interface IUpdateCommentRequest {
-  id: number;
-  text?: string;
+  readonly id: number;
+  readonly text?: string;
 }
 
 export type IUpdateCommentResponse = IServerResponse;
 
 export interface IAddCommentLikeRequest {
-  commentId: number;
+  readonly commentId: number;
 }
 
 export type IAddCommentLikeResponse = IServerResponse;
 
 export interface IRemoveCommentLikeRequest {
-  commentId: number;
+  readonly commentId: number;
 }
 
 export type IRemoveCommentLikeResponse = IServerResponse;
