@@ -76,5 +76,7 @@
       "@type/*": ["src/types/*"],
       "@use/*": ["src/use/*"]
     }
-  }
+  },
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

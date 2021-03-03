@@ -26,7 +26,7 @@ export interface ICreateTodoRequest {
   color?: IColor;
   isCollapsed?: boolean;
   status?: EnumTodoStatus;
-  expirationDate?: Date;
+  expirationDate?: Date | null;
   belowId?: number;
 }
 

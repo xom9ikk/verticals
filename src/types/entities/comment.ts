@@ -11,7 +11,7 @@ export interface IFile {
 // }
 
 export interface ICommentLike {
-  name: string | null;
+  readonly name: string | null;
   surname: string | null;
   username: string | null;
   avatar: string | null;
