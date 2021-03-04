@@ -12,15 +12,15 @@ import { watchUpdate } from '@store/sagas/update';
 
 export function* rootSaga() {
   yield all([
-    yield fork(watchAuth),
-    yield fork(watchUser),
-    yield fork(watchBoard),
-    yield fork(watchColumn),
-    yield fork(watchTodo),
-    yield fork(watchComment),
-    yield fork(watchCommentAttachments),
-    yield fork(watchSearch),
-    yield fork(watchSystem),
-    yield fork(watchUpdate),
+    fork(watchAuth),
+    fork(watchUser),
+    fork(watchBoard),
+    fork(watchColumn),
+    fork(watchTodo),
+    fork(watchComment),
+    fork(watchCommentAttachments),
+    fork(watchSearch),
+    fork(watchSystem),
+    fork(watchUpdate),
   ]);
 }

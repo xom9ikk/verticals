@@ -12,7 +12,7 @@
     "type-check": "npx tsc -p tsconfig.json",
     "lint": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src --fix",
-    "graph": "npx madge --image graph.svg src/index.tsx"
+    "graph": "npx madge --image graph.svg"
   },
   "keywords": [],
   "author": "xom9ik <xom9ik.code@gmail.com>",

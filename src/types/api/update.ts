@@ -9,30 +9,42 @@ export enum EnumOperations {
 }
 
 export interface IOperation {
-  readonly operation: EnumOperations
+  readonly operation: EnumOperations;
 }
 
-export type IBoardUpdateResponse = IBoard & IOperation;
-
-export type IColumnUpdateResponse = IColumn & IOperation;
-
-export type ITodoUpdateResponse = ITodo & IOperation;
-
-export type IBoardPositionsUpdateResponse = {
-  readonly userId: ID,
-  readonly order: Array<ID>;
+export type IUpdateData<T> = {
+  readonly data: T;
 } & IOperation;
 
-export type IColumnPositionsUpdateResponse = {
-  readonly boardId: ID,
+export type IBoardUpdateData = IBoard;
+export type IBoardUpdateResponse = IUpdateData<IBoardUpdateData>;
+
+export type IColumnUpdateData = IColumn;
+export type IColumnUpdateResponse = IUpdateData<IColumnUpdateData>;
+
+export type ITodoUpdateData = ITodo;
+export type ITodoUpdateResponse = IUpdateData<ITodoUpdateData>;
+
+export interface IBoardPositionsUpdateData {
+  readonly userId: ID;
   readonly order: Array<ID>;
-} & IOperation;
+}
+export type IBoardPositionsUpdateResponse = IUpdateData<IBoardPositionsUpdateData>;
 
-export type ITodoPositionsUpdateResponse = {
-  readonly columnId: ID,
+export interface IColumnPositionsUpdateData {
+  readonly boardId: ID;
   readonly order: Array<ID>;
-} & IOperation;
+}
+export type IColumnPositionsUpdateResponse = IUpdateData<IColumnPositionsUpdateData>;
 
-export type ICommentUpdateResponse = IComment & IOperation;
+export interface ITodoPositionsUpdateData {
+  readonly columnId: ID;
+  readonly order: Array<ID>;
+}
+export type ITodoPositionsUpdateResponse = IUpdateData<ITodoPositionsUpdateData>;
 
-export type ICommentAttachmentUpdateResponse = ICommentAttachment & IOperation;
+export type ICommentUpdateData = IComment;
+export type ICommentUpdateResponse = IUpdateData<ICommentUpdateData>;
+
+export type ICommentAttachmentUpdateData = ICommentAttachment;
+export type ICommentAttachmentUpdateResponse = IUpdateData<ICommentAttachmentUpdateData>;

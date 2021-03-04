@@ -1,28 +1,37 @@
 import {
   all, apply, takeLatest, fork, put,
 } from 'typed-redux-saga';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { container } from '@inversify/config';
 import { TYPES } from '@inversify/types';
 import { IServices } from '@inversify/interfaces';
 import {
   BoardsActions, ColumnsActions, CommentsActions, TodosActions, UpdatesActions,
 } from '@store/actions';
-import { EnumOperations, IOperation } from '@type/api';
-import { PayloadAction } from '@reduxjs/toolkit';
+import {
+  EnumOperations, IBoardPositionsUpdateData,
+  IBoardUpdateData,
+  IColumnPositionsUpdateData,
+  IColumnUpdateData, ICommentUpdateData,
+  ITodoPositionsUpdateData, ITodoUpdateData,
+  IUpdateData,
+} from '@type/api';
 
 const { updateService } = container.get<IServices>(TYPES.Services);
 
-interface IOperationHandlers {
-  insert?: (data: any) => PayloadAction<any>,
-  update?: (data: any) => PayloadAction<any>,
-  delete?: (data: any) => PayloadAction<any>,
+interface IOperationHandlers<T> {
+  insert?: (data: T) => PayloadAction<any>,
+  update?: (data: T) => PayloadAction<any>,
+  delete?: (data: T) => PayloadAction<any>,
 }
 
-function* subscribeOnEntity<T extends IOperation>(
-  context: any, subscribeFunction: () => Promise<T>, handlers: IOperationHandlers,
+function* subscribeOnEntity<T>(
+  context: any,
+  subscribeFunction: () => Promise<IUpdateData<T>>,
+  handlers: IOperationHandlers<T>,
 ) {
   while (true) {
-    const { operation, ...data } = yield* apply(context, subscribeFunction, []);
+    const { operation, data } = yield* apply(context, subscribeFunction, []);
     console.log('>>>>update', data);
     switch (operation) {
       case EnumOperations.Insert: {
@@ -52,49 +61,69 @@ function* subscribeOnUpdatesWorker() {
   try {
     yield* apply(updateService, updateService.openChannel, []);
 
-    yield* fork(subscribeOnEntity, updateService, updateService.onBoardsUpdate, {
-      insert: BoardsActions.add,
-      update: BoardsActions.updateEntity,
-      delete: BoardsActions.remove,
-    });
-    yield* fork(subscribeOnEntity, updateService, updateService.onColumnsUpdate, {
-      insert: ColumnsActions.add,
-      update: ColumnsActions.updateEntity,
-      delete: ColumnsActions.remove,
-    });
-    yield* fork(subscribeOnEntity, updateService, updateService.onTodosUpdate, {
-      insert: TodosActions.add,
-      update: TodosActions.updateEntity,
-      delete: TodosActions.remove,
-    });
-    yield* fork(subscribeOnEntity, updateService, updateService.onBoardPositionsUpdate, {
-      update: (data) => BoardsActions.setPositions(data.order),
-    });
-    yield* fork(subscribeOnEntity, updateService, updateService.onColumnPositionsUpdate, {
-      insert: (data) => ColumnsActions.setPositionsByBoardId({
-        positions: data.order,
-        boardId: data.boardId,
-      }),
-      update: (data) => ColumnsActions.setPositionsByBoardId({
-        positions: data.order,
-        boardId: data.boardId,
-      }),
-    });
-    yield* fork(subscribeOnEntity, updateService, updateService.onTodoPositionsUpdate, {
-      insert: (data) => TodosActions.setPositionsByColumnId({
-        positions: data,
-        columnId: data.columnId,
-      }),
-      update: (data) => TodosActions.setPositionsByColumnId({
-        positions: data.order,
-        columnId: data.columnId,
-      }),
-    });
-    yield* fork(subscribeOnEntity, updateService, updateService.onCommentsUpdate, {
-      insert: CommentsActions.add,
-      update: CommentsActions.updateText,
-      delete: CommentsActions.remove,
-    });
+    yield* fork(() => subscribeOnEntity<IBoardUpdateData>(
+      updateService,
+      updateService.onBoardsUpdate, {
+        insert: BoardsActions.add,
+        update: BoardsActions.updateEntity,
+        delete: BoardsActions.remove,
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<IColumnUpdateData>(
+      updateService,
+      updateService.onColumnsUpdate, {
+        insert: ColumnsActions.add,
+        update: ColumnsActions.updateEntity,
+        delete: ColumnsActions.remove,
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<ITodoUpdateData>(
+      updateService, updateService.onTodosUpdate, {
+        insert: TodosActions.add,
+        update: TodosActions.updateEntity,
+        delete: TodosActions.remove,
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<IBoardPositionsUpdateData>(
+      updateService,
+      updateService.onBoardPositionsUpdate, {
+        update: (data) => BoardsActions.setPositions(data.order),
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<IColumnPositionsUpdateData>(
+      updateService,
+      updateService.onColumnPositionsUpdate, {
+        insert: (data) => ColumnsActions.setPositionsByBoardId({
+          positions: data.order,
+          boardId: data.boardId,
+        }),
+        update: (data) => ColumnsActions.setPositionsByBoardId({
+          positions: data.order,
+          boardId: data.boardId,
+        }),
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<ITodoPositionsUpdateData>(
+      updateService,
+      updateService.onTodoPositionsUpdate, {
+        insert: (data) => TodosActions.setPositionsByColumnId({
+          positions: data.order,
+          columnId: data.columnId,
+        }),
+        update: (data) => TodosActions.setPositionsByColumnId({
+          positions: data.order,
+          columnId: data.columnId,
+        }),
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<ICommentUpdateData>(
+      updateService,
+      updateService.onCommentsUpdate, {
+        insert: CommentsActions.add,
+        update: CommentsActions.updateText,
+        delete: CommentsActions.remove,
+      },
+    ));
   } catch (error) {
     console.error(error);
   }

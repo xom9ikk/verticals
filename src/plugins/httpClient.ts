@@ -9,18 +9,19 @@ import { storage } from './storage';
 const { API_URL } = process.env;
 
 const AUTH_PREFIX = 'Bearer ';
+const DEFAULT_ERROR_MESSAGE = 'Internal error';
 const DEFAULT_CONTENT_TYPE = 'application/json; charset=utf-8';
 const UNAUTHORIZED_STATUS = 401;
 const REFRESH_ROUTE = '/auth/refresh';
 
 interface IPairTokens {
-  token: string;
-  refreshToken: string;
+  readonly token: string;
+  readonly refreshToken: string;
 }
 
 @injectable()
 export class HttpClient implements IHttpClient {
-  client: AxiosInstance;
+  private readonly client: AxiosInstance;
 
   private refreshRequest?: Promise<IRefreshResponse>;
 
@@ -99,8 +100,8 @@ export class HttpClient implements IHttpClient {
         delete this.refreshRequest;
       }
     } catch (e) {
-      const err = error?.response?.data?.message || 'Internal error';
-      return Promise.reject(err);
+      const errorMessage = error?.response?.data?.message || DEFAULT_ERROR_MESSAGE;
+      return Promise.reject(errorMessage);
     }
   }
 

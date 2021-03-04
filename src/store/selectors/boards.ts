@@ -7,7 +7,6 @@ export const getOrderedBoards = createSelector(
   [getBoards],
   (boards) => {
     const { entities, positions } = boards;
-    // console.log('getBoards', state.boards, entities, positions);  // TODO: remove null
     const orderedBoards: Array<IBoard> = [];
     positions.forEach((boardId) => {
       const boardByOrder = entities.find((board) => board.id === boardId);
@@ -18,10 +17,7 @@ export const getOrderedBoards = createSelector(
     return orderedBoards;
   },
 );
-export const getBoardCardType = (boardId?: number | null) => createSelector( // TODO: remove null
+export const getBoardCardType = (boardId?: number) => createSelector(
   [getBoards],
-  (boards) => {
-    console.log('TODO: getBoardCardType');
-    return boards.entities.find((board) => board.id === boardId)?.cardType ?? EnumTodoType.Checkboxes;
-  },
+  (boards) => boards.entities.find((board) => board.id === boardId)?.cardType ?? EnumTodoType.Checkboxes,
 );
