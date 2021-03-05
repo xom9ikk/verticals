@@ -1,21 +1,11 @@
-/* eslint-disable no-underscore-dangle,class-methods-use-this */
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-// import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-// import { IRefreshResponse } from '@type/api';
 import { IWSClient } from '@inversify/interfaces/wsClient';
-import { storage } from './storage';
-
-const { WS_URL } = process.env;
-
-const AUTH_PREFIX = 'Bearer ';
-// const UNAUTHORIZED_STATUS = 401;
-// const REFRESH_ROUTE = '/auth/refresh';
-
-// interface IPairTokens {
-//   token: string;
-//   refreshToken: string;
-// }
+import { storage } from '@plugins/storage';
+import { AuthRefresher } from '@plugins/authRefresher';
+import { container } from '@inversify/config';
+import { TYPES } from '@inversify/types';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
 
 @injectable()
 export class WSClient implements IWSClient {
@@ -29,10 +19,21 @@ export class WSClient implements IWSClient {
     };
   };
 
+  private readonly authRefresher: AuthRefresher<string>;
+
   constructor() {
     this.instances = {};
     this.listeners = {};
+
+    const httpClient = container.get<IHttpClient>(TYPES.HttpClient);
+    this.authRefresher = new AuthRefresher<string>(httpClient, this.handleReconnect.bind(this));
     console.log('constructor ws', this.instances);
+  }
+
+  handleReconnect(path: string) {
+    console.log('try reconnect');
+    delete this.instances[path];
+    this.open(path);
   }
 
   close(path: string) {
@@ -45,15 +46,12 @@ export class WSClient implements IWSClient {
 
   open(path: string) {
     const authQuery = WSClient.getAuthQuery();
-
-    console.log('path', path);
     console.log('authQuery', authQuery);
-    console.log('this.instances', this);
     if (this.instances[path]) {
       return;
     }
 
-    this.instances[path] = new WebSocket(`${WS_URL}${path}${authQuery}`);
+    this.instances[path] = new WebSocket(`${process.env.WS_URL}${path}${authQuery}`);
 
     this.instances[path].addEventListener('open', (event) => {
       console.log('opened', path, event);
@@ -73,13 +71,15 @@ export class WSClient implements IWSClient {
       console.log('error', path, event);
     });
 
-    this.instances[path].addEventListener('close', (event) => {
-      console.log('close', path, event);
-    });
+    this.instances[path].addEventListener(
+      'close',
+      async (event) => {
+        await this.authRefresher.websocketResponseInterceptor(event, path);
+      },
+    );
   }
 
   on<T>(path: string, channel: string, callback: T) {
-    console.log('on', path, channel, callback);
     if (!this.listeners[path]) {
       this.listeners[path] = {};
     }
@@ -99,6 +99,6 @@ export class WSClient implements IWSClient {
 
   private static getAuthQuery() {
     const token = storage.getToken();
-    return `?authorization=${AUTH_PREFIX}${token}`;
+    return `?authorization=${process.env.AUTH_PREFIX}${token}`;
   }
 }

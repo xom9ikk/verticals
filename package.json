@@ -9,7 +9,7 @@
     "build": "webpack --config ./build/webpack.build.config.js",
     "analyze": "node ./build/analyze.js",
     "test": "node scripts/test.js",
-    "type-check": "npx tsc -p tsconfig.json",
+    "type-check": "npx tsc --pretty",
     "lint": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src --fix",
     "graph": "npx madge --image graph.svg"
