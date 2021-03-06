@@ -8,7 +8,7 @@ import { Button } from '../Button';
 
 interface IModal {
   isOpen: boolean,
-  type?: 'button' | 'submit' | 'reset',
+  type?: 'button' | 'submit',
   isSoftExit?: boolean,
   negative?: string,
   positive: string,

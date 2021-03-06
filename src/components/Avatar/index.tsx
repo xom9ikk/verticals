@@ -23,38 +23,34 @@ export const Avatar: FC<IAvatar> = ({
   const url = userAvatarUrl === null ? null : userAvatarUrl || useSelector(getAvatarUrl);
   const firstLetter = fullName[0]?.toUpperCase() ?? ':)';
 
-  return (
-    <>
-      { url ? (
-        <img
-          src={url}
-          alt="avatar"
-          className={`avatar avatar--${borderSize}-border`}
-          style={{
-            height: size,
-            width: size,
-            ...style,
-          }}
-          onClick={onClick}
-          data-for="tooltip"
-          data-tip={fullName}
-        />
-      ) : (
-        <span
-          className="avatar avatar--letter"
-          style={{
-            height: size,
-            width: size,
-            fontSize: size / 2,
-            ...style,
-          }}
-          onClick={onClick}
-          data-for="tooltip"
-          data-tip={fullName}
-        >
-          {firstLetter}
-        </span>
-      )}
-    </>
+  return url ? (
+    <img
+      src={url}
+      alt="avatar"
+      className={`avatar avatar--${borderSize}-border`}
+      style={{
+        height: size,
+        width: size,
+        ...style,
+      }}
+      onClick={onClick}
+      data-for="tooltip"
+      data-tip={fullName}
+    />
+  ) : (
+    <span
+      className="avatar avatar--letter"
+      style={{
+        height: size,
+        width: size,
+        fontSize: size / 2,
+        ...style,
+      }}
+      onClick={onClick}
+      data-for="tooltip"
+      data-tip={fullName}
+    >
+      {firstLetter}
+    </span>
   );
 };

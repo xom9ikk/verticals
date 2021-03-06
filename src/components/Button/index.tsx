@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 
 interface IButton {
-  type: 'button' | 'submit' | 'reset',
+  type: 'button' | 'submit',
   modificator?: 'primary' | 'transparent' | 'danger',
   onClick?: (event: React.SyntheticEvent) => void,
   isMaxWidth?: boolean,

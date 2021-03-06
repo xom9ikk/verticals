@@ -59,6 +59,7 @@ export const RoundedButton: FC<IRoundedButton> = ({
     </div>
   ), [
     isActive,
+    isSpecialIcon,
     text,
     color,
     icon,
