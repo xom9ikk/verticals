@@ -28,7 +28,6 @@ function* fetchByTodoIdWorker(action: PayloadAction<IFetchCommentsByTodoId>) {
     const response = yield* apply(commentService, commentService.getByTodoId, [action.payload]);
     const { comments } = response.data;
     yield put(CommentsActions.setAll(comments));
-    // yield put(SystemActions.setIsLoadedComments(true));
   } catch (error) {
     yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
@@ -51,7 +50,7 @@ function* createWorker(action: PayloadAction<ICreateComment>) {
     }
     yield call(show, i18n.t('Comment'), i18n.t('Comment added successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, i18n.t('Comment'), error.message || error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 

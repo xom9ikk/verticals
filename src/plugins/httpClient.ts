@@ -58,6 +58,7 @@ export class HttpClient implements IHttpClient {
   }
 
   private retryRequest(error: AxiosError) {
+    console.log('retryRequest');
     const newRequest = {
       ...error.config,
       retry: true,

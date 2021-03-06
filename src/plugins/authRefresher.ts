@@ -33,7 +33,6 @@ export class AuthRefresher<T extends string | IAxiosErrorRetry> {
       AuthRefresher.setTokenData(pairTokens);
       return this.retryRequest(ctx);
     } catch (e) {
-      console.log(e);
       throw new Error();
     } finally {
       delete this.refreshRequest;
@@ -41,7 +40,6 @@ export class AuthRefresher<T extends string | IAxiosErrorRetry> {
   }
 
   async websocketResponseInterceptor(event: CloseEvent, ctx: T) {
-    console.log('close', ctx, event.code, event.reason, event);
     if (event.code === UNAUTHORIZED_WS_CODE) {
       await this.refreshTokens(ctx);
     }
@@ -58,7 +56,7 @@ export class AuthRefresher<T extends string | IAxiosErrorRetry> {
         throw new Error();
       }
 
-      await this.refreshTokens(ctx);
+      return await this.refreshTokens(ctx);
     } catch (e) {
       const errorMessage = error?.response?.data?.message || DEFAULT_ERROR_MESSAGE;
       return Promise.reject(errorMessage);
