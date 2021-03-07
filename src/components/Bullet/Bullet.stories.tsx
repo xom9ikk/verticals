@@ -29,4 +29,3 @@ export const Checkbox = (args: any) => <Bullet {...args} type={EnumTodoType.Chec
 export const Arrow = (args: any) => <Bullet {...args} type={EnumTodoType.Arrows} />;
 export const Dash = (args: any) => <Bullet {...args} type={EnumTodoType.Dashes} />;
 export const Dots = (args: any) => <Bullet {...args} type={EnumTodoType.Dots} />;
-export const Nothing = (args: any) => <Bullet {...args} type={EnumTodoType.Nothing} />;

@@ -8,7 +8,7 @@ const PATHS = {
   src: path.resolve('src'),
   dist: path.resolve('dist'),
   static: path.resolve('static'),
-  assets: 'assets',
+  public: 'public',
 };
 
 module.exports = {
@@ -77,8 +77,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.join(PATHS.src, PATHS.assets),
-          to: PATHS.assets,
+          from: path.join(PATHS.src, PATHS.public),
+          to: '',
         },
         {
           from: PATHS.static,

@@ -3,6 +3,9 @@ import React, {FC} from "react";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
+  docs: {
+    inlineStories: true,
+  },
   backgrounds: {
     default: 'light',
   },
