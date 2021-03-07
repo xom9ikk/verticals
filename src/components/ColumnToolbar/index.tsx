@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import { ControlButton } from '@comp/ControlButton';
 import { useTranslation } from 'react-i18next';
+import { ControlButton } from '@comp/ControlButton';
 
 interface IColumnToolbar {
   isEnabled: boolean;

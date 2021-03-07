@@ -54,6 +54,7 @@ const ControlButtonComponent = ({
     width ${animationDuration}ms ease-in-out, 
     padding ${animationDuration}ms ease-in-out`,
   };
+
   return (
     <button
       ref={ref}

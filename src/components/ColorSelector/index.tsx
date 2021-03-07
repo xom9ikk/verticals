@@ -13,7 +13,7 @@ export const ColorSelector: FC<IColorSelector> = ({
   onClick,
 }) => {
   const { isHovering, hoveringProps } = useHover();
-  console.log('color', color);
+
   return (
     <button
       {...hoveringProps}

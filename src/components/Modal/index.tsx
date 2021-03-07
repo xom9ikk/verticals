@@ -16,7 +16,7 @@ interface IModal {
   onNegative?: () => void,
   renderWrapper?: (children: React.ReactChild) => React.ReactChild,
   onClose: () => void,
-  size?: string,
+  size?: 'small' | 'medium' | 'large',
 }
 
 export const Modal: FC<IModal> = ({

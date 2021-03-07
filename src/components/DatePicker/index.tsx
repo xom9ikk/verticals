@@ -12,12 +12,14 @@ import { useEffectState } from '@use/effectState';
 import { useNormalizeDate } from '@use/normalizeDate';
 
 interface IDatePicker {
+  medianDate?: Date;
   isOpen: boolean;
   selectedDate?: Date | null;
   onSelectDate: (payload: Date | null) => void;
 }
 
 export const DatePicker: FC<IDatePicker> = ({
+  medianDate = new Date(),
   isOpen,
   selectedDate = null,
   onSelectDate,
@@ -80,6 +82,7 @@ export const DatePicker: FC<IDatePicker> = ({
         horizontalSpacer={0}
       />
       <Calendar
+        medianDate={medianDate}
         onSelectDate={handleSelectDate}
         highlightDate={highlightDate}
         selectedDates={date ? [date] : []}

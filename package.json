@@ -8,7 +8,6 @@
     "i18n:extract": "i18next-scanner",
     "build": "webpack --config ./build/webpack.build.config.js",
     "analyze": "node ./build/analyze.js",
-    "test": "node scripts/test.js",
     "type-check": "npx tsc --pretty",
     "lint": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src --fix",
@@ -17,6 +16,7 @@
     "loki:prepend": "node ./.loki/replace.js",
     "loki:update": "npm run sb:build && npm run loki:prepend && npx loki --chromeDockerUseCopy --reactUri file:./storybook-static",
     "loki:approve": "npx loki approve",
+    "test": "npm run lint:fix && loki:update",
     "graph": "npx madge --image graph.svg"
   },
   "keywords": [],
@@ -36,6 +36,7 @@
   ],
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@loki/is-loki-running": "^0.28.0",
     "@reduxjs/toolkit": "^1.5.0",
     "@rooks/use-keys": "^4.9.1",
     "@rooks/use-outside-click-ref": "^4.9.1",

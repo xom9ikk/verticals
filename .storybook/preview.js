@@ -1,5 +1,5 @@
 import '../src/styles/scss/main.scss';
-import React, {FC} from "react";
+import React from "react";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

@@ -15,18 +15,21 @@ export default {
     borderSize: { control: { type: 'select', options: ['small', 'medium', 'large'] }, defaultValue: 'medium' },
     onClick: { action: 'clicked' },
   },
+  decorators: [
+    (Story: any) => (
+      <>
+        <ReactTooltip
+          id="tooltip"
+          place="top"
+          effect="solid"
+          multiline
+          arrowColor="transparent"
+          overridePosition={({ left, top }) => ({ left, top })}
+        />
+        <Story />
+      </>
+    ),
+  ],
 };
 
-export const Default = (args: any) => (
-  <>
-    <ReactTooltip
-      id="tooltip"
-      place="top"
-      effect="solid"
-      multiline
-      arrowColor="transparent"
-      overridePosition={({ left, top }) => ({ left, top })}
-    />
-    <Avatar {...args} />
-  </>
-);
+export const Default = (args: any) => <Avatar {...args} />;
