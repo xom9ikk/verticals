@@ -21,6 +21,7 @@ module.exports = {
   input: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.spec.{ts,tsx}',
+    '!src/**/*.stories.{ts,tsx}',
     '!src/i18n/**',
     '!**/node_modules/**',
   ],
@@ -52,10 +53,10 @@ module.exports = {
     defaultNs: 'translation',
     defaultValue: (lng, ns, key) => {
       return key;
-      if (lng === languages[0]) {
-        return key;
-      }
-      return '__STRING_NOT_TRANSLATED__';
+      // if (lng === languages[0]) {
+      //   return key;
+      // }
+      // return '__STRING_NOT_TRANSLATED__';
     },
     resource: {
       loadPath: 'static/locales/{{lng}}/{{ns}}.json',
