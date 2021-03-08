@@ -6,8 +6,8 @@
   "scripts": {
     "start": "webpack serve --config ./build/webpack.dev.config.js",
     "i18n:extract": "i18next-scanner",
-    "build": "webpack --config ./build/webpack.build.config.js",
     "analyze": "node ./build/analyze.js",
+    "build": "webpack --config ./build/webpack.build.config.js",
     "type-check": "npx tsc --pretty",
     "lint": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run type-check && eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

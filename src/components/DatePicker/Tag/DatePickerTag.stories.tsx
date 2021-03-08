@@ -4,7 +4,7 @@ import { DatePickerTag } from '@comp/DatePicker/Tag';
 export default {
   title: 'DatePickerTag',
   argTypes: {
-    date: { control: { type: 'date' }, defaultValue: new Date() },
+    date: { control: { type: 'date' }, defaultValue: new Date(2021, 2, 7) },
     onRemove: { action: 'remove' },
   },
   parameters: {

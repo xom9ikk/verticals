@@ -9,6 +9,7 @@ export default {
     onAddCard: { action: 'add card' },
     onAddHeading: { action: 'add heading' },
   },
+  parameters: { loki: { skip: true } },
 };
 
 export const Default = (args: any) => <ColumnToolbar {...args} />;
