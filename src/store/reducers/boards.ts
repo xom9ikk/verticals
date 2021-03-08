@@ -3,7 +3,7 @@ import { EnumTodoType, IBoards } from '@type/entities';
 import { BoardsActions } from '@store/actions';
 import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
 
-const initialState: IBoards = {
+export const initialState: IBoards = {
   entities: [],
   positions: [],
 };
