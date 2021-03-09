@@ -3,7 +3,7 @@ import uniqBy from 'lodash.uniqby';
 import { ICommentAttachments } from '@type/entities';
 import { CommentAttachmentsActions } from '@store/actions';
 
-const initialState: ICommentAttachments = [];
+export const initialState: ICommentAttachments = [];
 
 export const CommentAttachmentsReducer = createReducer(initialState, (builder) => builder
   .addCase(CommentAttachmentsActions.merge, (draft, action) => (uniqBy([...action.payload, ...draft], 'id')))
