@@ -18,6 +18,7 @@
     "loki:approve": "npx loki approve",
     "test": "jest --config ./jest.config.js",
     "test:watch": "npm test -- --watch",
+    "test:coverage": "jest --config ./jest.config.js --coverage",
     "test:all": "npm run test && npm run lint:fix && npm run loki:update",
     "graph": "npx madge --image graph.svg"
   },
@@ -95,6 +96,8 @@
     "@storybook/addon-essentials": "^6.1.21",
     "@storybook/addon-links": "^6.1.21",
     "@storybook/react": "^6.1.21",
+    "@stryker-mutator/core": "^4.5.0",
+    "@stryker-mutator/jest-runner": "^4.5.0",
     "@types/classnames": "^2.2.11",
     "@types/debug": "^4.1.5",
     "@types/downloadjs": "^1.4.2",

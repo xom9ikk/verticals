@@ -2,3 +2,6 @@
 /dist
 /storybook-static
 /.idea
+
+# stryker temp files
+.stryker-tmp
