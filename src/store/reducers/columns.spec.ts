@@ -208,4 +208,23 @@ describe('Column reducer', () => {
       },
     });
   });
+  it('reverse order', () => {
+    const [column, column2, column3, columnFromOtherBoard] = mockColumns;
+    const initialStateWithFourColumns = {
+      entities: [column, column2, column3, columnFromOtherBoard],
+      positions: {
+        [column.boardId]: [column.id, column2.id, column3.id],
+        [columnFromOtherBoard.boardId]: [columnFromOtherBoard.id],
+      },
+    };
+    expect(ColumnsReducer(initialStateWithFourColumns, ColumnsActions.reverseOrder({
+      boardId: column.boardId,
+    }))).toEqual({
+      entities: [column, column2, column3, columnFromOtherBoard],
+      positions: {
+        [column.boardId]: [column3.id, column2.id, column.id],
+        [columnFromOtherBoard.boardId]: [columnFromOtherBoard.id],
+      },
+    });
+  });
 });
