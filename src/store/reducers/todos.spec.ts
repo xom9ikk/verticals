@@ -152,6 +152,28 @@ describe('Todo reducer', () => {
       },
     });
   });
+  it('move between columns', () => {
+    const [todo, todo2, todo3, todoFromOtherColumn] = mockTodos;
+    const initialStateWithFourTodos = {
+      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      positions: {
+        [todo.columnId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+      },
+    };
+    expect(TodosReducer(initialStateWithFourTodos, TodosActions.move({
+      columnId: todoFromOtherColumn.columnId,
+      targetColumnId: todo.columnId,
+      sourcePosition: 0,
+      destinationPosition: 0,
+    }))).toEqual({
+      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      positions: {
+        [todo.columnId]: [todoFromOtherColumn.id, todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.columnId]: [],
+      },
+    });
+  });
   it('insert in position', () => {
     const [todo, todo2, todo3, todoFromOtherColumn, todoFromOtherColumn2] = mockTodos;
     const initialStateWithFourTodos = {
