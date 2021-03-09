@@ -3,7 +3,7 @@ import { ColumnsActions } from '@store/actions';
 import { TEMP_ID } from '@/constants';
 import { IColumns } from '@type/entities';
 
-const initialState: IColumns = {
+export const initialState: IColumns = {
   entities: [],
   positions: {},
 };

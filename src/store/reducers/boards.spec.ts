@@ -1,7 +1,7 @@
 import { BoardsActions } from '@store/actions';
 import { EnumColors, EnumTodoType } from '@type/entities';
 import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
-import { initialState, BoardsReducer } from './boards';
+import { BoardsReducer, initialState } from '@store/reducers/boards';
 
 const mockBoards = [{
   id: 1,

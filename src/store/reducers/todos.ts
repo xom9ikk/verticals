@@ -5,7 +5,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { TEMP_ID } from '@/constants';
 import { TodosActions } from '../actions';
 
-const initialState: ITodos = {
+export const initialState: ITodos = {
   entities: [],
   positions: {},
 };
