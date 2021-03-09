@@ -2,7 +2,7 @@ import { IComments } from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
 import { CommentsActions } from '@store/actions';
 
-const initialState: IComments = [];
+export const initialState: IComments = [];
 
 export const CommentsReducer = createReducer(initialState, (builder) => builder
   .addCase(CommentsActions.setAll, (draft, action) => action.payload)
