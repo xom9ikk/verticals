@@ -21,28 +21,30 @@ export const CardAttachments: FC<ICardAttachments> = ({
       'card-attachments--collapse': isCollapse,
     })}
     >
-      {
-        attachments.map((attachment) => (
-          <button
-            key={attachment.path}
-            className="card-attachment"
-            onClick={(e) => {
-              e.stopPropagation();
-              download(attachment.path);
-            }}
-          >
-            <div className="comment-file__extension">
-              <img src="/assets/svg/extension.svg" alt="extension" />
-              <span>
-                {attachment.extension.substring(0, 4)}
+      <div className="card-attachments__inner">
+        {
+          attachments.map((attachment) => (
+            <button
+              key={attachment.path}
+              className="card-attachment"
+              onClick={(e) => {
+                e.stopPropagation();
+                download(attachment.path);
+              }}
+            >
+              <div className="comment-file__extension">
+                <img src="/assets/svg/extension.svg" alt="extension" />
+                <span>
+                  {attachment.extension.substring(0, 4)}
+                </span>
+              </div>
+              <span className="card-attachment__name">
+                {attachment.name}
               </span>
-            </div>
-            <span className="card-attachment__name">
-              {attachment.name}
-            </span>
-          </button>
-        ))
-      }
+            </button>
+          ))
+        }
+      </div>
     </div>
   ) : null;
 };

@@ -60,13 +60,13 @@ export const CardPopup: FC<ICardPopup> = ({
   const debounceSave = useDebounce((id: number, { newTitle, newDescription } : any) => {
     setIsProgress(true);
     if (newTitle) {
-      dispatch(TodosActions.update({
+      dispatch(TodosActions.effect.update({
         id,
         title: newTitle,
       }));
     }
     if (newDescription) {
-      dispatch(TodosActions.update({
+      dispatch(TodosActions.effect.update({
         id,
         description: newDescription,
       }));
@@ -85,7 +85,7 @@ export const CardPopup: FC<ICardPopup> = ({
   };
 
   const handleChangeStatus = (newStatus: EnumTodoStatus) => {
-    dispatch(TodosActions.update({
+    dispatch(TodosActions.effect.update({
       id: activeTodo!.id,
       status: newStatus,
     }));
@@ -100,7 +100,7 @@ export const CardPopup: FC<ICardPopup> = ({
 
   const handleSelectDate = (selectedDate: Date | null) => {
     dispatch(SystemActions.setActivePopupId(null));
-    dispatch(TodosActions.update({
+    dispatch(TodosActions.effect.update({
       id: activeTodo!.id,
       expirationDate: selectedDate,
     }));
@@ -110,7 +110,7 @@ export const CardPopup: FC<ICardPopup> = ({
     if (activeTodo && activeTodo.columnId === columnId) {
       setTitleValue(activeTodo.title);
       setDescriptionValue(activeTodo.description);
-      dispatch(CommentsActions.fetchByTodoId({ todoId: activeTodo.id }));
+      dispatch(CommentsActions.effects.fetchByTodoId({ todoId: activeTodo.id }));
       dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: activeTodo.id }));
     }
   }, [activeTodo]);
@@ -261,7 +261,7 @@ export const CardPopup: FC<ICardPopup> = ({
                     titleInputRef.current?.focus();
                   }}
                   onChangeColor={(newColor) => {
-                    dispatch(TodosActions.update({
+                    dispatch(TodosActions.effect.update({
                       id: activeTodo.id,
                       color: newColor,
                     }));
@@ -281,7 +281,7 @@ export const CardPopup: FC<ICardPopup> = ({
                   justifySelf: 'flex-end',
                 }}
                 onClick={() => {
-                  dispatch(TodosActions.update({
+                  dispatch(TodosActions.effect.update({
                     id: activeTodo.id,
                     isNotificationsEnabled: !activeTodo.isNotificationsEnabled,
                   }));

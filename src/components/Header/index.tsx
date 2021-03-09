@@ -25,7 +25,7 @@ export const Header: FC = () => {
       <div className="header__wrapper">
         <div className="header__logo">
           <img src="/assets/svg/logo.svg" alt="logo" />
-          <Link to="/">
+          <Link to="/auth/login">
             Verticals
           </Link>
         </div>

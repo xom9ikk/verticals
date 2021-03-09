@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 export const useFocus = (ref?: any, dependencies?: Array<boolean>) => {
   const focus = (focusRef: any) => {
+    console.log('focusRef.c', focusRef);
     if (!focusRef.current) return;
     focusRef.current.focus();
     focusRef.current.setSelectionRange(focusRef.current.value.length, focusRef.current.value.length);

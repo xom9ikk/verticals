@@ -4,12 +4,15 @@ import ReactTooltip from 'react-tooltip';
 import { Provider } from 'react-redux';
 import { App } from '@/app';
 import { configureAppStore } from '@/store';
+import { ErrorBoundary } from '@comp/ErrorBoundary/ErrorBoundary';
 
 const store = configureAppStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </Provider>,
   document.getElementById('root'),
 );

@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { IUser } from '@type/entities';
 import { UserActions } from '@store/actions';
 
-const initialState: IUser = {
+export const initialState: IUser = {
   email: null,
   name: null,
   surname: null,

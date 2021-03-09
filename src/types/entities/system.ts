@@ -13,35 +13,35 @@ export enum EnumDroppedZoneType {
 }
 
 export interface ISystem {
-  isLoadedBoards: boolean;
-  isLoadedColumns: boolean;
-  isLoadedTodos: boolean;
-  activePopupId: string | null;
-  editableBoardId: number | null;
-  editableColumnId: number | null;
-  editableCardId: number | string | null;
-  isSearchMode: boolean;
-  language: EnumLanguage;
-  activeTodoId: number | null;
-  editCommentId: number | null;
-  replyCommentId: number | null;
-  isOpenProfile: boolean;
-  activeBoardId: number | null;
-  activeBoardReadableId: string | null;
-  activeTodoReadableId: string | null;
-  droppedFiles: {
+  readonly isLoadedBoards: boolean;
+  readonly isLoadedColumns: boolean;
+  readonly isLoadedTodos: boolean;
+  readonly activePopupId: string | null;
+  readonly editableBoardId: number | null;
+  readonly editableColumnId: number | null;
+  readonly editableCardId: number | string | null;
+  readonly isSearchMode: boolean;
+  readonly language: EnumLanguage;
+  readonly activeTodoId: number | null;
+  readonly editCommentId: number | null;
+  readonly replyCommentId: number | null;
+  readonly isOpenProfile: boolean;
+  readonly activeBoardId: number | null;
+  readonly activeBoardReadableId: string | null;
+  readonly activeTodoReadableId: string | null;
+  readonly droppedFiles: {
     type: EnumDroppedZoneType;
     files: FileList;
   } | null;
-  galleryImagesInfo: {
+  readonly galleryImagesInfo: {
     images: ICommentAttachments | null;
     index: number;
   } | null;
-  isOpenFormattingHelp: boolean;
+  readonly isOpenFormattingHelp: boolean;
 }
 
 export type ID = number;
 
 export interface IPositions {
-  [id: string]: Array<ID>;
+  readonly [id: number]: Array<ID>;
 }

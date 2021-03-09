@@ -7,6 +7,8 @@
   height: 0;
   position: relative;
   //height: auto;
+  margin-top: 5px;
+
 
   &__wrapper {
     //max-width: 215px;
@@ -28,14 +30,14 @@
     }
     &-wrapper {
       //max-width: calc(100% - 70px);
-      max-width: $column-width - 70;
+      max-width: $column-width - 61;
       //max-width: calc(var(--mini-gallery-width) - 70px);
       margin-bottom: -5px;
       //margin-right: -5px;
       img {
         //width: calc(100% - 70px + 2px);
         //width: $column-width - 70 + 2;
-        width: calc(var(--mini-gallery-width) - 70px + 2px);
+        width: calc(var(--mini-gallery-width) - 61px + 2px);
       }
     }
     &-pagination {

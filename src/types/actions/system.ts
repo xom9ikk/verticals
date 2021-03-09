@@ -17,12 +17,12 @@ export type ISetSystemIsOpenProfile = boolean;
 export type ISetSystemActiveBoardId = number | null;
 export type ISetSystemActiveBoardReadableId = string | null;
 export type ISetSystemActiveTodoReadableId = string | null;
-export interface ISetSystemDroppedFiles {
-  type: EnumDroppedZoneType;
-  files: FileList;
-}
+export type ISetSystemDroppedFiles = {
+  readonly type: EnumDroppedZoneType;
+  readonly files: FileList;
+} | null;
 export type ISetGalleryImagesInfo = {
-  images: ICommentAttachments | null;
-  index: number;
+  readonly images: ICommentAttachments | null;
+  readonly index: number;
 } | null;
 export type ISetIsOpenFormattingHelp = boolean;

@@ -4,73 +4,72 @@ import {
 import { IServerResponse } from './response';
 
 export type IGetAllTodosResponse = IServerResponse<{
-  todos: ITodos;
+  readonly todos: ITodos;
 }>;
 
 export interface IGetTodosByBoardIdRequest {
-  boardId: number;
+  readonly boardId: number;
 }
 
 export type IGetTodosByBoardIdResponse = IServerResponse<{
-  todos: ITodos;
+  readonly todos: ITodos;
 }>;
 
 export type IGetRemovedTodosResponse = IServerResponse<{
-  todos: ITodos;
+  readonly todos: ITodos;
 }>;
 
 export interface ICreateTodoRequest {
-  columnId: number;
-  title: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
-  status?: EnumTodoStatus;
-  expirationDate?: Date;
-  belowId?: number;
+  readonly columnId: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly isCollapsed?: boolean;
+  readonly status?: EnumTodoStatus;
+  readonly expirationDate?: Date | null;
+  readonly belowId?: number;
 }
 
 export type ICreateTodoResponse = IServerResponse<{
-  todoId: number;
-  position: number;
+  readonly todoId: number;
+  readonly position: number;
 }>;
 
 export interface IRemoveTodoRequest {
-  id: number;
+  readonly id: number;
 }
 
 export type IRemoveTodoResponse = IServerResponse;
 
 export interface IUpdateTodoRequest {
-  id: number;
-  // columnId: number;
-  title?: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
+  readonly id: number;
+  readonly title?: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly isCollapsed?: boolean;
 }
 
 export type IUpdateTodoResponse = IServerResponse;
 
 export interface IUpdateTodoPositionRequest {
-  sourcePosition: number;
-  destinationPosition: number;
-  columnId: number;
+  readonly sourcePosition: number;
+  readonly destinationPosition: number;
+  readonly columnId: number;
 }
 
 export type IUpdateTodoPositionResponse = IServerResponse;
 
 export interface IDuplicateTodoRequest {
-  todoId: number;
+  readonly todoId: number;
 }
 
 export type IDuplicateTodoResponse = IServerResponse<{
-  todoId: number;
-  position: number;
-  columnId: number;
-  title: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
-  belowId?: number;
+  readonly todoId: number;
+  readonly position: number;
+  readonly columnId: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly isCollapsed?: boolean;
+  readonly belowId?: number;
 }>;

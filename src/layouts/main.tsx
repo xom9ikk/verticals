@@ -100,7 +100,7 @@ export const MainLayout: FC = () => {
 
   useEffect(() => {
     dispatch(UserActions.fetchMe());
-    dispatch(BoardsActions.fetchAll());
+    dispatch(BoardsActions.effect.fetchAll());
   }, []);
 
   const memoSidebar = useMemo(() => (

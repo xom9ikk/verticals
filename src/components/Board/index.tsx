@@ -23,6 +23,7 @@ import { BoardContextMenu } from '@comp/BoardContextMenu';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { BoardCounter } from '@comp/BoardCounter';
+import { useEffectState } from '@use/effectState';
 
 interface IBoard {
   boardId: number;
@@ -62,8 +63,8 @@ export const Board: FC<IBoard> = ({
   const isSearchMode = useSelector(getIsSearchMode);
 
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [titleValue, setTitleValue] = useState<string>(title);
-  const [descriptionValue, setDescriptionValue] = useState<string>(description);
+  const [titleValue, setTitleValue] = useEffectState<string>(title);
+  const [descriptionValue, setDescriptionValue] = useEffectState<string>(description);
 
   const titleInputRef = useRef<any>(null);
 
@@ -77,7 +78,7 @@ export const Board: FC<IBoard> = ({
     if (boardId !== NEW_BOARD_ID && belowId === undefined) {
       const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
       if (normalizedTitleValue && isNew) {
-        dispatch(BoardsActions.update({
+        dispatch(BoardsActions.effect.update({
           id: boardId,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
@@ -89,10 +90,10 @@ export const Board: FC<IBoard> = ({
       dispatch(SystemActions.setEditableBoardId(null));
     } else {
       if (normalizedTitleValue) {
-        dispatch(BoardsActions.create({
+        dispatch(BoardsActions.effect.create({
           icon: '/assets/svg/board/item.svg',
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue || undefined,
+          description: normalizedDescriptionValue,
           cardType: EnumTodoType.Checkboxes,
           belowId,
         }));
@@ -143,7 +144,7 @@ export const Board: FC<IBoard> = ({
   };
 
   const handleClickUnwrapped = () => {
-    if (!isEditable) {
+    if (!isEditable && !isActive) {
       onClick?.(title, boardId!);
     }
   };

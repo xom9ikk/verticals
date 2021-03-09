@@ -13,8 +13,6 @@ export const MainLayout = lazy(() => import('@layouts/main'), (module) => module
 export const Register = lazy(() => import('@pages/auth/Register'), (module) => module.Register);
 export const Login = lazy(() => import('@pages/auth/Login'), (module) => module.Login);
 export const Reset = lazy(() => import('@pages/auth/Reset'), (module) => module.Reset);
-export const Account = lazy(() => import('@pages/settings/Account'), (module) => module.Account);
-export const Profile = lazy(() => import('@pages/settings/Profile'), (module) => module.Profile);
 
 export const MainRouter: FC = () => (
   <Router history={history}>

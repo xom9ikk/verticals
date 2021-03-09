@@ -46,7 +46,7 @@ export const BoardContextMenu: FC<IBoard> = ({
   const username = useSelector(getUsername);
 
   const handleColorPick = (newColor: IColor) => {
-    dispatch(BoardsActions.update({ id: boardId, color: newColor }));
+    dispatch(BoardsActions.effect.update({ id: boardId, color: newColor }));
   };
 
   const handleMenuButtonClick = (action: EnumMenuActions, payload?: any) => {
@@ -56,11 +56,11 @@ export const BoardContextMenu: FC<IBoard> = ({
         break;
       }
       case EnumMenuActions.CardStyle: {
-        dispatch(BoardsActions.update({ id: boardId, cardType: payload }));
+        dispatch(BoardsActions.effect.update({ id: boardId, cardType: payload }));
         break;
       }
       case EnumMenuActions.ReverseColumnOrder: {
-        dispatch(ColumnsActions.reverseOrder({ boardId }));
+        dispatch(ColumnsActions.effect.reverseOrder({ boardId }));
         break;
       }
       case EnumMenuActions.CopyLink: {
@@ -77,7 +77,7 @@ export const BoardContextMenu: FC<IBoard> = ({
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(BoardsActions.remove({ id: boardId }));
+        dispatch(BoardsActions.effect.remove({ id: boardId }));
         break;
       }
       default: break;
@@ -160,7 +160,7 @@ export const BoardContextMenu: FC<IBoard> = ({
                   imageSize={24}
                   size={36}
                   onClick={() => {
-                    dispatch(BoardsActions.update({ id: boardId, icon: link }));
+                    dispatch(BoardsActions.effect.update({ id: boardId, icon: link }));
                   }}
                 />
               );

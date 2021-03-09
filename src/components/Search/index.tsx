@@ -32,9 +32,9 @@ export const Search: FC = () => {
 
   useEffect(() => {
     if (!query && isSearchMode) {
-      dispatch(BoardsActions.fetchAll());
-      dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId! }));
-      dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId! }));
+      dispatch(BoardsActions.effect.fetchAll());
+      dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
+      dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(SystemActions.setIsSearchMode(false));
     }
   }, [query, isSearchMode]);

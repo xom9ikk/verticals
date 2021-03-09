@@ -183,5 +183,8 @@
   "{{count}} cards archived_2": "{{count}} карточек заархивировано",
   "System": "Система",
   "Formatting help": "Помощь в форматировании",
-  "Shift+Enter to send": "Shift+Enter для отправки"
+  "Shift+Enter to send": "Shift+Enter для отправки",
+  "Something went wrong...": "Something went wrong...",
+  "Please reload page": "Please reload page",
+  "We are already working on fixing this error": "We are already working on fixing this error"
 }

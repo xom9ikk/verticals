@@ -1,31 +1,19 @@
-export interface IFile {
-  id: number;
-  link: string;
-  type: string;
-  size: string;
-  name: string;
-}
-
-// export interface IImage {
-//   link: string;
-// }
-
 export interface ICommentLike {
-  name: string | null;
-  surname: string | null;
-  username: string | null;
-  avatar: string | null;
+  readonly name: string | null;
+  readonly surname: string | null;
+  readonly username: string | null;
+  readonly avatar: string | null;
 }
 
 export interface IComment {
-  id: number;
-  userId: number;
-  todoId: number;
-  text?: string;
-  createdAt: number;
-  updatedAt: number | null;
-  replyCommentId?: number;
-  likedUsers?: Array<ICommentLike>;
+  readonly id: number;
+  readonly userId: number;
+  readonly todoId: number;
+  readonly text: string;
+  readonly createdAt: number;
+  readonly updatedAt: number | null;
+  readonly replyCommentId?: number;
+  readonly likedUsers?: Array<ICommentLike>;
 }
 
 export type IComments = Array<IComment>;

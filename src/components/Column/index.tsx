@@ -27,7 +27,7 @@ interface IColumn {
   description?: string;
   scrollToRight?: () => void;
   mode?: EnumColumnMode;
-  width: number | null;
+  width?: number | null;
 }
 
 export const Column: FC<IColumn> = ({
@@ -51,7 +51,7 @@ export const Column: FC<IColumn> = ({
 
   const handleClick = () => {
     if (mode === EnumColumnMode.Normal) {
-      dispatch(ColumnsActions.update({
+      dispatch(ColumnsActions.effect.update({
         id: columnId!,
         isCollapsed: !isCollapsed,
       }));

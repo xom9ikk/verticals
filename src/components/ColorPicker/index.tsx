@@ -3,8 +3,8 @@ import { ColorSelector } from '@comp/ColorSelector';
 import { colors, EnumColors, IColor } from '@type/entities';
 
 interface IColorPicker {
-  onPick: (color: IColor) => void;
   activeColor?: IColor;
+  onPick: (color: IColor) => void;
 }
 
 export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {

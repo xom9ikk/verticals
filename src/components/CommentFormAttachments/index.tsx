@@ -3,14 +3,14 @@ import { ControlButton } from '@comp/ControlButton';
 
 interface ICommentFormAttachments {
   files: FileList | null;
-  onRemove: (index: number) => void;
   isListView?: boolean;
+  onRemove: (index: number) => void;
 }
 
 export const CommentFormAttachments: FC<ICommentFormAttachments> = ({
   files,
-  onRemove,
   isListView,
+  onRemove,
 }) => useMemo(() => (files && files.length > 0 ? (
   <div className={
     `comment-form-attachments

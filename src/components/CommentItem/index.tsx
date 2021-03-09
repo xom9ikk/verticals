@@ -80,9 +80,9 @@ export const CommentItem: FC<ICommentItem> = ({
       case EnumMenuActions.Like: {
         const like = { commentId: id };
         if (isLikedByMe) {
-          dispatch(CommentsActions.removeLike(like));
+          dispatch(CommentsActions.effects.removeLike(like));
         } else {
-          dispatch(CommentsActions.addLike(like));
+          dispatch(CommentsActions.effects.addLike(like));
         }
         break;
       }
@@ -97,7 +97,7 @@ export const CommentItem: FC<ICommentItem> = ({
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(CommentsActions.remove({ id }));
+        dispatch(CommentsActions.effects.remove({ id }));
         break;
       }
       default:
@@ -206,6 +206,7 @@ export const CommentItem: FC<ICommentItem> = ({
     replyComment,
     fullName,
     attachments,
+    text,
   ]);
 
   const handleClickOnLikedUser = () => {

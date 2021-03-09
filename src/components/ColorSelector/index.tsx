@@ -4,11 +4,16 @@ import { useHover } from '@use/hover';
 interface IColorSelector {
   color: string;
   onClick: (color: string) => void;
-  isActive: boolean
+  isActive: boolean;
 }
 
-export const ColorSelector: FC<IColorSelector> = ({ color, onClick, isActive }) => {
+export const ColorSelector: FC<IColorSelector> = ({
+  color,
+  isActive,
+  onClick,
+}) => {
   const { isHovering, hoveringProps } = useHover();
+
   return (
     <button
       {...hoveringProps}

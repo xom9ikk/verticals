@@ -1,69 +1,46 @@
 import {
-  EnumTodoType, IBoards, IBoard, IColor,
+  EnumTodoType, IBoards, IBoard, IColor, ID,
 } from '@type/entities';
 
 export type ISetBoards = IBoards;
 
 export interface ICreateBoard {
-  icon: string;
-  title: string;
-  cardType: EnumTodoType;
-  description?: string;
-  color?: IColor;
-  belowId?: number;
+  readonly icon: string;
+  readonly title: string;
+  readonly cardType: EnumTodoType;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly belowId?: number;
 }
 
 export type IAddBoard = IBoard;
 
 export interface IInsertBoard {
-  entity: IBoard;
-  position: number;
+  readonly entity: IBoard;
+  readonly position: number;
 }
 
 export type IUpdateBoard = {
-  id: number;
+  readonly id: ID;
 } & (
-  { title: string }
-  | { description: string }
-  | { color: IColor }
-  | { cardType: EnumTodoType }
-  | { icon: string }
+  | { readonly title: string }
+  | { readonly description: string }
+  | { readonly color: IColor }
+  | { readonly cardType: EnumTodoType }
+  | { readonly icon: string }
 );
 
-// export interface IUpdateBoardTitle {
-//   id: number;
-//   title: string;
-// }
-//
-// export interface IUpdateBoardDescription {
-//   id: number;
-//   description: string;
-// }
-//
-// export interface IUpdateBoardColor {
-//   id: number;
-//   color: IColor;
-// }
-//
-// export interface IUpdateBoardCardType {
-//   id: number;
-//   cardType: EnumTodoType;
-// }
-//
-// export interface IUpdateBoardIcon {
-//   id: number;
-//   icon: string;
-// }
-
-export interface IUpdateBoardPosition {
-  sourcePosition: number;
-  destinationPosition: number;
+export interface IMoveBoard {
+  readonly sourcePosition: number;
+  readonly destinationPosition: number;
 }
 
+export type ISetBoardPositions = Array<ID>;
+
 export interface IRemoveBoard {
-  id: number;
+  readonly id: number;
 }
 
 export interface IDrawBoardBelow {
-  belowId: number;
+  readonly belowId: number;
 }

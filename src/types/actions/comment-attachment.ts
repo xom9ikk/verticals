@@ -1,26 +1,26 @@
 import { ICommentAttachment, ICommentAttachments } from '@type/entities';
 
 export interface IFetchCommentAttachmentsByTodoId {
-  todoId: number;
+  readonly todoId: number;
 }
 
 export type ISetCommentAttachments = ICommentAttachments;
 export type IAddCommentAttachment = ICommentAttachment;
 
 export interface IUploadCommentAttachmentsFiles {
-  commentId: number;
-  files: FileList;
+  readonly commentId: number;
+  readonly files: FileList;
 }
 
 export interface IUploadCommentAttachmentsFileRaw {
-  commentId: number;
-  file: File;
+  readonly commentId: number;
+  readonly file: File;
 }
 export interface IUploadCommentAttachmentsFile {
-  commentId: number;
-  file: FormData;
+  readonly commentId: number;
+  readonly file: FormData;
 }
 
 export interface IRemoveCommentAttachment {
-  id: number;
+  readonly id: number;
 }

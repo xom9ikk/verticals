@@ -3,17 +3,17 @@ export type ResizeDirection = 'left' | 'right' | 'up' | 'down' | 'top' | 'bottom
 export type ResizeDirectionGroup = 'horizontal' | 'vertical';
 
 export interface IResizableOption {
-  direction: ResizeDirection;
-  size?: number;
-  minSize?: number;
-  maxSize?: number;
-  onResize?: (size: number) => void;
+  readonly direction: ResizeDirection;
+  readonly size?: number;
+  readonly minSize?: number;
+  readonly maxSize?: number;
+  readonly onResize?: (size: number) => void;
 }
 
 export interface IResizableState extends IResizableOption {
-  position?: number;
-  initSize?: number;
-  isMove?: boolean;
+  readonly position?: number;
+  readonly initSize?: number;
+  readonly isMove?: boolean;
 }
 
 export const directionMap: Record<ResizeDirection, ResizeDirectionGroup> = {

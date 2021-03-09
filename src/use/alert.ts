@@ -1,6 +1,20 @@
-import { store } from 'react-notifications-component';
+import { store, ReactNotificationOptions } from 'react-notifications-component';
 
-const defaultPreferences = {
+type IType = 'success' | 'danger' | 'info' | 'default' | 'warning';
+
+interface IAlertTypes {
+  [key: string]: IType;
+}
+
+const ALERT_TYPES: IAlertTypes = {
+  SUCCESS: 'success',
+  DANGER: 'danger',
+  INFO: 'info',
+  DEFAULT: 'default',
+  WARNING: 'warning',
+};
+
+const defaultPreferences: ReactNotificationOptions = {
   insert: 'bottom',
   container: 'bottom-right',
   dismiss: {
@@ -14,19 +28,11 @@ const defaultPreferences = {
   },
 };
 
-const ALERT_TYPES = {
-  SUCCESS: 'success',
-  DANGER: 'danger',
-  INFO: 'info',
-  DEFAULT: 'default',
-  WARNING: 'warning',
-};
-
 export const useAlert = () => {
   const show = (
     title: string,
     message: string,
-    type: string = ALERT_TYPES.DEFAULT,
+    type: IType = ALERT_TYPES.DEFAULT,
     preferences = defaultPreferences,
   ) => {
     store.addNotification({

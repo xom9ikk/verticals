@@ -8,7 +8,7 @@ import { Button } from '../Button';
 
 interface IModal {
   isOpen: boolean,
-  type?: 'button' | 'submit' | 'reset',
+  type?: 'button' | 'submit',
   isSoftExit?: boolean,
   negative?: string,
   positive: string,
@@ -16,7 +16,7 @@ interface IModal {
   onNegative?: () => void,
   renderWrapper?: (children: React.ReactChild) => React.ReactChild,
   onClose: () => void,
-  size?: string,
+  size?: 'small' | 'medium' | 'large',
 }
 
 export const Modal: FC<IModal> = ({

@@ -67,7 +67,7 @@ function* removeWorker(action: PayloadAction<IRemoveCommentAttachment>) {
 }
 
 export function* watchCommentAttachments() {
-  yield* all([
+  yield all([
     takeLatest(CommentAttachmentsActions.fetchByTodoId, fetchByTodoIdWorker),
     takeLatest(CommentAttachmentsActions.uploadFiles, uploadFilesWorker),
     takeEvery(CommentAttachmentsActions.uploadFile, uploadFileWorker),

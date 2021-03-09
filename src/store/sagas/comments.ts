@@ -28,7 +28,6 @@ function* fetchByTodoIdWorker(action: PayloadAction<IFetchCommentsByTodoId>) {
     const response = yield* apply(commentService, commentService.getByTodoId, [action.payload]);
     const { comments } = response.data;
     yield put(CommentsActions.setAll(comments));
-    // yield put(SystemActions.setIsLoadedComments(true));
   } catch (error) {
     yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
@@ -51,12 +50,13 @@ function* createWorker(action: PayloadAction<ICreateComment>) {
     }
     yield call(show, i18n.t('Comment'), i18n.t('Comment added successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
-    yield call(show, i18n.t('Comment'), error.message || error, ALERT_TYPES.DANGER);
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
   }
 }
 
 function* removeWorker(action: PayloadAction<IRemoveComment>) {
   try {
+    yield put(CommentsActions.remove(action.payload));
     yield* apply(commentService, commentService.remove, [action.payload]);
     yield call(show, i18n.t('Comment'), i18n.t('Comment removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -66,6 +66,7 @@ function* removeWorker(action: PayloadAction<IRemoveComment>) {
 
 function* updateWorker(action: PayloadAction<IUpdateCommentText>) {
   try {
+    yield put(CommentsActions.updateText(action.payload));
     yield* apply(commentService, commentService.update, [action.payload]);
     yield call(show, i18n.t('Comment'), i18n.t('Comment updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -120,12 +121,12 @@ function* removeLikeWorker(action: PayloadAction<IRemoveCommentLike>) {
 }
 
 export function* watchComment() {
-  yield* all([
-    takeLatest(CommentsActions.fetchByTodoId, fetchByTodoIdWorker),
-    takeLatest(CommentsActions.create, createWorker),
-    takeLatest(CommentsActions.remove, removeWorker),
-    takeLatest(CommentsActions.updateText, updateWorker),
-    takeLeading(CommentsActions.addLike, addLikeWorker),
-    takeLeading(CommentsActions.removeLike, removeLikeWorker),
+  yield all([
+    takeLatest(CommentsActions.effects.fetchByTodoId, fetchByTodoIdWorker),
+    takeLatest(CommentsActions.effects.create, createWorker),
+    takeLatest(CommentsActions.effects.remove, removeWorker),
+    takeLatest(CommentsActions.effects.updateText, updateWorker),
+    takeLeading(CommentsActions.effects.addLike, addLikeWorker),
+    takeLeading(CommentsActions.effects.removeLike, removeLikeWorker),
   ]);
 }

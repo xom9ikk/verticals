@@ -4,42 +4,42 @@ import {
 import { IServerResponse } from './response';
 
 export type IGetAllBoardsResponse = IServerResponse<{
-  boards: IBoards;
+  readonly boards: IBoards;
 }>;
 
 export interface ICreateBoardRequest {
-  icon: string;
-  title: string;
-  cardType: EnumTodoType;
-  description?: string;
-  belowId?: number;
+  readonly icon: string;
+  readonly title: string;
+  readonly cardType: EnumTodoType;
+  readonly description?: string;
+  readonly belowId?: number;
 }
 
 export type ICreateBoardResponse = IServerResponse<{
-  boardId: number;
-  position: number;
+  readonly boardId: number;
+  readonly position: number;
 }>;
 
 export interface IRemoveBoardRequest {
-  id: number;
+  readonly id: number;
 }
 
 export type IRemoveBoardResponse = IServerResponse;
 
 export interface IUpdateBoardRequest {
-  id: number;
-  icon?: string;
-  title?: string;
-  cardType?: EnumTodoType;
-  description?: string;
-  color?: IColor;
+  readonly id: number;
+  readonly icon?: string;
+  readonly title?: string;
+  readonly cardType?: EnumTodoType;
+  readonly description?: string;
+  readonly color?: IColor;
 }
 
 export type IUpdateBoardResponse = IServerResponse;
 
 export interface IUpdateBoardPositionRequest {
-  sourcePosition: number;
-  destinationPosition: number;
+  readonly sourcePosition: number;
+  readonly destinationPosition: number;
 }
 
 export type IUpdateBoardPositionResponse = IServerResponse;

@@ -62,11 +62,9 @@ export const ColumnWide: FC<IColumnWide> = ({
   const archivedTodos = useParamSelector(getOrderedArchivedTodosByColumnId, columnId);
   const nonArchivedTodos = useParamSelector(getOrderedNonArchivedTodosByColumnId, columnId);
   const allTodos = useSelector(getTodosEntities);
-
   const todos = mode === EnumColumnMode.Deleted ? allTodos : nonArchivedTodos;
 
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [isDraggingCard, setIsDraggingCard] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
   const columnContainerRef = useRef<any>(null);
@@ -107,25 +105,8 @@ export const ColumnWide: FC<IColumnWide> = ({
     }
   }, []);
 
-  const memoCardContainer = useMemo(() => {
-    const a = editableCardId === `${columnId}-${NEW_TODO_ID}`;
-    // console.log('TODO: memoCardContainer', a);
-    return (
-      <CardsContainer
-        columnId={columnId}
-        todos={todos}
-        cardType={cardType}
-        mode={mode}
-        isOpenNewCard={a}
-        isDraggingCard={isDraggingCard}
-        onAddCard={handleAddCard}
-        scrollToBottom={scrollToBottom}
-      />
-    );
-  }, [columnId, todos, cardType, mode, editableCardId, isDraggingCard]);
-
   return useMemo(() => {
-    console.log('TODO: Column');
+    console.log('TODO: Column redraw');
     return (
       <div
         ref={(ref) => {
@@ -154,48 +135,58 @@ export const ColumnWide: FC<IColumnWide> = ({
               type="CARD"
             >
               {
-                (dropProvided, dropSnapshot) => {
-                  setIsDraggingCard(dropSnapshot.isDraggingOver);
-                  return (
-                    <div
-                      ref={dropProvided.innerRef}
-                      className="column__container"
-                    >
-                      <div>
-                        <ColumnHeader
-                          provided={provided}
-                          boardId={boardId}
-                          columnId={columnId}
-                          belowId={belowId}
-                          title={title}
-                          description={description}
-                          color={color}
-                          isEditable={isEditable}
-                          mode={mode}
-                          onHover={setIsHoverHeader}
-                          onClick={handleClick}
-                          onDoubleClick={handleDoubleClick}
-                          scrollToRight={scrollToRight}
-                        />
-                        <ColumnContextMenu
-                          isEnabled={mode === EnumColumnMode.Normal}
-                          columnId={columnId}
-                          boardId={boardId}
-                          color={color}
-                          isHover={isHover}
-                          isHide={isEditable}
-                          onAddCard={handleAddCard}
-                        />
-                        { mode !== EnumColumnMode.New && memoCardContainer }
-                        <ArchiveContainer
-                          archivedTodos={archivedTodos}
-                          cardType={cardType}
-                        />
-                      </div>
-                      {dropProvided.placeholder}
+                (dropProvided, dropSnapshot) => (
+                  <div
+                    ref={dropProvided.innerRef}
+                    className="column__container"
+                  >
+                    <div>
+                      <ColumnHeader
+                        provided={provided}
+                        boardId={boardId}
+                        columnId={columnId}
+                        belowId={belowId}
+                        title={title}
+                        description={description}
+                        color={color}
+                        isEditable={isEditable}
+                        mode={mode}
+                        onHover={setIsHoverHeader}
+                        onClick={handleClick}
+                        onDoubleClick={handleDoubleClick}
+                        scrollToRight={scrollToRight}
+                      />
+                      <ColumnContextMenu
+                        isEnabled={mode === EnumColumnMode.Normal}
+                        columnId={columnId}
+                        boardId={boardId}
+                        color={color}
+                        isHover={isHover}
+                        isHide={isEditable}
+                        onAddCard={handleAddCard}
+                      />
+                      { mode !== EnumColumnMode.New && (
+                        <>
+                          <CardsContainer
+                            columnId={columnId}
+                            todos={todos}
+                            cardType={cardType}
+                            mode={mode}
+                            isOpenNewCard={editableCardId === `${columnId}-${NEW_TODO_ID}`}
+                            isDraggingCard={dropSnapshot.isDraggingOver}
+                            onAddCard={handleAddCard}
+                            scrollToBottom={scrollToBottom}
+                          />
+                          <ArchiveContainer
+                            archivedTodos={archivedTodos}
+                            cardType={cardType}
+                          />
+                        </>
+                      ) }
                     </div>
-                  );
-                }
+                    {dropProvided.placeholder}
+                  </div>
+                )
               }
             </Droppable>
           </div>

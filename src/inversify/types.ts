@@ -1,5 +1,6 @@
 export const TYPES = {
   HttpClient: Symbol.for('HttpClient'),
+  WSClient: Symbol.for('WSClient'),
   Services: Symbol.for('Services'),
   AuthService: Symbol.for('AuthService'),
   UserService: Symbol.for('UserService'),
@@ -9,4 +10,5 @@ export const TYPES = {
   CommentService: Symbol.for('CommentService'),
   CommentAttachmentService: Symbol.for('CommentAttachmentService'),
   SearchService: Symbol.for('SearchService'),
+  UpdateService: Symbol.for('UpdateService'),
 };

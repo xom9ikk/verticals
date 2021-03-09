@@ -1,5 +1,7 @@
 import { Container } from 'inversify';
+import { TYPES } from '@inversify/types';
 import { HttpClient } from '@plugins/httpClient';
+import { WSClient } from '@plugins/wsClient';
 import { IServices } from '@inversify/interfaces';
 import {
   IAuthService,
@@ -10,8 +12,10 @@ import {
   ISearchService,
   ITodoService,
   IUserService,
+  IUpdateService,
 } from '@inversify/interfaces/services';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { IWSClient } from '@inversify/interfaces/wsClient';
 import { Services } from '@/services';
 import { AuthService } from '@services/auth';
 import { UserService } from '@services/user';
@@ -21,13 +25,18 @@ import { TodoService } from '@services/todo';
 import { CommentService } from '@services/comment';
 import { CommentAttachmentService } from '@services/comment-attachment';
 import { SearchService } from '@services/search';
-import { TYPES } from '@inversify/types';
+import { UpdateService } from '@services/update';
 
 const container = new Container();
 
 container
   .bind<IHttpClient>(TYPES.HttpClient)
   .to(HttpClient)
+  .inSingletonScope();
+
+container
+  .bind<IWSClient>(TYPES.WSClient)
+  .to(WSClient)
   .inSingletonScope();
 
 container
@@ -73,6 +82,11 @@ container
 container
   .bind<ISearchService>(TYPES.SearchService)
   .to(SearchService)
+  .inSingletonScope();
+
+container
+  .bind<IUpdateService>(TYPES.UpdateService)
+  .to(UpdateService)
   .inSingletonScope();
 
 export { container };

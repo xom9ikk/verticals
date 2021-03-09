@@ -33,6 +33,8 @@ import { useNewValues } from '@use/newValues';
 import { DateBadge } from '@comp/DateBadge';
 import { useTranslation } from 'react-i18next';
 import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import { useEffectState } from '@use/effectState';
+import { useNormalizeDate } from '@use/normalizeDate';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -88,6 +90,8 @@ export const Card: FC<ICard> = ({
   const { toReadableId } = useReadableId();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
+  const { normalizeDate } = useNormalizeDate();
+
   const colorClass = useColorClass('card__content', color);
 
   const username = useSelector(getUsername);
@@ -95,10 +99,11 @@ export const Card: FC<ICard> = ({
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const [titleValue, setTitleValue] = useState<string>(title);
-  const [descriptionValue, setDescriptionValue] = useState<string>(description);
-  const [expirationDateValue, setExpirationDateValue] = useState<Date | null>(expirationDate || null);
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
+
+  const [titleValue, setTitleValue] = useEffectState<string>(title);
+  const [descriptionValue, setDescriptionValue] = useEffectState<string>(description);
+  const [expirationDateValue, setExpirationDateValue] = useEffectState<Date | null>(expirationDate || null);
 
   const buttonRef = useRef<any>(null);
   const titleInputRef = useRef<any>(null);
@@ -113,11 +118,11 @@ export const Card: FC<ICard> = ({
   };
 
   const handleColorPick = (newColor: IColor) => {
-    dispatch(TodosActions.update({ id: todoId!, color: newColor }));
+    dispatch(TodosActions.effect.update({ id: todoId!, color: newColor }));
   };
 
   const handleChangeStatus = (newStatus: EnumTodoStatus) => {
-    dispatch(TodosActions.update({ id: todoId!, status: newStatus }));
+    dispatch(TodosActions.effect.update({ id: todoId!, status: newStatus }));
   };
 
   const handleClickUnwrapped = () => {
@@ -144,13 +149,15 @@ export const Card: FC<ICard> = ({
 
   const saveAttachments = (attachedFiles: FileList | null) => {
     if (attachedFiles?.length) {
-      dispatch(CommentsActions.create({
+      dispatch(CommentsActions.effects.create({
         todoId,
         text: '',
         files: attachedFiles,
       }));
     }
   };
+
+  // const normalizeDate = (date) => (date ? new Date(date) : undefined);
 
   const saveTodo = () => {
     if (!isEditable) return;
@@ -164,11 +171,11 @@ export const Card: FC<ICard> = ({
         [expirationDate, expirationDateValue],
       );
       if (normalizedTitleValue && isNew) {
-        dispatch(TodosActions.update({
+        dispatch(TodosActions.effect.update({
           id: todoId,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
-          expirationDate: expirationDateValue,
+          expirationDate: normalizeDate(expirationDateValue),
         }));
       } else {
         setTitleValue(title);
@@ -178,11 +185,11 @@ export const Card: FC<ICard> = ({
       dispatch(SystemActions.setEditableCardId(null));
     } else {
       if (normalizedTitleValue) {
-        dispatch(TodosActions.create({
+        dispatch(TodosActions.effect.create({
           columnId,
           title: normalizedTitleValue,
-          description: normalizedDescriptionValue || undefined,
-          expirationDate: expirationDateValue || undefined,
+          description: normalizedDescriptionValue,
+          expirationDate: normalizeDate(expirationDateValue),
           belowId,
           files,
         }));
@@ -251,7 +258,7 @@ export const Card: FC<ICard> = ({
 
   const handleSelectDateAndUpdate = (selectedDate: Date | null) => {
     dispatch(SystemActions.setActivePopupId(null));
-    dispatch(TodosActions.update({
+    dispatch(TodosActions.effect.update({
       id: todoId,
       expirationDate: selectedDate,
     }));

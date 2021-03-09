@@ -1,9 +1,9 @@
 import { AxiosRequestConfig } from 'axios';
 
 export interface IHttpClient {
-  post: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
-  patch: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
-  get: <T>(url: string, body?: Object) => Promise<T>;
-  put: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
-  delete: <T>(url: string, body?: Object) => Promise<T>;
+  readonly post: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
+  readonly patch: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
+  readonly get: <T>(url: string, body?: Object) => Promise<T>;
+  readonly put: <T>(url: string, body?: Object, options?: AxiosRequestConfig) => Promise<T>;
+  readonly delete: <T>(url: string, body?: Object) => Promise<T>;
 }

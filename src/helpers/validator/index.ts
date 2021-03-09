@@ -5,14 +5,14 @@ import i18n from '@/i18n';
 export type IValidatorPayload = string | null;
 
 export interface IValidatorRules {
-  min?: number;
-  max?: number;
-  name?: string;
+  readonly min?: number;
+  readonly max?: number;
+  readonly name?: string;
 }
 
 export interface IValidatorResult {
-  isValid: boolean;
-  message?: string;
+  readonly isValid: boolean;
+  readonly message?: string;
 }
 
 const email = (

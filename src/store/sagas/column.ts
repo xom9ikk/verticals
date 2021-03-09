@@ -13,14 +13,10 @@ import {
   IFetchColumnsByBoardId,
   ICreateColumn,
   IRemoveColumn,
-  IUpdateColumnPosition,
+  IMoveColumn,
   IDuplicateColumn,
   IReverseColumnOrder,
   IUpdateColumn,
-  // IUpdateColumnTitle,
-  // IUpdateColumnDescription,
-  // IUpdateColumnColor,
-  // IUpdateColumnIsCollapsed,
 } from '@type/actions';
 import { ITodo } from '@type/entities';
 import i18n from '@/i18n';
@@ -67,6 +63,7 @@ function* createWorker(action: PayloadAction<ICreateColumn>) {
 
 function* removeWorker(action: PayloadAction<IRemoveColumn>) {
   try {
+    yield put(ColumnsActions.remove(action.payload));
     yield* apply(columnService, columnService.remove, [action.payload]);
     yield call(show, i18n.t('Column'), i18n.t('Column removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -76,6 +73,7 @@ function* removeWorker(action: PayloadAction<IRemoveColumn>) {
 
 function* updateWorker(action: PayloadAction<IUpdateColumn>) {
   try {
+    yield put(ColumnsActions.updateEntity(action.payload));
     yield* apply(columnService, columnService.update, [action.payload]);
     yield call(show, i18n.t('Column'), i18n.t('Column updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -83,8 +81,9 @@ function* updateWorker(action: PayloadAction<IUpdateColumn>) {
   }
 }
 
-function* updatePositionWorker(action: PayloadAction<IUpdateColumnPosition>) {
+function* moveWorker(action: PayloadAction<IMoveColumn>) {
   try {
+    yield put(ColumnsActions.move(action.payload));
     yield* apply(columnService, columnService.updatePosition, [action.payload]);
     yield call(show, i18n.t('Column'), i18n.t('Column position updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -112,6 +111,7 @@ function* duplicateWorker(action: PayloadAction<IDuplicateColumn>) {
 
 function* reverseOrderWorker(action: PayloadAction<IReverseColumnOrder>) {
   try {
+    yield put(ColumnsActions.reverseOrder(action.payload));
     yield* apply(columnService, columnService.reverseOrder, [action.payload]);
     yield call(show, i18n.t('Column'), i18n.t('Reverse successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -120,17 +120,13 @@ function* reverseOrderWorker(action: PayloadAction<IReverseColumnOrder>) {
 }
 
 export function* watchColumn() {
-  yield* all([
-    takeLatest(ColumnsActions.fetchByBoardId, fetchByBoardIdWorker),
-    takeLatest(ColumnsActions.create, createWorker),
-    takeLatest(ColumnsActions.remove, removeWorker),
-    takeLatest(ColumnsActions.update, updateWorker),
-    // takeLatest(ColumnsActions.updateTitle, updateWorker),
-    // takeLatest(ColumnsActions.updateDescription, updateWorker),
-    // takeLatest(ColumnsActions.updateColor, updateWorker),
-    // takeLatest(ColumnsActions.updateIsCollapsed, updateWorker),
-    takeLatest(ColumnsActions.updatePosition, updatePositionWorker),
-    takeLatest(ColumnsActions.duplicate, duplicateWorker),
-    takeLatest(ColumnsActions.reverseOrder, reverseOrderWorker),
+  yield all([
+    takeLatest(ColumnsActions.effect.fetchByBoardId, fetchByBoardIdWorker),
+    takeLatest(ColumnsActions.effect.create, createWorker),
+    takeLatest(ColumnsActions.effect.remove, removeWorker),
+    takeLatest(ColumnsActions.effect.update, updateWorker),
+    takeLatest(ColumnsActions.effect.move, moveWorker),
+    takeLatest(ColumnsActions.effect.duplicate, duplicateWorker),
+    takeLatest(ColumnsActions.effect.reverseOrder, reverseOrderWorker),
   ]);
 }

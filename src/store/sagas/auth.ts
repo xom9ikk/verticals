@@ -97,7 +97,7 @@ function* changePasswordWorker(action: PayloadAction<IChangePassword>) {
 }
 
 export function* watchAuth() {
-  yield* all([
+  yield all([
     takeLatest(AuthActions.signUp, signUpWorker),
     takeLatest(AuthActions.signIn, signInWorker),
     takeLatest(AuthActions.setAuthInfo, setAuthInfoWorker),

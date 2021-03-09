@@ -8,7 +8,7 @@ const PATHS = {
   src: path.resolve('src'),
   dist: path.resolve('dist'),
   static: path.resolve('static'),
-  assets: 'assets',
+  public: 'public',
 };
 
 module.exports = {
@@ -48,16 +48,16 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [
-                '@babel/preset-env',
-                '@babel/preset-react',
-                '@babel/preset-typescript',
-              ],
-              plugins: [
-                ['@babel/plugin-proposal-decorators', { legacy: true }],
-                'babel-plugin-parameter-decorator',
-                '@babel/plugin-syntax-dynamic-import',
-              ],
+              // presets: [
+              //   '@babel/preset-env',
+              //   '@babel/preset-react',
+              //   '@babel/preset-typescript',
+              // ],
+              // plugins: [
+              //   ['@babel/plugin-proposal-decorators', { legacy: true }],
+              //   'babel-plugin-parameter-decorator',
+              //   '@babel/plugin-syntax-dynamic-import',
+              // ],
             },
           },
         ],
@@ -77,8 +77,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.join(PATHS.src, PATHS.assets),
-          to: PATHS.assets,
+          from: path.join(PATHS.src, PATHS.public),
+          to: '',
         },
         {
           from: PATHS.static,

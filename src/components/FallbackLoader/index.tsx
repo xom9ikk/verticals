@@ -72,14 +72,14 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
     };
   }, [initialIsLoading]);
 
-  const memoFallback = useMemo(() => (
+  return useMemo(() => (
     <div
       className={cn('fallback-loader', {
         'fallback-loader--fixed': isFixed,
         'fallback-loader--absolute': isAbsolute,
         'fallback-loader--hide': !isLoading,
       })}
-      style={{ zIndex, background: backgroundColor }}
+      style={{ background: backgroundColor }}
     >
       <div className="fallback-loader__wrapper">
         <Loader
@@ -92,8 +92,4 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
     </div>
   ), [isFixed, isAbsolute, backgroundColor, size,
     isShowLoader, isLoading, zIndex]);
-
-  return (
-    <>{memoFallback}</>
-  );
 };

@@ -29,7 +29,7 @@ function* searchByTodoTitleWorker(action: PayloadAction<ISearchByTodoTitle>) {
 }
 
 export function* watchSearch() {
-  yield* all([
+  yield all([
     takeLatest(SearchActions.searchByTodoTitle, searchByTodoTitleWorker),
   ]);
 }

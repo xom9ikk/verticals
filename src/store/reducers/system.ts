@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { EnumLanguage, ISystem } from '@type/entities';
 import { SystemActions } from '@store/actions';
 
-const initialState: ISystem = {
+export const initialState: ISystem = {
   isLoadedBoards: false,
   isLoadedColumns: false,
   isLoadedTodos: false,

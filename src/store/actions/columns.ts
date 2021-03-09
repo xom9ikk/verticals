@@ -6,51 +6,33 @@ import {
   IDuplicateColumn,
   IFetchColumnsByBoardId,
   IInsertColumn,
+  IMoveColumn,
   IRemoveColumn,
   IReverseColumnOrder,
   ISetColumns,
+  ISetColumnPositionsByBoardId,
   IUpdateColumn,
-  IUpdateColumnPosition,
-  // IUpdateColumnColor,
-  // IUpdateColumnDescription,
-  // IUpdateColumnIsCollapsed,
-  // IUpdateColumnTitle,
 } from '@type/actions';
 
-const fetchByBoardId = createAction<IFetchColumnsByBoardId>('COLUMNS/FETCH_BY_BOARD_ID');
-const setAll = createAction<ISetColumns>('COLUMNS/SET_ALL');
-const create = createAction<ICreateColumn>('COLUMNS/CREATE');
-const add = createAction<IAddColumn>('COLUMNS/ADD');
-const insertInPosition = createAction<IInsertColumn>('COLUMNS/INSERT_IN_POSITION');
-
-const update = createAction<IUpdateColumn>('COLUMNS/UPDATE');
-// const updateTitle = createAction<IUpdateColumnTitle>('COLUMNS/UPDATE_TITLE');
-// const updateDescription = createAction<IUpdateColumnDescription>('COLUMNS/UPDATE_DESCRIPTION');
-// const updateColor = createAction<IUpdateColumnColor>('COLUMNS/UPDATE_COLOR');
-// const updateIsCollapsed = createAction<IUpdateColumnIsCollapsed>('COLUMNS/UPDATE_IS_COLLAPSED');
-
-const updatePosition = createAction<IUpdateColumnPosition>('COLUMNS/UPDATE_POSITION');
-const remove = createAction<IRemoveColumn>('COLUMNS/REMOVE');
-const duplicate = createAction<IDuplicateColumn>('COLUMNS/DUPLICATE');
-const drawBelow = createAction<IDrawColumnBelow>('COLUMNS/DRAW_BELOW');
-const removeTemp = createAction('COLUMNS/REMOVE_TEMP');
-const reverseOrder = createAction<IReverseColumnOrder>('COLUMNS/REVERSE_ORDER');
-
 export const ColumnsActions = {
-  fetchByBoardId,
-  setAll,
-  create,
-  add,
-  insertInPosition,
-  update,
-  updatePosition,
-  // updateTitle,
-  // updateDescription,
-  // updateColor,
-  // updateIsCollapsed,
-  remove,
-  duplicate,
-  drawBelow,
-  removeTemp,
-  reverseOrder,
+  effect: {
+    fetchByBoardId: createAction<IFetchColumnsByBoardId>('COLUMNS-EFFECT/FETCH_BY_BOARD_ID'),
+    create: createAction<ICreateColumn>('COLUMNS-EFFECT/CREATE'),
+    update: createAction<IUpdateColumn>('COLUMNS-EFFECT/UPDATE'),
+    remove: createAction<IRemoveColumn>('COLUMNS-EFFECT/REMOVE'),
+    move: createAction<IMoveColumn>('COLUMNS-EFFECT/MOVE'),
+    duplicate: createAction<IDuplicateColumn>('COLUMNS-EFFECT/DUPLICATE'),
+    reverseOrder: createAction<IReverseColumnOrder>('COLUMNS-EFFECT/REVERSE_ORDER'),
+  },
+  setAll: createAction<ISetColumns>('COLUMNS/SET_ALL'),
+  add: createAction<IAddColumn>('COLUMNS/ADD'),
+  insertInPosition: createAction<IInsertColumn>('COLUMNS/INSERT_IN_POSITION'),
+  updateEntity: createAction<IUpdateColumn>('COLUMNS/UPDATE_ENTITY'),
+  // setPositions
+  move: createAction<IMoveColumn>('COLUMNS/MOVE'),
+  setPositionsByBoardId: createAction<ISetColumnPositionsByBoardId>('COLUMNS/SET_POSITIONS_BY_BOARD_ID'),
+  remove: createAction<IRemoveColumn>('COLUMNS/REMOVE'),
+  drawBelow: createAction<IDrawColumnBelow>('COLUMNS/DRAW_BELOW'),
+  removeTemp: createAction('COLUMNS/REMOVE_TEMP'),
+  reverseOrder: createAction<IReverseColumnOrder>('COLUMNS/REVERSE_ORDER'),
 };

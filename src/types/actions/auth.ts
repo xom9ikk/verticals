@@ -1,25 +1,25 @@
 export interface ISetAuthInfo {
-  token: string;
-  refreshToken: string;
+  readonly token: string;
+  readonly refreshToken: string;
 }
 
 export interface ISignUp {
-  email: string;
-  password: string;
-  name: string;
-  surname: string;
-  username: string;
+  readonly email: string;
+  readonly password: string;
+  readonly name: string;
+  readonly surname: string;
+  readonly username: string;
 }
 
 export type ISignIn = {
-  password: string;
-} & ({ username: string } | { email: string });
+  readonly password: string;
+} & ({ readonly username: string } | { readonly email: string });
 
 export interface IResetPassword {
-  email: string;
+  readonly email: string;
 }
 
 export interface IChangePassword {
-  oldPassword: string;
-  newPassword: string;
+  readonly oldPassword: string;
+  readonly newPassword: string;
 }

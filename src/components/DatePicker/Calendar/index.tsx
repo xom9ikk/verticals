@@ -10,17 +10,19 @@ import { CalendarWeek } from '@comp/DatePicker/Calendar/Week';
 import { useDebounce } from '@use/debounce';
 
 interface ICalendar {
+  medianDate?: Date;
   selectedDates?: Array<Date>;
   highlightDate?: Date | null;
   onSelectDate: (date: Date) => void;
 }
 
 const WEEKS_RANGE = 4 * 12;
-const weekHeight = 30;
-const monthHeight = weekHeight * 4;
-const halfYearHeight = monthHeight * 6;
+const WEEK_HEIGHT = 30;
+const MONTH_HEIGHT = WEEK_HEIGHT * 4;
+const HALF_YEAR_HEIGHT = MONTH_HEIGHT * 6;
 
 export const Calendar: FC<ICalendar> = ({
+  medianDate = new Date(),
   selectedDates,
   highlightDate = null,
   onSelectDate,
@@ -32,7 +34,7 @@ export const Calendar: FC<ICalendar> = ({
   const containerRef = useRef<any>();
 
   useEffect(() => {
-    const today = new Date();
+    const today = medianDate;
     setStartDate(subWeeks(today, WEEKS_RANGE));
     setEndDate(addWeeks(today, WEEKS_RANGE));
   }, []);
@@ -49,7 +51,7 @@ export const Calendar: FC<ICalendar> = ({
   useEffect(() => {
     setTimeout(() => {
       if (containerRef.current) {
-        containerRef.current.scrollTop = weekHeight * WEEKS_RANGE - 1.5 * weekHeight;
+        containerRef.current.scrollTop = WEEK_HEIGHT * WEEKS_RANGE - 1.5 * WEEK_HEIGHT;
       }
     });
 
@@ -63,8 +65,8 @@ export const Calendar: FC<ICalendar> = ({
   const handleScroll = useDebounce((e) => {
     const { scrollTop: currentPosition, scrollHeight: max } = e.target;
 
-    const minThreshold = halfYearHeight;
-    const maxThreshold = max - halfYearHeight;
+    const minThreshold = HALF_YEAR_HEIGHT;
+    const maxThreshold = max - HALF_YEAR_HEIGHT;
 
     if (currentPosition < minThreshold) {
       setStartDate(subWeeks(startDate, WEEKS_RANGE));

@@ -1,3 +1,3 @@
 export interface ISearchByTodoTitle {
-  query: string;
+  readonly query: string;
 }

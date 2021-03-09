@@ -122,6 +122,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             {
               LANGUAGES.map((lng, index) => (
                 <MenuItem
+                  key={lng}
                   text={lng}
                   hintImageSrc={getTickSvg(index)}
                   isColoredHintImage

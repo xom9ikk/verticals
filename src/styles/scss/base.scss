@@ -7,48 +7,48 @@
 // TODO: refactor
 @font-face {
   font-family: 'Nunito Extra Light';
-  src: url('~@/assets/fonts/Nunito-ExtraLight.woff2') format('woff2'),
-  url('~@/assets/fonts/Nunito-ExtraLight.woff') format('woff');
+  src: url('~@/public/assets/fonts/Nunito-ExtraLight.woff2') format('woff2'),
+  url('~@/public/assets/fonts/Nunito-ExtraLight.woff') format('woff');
   font-style: normal;
   font-weight: normal; // 100
 }
 
 @font-face {
   font-family: 'Nunito Light';
-  src: url('~@/assets/fonts/Nunito-Light.woff2') format('woff2'),
-  url('~@/assets/fonts/Nunito-Light.woff') format('woff');
+  src: url('~@/public/assets/fonts/Nunito-Light.woff2') format('woff2'),
+  url('~@/public/assets/fonts/Nunito-Light.woff') format('woff');
   font-style: normal;
   font-weight: normal; // 200
 }
 
 @font-face {
   font-family: 'Nunito Regular';
-  src: url('~@/assets/fonts/Nunito-Regular.woff2') format('woff2'),
-  url('~@/assets/fonts/Nunito-Regular.woff') format('woff');
+  src: url('~@/public/assets/fonts/Nunito-Regular.woff2') format('woff2'),
+  url('~@/public/assets/fonts/Nunito-Regular.woff') format('woff');
   font-style: normal;
   font-weight: normal; // 400
 }
 
 @font-face {
   font-family: 'Nunito Semi Bold';
-  src: url('~@/assets/fonts/Nunito-SemiBold.woff2') format('woff2'),
-  url('~@/assets/fonts/Nunito-SemiBold.woff') format('woff');
+  src: url('~@/public/assets/fonts/Nunito-SemiBold.woff2') format('woff2'),
+  url('~@/public/assets/fonts/Nunito-SemiBold.woff') format('woff');
   font-style: normal;
   font-weight: normal; // 700
 }
 
 @font-face {
   font-family: 'Nunito Bold';
-  src: url('~@/assets/fonts/Nunito-Bold.woff2') format('woff2'),
-  url('~@/assets/fonts/Nunito-Bold.woff') format('woff');
+  src: url('~@/public/assets/fonts/Nunito-Bold.woff2') format('woff2'),
+  url('~@/public/assets/fonts/Nunito-Bold.woff') format('woff');
   font-style: normal;
   font-weight: normal; // 800
 }
 
 @font-face {
   font-family: 'Nunito Extra Bold';
-  src: url('~@/assets/fonts/Nunito-ExtraBold.woff2') format('woff2'),
-  url('~@/assets/fonts/Nunito-ExtraBold.woff') format('woff');
+  src: url('~@/public/assets/fonts/Nunito-ExtraBold.woff2') format('woff2'),
+  url('~@/public/assets/fonts/Nunito-ExtraBold.woff') format('woff');
   font-style: normal;
   font-weight: normal; // 900
 }

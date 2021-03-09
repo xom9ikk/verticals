@@ -41,10 +41,10 @@ export const Columns: FC<IColumns> = () => {
     if (activeBoardId !== null && !isSearchMode) {
       const timeout = setTimeout(() => {
         if (activeBoardId !== TRASH_BOARD_ID) {
-          dispatch(ColumnsActions.fetchByBoardId({ boardId: activeBoardId }));
-          dispatch(TodosActions.fetchByBoardId({ boardId: activeBoardId }));
+          dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+          dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
         } else {
-          dispatch(TodosActions.fetchRemoved());
+          dispatch(TodosActions.effect.fetchRemoved());
         }
       }, 100);
       return () => {
@@ -70,7 +70,7 @@ export const Columns: FC<IColumns> = () => {
       if (destination.index >= columns.length) {
         return;
       }
-      dispatch(ColumnsActions.updatePosition({
+      dispatch(ColumnsActions.effect.move({
         sourcePosition: source.index,
         destinationPosition: destination.index,
         boardId: Number(source.droppableId.split('board-')[1]),
@@ -95,7 +95,7 @@ export const Columns: FC<IColumns> = () => {
     const targetColumnId = Number(destination.droppableId.split('column-')[1]);
 
     if (source.droppableId === destination.droppableId) {
-      dispatch(TodosActions.updatePosition({
+      dispatch(TodosActions.effect.move({
         sourcePosition,
         destinationPosition,
         columnId: targetColumnId,
@@ -104,7 +104,7 @@ export const Columns: FC<IColumns> = () => {
     }
 
     // moving to different list
-    dispatch(TodosActions.updatePosition({
+    dispatch(TodosActions.effect.move({
       columnId: sourceColumnId,
       targetColumnId,
       sourcePosition,

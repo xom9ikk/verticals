@@ -18,7 +18,7 @@ import {
   ICreateBoard,
   IRemoveBoard,
   IUpdateBoard,
-  IUpdateBoardPosition,
+  IMoveBoard,
 } from '@type/actions';
 import i18n from '@/i18n';
 
@@ -76,6 +76,7 @@ function* createWorker(action: PayloadAction<ICreateBoard>) {
 
 function* removeWorker(action: PayloadAction<IRemoveBoard>) {
   try {
+    yield put(BoardsActions.remove(action.payload));
     yield* apply(boardService, boardService.remove, [action.payload]);
     yield call(show, i18n.t('Board'), i18n.t('Board removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -85,16 +86,17 @@ function* removeWorker(action: PayloadAction<IRemoveBoard>) {
 
 function* updateWorker(action: PayloadAction<IUpdateBoard>) {
   try {
+    yield put(BoardsActions.updateEntity(action.payload));
     yield* apply(boardService, boardService.update, [action.payload]);
     yield call(show, i18n.t('Board'), i18n.t('Board updated successfully'), ALERT_TYPES.SUCCESS);
-    yield put(BoardsActions.updateEntity(action.payload));
   } catch (error) {
     yield call(show, i18n.t('Board'), error, ALERT_TYPES.DANGER);
   }
 }
 
-function* updatePositionWorker(action: PayloadAction<IUpdateBoardPosition>) {
+function* moveWorker(action: PayloadAction<IMoveBoard>) {
   try {
+    yield put(BoardsActions.move(action.payload));
     yield* apply(boardService, boardService.updatePosition, [action.payload]);
     yield call(show, i18n.t('Board'), i18n.t('Board position updated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -103,11 +105,11 @@ function* updatePositionWorker(action: PayloadAction<IUpdateBoardPosition>) {
 }
 
 export function* watchBoard() {
-  yield* all([
-    takeLatest(BoardsActions.fetchAll, fetchWorker),
-    takeLatest(BoardsActions.create, createWorker),
-    takeLatest(BoardsActions.remove, removeWorker),
-    takeLatest(BoardsActions.update, updateWorker),
-    takeLatest(BoardsActions.updatePosition, updatePositionWorker),
+  yield all([
+    takeLatest(BoardsActions.effect.fetchAll, fetchWorker),
+    takeLatest(BoardsActions.effect.create, createWorker),
+    takeLatest(BoardsActions.effect.remove, removeWorker),
+    takeLatest(BoardsActions.effect.update, updateWorker),
+    takeLatest(BoardsActions.effect.move, moveWorker),
   ]);
 }

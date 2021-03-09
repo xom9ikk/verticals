@@ -1,60 +1,65 @@
 import {
-  EnumTodoStatus, IColor, ITodo, ITodos,
+  EnumTodoStatus, IColor, ID, ITodo, ITodos,
 } from '@type/entities';
 
 export interface IFetchTodosByBoardId {
-  boardId: number;
+  readonly boardId: number;
 }
 
 export type ISetTodos = ITodos;
 
 export interface ICreateTodo {
-  columnId: number;
-  title: string;
-  description?: string;
-  color?: IColor;
-  status?: EnumTodoStatus;
-  belowId?: number;
-  expirationDate?: Date;
-  files: FileList | null;
+  readonly columnId: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly status?: EnumTodoStatus;
+  readonly belowId?: number;
+  readonly expirationDate?: Date | null;
+  readonly files: FileList | null;
 }
 
 export type IAddTodo = ITodo;
 
 export interface IInsertTodo {
-  entity: ITodo;
-  position: number;
+  readonly entity: ITodo;
+  readonly position: number;
 }
 
 export type IUpdateTodo = {
-  id: number;
+  readonly id: number;
 } & (
-  { title: string }
-  | { description: string }
-  | { status: EnumTodoStatus }
-  | { color: IColor }
-  | { isArchived: boolean }
-  | { isRemoved: boolean }
-  | { isNotificationsEnabled: boolean }
-  | { expirationDate: Date | null }
+  | { readonly title: string }
+  | { readonly description: string }
+  | { readonly status: EnumTodoStatus }
+  | { readonly color: IColor }
+  | { readonly isArchived: boolean }
+  | { readonly isRemoved: boolean }
+  | { readonly isNotificationsEnabled: boolean }
+  | { readonly expirationDate: Date | null }
 );
 
-export interface IUpdateTodoPosition {
-  sourcePosition: number;
-  destinationPosition: number;
-  columnId: number;
-  targetColumnId?: number;
+export interface IMoveTodo {
+  readonly sourcePosition: number;
+  readonly destinationPosition: number;
+  readonly columnId: number;
+  readonly targetColumnId?: number;
+}
+
+export interface ISetTodoPositionsByColumnId {
+  readonly positions: Array<ID>;
+  readonly columnId: ID;
 }
 
 export interface IDuplicateTodo {
-  todoId: number;
+  readonly todoId: number;
 }
 
 export interface IRemoveTodo {
-  id: number;
+  readonly id: number;
 }
 
 export interface IDrawTodoBelow {
-  columnId: number;
-  belowId: number;
+  readonly columnId: number;
+  readonly belowId: number;
 }

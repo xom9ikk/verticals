@@ -89,7 +89,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
 
   const handleUploadFiles = async () => {
     const openedFiles = await openFiles('*', true);
-    dispatch(CommentsActions.create({
+    dispatch(CommentsActions.effects.create({
       todoId: todoId!,
       text: '',
       files: openedFiles,
@@ -115,14 +115,14 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.CompleteStatus: {
-        dispatch(TodosActions.update({
+        dispatch(TodosActions.effect.update({
           id: todoId!,
           status: payload,
         }));
         break;
       }
       case EnumCardActions.Notifications: {
-        dispatch(TodosActions.update({
+        dispatch(TodosActions.effect.update({
           id: todoId!,
           isNotificationsEnabled: !isNotificationsEnabled,
         }));
@@ -137,7 +137,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         return;
       }
       case EnumCardActions.Duplicate: {
-        dispatch(TodosActions.duplicate({ todoId: todoId! }));
+        dispatch(TodosActions.effect.duplicate({ todoId: todoId! }));
         break;
       }
       case EnumCardActions.AddCardBelow: {
@@ -149,20 +149,20 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Archive: {
-        dispatch(TodosActions.update({
+        dispatch(TodosActions.effect.update({
           id: todoId!,
           isArchived: !isArchived,
         }));
         break;
       }
       case EnumCardActions.Delete: {
-        dispatch(TodosActions.update({ id: todoId!, isRemoved: true }));
-        dispatch(TodosActions.removeEntity({ id: todoId! }));
+        dispatch(TodosActions.effect.update({ id: todoId!, isRemoved: true }));
+        dispatch(TodosActions.remove({ id: todoId! }));
         break;
       }
       case EnumCardActions.Restore: {
-        dispatch(TodosActions.update({ id: todoId!, isRemoved: false }));
-        dispatch(TodosActions.removeEntity({ id: todoId! }));
+        dispatch(TodosActions.effect.update({ id: todoId!, isRemoved: false }));
+        dispatch(TodosActions.remove({ id: todoId! }));
         break;
       }
       default: break;
@@ -177,7 +177,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
 
   const handleSelectDate = (selectedDate: Date | null) => {
     dispatch(SystemActions.setActivePopupId(null));
-    dispatch(TodosActions.update({
+    dispatch(TodosActions.effect.update({
       id: todoId!,
       expirationDate: selectedDate,
     }));

@@ -4,71 +4,71 @@ import {
 import { IServerResponse } from './response';
 
 export type IGetAllColumnsResponse = IServerResponse<{
-  columns: IColumns;
+  readonly columns: IColumns;
 }>;
 
 export interface IGetColumnsByBoardIdRequest {
-  boardId: number;
+  readonly boardId: number;
 }
 
 export type IGetColumnsByBoardIdResponse = IServerResponse<{
-  columns: IColumns;
+  readonly columns: IColumns;
 }>;
 
 export interface ICreateColumnRequest {
-  boardId: number;
-  title: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
-  belowId?: number;
-  width?: number;
+  readonly boardId: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly isCollapsed?: boolean;
+  readonly belowId?: number;
+  readonly width?: number;
 }
 
 export type ICreateColumnResponse = IServerResponse<{
-  columnId: number;
-  position: number;
+  readonly columnId: number;
+  readonly position: number;
 }>;
 
 export interface IRemoveColumnRequest {
-  id: number;
+  readonly id: number;
 }
 
 export type IRemoveColumnResponse = IServerResponse;
 
 export interface IUpdateColumnRequest {
-  id: number;
-  title?: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
-  width?: number;
+  readonly id: number;
+  readonly title?: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly isCollapsed?: boolean;
+  readonly width?: number;
 }
 
 export type IUpdateColumnResponse = IServerResponse;
 
 export interface IUpdateColumnPositionRequest {
-  sourcePosition: number;
-  destinationPosition: number;
+  readonly sourcePosition: number;
+  readonly destinationPosition: number;
 }
 
 export type IUpdateColumnPositionResponse = IServerResponse;
 
 export interface IDuplicateColumnRequest {
-  columnId: number;
+  readonly columnId: number;
 }
 
 export type IDuplicateColumnResponse = IServerResponse<{
-  columnId: number;
-  position: number;
-  boardId: number;
-  title: string;
-  description?: string;
-  color?: IColor;
-  isCollapsed?: boolean;
-  belowId?: number;
-  width?: number;
-  todos: ITodos;
+  readonly columnId: number;
+  readonly position: number;
+  readonly boardId: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly color?: IColor;
+  readonly isCollapsed?: boolean;
+  readonly belowId?: number;
+  readonly width?: number;
+  readonly todos: ITodos;
 }>;
 
 export interface IReverseColumnOrderRequest {
