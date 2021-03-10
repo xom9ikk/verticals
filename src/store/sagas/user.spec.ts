@@ -9,9 +9,6 @@ import { UserService } from '@services/user';
 // @ts-ignore
 const userService = new UserService();
 const { show, ALERT_TYPES } = useAlert();
-jest.mock('@/i18n', () => ({
-  t: (v: string) => v,
-}));
 
 describe('User saga flow', () => {
   it('fetch me', () => {

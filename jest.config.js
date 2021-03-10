@@ -5,6 +5,7 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: "coverage",
   testEnvironment: "jsdom",
+  setupFilesAfterEnv: ['./jest.setup.js'],
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
   },

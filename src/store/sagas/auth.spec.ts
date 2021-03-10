@@ -11,9 +11,6 @@ import { AuthService } from '@services/auth';
 // @ts-ignore
 const authService = new AuthService();
 const { show, ALERT_TYPES } = useAlert();
-jest.mock('@/i18n', () => ({
-  t: (v: string) => v,
-}));
 
 describe('Auth saga flow', () => {
   it('sign up', () => {
