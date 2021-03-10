@@ -2,9 +2,6 @@ import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
 import { useAlert } from '@use/alert';
-import { container } from '@inversify/config';
-import { TYPES } from '@inversify/types';
-import { IServices } from '@inversify/interfaces';
 import { storage } from '@plugins/storage';
 import { redirectTo } from '@router/history';
 import { AuthActions } from '@store/actions';
@@ -17,11 +14,11 @@ import {
 } from '@type/actions';
 import { PayloadAction } from '@reduxjs/toolkit';
 import i18n from '@/i18n';
+import { IAuthService } from '@inversify/interfaces/services';
 
-const { authService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* signUpWorker(action: PayloadAction<ISignUp>) {
+export function* signUpWorker(authService: IAuthService, action: PayloadAction<ISignUp>) {
   try {
     const response = yield* apply(authService, authService.signUp, [action.payload]);
     const { token, refreshToken } = response.data;
@@ -36,7 +33,7 @@ function* signUpWorker(action: PayloadAction<ISignUp>) {
   }
 }
 
-function* signInWorker(action: PayloadAction<ISignIn>) {
+export function* signInWorker(authService: IAuthService, action: PayloadAction<ISignIn>) {
   try {
     const response = yield* apply(authService, authService.signIn, [action.payload]);
     const { token, refreshToken } = response.data;
@@ -52,7 +49,7 @@ function* signInWorker(action: PayloadAction<ISignIn>) {
   }
 }
 
-function* setAuthInfoWorker(action: PayloadAction<ISetAuthInfo>) {
+export function* setAuthInfoWorker(authService: IAuthService, action: PayloadAction<ISetAuthInfo>) {
   try {
     const { token, refreshToken } = action.payload;
     yield call(storage.setToken, token);
@@ -62,7 +59,7 @@ function* setAuthInfoWorker(action: PayloadAction<ISetAuthInfo>) {
   }
 }
 
-function* logoutWorker() {
+export function* logoutWorker(authService: IAuthService) {
   try {
     yield apply(authService, authService.logout, []);
     yield call(show, i18n.t('Success'), i18n.t('Successful logout'), ALERT_TYPES.SUCCESS);
@@ -77,7 +74,7 @@ function* logoutWorker() {
   }
 }
 
-function* resetPasswordWorker(action: PayloadAction<IResetPassword>) {
+export function* resetPasswordWorker(authService: IAuthService, action: PayloadAction<IResetPassword>) {
   try {
     yield* apply(authService, authService.reset, [action.payload]);
     yield call(show, i18n.t('Success'), i18n.t('Successful reset password'), ALERT_TYPES.SUCCESS);
@@ -87,7 +84,7 @@ function* resetPasswordWorker(action: PayloadAction<IResetPassword>) {
   }
 }
 
-function* changePasswordWorker(action: PayloadAction<IChangePassword>) {
+export function* changePasswordWorker(authService: IAuthService, action: PayloadAction<IChangePassword>) {
   try {
     yield* apply(authService, authService.change, [action.payload]);
     yield call(show, i18n.t('Success'), i18n.t('Successful change password'), ALERT_TYPES.SUCCESS);
@@ -96,13 +93,13 @@ function* changePasswordWorker(action: PayloadAction<IChangePassword>) {
   }
 }
 
-export function* watchAuth() {
+export function* watchAuth(authService: IAuthService) {
   yield all([
-    takeLatest(AuthActions.signUp, signUpWorker),
-    takeLatest(AuthActions.signIn, signInWorker),
-    takeLatest(AuthActions.setAuthInfo, setAuthInfoWorker),
-    takeLatest(AuthActions.logout, logoutWorker),
-    takeLatest(AuthActions.reset, resetPasswordWorker),
-    takeLatest(AuthActions.changePassword, changePasswordWorker),
+    takeLatest(AuthActions.signUp, signUpWorker, authService),
+    takeLatest(AuthActions.signIn, signInWorker, authService),
+    takeLatest(AuthActions.setAuthInfo, setAuthInfoWorker, authService),
+    takeLatest(AuthActions.logout, logoutWorker, authService),
+    takeLatest(AuthActions.reset, resetPasswordWorker, authService),
+    takeLatest(AuthActions.changePassword, changePasswordWorker, authService),
   ]);
 }

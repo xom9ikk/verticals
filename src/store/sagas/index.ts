@@ -9,10 +9,15 @@ import { watchCommentAttachments } from '@store/sagas/comment-attachments';
 import { watchSearch } from '@store/sagas/search';
 import { watchSystem } from '@store/sagas/system';
 import { watchUpdate } from '@store/sagas/update';
+import { container } from '@inversify/config';
+import { IServices } from '@inversify/interfaces';
+import { TYPES } from '@inversify/types';
+
+const { authService } = container.get<IServices>(TYPES.Services);
 
 export function* rootSaga() {
   yield all([
-    fork(watchAuth),
+    fork(watchAuth, authService),
     fork(watchUser),
     fork(watchBoard),
     fork(watchColumn),
