@@ -39,6 +39,7 @@ export const ColumnToolbar: FC<IColumnToolbar> = ({
           isHoverBlock={isHoverBlock}
           imageSize={24}
           size={36}
+          tooltip={t('Add heading')}
           onClick={onAddHeading}
         />
       </div>

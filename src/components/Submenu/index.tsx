@@ -5,11 +5,15 @@ import { MenuItem } from '@comp/MenuItem';
 interface ISubmenu {
   text: string;
   imageSrc: string;
+  maxHeight?: number;
+  isHideScroll?: boolean;
 }
 
 export const Submenu: FC<ISubmenu> = ({
   text,
   imageSrc,
+  maxHeight,
+  isHideScroll,
   children,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -27,6 +31,8 @@ export const Submenu: FC<ISubmenu> = ({
         sourceRef={sourceRef}
         position="right"
         isAbsolute={false}
+        maxHeight={maxHeight}
+        isHideScroll={isHideScroll}
         style={{ marginLeft: -10, marginTop: -7 }}
       >
         {children}

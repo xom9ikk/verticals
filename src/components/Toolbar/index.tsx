@@ -118,6 +118,8 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           <Submenu
             text={`${t('Language')}: ${LANGUAGES[language]}`}
             imageSrc="/assets/svg/menu/language.svg"
+            maxHeight={170}
+            isHideScroll
           >
             {
               LANGUAGES.map((lng, index) => (

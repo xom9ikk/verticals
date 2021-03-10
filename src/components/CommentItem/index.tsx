@@ -230,7 +230,7 @@ export const CommentItem: FC<ICommentItem> = ({
           <div className="comment__controls--buttons">
             <ControlButton
               imageSrc={`/assets/svg/like${isLikedByMe ? '-active' : ''}.svg`}
-              tooltip={`${isLikedByMe ? 'Unlike' : 'Like'}`}
+              tooltip={`${isLikedByMe ? t('Unlike') : t('Like')}`}
               isColored={isLikedByMe}
               alt="like"
               imageSize={16}
@@ -288,7 +288,7 @@ export const CommentItem: FC<ICommentItem> = ({
               onSelect={handleMenuButtonClick}
             >
               <MenuItem
-                text={`${isLikedByMe ? 'Unlike' : 'Like'}`}
+                text={`${isLikedByMe ? t('Unlike') : t('Like')}`}
                 imageSrc="/assets/svg/like.svg"
                 action={EnumMenuActions.Like}
               />

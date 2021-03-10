@@ -11,6 +11,8 @@ interface IPopup {
   sourceRef: MutableRefObject<any>;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   width?: number;
+  maxHeight?: number;
+  isHideScroll?: boolean;
   style?: React.CSSProperties;
 }
 
@@ -28,6 +30,8 @@ export const Popup: FC<IPopup> = ({
   isAbsolute,
   position = 'top',
   width: defaultWidth = 240,
+  maxHeight,
+  isHideScroll = false,
   style,
   children,
 }) => {
@@ -47,8 +51,14 @@ export const Popup: FC<IPopup> = ({
       onDoubleClick={(e) => e.stopPropagation()}
     >
       <div
-        className="popup__inner"
-        style={{ width: defaultWidth }}
+        className={cn('popup__inner', {
+          'popup__inner--hide-scroll': !isHideScroll,
+        })}
+        style={{
+          minWidth: defaultWidth,
+          overflowY: isSubMenu ? 'scroll' : 'hidden',
+          maxHeight,
+        }}
       >
         {children}
       </div>
