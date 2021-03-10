@@ -1,12 +1,12 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 
-import { watchAuth } from '@store/sagas/auth';
-import { AuthActions } from '@store/actions';
 import { useAlert } from '@use/alert';
-import { AuthService } from '@services/auth';
 import { redirectTo } from '@router/history';
 import { storage } from '@plugins/storage';
+import { watchAuth } from '@store/sagas/auth';
+import { AuthActions } from '@store/actions';
+import { AuthService } from '@services/auth';
 
 // @ts-ignore
 const authService = new AuthService();
@@ -15,7 +15,7 @@ jest.mock('@/i18n', () => ({
   t: (v: string) => v,
 }));
 
-describe('Auth saga', () => {
+describe('Auth saga flow', () => {
   it('sign up', () => {
     const actionPayload = {
       name: 'John',

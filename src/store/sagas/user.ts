@@ -3,19 +3,16 @@ import {
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';
-import { container } from '@inversify/config';
-import { TYPES } from '@inversify/types';
-import { IServices } from '@inversify/interfaces';
 import { UserActions } from '@store/actions';
 import {
   IUpdateEmail, IUpdatePersonalData, IUpdateUsername, IUploadAvatar,
 } from '@type/actions';
 import i18n from '@/i18n';
+import { IUserService } from '@inversify/interfaces/services';
 
-const { userService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* fetchMeWorker() {
+function* fetchMeWorker(userService: IUserService) {
   try {
     const response = yield* apply(userService, userService.getMe, []);
     const { data } = response;
@@ -25,7 +22,7 @@ function* fetchMeWorker() {
   }
 }
 
-function* updateUsernameWorker(action: PayloadAction<IUpdateUsername>) {
+function* updateUsernameWorker(userService: IUserService, action: PayloadAction<IUpdateUsername>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
     yield put(UserActions.setUsername(action.payload.username));
@@ -35,7 +32,7 @@ function* updateUsernameWorker(action: PayloadAction<IUpdateUsername>) {
   }
 }
 
-function* updateEmailWorker(action: PayloadAction<IUpdateEmail>) {
+function* updateEmailWorker(userService: IUserService, action: PayloadAction<IUpdateEmail>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
     yield put(UserActions.setEmail(action.payload.email));
@@ -45,15 +42,10 @@ function* updateEmailWorker(action: PayloadAction<IUpdateEmail>) {
   }
 }
 
-function* updatePersonalDataWorker(action: PayloadAction<IUpdatePersonalData>) {
+function* updatePersonalDataWorker(userService: IUserService, action: PayloadAction<IUpdatePersonalData>) {
   try {
     yield* apply(userService, userService.update, [action.payload]);
-    const { name, surname, bio } = action.payload;
-    yield put(UserActions.setPersonalData({
-      name: name!,
-      surname: surname!,
-      bio: bio!,
-    }));
+    yield put(UserActions.setPersonalData(action.payload));
     yield call(
       show, i18n.t('User'), i18n.t('Personal data updated successfully'), ALERT_TYPES.SUCCESS,
     );
@@ -62,7 +54,7 @@ function* updatePersonalDataWorker(action: PayloadAction<IUpdatePersonalData>) {
   }
 }
 
-function* uploadAvatarWorker(action: PayloadAction<IUploadAvatar>) {
+function* uploadAvatarWorker(userService: IUserService, action: PayloadAction<IUploadAvatar>) {
   try {
     const response = yield* apply(userService, userService.uploadAvatar, [action.payload]);
     const { avatar } = response.data;
@@ -75,7 +67,7 @@ function* uploadAvatarWorker(action: PayloadAction<IUploadAvatar>) {
   }
 }
 
-function* removeAvatarWorker() {
+function* removeAvatarWorker(userService: IUserService) {
   try {
     yield* apply(userService, userService.removeAvatar, []);
     yield call(
@@ -87,13 +79,13 @@ function* removeAvatarWorker() {
   }
 }
 
-export function* watchUser() {
+export function* watchUser(userService: IUserService) {
   yield all([
-    takeLatest(UserActions.fetchMe, fetchMeWorker),
-    takeLatest(UserActions.updateUsername, updateUsernameWorker),
-    takeLatest(UserActions.updateEmail, updateEmailWorker),
-    takeLatest(UserActions.updatePersonalData, updatePersonalDataWorker),
-    takeLatest(UserActions.uploadAvatar, uploadAvatarWorker),
-    takeLatest(UserActions.removeAvatar, removeAvatarWorker),
+    takeLatest(UserActions.fetchMe, fetchMeWorker, userService),
+    takeLatest(UserActions.updateUsername, updateUsernameWorker, userService),
+    takeLatest(UserActions.updateEmail, updateEmailWorker, userService),
+    takeLatest(UserActions.updatePersonalData, updatePersonalDataWorker, userService),
+    takeLatest(UserActions.uploadAvatar, uploadAvatarWorker, userService),
+    takeLatest(UserActions.removeAvatar, removeAvatarWorker, userService),
   ]);
 }

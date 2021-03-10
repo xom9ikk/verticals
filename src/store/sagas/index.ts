@@ -13,12 +13,15 @@ import { container } from '@inversify/config';
 import { IServices } from '@inversify/interfaces';
 import { TYPES } from '@inversify/types';
 
-const { authService } = container.get<IServices>(TYPES.Services);
+const {
+  authService,
+  userService,
+} = container.get<IServices>(TYPES.Services);
 
 export function* rootSaga() {
   yield all([
     fork(watchAuth, authService),
-    fork(watchUser),
+    fork(watchUser, userService),
     fork(watchBoard),
     fork(watchColumn),
     fork(watchTodo),
