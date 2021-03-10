@@ -71,6 +71,10 @@ describe('Auth saga flow', () => {
     };
 
     return expectSaga(watchAuth, authService)
+      .provide([
+        [matchers.apply.fn(storage.setToken), undefined],
+        [matchers.apply.fn(storage.setRefreshToken), undefined],
+      ])
       .dispatch(AuthActions.setAuthInfo(actionPayload))
       .call(storage.setToken, actionPayload.token)
       .call(storage.setRefreshToken, actionPayload.refreshToken)
