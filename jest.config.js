@@ -1,16 +1,17 @@
-const tsconfig = require("./tsconfig.json");
-const moduleNameMapper = require("tsconfig-paths-jest")(tsconfig);
+const tsconfig = require('./tsconfig.json');
+const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig);
 
 module.exports = {
   clearMocks: true,
-  coverageDirectory: "coverage",
-  testEnvironment: "jsdom",
+  coverageDirectory: 'coverage',
+  testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['./jest.setup.js'],
   transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
   moduleNameMapper,
-  moduleDirectories: ["node_modules", "src"],
+  moduleDirectories: ['node_modules', 'src'],
+  testMatch: ['**/*.spec.ts'],
   coverageThreshold: {
     global: {
       branches: 80,
