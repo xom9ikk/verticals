@@ -23,7 +23,6 @@ export const BoardsActions = {
   add: createAction<IAddBoard>('BOARDS/ADD'),
   insertInPosition: createAction<IInsertBoard>('BOARDS/INSERT_IN_POSITION'),
   updateEntity: createAction<IUpdateBoard>('BOARDS/UPDATE_ENTITY'),
-  // setPositions
   move: createAction<IMoveBoard>('BOARDS/MOVE'),
   setPositions: createAction<ISetBoardPositions>('BOARDS/SET_POSITIONS'),
   remove: createAction<IRemoveBoard>('BOARDS/REMOVE'),

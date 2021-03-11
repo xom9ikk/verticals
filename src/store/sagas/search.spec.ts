@@ -79,7 +79,7 @@ describe('Search saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(SearchActions.searchByTodoTitle(payload))
+      .dispatch(SearchActions.effect.searchByTodoTitle(payload))
       .apply(searchService, searchService.searchByTodoTitle, [payload])
       .put(BoardsActions.setAll(mockData.boards))
       .put(ColumnsActions.setAll(mockData.columns))

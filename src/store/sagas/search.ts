@@ -27,6 +27,6 @@ function* searchByTodoTitleWorker(searchService: ISearchService, action: Payload
 
 export function* watchSearch(searchService: ISearchService) {
   yield all([
-    takeLatest(SearchActions.searchByTodoTitle, searchByTodoTitleWorker, searchService),
+    takeLatest(SearchActions.effect.searchByTodoTitle, searchByTodoTitleWorker, searchService),
   ]);
 }

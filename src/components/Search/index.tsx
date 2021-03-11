@@ -21,7 +21,7 @@ export const Search: FC = () => {
   const isSearchMode = useSelector(getIsSearchMode);
 
   const debounceSearch = useDebounce((queryString: string) => {
-    dispatch(SearchActions.searchByTodoTitle({ query: queryString }));
+    dispatch(SearchActions.effect.searchByTodoTitle({ query: queryString }));
   }, 100);
 
   useEffect(() => {
