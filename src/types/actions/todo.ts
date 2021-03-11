@@ -16,7 +16,7 @@ export interface ICreateTodo {
   readonly status?: EnumTodoStatus;
   readonly belowId?: number;
   readonly expirationDate?: Date | null;
-  readonly files: FileList | null;
+  readonly files?: FileList | null;
 }
 
 export type IAddTodo = ITodo;

@@ -18,6 +18,7 @@ const {
   userService,
   boardService,
   columnService,
+  todoService,
 } = container.get<IServices>(TYPES.Services);
 
 export function* rootSaga() {
@@ -26,7 +27,7 @@ export function* rootSaga() {
     fork(watchUser, userService),
     fork(watchBoard, boardService),
     fork(watchColumn, columnService),
-    fork(watchTodo),
+    fork(watchTodo, todoService),
     fork(watchComment),
     fork(watchCommentAttachments),
     fork(watchSearch),

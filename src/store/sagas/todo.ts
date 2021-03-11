@@ -3,9 +3,6 @@ import {
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';
-import { container } from '@inversify/config';
-import { TYPES } from '@inversify/types';
-import { IServices } from '@inversify/interfaces';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   ICreateTodo,
@@ -16,11 +13,11 @@ import {
   IUpdateTodo,
 } from '@type/actions';
 import i18n from '@/i18n';
+import { ITodoService } from '@inversify/interfaces/services';
 
-const { todoService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
+function* fetchByBoardIdWorker(todoService: ITodoService, action: PayloadAction<IFetchTodosByBoardId>) {
   try {
     const response = yield* apply(todoService, todoService.getByBoardId, [action.payload]);
     const { todos } = response.data;
@@ -31,7 +28,7 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchTodosByBoardId>) {
   }
 }
 
-function* fetchRemovedWorker() {
+function* fetchRemovedWorker(todoService: ITodoService) {
   try {
     const response = yield* apply(todoService, todoService.getRemoved, []);
     const { todos } = response.data;
@@ -43,7 +40,7 @@ function* fetchRemovedWorker() {
   }
 }
 
-function* createWorker(action: PayloadAction<ICreateTodo>) {
+function* createWorker(todoService: ITodoService, action: PayloadAction<ICreateTodo>) {
   try {
     const { belowId, files, ...entity } = action.payload;
     const response = yield* apply(todoService, todoService.create, [action.payload]);
@@ -82,7 +79,7 @@ function* createWorker(action: PayloadAction<ICreateTodo>) {
   }
 }
 
-function* removeWorker(action: PayloadAction<IRemoveTodo>) {
+function* removeWorker(todoService: ITodoService, action: PayloadAction<IRemoveTodo>) {
   try {
     yield put(TodosActions.remove(action.payload));
     yield* apply(todoService, todoService.remove, [action.payload]);
@@ -92,7 +89,7 @@ function* removeWorker(action: PayloadAction<IRemoveTodo>) {
   }
 }
 
-function* updateWorker(action: PayloadAction<IUpdateTodo>) {
+function* updateWorker(todoService: ITodoService, action: PayloadAction<IUpdateTodo>) {
   try {
     yield put(TodosActions.updateEntity(action.payload));
     yield* apply(todoService, todoService.update, [action.payload]);
@@ -102,7 +99,7 @@ function* updateWorker(action: PayloadAction<IUpdateTodo>) {
   }
 }
 
-function* moveWorker(action: PayloadAction<IMoveTodo>) {
+function* moveWorker(todoService: ITodoService, action: PayloadAction<IMoveTodo>) {
   try {
     yield put(TodosActions.move(action.payload));
     yield* apply(todoService, todoService.updatePosition, [action.payload]);
@@ -112,20 +109,22 @@ function* moveWorker(action: PayloadAction<IMoveTodo>) {
   }
 }
 
-function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
+function* duplicateWorker(todoService: ITodoService, action: PayloadAction<IDuplicateTodo>) {
   try {
     const response = yield* apply(todoService, todoService.duplicate, [action.payload]);
-    const { columnId, todoId, ...todo } = response.data;
+    const {
+      columnId, todoId, position, ...todo
+    } = response.data;
     yield put(TodosActions.insertInPosition({
       entity: {
+        ...todo,
         id: todoId,
         columnId,
-        ...todo,
         attachmentsCount: 0,
         commentsCount: 0,
         imagesCount: 0,
       },
-      position: todo.position,
+      position,
     }));
     yield call(show, i18n.t('Todo'), i18n.t('Todo duplicated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -133,14 +132,14 @@ function* duplicateWorker(action: PayloadAction<IDuplicateTodo>) {
   }
 }
 
-export function* watchTodo() {
+export function* watchTodo(todoService: ITodoService) {
   yield all([
-    takeLatest(TodosActions.effect.fetchByBoardId, fetchByBoardIdWorker),
-    takeLatest(TodosActions.effect.fetchRemoved, fetchRemovedWorker),
-    takeLatest(TodosActions.effect.create, createWorker),
-    takeLatest(TodosActions.effect.remove, removeWorker),
-    takeLatest(TodosActions.effect.update, updateWorker),
-    takeLatest(TodosActions.effect.move, moveWorker),
-    takeLatest(TodosActions.effect.duplicate, duplicateWorker),
+    takeLatest(TodosActions.effect.fetchByBoardId, fetchByBoardIdWorker, todoService),
+    takeLatest(TodosActions.effect.fetchRemoved, fetchRemovedWorker, todoService),
+    takeLatest(TodosActions.effect.create, createWorker, todoService),
+    takeLatest(TodosActions.effect.remove, removeWorker, todoService),
+    takeLatest(TodosActions.effect.update, updateWorker, todoService),
+    takeLatest(TodosActions.effect.move, moveWorker, todoService),
+    takeLatest(TodosActions.effect.duplicate, duplicateWorker, todoService),
   ]);
 }
