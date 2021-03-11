@@ -25,7 +25,7 @@ const mockTodo = {
 };
 
 describe('Todo saga flow', () => {
-  it('fetch by column id', () => {
+  it('fetch by board id', () => {
     const mockData = {
       todos: {
         entities: [{
@@ -52,6 +52,35 @@ describe('Todo saga flow', () => {
       .dispatch(TodosActions.effect.fetchByBoardId(payload))
       .apply(todoService, todoService.getByBoardId, [payload])
       .put(TodosActions.setAll(mockData.todos))
+      .put(SystemActions.setIsLoadedTodos(true))
+      .silentRun();
+  });
+  it('fetch removed', () => {
+    const mockData = {
+      todos: {
+        entities: [{
+          ...mockTodo,
+          isRemoved: true,
+          commentsCount: 3,
+          attachmentsCount: 1,
+          imagesCount: 0,
+        }],
+        positions: {
+          [mockTodo.columnId]: [mockTodo.id],
+        },
+      },
+    };
+
+    return expectSaga(watchTodo, todoService)
+      .provide([
+        [matchers.apply.fn(todoService.getRemoved), {
+          data: mockData,
+        }],
+      ])
+      .dispatch(TodosActions.effect.fetchRemoved())
+      .apply(todoService, todoService.getRemoved, [])
+      .put(TodosActions.setAll(mockData.todos))
+      .put(SystemActions.setIsLoadedColumns(true))
       .put(SystemActions.setIsLoadedTodos(true))
       .silentRun();
   });
