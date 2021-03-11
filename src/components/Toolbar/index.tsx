@@ -54,7 +54,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.ChangeLanguage: {
-        dispatch(SystemActions.setLanguage(payload));
+        dispatch(SystemActions.effect.setLanguage(payload));
         break;
       }
       case EnumToolbarActions.WriteToDeveloper: {

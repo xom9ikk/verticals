@@ -18,7 +18,7 @@ describe('System saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(SystemActions.setLanguage(mockData))
+      .dispatch(SystemActions.effect.setLanguage(mockData))
       .apply(i18n, i18n.changeLanguage, [LANGUAGE_CODES[mockData]])
       .apply(storage, storage.setLanguage, [mockData])
       .silentRun();
@@ -30,7 +30,7 @@ describe('System saga flow', () => {
       .provide([
         [matchers.apply.fn(storage.getLanguage), mockData],
       ])
-      .dispatch(SystemActions.fetchLanguage())
+      .dispatch(SystemActions.effect.fetchLanguage())
       .put(SystemActions.setLanguage(mockData))
       .silentRun();
   });

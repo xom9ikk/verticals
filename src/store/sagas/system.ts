@@ -33,7 +33,7 @@ function* fetchLanguageWorker() {
 
 export function* watchSystem() {
   yield all([
-    takeLatest(SystemActions.setLanguage, setLanguageWorker),
-    takeLatest(SystemActions.fetchLanguage, fetchLanguageWorker),
+    takeLatest(SystemActions.effect.setLanguage, setLanguageWorker),
+    takeLatest(SystemActions.effect.fetchLanguage, fetchLanguageWorker),
   ]);
 }
