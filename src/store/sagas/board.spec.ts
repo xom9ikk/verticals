@@ -17,49 +17,21 @@ const boardService = new BoardService();
 const { show, ALERT_TYPES } = useAlert();
 const { toReadableId } = useReadableId();
 
-const mockBoards = [{
+const mockBoard = {
   id: 1,
   title: 'Title',
   icon: 'path/to/icon',
   cardType: EnumTodoType.Checkboxes,
   description: 'Description for board',
   color: EnumColors.Green,
-}, {
-  id: 2,
-  title: 'Title #2',
-  icon: 'path/to/icon2',
-  cardType: EnumTodoType.Nothing,
-  description: 'Description for board #2',
-  color: EnumColors.Red,
-}, {
-  id: 3,
-  title: 'Title #3',
-  icon: 'path/to/icon3',
-  cardType: EnumTodoType.Dashes,
-  description: 'Description for board #3',
-  color: EnumColors.Gray,
-}, {
-  id: 3,
-  title: 'Title #4',
-  icon: 'path/to/icon4',
-  cardType: EnumTodoType.Arrows,
-  description: 'Description for board #4',
-  color: EnumColors.Turquoise,
-}, {
-  id: 4,
-  title: 'Title #5',
-  icon: 'path/to/icon5',
-  cardType: EnumTodoType.Checkboxes,
-  description: 'Description for board #5',
-  color: null,
-}];
+};
 
-describe('Bord saga flow', () => {
+describe('Board saga flow', () => {
   it('fetch', () => {
     const mockData = {
       boards: {
-        entities: [mockBoards[0]],
-        positions: [mockBoards[0].id],
+        entities: [mockBoard],
+        positions: [mockBoard.id],
       },
     };
     const username = 'john.doe';
@@ -86,7 +58,7 @@ describe('Bord saga flow', () => {
   });
   it('create', () => {
     const mockData = {
-      boardId: mockBoards[0].id,
+      boardId: mockBoard.id,
       position: 7,
     };
 
@@ -96,10 +68,10 @@ describe('Bord saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(BoardsActions.effect.create(mockBoards[0]))
-      .apply(boardService, boardService.create, [mockBoards[0]])
+      .dispatch(BoardsActions.effect.create(mockBoard))
+      .apply(boardService, boardService.create, [mockBoard])
       .put(BoardsActions.add({
-        ...mockBoards[0],
+        ...mockBoard,
         id: mockData.boardId,
       }))
       .call(show, 'Board', 'Board created successfully', ALERT_TYPES.SUCCESS)
@@ -107,12 +79,12 @@ describe('Bord saga flow', () => {
   });
   it('create with below id', () => {
     const mockData = {
-      boardId: mockBoards[0].id,
+      boardId: mockBoard.id,
       position: 7,
     };
 
     const payload = {
-      ...mockBoards[0],
+      ...mockBoard,
       belowId: 77,
     };
 
@@ -127,7 +99,7 @@ describe('Bord saga flow', () => {
       .put(BoardsActions.removeTemp())
       .put(BoardsActions.insertInPosition({
         entity: {
-          ...mockBoards[0],
+          ...mockBoard,
           id: mockData.boardId,
         },
         position: mockData.position,
