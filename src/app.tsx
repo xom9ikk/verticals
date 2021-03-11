@@ -17,7 +17,7 @@ export const App: FC = () => {
 
   useEffect(() => {
     dispatch(SystemActions.effect.fetchLanguage());
-    dispatch(UpdatesActions.subscribe());
+    dispatch(UpdatesActions.effect.subscribe());
   }, []);
 
   return (

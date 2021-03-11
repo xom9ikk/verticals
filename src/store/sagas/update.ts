@@ -131,6 +131,6 @@ function* subscribeOnUpdatesWorker() {
 
 export function* watchUpdate() {
   yield all([
-    takeLatest(UpdatesActions.subscribe, subscribeOnUpdatesWorker),
+    takeLatest(UpdatesActions.effect.subscribe, subscribeOnUpdatesWorker),
   ]);
 }
