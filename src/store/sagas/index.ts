@@ -16,13 +16,14 @@ import { TYPES } from '@inversify/types';
 const {
   authService,
   userService,
+  boardService,
 } = container.get<IServices>(TYPES.Services);
 
 export function* rootSaga() {
   yield all([
     fork(watchAuth, authService),
     fork(watchUser, userService),
-    fork(watchBoard),
+    fork(watchBoard, boardService),
     fork(watchColumn),
     fork(watchTodo),
     fork(watchComment),
