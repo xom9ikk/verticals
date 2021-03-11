@@ -10,7 +10,7 @@ export interface ICreateComment {
   readonly todoId: number;
   readonly text: string;
   readonly replyCommentId?: number;
-  readonly files: FileList | null;
+  readonly files?: FileList | null;
 }
 
 export interface IAddComment {

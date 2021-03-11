@@ -4,7 +4,7 @@ import { watchUser } from '@store/sagas/user';
 import { watchBoard } from '@store/sagas/board';
 import { watchColumn } from '@store/sagas/column';
 import { watchTodo } from '@store/sagas/todo';
-import { watchComment } from '@store/sagas/comments';
+import { watchComment } from '@store/sagas/comment';
 import { watchCommentAttachments } from '@store/sagas/comment-attachments';
 import { watchSearch } from '@store/sagas/search';
 import { watchSystem } from '@store/sagas/system';
@@ -19,6 +19,7 @@ const {
   boardService,
   columnService,
   todoService,
+  commentService,
 } = container.get<IServices>(TYPES.Services);
 
 export function* rootSaga() {
@@ -28,7 +29,7 @@ export function* rootSaga() {
     fork(watchBoard, boardService),
     fork(watchColumn, columnService),
     fork(watchTodo, todoService),
-    fork(watchComment),
+    fork(watchComment, commentService),
     fork(watchCommentAttachments),
     fork(watchSearch),
     fork(watchSystem),

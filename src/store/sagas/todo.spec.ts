@@ -137,7 +137,7 @@ describe('Todo saga flow', () => {
         ...payload,
         files,
       }])
-      .put(CommentsActions.effects.create({
+      .put(CommentsActions.effect.create({
         todoId: mockData.todoId,
         text: '',
         files,

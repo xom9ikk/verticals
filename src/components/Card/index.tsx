@@ -149,7 +149,7 @@ export const Card: FC<ICard> = ({
 
   const saveAttachments = (attachedFiles: FileList | null) => {
     if (attachedFiles?.length) {
-      dispatch(CommentsActions.effects.create({
+      dispatch(CommentsActions.effect.create({
         todoId,
         text: '',
         files: attachedFiles,

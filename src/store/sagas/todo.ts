@@ -46,7 +46,7 @@ function* createWorker(todoService: ITodoService, action: PayloadAction<ICreateT
     const response = yield* apply(todoService, todoService.create, [action.payload]);
     const { todoId, position } = response.data;
     if (files?.length) {
-      yield put(CommentsActions.effects.create({
+      yield put(CommentsActions.effect.create({
         todoId,
         text: '',
         files,

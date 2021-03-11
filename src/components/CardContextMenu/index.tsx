@@ -89,7 +89,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
 
   const handleUploadFiles = async () => {
     const openedFiles = await openFiles('*', true);
-    dispatch(CommentsActions.effects.create({
+    dispatch(CommentsActions.effect.create({
       todoId: todoId!,
       text: '',
       files: openedFiles,
