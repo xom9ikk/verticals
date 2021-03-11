@@ -35,7 +35,7 @@ export const Register: FC = () => {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm<IFormValidatedState>(
     initialState,
-    useWith(dispatch, [AuthActions.signUp]),
+    useWith(dispatch, [AuthActions.effect.signUp]),
     validatorRegisterForm,
   );
 

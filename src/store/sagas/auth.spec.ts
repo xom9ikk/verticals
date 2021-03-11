@@ -33,9 +33,9 @@ describe('Auth saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(AuthActions.signUp(actionPayload))
+      .dispatch(AuthActions.effect.signUp(actionPayload))
       .apply(authService, authService.signUp, [actionPayload])
-      .put(AuthActions.setAuthInfo(mockData))
+      .put(AuthActions.effect.setAuthInfo(mockData))
       .call(show, 'Success', 'Registration completed successfully', ALERT_TYPES.SUCCESS)
       .call(redirectTo, '/')
       .silentRun();
@@ -57,9 +57,9 @@ describe('Auth saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(AuthActions.signIn(actionPayload))
+      .dispatch(AuthActions.effect.signIn(actionPayload))
       .apply(authService, authService.signIn, [actionPayload])
-      .put(AuthActions.setAuthInfo(mockData))
+      .put(AuthActions.effect.setAuthInfo(mockData))
       .call(show, 'Success', 'Successful login', ALERT_TYPES.SUCCESS)
       .call(redirectTo, '/')
       .silentRun();
@@ -75,7 +75,7 @@ describe('Auth saga flow', () => {
         [matchers.apply.fn(storage.setToken), undefined],
         [matchers.apply.fn(storage.setRefreshToken), undefined],
       ])
-      .dispatch(AuthActions.setAuthInfo(actionPayload))
+      .dispatch(AuthActions.effect.setAuthInfo(actionPayload))
       .call(storage.setToken, actionPayload.token)
       .call(storage.setRefreshToken, actionPayload.refreshToken)
       .silentRun();
@@ -84,10 +84,10 @@ describe('Auth saga flow', () => {
     .provide([
       [matchers.apply.fn(authService.logout), undefined],
     ])
-    .dispatch(AuthActions.logout())
+    .dispatch(AuthActions.effect.logout())
     .apply(authService, authService.logout, [])
     .call(show, 'Success', 'Successful logout', ALERT_TYPES.SUCCESS)
-    .put(AuthActions.setAuthInfo({
+    .put(AuthActions.effect.setAuthInfo({
       token: '',
       refreshToken: '',
     }))
@@ -103,7 +103,7 @@ describe('Auth saga flow', () => {
       .provide([
         [matchers.apply.fn(authService.reset), undefined],
       ])
-      .dispatch(AuthActions.reset(actionPayload))
+      .dispatch(AuthActions.effect.reset(actionPayload))
       .apply(authService, authService.reset, [actionPayload])
       .call(show, 'Success', 'Successful reset password', ALERT_TYPES.SUCCESS)
       .call(redirectTo, '/auth/login')
@@ -119,7 +119,7 @@ describe('Auth saga flow', () => {
       .provide([
         [matchers.apply.fn(authService.change), undefined],
       ])
-      .dispatch(AuthActions.changePassword(actionPayload))
+      .dispatch(AuthActions.effect.changePassword(actionPayload))
       .apply(authService, authService.change, [actionPayload])
       .call(show, 'Success', 'Successful change password', ALERT_TYPES.SUCCESS)
       .silentRun();

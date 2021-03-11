@@ -7,18 +7,13 @@ import {
   ISignUp,
 } from '@type/actions';
 
-const setAuthInfo = createAction<ISetAuthInfo>('AUTH/SET_AUTH_INFO');
-const signUp = createAction<ISignUp>('AUTH/SIGN_UP');
-const signIn = createAction<ISignIn>('AUTH/SIGN_IN');
-const logout = createAction('AUTH/LOGOUT');
-const reset = createAction<IResetPassword>('AUTH/RESET');
-const changePassword = createAction<IChangePassword>('AUTH/CHANGE');
-
 export const AuthActions = {
-  setAuthInfo,
-  signIn,
-  signUp,
-  logout,
-  reset,
-  changePassword,
+  effect: {
+    setAuthInfo: createAction<ISetAuthInfo>('AUTH-EFFECT/SET_AUTH_INFO'),
+    signIn: createAction<ISignIn>('AUTH-EFFECT/SIGN_IN'),
+    signUp: createAction<ISignUp>('AUTH-EFFECT/SIGN_UP'),
+    logout: createAction('AUTH-EFFECT/LOGOUT'),
+    reset: createAction<IResetPassword>('AUTH-EFFECT/RESET'),
+    changePassword: createAction<IChangePassword>('AUTH-EFFECT/CHANGE_PASSWORD'),
+  },
 };

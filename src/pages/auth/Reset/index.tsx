@@ -26,7 +26,7 @@ export const Reset: FC = () => {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm<IFormValidatedState>(
     initialState,
-    useWith(dispatch, [AuthActions.reset]),
+    useWith(dispatch, [AuthActions.effect.reset]),
     validatorResetForm,
   );
 

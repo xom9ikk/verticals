@@ -22,7 +22,7 @@ function* signUpWorker(authService: IAuthService, action: PayloadAction<ISignUp>
   try {
     const response = yield* apply(authService, authService.signUp, [action.payload]);
     const { token, refreshToken } = response.data;
-    yield put(AuthActions.setAuthInfo({
+    yield put(AuthActions.effect.setAuthInfo({
       token,
       refreshToken,
     }));
@@ -37,7 +37,7 @@ function* signInWorker(authService: IAuthService, action: PayloadAction<ISignIn>
   try {
     const response = yield* apply(authService, authService.signIn, [action.payload]);
     const { token, refreshToken } = response.data;
-    yield put(AuthActions.setAuthInfo({
+    yield put(AuthActions.effect.setAuthInfo({
       token,
       refreshToken,
     }));
@@ -66,7 +66,7 @@ function* logoutWorker(authService: IAuthService) {
   } catch (error) {
     yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   } finally {
-    yield put(AuthActions.setAuthInfo({
+    yield put(AuthActions.effect.setAuthInfo({
       token: '',
       refreshToken: '',
     }));
@@ -95,11 +95,11 @@ function* changePasswordWorker(authService: IAuthService, action: PayloadAction<
 
 export function* watchAuth(authService: IAuthService) {
   yield all([
-    takeLatest(AuthActions.signUp, signUpWorker, authService),
-    takeLatest(AuthActions.signIn, signInWorker, authService),
-    takeLatest(AuthActions.setAuthInfo, setAuthInfoWorker, authService),
-    takeLatest(AuthActions.logout, logoutWorker, authService),
-    takeLatest(AuthActions.reset, resetPasswordWorker, authService),
-    takeLatest(AuthActions.changePassword, changePasswordWorker, authService),
+    takeLatest(AuthActions.effect.signUp, signUpWorker, authService),
+    takeLatest(AuthActions.effect.signIn, signInWorker, authService),
+    takeLatest(AuthActions.effect.setAuthInfo, setAuthInfoWorker, authService),
+    takeLatest(AuthActions.effect.logout, logoutWorker, authService),
+    takeLatest(AuthActions.effect.reset, resetPasswordWorker, authService),
+    takeLatest(AuthActions.effect.changePassword, changePasswordWorker, authService),
   ]);
 }

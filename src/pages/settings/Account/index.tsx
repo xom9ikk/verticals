@@ -49,7 +49,7 @@ export const Account: FC = () => {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm<IFormValidatedState>(
     initialState,
-    useWith(dispatch, [AuthActions.changePassword]),
+    useWith(dispatch, [AuthActions.effect.changePassword]),
     validatorChangePasswordForm,
   );
 

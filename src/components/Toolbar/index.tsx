@@ -70,7 +70,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.Logout: {
-        dispatch(AuthActions.logout());
+        dispatch(AuthActions.effect.logout());
         break;
       }
       default: break;
