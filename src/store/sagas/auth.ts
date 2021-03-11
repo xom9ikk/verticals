@@ -18,7 +18,7 @@ import { IAuthService } from '@inversify/interfaces/services';
 
 const { show, ALERT_TYPES } = useAlert();
 
-export function* signUpWorker(authService: IAuthService, action: PayloadAction<ISignUp>) {
+function* signUpWorker(authService: IAuthService, action: PayloadAction<ISignUp>) {
   try {
     const response = yield* apply(authService, authService.signUp, [action.payload]);
     const { token, refreshToken } = response.data;
@@ -33,7 +33,7 @@ export function* signUpWorker(authService: IAuthService, action: PayloadAction<I
   }
 }
 
-export function* signInWorker(authService: IAuthService, action: PayloadAction<ISignIn>) {
+function* signInWorker(authService: IAuthService, action: PayloadAction<ISignIn>) {
   try {
     const response = yield* apply(authService, authService.signIn, [action.payload]);
     const { token, refreshToken } = response.data;
@@ -49,7 +49,7 @@ export function* signInWorker(authService: IAuthService, action: PayloadAction<I
   }
 }
 
-export function* setAuthInfoWorker(authService: IAuthService, action: PayloadAction<ISetAuthInfo>) {
+function* setAuthInfoWorker(authService: IAuthService, action: PayloadAction<ISetAuthInfo>) {
   try {
     const { token, refreshToken } = action.payload;
     yield call(storage.setToken, token);
@@ -59,7 +59,7 @@ export function* setAuthInfoWorker(authService: IAuthService, action: PayloadAct
   }
 }
 
-export function* logoutWorker(authService: IAuthService) {
+function* logoutWorker(authService: IAuthService) {
   try {
     yield apply(authService, authService.logout, []);
     yield call(show, i18n.t('Success'), i18n.t('Successful logout'), ALERT_TYPES.SUCCESS);
@@ -74,7 +74,7 @@ export function* logoutWorker(authService: IAuthService) {
   }
 }
 
-export function* resetPasswordWorker(authService: IAuthService, action: PayloadAction<IResetPassword>) {
+function* resetPasswordWorker(authService: IAuthService, action: PayloadAction<IResetPassword>) {
   try {
     yield* apply(authService, authService.reset, [action.payload]);
     yield call(show, i18n.t('Success'), i18n.t('Successful reset password'), ALERT_TYPES.SUCCESS);
@@ -84,7 +84,7 @@ export function* resetPasswordWorker(authService: IAuthService, action: PayloadA
   }
 }
 
-export function* changePasswordWorker(authService: IAuthService, action: PayloadAction<IChangePassword>) {
+function* changePasswordWorker(authService: IAuthService, action: PayloadAction<IChangePassword>) {
   try {
     yield* apply(authService, authService.change, [action.payload]);
     yield call(show, i18n.t('Success'), i18n.t('Successful change password'), ALERT_TYPES.SUCCESS);
