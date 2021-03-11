@@ -29,7 +29,7 @@ export const Login: FC = () => {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm<IFormValidatedState>(
     initialState,
-    useWith(dispatch, [AuthActions.signIn]),
+    useWith(dispatch, [AuthActions.effect.signIn]),
     validatorLoginForm,
   );
 

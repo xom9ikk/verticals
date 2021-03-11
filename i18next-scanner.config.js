@@ -14,7 +14,7 @@ const languages = [
   'ru', // Russian
   'uk', // Ukrainian
   'tr', // Turkish
-  'zh-tw', // Traditional Chinese
+  'zh-TW', // Traditional Chinese
 ];
 
 module.exports = {

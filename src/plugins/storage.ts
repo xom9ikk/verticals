@@ -10,7 +10,6 @@ interface IStorage {
 
 class Storage implements IStorage {
   setLanguage(language: EnumLanguage) {
-    console.log('set lss lang', language);
     return Storage.set('language', language);
   }
 

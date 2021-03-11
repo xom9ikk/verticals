@@ -18,12 +18,26 @@ export const MAX_FILES_IN_COMMENT_PREVIEW = 3;
 export const LANGUAGES = [
   'English',
   'Русский',
+  'Українська',
   'Français',
   'Español',
+  'Deutsche',
+  'Italiano',
+  'Polskie',
+  'Türk',
+  '日本語',
+  '繁體中文',
 ];
 export const LANGUAGE_CODES = [
   'en',
   'ru',
+  'uk',
   'fr',
   'es',
+  'de',
+  'it',
+  'pl',
+  'tr',
+  'ja',
+  'zh-tw',
 ];

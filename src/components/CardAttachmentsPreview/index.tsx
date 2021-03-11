@@ -84,7 +84,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
         event.stopPropagation();
         setTimeout(() => setIsShowFiles((prev) => {
           if (!prev) {
-            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: todoId! }));
+            dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: todoId! }));
           }
           return !prev;
         }), 400);
@@ -94,7 +94,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
         event.stopPropagation();
         setTimeout(() => setIsShowGallery((prev) => {
           if (!prev) {
-            dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: todoId! }));
+            dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: todoId! }));
           }
           return !prev;
         }), 300);

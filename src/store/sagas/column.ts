@@ -3,9 +3,6 @@ import {
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';
-import { container } from '@inversify/config';
-import { TYPES } from '@inversify/types';
-import { IServices } from '@inversify/interfaces';
 import {
   ColumnsActions, SystemActions, TodosActions,
 } from '@store/actions';
@@ -20,11 +17,11 @@ import {
 } from '@type/actions';
 import { ITodo } from '@type/entities';
 import i18n from '@/i18n';
+import { IColumnService } from '@inversify/interfaces/services';
 
-const { columnService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 
-function* fetchByBoardIdWorker(action: PayloadAction<IFetchColumnsByBoardId>) {
+function* fetchByBoardIdWorker(columnService: IColumnService, action: PayloadAction<IFetchColumnsByBoardId>) {
   try {
     const response = yield* apply(columnService, columnService.getByBoardId, [action.payload]);
     const { columns } = response.data;
@@ -35,7 +32,7 @@ function* fetchByBoardIdWorker(action: PayloadAction<IFetchColumnsByBoardId>) {
   }
 }
 
-function* createWorker(action: PayloadAction<ICreateColumn>) {
+function* createWorker(columnService: IColumnService, action: PayloadAction<ICreateColumn>) {
   try {
     const { belowId, ...column } = action.payload;
     const response = yield* apply(columnService, columnService.create, [action.payload]);
@@ -61,7 +58,7 @@ function* createWorker(action: PayloadAction<ICreateColumn>) {
   }
 }
 
-function* removeWorker(action: PayloadAction<IRemoveColumn>) {
+function* removeWorker(columnService: IColumnService, action: PayloadAction<IRemoveColumn>) {
   try {
     yield put(ColumnsActions.remove(action.payload));
     yield* apply(columnService, columnService.remove, [action.payload]);
@@ -71,7 +68,7 @@ function* removeWorker(action: PayloadAction<IRemoveColumn>) {
   }
 }
 
-function* updateWorker(action: PayloadAction<IUpdateColumn>) {
+function* updateWorker(columnService: IColumnService, action: PayloadAction<IUpdateColumn>) {
   try {
     yield put(ColumnsActions.updateEntity(action.payload));
     yield* apply(columnService, columnService.update, [action.payload]);
@@ -81,7 +78,7 @@ function* updateWorker(action: PayloadAction<IUpdateColumn>) {
   }
 }
 
-function* moveWorker(action: PayloadAction<IMoveColumn>) {
+function* moveWorker(columnService: IColumnService, action: PayloadAction<IMoveColumn>) {
   try {
     yield put(ColumnsActions.move(action.payload));
     yield* apply(columnService, columnService.updatePosition, [action.payload]);
@@ -91,16 +88,18 @@ function* moveWorker(action: PayloadAction<IMoveColumn>) {
   }
 }
 
-function* duplicateWorker(action: PayloadAction<IDuplicateColumn>) {
+function* duplicateWorker(columnService: IColumnService, action: PayloadAction<IDuplicateColumn>) {
   try {
     const response = yield* apply(columnService, columnService.duplicate, [action.payload]);
-    const { columnId, todos, ...column } = response.data;
+    const {
+      columnId, todos, position, ...column
+    } = response.data;
     yield put(ColumnsActions.insertInPosition({
       entity: {
         ...column,
         id: columnId,
       },
-      position: column.position,
+      position,
     }));
     yield all(todos.entities.map((todo: ITodo) => put(TodosActions.add(todo))));
     yield call(show, i18n.t('Column'), i18n.t('Column duplicated successfully'), ALERT_TYPES.SUCCESS);
@@ -109,7 +108,7 @@ function* duplicateWorker(action: PayloadAction<IDuplicateColumn>) {
   }
 }
 
-function* reverseOrderWorker(action: PayloadAction<IReverseColumnOrder>) {
+function* reverseOrderWorker(columnService: IColumnService, action: PayloadAction<IReverseColumnOrder>) {
   try {
     yield put(ColumnsActions.reverseOrder(action.payload));
     yield* apply(columnService, columnService.reverseOrder, [action.payload]);
@@ -119,14 +118,14 @@ function* reverseOrderWorker(action: PayloadAction<IReverseColumnOrder>) {
   }
 }
 
-export function* watchColumn() {
+export function* watchColumn(columnService: IColumnService) {
   yield all([
-    takeLatest(ColumnsActions.effect.fetchByBoardId, fetchByBoardIdWorker),
-    takeLatest(ColumnsActions.effect.create, createWorker),
-    takeLatest(ColumnsActions.effect.remove, removeWorker),
-    takeLatest(ColumnsActions.effect.update, updateWorker),
-    takeLatest(ColumnsActions.effect.move, moveWorker),
-    takeLatest(ColumnsActions.effect.duplicate, duplicateWorker),
-    takeLatest(ColumnsActions.effect.reverseOrder, reverseOrderWorker),
+    takeLatest(ColumnsActions.effect.fetchByBoardId, fetchByBoardIdWorker, columnService),
+    takeLatest(ColumnsActions.effect.create, createWorker, columnService),
+    takeLatest(ColumnsActions.effect.remove, removeWorker, columnService),
+    takeLatest(ColumnsActions.effect.update, updateWorker, columnService),
+    takeLatest(ColumnsActions.effect.move, moveWorker, columnService),
+    takeLatest(ColumnsActions.effect.duplicate, duplicateWorker, columnService),
+    takeLatest(ColumnsActions.effect.reverseOrder, reverseOrderWorker, columnService),
   ]);
 }

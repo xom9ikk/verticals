@@ -4,7 +4,6 @@ import { CommentsReducer, initialState } from '@store/reducers/comments';
 const mockComments = [{
   id: 1,
   userId: 11,
-  commentId: 12,
   todoId: 13,
   text: 'Comment text',
   createdAt: new Date().getTime(),
@@ -19,7 +18,6 @@ const mockComments = [{
 }, {
   id: 2,
   userId: 11,
-  commentId: 12,
   todoId: 13,
   text: 'Comment text #2',
   createdAt: new Date().getTime(),
@@ -34,7 +32,6 @@ const mockComments = [{
 }, {
   id: 3,
   userId: 11,
-  commentId: 12,
   todoId: 13,
   text: 'Comment text #3',
   createdAt: new Date().getTime(),
@@ -43,7 +40,6 @@ const mockComments = [{
 }, {
   id: 4,
   userId: 111,
-  commentId: 112,
   todoId: 113,
   text: 'Comment text #4',
   createdAt: new Date().getTime(),
@@ -52,7 +48,6 @@ const mockComments = [{
 }, {
   id: 5,
   userId: 111,
-  commentId: 112,
   todoId: 113,
   text: 'Comment text #5',
   createdAt: new Date().getTime(),

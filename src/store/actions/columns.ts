@@ -28,7 +28,6 @@ export const ColumnsActions = {
   add: createAction<IAddColumn>('COLUMNS/ADD'),
   insertInPosition: createAction<IInsertColumn>('COLUMNS/INSERT_IN_POSITION'),
   updateEntity: createAction<IUpdateColumn>('COLUMNS/UPDATE_ENTITY'),
-  // setPositions
   move: createAction<IMoveColumn>('COLUMNS/MOVE'),
   setPositionsByBoardId: createAction<ISetColumnPositionsByBoardId>('COLUMNS/SET_POSITIONS_BY_BOARD_ID'),
   remove: createAction<IRemoveColumn>('COLUMNS/REMOVE'),

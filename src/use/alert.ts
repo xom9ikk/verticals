@@ -28,23 +28,21 @@ const defaultPreferences: ReactNotificationOptions = {
   },
 };
 
-export const useAlert = () => {
-  const show = (
-    title: string,
-    message: string,
-    type: IType = ALERT_TYPES.DEFAULT,
-    preferences = defaultPreferences,
-  ) => {
-    store.addNotification({
-      title,
-      message,
-      type,
-      ...preferences,
-    });
-  };
-
-  return {
-    show,
-    ALERT_TYPES,
-  };
+const show = (
+  title: string,
+  message: string,
+  type: IType = ALERT_TYPES.DEFAULT,
+  preferences = defaultPreferences,
+) => {
+  store.addNotification({
+    title,
+    message,
+    type,
+    ...preferences,
+  });
 };
+
+export const useAlert = () => ({
+  show,
+  ALERT_TYPES,
+});

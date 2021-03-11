@@ -54,7 +54,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.ChangeLanguage: {
-        dispatch(SystemActions.setLanguage(payload));
+        dispatch(SystemActions.effect.setLanguage(payload));
         break;
       }
       case EnumToolbarActions.WriteToDeveloper: {
@@ -70,7 +70,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.Logout: {
-        dispatch(AuthActions.logout());
+        dispatch(AuthActions.effect.logout());
         break;
       }
       default: break;
@@ -118,6 +118,8 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           <Submenu
             text={`${t('Language')}: ${LANGUAGES[language]}`}
             imageSrc="/assets/svg/menu/language.svg"
+            maxHeight={170}
+            isHideScroll
           >
             {
               LANGUAGES.map((lng, index) => (

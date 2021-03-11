@@ -80,9 +80,9 @@ export const CommentItem: FC<ICommentItem> = ({
       case EnumMenuActions.Like: {
         const like = { commentId: id };
         if (isLikedByMe) {
-          dispatch(CommentsActions.effects.removeLike(like));
+          dispatch(CommentsActions.effect.removeLike(like));
         } else {
-          dispatch(CommentsActions.effects.addLike(like));
+          dispatch(CommentsActions.effect.addLike(like));
         }
         break;
       }
@@ -97,7 +97,7 @@ export const CommentItem: FC<ICommentItem> = ({
         break;
       }
       case EnumMenuActions.Delete: {
-        dispatch(CommentsActions.effects.remove({ id }));
+        dispatch(CommentsActions.effect.remove({ id }));
         break;
       }
       default:
@@ -118,7 +118,7 @@ export const CommentItem: FC<ICommentItem> = ({
   }, [isDoubleClick]);
 
   const handleRemove = (fileId: number) => {
-    dispatch(CommentAttachmentsActions.remove({
+    dispatch(CommentAttachmentsActions.effect.remove({
       id: fileId,
     }));
   };
@@ -230,7 +230,7 @@ export const CommentItem: FC<ICommentItem> = ({
           <div className="comment__controls--buttons">
             <ControlButton
               imageSrc={`/assets/svg/like${isLikedByMe ? '-active' : ''}.svg`}
-              tooltip={`${isLikedByMe ? 'Unlike' : 'Like'}`}
+              tooltip={`${isLikedByMe ? t('Unlike') : t('Like')}`}
               isColored={isLikedByMe}
               alt="like"
               imageSize={16}
@@ -288,7 +288,7 @@ export const CommentItem: FC<ICommentItem> = ({
               onSelect={handleMenuButtonClick}
             >
               <MenuItem
-                text={`${isLikedByMe ? 'Unlike' : 'Like'}`}
+                text={`${isLikedByMe ? t('Unlike') : t('Like')}`}
                 imageSrc="/assets/svg/like.svg"
                 action={EnumMenuActions.Like}
               />

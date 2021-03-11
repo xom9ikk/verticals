@@ -49,7 +49,7 @@ export const Account: FC = () => {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm<IFormValidatedState>(
     initialState,
-    useWith(dispatch, [AuthActions.changePassword]),
+    useWith(dispatch, [AuthActions.effect.changePassword]),
     validatorChangePasswordForm,
   );
 
@@ -63,7 +63,7 @@ export const Account: FC = () => {
           label={t('Email')}
           isLight
           initialValue={email}
-          action={UserActions.updateEmail}
+          action={UserActions.effect.updateEmail}
           validator={validator.email({ max: 64 })}
           style={{ marginBottom: 20 }}
         />

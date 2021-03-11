@@ -44,18 +44,18 @@ export const Profile: FC = () => {
     handleChange, handleSubmit, handleBlur, values, errors, touches,
   } = useForm<IFormValidatedState>(
     initialState,
-    useWith(dispatch, [UserActions.updatePersonalData]),
+    useWith(dispatch, [UserActions.effect.updatePersonalData]),
     validatorProfileForm,
   );
 
   const handleClick = async () => {
     const [file] = await openFiles('image/x-png,image/jpeg', false) || [];
-    dispatch(UserActions.uploadAvatar(file));
+    dispatch(UserActions.effect.uploadAvatar(file));
   };
 
   const handleDelete = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(UserActions.removeAvatar());
+    dispatch(UserActions.effect.removeAvatar());
   };
 
   return (
@@ -99,7 +99,7 @@ export const Profile: FC = () => {
             label={t('Username')}
             isLight
             initialValue={username}
-            action={UserActions.updateUsername}
+            action={UserActions.effect.updateUsername}
             validator={validator.text({ min: 2, name: t('Username') })}
           />
           <Input

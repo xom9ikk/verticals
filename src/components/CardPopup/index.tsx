@@ -110,8 +110,8 @@ export const CardPopup: FC<ICardPopup> = ({
     if (activeTodo && activeTodo.columnId === columnId) {
       setTitleValue(activeTodo.title);
       setDescriptionValue(activeTodo.description);
-      dispatch(CommentsActions.effects.fetchByTodoId({ todoId: activeTodo.id }));
-      dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: activeTodo.id }));
+      dispatch(CommentsActions.effect.fetchByTodoId({ todoId: activeTodo.id }));
+      dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: activeTodo.id }));
     }
   }, [activeTodo]);
 

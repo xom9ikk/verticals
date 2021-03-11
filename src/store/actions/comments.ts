@@ -12,7 +12,7 @@ import {
 } from '@type/actions';
 
 export const CommentsActions = {
-  effects: {
+  effect: {
     fetchByTodoId: createAction<IFetchCommentsByTodoId>('COMMENTS-EFFECT/FETCH_BY_TODO_ID'),
     create: createAction<ICreateComment>('COMMENTS-EFFECT/CREATE'),
     remove: createAction<IRemoveComment>('COMMENTS-EFFECT/REMOVE'),

@@ -3,9 +3,6 @@ import {
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';
-import { container } from '@inversify/config';
-import { TYPES } from '@inversify/types';
-import { IServices } from '@inversify/interfaces';
 import {
   BoardsActions, SystemActions,
 } from '@store/actions';
@@ -21,12 +18,12 @@ import {
   IMoveBoard,
 } from '@type/actions';
 import i18n from '@/i18n';
+import { IBoardService } from '@inversify/interfaces/services';
 
-const { boardService } = container.get<IServices>(TYPES.Services);
 const { show, ALERT_TYPES } = useAlert();
 const { toReadableId } = useReadableId();
 
-function* fetchWorker() {
+function* fetchWorker(boardService: IBoardService) {
   try {
     const response = yield* apply(boardService, boardService.getAll, []);
     const { boards } = response.data;
@@ -48,7 +45,7 @@ function* fetchWorker() {
   }
 }
 
-function* createWorker(action: PayloadAction<ICreateBoard>) {
+function* createWorker(boardService: IBoardService, action: PayloadAction<ICreateBoard>) {
   try {
     const { belowId, ...board } = action.payload;
     const response = yield* apply(boardService, boardService.create, [action.payload]);
@@ -74,7 +71,7 @@ function* createWorker(action: PayloadAction<ICreateBoard>) {
   }
 }
 
-function* removeWorker(action: PayloadAction<IRemoveBoard>) {
+function* removeWorker(boardService: IBoardService, action: PayloadAction<IRemoveBoard>) {
   try {
     yield put(BoardsActions.remove(action.payload));
     yield* apply(boardService, boardService.remove, [action.payload]);
@@ -84,7 +81,7 @@ function* removeWorker(action: PayloadAction<IRemoveBoard>) {
   }
 }
 
-function* updateWorker(action: PayloadAction<IUpdateBoard>) {
+function* updateWorker(boardService: IBoardService, action: PayloadAction<IUpdateBoard>) {
   try {
     yield put(BoardsActions.updateEntity(action.payload));
     yield* apply(boardService, boardService.update, [action.payload]);
@@ -94,7 +91,7 @@ function* updateWorker(action: PayloadAction<IUpdateBoard>) {
   }
 }
 
-function* moveWorker(action: PayloadAction<IMoveBoard>) {
+function* moveWorker(boardService: IBoardService, action: PayloadAction<IMoveBoard>) {
   try {
     yield put(BoardsActions.move(action.payload));
     yield* apply(boardService, boardService.updatePosition, [action.payload]);
@@ -104,12 +101,12 @@ function* moveWorker(action: PayloadAction<IMoveBoard>) {
   }
 }
 
-export function* watchBoard() {
+export function* watchBoard(boardService: IBoardService) {
   yield all([
-    takeLatest(BoardsActions.effect.fetchAll, fetchWorker),
-    takeLatest(BoardsActions.effect.create, createWorker),
-    takeLatest(BoardsActions.effect.remove, removeWorker),
-    takeLatest(BoardsActions.effect.update, updateWorker),
-    takeLatest(BoardsActions.effect.move, moveWorker),
+    takeLatest(BoardsActions.effect.fetchAll, fetchWorker, boardService),
+    takeLatest(BoardsActions.effect.create, createWorker, boardService),
+    takeLatest(BoardsActions.effect.remove, removeWorker, boardService),
+    takeLatest(BoardsActions.effect.update, updateWorker, boardService),
+    takeLatest(BoardsActions.effect.move, moveWorker, boardService),
   ]);
 }

@@ -3,8 +3,15 @@ import { ICommentAttachments } from '@type/entities/comment-attachment';
 export enum EnumLanguage {
   English,
   Russian,
+  Ukrainian,
   French,
   Spanish,
+  German,
+  Italian,
+  Polish,
+  Turkish,
+  Japanese,
+  TraditionalChinese,
 }
 
 export enum EnumDroppedZoneType {

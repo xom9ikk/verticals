@@ -23,6 +23,11 @@
     border-radius: 8px;
     //transition: opacity .1s ease-in-out;
     //z-index: 3;
+    &--hide-scroll {
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+    }
   }
   &--top {
     transform: translate(37%, -60%);
