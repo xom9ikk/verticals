@@ -27,7 +27,7 @@ describe('User saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(UserActions.fetchMe())
+      .dispatch(UserActions.effect.fetchMe())
       .apply(userService, userService.getMe, [])
       .put(UserActions.setUserData(mockData))
       .silentRun();
@@ -42,7 +42,7 @@ describe('User saga flow', () => {
       .provide([
         [matchers.apply.fn(userService.update), undefined],
       ])
-      .dispatch(UserActions.updateUsername(username))
+      .dispatch(UserActions.effect.updateUsername(username))
       .apply(userService, userService.update, [mockData])
       .put(UserActions.setUsername(username))
       .call(show, 'User', 'Username updated successfully', ALERT_TYPES.SUCCESS)
@@ -58,7 +58,7 @@ describe('User saga flow', () => {
       .provide([
         [matchers.apply.fn(userService.update), undefined],
       ])
-      .dispatch(UserActions.updateEmail(email))
+      .dispatch(UserActions.effect.updateEmail(email))
       .apply(userService, userService.update, [mockData])
       .put(UserActions.setEmail(email))
       .call(show, 'User', 'Email updated successfully', ALERT_TYPES.SUCCESS)
@@ -75,7 +75,7 @@ describe('User saga flow', () => {
       .provide([
         [matchers.apply.fn(userService.update), undefined],
       ])
-      .dispatch(UserActions.updatePersonalData(mockData))
+      .dispatch(UserActions.effect.updatePersonalData(mockData))
       .apply(userService, userService.update, [mockData])
       .put(UserActions.setPersonalData(mockData))
       .call(show, 'User', 'Personal data updated successfully', ALERT_TYPES.SUCCESS)
@@ -92,7 +92,7 @@ describe('User saga flow', () => {
           },
         }],
       ])
-      .dispatch(UserActions.uploadAvatar(payload))
+      .dispatch(UserActions.effect.uploadAvatar(payload))
       // .apply(userService, userService.uploadAvatar, [{}])
       .put(UserActions.setAvatar(payload))
       .call(show, 'User', 'Avatar successfully uploaded', ALERT_TYPES.SUCCESS)
@@ -102,7 +102,7 @@ describe('User saga flow', () => {
     .provide([
       [matchers.apply.fn(userService.removeAvatar), undefined],
     ])
-    .dispatch(UserActions.removeAvatar())
+    .dispatch(UserActions.effect.removeAvatar())
     .apply(userService, userService.removeAvatar, [])
     .put(UserActions.setAvatar(null))
     .call(show, 'User', 'Avatar removed successfully', ALERT_TYPES.SUCCESS)

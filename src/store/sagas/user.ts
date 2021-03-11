@@ -81,11 +81,11 @@ function* removeAvatarWorker(userService: IUserService) {
 
 export function* watchUser(userService: IUserService) {
   yield all([
-    takeLatest(UserActions.fetchMe, fetchMeWorker, userService),
-    takeLatest(UserActions.updateUsername, updateUsernameWorker, userService),
-    takeLatest(UserActions.updateEmail, updateEmailWorker, userService),
-    takeLatest(UserActions.updatePersonalData, updatePersonalDataWorker, userService),
-    takeLatest(UserActions.uploadAvatar, uploadAvatarWorker, userService),
-    takeLatest(UserActions.removeAvatar, removeAvatarWorker, userService),
+    takeLatest(UserActions.effect.fetchMe, fetchMeWorker, userService),
+    takeLatest(UserActions.effect.updateUsername, updateUsernameWorker, userService),
+    takeLatest(UserActions.effect.updateEmail, updateEmailWorker, userService),
+    takeLatest(UserActions.effect.updatePersonalData, updatePersonalDataWorker, userService),
+    takeLatest(UserActions.effect.uploadAvatar, uploadAvatarWorker, userService),
+    takeLatest(UserActions.effect.removeAvatar, removeAvatarWorker, userService),
   ]);
 }

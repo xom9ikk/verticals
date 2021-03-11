@@ -99,7 +99,7 @@ export const MainLayout: FC = () => {
   }, [todoId]);
 
   useEffect(() => {
-    dispatch(UserActions.fetchMe());
+    dispatch(UserActions.effect.fetchMe());
     dispatch(BoardsActions.effect.fetchAll());
   }, []);
 
