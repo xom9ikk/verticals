@@ -37,7 +37,7 @@ describe('Comment attachment saga flow', () => {
           data: mockData,
         }],
       ])
-      .dispatch(CommentAttachmentsActions.fetchByTodoId(payload))
+      .dispatch(CommentAttachmentsActions.effect.fetchByTodoId(payload))
       .apply(commentAttachmentService, commentAttachmentService.getByTodoId, [payload])
       .put(CommentAttachmentsActions.merge(mockData.attachments))
       .silentRun();
@@ -56,7 +56,7 @@ describe('Comment attachment saga flow', () => {
           data: mockAttachment,
         }],
       ])
-      .dispatch(CommentAttachmentsActions.uploadFiles(payload))
+      .dispatch(CommentAttachmentsActions.effect.uploadFiles(payload))
       .put(CommentAttachmentsActions.add(mockAttachment))
       .put(CommentAttachmentsActions.add(mockAttachment))
       .put(CommentAttachmentsActions.add(mockAttachment))
@@ -74,7 +74,7 @@ describe('Comment attachment saga flow', () => {
           data: mockAttachment,
         }],
       ])
-      .dispatch(CommentAttachmentsActions.uploadFile(payload))
+      .dispatch(CommentAttachmentsActions.effect.uploadFile(payload))
       .put(CommentAttachmentsActions.add(mockAttachment))
       .silentRun();
   });
@@ -87,8 +87,9 @@ describe('Comment attachment saga flow', () => {
       .provide([
         [matchers.apply.fn(commentAttachmentService.remove), undefined],
       ])
-      .dispatch(CommentAttachmentsActions.remove(payload))
+      .dispatch(CommentAttachmentsActions.effect.remove(payload))
       .apply(commentAttachmentService, commentAttachmentService.remove, [payload])
+      .put(CommentAttachmentsActions.remove(payload))
       .call(show, 'Attachments', 'Attachment removed successfully', ALERT_TYPES.SUCCESS)
       .silentRun();
   });

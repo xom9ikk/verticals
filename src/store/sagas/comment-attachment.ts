@@ -38,7 +38,7 @@ function* uploadFilesWorker(
     const { files, commentId } = action.payload;
     for (let i = 0; i < files.length; i += 1) { // TODO: foreach?
       const file = files[i];
-      yield put(CommentAttachmentsActions.uploadFile({
+      yield put(CommentAttachmentsActions.effect.uploadFile({
         commentId,
         file,
       }));
@@ -68,6 +68,7 @@ function* removeWorker(
   action: PayloadAction<IRemoveCommentAttachment>,
 ) {
   try {
+    yield put(CommentAttachmentsActions.remove(action.payload));
     yield* apply(commentAttachmentService, commentAttachmentService.remove, [action.payload]);
     yield call(show, i18n.t('Attachments'), i18n.t('Attachment removed successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
@@ -77,9 +78,9 @@ function* removeWorker(
 
 export function* watchCommentAttachment(commentAttachmentService: ICommentAttachmentService) {
   yield all([
-    takeLatest(CommentAttachmentsActions.fetchByTodoId, fetchByTodoIdWorker, commentAttachmentService),
-    takeLatest(CommentAttachmentsActions.uploadFiles, uploadFilesWorker, commentAttachmentService),
-    takeEvery(CommentAttachmentsActions.uploadFile, uploadFileWorker, commentAttachmentService),
-    takeLatest(CommentAttachmentsActions.remove, removeWorker, commentAttachmentService),
+    takeLatest(CommentAttachmentsActions.effect.fetchByTodoId, fetchByTodoIdWorker, commentAttachmentService),
+    takeLatest(CommentAttachmentsActions.effect.uploadFiles, uploadFilesWorker, commentAttachmentService),
+    takeEvery(CommentAttachmentsActions.effect.uploadFile, uploadFileWorker, commentAttachmentService),
+    takeLatest(CommentAttachmentsActions.effect.remove, removeWorker, commentAttachmentService),
   ]);
 }

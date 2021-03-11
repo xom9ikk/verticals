@@ -118,7 +118,7 @@ export const CommentItem: FC<ICommentItem> = ({
   }, [isDoubleClick]);
 
   const handleRemove = (fileId: number) => {
-    dispatch(CommentAttachmentsActions.remove({
+    dispatch(CommentAttachmentsActions.effect.remove({
       id: fileId,
     }));
   };

@@ -74,7 +74,7 @@ export const CommentForm: FC<ICommentForm> = ({
         text: commentText,
       }));
       if (files) {
-        dispatch(CommentAttachmentsActions.uploadFiles({
+        dispatch(CommentAttachmentsActions.effect.uploadFiles({
           commentId: editCommentId,
           files,
         }));

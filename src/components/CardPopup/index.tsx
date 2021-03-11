@@ -111,7 +111,7 @@ export const CardPopup: FC<ICardPopup> = ({
       setTitleValue(activeTodo.title);
       setDescriptionValue(activeTodo.description);
       dispatch(CommentsActions.effect.fetchByTodoId({ todoId: activeTodo.id }));
-      dispatch(CommentAttachmentsActions.fetchByTodoId({ todoId: activeTodo.id }));
+      dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: activeTodo.id }));
     }
   }, [activeTodo]);
 

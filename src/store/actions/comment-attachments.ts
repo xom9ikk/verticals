@@ -9,31 +9,27 @@ import {
   IRemoveCommentAttachment,
 } from '@type/actions';
 
-const fetchByTodoId = createAction<IFetchCommentAttachmentsByTodoId>('COMMENT_ATTACHMENTS/FETCH_BY_TODO_ID');
-const merge = createAction<ISetCommentAttachments>('COMMENT_ATTACHMENTS/MERGE');
-const add = createAction<IAddCommentAttachment>('COMMENT_ATTACHMENTS/ADD');
-const uploadFiles = createAction<IUploadCommentAttachmentsFiles>('COMMENT_ATTACHMENTS/UPLOAD_FILES');
-const uploadFile = createAction<PrepareAction<IUploadCommentAttachmentsFile>>(
-  'COMMENT_ATTACHMENTS/UPLOAD_FILE',
-  (payload: IUploadCommentAttachmentsFileRaw) => { // TODO: move to saga?
-    const { commentId, file } = payload;
-    const formData = new FormData();
-    formData.append(file.name, file);
-    return {
-      payload: {
-        commentId,
-        file: formData,
-      },
-    };
-  },
-);
-const remove = createAction<IRemoveCommentAttachment>('COMMENT_ATTACHMENTS/REMOVE');
-
 export const CommentAttachmentsActions = {
-  fetchByTodoId,
-  merge,
-  add,
-  uploadFiles,
-  uploadFile,
-  remove,
+  effect: {
+    fetchByTodoId: createAction<IFetchCommentAttachmentsByTodoId>('COMMENT_ATTACHMENTS-EFFECT/FETCH_BY_TODO_ID'),
+    uploadFiles: createAction<IUploadCommentAttachmentsFiles>('COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILES'),
+    uploadFile: createAction<PrepareAction<IUploadCommentAttachmentsFile>>(
+      'COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILE',
+      (payload: IUploadCommentAttachmentsFileRaw) => { // TODO: move to saga?
+        const { commentId, file } = payload;
+        const formData = new FormData();
+        formData.append(file.name, file);
+        return {
+          payload: {
+            commentId,
+            file: formData,
+          },
+        };
+      },
+    ),
+    remove: createAction<IRemoveCommentAttachment>('COMMENT_ATTACHMENTS-EFFECT/REMOVE'),
+  },
+  merge: createAction<ISetCommentAttachments>('COMMENT_ATTACHMENTS/MERGE'),
+  add: createAction<IAddCommentAttachment>('COMMENT_ATTACHMENTS/ADD'),
+  remove: createAction<IRemoveCommentAttachment>('COMMENT_ATTACHMENTS/REMOVE'),
 };

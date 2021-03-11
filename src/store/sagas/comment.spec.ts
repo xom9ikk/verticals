@@ -102,7 +102,7 @@ describe('Comment saga flow', () => {
         ...payload,
         id: mockData.commentId,
       }))
-      .put(CommentAttachmentsActions.uploadFiles({
+      .put(CommentAttachmentsActions.effect.uploadFiles({
         commentId: mockData.commentId,
         files,
       }))

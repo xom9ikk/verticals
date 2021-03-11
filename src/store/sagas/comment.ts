@@ -40,7 +40,7 @@ function* createWorker(commentService: ICommentService, action: PayloadAction<IC
       id: commentId,
     }));
     if (files) {
-      yield put(CommentAttachmentsActions.uploadFiles({
+      yield put(CommentAttachmentsActions.effect.uploadFiles({
         commentId,
         files,
       }));
