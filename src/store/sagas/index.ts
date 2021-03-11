@@ -22,6 +22,7 @@ const {
   commentService,
   commentAttachmentService,
   searchService,
+  updateService,
 } = container.get<IServices>(TYPES.Services);
 
 export function* rootSaga() {
@@ -34,7 +35,7 @@ export function* rootSaga() {
     fork(watchComment, commentService),
     fork(watchCommentAttachment, commentAttachmentService),
     fork(watchSearch, searchService),
+    fork(watchUpdate, updateService),
     fork(watchSystem),
-    fork(watchUpdate),
   ]);
 }
