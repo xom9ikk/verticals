@@ -20,15 +20,19 @@ jobs:
           path: ${{ env.APP_NAME }}
 
       - name: Install 🔧
+        working-directory: ${{ env.APP_NAME }}
         run: npm install
 
       - name: Lint 🧐
+        working-directory: ${{ env.APP_NAME }}
         run: npm run lint:fix
 
       - name: Test 🚨
+        working-directory: ${{ env.APP_NAME }}
         run: npm run test
 
       - name: Regression check 👀
+        working-directory: ${{ env.APP_NAME }}
         run: npm run loki:update
 
       - name: Copy repo ✍️
