@@ -14,7 +14,7 @@
     "sb": "start-storybook -s ./src/public -p 6006",
     "sb:build": "build-storybook -s ./src/public",
     "loki:prepend": "node ./.loki/replace.js",
-    "loki:update": "npm run sb:build && npm run loki:prepend && npx loki --chromeDockerUseCopy --reactUri file:./storybook-static",
+    "loki:update": "npm run sb:build && npm run loki:prepend && npx loki --chromeDockerUseCopy --verboseRenderer --reactUri file:./storybook-static",
     "loki:approve": "npx loki approve",
     "test": "jest --config ./jest.config.js",
     "test:watch": "npm test -- --watch",
