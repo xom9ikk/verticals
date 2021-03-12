@@ -20,7 +20,7 @@
     "test:watch": "npm test -- --watch",
     "test:coverage": "jest --config ./jest.config.js --coverage",
     "test:stryker": "npx stryker run",
-    "test:all": "npm run test && npm run lint:fix && npm run loki:update",
+    "ci": "npm run lint:fix && npm run test && npm run loki:update",
     "graph": "npx madge --image graph.svg"
   },
   "author": "Max Romanyuta <xom9ik.code@gmail.com>",
