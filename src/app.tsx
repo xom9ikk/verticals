@@ -6,10 +6,11 @@ import ReactTooltip from 'react-tooltip';
 
 import 'swiper/swiper.scss';
 import 'react-notifications-component/dist/theme.css';
+import './styles/scss/main.scss';
+
 import { Gallery } from '@comp/Gallery';
 import { FormattingHelp } from '@comp/FormattingHelp';
 import { MainRouter } from '@/router';
-import './styles/scss/main.scss';
 import { SystemActions, UpdatesActions } from '@store/actions';
 
 export const App: FC = () => {
