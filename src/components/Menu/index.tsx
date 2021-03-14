@@ -91,6 +91,7 @@ const MenuComponent = ({
       child, {
         ...child.props,
         onClick: () => {
+          console.log('onClick');
           onSelect(child.props.action, child.props.payload);
         },
       },
@@ -107,10 +108,10 @@ const MenuComponent = ({
       width={width}
     >
       {React.Children.map(children, (child: ReactComponentElement<typeof MenuItem | typeof Submenu>) => {
-        if (child.type.name === 'MenuItem') {
+        if (child.type.displayName === 'MenuItem') {
           return wrapping(child);
         }
-        if (child.type.name === 'Submenu') {
+        if (child.type.displayName === 'Submenu') {
           return React.cloneElement(
             child, {
               ...child.props,
