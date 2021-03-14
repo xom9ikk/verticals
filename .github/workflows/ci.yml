@@ -10,7 +10,7 @@ on:
 
 jobs:
   delivery_code:
-    name: Test and felivery code to server
+    name: Test and delivery code to server
     runs-on: ubuntu-16.04
 
     steps:

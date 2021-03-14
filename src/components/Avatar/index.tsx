@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getAvatarUrl, getFullName } from '@store/selectors';
+import ReactTooltip from 'react-tooltip';
 
 interface IAvatar {
   userAvatarUrl?: string | null
@@ -22,6 +23,10 @@ export const Avatar: FC<IAvatar> = ({
   const fullName = userFullName || useSelector(getFullName);
   const url = userAvatarUrl === null ? null : userAvatarUrl || useSelector(getAvatarUrl);
   const firstLetter = fullName[0]?.toUpperCase() ?? ':)';
+
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, []);
 
   return url ? (
     <img

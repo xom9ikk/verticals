@@ -1,5 +1,6 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import cn from 'classnames';
+import ReactTooltip from 'react-tooltip';
 
 interface IControlButton {
   imageSrc: string;
@@ -54,6 +55,12 @@ const ControlButtonComponent = ({
     width ${animationDuration}ms ease-in-out, 
     padding ${animationDuration}ms ease-in-out`,
   };
+
+  useEffect(() => {
+    if (tooltip) {
+      ReactTooltip.rebuild();
+    }
+  }, [tooltip]);
 
   return (
     <button
