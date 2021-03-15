@@ -34,20 +34,26 @@ export const ColumnResizable: FC<IColumnResizable> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const debounceUpdateWidth = useDebounce((newWidth: number) => {
+  const debounceEffectUpdateWidth = useDebounce((newWidth: number) => {
     dispatch(ColumnsActions.effect.update({ id: columnId, width: newWidth }));
   }, 1000);
+
+  const debounceUpdateWidth = useDebounce((newWidth: number) => {
+    dispatch(ColumnsActions.updateEntity({ id: columnId, width: newWidth }));
+  }, 50);
+
+  const handleResize = (newWidth: number) => {
+    debounceEffectUpdateWidth(newWidth);
+    debounceUpdateWidth(newWidth);
+  };
 
   const { size, handler } = useResizable({
     size: width === null ? DEFAULT_COLUMN_WIDTH : width,
     minSize: 280,
     maxSize: 700,
     direction: 'right',
-    onResize: debounceUpdateWidth,
+    onResize: handleResize,
   });
-
-  console.log('width', width);
-  console.log('size', size);
 
   return (
     <div style={{
