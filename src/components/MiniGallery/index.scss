@@ -7,8 +7,10 @@
   height: 0;
   position: relative;
   //height: auto;
-  margin-top: 5px;
 
+  &--opened {
+    margin-top: 5px;
+  }
 
   &__wrapper {
     //max-width: 215px;

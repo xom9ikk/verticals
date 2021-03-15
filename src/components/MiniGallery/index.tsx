@@ -1,7 +1,7 @@
 import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
-
+import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { getCommentImageAttachmentsByTodoId } from '@store/selectors';
 import { useCollapse } from '@use/animationHeight';
@@ -110,7 +110,9 @@ export const MiniGallery: FC<IMiniGallery> = ({
   return (
     <div
       ref={ref}
-      className="mini-gallery"
+      className={cn('mini-gallery', {
+        'mini-gallery--opened': !isCollapse,
+      })}
       onClick={handleClick}
       onDoubleClick={(e) => e.stopPropagation()}
     >
