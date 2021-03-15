@@ -1,23 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactTooltip from 'react-tooltip';
-import { Provider } from 'react-redux';
-import { App } from '@/app';
-import { configureAppStore } from '@/store';
-import { ErrorBoundary } from '@comp/ErrorBoundary/ErrorBoundary';
 
-const store = configureAppStore();
+import { Sentry } from '@/sentry';
+import { Store } from '@/store';
+import { App } from '@/app';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ErrorBoundary>
+  <Sentry>
+    <Store>
       <App />
-    </ErrorBoundary>
-  </Provider>,
+    </Store>
+  </Sentry>,
   document.getElementById('root'),
 );
-
-setInterval(() => {
-  // console.log('rebuild');
-  ReactTooltip.rebuild(); // TODO: move to data-tip update hook useEffect(() => {})
-}, 2000);

@@ -37,6 +37,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick.svg' : '');
 
   const handleMenuButtonClick = (action: EnumToolbarActions, payload?: any) => {
+    console.log('action', action);
     switch (action) {
       case EnumToolbarActions.NewWorkspace: {
         // TODO:

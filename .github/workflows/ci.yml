@@ -1,4 +1,4 @@
-name: delivery-action
+name: ci-action
 
 env:
   APP_NAME: "verticals"
@@ -10,16 +10,32 @@ on:
 
 jobs:
   delivery_code:
-    name: Delivery code to server
+    name: Test and delivery code to server
     runs-on: ubuntu-16.04
 
     steps:
-      - name: Clone repo
+      - name: Clone repo ⚓️
         uses: actions/checkout@v2
         with:
           path: ${{ env.APP_NAME }}
 
-      - name: Copy repo
+      - name: Install 🔧
+        working-directory: ${{ env.APP_NAME }}
+        run: npm install
+
+      - name: Lint 🧐
+        working-directory: ${{ env.APP_NAME }}
+        run: npm run lint
+
+      - name: Test 🚨
+        working-directory: ${{ env.APP_NAME }}
+        run: npm run test
+
+      - name: Regression check 👀
+        working-directory: ${{ env.APP_NAME }}
+        run: npm run loki:update
+
+      - name: Copy repo ✍️
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -28,7 +44,7 @@ jobs:
           source: ${{ env.APP_NAME }}
           target: ${{ env.PATH_TO_APPS }}
 
-      - name: Run rebuild script
+      - name: Run rebuild script 😎
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}

@@ -79,7 +79,7 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
         'fallback-loader--absolute': isAbsolute,
         'fallback-loader--hide': !isLoading,
       })}
-      style={{ background: backgroundColor }}
+      style={{ background: backgroundColor, zIndex }}
     >
       <div className="fallback-loader__wrapper">
         <Loader

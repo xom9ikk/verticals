@@ -15,5 +15,6 @@ module.exports = {
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     'babel-plugin-parameter-decorator',
     '@babel/plugin-syntax-dynamic-import',
+    "add-react-displayname"
   ],
 };
