@@ -51,7 +51,7 @@ export const Search: FC = () => {
         name="search"
         value={query}
         onChange={(e: any) => setQuery(e.target.value)}
-        style={{ height: 33, paddingLeft: 33 }}
+        style={{ height: 36, paddingLeft: 33 }}
       >
         <img src="/assets/svg/search.svg" alt="search" />
         <ControlButton
@@ -63,7 +63,7 @@ export const Search: FC = () => {
           style={{
             position: 'absolute',
             right: 4,
-            top: 6,
+            top: 7,
           }}
           onClick={handleClear}
         />

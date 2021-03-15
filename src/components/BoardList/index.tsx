@@ -135,13 +135,15 @@ export const BoardList: FC = () => {
           </Droppable>
         </DragDropContext>
         <Link to={`/${username}/trash`}>
-          <Board
-            boardId={TRASH_BOARD_ID}
-            icon="/assets/svg/board/trash.svg"
-            title={t('Trash')}
-            isEditable={false}
-            isActive={activeBoardId === TRASH_BOARD_ID}
-          />
+          {!isSearchMode && (
+            <Board
+              boardId={TRASH_BOARD_ID}
+              icon="/assets/svg/board/trash.svg"
+              title={t('Trash')}
+              isEditable={false}
+              isActive={activeBoardId === TRASH_BOARD_ID}
+            />
+          )}
         </Link>
       </div>
     );

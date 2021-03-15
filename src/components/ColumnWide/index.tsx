@@ -13,7 +13,7 @@ import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
 import { SystemActions } from '@store/actions';
 import {
-  getEditableCardId,
+  getEditableCardId, getIsSearchMode,
   getOrderedArchivedTodosByColumnId,
   getOrderedNonArchivedTodosByColumnId,
   getTodosEntities,
@@ -62,7 +62,8 @@ export const ColumnWide: FC<IColumnWide> = ({
   const archivedTodos = useParamSelector(getOrderedArchivedTodosByColumnId, columnId);
   const nonArchivedTodos = useParamSelector(getOrderedNonArchivedTodosByColumnId, columnId);
   const allTodos = useSelector(getTodosEntities);
-  const todos = mode === EnumColumnMode.Deleted ? allTodos : nonArchivedTodos;
+  const isSearchMode = useSelector(getIsSearchMode);
+  const todos = mode === EnumColumnMode.Deleted && !isSearchMode ? allTodos : nonArchivedTodos;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);

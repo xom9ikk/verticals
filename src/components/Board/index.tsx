@@ -175,7 +175,7 @@ export const Board: FC<IBoard> = ({
         isEditable ? (
           <div className="card__block-wrapper card__block-wrapper--editable">
             <img src={icon} alt="ico" />
-            <div className="card__editable-content">
+            <div className="card__editable-content" style={{ paddingLeft: 2 }}>
               <TextArea
                 ref={titleInputRef}
                 className="card__textarea"

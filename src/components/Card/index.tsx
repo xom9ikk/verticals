@@ -286,7 +286,7 @@ export const Card: FC<ICard> = ({
           type={cardType}
           status={status}
           onChangeStatus={handleChangeStatus}
-          style={{ marginTop: 12 }}
+          style={{ marginTop: isEditable ? 11 : 12 }}
         />
         )
       }
