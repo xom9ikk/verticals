@@ -10,13 +10,14 @@ import { ColumnsActions, TodosActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useAutoScroll } from '@use/autoScroll';
 import {
-  getActiveBoardId, getEditableColumnId,
+  getActiveBoardId,
+  getColumnPositionsByBoardId,
+  getEditableColumnId,
   getIsLoadedBoards,
   getIsLoadedColumns,
   getIsSearchMode,
-  getOrderedColumnsByBoardId,
 } from '@store/selectors';
-import { NEW_COLUMN_ID, TRASH_BOARD_ID } from '@/constants';
+import { NEW_COLUMN_ID, TRASH_BOARD_ID, TRASH_COLUMN_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
 
@@ -28,9 +29,9 @@ export const Columns: FC<IColumns> = () => {
   const columnsRef = useRef<any>();
 
   const isSearchMode = useSelector(getIsSearchMode);
-  // const todos = useSelector(getTodosEntities);
   const activeBoardId = useSelector(getActiveBoardId);
-  const columns = useParamSelector(getOrderedColumnsByBoardId, activeBoardId);
+
+  const columnPositions = useParamSelector(getColumnPositionsByBoardId, activeBoardId);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const isLoadedColumns = useSelector(getIsLoadedColumns);
   const editableColumnId = useSelector(getEditableColumnId);
@@ -67,7 +68,7 @@ export const Columns: FC<IColumns> = () => {
 
     // reordering column
     if (type === 'COLUMN') {
-      if (destination.index >= columns.length) {
+      if (destination.index >= columnPositions.length) {
         return;
       }
       dispatch(ColumnsActions.effect.move({
@@ -112,42 +113,35 @@ export const Columns: FC<IColumns> = () => {
     }));
   };
 
-  const memoColumns = useMemo(() => columns
-    .map((column, index) => (
+  const memoColumns = useMemo(() => columnPositions
+    .map((id, index) => (
       <Column
-        key={`column-${column.id}`}
+        key={`column-${id}`}
         index={index}
-        color={column.color}
-        isCollapsed={column.isCollapsed}
-        isEditable={editableColumnId === column.id}
-        columnId={column.id}
+        isEditable={editableColumnId === id}
+        columnId={id}
         boardId={activeBoardId!}
-        belowId={column.belowId}
-        title={column.title}
-        description={column.description}
-        width={column.width}
       />
-    )), [columns, activeBoardId, editableColumnId]);
+    )), [columnPositions, activeBoardId, editableColumnId]);
 
   const memoNewColumn = useMemo(() => (
     <Column
-      index={columns.length}
+      index={columnPositions.length}
       boardId={activeBoardId!}
       columnId={NEW_COLUMN_ID}
       isEditable={editableColumnId === NEW_COLUMN_ID}
       mode={EnumColumnMode.New}
       scrollToRight={scrollToRight}
     />
-  ), [columns, activeBoardId, editableColumnId]);
+  ), [columnPositions, activeBoardId, editableColumnId]);
 
   const memoDeletedCardsColumn = useMemo(() => (
     <Column
+      columnId={TRASH_COLUMN_ID}
       index={0}
       boardId={activeBoardId!}
       isEditable={false}
       mode={EnumColumnMode.Deleted}
-      title={t('Deleted cards')}
-      description={t('Restore deleted cards')}
     />
   ), [t, activeBoardId]);
 
@@ -190,7 +184,7 @@ export const Columns: FC<IColumns> = () => {
     </DragDropContext>
   ), [
     t, isLoadedBoards, isLoadedColumns, isSearchMode,
-    activeBoardId, editableColumnId, columns,
+    activeBoardId, editableColumnId, columnPositions,
   ]);
 
   return (

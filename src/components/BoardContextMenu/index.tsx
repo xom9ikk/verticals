@@ -14,7 +14,7 @@ import { getUsername } from '@store/selectors';
 import { ICONS } from '@/constants';
 import { useTranslation } from 'react-i18next';
 
-interface IBoard {
+interface IBoardContextMenu {
   boardId: number;
   title: string;
   color?: IColor;
@@ -31,7 +31,7 @@ enum EnumMenuActions {
   Delete,
 }
 
-export const BoardContextMenu: FC<IBoard> = ({
+export const BoardContextMenu: FC<IBoardContextMenu> = ({
   boardId,
   title,
   color,

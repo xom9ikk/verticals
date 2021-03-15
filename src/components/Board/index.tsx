@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import useKeys from '@rooks/use-keys';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import { EnumTodoType, IColor } from '@type/entities';
+import { EnumTodoType, IBoard } from '@type/entities';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
 import { BoardsActions, SystemActions } from '@store/actions';
@@ -16,6 +16,7 @@ import { useNewValues } from '@use/newValues';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import {
+  getBoardById,
   getIsSearchMode,
   getUsername,
 } from '@store/selectors';
@@ -24,29 +25,20 @@ import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { BoardCounter } from '@comp/BoardCounter';
 import { useEffectState } from '@use/effectState';
+import { useParamSelector } from '@use/paramSelector';
 
-interface IBoard {
+interface IBoardComponent {
   boardId: number;
   snapshot?: DraggableStateSnapshot,
-  belowId?: number;
-  icon: string;
-  color?: IColor;
-  title?: string;
-  isActive?: boolean;
-  description?: string;
   isEditable: boolean;
+  isActive?: boolean;
   onClick?: (title: string, boardId: number) => void;
   scrollToBottom?: () => void;
 }
 
-export const Board: FC<IBoard> = ({
+export const Board: FC<IBoardComponent> = ({
   boardId,
   snapshot,
-  belowId,
-  icon,
-  color,
-  title = '',
-  description = '',
   isEditable,
   isActive = false,
   onClick,
@@ -59,8 +51,10 @@ export const Board: FC<IBoard> = ({
   const { isNewValues } = useNewValues();
 
   const username = useSelector(getUsername);
-
   const isSearchMode = useSelector(getIsSearchMode);
+  const {
+    belowId, icon, color, title = '', description = '',
+  } = useParamSelector(getBoardById, boardId) as IBoard;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useEffectState<string>(title);

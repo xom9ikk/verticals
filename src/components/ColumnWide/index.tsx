@@ -13,15 +13,11 @@ import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { CardsContainer } from '@comp/CardsContainer';
 import { SystemActions } from '@store/actions';
 import {
-  getEditableCardId, getIsSearchMode,
-  getOrderedArchivedTodosByColumnId,
-  getOrderedNonArchivedTodosByColumnId,
-  getTodosEntities,
+  getEditableCardId,
 } from '@store/selectors';
 import { useAutoScroll } from '@use/autoScroll';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { NEW_COLUMN_ID, NEW_TODO_ID } from '@/constants';
-import { useParamSelector } from '@use/paramSelector';
 
 interface IColumnWide {
   snapshot: DraggableStateSnapshot;
@@ -59,11 +55,11 @@ export const ColumnWide: FC<IColumnWide> = ({
   const dispatch = useDispatch();
 
   const editableCardId = useSelector(getEditableCardId);
-  const archivedTodos = useParamSelector(getOrderedArchivedTodosByColumnId, columnId);
-  const nonArchivedTodos = useParamSelector(getOrderedNonArchivedTodosByColumnId, columnId);
-  const allTodos = useSelector(getTodosEntities);
-  const isSearchMode = useSelector(getIsSearchMode);
-  const todos = mode === EnumColumnMode.Deleted && !isSearchMode ? allTodos : nonArchivedTodos;
+
+  // const nonArchivedTodos = useParamSelector(getNonArchivedTodoPositionsByColumnId, columnId);
+  // const allTodos = useSelector(getTodosEntities);
+  // const isSearchMode = useSelector(getIsSearchMode);
+  // const todos = mode === EnumColumnMode.Deleted && !isSearchMode ? allTodos : nonArchivedTodos;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
@@ -168,9 +164,15 @@ export const ColumnWide: FC<IColumnWide> = ({
                       />
                       { mode !== EnumColumnMode.New && (
                         <>
+                          {/* Default */}
+                          {/* Naming Heading 1 */}
+                          {/* Naming Heading 2 */}
+                          {/* Naming Heading 3 */}
+                          {/* Arch */}
+
                           <CardsContainer
                             columnId={columnId}
-                            todos={todos}
+                            // todos={todos}
                             cardType={cardType}
                             mode={mode}
                             isOpenNewCard={editableCardId === `${columnId}-${NEW_TODO_ID}`}
@@ -179,7 +181,7 @@ export const ColumnWide: FC<IColumnWide> = ({
                             scrollToBottom={scrollToBottom}
                           />
                           <ArchiveContainer
-                            archivedTodos={archivedTodos}
+                            columnId={columnId}
                             cardType={cardType}
                           />
                         </>
@@ -228,5 +230,5 @@ export const ColumnWide: FC<IColumnWide> = ({
     isHoverHeader, isHover,
     boardId, columnId, belowId,
     title, description, color, mode,
-    todos, archivedTodos, cardType]);
+    cardType]); // todos
 };

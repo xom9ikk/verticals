@@ -3,7 +3,7 @@ import { IColor } from '@type/entities';
 import cn from 'classnames';
 import { useColorClass } from '@use/colorClass';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { getTodosCountByColumnId } from '@store/selectors';
+import { getTodoPositionsByColumnId } from '@store/selectors';
 import { useParamSelector } from '@use/paramSelector';
 
 interface IColumnContextMenu {
@@ -23,10 +23,9 @@ export const ColumnCompact: FC<IColumnContextMenu> = ({
   title,
   onClick,
 }) => {
-  const todosCount = useParamSelector(getTodosCountByColumnId, columnId);
+  const todoPositions = useParamSelector(getTodoPositionsByColumnId, columnId);
 
   const colorClass = useColorClass('column-compact__wrapper', color);
-  console.log('ColumnCompact', columnId);
 
   return (
     <div
@@ -47,7 +46,7 @@ export const ColumnCompact: FC<IColumnContextMenu> = ({
       >
         <div className="column-compact__inner">
           <div className="column-compact__counter">
-            { todosCount }
+            { todoPositions.length }
           </div>
           <div className="column-compact__title">{title}</div>
         </div>

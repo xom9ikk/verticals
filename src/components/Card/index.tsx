@@ -7,11 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { redirectTo } from '@router/history';
-import { EnumTodoStatus, EnumTodoType, IColor } from '@type/entities';
+import {
+  EnumTodoStatus, EnumTodoType, IColor, ITodo,
+} from '@type/entities';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   getUsername,
-  getActiveBoardReadableId,
+  getActiveBoardReadableId, getTodoById,
 } from '@store/selectors';
 import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
@@ -35,27 +37,29 @@ import { useTranslation } from 'react-i18next';
 import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useEffectState } from '@use/effectState';
 import { useNormalizeDate } from '@use/normalizeDate';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICard {
   provided?: DraggableProvided;
   snapshot?: DraggableStateSnapshot;
   todoId: number;
-  columnId: number;
+  columnIdForNew?: number;
   cardType: EnumTodoType;
-  belowId?: number;
-  title?: string;
-  description?: string;
-  status?: EnumTodoStatus;
-  color?: IColor;
-  isArchived?: boolean;
-  isNotificationsEnabled?: boolean;
-  isRemoved?: boolean;
-  expirationDate?: Date | null;
+  // columnId: number;
+  // belowId?: number;
+  // title?: string;
+  // description?: string;
+  // status?: EnumTodoStatus;
+  // color?: IColor;
+  // isArchived?: boolean;
+  // isNotificationsEnabled?: boolean;
+  // isRemoved?: boolean;
+  // expirationDate?: Date | null;
   invertColor?: boolean;
   isEditable: boolean;
-  commentsCount?: number;
-  imagesCount?: number;
-  attachmentsCount?: number;
+  // commentsCount?: number;
+  // imagesCount?: number;
+  // attachmentsCount?: number;
   isActive?: boolean;
   scrollToBottom?: () => void;
 }
@@ -64,22 +68,23 @@ export const Card: FC<ICard> = ({
   provided,
   snapshot,
   todoId,
-  columnId,
+  columnIdForNew,
   cardType,
-  belowId,
-  title = '',
-  description = '',
-  status = EnumTodoStatus.Todo,
-  color,
-  isArchived,
-  isNotificationsEnabled,
-  isRemoved,
-  expirationDate,
+  // columnId,
+  // belowId,
+  // title = '',
+  // description = '',
+  // status = EnumTodoStatus.Todo,
+  // color,
+  // isArchived,
+  // isNotificationsEnabled,
+  // isRemoved,
+  // expirationDate,
+  // commentsCount,
+  // imagesCount,
+  // attachmentsCount,
   invertColor,
   isEditable,
-  commentsCount,
-  imagesCount,
-  attachmentsCount,
   isActive,
   scrollToBottom,
 }) => {
@@ -91,6 +96,22 @@ export const Card: FC<ICard> = ({
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
   const { normalizeDate } = useNormalizeDate();
+
+  const {
+    columnId,
+    belowId,
+    title = '',
+    description = '',
+    status = EnumTodoStatus.Todo,
+    color,
+    isArchived,
+    isNotificationsEnabled,
+    isRemoved,
+    expirationDate,
+    commentsCount,
+    imagesCount,
+    attachmentsCount,
+  } = useParamSelector(getTodoById, todoId) as ITodo;
 
   const colorClass = useColorClass('card__content', color);
 
@@ -157,14 +178,14 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  // const normalizeDate = (date) => (date ? new Date(date) : undefined);
-
   const saveTodo = () => {
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
     const normalizedDescriptionValue = descriptionValue?.trim();
 
-    if (`${columnId}-${todoId}` !== `${columnId}-${NEW_TODO_ID}` && belowId === undefined) {
+    const validColumnId = columnIdForNew === undefined ? columnId : columnIdForNew;
+
+    if (`${validColumnId}-${todoId}` !== `${validColumnId}-${NEW_TODO_ID}` && belowId === undefined) {
       const isNew = isNewValues(
         [title, normalizedTitleValue],
         [description, normalizedDescriptionValue],
@@ -186,7 +207,7 @@ export const Card: FC<ICard> = ({
     } else {
       if (normalizedTitleValue) {
         dispatch(TodosActions.effect.create({
-          columnId,
+          columnId: validColumnId!,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
           expirationDate: normalizeDate(expirationDateValue),

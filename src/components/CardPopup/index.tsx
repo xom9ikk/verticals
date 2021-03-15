@@ -4,7 +4,7 @@ import React, {
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  EnumDroppedZoneType, EnumTodoStatus, EnumTodoType,
+  EnumDroppedZoneType, EnumTodoStatus, EnumTodoType, ITodo,
 } from '@type/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
@@ -29,6 +29,7 @@ import { useDebounce } from '@use/debounce';
 import { useColorClass } from '@use/colorClass';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICardPopup {
   columnId: number;
@@ -47,7 +48,7 @@ export const CardPopup: FC<ICardPopup> = ({
   const titleInputRef = useRef<any>(null);
 
   const activeTodoId = useSelector(getActiveTodoId);
-  const activeTodo = useSelector(getTodoById(activeTodoId));
+  const activeTodo = useParamSelector(getTodoById, activeTodoId) as ITodo;
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const username = useSelector(getUsername);
 
