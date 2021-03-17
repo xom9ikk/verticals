@@ -281,4 +281,30 @@ describe('Todo saga flow', () => {
       .call(show, 'Todo', 'Todo duplicated successfully', ALERT_TYPES.SUCCESS)
       .silentRun();
   });
+  it('switch archived', () => {
+    const payload = {
+      todoId: 77,
+    };
+
+    return expectSaga(watchTodo, todoService)
+      .provide([
+        [matchers.apply.fn(todoService.switchArchived), undefined],
+      ])
+      .dispatch(TodosActions.effect.switchArchived(payload))
+      .apply(todoService, todoService.switchArchived, [payload])
+      .silentRun();
+  });
+  it('switch removed', () => {
+    const payload = {
+      todoId: 77,
+    };
+
+    return expectSaga(watchTodo, todoService)
+      .provide([
+        [matchers.apply.fn(todoService.switchRemoved), undefined],
+      ])
+      .dispatch(TodosActions.effect.switchRemoved(payload))
+      .apply(todoService, todoService.switchRemoved, [payload])
+      .silentRun();
+  });
 });
