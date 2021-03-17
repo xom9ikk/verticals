@@ -5,7 +5,7 @@ import { TodosReducer, initialState } from '@store/reducers/todos';
 
 const mockTodos = [{
   id: 1,
-  columnId: 11,
+  headingId: 11,
   title: 'Todo Title',
   description: 'Description for todo',
   status: EnumTodoStatus.Done,
@@ -19,7 +19,7 @@ const mockTodos = [{
   imagesCount: 4,
 }, {
   id: 2,
-  columnId: 11,
+  headingId: 11,
   title: 'Todo Title #2',
   description: 'Description for todo #2',
   status: EnumTodoStatus.Canceled,
@@ -33,7 +33,7 @@ const mockTodos = [{
   imagesCount: 0,
 }, {
   id: 3,
-  columnId: 11,
+  headingId: 11,
   title: 'Todo Title #3',
   description: 'Description for todo #3',
   status: EnumTodoStatus.Doing,
@@ -47,7 +47,7 @@ const mockTodos = [{
   imagesCount: 3,
 }, {
   id: 3,
-  columnId: 22,
+  headingId: 22,
   title: 'Todo Title #4',
   description: 'Description for todo #4',
   status: EnumTodoStatus.Todo,
@@ -61,7 +61,7 @@ const mockTodos = [{
   imagesCount: 2,
 }, {
   id: 4,
-  columnId: 22,
+  headingId: 22,
   title: 'Todo Title #5',
   description: 'Description for todo #5',
   status: EnumTodoStatus.Done,
@@ -81,18 +81,18 @@ describe('Todo reducer', () => {
     expect(TodosReducer(initialState, TodosActions.setAll({
       entities: [todo, todo2],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id],
+        [todo.headingId]: [todo.id, todo2.id],
       },
     }))).toEqual({
       entities: [todo, todo2],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id],
+        [todo.headingId]: [todo.id, todo2.id],
       },
     });
   });
   it('set positions', () => {
-    expect(TodosReducer(initialState, TodosActions.setPositionsByColumnId({
-      columnId: 1,
+    expect(TodosReducer(initialState, TodosActions.setPositionsByHeadingId({
+      headingId: 1,
       positions: [1, 2, 3, 4, 5, 6, 7],
     }))).toEqual({
       entities: [],
@@ -106,7 +106,7 @@ describe('Todo reducer', () => {
     const initialStateWithTwoTodos = {
       entities: [todo, todo2],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id],
+        [todo.headingId]: [todo.id, todo2.id],
       },
     };
     expect(TodosReducer(initialStateWithTwoTodos, TodosActions.updateEntity({
@@ -118,7 +118,7 @@ describe('Todo reducer', () => {
         title: 'new Todo Title',
       }, todo2],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id],
+        [todo.headingId]: [todo.id, todo2.id],
       },
     });
   });
@@ -127,7 +127,7 @@ describe('Todo reducer', () => {
     expect(TodosReducer(initialState, TodosActions.add(todo))).toEqual({
       entities: [todo],
       positions: {
-        [todo.columnId]: [todo.id],
+        [todo.headingId]: [todo.id],
       },
     });
   });
@@ -136,19 +136,19 @@ describe('Todo reducer', () => {
     const initialStateWithFourTodos = {
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.move({
-      columnId: todo.columnId,
+      headingId: todo.headingId,
       sourcePosition: 2,
       destinationPosition: 0,
     }))).toEqual({
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo3.id, todo.id, todo2.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo3.id, todo.id, todo2.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     });
   });
@@ -157,20 +157,20 @@ describe('Todo reducer', () => {
     const initialStateWithFourTodos = {
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.move({
-      columnId: todoFromOtherColumn.columnId,
-      targetColumnId: todo.columnId,
+      headingId: todoFromOtherColumn.headingId,
+      targetHeadingId: todo.headingId,
       sourcePosition: 0,
       destinationPosition: 0,
     }))).toEqual({
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todoFromOtherColumn.id, todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [],
+        [todo.headingId]: [todoFromOtherColumn.id, todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [],
       },
     });
   });
@@ -179,8 +179,8 @@ describe('Todo reducer', () => {
     const initialStateWithFourTodos = {
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.insertInPosition({
@@ -189,8 +189,8 @@ describe('Todo reducer', () => {
     }))).toEqual({
       entities: [todo, todo2, todo3, todoFromOtherColumn, todoFromOtherColumn2],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn2.id, todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn2.id, todoFromOtherColumn.id],
       },
     });
   });
@@ -199,8 +199,8 @@ describe('Todo reducer', () => {
     const initialStateWithFourTodos = {
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.remove({
@@ -208,8 +208,8 @@ describe('Todo reducer', () => {
     }))).toEqual({
       entities: [todo, todo2, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     });
   });
@@ -218,17 +218,17 @@ describe('Todo reducer', () => {
     const initialStateWithFourTodos = {
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.drawBelow({
-      columnId: todo2.columnId,
+      headingId: todo2.headingId,
       belowId: todo2.id,
     }))).toEqual({
       entities: [todo, todo2, todo3, todoFromOtherColumn, {
         id: TEMP_ID,
-        columnId: todo2.columnId,
+        headingId: todo2.headingId,
         belowId: todo2.id,
         title: '',
         attachmentsCount: 0,
@@ -236,8 +236,8 @@ describe('Todo reducer', () => {
         imagesCount: 0,
       }],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, TEMP_ID, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, TEMP_ID, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     });
   });
@@ -246,7 +246,7 @@ describe('Todo reducer', () => {
     const initialStateWithFourTodos = {
       entities: [todo, todo2, todo3, todoFromOtherColumn, {
         id: TEMP_ID,
-        columnId: todo2.columnId,
+        headingId: todo2.headingId,
         belowId: todo2.id,
         title: '',
         attachmentsCount: 0,
@@ -254,15 +254,15 @@ describe('Todo reducer', () => {
         imagesCount: 0,
       }],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, TEMP_ID, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, TEMP_ID, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.removeTemp())).toEqual({
       entities: [todo, todo2, todo3, todoFromOtherColumn],
       positions: {
-        [todo.columnId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.columnId]: [todoFromOtherColumn.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
       },
     });
   });

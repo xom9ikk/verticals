@@ -6,18 +6,18 @@ import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beau
 import { useDispatch, useSelector } from 'react-redux';
 import { EnumTodoType, IColor } from '@type/entities';
 import { EnumColumnMode } from '@comp/Column';
-import { ColumnHeader } from '@comp/ColumnHeader';
-import { ColumnToolbar } from '@comp/ColumnToolbar';
-import { ColumnContextMenu } from '@comp/ColumnContextMenu';
+import { ColumnHeader } from '@comp/Column/Header';
+import { ColumnToolbar } from '@comp/Column/Toolbar';
+import { ColumnContextMenu } from '@comp/Column/ContextMenu';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
-import { CardsContainer } from '@comp/CardsContainer';
 import { SystemActions } from '@store/actions';
-import {
-  getEditableCardId,
-} from '@store/selectors';
+import { getDefaultHeadingIdByColumnId, getIsSearchMode } from '@store/selectors';
 import { useAutoScroll } from '@use/autoScroll';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { NEW_COLUMN_ID, NEW_TODO_ID } from '@/constants';
+import { NEW_COLUMN_ID, NEW_HEADING_ID, NEW_TODO_ID } from '@/constants';
+import { DeletedCardsContainer } from '@comp/DeletedCardsContainer';
+import { Headings } from '@comp/Headings';
+import { useParamSelector } from '@use/paramSelector';
 
 interface IColumnWide {
   snapshot: DraggableStateSnapshot;
@@ -54,12 +54,8 @@ export const ColumnWide: FC<IColumnWide> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const editableCardId = useSelector(getEditableCardId);
-
-  // const nonArchivedTodos = useParamSelector(getNonArchivedTodoPositionsByColumnId, columnId);
-  // const allTodos = useSelector(getTodosEntities);
-  // const isSearchMode = useSelector(getIsSearchMode);
-  // const todos = mode === EnumColumnMode.Deleted && !isSearchMode ? allTodos : nonArchivedTodos;
+  const isSearchMode = useSelector(getIsSearchMode);
+  const defaultHeadingId = useParamSelector(getDefaultHeadingIdByColumnId, columnId);
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
@@ -77,7 +73,13 @@ export const ColumnWide: FC<IColumnWide> = ({
 
   const handleAddCard = () => {
     setTimeout(scrollToBottom);
-    dispatch(SystemActions.setEditableCardId(`${columnId}-${NEW_TODO_ID}`));
+    // TODO: use default heading id for default heading
+    dispatch(SystemActions.setEditableCardId(`${defaultHeadingId}-${NEW_TODO_ID}`));
+  };
+
+  const handleAddHeading = () => {
+    setTimeout(scrollToBottom);
+    dispatch(SystemActions.setEditableHeadingId(`${columnId}-${NEW_HEADING_ID}`));
   };
 
   const handleDoubleClickUnwrapped = () => {
@@ -129,15 +131,15 @@ export const ColumnWide: FC<IColumnWide> = ({
           <div className="column__inner">
             <Droppable
               droppableId={`column-${columnId}`}
-              type="CARD"
+              type="HEADING"
             >
               {
-                (dropProvided, dropSnapshot) => (
+                (dropProvided) => (
                   <div
                     ref={dropProvided.innerRef}
                     className="column__container"
                   >
-                    <div>
+                    <>
                       <ColumnHeader
                         provided={provided}
                         boardId={boardId}
@@ -161,6 +163,7 @@ export const ColumnWide: FC<IColumnWide> = ({
                         isHover={isHover}
                         isHide={isEditable}
                         onAddCard={handleAddCard}
+                        onAddHeading={handleAddHeading}
                       />
                       { mode !== EnumColumnMode.New && (
                         <>
@@ -170,40 +173,41 @@ export const ColumnWide: FC<IColumnWide> = ({
                           {/* Naming Heading 3 */}
                           {/* Arch */}
 
-                          <CardsContainer
-                            columnId={columnId}
-                            // todos={todos}
-                            cardType={cardType}
-                            mode={mode}
-                            isOpenNewCard={editableCardId === `${columnId}-${NEW_TODO_ID}`}
-                            isDraggingCard={dropSnapshot.isDraggingOver}
-                            onAddCard={handleAddCard}
-                            scrollToBottom={scrollToBottom}
-                          />
+                          {
+                            mode === EnumColumnMode.Deleted ? (
+                              <DeletedCardsContainer />
+                            ) : (
+                              <Headings
+                                dropProvided={dropProvided}
+                                columnId={columnId}
+                                cardType={cardType}
+                              />
+                            )
+                          }
                           <ArchiveContainer
                             columnId={columnId}
                             cardType={cardType}
                           />
                         </>
                       ) }
-                    </div>
+                    </>
                     {dropProvided.placeholder}
                   </div>
                 )
               }
             </Droppable>
           </div>
-          { mode === EnumColumnMode.New && !isEditable && (
-          <span className="column__new-overlay">
-            <img src="/assets/svg/add.svg" alt="add" />
-          </span>
+          { mode === EnumColumnMode.New && !isEditable && !isSearchMode && (
+            <span className="column__new-overlay">
+              <img src="/assets/svg/add.svg" alt="add" />
+            </span>
           ) }
         </div>
         <ColumnToolbar
           isEnabled={mode === EnumColumnMode.Normal && !isEditable}
           isHoverBlock={isHover && !isHoverHeader}
           onAddCard={handleAddCard}
-          onAddHeading={() => console.log('open heading')}
+          onAddHeading={handleAddHeading}
         />
         {
           mode === EnumColumnMode.Normal && (
@@ -226,8 +230,8 @@ export const ColumnWide: FC<IColumnWide> = ({
       </div>
     );
   },
-  [snapshot, provided, isEditable, editableCardId,
-    isHoverHeader, isHover,
+  [snapshot, provided, isEditable,
+    isHoverHeader, isHover, isSearchMode,
     boardId, columnId, belowId,
     title, description, color, mode,
     cardType]); // todos

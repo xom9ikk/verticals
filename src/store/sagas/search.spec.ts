@@ -32,7 +32,7 @@ const mockColumn = {
 
 const mockTodo = {
   id: 222,
-  columnId: 111,
+  headingId: 111,
   title: 'Todo Title',
   description: 'Description for todo',
   status: EnumTodoStatus.Done,
@@ -64,7 +64,7 @@ describe('Search saga flow', () => {
           imagesCount: 0,
         }],
         positions: {
-          [mockTodo.columnId]: [mockTodo.id],
+          [mockTodo.headingId]: [mockTodo.id],
         },
       },
     };

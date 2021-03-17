@@ -3,15 +3,21 @@ import {
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
-  BoardsActions, ColumnsActions, CommentsActions, TodosActions, UpdatesActions,
+  BoardsActions,
+  ColumnsActions,
+  HeadingsActions,
+  TodosActions,
+  CommentsActions,
+  UpdatesActions,
 } from '@store/actions';
 import {
   EnumOperations, IBoardPositionsUpdateData,
   IBoardUpdateData,
   IColumnPositionsUpdateData,
+  IHeadingPositionsUpdateData,
   IColumnUpdateData, ICommentUpdateData,
   ITodoPositionsUpdateData, ITodoUpdateData,
-  IUpdateData,
+  IUpdateData, IHeadingUpdateData,
 } from '@type/api';
 import { IUpdateService } from '@inversify/interfaces/services';
 
@@ -73,6 +79,14 @@ function* subscribeOnUpdatesWorker(updateService: IUpdateService) {
         delete: ColumnsActions.remove,
       },
     ));
+    yield* fork(() => subscribeOnEntity<IHeadingUpdateData>(
+      updateService,
+      updateService.onHeadingsUpdate, {
+        insert: HeadingsActions.add,
+        update: HeadingsActions.updateEntity,
+        delete: HeadingsActions.remove,
+      },
+    ));
     yield* fork(() => subscribeOnEntity<ITodoUpdateData>(
       updateService, updateService.onTodosUpdate, {
         insert: TodosActions.add,
@@ -99,16 +113,29 @@ function* subscribeOnUpdatesWorker(updateService: IUpdateService) {
         }),
       },
     ));
-    yield* fork(() => subscribeOnEntity<ITodoPositionsUpdateData>(
+    yield* fork(() => subscribeOnEntity<IHeadingPositionsUpdateData>(
       updateService,
-      updateService.onTodoPositionsUpdate, {
-        insert: (data) => TodosActions.setPositionsByColumnId({
+      updateService.onHeadingPositionsUpdate, {
+        insert: (data) => HeadingsActions.setPositionsByColumnId({
           positions: data.order,
           columnId: data.columnId,
         }),
-        update: (data) => TodosActions.setPositionsByColumnId({
+        update: (data) => HeadingsActions.setPositionsByColumnId({
           positions: data.order,
           columnId: data.columnId,
+        }),
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<ITodoPositionsUpdateData>(
+      updateService,
+      updateService.onTodoPositionsUpdate, {
+        insert: (data) => TodosActions.setPositionsByHeadingId({
+          positions: data.order,
+          headingId: data.headingId,
+        }),
+        update: (data) => TodosActions.setPositionsByHeadingId({
+          positions: data.order,
+          headingId: data.headingId,
         }),
       },
     ));

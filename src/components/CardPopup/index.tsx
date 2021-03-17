@@ -4,7 +4,7 @@ import React, {
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  EnumDroppedZoneType, EnumTodoStatus, EnumTodoType, ITodo,
+  EnumDroppedZoneType, EnumTodoStatus, EnumTodoType, IHeading, ITodo,
 } from '@type/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,
@@ -12,7 +12,7 @@ import {
 import { redirectTo } from '@router/history';
 import {
   getActiveBoardReadableId,
-  getActiveTodoId,
+  getActiveTodoId, getHeadingById,
   getTodoById,
   getUsername,
 } from '@store/selectors';
@@ -49,6 +49,7 @@ export const CardPopup: FC<ICardPopup> = ({
 
   const activeTodoId = useSelector(getActiveTodoId);
   const activeTodo = useParamSelector(getTodoById, activeTodoId) as ITodo;
+  const activeHeading = useParamSelector(getHeadingById, activeTodo.headingId) as IHeading;
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const username = useSelector(getUsername);
 
@@ -108,7 +109,7 @@ export const CardPopup: FC<ICardPopup> = ({
   };
 
   useEffect(() => {
-    if (activeTodo && activeTodo.columnId === columnId) {
+    if (activeTodo && activeHeading.columnId === columnId) {
       setTitleValue(activeTodo.title);
       setDescriptionValue(activeTodo.description);
       dispatch(CommentsActions.effect.fetchByTodoId({ todoId: activeTodo.id }));
@@ -141,7 +142,7 @@ export const CardPopup: FC<ICardPopup> = ({
     });
   }, [descriptionValue]);
 
-  return useMemo(() => (activeTodo && activeTodo.columnId === columnId ? (
+  return useMemo(() => (activeTodo && activeHeading.columnId === columnId ? (
     <div
       className={cn('card-popup', {
         'card-popup--open': activeTodo,
@@ -244,12 +245,12 @@ export const CardPopup: FC<ICardPopup> = ({
                   menuId="popup"
                   todoId={activeTodo.id}
                   title={activeTodo.title}
-                  columnId={activeTodo.columnId}
-                  isArchived={activeTodo.isArchived}
+                  headingId={activeTodo.headingId}
+                  // isArchived={activeTodo.isArchived}
                   isActive={false}
                   isHover
                   isNotificationsEnabled={activeTodo.isNotificationsEnabled}
-                  isRemoved={activeTodo.isRemoved}
+                  // isRemoved={activeTodo.isRemoved}
                   expirationDate={activeTodo.expirationDate}
                   color={activeTodo.color}
                   status={activeTodo.status}

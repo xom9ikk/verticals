@@ -13,7 +13,7 @@ const { show, ALERT_TYPES } = useAlert();
 
 const mockTodo = {
   id: 1,
-  columnId: 11,
+  headingId: 11,
   title: 'Todo Title',
   description: 'Description for todo',
   status: EnumTodoStatus.Done,
@@ -35,7 +35,7 @@ describe('Todo saga flow', () => {
           imagesCount: 0,
         }],
         positions: {
-          [mockTodo.columnId]: [mockTodo.id],
+          [mockTodo.headingId]: [mockTodo.id],
         },
       },
     };
@@ -66,7 +66,7 @@ describe('Todo saga flow', () => {
           imagesCount: 0,
         }],
         positions: {
-          [mockTodo.columnId]: [mockTodo.id],
+          [mockTodo.headingId]: [mockTodo.id],
         },
       },
     };
@@ -214,7 +214,7 @@ describe('Todo saga flow', () => {
   });
   it('move', () => {
     const payload = {
-      columnId: 1,
+      headingId: 1,
       sourcePosition: 0,
       destinationPosition: 2,
     };
@@ -231,7 +231,7 @@ describe('Todo saga flow', () => {
   });
   it('move between columns', () => {
     const payload = {
-      columnId: 1,
+      headingId: 1,
       sourcePosition: 0,
       destinationPosition: 2,
       targetColumnId: 77,

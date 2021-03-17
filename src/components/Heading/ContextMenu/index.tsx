@@ -4,14 +4,13 @@ import { ColorPicker } from '@comp/ColorPicker';
 import { MenuItem } from '@comp/MenuItem';
 import { Divider } from '@comp/Divider';
 import { IColor } from '@type/entities';
-import { ColumnsActions, SystemActions } from '@store/actions';
+import { HeadingsActions, SystemActions } from '@store/actions';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-interface IColumnContextMenu {
+interface IHeadingContextMenu {
   isEnabled?: boolean;
-  columnId: number;
-  boardId: number;
+  headingId: number;
   color?: IColor;
   isHide: boolean;
   isHover: boolean;
@@ -19,18 +18,15 @@ interface IColumnContextMenu {
 }
 
 enum EnumMenuActions {
-  EditColumn,
+  Edit,
   Duplicate,
   AddCard,
-  AddHeading,
-  AddColumnAfter,
   Delete,
 }
 
-export const ColumnContextMenu: FC<IColumnContextMenu> = ({
+export const HeadingContextMenu: FC<IHeadingContextMenu> = ({
   isEnabled = true,
-  columnId,
-  boardId,
+  headingId,
   color,
   isHide,
   isHover,
@@ -40,18 +36,18 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
   const dispatch = useDispatch();
 
   const handleColorPick = (newColor: IColor) => {
-    dispatch(ColumnsActions.effect.update({ id: columnId, color: newColor }));
+    dispatch(HeadingsActions.effect.update({ id: headingId, color: newColor }));
   };
 
   const handleMenuButtonClick = (action: EnumMenuActions) => {
     switch (action) {
-      case EnumMenuActions.EditColumn: {
-        dispatch(SystemActions.setEditableColumnId(columnId));
+      case EnumMenuActions.Edit: {
+        dispatch(SystemActions.setEditableHeadingId(headingId));
         break;
       }
       case EnumMenuActions.Duplicate: {
-        dispatch(ColumnsActions.effect.duplicate({
-          columnId: columnId!,
+        dispatch(HeadingsActions.effect.duplicate({
+          headingId: headingId!,
         }));
         break;
       }
@@ -59,20 +55,8 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
         onAddCard();
         break;
       }
-      case EnumMenuActions.AddHeading: {
-        // TODO:
-        break;
-      }
-      case EnumMenuActions.AddColumnAfter: {
-        dispatch(ColumnsActions.removeTemp());
-        dispatch(ColumnsActions.drawBelow({
-          belowId: columnId,
-          boardId: boardId!,
-        }));
-        break;
-      }
       case EnumMenuActions.Delete: {
-        dispatch(ColumnsActions.effect.remove({ id: columnId }));
+        dispatch(HeadingsActions.effect.remove({ id: headingId }));
         break;
       }
       default: break;
@@ -81,7 +65,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
 
   return useMemo(() => (isEnabled ? (
     <Menu
-      id={`column-${columnId}`}
+      id={`heading-${headingId}`}
       imageSrc="/assets/svg/dots.svg"
       alt="menu"
       imageSize={22}
@@ -92,16 +76,16 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
       isHoverBlock={isHover}
       style={{
         position: 'absolute',
-        top: 23,
+        top: 7,
         right: 10,
       }}
       onSelect={handleMenuButtonClick}
     >
       <ColorPicker onPick={handleColorPick} activeColor={color} />
       <MenuItem
-        text={t('Edit column')}
+        text={t('Edit heading')}
         imageSrc="/assets/svg/menu/edit.svg"
-        action={EnumMenuActions.EditColumn}
+        action={EnumMenuActions.Edit}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
@@ -115,16 +99,6 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
         imageSrc="/assets/svg/menu/add-card.svg"
         action={EnumMenuActions.AddCard}
       />
-      <MenuItem
-        text={t('Add heading')}
-        imageSrc="/assets/svg/menu/add-heading.svg"
-        action={EnumMenuActions.AddHeading}
-      />
-      <MenuItem
-        text={t('Add column after')}
-        imageSrc="/assets/svg/menu/add-column.svg"
-        action={EnumMenuActions.AddColumnAfter}
-      />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
       <MenuItem
         text={t('Delete')}
@@ -134,5 +108,5 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
       />
     </Menu>
   ) : null),
-  [t, columnId, isEnabled, isHide, isHover, color]);
+  [t, headingId, isEnabled, isHide, isHover, color]);
 };

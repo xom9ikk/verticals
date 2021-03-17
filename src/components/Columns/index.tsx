@@ -6,7 +6,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column, EnumColumnMode } from '@comp/Column';
-import { ColumnsActions, TodosActions } from '@store/actions';
+import { ColumnsActions, HeadingsActions, TodosActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useAutoScroll } from '@use/autoScroll';
 import {
@@ -43,6 +43,7 @@ export const Columns: FC<IColumns> = () => {
       const timeout = setTimeout(() => {
         if (activeBoardId !== TRASH_BOARD_ID) {
           dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+          dispatch(HeadingsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
           dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
         } else {
           dispatch(TodosActions.effect.fetchRemoved());
@@ -79,8 +80,6 @@ export const Columns: FC<IColumns> = () => {
       return;
     }
 
-    const sourceColumnId = Number(source.droppableId.split('column-')[1]);
-
     // TODO: need?
     // const currentTodos: ITodo[] = todos.filter((todo) => todo.columnId === sourceColumnId);
 
@@ -90,27 +89,58 @@ export const Columns: FC<IColumns> = () => {
     //   return;
     // }
 
-    // moving to same list
-    const sourcePosition = source.index;
-    const destinationPosition = destination.index;
-    const targetColumnId = Number(destination.droppableId.split('column-')[1]);
+    if (type === 'HEADING') {
+      const sourceColumnId = Number(source.droppableId.split('column-')[1]);
 
-    if (source.droppableId === destination.droppableId) {
-      dispatch(TodosActions.effect.move({
+      // moving to same HEADING list
+      const sourcePosition = source.index;
+      const destinationPosition = destination.index;
+      const targetColumnId = Number(destination.droppableId.split('column-')[1]);
+
+      if (source.droppableId === destination.droppableId) {
+        dispatch(HeadingsActions.effect.move({
+          sourcePosition,
+          destinationPosition,
+          columnId: targetColumnId,
+        }));
+        return;
+      }
+
+      // moving to different list
+      dispatch(HeadingsActions.effect.move({
+        columnId: sourceColumnId,
+        targetColumnId,
         sourcePosition,
         destinationPosition,
-        columnId: targetColumnId,
       }));
-      return;
     }
 
-    // moving to different list
-    dispatch(TodosActions.effect.move({
-      columnId: sourceColumnId,
-      targetColumnId,
-      sourcePosition,
-      destinationPosition,
-    }));
+    if (type === 'CARD') {
+      console.log(source, destination);
+      const sourceHeadingId = Number(source.droppableId.split('heading-')[1]);
+
+      // moving to same HEADING list
+      const sourcePosition = source.index;
+      const destinationPosition = destination.index;
+      const targetHeadingId = Number(destination.droppableId.split('heading-')[1]);
+
+      if (source.droppableId === destination.droppableId) {
+        dispatch(TodosActions.effect.move({
+          sourcePosition,
+          destinationPosition,
+          headingId: targetHeadingId,
+        }));
+        return;
+      }
+
+      // moving to different list
+      dispatch(TodosActions.effect.move({
+        headingId: sourceHeadingId,
+        targetHeadingId,
+        sourcePosition,
+        destinationPosition,
+      }));
+    }
   };
 
   const memoColumns = useMemo(() => columnPositions

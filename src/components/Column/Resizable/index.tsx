@@ -3,7 +3,7 @@ import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useResizable } from '@use/resizable';
 import { EnumTodoType, IColor } from '@type/entities';
 import { EnumColumnMode } from '@comp/Column';
-import { ColumnWide } from '@comp/ColumnWide';
+import { ColumnWide } from '@comp/Column/Wide';
 import { useDebounce } from '@use/debounce';
 import { ColumnsActions } from '@store/actions';
 import { useDispatch } from 'react-redux';

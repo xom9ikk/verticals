@@ -7,6 +7,7 @@ import {
   IAuthService,
   IBoardService,
   IColumnService,
+  IHeadingService,
   ICommentAttachmentService,
   ICommentService,
   ISearchService,
@@ -21,6 +22,7 @@ import { AuthService } from '@services/auth';
 import { UserService } from '@services/user';
 import { BoardService } from '@services/board';
 import { ColumnService } from '@services/column';
+import { HeadingService } from '@services/heading';
 import { TodoService } from '@services/todo';
 import { CommentService } from '@services/comment';
 import { CommentAttachmentService } from '@services/comment-attachment';
@@ -62,6 +64,11 @@ container
 container
   .bind<IColumnService>(TYPES.ColumnService)
   .to(ColumnService)
+  .inSingletonScope();
+
+container
+  .bind<IHeadingService>(TYPES.HeadingService)
+  .to(HeadingService)
   .inSingletonScope();
 
 container

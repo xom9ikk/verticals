@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import {
   getCommentFileAttachmentsByTodoId,
   getCommentImageAttachmentsByTodoId,
-  getCommentsByTodoId, getWidthByColumnId,
+  getCommentsByTodoId,
+  getWidthByHeadingId,
 } from '@store/selectors';
 import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
@@ -20,7 +21,7 @@ enum EnumToggleType {
 }
 
 interface ICardAttachmentsPreview {
-  columnId: number;
+  headingId: number;
   todoId: number;
   isActive?: boolean;
   commentsCount?: number;
@@ -29,7 +30,7 @@ interface ICardAttachmentsPreview {
 }
 
 export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
-  columnId,
+  headingId,
   todoId,
   isActive,
   commentsCount,
@@ -42,7 +43,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
   const comments = useParamSelector(getCommentsByTodoId, todoId);
   const imageAttachments = useParamSelector(getCommentImageAttachmentsByTodoId, todoId);
   const fileAttachments = useParamSelector(getCommentFileAttachmentsByTodoId, todoId);
-  const columnWidth = useParamSelector(getWidthByColumnId, columnId);
+  const columnWidth = useParamSelector(getWidthByHeadingId, headingId);
 
   const commentsCountWithCache = comments?.length || commentsCount;
   const imagesCountWithCache = imageAttachments?.length || imagesCount;

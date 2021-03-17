@@ -3,6 +3,7 @@ import { SystemReducer } from './system';
 import { UserReducer } from './user';
 import { BoardsReducer } from './boards';
 import { ColumnsReducer } from './columns';
+import { HeadingsReducer } from './headings';
 import { TodosReducer } from './todos';
 import { CommentsReducer } from './comments';
 import { CommentAttachmentsReducer } from './comment-attachments';
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
   user: UserReducer,
   boards: BoardsReducer,
   columns: ColumnsReducer,
+  headings: HeadingsReducer,
   todos: TodosReducer,
   comments: CommentsReducer,
   commentAttachments: CommentAttachmentsReducer,

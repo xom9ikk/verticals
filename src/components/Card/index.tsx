@@ -43,23 +43,10 @@ interface ICard {
   provided?: DraggableProvided;
   snapshot?: DraggableStateSnapshot;
   todoId: number;
-  columnIdForNew?: number;
+  headingIdIdForNew?: number;
   cardType: EnumTodoType;
-  // columnId: number;
-  // belowId?: number;
-  // title?: string;
-  // description?: string;
-  // status?: EnumTodoStatus;
-  // color?: IColor;
-  // isArchived?: boolean;
-  // isNotificationsEnabled?: boolean;
-  // isRemoved?: boolean;
-  // expirationDate?: Date | null;
   invertColor?: boolean;
   isEditable: boolean;
-  // commentsCount?: number;
-  // imagesCount?: number;
-  // attachmentsCount?: number;
   isActive?: boolean;
   scrollToBottom?: () => void;
 }
@@ -68,21 +55,8 @@ export const Card: FC<ICard> = ({
   provided,
   snapshot,
   todoId,
-  columnIdForNew,
+  headingIdIdForNew,
   cardType,
-  // columnId,
-  // belowId,
-  // title = '',
-  // description = '',
-  // status = EnumTodoStatus.Todo,
-  // color,
-  // isArchived,
-  // isNotificationsEnabled,
-  // isRemoved,
-  // expirationDate,
-  // commentsCount,
-  // imagesCount,
-  // attachmentsCount,
   invertColor,
   isEditable,
   isActive,
@@ -98,15 +72,15 @@ export const Card: FC<ICard> = ({
   const { normalizeDate } = useNormalizeDate();
 
   const {
-    columnId,
+    headingId,
     belowId,
     title = '',
     description = '',
     status = EnumTodoStatus.Todo,
     color,
-    isArchived,
+    // isArchived,
     isNotificationsEnabled,
-    isRemoved,
+    // isRemoved,
     expirationDate,
     commentsCount,
     imagesCount,
@@ -183,9 +157,9 @@ export const Card: FC<ICard> = ({
     const normalizedTitleValue = titleValue.trim();
     const normalizedDescriptionValue = descriptionValue?.trim();
 
-    const validColumnId = columnIdForNew === undefined ? columnId : columnIdForNew;
+    const validHeadingId = headingIdIdForNew === undefined ? headingId : headingIdIdForNew;
 
-    if (`${validColumnId}-${todoId}` !== `${validColumnId}-${NEW_TODO_ID}` && belowId === undefined) {
+    if (`${validHeadingId}-${todoId}` !== `${validHeadingId}-${NEW_TODO_ID}` && belowId === undefined) {
       const isNew = isNewValues(
         [title, normalizedTitleValue],
         [description, normalizedDescriptionValue],
@@ -207,7 +181,7 @@ export const Card: FC<ICard> = ({
     } else {
       if (normalizedTitleValue) {
         dispatch(TodosActions.effect.create({
-          columnId: validColumnId!,
+          headingId: validHeadingId!,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
           expirationDate: normalizeDate(expirationDateValue),
@@ -227,6 +201,7 @@ export const Card: FC<ICard> = ({
         }, 200);
       }
     }
+    dispatch(TodosActions.removeTemp());
     setFiles(new DataTransfer().files);
   };
 
@@ -394,12 +369,12 @@ export const Card: FC<ICard> = ({
                 menuId="card"
                 todoId={todoId}
                 title={title}
-                columnId={columnId}
-                isArchived={isArchived}
+                headingId={headingId}
+                // isArchived={isArchived}
                 isActive={isActive}
                 isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
-                isRemoved={isRemoved}
+                // isRemoved={isRemoved}
                 expirationDate={expirationDate}
                 color={color}
                 status={status}
@@ -420,7 +395,7 @@ export const Card: FC<ICard> = ({
                 onSelectDate={handleSelectDateAndUpdate}
               />
               <CardAttachmentsPreview
-                columnId={columnId}
+                headingId={headingId}
                 todoId={todoId!}
                 isActive={isActive}
                 commentsCount={commentsCount}
@@ -434,11 +409,11 @@ export const Card: FC<ICard> = ({
     </div>
   ),
   [
-    t, todoId, columnId, status, isEditable, color,
+    t, todoId, headingId, status, isEditable, color,
     titleValue, descriptionValue, expirationDateValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,
-    isNotificationsEnabled, isArchived, isRemoved, expirationDate,
+    isNotificationsEnabled, expirationDate, // isArchived, isRemoved,
   ]);
 
   return (
@@ -450,6 +425,7 @@ export const Card: FC<ICard> = ({
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
       className="card"
+      // style={{ height: (isArchived === undefined && todoId !== NEW_TODO_ID) ? '0px !important' : 'auto' }}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}

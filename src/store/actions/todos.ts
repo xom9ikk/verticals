@@ -10,7 +10,9 @@ import {
   ISetTodos,
   IUpdateTodo,
   IMoveTodo,
-  ISetTodoPositionsByColumnId,
+  ISetTodoPositionsByHeadingId,
+  ISwitchArchivedTodo,
+  ISwitchRemovedTodo,
 } from '@type/actions';
 
 export const TodosActions = {
@@ -22,13 +24,15 @@ export const TodosActions = {
     remove: createAction<IRemoveTodo>('TODOS-EFFECT/REMOVE'),
     move: createAction<IMoveTodo>('TODOS-EFFECT/MOVE'),
     duplicate: createAction<IDuplicateTodo>('TODOS-EFFECT/DUPLICATE'),
+    switchArchived: createAction<ISwitchArchivedTodo>('TODOS-EFFECT/SWITCH_ARCHIVED'),
+    switchRemoved: createAction<ISwitchRemovedTodo>('TODOS-EFFECT/SWITCH_REMOVED'),
   },
   setAll: createAction<ISetTodos>('TODOS/SET_ALL'),
   add: createAction<IAddTodo>('TODOS/ADD'),
   insertInPosition: createAction<IInsertTodo>('TODOS/INSERT_IN_POSITION'),
   updateEntity: createAction<IUpdateTodo>('TODOS/UPDATE'),
   move: createAction<IMoveTodo>('TODOS/MOVE'),
-  setPositionsByColumnId: createAction<ISetTodoPositionsByColumnId>('TODOS/SET_POSITIONS_BY_COLUMN_ID'),
+  setPositionsByHeadingId: createAction<ISetTodoPositionsByHeadingId>('TODOS/SET_POSITIONS_BY_HEADING_ID'),
   remove: createAction<IRemoveTodo>('TODOS/REMOVE'),
   drawBelow: createAction<IDrawTodoBelow>('TODOS/DRAW_BELOW'),
   removeTemp: createAction('TODOS/REMOVE_TEMP'),

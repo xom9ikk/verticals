@@ -5,8 +5,8 @@ import { IColumn } from '@type/entities';
 import { ColumnsActions } from '@store/actions';
 import { getBoardCardType, getColumnById, getIsSearchMode } from '@store/selectors';
 import { CardPopup } from '@comp/CardPopup';
-import { ColumnCompact } from '@comp/ColumnCompact';
-import { ColumnResizable } from '@comp/ColumnResizable';
+import { ColumnCompact } from '@comp/Column/Compact';
+import { ColumnResizable } from '@comp/Column/Resizable';
 import { useParamSelector } from '@use/paramSelector';
 
 export enum EnumColumnMode {

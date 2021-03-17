@@ -6,6 +6,7 @@ export const TYPES = {
   UserService: Symbol.for('UserService'),
   BoardService: Symbol.for('BoardService'),
   ColumnService: Symbol.for('ColumnService'),
+  HeadingService: Symbol.for('HeadingService'),
   TodoService: Symbol.for('TodoService'),
   CommentService: Symbol.for('CommentService'),
   CommentAttachmentService: Symbol.for('CommentAttachmentService'),

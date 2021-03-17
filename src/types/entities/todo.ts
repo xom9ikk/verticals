@@ -4,13 +4,13 @@ import {
 
 export interface ITodo {
   readonly id: ID;
-  readonly columnId: number;
+  readonly headingId: number;
   readonly title: string;
   readonly description?: string;
   readonly status?: EnumTodoStatus;
   readonly color?: IColor;
-  readonly isArchived?: boolean;
-  readonly isRemoved?: boolean;
+  // readonly isArchived?: boolean;
+  // readonly isRemoved?: boolean;
   readonly isNotificationsEnabled?: boolean;
   readonly expirationDate?: Date | null;
   readonly belowId?: number;

@@ -1,5 +1,5 @@
 import {
-  IBoard, IColumn, IComment, ICommentAttachment, ID, ITodo,
+  IBoard, IColumn, IComment, ICommentAttachment, ID, IHeading, ITodo,
 } from '@type/entities';
 
 export enum EnumOperations {
@@ -22,6 +22,9 @@ export type IBoardUpdateResponse = IUpdateData<IBoardUpdateData>;
 export type IColumnUpdateData = IColumn;
 export type IColumnUpdateResponse = IUpdateData<IColumnUpdateData>;
 
+export type IHeadingUpdateData = IHeading;
+export type IHeadingUpdateResponse = IUpdateData<IHeadingUpdateData>;
+
 export type ITodoUpdateData = ITodo;
 export type ITodoUpdateResponse = IUpdateData<ITodoUpdateData>;
 
@@ -37,8 +40,14 @@ export interface IColumnPositionsUpdateData {
 }
 export type IColumnPositionsUpdateResponse = IUpdateData<IColumnPositionsUpdateData>;
 
-export interface ITodoPositionsUpdateData {
+export interface IHeadingPositionsUpdateData {
   readonly columnId: ID;
+  readonly order: Array<ID>;
+}
+export type IHeadingPositionsUpdateResponse = IUpdateData<IHeadingPositionsUpdateData>;
+
+export interface ITodoPositionsUpdateData {
+  readonly headingId: ID;
   readonly order: Array<ID>;
 }
 export type ITodoPositionsUpdateResponse = IUpdateData<ITodoPositionsUpdateData>;

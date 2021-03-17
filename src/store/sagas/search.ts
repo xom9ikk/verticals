@@ -4,7 +4,7 @@ import {
 import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';
 import {
-  BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
+  BoardsActions, ColumnsActions, HeadingsActions, SearchActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { ISearchByTodoTitle } from '@type/actions';
 import i18n from '@/i18n';
@@ -15,9 +15,12 @@ const { show, ALERT_TYPES } = useAlert();
 function* searchByTodoTitleWorker(searchService: ISearchService, action: PayloadAction<ISearchByTodoTitle>) {
   try {
     const response = yield* apply(searchService, searchService.searchByTodoTitle, [action.payload]);
-    const { todos, columns, boards } = response.data;
+    const {
+      todos, headings, columns, boards,
+    } = response.data;
     yield put(BoardsActions.setAll(boards));
     yield put(ColumnsActions.setAll(columns));
+    yield put(HeadingsActions.setAll(headings));
     yield put(TodosActions.setAll(todos));
     yield put(SystemActions.setIsSearchMode(true));
   } catch (error) {

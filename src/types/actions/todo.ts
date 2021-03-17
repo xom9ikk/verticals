@@ -9,7 +9,7 @@ export interface IFetchTodosByBoardId {
 export type ISetTodos = ITodos;
 
 export interface ICreateTodo {
-  readonly columnId: number;
+  readonly headingId: number;
   readonly title: string;
   readonly description?: string;
   readonly color?: IColor;
@@ -33,8 +33,8 @@ export type IUpdateTodo = {
   | { readonly description: string }
   | { readonly status: EnumTodoStatus }
   | { readonly color: IColor }
-  | { readonly isArchived: boolean }
-  | { readonly isRemoved: boolean }
+  // | { readonly isArchived: boolean }
+  // | { readonly isRemoved: boolean }
   | { readonly isNotificationsEnabled: boolean }
   | { readonly expirationDate: Date | null }
 );
@@ -42,16 +42,24 @@ export type IUpdateTodo = {
 export interface IMoveTodo {
   readonly sourcePosition: number;
   readonly destinationPosition: number;
-  readonly columnId: number;
-  readonly targetColumnId?: number;
+  readonly headingId: number;
+  readonly targetHeadingId?: number;
 }
 
-export interface ISetTodoPositionsByColumnId {
+export interface ISetTodoPositionsByHeadingId {
   readonly positions: Array<ID>;
-  readonly columnId: ID;
+  readonly headingId: ID;
 }
 
 export interface IDuplicateTodo {
+  readonly todoId: number;
+}
+
+export interface ISwitchArchivedTodo {
+  readonly todoId: number;
+}
+
+export interface ISwitchRemovedTodo {
   readonly todoId: number;
 }
 
@@ -60,6 +68,6 @@ export interface IRemoveTodo {
 }
 
 export interface IDrawTodoBelow {
-  readonly columnId: number;
+  readonly headingId: number;
   readonly belowId: number;
 }

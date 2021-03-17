@@ -1,17 +1,13 @@
 import React, { FC, useState } from 'react';
-import {
-  EnumTodoType,
-} from '@type/entities';
-import { Card } from '@comp/Card';
-import { useSelector } from 'react-redux';
-import {
-  getActiveTodoId,
-  getArchivedTodoPositionsByColumnId,
-  getEditableCardId,
-} from '@store/selectors';
+import { EnumHeadingType, EnumTodoType } from '@type/entities';
+import { getArchivedHeadingIdByColumnId, getTodoPositionsByHeadingId } from '@store/selectors';
 import { Divider } from '@comp/Divider';
 import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
+import { CardsContainer } from '@comp/CardsContainer';
+import { EnumHeadingMode } from '@comp/Heading';
+import { Droppable } from 'react-beautiful-dnd';
+import cn from 'classnames';
 
 interface IArchiveContainer {
   columnId: number;
@@ -24,9 +20,8 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
 }) => {
   const { t } = useTranslation();
 
-  const activeTodoId = useSelector(getActiveTodoId);
-  const editableCardId = useSelector(getEditableCardId);
-  const archivedTodoPositions = useParamSelector(getArchivedTodoPositionsByColumnId, columnId);
+  const headingId = useParamSelector(getArchivedHeadingIdByColumnId, columnId);
+  const todoPositions = useParamSelector(getTodoPositionsByHeadingId, headingId);
 
   const [isOpenArchived, setIsOpenArchived] = useState<boolean>(false);
 
@@ -34,34 +29,47 @@ export const ArchiveContainer: FC<IArchiveContainer> = ({
     setIsOpenArchived((prev) => !prev);
   };
 
-  return archivedTodoPositions.length > 0 ? (
-    <div className="archive-container">
-      <div
-        className="archive-container__title"
-        onClick={handleClick}
-      >
-        <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
-        {t('{{count}} cards archived', { count: archivedTodoPositions.length })}
-      </div>
+  return todoPositions.length > 0 ? (
+    <Droppable
+      droppableId={`heading-${headingId}`}
+      type="CARD"
+    >
       {
-      isOpenArchived && (
-      <div className="archive-container__inner">
-        <Divider verticalSpacer={0} horizontalSpacer={0} style={{ marginBottom: 10 }} />
-        {
-          archivedTodoPositions?.map((id) => (
-            <Card
-              key={id}
-              todoId={id}
-              cardType={cardType}
-              isActive={id === activeTodoId}
-              isEditable={id === editableCardId}
-              invertColor
-            />
-          ))
-        }
-      </div>
-      )
-    }
-    </div>
+        (dropProvided, dropSnapshot) => (
+          <div ref={dropProvided.innerRef}>
+            <div
+              className={cn('archive-container', {
+                'archive-container--dragging-over': dropSnapshot.isDraggingOver,
+              })}
+            >
+              <div
+                className="archive-container__title"
+                onClick={handleClick}
+              >
+                <img src={`/assets/svg/menu/archive${isOpenArchived ? '' : '-close'}.svg`} alt="archive" />
+                {t('{{count}} cards archived', { count: todoPositions.length })}
+              </div>
+              {
+                  isOpenArchived && (
+                  <div className="archive-container__inner">
+                    <Divider verticalSpacer={0} horizontalSpacer={0} style={{ marginBottom: 10 }} />
+                    <CardsContainer
+                      headingId={headingId!}
+                      cardType={cardType}
+                      mode={EnumHeadingMode.Normal}
+                      type={EnumHeadingType.Archived}
+                      isOpenNewCard={false}
+                      dropSnapshot={dropSnapshot}
+                    />
+                    {dropSnapshot.isDraggingOver && <div style={{ height: 38 }} />}
+                  </div>
+                  )
+                }
+            </div>
+          </div>
+        )
+      }
+    </Droppable>
+
   ) : null;
 };
