@@ -19,6 +19,7 @@ import { getEditableCardId } from '@store/selectors';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { NEW_TODO_ID } from '@/constants';
 import { HeadingContextMenu } from '@comp/Heading/ContextMenu';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
 
 interface IHeadingWide {
   snapshot: DraggableStateSnapshot;
@@ -35,7 +36,6 @@ interface IHeadingWide {
   cardType: EnumTodoType;
   isEditable: boolean;
   type: EnumHeadingType;
-  scrollToBottom?: () => void;
   onClick: (event: React.SyntheticEvent) => void;
 }
 
@@ -54,7 +54,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
   cardType,
   isEditable,
   type,
-  scrollToBottom = () => {},
   onClick,
 }) => {
   const dispatch = useDispatch();
@@ -65,8 +64,7 @@ export const HeadingWide: FC<IHeadingWide> = ({
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
   const headingContainerRef = useRef<any>(null);
-
-  // const { scrollToBottom } = useAutoScroll(headingContainerRef);
+  const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
 
   const handleHeadingClick = (event: SyntheticEvent) => {
     if (mode === EnumHeadingMode.New) {
@@ -76,7 +74,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
   };
 
   const handleAddCard = () => {
-    setTimeout(scrollToBottom);
     dispatch(SystemActions.setEditableCardId(`${headingId}-${NEW_TODO_ID}`));
   };
 
@@ -101,12 +98,21 @@ export const HeadingWide: FC<IHeadingWide> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (isEditable) {
+      scrollToRef({
+        block: EnumScrollPosition.Center,
+      });
+    }
+  }, [isEditable]);
+
   return useMemo(() => {
     console.log('TODO: Heading redraw');
     return (
       <div
         ref={(ref) => {
           provided.innerRef(ref);
+          refForScroll.current = ref;
         }}
         className={cn('heading', {
           'heading--dragging': snapshot.isDragging,
@@ -149,7 +155,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
                       onHover={setIsHoverHeader}
                       onClick={handleClick}
                       onDoubleClick={handleDoubleClick}
-                      scrollToBottom={scrollToBottom}
                     />
                     <HeadingContextMenu
                       isEnabled={mode === EnumHeadingMode.Normal}
@@ -172,7 +177,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
                   isOpenNewCard={editableCardId === `${headingId}-${NEW_TODO_ID}`}
                   dropSnapshot={dropSnapshot}
                   onAddCard={handleAddCard}
-                  scrollToBottom={scrollToBottom}
                 />
                 ) }
               </div>

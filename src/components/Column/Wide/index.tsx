@@ -1,5 +1,5 @@
 import React, {
-  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useState,
 } from 'react';
 import cn from 'classnames';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
@@ -12,7 +12,6 @@ import { ColumnContextMenu } from '@comp/Column/ContextMenu';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { SystemActions } from '@store/actions';
 import { getDefaultHeadingIdByColumnId, getIsSearchMode } from '@store/selectors';
-import { useAutoScroll } from '@use/autoScroll';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { NEW_COLUMN_ID, NEW_HEADING_ID, NEW_TODO_ID } from '@/constants';
 import { DeletedCardsContainer } from '@comp/DeletedCardsContainer';
@@ -31,7 +30,6 @@ interface IColumnWide {
   mode: EnumColumnMode;
   cardType: EnumTodoType;
   isEditable: boolean;
-  scrollToRight?: () => void;
   onClick: (event: React.SyntheticEvent) => void;
   onResize: (event: React.MouseEvent | React.TouchEvent) => void;
 }
@@ -48,7 +46,6 @@ export const ColumnWide: FC<IColumnWide> = ({
   mode,
   cardType,
   isEditable,
-  scrollToRight,
   onClick,
   onResize,
 }) => {
@@ -60,10 +57,6 @@ export const ColumnWide: FC<IColumnWide> = ({
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
-  const columnContainerRef = useRef<any>(null);
-
-  const { scrollToBottom } = useAutoScroll(columnContainerRef);
-
   const handleColumnClick = (event: SyntheticEvent) => {
     if (mode === EnumColumnMode.New) {
       event.stopPropagation();
@@ -72,13 +65,10 @@ export const ColumnWide: FC<IColumnWide> = ({
   };
 
   const handleAddCard = () => {
-    setTimeout(scrollToBottom);
-    // TODO: use default heading id for default heading
     dispatch(SystemActions.setEditableCardId(`${defaultHeadingId}-${NEW_TODO_ID}`));
   };
 
   const handleAddHeading = () => {
-    setTimeout(scrollToBottom);
     dispatch(SystemActions.setEditableHeadingId(`${columnId}-${NEW_HEADING_ID}`));
   };
 
@@ -121,7 +111,6 @@ export const ColumnWide: FC<IColumnWide> = ({
         {...provided.draggableProps}
       >
         <div
-          ref={columnContainerRef}
           className={cn('column__wrapper', {
             'column__wrapper--editable': isEditable,
             'column__wrapper--dragging': snapshot.isDragging,
@@ -153,7 +142,6 @@ export const ColumnWide: FC<IColumnWide> = ({
                         onHover={setIsHoverHeader}
                         onClick={handleClick}
                         onDoubleClick={handleDoubleClick}
-                        scrollToRight={scrollToRight}
                       />
                       <ColumnContextMenu
                         isEnabled={mode === EnumColumnMode.Normal}

@@ -29,7 +29,6 @@ interface ICardsContainer {
   isOpenNewCard: boolean;
   dropSnapshot: DroppableStateSnapshot;
   onAddCard?: () => void;
-  scrollToBottom?: () => void;
 }
 
 export const CardsContainer: FC<ICardsContainer> = ({
@@ -40,7 +39,6 @@ export const CardsContainer: FC<ICardsContainer> = ({
   isOpenNewCard,
   dropSnapshot,
   onAddCard,
-  scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const { isHovering, hoveringProps } = useHover();
@@ -78,7 +76,6 @@ export const CardsContainer: FC<ICardsContainer> = ({
       headingIdIdForNew={headingId}
       cardType={cardType}
       isEditable
-      scrollToBottom={scrollToBottom}
     />
   ), [headingId, editableCardId]);
 
@@ -101,7 +98,6 @@ export const CardsContainer: FC<ICardsContainer> = ({
                 todoId={id}
                 isActive={activeTodoId === id}
                 isEditable={id === editableCardId}
-                scrollToBottom={scrollToBottom}
                 invertColor={type === EnumHeadingType.Archived}
               />
             )}
@@ -111,6 +107,8 @@ export const CardsContainer: FC<ICardsContainer> = ({
       <FallbackLoader
         isAbsolute
         size="small"
+        delay={1000}
+        backgroundColor="#ffffff"
         isLoading={!isLoadedTodos}
       />
       <>

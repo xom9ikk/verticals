@@ -20,7 +20,6 @@ interface IColumnComponent {
   isEditable: boolean;
   boardId: number;
   columnId: number;
-  scrollToRight?: () => void;
   mode?: EnumColumnMode;
 }
 
@@ -29,7 +28,6 @@ export const Column: FC<IColumnComponent> = ({
   isEditable,
   boardId,
   columnId,
-  scrollToRight,
   mode = EnumColumnMode.Normal,
 }) => {
   const dispatch = useDispatch();
@@ -88,7 +86,6 @@ export const Column: FC<IColumnComponent> = ({
             width={width}
             cardType={cardType}
             isEditable={isEditable}
-            scrollToRight={scrollToRight}
             onClick={handleClick}
           />
         ))}

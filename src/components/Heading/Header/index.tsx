@@ -30,7 +30,6 @@ interface IHeadingHeader {
   onHover: (isHovered: boolean) => void;
   onClick: (e: React.SyntheticEvent) => void;
   onDoubleClick: (e: React.SyntheticEvent) => void;
-  scrollToBottom?: () => void;
 }
 
 export const HeadingHeader: FC<IHeadingHeader> = ({
@@ -46,7 +45,6 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
   onHover,
   onClick,
   onDoubleClick,
-  // scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -97,10 +95,6 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
       // } else {
       setTitleValue('');
       setDescriptionValue('');
-      // setTimeout(() => {
-      //   scrollToBottom?.();
-      // }, 200);
-      // }
     }
     dispatch(SystemActions.setEditableHeadingId(null));
   };

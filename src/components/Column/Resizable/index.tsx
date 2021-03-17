@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { useResizable } from '@use/resizable';
 import { EnumTodoType, IColor } from '@type/entities';
+import { DEFAULT_COLUMN_WIDTH } from '@/constants';
 import { EnumColumnMode } from '@comp/Column';
 import { ColumnWide } from '@comp/Column/Wide';
-import { useDebounce } from '@use/debounce';
 import { ColumnsActions } from '@store/actions';
-import { useDispatch } from 'react-redux';
-import { DEFAULT_COLUMN_WIDTH } from '@/constants';
+import { useDebounce } from '@use/debounce';
+import { useResizable } from '@use/resizable';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
 
 interface IColumnResizable {
   snapshot: DraggableStateSnapshot;
@@ -22,13 +23,14 @@ interface IColumnResizable {
   width?: number | null;
   cardType: EnumTodoType;
   isEditable: boolean;
-  scrollToRight?: () => void;
   onClick: (event: React.SyntheticEvent) => void;
 }
 
 export const ColumnResizable: FC<IColumnResizable> = ({
   snapshot,
   columnId,
+  mode,
+  isEditable,
   width = DEFAULT_COLUMN_WIDTH,
   ...props
 }) => {
@@ -55,15 +57,36 @@ export const ColumnResizable: FC<IColumnResizable> = ({
     onResize: handleResize,
   });
 
+  const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
+
+  useEffect(() => {
+    if (isEditable) {
+      scrollToRef(EnumScrollPosition.Center);
+    }
+  }, [isEditable]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (isEditable && mode === EnumColumnMode.New) {
+        scrollToRef(EnumScrollPosition.Center);
+      }
+    }, 200);
+    return () => clearTimeout(timeout);
+  });
+
   return (
-    <div style={{
-      minWidth: snapshot.isDragging ? undefined : size,
-      maxWidth: snapshot.isDragging ? undefined : size,
-    }}
+    <div
+      ref={refForScroll}
+      style={{
+        minWidth: snapshot.isDragging ? undefined : size,
+        maxWidth: snapshot.isDragging ? undefined : size,
+      }}
     >
       <ColumnWide
         {...props}
         columnId={columnId}
+        mode={mode}
+        isEditable={isEditable}
         snapshot={snapshot}
         onResize={handler}
       />

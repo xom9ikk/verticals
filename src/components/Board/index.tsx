@@ -15,17 +15,14 @@ import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import {
-  getBoardById,
-  getIsSearchMode,
-  getUsername,
-} from '@store/selectors';
+import { getBoardById, getIsSearchMode, getUsername } from '@store/selectors';
 import { BoardContextMenu } from '@comp/BoardContextMenu';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { BoardCounter } from '@comp/BoardCounter';
 import { useEffectState } from '@use/effectState';
 import { useParamSelector } from '@use/paramSelector';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
 
 interface IBoardComponent {
   boardId: number;
@@ -33,7 +30,6 @@ interface IBoardComponent {
   isEditable: boolean;
   isActive?: boolean;
   onClick?: (title: string, boardId: number) => void;
-  scrollToBottom?: () => void;
 }
 
 export const Board: FC<IBoardComponent> = ({
@@ -42,7 +38,6 @@ export const Board: FC<IBoardComponent> = ({
   isEditable,
   isActive = false,
   onClick,
-  scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -63,6 +58,7 @@ export const Board: FC<IBoardComponent> = ({
   const titleInputRef = useRef<any>(null);
 
   useFocus(titleInputRef, [isEditable]);
+  const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
 
   const saveBoard = () => {
     if (!isEditable) return;
@@ -99,9 +95,6 @@ export const Board: FC<IBoardComponent> = ({
       } else {
         setTitleValue('');
         setDescriptionValue('');
-        setTimeout(() => {
-          scrollToBottom?.();
-        }, 200);
       }
     }
   };
@@ -154,9 +147,18 @@ export const Board: FC<IBoardComponent> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (isEditable) {
+      scrollToRef(EnumScrollPosition.Center);
+    }
+  }, [isEditable]);
+
   return useMemo(() => (
     <div
-      ref={boardRef}
+      ref={(r) => {
+        boardRef(r);
+        refForScroll.current = r;
+      }}
       className={cn('board', {
         'board--editable': isEditable,
         'board--dragging': snapshot?.isDragging,

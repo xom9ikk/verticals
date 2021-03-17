@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef,
+  FC, useEffect, useMemo,
 } from 'react';
 import {
   DragDropContext, Droppable, DroppableProvided, DropResult,
@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Column, EnumColumnMode } from '@comp/Column';
 import { ColumnsActions, HeadingsActions, TodosActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
-import { useAutoScroll } from '@use/autoScroll';
 import {
   getActiveBoardId,
   getColumnPositionsByBoardId,
@@ -26,7 +25,6 @@ interface IColumns { }
 export const Columns: FC<IColumns> = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const columnsRef = useRef<any>();
 
   const isSearchMode = useSelector(getIsSearchMode);
   const activeBoardId = useSelector(getActiveBoardId);
@@ -35,8 +33,6 @@ export const Columns: FC<IColumns> = () => {
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const isLoadedColumns = useSelector(getIsLoadedColumns);
   const editableColumnId = useSelector(getEditableColumnId);
-
-  const { scrollToRight } = useAutoScroll(columnsRef);
 
   useEffect(() => {
     if (activeBoardId !== null && !isSearchMode) {
@@ -161,7 +157,6 @@ export const Columns: FC<IColumns> = () => {
       columnId={NEW_COLUMN_ID}
       isEditable={editableColumnId === NEW_COLUMN_ID}
       mode={EnumColumnMode.New}
-      scrollToRight={scrollToRight}
     />
   ), [columnPositions, activeBoardId, editableColumnId]);
 
@@ -184,10 +179,7 @@ export const Columns: FC<IColumns> = () => {
       >
         {(provided: DroppableProvided) => (
           <div
-            ref={(r) => {
-              columnsRef.current = r;
-              provided.innerRef(r);
-            }}
+            ref={provided.innerRef}
             className="columns"
             {...provided.droppableProps}
           >
@@ -195,7 +187,7 @@ export const Columns: FC<IColumns> = () => {
               backgroundColor="#ffffff"
               isAbsolute
               size="medium"
-              delay={1000}
+              delay={500}
               minimumZIndex={2}
               isLoading={!isLoadedBoards || !isLoadedColumns}
             />

@@ -38,6 +38,7 @@ import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useEffectState } from '@use/effectState';
 import { useNormalizeDate } from '@use/normalizeDate';
 import { useParamSelector } from '@use/paramSelector';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -48,7 +49,6 @@ interface ICard {
   invertColor?: boolean;
   isEditable: boolean;
   isActive?: boolean;
-  scrollToBottom?: () => void;
 }
 
 export const Card: FC<ICard> = ({
@@ -60,7 +60,6 @@ export const Card: FC<ICard> = ({
   invertColor,
   isEditable,
   isActive,
-  scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -104,6 +103,7 @@ export const Card: FC<ICard> = ({
   const titleInputRef = useRef<any>(null);
 
   useFocus(titleInputRef, [isEditable]);
+  const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
 
   const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;
@@ -196,9 +196,6 @@ export const Card: FC<ICard> = ({
       } else {
         setTitleValue('');
         setDescriptionValue('');
-        setTimeout(() => {
-          scrollToBottom?.();
-        }, 200);
       }
     }
     dispatch(TodosActions.removeTemp());
@@ -236,6 +233,25 @@ export const Card: FC<ICard> = ({
   }, []);
 
   useEffect(() => {
+    if (isEditable) {
+      scrollToRef({
+        block: EnumScrollPosition.Center,
+      });
+    }
+  }, [isEditable]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (isEditable && todoId === NEW_TODO_ID) {
+        scrollToRef({
+          block: EnumScrollPosition.Center,
+        });
+      }
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, [titleValue, descriptionValue]);
+
+  useEffect(() => {
     if (!snapshot?.isDragging) {
       setIsMouseDown(false);
     }
@@ -271,6 +287,7 @@ export const Card: FC<ICard> = ({
 
   const card = useMemo(() => (
     <div
+      ref={refForScroll}
       className={cn('card__block-wrapper', {
         'card__block-wrapper--editable': isEditable,
       })}

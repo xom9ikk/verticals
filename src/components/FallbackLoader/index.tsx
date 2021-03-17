@@ -51,7 +51,8 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
       setIsLoading(true);
       setZIndex(minimumZIndex);
     }
-    const delayTimeout = delay - 200 > 0 ? delay - 200 : 0;
+    const animationDuration = 250 + 200;
+    const delayTimeout = delay - animationDuration > 0 ? delay - animationDuration : 0;
 
     const timeout = setTimeout(() => {
       if (!initialIsLoading) {

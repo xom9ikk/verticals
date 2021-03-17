@@ -30,7 +30,6 @@ interface IColumnHeader {
   onHover: (isHovered: boolean) => void;
   onClick: (e: React.SyntheticEvent) => void;
   onDoubleClick: (e: React.SyntheticEvent) => void;
-  scrollToRight?: () => void;
 }
 
 export const ColumnHeader: FC<IColumnHeader> = ({
@@ -46,7 +45,6 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   onHover,
   onClick,
   onDoubleClick,
-  scrollToRight,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -96,9 +94,6 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       } else {
         setTitleValue('');
         setDescriptionValue('');
-        setTimeout(() => {
-          scrollToRight?.();
-        }, 200);
       }
     }
   };

@@ -26,7 +26,6 @@ export const Headings: FC<IHeadings> = ({
   const headingPositions = useParamSelector(getHeadingPositionsByColumnId, columnId);
 
   const handleAddHeading = () => {
-    // setTimeout(scrollToBottom);
     dispatch(SystemActions.setEditableHeadingId(`${columnId}-${NEW_HEADING_ID}`));
   };
 

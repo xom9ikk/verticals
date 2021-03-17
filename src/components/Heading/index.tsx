@@ -27,7 +27,6 @@ interface IHeadingComponent {
   isOpenNewCard?: boolean;
   // isDraggingCard: boolean;
   onAddHeading?: () => void;
-  // scrollToBottom: () => void;
   mode: EnumHeadingMode;
 }
 
@@ -40,7 +39,6 @@ export const Heading: FC<IHeadingComponent> = ({
   // isOpenNewCard,
   // isDraggingCard,
   // onAddHeading,
-  // scrollToBottom,
   mode = EnumHeadingMode.Normal,
 }) => {
   const dispatch = useDispatch();

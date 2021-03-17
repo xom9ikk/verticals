@@ -30,6 +30,8 @@ function* fetchByBoardIdWorker(todoService: ITodoService, action: PayloadAction<
 
 function* fetchRemovedWorker(todoService: ITodoService) {
   try {
+    yield put(SystemActions.setIsLoadedColumns(false));
+    yield put(SystemActions.setIsLoadedTodos(false));
     const response = yield* apply(todoService, todoService.getRemoved, []);
     const { todos } = response.data;
     yield put(TodosActions.setAll(todos));

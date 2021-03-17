@@ -1,6 +1,4 @@
-import React, {
-  FC, useMemo, useRef,
-} from 'react';
+import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
@@ -25,7 +23,6 @@ import {
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
 import { useHover } from '@use/hover';
-import { useAutoScroll } from '@use/autoScroll';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 
@@ -46,10 +43,6 @@ export const BoardList: FC = () => {
 
   useTitle(activeTodoTitle || activeBoardTitle);
 
-  const boardContainerRef = useRef<any>(null);
-
-  const { scrollToBottom } = useAutoScroll(boardContainerRef);
-
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -67,7 +60,6 @@ export const BoardList: FC = () => {
   };
 
   const addNewBoard = () => {
-    requestAnimationFrame(scrollToBottom);
     dispatch(SystemActions.setEditableBoardId(NEW_BOARD_ID));
   };
 
@@ -113,7 +105,6 @@ export const BoardList: FC = () => {
                         boardId={id}
                         isActive={activeBoardId === id}
                         isEditable={editableBoardId === id}
-                        scrollToBottom={scrollToBottom}
                         onClick={handleClick}
                       />
                     </div>
@@ -155,7 +146,6 @@ export const BoardList: FC = () => {
     <div
       className="board-list"
       {...hoveringProps}
-      ref={boardContainerRef}
     >
       <Profile onAddNewBoard={addNewBoard} />
       { boardItems }
@@ -165,7 +155,6 @@ export const BoardList: FC = () => {
         <Board
           boardId={NEW_BOARD_ID}
           isEditable={editableBoardId === NEW_BOARD_ID}
-          scrollToBottom={scrollToBottom}
         />
         )
       }
