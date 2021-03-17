@@ -152,14 +152,10 @@ describe('Column saga flow', () => {
         ...mockColumn,
         position: 2,
         columnId: 77,
-        todos: {
-          entities: [],
-          positions: {},
-        },
       },
     };
     const {
-      columnId, todos, position, ...duplicatedColumn
+      columnId, position, ...duplicatedColumn
     } = mockData.data;
     const payload = {
       columnId: mockColumn.id,

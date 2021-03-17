@@ -229,12 +229,12 @@ describe('Todo saga flow', () => {
       .call(show, 'Todo', 'Todo position updated successfully', ALERT_TYPES.SUCCESS)
       .silentRun();
   });
-  it('move between columns', () => {
+  it('move between headings', () => {
     const payload = {
       headingId: 1,
       sourcePosition: 0,
       destinationPosition: 2,
-      targetColumnId: 77,
+      targetHeadingId: 77,
     };
 
     return expectSaga(watchTodo, todoService)

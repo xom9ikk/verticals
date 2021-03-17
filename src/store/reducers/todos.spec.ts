@@ -132,12 +132,12 @@ describe('Todo reducer', () => {
     });
   });
   it('move', () => {
-    const [todo, todo2, todo3, todoFromOtherColumn] = mockTodos;
+    const [todo, todo2, todo3, todoFromOtherHeading] = mockTodos;
     const initialStateWithFourTodos = {
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.move({
@@ -145,88 +145,88 @@ describe('Todo reducer', () => {
       sourcePosition: 2,
       destinationPosition: 0,
     }))).toEqual({
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo3.id, todo.id, todo2.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     });
   });
-  it('move between columns', () => {
-    const [todo, todo2, todo3, todoFromOtherColumn] = mockTodos;
+  it('move between headings', () => {
+    const [todo, todo2, todo3, todoFromOtherHeading] = mockTodos;
     const initialStateWithFourTodos = {
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.move({
-      headingId: todoFromOtherColumn.headingId,
+      headingId: todoFromOtherHeading.headingId,
       targetHeadingId: todo.headingId,
       sourcePosition: 0,
       destinationPosition: 0,
     }))).toEqual({
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
-        [todo.headingId]: [todoFromOtherColumn.id, todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [],
+        [todo.headingId]: [todoFromOtherHeading.id, todo.id, todo2.id, todo3.id],
+        [todoFromOtherHeading.headingId]: [],
       },
     });
   });
   it('insert in position', () => {
-    const [todo, todo2, todo3, todoFromOtherColumn, todoFromOtherColumn2] = mockTodos;
+    const [todo, todo2, todo3, todoFromOtherHeading, todoFromOtherHeading2] = mockTodos;
     const initialStateWithFourTodos = {
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.insertInPosition({
       position: 0,
-      entity: todoFromOtherColumn2,
+      entity: todoFromOtherHeading2,
     }))).toEqual({
-      entities: [todo, todo2, todo3, todoFromOtherColumn, todoFromOtherColumn2],
+      entities: [todo, todo2, todo3, todoFromOtherHeading, todoFromOtherHeading2],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn2.id, todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading2.id, todoFromOtherHeading.id],
       },
     });
   });
   it('remove', () => {
-    const [todo, todo2, todo3, todoFromOtherColumn] = mockTodos;
+    const [todo, todo2, todo3, todoFromOtherHeading] = mockTodos;
     const initialStateWithFourTodos = {
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.remove({
       id: todo3.id,
     }))).toEqual({
-      entities: [todo, todo2, todoFromOtherColumn],
+      entities: [todo, todo2, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     });
   });
   it('draw below', () => {
-    const [todo, todo2, todo3, todoFromOtherColumn] = mockTodos;
+    const [todo, todo2, todo3, todoFromOtherHeading] = mockTodos;
     const initialStateWithFourTodos = {
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.drawBelow({
       headingId: todo2.headingId,
       belowId: todo2.id,
     }))).toEqual({
-      entities: [todo, todo2, todo3, todoFromOtherColumn, {
+      entities: [todo, todo2, todo3, todoFromOtherHeading, {
         id: TEMP_ID,
         headingId: todo2.headingId,
         belowId: todo2.id,
@@ -237,14 +237,14 @@ describe('Todo reducer', () => {
       }],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, TEMP_ID, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     });
   });
   it('remove temporary todo', () => {
-    const [todo, todo2, todo3, todoFromOtherColumn] = mockTodos;
+    const [todo, todo2, todo3, todoFromOtherHeading] = mockTodos;
     const initialStateWithFourTodos = {
-      entities: [todo, todo2, todo3, todoFromOtherColumn, {
+      entities: [todo, todo2, todo3, todoFromOtherHeading, {
         id: TEMP_ID,
         headingId: todo2.headingId,
         belowId: todo2.id,
@@ -255,14 +255,14 @@ describe('Todo reducer', () => {
       }],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, TEMP_ID, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     };
     expect(TodosReducer(initialStateWithFourTodos, TodosActions.removeTemp())).toEqual({
-      entities: [todo, todo2, todo3, todoFromOtherColumn],
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
       positions: {
         [todo.headingId]: [todo.id, todo2.id, todo3.id],
-        [todoFromOtherColumn.headingId]: [todoFromOtherColumn.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
       },
     });
   });

@@ -378,7 +378,7 @@ describe('Update saga flow', () => {
   it('insert todo positions', async () => testSaga(
     subscribeOnEntity, updateService, updateService.onTodoPositionsUpdate, {
       // @ts-ignore
-      insert: (data) => TodosActions.setPositionsByColumnId({
+      insert: (data) => TodosActions.setPositionsByHeadingId({
         // @ts-ignore
         positions: data.order,
         // @ts-ignore
@@ -413,7 +413,7 @@ describe('Update saga flow', () => {
   it('update todo positions', async () => testSaga(
     subscribeOnEntity, updateService, updateService.onTodoPositionsUpdate, {
       // @ts-ignore
-      update: (data) => TodosActions.setPositionsByColumnId({
+      update: (data) => TodosActions.setPositionsByHeadingId({
         // @ts-ignore
         positions: data.order,
         // @ts-ignore

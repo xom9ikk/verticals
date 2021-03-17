@@ -91,7 +91,7 @@ function* duplicateWorker(columnService: IColumnService, action: PayloadAction<I
   try {
     const response = yield* apply(columnService, columnService.duplicate, [action.payload]);
     const {
-      columnId, headings, position, ...column
+      columnId, position, ...column
     } = response.data;
     yield put(ColumnsActions.insertInPosition({
       entity: {
@@ -100,7 +100,6 @@ function* duplicateWorker(columnService: IColumnService, action: PayloadAction<I
       },
       position,
     }));
-    // yield all(todos.entities.map((todo: ITodo) => put(TodosActions.add(todo))));
     yield call(show, i18n.t('Column'), i18n.t('Column duplicated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, i18n.t('Column'), error, ALERT_TYPES.DANGER);
