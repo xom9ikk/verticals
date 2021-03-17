@@ -30,7 +30,7 @@ export const TodosActions = {
   setAll: createAction<ISetTodos>('TODOS/SET_ALL'),
   add: createAction<IAddTodo>('TODOS/ADD'),
   insertInPosition: createAction<IInsertTodo>('TODOS/INSERT_IN_POSITION'),
-  updateEntity: createAction<IUpdateTodo>('TODOS/UPDATE'),
+  updateEntity: createAction<IUpdateTodo>('TODOS/UPDATE_ENTITY'),
   move: createAction<IMoveTodo>('TODOS/MOVE'),
   setPositionsByHeadingId: createAction<ISetTodoPositionsByHeadingId>('TODOS/SET_POSITIONS_BY_HEADING_ID'),
   remove: createAction<IRemoveTodo>('TODOS/REMOVE'),

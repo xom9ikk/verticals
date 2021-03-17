@@ -33,8 +33,6 @@ export type IUpdateTodo = {
   | { readonly description: string }
   | { readonly status: EnumTodoStatus }
   | { readonly color: IColor }
-  // | { readonly isArchived: boolean }
-  // | { readonly isRemoved: boolean }
   | { readonly isNotificationsEnabled: boolean }
   | { readonly expirationDate: Date | null }
 );

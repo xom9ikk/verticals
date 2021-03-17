@@ -154,23 +154,16 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         break;
       }
       case EnumCardActions.Archive: {
-        // dispatch(TodosActions.effect.update({
-        //   id: todoId!,
-        //   isArchived: !isArchived,
-        // }));
         dispatch(TodosActions.effect.switchArchived({
           todoId,
         }));
         break;
       }
       case EnumCardActions.Delete: {
-        // dispatch(TodosActions.effect.update({ id: todoId!, isRemoved: true }));
         dispatch(TodosActions.effect.switchRemoved({ todoId }));
-        dispatch(TodosActions.remove({ id: todoId }));
         break;
       }
       case EnumCardActions.Restore: {
-        // dispatch(TodosActions.effect.update({ id: todoId!, isRemoved: false }));
         dispatch(TodosActions.effect.switchRemoved({ todoId }));
         dispatch(TodosActions.remove({ id: todoId! }));
         break;

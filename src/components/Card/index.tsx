@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import useKeys from '@rooks/use-keys';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
@@ -10,35 +11,31 @@ import { redirectTo } from '@router/history';
 import {
   EnumTodoStatus, EnumTodoType, IColor, ITodo,
 } from '@type/entities';
+import { NEW_TODO_ID } from '@/constants';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
-import {
-  getUsername,
-  getActiveBoardReadableId, getTodoById,
-} from '@store/selectors';
+import { getUsername, getActiveBoardReadableId, getTodoById } from '@store/selectors';
 import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
 import { TextArea } from '@comp/TextArea';
+import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
 import { CardContextMenu } from '@comp/CardContextMenu';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { useFocus } from '@use/focus';
 import { useFileList } from '@use/fileList';
+import { useDebounce } from '@use/debounce';
+import { useNewValues } from '@use/newValues';
 import { useOpenFiles } from '@use/openFiles';
 import { useReadableId } from '@use/readableId';
 import { useColorClass } from '@use/colorClass';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
-import { NEW_TODO_ID } from '@/constants';
-import { useDebounce } from '@use/debounce';
-import { useNewValues } from '@use/newValues';
-import { DateBadge } from '@comp/DateBadge';
-import { useTranslation } from 'react-i18next';
-import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useEffectState } from '@use/effectState';
 import { useNormalizeDate } from '@use/normalizeDate';
 import { useParamSelector } from '@use/paramSelector';
 import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -77,9 +74,7 @@ export const Card: FC<ICard> = ({
     description = '',
     status = EnumTodoStatus.Todo,
     color,
-    // isArchived,
     isNotificationsEnabled,
-    // isRemoved,
     expirationDate,
     commentsCount,
     imagesCount,
@@ -339,7 +334,6 @@ export const Card: FC<ICard> = ({
                   popupId="card"
                   position="bottom"
                   todoId={todoId}
-                  // style={{ maxWidth: 55 }}
                   date={expirationDateValue}
                   onSelectDate={handleSelectDate}
                 />
@@ -387,11 +381,9 @@ export const Card: FC<ICard> = ({
                 todoId={todoId}
                 title={title}
                 headingId={headingId}
-                // isArchived={isArchived}
                 isActive={isActive}
                 isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
-                // isRemoved={isRemoved}
                 expirationDate={expirationDate}
                 color={color}
                 status={status}
@@ -430,7 +422,7 @@ export const Card: FC<ICard> = ({
     titleValue, descriptionValue, expirationDateValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,
-    isNotificationsEnabled, expirationDate, // isArchived, isRemoved,
+    isNotificationsEnabled, expirationDate,
   ]);
 
   return (
@@ -442,7 +434,6 @@ export const Card: FC<ICard> = ({
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
       className="card"
-      // style={{ height: (isArchived === undefined && todoId !== NEW_TODO_ID) ? '0px !important' : 'auto' }}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}

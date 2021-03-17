@@ -246,11 +246,9 @@ export const CardPopup: FC<ICardPopup> = ({
                   todoId={activeTodo.id}
                   title={activeTodo.title}
                   headingId={activeTodo.headingId}
-                  // isArchived={activeTodo.isArchived}
                   isActive={false}
                   isHover
                   isNotificationsEnabled={activeTodo.isNotificationsEnabled}
-                  // isRemoved={activeTodo.isRemoved}
                   expirationDate={activeTodo.expirationDate}
                   color={activeTodo.color}
                   status={activeTodo.status}

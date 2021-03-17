@@ -11,14 +11,13 @@ import './styles/scss/main.scss';
 import { Gallery } from '@comp/Gallery';
 import { FormattingHelp } from '@comp/FormattingHelp';
 import { MainRouter } from '@/router';
-import { SystemActions, UpdatesActions } from '@store/actions';
+import { SystemActions } from '@store/actions';
 
 export const App: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(SystemActions.effect.fetchLanguage());
-    dispatch(UpdatesActions.effect.subscribe());
   }, []);
 
   return (
