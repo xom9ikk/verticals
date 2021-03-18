@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@comp/Input';
 import { ControlButton } from '@comp/ControlButton';
 import {
-  BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
+  BoardsActions, ColumnsActions, HeadingsActions, SearchActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 import { useDebounce } from '@use/debounce';
@@ -34,6 +34,7 @@ export const Search: FC = () => {
     if (!query && isSearchMode) {
       dispatch(BoardsActions.effect.fetchAll());
       dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
+      dispatch(HeadingsActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(SystemActions.setIsSearchMode(false));
     }
@@ -51,7 +52,7 @@ export const Search: FC = () => {
         name="search"
         value={query}
         onChange={(e: any) => setQuery(e.target.value)}
-        style={{ height: 33, paddingLeft: 33 }}
+        style={{ height: 36, paddingLeft: 33 }}
       >
         <img src="/assets/svg/search.svg" alt="search" />
         <ControlButton
@@ -63,7 +64,7 @@ export const Search: FC = () => {
           style={{
             position: 'absolute',
             right: 4,
-            top: 6,
+            top: 7,
           }}
           onClick={handleClear}
         />

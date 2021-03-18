@@ -3,6 +3,7 @@ import { watchAuth } from '@store/sagas/auth';
 import { watchUser } from '@store/sagas/user';
 import { watchBoard } from '@store/sagas/board';
 import { watchColumn } from '@store/sagas/column';
+import { watchHeading } from '@store/sagas/heading';
 import { watchTodo } from '@store/sagas/todo';
 import { watchComment } from '@store/sagas/comment';
 import { watchCommentAttachment } from '@store/sagas/comment-attachment';
@@ -18,6 +19,7 @@ const {
   userService,
   boardService,
   columnService,
+  headingService,
   todoService,
   commentService,
   commentAttachmentService,
@@ -31,6 +33,7 @@ export function* rootSaga() {
     fork(watchUser, userService),
     fork(watchBoard, boardService),
     fork(watchColumn, columnService),
+    fork(watchHeading, headingService),
     fork(watchTodo, todoService),
     fork(watchComment, commentService),
     fork(watchCommentAttachment, commentAttachmentService),

@@ -2,13 +2,24 @@ import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
-  ICreateTodoRequest, ICreateTodoResponse,
-  IRemoveTodoRequest, IRemoveTodoResponse,
-  IUpdateTodoRequest, IUpdateTodoResponse,
-  IUpdateTodoPositionRequest, IUpdateTodoPositionResponse,
+  ICreateTodoRequest,
+  ICreateTodoResponse,
+  IRemoveTodoRequest,
+  IRemoveTodoResponse,
+  IUpdateTodoRequest,
+  IUpdateTodoResponse,
+  IUpdateTodoPositionRequest,
+  IUpdateTodoPositionResponse,
   IGetAllTodosResponse,
-  IGetTodosByBoardIdRequest, IGetTodosByBoardIdResponse,
-  IDuplicateTodoRequest, IDuplicateTodoResponse, IGetRemovedTodosResponse,
+  IGetTodosByBoardIdRequest,
+  IGetTodosByBoardIdResponse,
+  IDuplicateTodoRequest,
+  IDuplicateTodoResponse,
+  IGetRemovedTodosResponse,
+  ISwitchArchivedTodoRequest,
+  ISwitchArchivedTodoResponse,
+  ISwitchRemovedTodoRequest,
+  ISwitchRemovedTodoResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { ITodoService } from '@inversify/interfaces/services';
@@ -57,5 +68,13 @@ export class TodoService implements ITodoService {
 
   duplicate(body: IDuplicateTodoRequest) {
     return this.httpClient.post<IDuplicateTodoResponse>('/todo/duplicate', body);
+  }
+
+  switchArchived(body: ISwitchArchivedTodoRequest) {
+    return this.httpClient.post<ISwitchArchivedTodoResponse>('/todo/switch-archived', body);
+  }
+
+  switchRemoved(body: ISwitchRemovedTodoRequest) {
+    return this.httpClient.post<ISwitchRemovedTodoResponse>('/todo/switch-removed', body);
   }
 }

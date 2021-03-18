@@ -13,6 +13,10 @@ import {
   IUpdateTodoPositionResponse,
   IUpdateTodoRequest,
   IUpdateTodoResponse,
+  ISwitchArchivedTodoRequest,
+  ISwitchArchivedTodoResponse,
+  ISwitchRemovedTodoRequest,
+  ISwitchRemovedTodoResponse,
 } from '@type/api';
 
 export interface ITodoService {
@@ -24,4 +28,6 @@ export interface ITodoService {
   update(body: IUpdateTodoRequest): Promise<IUpdateTodoResponse>;
   updatePosition(body: IUpdateTodoPositionRequest): Promise<IUpdateTodoPositionResponse>;
   duplicate(body: IDuplicateTodoRequest): Promise<IDuplicateTodoResponse>;
+  switchArchived(body: ISwitchArchivedTodoRequest): Promise<ISwitchArchivedTodoResponse>;
+  switchRemoved(body: ISwitchRemovedTodoRequest): Promise<ISwitchRemovedTodoResponse>;
 }

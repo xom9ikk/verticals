@@ -3,85 +3,60 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import useKeys from '@rooks/use-keys';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { redirectTo } from '@router/history';
-import { EnumTodoStatus, EnumTodoType, IColor } from '@type/entities';
-import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
-  getUsername,
-  getActiveBoardReadableId,
-} from '@store/selectors';
+  EnumTodoStatus, EnumTodoType, IColor, ITodo,
+} from '@type/entities';
+import { NEW_TODO_ID } from '@/constants';
+import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
+import { getUsername, getActiveBoardReadableId, getTodoById } from '@store/selectors';
 import { Bullet } from '@comp/Bullet';
 import { DropZone } from '@comp/DropZone';
 import { TextArea } from '@comp/TextArea';
+import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
 import { CardContextMenu } from '@comp/CardContextMenu';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
 import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { useFocus } from '@use/focus';
 import { useFileList } from '@use/fileList';
+import { useDebounce } from '@use/debounce';
+import { useNewValues } from '@use/newValues';
 import { useOpenFiles } from '@use/openFiles';
 import { useReadableId } from '@use/readableId';
 import { useColorClass } from '@use/colorClass';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
-import { NEW_TODO_ID } from '@/constants';
-import { useDebounce } from '@use/debounce';
-import { useNewValues } from '@use/newValues';
-import { DateBadge } from '@comp/DateBadge';
-import { useTranslation } from 'react-i18next';
-import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useEffectState } from '@use/effectState';
 import { useNormalizeDate } from '@use/normalizeDate';
+import { useParamSelector } from '@use/paramSelector';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 
 interface ICard {
   provided?: DraggableProvided;
   snapshot?: DraggableStateSnapshot;
   todoId: number;
-  columnId: number;
+  headingIdIdForNew?: number;
   cardType: EnumTodoType;
-  belowId?: number;
-  title?: string;
-  description?: string;
-  status?: EnumTodoStatus;
-  color?: IColor;
-  isArchived?: boolean;
-  isNotificationsEnabled?: boolean;
-  isRemoved?: boolean;
-  expirationDate?: Date | null;
   invertColor?: boolean;
   isEditable: boolean;
-  commentsCount?: number;
-  imagesCount?: number;
-  attachmentsCount?: number;
   isActive?: boolean;
-  scrollToBottom?: () => void;
 }
 
 export const Card: FC<ICard> = ({
   provided,
   snapshot,
   todoId,
-  columnId,
+  headingIdIdForNew,
   cardType,
-  belowId,
-  title = '',
-  description = '',
-  status = EnumTodoStatus.Todo,
-  color,
-  isArchived,
-  isNotificationsEnabled,
-  isRemoved,
-  expirationDate,
   invertColor,
   isEditable,
-  commentsCount,
-  imagesCount,
-  attachmentsCount,
   isActive,
-  scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -91,6 +66,20 @@ export const Card: FC<ICard> = ({
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
   const { normalizeDate } = useNormalizeDate();
+
+  const {
+    headingId,
+    belowId,
+    title = '',
+    description = '',
+    status = EnumTodoStatus.Todo,
+    color,
+    isNotificationsEnabled,
+    expirationDate,
+    commentsCount,
+    imagesCount,
+    attachmentsCount,
+  } = useParamSelector(getTodoById, todoId) as ITodo;
 
   const colorClass = useColorClass('card__content', color);
 
@@ -109,6 +98,7 @@ export const Card: FC<ICard> = ({
   const titleInputRef = useRef<any>(null);
 
   useFocus(titleInputRef, [isEditable]);
+  const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
 
   const handleChangeText = (event: any, isDescription: boolean) => {
     const { value } = event.target;
@@ -157,14 +147,14 @@ export const Card: FC<ICard> = ({
     }
   };
 
-  // const normalizeDate = (date) => (date ? new Date(date) : undefined);
-
   const saveTodo = () => {
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
     const normalizedDescriptionValue = descriptionValue?.trim();
 
-    if (`${columnId}-${todoId}` !== `${columnId}-${NEW_TODO_ID}` && belowId === undefined) {
+    const validHeadingId = headingIdIdForNew === undefined ? headingId : headingIdIdForNew;
+
+    if (`${validHeadingId}-${todoId}` !== `${validHeadingId}-${NEW_TODO_ID}` && belowId === undefined) {
       const isNew = isNewValues(
         [title, normalizedTitleValue],
         [description, normalizedDescriptionValue],
@@ -186,7 +176,7 @@ export const Card: FC<ICard> = ({
     } else {
       if (normalizedTitleValue) {
         dispatch(TodosActions.effect.create({
-          columnId,
+          headingId: validHeadingId!,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
           expirationDate: normalizeDate(expirationDateValue),
@@ -201,11 +191,9 @@ export const Card: FC<ICard> = ({
       } else {
         setTitleValue('');
         setDescriptionValue('');
-        setTimeout(() => {
-          scrollToBottom?.();
-        }, 200);
       }
     }
+    dispatch(TodosActions.removeTemp());
     setFiles(new DataTransfer().files);
   };
 
@@ -238,6 +226,25 @@ export const Card: FC<ICard> = ({
       dispatch(SystemActions.setEditableCardId(todoId));
     }
   }, []);
+
+  useEffect(() => {
+    if (isEditable) {
+      scrollToRef({
+        block: EnumScrollPosition.Center,
+      });
+    }
+  }, [isEditable]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (isEditable && todoId === NEW_TODO_ID) {
+        scrollToRef({
+          block: EnumScrollPosition.Center,
+        });
+      }
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, [titleValue, descriptionValue]);
 
   useEffect(() => {
     if (!snapshot?.isDragging) {
@@ -275,6 +282,7 @@ export const Card: FC<ICard> = ({
 
   const card = useMemo(() => (
     <div
+      ref={refForScroll}
       className={cn('card__block-wrapper', {
         'card__block-wrapper--editable': isEditable,
       })}
@@ -286,7 +294,7 @@ export const Card: FC<ICard> = ({
           type={cardType}
           status={status}
           onChangeStatus={handleChangeStatus}
-          style={{ marginTop: 12 }}
+          style={{ marginTop: isEditable ? 11 : 12 }}
         />
         )
       }
@@ -326,7 +334,6 @@ export const Card: FC<ICard> = ({
                   popupId="card"
                   position="bottom"
                   todoId={todoId}
-                  // style={{ maxWidth: 55 }}
                   date={expirationDateValue}
                   onSelectDate={handleSelectDate}
                 />
@@ -373,12 +380,10 @@ export const Card: FC<ICard> = ({
                 menuId="card"
                 todoId={todoId}
                 title={title}
-                columnId={columnId}
-                isArchived={isArchived}
+                headingId={headingId}
                 isActive={isActive}
                 isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
-                isRemoved={isRemoved}
                 expirationDate={expirationDate}
                 color={color}
                 status={status}
@@ -399,7 +404,7 @@ export const Card: FC<ICard> = ({
                 onSelectDate={handleSelectDateAndUpdate}
               />
               <CardAttachmentsPreview
-                columnId={columnId}
+                headingId={headingId}
                 todoId={todoId!}
                 isActive={isActive}
                 commentsCount={commentsCount}
@@ -413,11 +418,11 @@ export const Card: FC<ICard> = ({
     </div>
   ),
   [
-    t, todoId, columnId, status, isEditable, color,
+    t, todoId, headingId, status, isEditable, color,
     titleValue, descriptionValue, expirationDateValue, cardType,
     isActive, files, isHover,
     commentsCount, imagesCount, attachmentsCount,
-    isNotificationsEnabled, isArchived, isRemoved, expirationDate,
+    isNotificationsEnabled, expirationDate,
   ]);
 
   return (

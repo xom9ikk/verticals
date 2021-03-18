@@ -1,6 +1,4 @@
-import React, {
-  FC, useMemo, useRef,
-} from 'react';
+import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DragDropContext, Draggable, Droppable, DropResult,
@@ -16,16 +14,15 @@ import {
   getActiveBoardId,
   getEditableBoardId,
   getIsLoadedBoards,
-  getOrderedBoards,
   getUsername,
   getIsSearchMode,
   getActiveBoardTitle,
   getActiveTodoTitle,
+  getBoardPositions,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
 import { useHover } from '@use/hover';
-import { useAutoScroll } from '@use/autoScroll';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 
@@ -36,7 +33,7 @@ export const BoardList: FC = () => {
   const { isHovering, hoveringProps } = useHover();
 
   const username = useSelector(getUsername);
-  const boards = useSelector(getOrderedBoards);
+  const boardPositions = useSelector(getBoardPositions);
   const isSearchMode = useSelector(getIsSearchMode);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const activeBoardId = useSelector(getActiveBoardId);
@@ -45,10 +42,6 @@ export const BoardList: FC = () => {
   const editableBoardId = useSelector(getEditableBoardId);
 
   useTitle(activeTodoTitle || activeBoardTitle);
-
-  const boardContainerRef = useRef<any>(null);
-
-  const { scrollToBottom } = useAutoScroll(boardContainerRef);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -67,7 +60,6 @@ export const BoardList: FC = () => {
   };
 
   const addNewBoard = () => {
-    requestAnimationFrame(scrollToBottom);
     dispatch(SystemActions.setEditableBoardId(NEW_BOARD_ID));
   };
 
@@ -79,73 +71,63 @@ export const BoardList: FC = () => {
     redirectTo(`/${username}/${toReadableId(title, id)}`);
   };
 
-  const boardItems = useMemo(() => {
-    console.log('boards redraw', boards);
-    return (
-      <div
-        onClick={(e) => {
-          if (editableBoardId) {
-            e.stopPropagation();
-          }
-        }}
-      >
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {boards.map(({
-                  id, icon, title, description, color, belowId,
-                }, index) => (
-                  <Draggable
-                    key={`board-${id}`}
-                    draggableId={`board-${id}`}
-                    index={index}
-                    isDragDisabled={isSearchMode}
-                  >
-                    {(draggableProvided, draggableSnapshot) => (
-                      <div
-                        ref={draggableProvided.innerRef}
-                        {...draggableProvided.draggableProps}
-                        {...draggableProvided.dragHandleProps}
-                      >
-                        <Board
-                          snapshot={draggableSnapshot}
-                          key={id}
-                          boardId={id}
-                          belowId={belowId}
-                          icon={icon}
-                          color={color}
-                          title={title}
-                          description={description}
-                          isActive={activeBoardId === id}
-                          isEditable={editableBoardId === id}
-                          scrollToBottom={scrollToBottom}
-                          onClick={handleClick}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <Link to={`/${username}/trash`}>
+  const boardItems = useMemo(() => (
+    <div
+      onClick={(e) => {
+        if (editableBoardId) {
+          e.stopPropagation();
+        }
+      }}
+    >
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {boardPositions.map((id, index) => (
+                <Draggable
+                  key={`board-${id}`}
+                  draggableId={`board-${id}`}
+                  index={index}
+                  isDragDisabled={isSearchMode}
+                >
+                  {(draggableProvided, draggableSnapshot) => (
+                    <div
+                      ref={draggableProvided.innerRef}
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
+                    >
+                      <Board
+                        snapshot={draggableSnapshot}
+                        key={id}
+                        boardId={id}
+                        isActive={activeBoardId === id}
+                        isEditable={editableBoardId === id}
+                        onClick={handleClick}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <Link to={`/${username}/trash`}>
+        {!isSearchMode && (
           <Board
             boardId={TRASH_BOARD_ID}
-            icon="/assets/svg/board/trash.svg"
-            title={t('Trash')}
             isEditable={false}
             isActive={activeBoardId === TRASH_BOARD_ID}
           />
-        </Link>
-      </div>
-    );
-  }, [t, boards, activeBoardId, isSearchMode, editableBoardId, username]);
+        )}
+      </Link>
+    </div>
+  ),
+  [t, boardPositions, activeBoardId, isSearchMode, editableBoardId, username]);
 
   const memoAddNewBoard = useMemo(() => (
     <ControlButton
@@ -164,7 +146,6 @@ export const BoardList: FC = () => {
     <div
       className="board-list"
       {...hoveringProps}
-      ref={boardContainerRef}
     >
       <Profile onAddNewBoard={addNewBoard} />
       { boardItems }
@@ -173,9 +154,7 @@ export const BoardList: FC = () => {
         editableBoardId === NEW_BOARD_ID && (
         <Board
           boardId={NEW_BOARD_ID}
-          icon="/assets/svg/board/item.svg"
           isEditable={editableBoardId === NEW_BOARD_ID}
-          scrollToBottom={scrollToBottom}
         />
         )
       }

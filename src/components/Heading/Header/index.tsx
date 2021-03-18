@@ -1,14 +1,12 @@
-import React, {
-  FC, useMemo, useRef,
-} from 'react';
+import React, { FC, useMemo, useRef } from 'react';
 import cn from 'classnames';
 import { useColorClass } from '@use/colorClass';
 import { DraggableProvided } from 'react-beautiful-dnd';
-import { EnumColumnMode } from '@comp/Column';
+import { EnumHeadingMode } from '@comp/Heading';
 import { TextArea } from '@comp/TextArea';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { IColor } from '@type/entities';
-import { ColumnsActions, SystemActions } from '@store/actions';
+import { EnumHeadingType, IColor } from '@type/entities';
+import { HeadingsActions, SystemActions } from '@store/actions';
 import { useDispatch } from 'react-redux';
 import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
@@ -16,43 +14,45 @@ import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import useKeys from '@rooks/use-keys';
 import { useTranslation } from 'react-i18next';
 import { useEffectState } from '@use/effectState';
+import { Divider } from '@comp/Divider';
 
-interface IColumnHeader {
+interface IHeadingHeader {
   provided: DraggableProvided;
-  boardId: number;
   columnId: number;
+  headingId: number;
   belowId?: number;
   title?: string;
   description?: string;
   color?: IColor;
   isEditable: boolean;
-  mode: EnumColumnMode;
+  mode: EnumHeadingMode;
+  type: EnumHeadingType;
   onHover: (isHovered: boolean) => void;
   onClick: (e: React.SyntheticEvent) => void;
   onDoubleClick: (e: React.SyntheticEvent) => void;
-  scrollToRight?: () => void;
 }
 
-export const ColumnHeader: FC<IColumnHeader> = ({
+export const HeadingHeader: FC<IHeadingHeader> = ({
   provided,
-  boardId,
   columnId,
-  belowId,
+  headingId,
   title = '',
   description = '',
   color,
   isEditable,
   mode,
+  type,
   onHover,
   onClick,
   onDoubleClick,
-  scrollToRight,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
-  const colorClass = useColorClass('column__inner', color);
+  const colorClass = useColorClass('heading__inner', color);
+  const isArchived = type === EnumHeadingType.Archived;
+  const isNewHeading = mode === EnumHeadingMode.New;
 
   const [titleValue, setTitleValue] = useEffectState<string>(title);
   const [descriptionValue, setDescriptionValue] = useEffectState<string>(description);
@@ -61,16 +61,16 @@ export const ColumnHeader: FC<IColumnHeader> = ({
 
   useFocus(titleInputRef, [isEditable]);
 
-  const saveColumnHeader = () => {
+  const saveHeadingHeader = () => {
     if (!isEditable) return;
     const normalizedTitleValue = titleValue.trim();
     const normalizedDescriptionValue = descriptionValue?.trim();
 
-    if (mode === EnumColumnMode.Normal && belowId === undefined) {
+    if (mode === EnumHeadingMode.Normal) { // && belowId === undefined
       const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
       if (normalizedTitleValue && isNew) {
-        dispatch(ColumnsActions.effect.update({
-          id: columnId,
+        dispatch(HeadingsActions.effect.update({
+          id: headingId,
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
         }));
@@ -78,37 +78,33 @@ export const ColumnHeader: FC<IColumnHeader> = ({
         setTitleValue(title);
         setDescriptionValue(description);
       }
-      dispatch(SystemActions.setEditableColumnId(null));
     }
-    if (mode === EnumColumnMode.New || belowId !== undefined) {
+    if (mode === EnumHeadingMode.New) { // || belowId !== undefined
       if (normalizedTitleValue) {
-        dispatch(ColumnsActions.effect.create({
+        dispatch(HeadingsActions.effect.create({
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
-          boardId,
-          belowId,
+          columnId,
         }));
-      } else {
-        dispatch(SystemActions.setEditableColumnId(null));
       }
-      if (belowId !== undefined) {
-        dispatch(SystemActions.setEditableColumnId(null));
-      } else {
-        setTitleValue('');
-        setDescriptionValue('');
-        setTimeout(() => {
-          scrollToRight?.();
-        }, 200);
-      }
+      // else {
+      //   dispatch(SystemActions.setEditableHeadingId(null));
+      // }
+      // if (belowId !== undefined) {
+      // dispatch(SystemActions.setEditableHeadingId(null));
+      // } else {
+      setTitleValue('');
+      setDescriptionValue('');
     }
+    dispatch(SystemActions.setEditableHeadingId(null));
   };
 
   const handleEsc = () => {
-    dispatch(SystemActions.setEditableColumnId(null));
-    saveColumnHeader();
+    // dispatch(SystemActions.setEditableHeadingId(null));
+    saveHeadingHeader();
   };
 
-  const [headerRef] = useOutsideClickRef(saveColumnHeader, isEditable);
+  const [headerRef] = useOutsideClickRef(saveHeadingHeader, isEditable);
 
   useKeys(['Escape'], handleEsc, {
     // @ts-ignore
@@ -119,7 +115,7 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   const handleKeyDown = (event: KeyboardEvent) => {
     const { key, ctrlKey, shiftKey } = event;
     if (key === 'Enter' && !ctrlKey && !shiftKey) {
-      saveColumnHeader();
+      saveHeadingHeader();
     }
   };
 
@@ -131,62 +127,69 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   };
 
   const memoTitle = useMemo(() => (
-    (mode !== EnumColumnMode.New || isEditable) && (
-      <div className="column__header-container">
+    (!isNewHeading || isEditable) && (
+      <div className="heading__header-container">
         {
           isEditable ? (
             <TextArea
               ref={titleInputRef}
-              className="column__title column__title--editable"
+              className="heading__title heading__title--editable"
               value={titleValue}
-              placeholder={t('New column')}
+              placeholder={t('New heading')}
               minRows={1}
-              maxRows={4}
+              maxRows={2}
               onKeyDown={shiftEnterRestriction}
               onKeyDownCapture={(event) => handleKeyDown(event)}
               onChange={(event) => handleChange(event, false)}
             />
           ) : (
-            <span className={cn('column__title', { 'column__title--empty': !titleValue })}>
-              {titleValue || t('New column')}
+            <span className={cn('heading__title', {
+              'heading__title--empty': !titleValue,
+              'heading__title--archived': isArchived,
+            })}
+            >
+              {titleValue || t('New heading')}
             </span>
           )
         }
       </div>
     )
-  ), [t, mode, isEditable, titleValue]);
+  ), [t, isNewHeading, isEditable, titleValue, isArchived]);
 
-  const memoDescription = useMemo(() => (mode !== EnumColumnMode.New || isEditable) && (
+  const memoDescription = useMemo(() => (!isNewHeading || isEditable) && (
     isEditable ? (
       <TextArea
-        className="column__description column__description--editable"
+        className="heading__description heading__description--editable"
         value={descriptionValue}
         placeholder={t('Notes')}
         minRows={1}
-        maxRows={4}
+        maxRows={2}
         onKeyDown={shiftEnterRestriction}
         onKeyDownCapture={(event) => handleKeyDown(event)}
         onChange={(event) => handleChange(event, true)}
       />
     ) : (
+      descriptionValue && (
       <span
-        className={cn('column__description', {
-          'column__description--empty': !descriptionValue,
+        className={cn('heading__description', {
+          'heading__description--empty': !descriptionValue,
         })}
       >
         {descriptionValue || t('Notes')}
       </span>
+      )
     )
   ),
-  [t, isEditable, descriptionValue, t]);
+  [t, isNewHeading, isEditable, descriptionValue, t]);
 
   return (
     <div
       ref={headerRef}
       role="button"
       tabIndex={0}
-      className={cn('column__header', colorClass, {
-        'column__header--editable': isEditable,
+      className={cn('heading__header', colorClass, {
+        'heading__header--editable': isEditable,
+        'heading__header--new': isNewHeading,
       })}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
@@ -195,7 +198,12 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       {...provided.dragHandleProps}
     >
       { memoTitle }
-      { memoDescription }
+      { !isArchived && memoDescription }
+      { !isNewHeading && (
+        <Divider
+          style={{ marginTop: 0, marginBottom: 10 }}
+        />
+      )}
     </div>
   );
 };

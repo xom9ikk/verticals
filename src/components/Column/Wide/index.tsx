@@ -1,26 +1,21 @@
 import React, {
-  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useState,
 } from 'react';
 import cn from 'classnames';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { EnumTodoType, IColor } from '@type/entities';
 import { EnumColumnMode } from '@comp/Column';
-import { ColumnHeader } from '@comp/ColumnHeader';
-import { ColumnToolbar } from '@comp/ColumnToolbar';
-import { ColumnContextMenu } from '@comp/ColumnContextMenu';
+import { ColumnHeader } from '@comp/Column/Header';
+import { ColumnToolbar } from '@comp/Column/Toolbar';
+import { ColumnContextMenu } from '@comp/Column/ContextMenu';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
-import { CardsContainer } from '@comp/CardsContainer';
 import { SystemActions } from '@store/actions';
-import {
-  getEditableCardId,
-  getOrderedArchivedTodosByColumnId,
-  getOrderedNonArchivedTodosByColumnId,
-  getTodosEntities,
-} from '@store/selectors';
-import { useAutoScroll } from '@use/autoScroll';
+import { getDefaultHeadingIdByColumnId, getIsSearchMode } from '@store/selectors';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { NEW_COLUMN_ID, NEW_TODO_ID } from '@/constants';
+import { NEW_COLUMN_ID, NEW_HEADING_ID, NEW_TODO_ID } from '@/constants';
+import { DeletedCardsContainer } from '@comp/DeletedCardsContainer';
+import { Headings } from '@comp/Headings';
 import { useParamSelector } from '@use/paramSelector';
 
 interface IColumnWide {
@@ -35,7 +30,6 @@ interface IColumnWide {
   mode: EnumColumnMode;
   cardType: EnumTodoType;
   isEditable: boolean;
-  scrollToRight?: () => void;
   onClick: (event: React.SyntheticEvent) => void;
   onResize: (event: React.MouseEvent | React.TouchEvent) => void;
 }
@@ -52,24 +46,16 @@ export const ColumnWide: FC<IColumnWide> = ({
   mode,
   cardType,
   isEditable,
-  scrollToRight,
   onClick,
   onResize,
 }) => {
   const dispatch = useDispatch();
 
-  const editableCardId = useSelector(getEditableCardId);
-  const archivedTodos = useParamSelector(getOrderedArchivedTodosByColumnId, columnId);
-  const nonArchivedTodos = useParamSelector(getOrderedNonArchivedTodosByColumnId, columnId);
-  const allTodos = useSelector(getTodosEntities);
-  const todos = mode === EnumColumnMode.Deleted ? allTodos : nonArchivedTodos;
+  const isSearchMode = useSelector(getIsSearchMode);
+  const defaultHeadingId = useParamSelector(getDefaultHeadingIdByColumnId, columnId);
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
-
-  const columnContainerRef = useRef<any>(null);
-
-  const { scrollToBottom } = useAutoScroll(columnContainerRef);
 
   const handleColumnClick = (event: SyntheticEvent) => {
     if (mode === EnumColumnMode.New) {
@@ -79,8 +65,11 @@ export const ColumnWide: FC<IColumnWide> = ({
   };
 
   const handleAddCard = () => {
-    setTimeout(scrollToBottom);
-    dispatch(SystemActions.setEditableCardId(`${columnId}-${NEW_TODO_ID}`));
+    dispatch(SystemActions.setEditableCardId(`${defaultHeadingId}-${NEW_TODO_ID}`));
+  };
+
+  const handleAddHeading = () => {
+    dispatch(SystemActions.setEditableHeadingId(`${columnId}-${NEW_HEADING_ID}`));
   };
 
   const handleDoubleClickUnwrapped = () => {
@@ -122,7 +111,6 @@ export const ColumnWide: FC<IColumnWide> = ({
         {...provided.draggableProps}
       >
         <div
-          ref={columnContainerRef}
           className={cn('column__wrapper', {
             'column__wrapper--editable': isEditable,
             'column__wrapper--dragging': snapshot.isDragging,
@@ -132,15 +120,15 @@ export const ColumnWide: FC<IColumnWide> = ({
           <div className="column__inner">
             <Droppable
               droppableId={`column-${columnId}`}
-              type="CARD"
+              type="HEADING"
             >
               {
-                (dropProvided, dropSnapshot) => (
+                (dropProvided) => (
                   <div
                     ref={dropProvided.innerRef}
                     className="column__container"
                   >
-                    <div>
+                    <>
                       <ColumnHeader
                         provided={provided}
                         boardId={boardId}
@@ -154,7 +142,6 @@ export const ColumnWide: FC<IColumnWide> = ({
                         onHover={setIsHoverHeader}
                         onClick={handleClick}
                         onDoubleClick={handleDoubleClick}
-                        scrollToRight={scrollToRight}
                       />
                       <ColumnContextMenu
                         isEnabled={mode === EnumColumnMode.Normal}
@@ -164,43 +151,51 @@ export const ColumnWide: FC<IColumnWide> = ({
                         isHover={isHover}
                         isHide={isEditable}
                         onAddCard={handleAddCard}
+                        onAddHeading={handleAddHeading}
                       />
                       { mode !== EnumColumnMode.New && (
                         <>
-                          <CardsContainer
-                            columnId={columnId}
-                            todos={todos}
-                            cardType={cardType}
-                            mode={mode}
-                            isOpenNewCard={editableCardId === `${columnId}-${NEW_TODO_ID}`}
-                            isDraggingCard={dropSnapshot.isDraggingOver}
-                            onAddCard={handleAddCard}
-                            scrollToBottom={scrollToBottom}
-                          />
+                          {/* Default */}
+                          {/* Naming Heading 1 */}
+                          {/* Naming Heading 2 */}
+                          {/* Naming Heading 3 */}
+                          {/* Arch */}
+
+                          {
+                            mode === EnumColumnMode.Deleted ? (
+                              <DeletedCardsContainer />
+                            ) : (
+                              <Headings
+                                dropProvided={dropProvided}
+                                columnId={columnId}
+                                cardType={cardType}
+                              />
+                            )
+                          }
                           <ArchiveContainer
-                            archivedTodos={archivedTodos}
+                            columnId={columnId}
                             cardType={cardType}
                           />
                         </>
                       ) }
-                    </div>
+                    </>
                     {dropProvided.placeholder}
                   </div>
                 )
               }
             </Droppable>
           </div>
-          { mode === EnumColumnMode.New && !isEditable && (
-          <span className="column__new-overlay">
-            <img src="/assets/svg/add.svg" alt="add" />
-          </span>
+          { mode === EnumColumnMode.New && !isEditable && !isSearchMode && (
+            <span className="column__new-overlay">
+              <img src="/assets/svg/add.svg" alt="add" />
+            </span>
           ) }
         </div>
         <ColumnToolbar
           isEnabled={mode === EnumColumnMode.Normal && !isEditable}
           isHoverBlock={isHover && !isHoverHeader}
           onAddCard={handleAddCard}
-          onAddHeading={() => console.log('open heading')}
+          onAddHeading={handleAddHeading}
         />
         {
           mode === EnumColumnMode.Normal && (
@@ -223,9 +218,9 @@ export const ColumnWide: FC<IColumnWide> = ({
       </div>
     );
   },
-  [snapshot, provided, isEditable, editableCardId,
-    isHoverHeader, isHover,
+  [snapshot, provided, isEditable,
+    isHoverHeader, isHover, isSearchMode,
     boardId, columnId, belowId,
     title, description, color, mode,
-    todos, archivedTodos, cardType]);
+    cardType]); // todos
 };

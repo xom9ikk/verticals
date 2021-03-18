@@ -10,7 +10,7 @@ import {
   IMoveTodo,
   IDuplicateTodo,
   IFetchTodosByBoardId,
-  IUpdateTodo,
+  IUpdateTodo, ISwitchArchivedTodo, ISwitchRemovedTodo,
 } from '@type/actions';
 import i18n from '@/i18n';
 import { ITodoService } from '@inversify/interfaces/services';
@@ -30,6 +30,8 @@ function* fetchByBoardIdWorker(todoService: ITodoService, action: PayloadAction<
 
 function* fetchRemovedWorker(todoService: ITodoService) {
   try {
+    yield put(SystemActions.setIsLoadedColumns(false));
+    yield put(SystemActions.setIsLoadedTodos(false));
     const response = yield* apply(todoService, todoService.getRemoved, []);
     const { todos } = response.data;
     yield put(TodosActions.setAll(todos));
@@ -113,13 +115,13 @@ function* duplicateWorker(todoService: ITodoService, action: PayloadAction<IDupl
   try {
     const response = yield* apply(todoService, todoService.duplicate, [action.payload]);
     const {
-      columnId, todoId, position, ...todo
+      headingId, todoId, position, ...todo
     } = response.data;
     yield put(TodosActions.insertInPosition({
       entity: {
         ...todo,
         id: todoId,
-        columnId,
+        headingId,
         attachmentsCount: 0,
         commentsCount: 0,
         imagesCount: 0,
@@ -127,6 +129,22 @@ function* duplicateWorker(todoService: ITodoService, action: PayloadAction<IDupl
       position,
     }));
     yield call(show, i18n.t('Todo'), i18n.t('Todo duplicated successfully'), ALERT_TYPES.SUCCESS);
+  } catch (error) {
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* switchArchivedWorker(todoService: ITodoService, action: PayloadAction<ISwitchArchivedTodo>) {
+  try {
+    yield* apply(todoService, todoService.switchArchived, [action.payload]);
+  } catch (error) {
+    yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* switchRemovedWorker(todoService: ITodoService, action: PayloadAction<ISwitchRemovedTodo>) {
+  try {
+    yield* apply(todoService, todoService.switchRemoved, [action.payload]);
   } catch (error) {
     yield call(show, i18n.t('Todo'), error, ALERT_TYPES.DANGER);
   }
@@ -141,5 +159,7 @@ export function* watchTodo(todoService: ITodoService) {
     takeLatest(TodosActions.effect.update, updateWorker, todoService),
     takeLatest(TodosActions.effect.move, moveWorker, todoService),
     takeLatest(TodosActions.effect.duplicate, duplicateWorker, todoService),
+    takeLatest(TodosActions.effect.switchArchived, switchArchivedWorker, todoService),
+    takeLatest(TodosActions.effect.switchRemoved, switchRemovedWorker, todoService),
   ]);
 }

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import useKeys from '@rooks/use-keys';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import { EnumTodoType, IColor } from '@type/entities';
+import { EnumTodoType, IBoard } from '@type/entities';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
 import { BoardsActions, SystemActions } from '@store/actions';
@@ -15,42 +15,29 @@ import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import {
-  getIsSearchMode,
-  getUsername,
-} from '@store/selectors';
+import { getBoardById, getIsSearchMode, getUsername } from '@store/selectors';
 import { BoardContextMenu } from '@comp/BoardContextMenu';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { BoardCounter } from '@comp/BoardCounter';
 import { useEffectState } from '@use/effectState';
+import { useParamSelector } from '@use/paramSelector';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
 
-interface IBoard {
+interface IBoardComponent {
   boardId: number;
   snapshot?: DraggableStateSnapshot,
-  belowId?: number;
-  icon: string;
-  color?: IColor;
-  title?: string;
-  isActive?: boolean;
-  description?: string;
   isEditable: boolean;
+  isActive?: boolean;
   onClick?: (title: string, boardId: number) => void;
-  scrollToBottom?: () => void;
 }
 
-export const Board: FC<IBoard> = ({
+export const Board: FC<IBoardComponent> = ({
   boardId,
   snapshot,
-  belowId,
-  icon,
-  color,
-  title = '',
-  description = '',
   isEditable,
   isActive = false,
   onClick,
-  scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -59,8 +46,10 @@ export const Board: FC<IBoard> = ({
   const { isNewValues } = useNewValues();
 
   const username = useSelector(getUsername);
-
   const isSearchMode = useSelector(getIsSearchMode);
+  const {
+    belowId, icon, color, title = '', description = '',
+  } = useParamSelector(getBoardById, boardId) as IBoard;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useEffectState<string>(title);
@@ -69,6 +58,7 @@ export const Board: FC<IBoard> = ({
   const titleInputRef = useRef<any>(null);
 
   useFocus(titleInputRef, [isEditable]);
+  const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
 
   const saveBoard = () => {
     if (!isEditable) return;
@@ -105,9 +95,6 @@ export const Board: FC<IBoard> = ({
       } else {
         setTitleValue('');
         setDescriptionValue('');
-        setTimeout(() => {
-          scrollToBottom?.();
-        }, 200);
       }
     }
   };
@@ -160,9 +147,18 @@ export const Board: FC<IBoard> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (isEditable) {
+      scrollToRef(EnumScrollPosition.Center);
+    }
+  }, [isEditable]);
+
   return useMemo(() => (
     <div
-      ref={boardRef}
+      ref={(r) => {
+        boardRef(r);
+        refForScroll.current = r;
+      }}
       className={cn('board', {
         'board--editable': isEditable,
         'board--dragging': snapshot?.isDragging,
@@ -175,7 +171,7 @@ export const Board: FC<IBoard> = ({
         isEditable ? (
           <div className="card__block-wrapper card__block-wrapper--editable">
             <img src={icon} alt="ico" />
-            <div className="card__editable-content">
+            <div className="card__editable-content" style={{ paddingLeft: 2 }}>
               <TextArea
                 ref={titleInputRef}
                 className="card__textarea"

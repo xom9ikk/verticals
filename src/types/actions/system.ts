@@ -7,6 +7,7 @@ export type ISetSystemIsLoadedTodos = boolean;
 export type ISetSystemActivePopupId = string | null;
 export type ISetSystemEditableBoardId = number | null;
 export type ISetSystemEditableColumnId = number | null;
+export type ISetSystemEditableHeadingId = number | string | null;
 export type ISetSystemEditableCardId = number | string | null;
 export type ISetSystemIsSearchMode = boolean;
 export type ISetSystemLanguage = EnumLanguage;

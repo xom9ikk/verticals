@@ -13,7 +13,7 @@ const { show, ALERT_TYPES } = useAlert();
 
 const mockTodo = {
   id: 1,
-  columnId: 11,
+  headingId: 11,
   title: 'Todo Title',
   description: 'Description for todo',
   status: EnumTodoStatus.Done,
@@ -35,7 +35,7 @@ describe('Todo saga flow', () => {
           imagesCount: 0,
         }],
         positions: {
-          [mockTodo.columnId]: [mockTodo.id],
+          [mockTodo.headingId]: [mockTodo.id],
         },
       },
     };
@@ -66,7 +66,7 @@ describe('Todo saga flow', () => {
           imagesCount: 0,
         }],
         positions: {
-          [mockTodo.columnId]: [mockTodo.id],
+          [mockTodo.headingId]: [mockTodo.id],
         },
       },
     };
@@ -214,7 +214,7 @@ describe('Todo saga flow', () => {
   });
   it('move', () => {
     const payload = {
-      columnId: 1,
+      headingId: 1,
       sourcePosition: 0,
       destinationPosition: 2,
     };
@@ -229,12 +229,12 @@ describe('Todo saga flow', () => {
       .call(show, 'Todo', 'Todo position updated successfully', ALERT_TYPES.SUCCESS)
       .silentRun();
   });
-  it('move between columns', () => {
+  it('move between headings', () => {
     const payload = {
-      columnId: 1,
+      headingId: 1,
       sourcePosition: 0,
       destinationPosition: 2,
-      targetColumnId: 77,
+      targetHeadingId: 77,
     };
 
     return expectSaga(watchTodo, todoService)
@@ -279,6 +279,32 @@ describe('Todo saga flow', () => {
         position,
       }))
       .call(show, 'Todo', 'Todo duplicated successfully', ALERT_TYPES.SUCCESS)
+      .silentRun();
+  });
+  it('switch archived', () => {
+    const payload = {
+      todoId: 77,
+    };
+
+    return expectSaga(watchTodo, todoService)
+      .provide([
+        [matchers.apply.fn(todoService.switchArchived), undefined],
+      ])
+      .dispatch(TodosActions.effect.switchArchived(payload))
+      .apply(todoService, todoService.switchArchived, [payload])
+      .silentRun();
+  });
+  it('switch removed', () => {
+    const payload = {
+      todoId: 77,
+    };
+
+    return expectSaga(watchTodo, todoService)
+      .provide([
+        [matchers.apply.fn(todoService.switchRemoved), undefined],
+      ])
+      .dispatch(TodosActions.effect.switchRemoved(payload))
+      .apply(todoService, todoService.switchRemoved, [payload])
       .silentRun();
   });
 });

@@ -32,7 +32,7 @@ const mockColumn = {
 
 const mockTodo = {
   id: 222,
-  columnId: 111,
+  headingId: 111,
   title: 'Todo Title',
   description: 'Description for todo',
   status: EnumTodoStatus.Done,
@@ -70,7 +70,7 @@ const mockColumnPositions = {
   order: [1, 2, 3, 4, 5],
 };
 const mockTodoPositions = {
-  columnId: 77,
+  headingId: 77,
   order: [1, 2, 3, 4, 5],
 };
 
@@ -378,12 +378,12 @@ describe('Update saga flow', () => {
   it('insert todo positions', async () => testSaga(
     subscribeOnEntity, updateService, updateService.onTodoPositionsUpdate, {
       // @ts-ignore
-      insert: (data) => TodosActions.setPositionsByColumnId({
+      insert: (data) => TodosActions.setPositionsByHeadingId({
         // @ts-ignore
         positions: data.order,
         // @ts-ignore
 
-        columnId: data.columnId,
+        headingId: data.headingId,
       }),
     },
   )
@@ -393,9 +393,9 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockTodoPositions,
     })
-    .put(TodosActions.setPositionsByColumnId({
+    .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
-      columnId: mockTodoPositions.columnId,
+      headingId: mockTodoPositions.headingId,
     }))
     .next()
     .apply(updateService, updateService.onTodoPositionsUpdate)
@@ -403,9 +403,9 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockTodoPositions,
     })
-    .put(TodosActions.setPositionsByColumnId({
+    .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
-      columnId: mockTodoPositions.columnId,
+      headingId: mockTodoPositions.headingId,
     }))
     .finish()
     .next()
@@ -413,11 +413,11 @@ describe('Update saga flow', () => {
   it('update todo positions', async () => testSaga(
     subscribeOnEntity, updateService, updateService.onTodoPositionsUpdate, {
       // @ts-ignore
-      update: (data) => TodosActions.setPositionsByColumnId({
+      update: (data) => TodosActions.setPositionsByHeadingId({
         // @ts-ignore
         positions: data.order,
         // @ts-ignore
-        columnId: data.columnId,
+        headingId: data.headingId,
       }),
     },
   )
@@ -427,9 +427,9 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockTodoPositions,
     })
-    .put(TodosActions.setPositionsByColumnId({
+    .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
-      columnId: mockTodoPositions.columnId,
+      headingId: mockTodoPositions.headingId,
     }))
     .next()
     .apply(updateService, updateService.onTodoPositionsUpdate)
@@ -437,9 +437,9 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockTodoPositions,
     })
-    .put(TodosActions.setPositionsByColumnId({
+    .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
-      columnId: mockTodoPositions.columnId,
+      headingId: mockTodoPositions.headingId,
     }))
     .finish()
     .next()

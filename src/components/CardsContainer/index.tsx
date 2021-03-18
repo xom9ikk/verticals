@@ -1,40 +1,44 @@
+/* eslint-disable no-nested-ternary */
 import React, { FC, useMemo } from 'react';
-import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import {
+  Draggable, DroppableStateSnapshot,
+} from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import {
-  EnumTodoType, ITodo,
-} from '@type/entities';
+import { EnumHeadingType, EnumTodoType } from '@type/entities';
 import { Card } from '@comp/Card';
-import { FallbackLoader } from '@comp/FallbackLoader';
 import {
-  getActiveTodoId, getEditableCardId, getIsLoadedTodos, getIsSearchMode,
+  getActiveTodoId,
+  getEditableCardId,
+  getIsLoadedTodos,
+  getIsSearchMode,
+  getTodoPositionsByHeadingId,
 } from '@store/selectors';
-import { EnumColumnMode } from '@comp/Column';
 import { ControlButton } from '@comp/ControlButton';
 import { useHover } from '@use/hover';
 import { NEW_TODO_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
+import { EnumHeadingMode } from '@comp/Heading';
+import { FallbackLoader } from '@comp/FallbackLoader';
 
 interface ICardsContainer {
-  columnId: number;
-  todos?: Array<ITodo>;
+  headingId: number;
   cardType: EnumTodoType;
-  mode: EnumColumnMode;
+  mode: EnumHeadingMode;
+  type: EnumHeadingType;
   isOpenNewCard: boolean;
-  isDraggingCard: boolean;
-  onAddCard: () => void;
-  scrollToBottom: () => void;
+  dropSnapshot: DroppableStateSnapshot;
+  onAddCard?: () => void;
 }
 
 export const CardsContainer: FC<ICardsContainer> = ({
-  columnId,
-  todos,
+  headingId,
   cardType,
   mode,
+  type,
   isOpenNewCard,
-  isDraggingCard,
+  dropSnapshot,
   onAddCard,
-  scrollToBottom,
 }) => {
   const { t } = useTranslation();
   const { isHovering, hoveringProps } = useHover();
@@ -43,90 +47,77 @@ export const CardsContainer: FC<ICardsContainer> = ({
   const isLoadedTodos = useSelector(getIsLoadedTodos);
   const isSearchMode = useSelector(getIsSearchMode);
   const editableCardId = useSelector(getEditableCardId);
+  const todoPositions = useParamSelector(getTodoPositionsByHeadingId, headingId);
 
-  const todosCount = todos?.length;
+  const todosCount = todoPositions?.length;
 
   const memoAddCard = useMemo(() => (
-    (!isDraggingCard && mode !== EnumColumnMode.New) && (
-      <ControlButton
-        imageSrc="/assets/svg/add.svg"
-        alt="add"
-        text={t('Add card')}
-        isInvisible
-        isMaxWidth
-        isHoverBlock={isHovering || todosCount === 0}
-        onClick={onAddCard}
-      />
+    (mode !== EnumHeadingMode.New) && (
+    <ControlButton
+      imageSrc="/assets/svg/add.svg"
+      alt="add"
+      text={t('Add card')}
+      isInvisible
+      style={{ margin: '1px 0' }}
+      isMaxWidth
+      isHoverBlock={!dropSnapshot.isDraggingOver
+      && (
+        isHovering
+          || (type === EnumHeadingType.Default && todosCount === 0)
+      )}
+      onClick={onAddCard}
+    />
     )
-  ), [t, isHovering, isDraggingCard, isOpenNewCard, mode, todosCount]);
+  ), [t, isHovering, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
 
   const memoNewCard = useMemo(() => (
     <Card
       todoId={NEW_TODO_ID}
-      columnId={columnId}
+      headingIdIdForNew={headingId}
       cardType={cardType}
       isEditable
-      scrollToBottom={scrollToBottom}
     />
-  ), [editableCardId]);
+  ), [headingId, editableCardId]);
 
   return (
-    <div
-      {...hoveringProps}
-    >
+    <div {...hoveringProps}>
       {
-        todos
-          ?.map((todo, index) => (
-            <Draggable
-              key={todo.id}
-              draggableId={`todo-${todo.id}`}
-              index={index}
-              isDragDisabled={isSearchMode || todo.belowId !== undefined}
-            >
-              {(
-                dragProvided: DraggableProvided,
-                dragSnapshot: DraggableStateSnapshot,
-              ) => (
-                <Card
-                  cardType={cardType}
-                  provided={dragProvided}
-                  snapshot={dragSnapshot}
-                  key={todo.id}
-                  todoId={todo.id}
-                  columnId={todo.columnId}
-                  belowId={todo.belowId}
-                  title={todo.title}
-                  description={todo.description}
-                  status={todo.status}
-                  color={todo.color}
-                  isArchived={todo.isArchived}
-                  isRemoved={todo.isRemoved}
-                  isNotificationsEnabled={todo.isNotificationsEnabled}
-                  expirationDate={todo.expirationDate}
-                  commentsCount={todo.commentsCount}
-                  imagesCount={todo.imagesCount}
-                  attachmentsCount={todo.attachmentsCount}
-                  isActive={activeTodoId === todo.id}
-                  isEditable={todo.id === editableCardId}
-                  scrollToBottom={scrollToBottom}
-                />
-              )}
-            </Draggable>
-          ))
-        }
+        todoPositions?.map((id, index) => (
+          <Draggable
+            key={id}
+            draggableId={`todo-${id}`}
+            index={index}
+            isDragDisabled={isSearchMode}
+          >
+            {(dragProvided, dragSnapshot) => (
+              <Card
+                cardType={cardType}
+                provided={dragProvided}
+                snapshot={dragSnapshot}
+                key={id}
+                todoId={id}
+                isActive={activeTodoId === id}
+                isEditable={id === editableCardId}
+                invertColor={type === EnumHeadingType.Archived}
+              />
+            )}
+          </Draggable>
+        ))
+      }
       <FallbackLoader
         isAbsolute
         size="small"
+        delay={1000}
+        backgroundColor="#ffffff"
         isLoading={!isLoadedTodos}
       />
-      {
-        mode !== EnumColumnMode.Deleted && (
-        <>
-          {isOpenNewCard ? memoNewCard : memoAddCard}
-          {isDraggingCard && <div style={{ height: 78 }} />}
-        </>
-        )
-      }
+      <>
+        {type === EnumHeadingType.Default || type === EnumHeadingType.Custom
+          ? (isOpenNewCard ? memoNewCard : memoAddCard)
+          : null}
+        {/* {type !== EnumHeadingType.Archived && dropSnapshot.isDraggingOver && <div style={{ height: 36 }} />} */}
+        {/* {type !== EnumHeadingType.Archived && dropProvided.placeholder} */}
+      </>
     </div>
   );
 };

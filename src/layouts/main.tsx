@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useParams } from 'react-router-dom';
+import useKeys from '@rooks/use-keys';
 import { RouteWrapper } from '@router/router';
 import { SettingsLayout } from '@layouts/Settings';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
@@ -14,7 +15,7 @@ import {
   BoardsActions,
   UserActions,
   ColumnsActions,
-  TodosActions,
+  TodosActions, UpdatesActions,
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
@@ -29,7 +30,6 @@ import {
 } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 import { useValueRef } from '@use/valueRef';
-import useKeys from '@rooks/use-keys';
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -51,15 +51,7 @@ export const MainLayout: FC = () => {
 
   const { toNumericId } = useReadableId();
 
-  const closePopups = () => {
-    // dispatch(SystemActions.setIsOpenPopup(false));
-    // dispatch(SystemActions.setEditableCardId(false));
-    // dispatch(SystemActions.setEditableColumnId(null));
-    // dispatch(SystemActions.setEditableBoardId(false));
-  };
-
-  const closePopupsAndEditable = () => {
-    closePopups();
+  const closeEditable = () => {
     dispatch(BoardsActions.removeTemp());
     dispatch(ColumnsActions.removeTemp());
     dispatch(TodosActions.removeTemp());
@@ -69,11 +61,7 @@ export const MainLayout: FC = () => {
     }
   };
 
-  // const handleClick = (event: any) => {
-  //   if (event.isTrusted) closePopups(); // TODO: fix useOutsideClick for close board/card/column
-  // };
-
-  useKeys(['Escape'], closePopupsAndEditable); // TODO: uncomment
+  useKeys(['Escape'], closeEditable);
 
   useEffect(() => {
     if (boardId) {
@@ -83,7 +71,6 @@ export const MainLayout: FC = () => {
           && !['account', 'profile'].includes(boardId)
           ? toNumericId(boardId)
           : null;
-      console.log('numericBoardId', numericBoardId);
       dispatch(SystemActions.setActiveBoardId(numericBoardId));
       dispatch(SystemActions.setActiveBoardReadableId(boardId));
     }
@@ -93,7 +80,7 @@ export const MainLayout: FC = () => {
     let numericTodoId = null;
     if (todoId) {
       numericTodoId = toNumericId(todoId);
-      dispatch(SystemActions.setActiveTodoReadableId(todoId)); // delete?
+      dispatch(SystemActions.setActiveTodoReadableId(todoId)); // not use?
     }
     dispatch(SystemActions.setActiveTodoId(numericTodoId));
   }, [todoId]);
@@ -101,6 +88,7 @@ export const MainLayout: FC = () => {
   useEffect(() => {
     dispatch(UserActions.effect.fetchMe());
     dispatch(BoardsActions.effect.fetchAll());
+    dispatch(UpdatesActions.effect.subscribe());
   }, []);
 
   const memoSidebar = useMemo(() => (

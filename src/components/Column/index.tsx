@@ -1,12 +1,12 @@
 import React, { FC, useMemo } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { IColor } from '@type/entities';
+import { IColumn } from '@type/entities';
 import { ColumnsActions } from '@store/actions';
-import { getBoardCardType, getIsSearchMode } from '@store/selectors';
+import { getBoardCardType, getColumnById, getIsSearchMode } from '@store/selectors';
 import { CardPopup } from '@comp/CardPopup';
-import { ColumnCompact } from '@comp/ColumnCompact';
-import { ColumnResizable } from '@comp/ColumnResizable';
+import { ColumnCompact } from '@comp/Column/Compact';
+import { ColumnResizable } from '@comp/Column/Resizable';
 import { useParamSelector } from '@use/paramSelector';
 
 export enum EnumColumnMode {
@@ -15,39 +15,34 @@ export enum EnumColumnMode {
   Deleted,
 }
 
-interface IColumn {
+interface IColumnComponent {
   index: number;
   isEditable: boolean;
   boardId: number;
-  columnId?: number;
-  belowId?: number;
-  color?: IColor;
-  isCollapsed?: boolean;
-  title?: string;
-  description?: string;
-  scrollToRight?: () => void;
+  columnId: number;
   mode?: EnumColumnMode;
-  width?: number | null;
 }
 
-export const Column: FC<IColumn> = ({
+export const Column: FC<IColumnComponent> = ({
   index,
   isEditable,
   boardId,
   columnId,
-  belowId,
-  color,
-  isCollapsed,
-  title,
-  description,
-  scrollToRight,
   mode = EnumColumnMode.Normal,
-  width,
 }) => {
   const dispatch = useDispatch();
 
   const cardType = useParamSelector(getBoardCardType, boardId);
   const isSearchMode = useSelector(getIsSearchMode);
+
+  const {
+    belowId,
+    color,
+    isCollapsed,
+    title,
+    description,
+    width,
+  } = useParamSelector(getColumnById, columnId) as IColumn;
 
   const handleClick = () => {
     if (mode === EnumColumnMode.Normal) {
@@ -91,7 +86,6 @@ export const Column: FC<IColumn> = ({
             width={width}
             cardType={cardType}
             isEditable={isEditable}
-            scrollToRight={scrollToRight}
             onClick={handleClick}
           />
         ))}

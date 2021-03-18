@@ -3,7 +3,6 @@
   flex: 1;
   justify-content: center;
   align-items: center;
-  transition: .25s opacity ease-in-out;
 
   &--fixed {
     position: fixed;
@@ -24,6 +23,7 @@
   &--hide {
     opacity: 0;
     z-index: -1;
+    transition: .25s opacity ease-in;
   }
 
   &__wrapper {

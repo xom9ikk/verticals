@@ -1,34 +1,38 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { IRootState } from '@store/reducers';
-import { IColumn } from '@type/entities';
+import { TRASH_COLUMN_ID } from '@/constants';
+import i18n from '@/i18n';
+import { getHeadings } from '@store/selectors/headings';
 
 export const getColumns = (state: IRootState) => state.columns;
-export const getOrderedColumnsByBoardId = (boardId: number | null) => createSelector(
+export const getColumnPositionsByBoardId = (
+  boardId: number | null,
+) => (state: IRootState) => {
+  if (boardId === null) return [];
+  const positions = state.columns.positions[boardId];
+  if (!positions) return [];
+  return positions;
+};
+export const getColumnById = (columnId: number) => createSelector(
   [getColumns],
   (columns) => {
-    if (boardId === null) return [];
+    const extraColumns = [{
+      id: TRASH_COLUMN_ID,
+      title: i18n.t('Deleted cards'),
+      description: i18n.t('Restore deleted cards'),
+    }];
 
-    const { entities, positions } = columns;
-    const positionsForBoard = positions[boardId];
-    if (!positionsForBoard) return [];
-
-    const orderedColumns: Array<IColumn> = [];
-
-    positionsForBoard.forEach((columnId) => {
-      const columnByOrder = entities.find((column) => column.id === columnId);
-      if (columnByOrder) {
-        orderedColumns.push(columnByOrder);
-      }
-    });
-
-    return orderedColumns;
+    return [
+      ...extraColumns,
+      ...columns.entities,
+    ].find((column) => column.id === columnId) || {};
   },
 );
-
-export const getWidthByColumnId = (columnId: number) => createSelector(
-  [getColumns],
-  (columns) => {
-    const targetColumn = columns.entities.find((column) => column.id === columnId);
+export const getWidthByHeadingId = (headingId: number) => createSelector(
+  [getColumns, getHeadings],
+  (columns, headings) => {
+    const targetHeading = headings.entities.find((heading) => heading.id === headingId);
+    const targetColumn = columns.entities.find((column) => column.id === targetHeading?.columnId);
     return targetColumn?.width ?? null;
   },
 );

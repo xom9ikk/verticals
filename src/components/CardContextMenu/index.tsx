@@ -6,26 +6,29 @@ import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
 import { MenuItem } from '@comp/MenuItem';
 import { Submenu } from '@comp/Submenu';
-import { EnumTodoStatus, IColor } from '@type/entities';
+import {
+  EnumHeadingType, EnumTodoStatus, IColor, IHeading,
+} from '@type/entities';
 import { Divider } from '@comp/Divider';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@use/readableId';
-import { getActiveBoardReadableId, getActivePopupId, getUsername } from '@store/selectors';
+import {
+  getActiveBoardReadableId, getActivePopupId, getHeadingById, getUsername,
+} from '@store/selectors';
 import { useOpenFiles } from '@use/openFiles';
 import { DatePicker } from '@comp/DatePicker';
 import { useTranslation } from 'react-i18next';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICardContextMenu {
   menuId: string;
   todoId: number;
   title: string;
-  columnId: number;
-  isArchived?: boolean;
+  headingId: number;
   isActive?: boolean;
   isHover: boolean;
   isNotificationsEnabled?: boolean;
-  isRemoved?: boolean;
   expirationDate?: Date | null;
   color?: IColor;
   status?: EnumTodoStatus;
@@ -57,12 +60,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   menuId,
   todoId,
   title,
-  columnId,
-  isArchived,
+  headingId,
   isActive,
   isHover,
   isNotificationsEnabled,
-  isRemoved,
   expirationDate,
   color,
   status,
@@ -81,6 +82,10 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
 
   const username = useSelector(getUsername);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
+  const heading = useParamSelector(getHeadingById, headingId) as IHeading;
+  const isArchivedHeading = heading.type === EnumHeadingType.Archived;
+
+  const isRemovedCards = activeBoardReadableId === 'trash';
 
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [isOpenDatePicker, setIsOpenDatePicker] = useState<boolean>(false);
@@ -144,24 +149,22 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         dispatch(TodosActions.removeTemp());
         dispatch(TodosActions.drawBelow({
           belowId: todoId!,
-          columnId: columnId!,
+          headingId: headingId!,
         }));
         break;
       }
       case EnumCardActions.Archive: {
-        dispatch(TodosActions.effect.update({
-          id: todoId!,
-          isArchived: !isArchived,
+        dispatch(TodosActions.effect.switchArchived({
+          todoId,
         }));
         break;
       }
       case EnumCardActions.Delete: {
-        dispatch(TodosActions.effect.update({ id: todoId!, isRemoved: true }));
-        dispatch(TodosActions.remove({ id: todoId! }));
+        dispatch(TodosActions.effect.switchRemoved({ todoId }));
         break;
       }
       case EnumCardActions.Restore: {
-        dispatch(TodosActions.effect.update({ id: todoId!, isRemoved: false }));
+        dispatch(TodosActions.effect.switchRemoved({ todoId }));
         dispatch(TodosActions.remove({ id: todoId! }));
         break;
       }
@@ -183,7 +186,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
     }));
   };
 
-  const buttons = isRemoved ? [
+  const buttons = isRemovedCards ? [
     <MenuItem
       key={15}
       text={t('Restore')}
@@ -315,8 +318,8 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       />,
       <MenuItem
         key={14}
-        text={isArchived ? t('Unarchive') : t('Archive')}
-        imageSrc={`/assets/svg/menu/archive${isArchived ? '' : '-close'}.svg`}
+        text={isArchivedHeading ? t('Unarchive') : t('Archive')}
+        imageSrc={`/assets/svg/menu/archive${isArchivedHeading ? '' : '-close'}.svg`}
         action={EnumCardActions.Archive}
       />,
       <MenuItem
@@ -360,6 +363,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   ) : null),
   [isHover, color,
     isNotificationsEnabled,
-    isArchived, isRemoved, status, username, isCopied,
+    status, username, isCopied, isArchivedHeading, isRemovedCards,
     isOpenDatePicker, expirationDate]);
 };

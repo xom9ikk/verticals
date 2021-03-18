@@ -16,6 +16,7 @@ function* setLanguageWorker(action: PayloadAction<ISetSystemLanguage>) {
     const languageCode = LANGUAGE_CODES[action.payload];
     yield* apply(i18n, i18n.changeLanguage, [languageCode]);
     yield* apply(storage, storage.setLanguage, [action.payload]);
+    yield put(SystemActions.setLanguage(action.payload));
   } catch (error) {
     yield call(show, i18n.t('System'), error, ALERT_TYPES.DANGER);
   }

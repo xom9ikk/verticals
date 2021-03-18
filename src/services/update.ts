@@ -5,7 +5,11 @@ import {
   IBoardPositionsUpdateResponse,
   IBoardUpdateResponse,
   IColumnPositionsUpdateResponse,
-  IColumnUpdateResponse, ICommentAttachmentUpdateResponse, ICommentUpdateResponse,
+  IHeadingPositionsUpdateResponse,
+  IColumnUpdateResponse,
+  IHeadingUpdateResponse,
+  ICommentAttachmentUpdateResponse,
+  ICommentUpdateResponse,
   ITodoPositionsUpdateResponse,
   ITodoUpdateResponse,
 } from '@type/api';
@@ -42,6 +46,12 @@ export class UpdateService implements IUpdateService {
     });
   }
 
+  onHeadingsUpdate(): Promise<IHeadingUpdateResponse> {
+    return new Promise((resolve) => {
+      this.wsClient.on<IHeadingUpdateResponse>('updates', 'heading', resolve);
+    });
+  }
+
   onTodosUpdate(): Promise<ITodoUpdateResponse> {
     return new Promise((resolve) => {
       this.wsClient.on<ITodoUpdateResponse>('updates', 'todo', resolve);
@@ -57,6 +67,12 @@ export class UpdateService implements IUpdateService {
   onColumnPositionsUpdate(): Promise<IColumnPositionsUpdateResponse> {
     return new Promise((resolve) => {
       this.wsClient.on<IColumnPositionsUpdateResponse>('updates', 'column_position', resolve);
+    });
+  }
+
+  onHeadingPositionsUpdate(): Promise<IHeadingPositionsUpdateResponse> {
+    return new Promise((resolve) => {
+      this.wsClient.on<IHeadingPositionsUpdateResponse>('updates', 'heading_position', resolve);
     });
   }
 

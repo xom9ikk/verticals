@@ -1,54 +1,51 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { IRootState } from '@store/reducers';
-import { ITodo } from '@type/entities';
 import { getColumns } from '@store/selectors/columns';
+import { getHeadings } from '@store/selectors/headings';
 
 export const getTodos = (state: IRootState) => state.todos;
 export const getTodosEntities = (state: IRootState) => state.todos.entities;
+export const getTodoPositions = (state: IRootState) => state.todos.positions;
 export const getTodoById = (todoId: number | null) => createSelector(
-  [getTodos],
-  (todos) => todos.entities.find((todo) => todo.id === todoId),
+  [getTodosEntities],
+  (todoEntities) => todoEntities.find((todo) => todo.id === todoId) || {},
 );
-export const getOrderedTodosByColumnId = (columnId?: number) => createSelector(
-  [getTodos],
-
-  (todos) => {
-    if (!columnId) return [];
-
-    const { entities, positions } = todos;
-    const positionsForBoard = positions[columnId];
-    if (!positionsForBoard) return [];
-
-    const orderedColumns: Array<ITodo> = [];
-
-    positionsForBoard.forEach((todoId) => {
-      const todoByOrder = entities.find((todo) => todo.id === todoId);
-      if (todoByOrder) {
-        orderedColumns.push(todoByOrder);
-      }
-    });
-
-    return orderedColumns;
+export const getTodoPositionsByHeadingId = (
+  headingId?: number,
+) => createSelector(
+  [getTodoPositions],
+  (todoPositions) => {
+    if (headingId === undefined) return [];
+    const positions = todoPositions[headingId];
+    if (!positions) return [];
+    return positions;
   },
 );
-export const getTodosCountByColumnId = (columnId?: number) => createSelector(
-  [getOrderedTodosByColumnId(columnId)],
-  (todos) => todos.length,
+export const getArchivedTodoPositionsByColumnId = (columnId?: number) => createSelector(
+  [getHeadings, getTodoPositions, getTodosEntities],
+  (headings, positions, todoEntities) => {
+    const filteredHeadings = headings.entities.filter((heading) => heading.columnId === columnId);
+    const headingIds = filteredHeadings.map((heading) => heading.id);
+    return todoEntities.filter((todo) => headingIds.includes(todo.headingId));
+  },
 );
-export const getOrderedArchivedTodosByColumnId = (columnId?: number) => createSelector(
-  [getOrderedTodosByColumnId(columnId)],
-  (todos) => todos?.filter((todo: ITodo) => todo.isArchived),
-);
-export const getOrderedNonArchivedTodosByColumnId = (columnId?: number) => createSelector(
-  [getOrderedTodosByColumnId(columnId)],
-  (todos) => todos?.filter((todo: ITodo) => !todo.isArchived),
+export const getCountTodosByColumnId = (columnId?: number) => createSelector(
+  [getColumns, getHeadings, getTodos],
+  (columns, headings, todos) => {
+    const filteredHeadings = headings.entities.filter((heading) => heading.columnId === columnId);
+    const headingIds = filteredHeadings.map((heading) => heading.id);
+    const filteredTodos = todos.entities.filter((todo) => headingIds.includes(todo.headingId));
+    return filteredTodos.length;
+  },
 );
 export const getCountTodosByBoardId = (boardId: number | null) => createSelector(
-  [getColumns, getTodos],
-  (columns, todos) => {
+  [getColumns, getHeadings, getTodos],
+  (columns, headings, todos) => {
     const filteredColumns = columns.entities.filter((column) => column.boardId === boardId);
     const columnIds = filteredColumns.map((column) => column.id);
-    const filteredTodos = todos.entities.filter((todo) => columnIds.includes(todo.columnId));
+    const filteredHeadings = headings.entities.filter((heading) => columnIds.includes(heading.columnId));
+    const headingIds = filteredHeadings.map((heading) => heading.id);
+    const filteredTodos = todos.entities.filter((todo) => headingIds.includes(todo.headingId));
     return filteredTodos.length;
   },
 );

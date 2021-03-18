@@ -68,7 +68,7 @@ export type IDuplicateColumnResponse = IServerResponse<{
   readonly isCollapsed?: boolean;
   readonly belowId?: number;
   readonly width?: number;
-  readonly todos: ITodos;
+  readonly headings: ITodos;
 }>;
 
 export interface IReverseColumnOrderRequest {

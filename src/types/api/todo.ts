@@ -20,7 +20,7 @@ export type IGetRemovedTodosResponse = IServerResponse<{
 }>;
 
 export interface ICreateTodoRequest {
-  readonly columnId: number;
+  readonly headingId: number;
   readonly title: string;
   readonly description?: string;
   readonly color?: IColor;
@@ -54,7 +54,8 @@ export type IUpdateTodoResponse = IServerResponse;
 export interface IUpdateTodoPositionRequest {
   readonly sourcePosition: number;
   readonly destinationPosition: number;
-  readonly columnId: number;
+  readonly headingId: number;
+  readonly targetHeadingId?: number;
 }
 
 export type IUpdateTodoPositionResponse = IServerResponse;
@@ -66,10 +67,22 @@ export interface IDuplicateTodoRequest {
 export type IDuplicateTodoResponse = IServerResponse<{
   readonly todoId: number;
   readonly position: number;
-  readonly columnId: number;
+  readonly headingId: number;
   readonly title: string;
   readonly description?: string;
   readonly color?: IColor;
   readonly isCollapsed?: boolean;
   readonly belowId?: number;
 }>;
+
+export interface ISwitchArchivedTodoRequest {
+  readonly todoId: number;
+}
+
+export type ISwitchArchivedTodoResponse = IServerResponse;
+
+export interface ISwitchRemovedTodoRequest {
+  readonly todoId: number;
+}
+
+export type ISwitchRemovedTodoResponse = IServerResponse;

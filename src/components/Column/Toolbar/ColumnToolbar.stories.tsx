@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColumnToolbar } from '@comp/ColumnToolbar';
+import { ColumnToolbar } from '@comp/Column/Toolbar';
 
 export default {
   title: 'ColumnToolbar',
