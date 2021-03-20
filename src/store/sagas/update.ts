@@ -1,5 +1,5 @@
 import {
-  all, apply, takeLatest, fork, put,
+  all, apply, takeLatest, fork, put, select,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
@@ -20,6 +20,7 @@ import {
   IUpdateData, IHeadingUpdateData,
 } from '@type/api';
 import { IUpdateService } from '@inversify/interfaces/services';
+import { getIsSearchMode } from '@store/selectors';
 
 interface IOperationHandlers<T> {
   insert?: (data: T) => PayloadAction<any>,
@@ -34,6 +35,11 @@ export function* subscribeOnEntity<T>(
 ) {
   while (true) {
     const { operation, data } = yield* apply(context, subscribeFunction, []);
+    const isSearchMode = yield* select(getIsSearchMode);
+    if (isSearchMode) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
     // console.log('>>>>update', operation, data);
     switch (operation) {
       case EnumOperations.Insert: {

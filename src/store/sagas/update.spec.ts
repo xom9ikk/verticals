@@ -7,6 +7,7 @@ import { UpdateService } from '@services/update';
 import { subscribeOnEntity } from '@store/sagas/update';
 import { EnumColors, EnumTodoStatus, EnumTodoType } from '@type/entities';
 import { EnumOperations } from '@type/api';
+import { getIsSearchMode } from '@store/selectors';
 
 // @ts-ignore
 const updateService = new UpdateService();
@@ -87,6 +88,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockBoard,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.add(mockBoard))
     .next()
     .apply(updateService, updateService.onBoardsUpdate)
@@ -94,6 +97,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockBoard,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.add(mockBoard))
     .finish()
     .next()
@@ -110,6 +115,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockBoard,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.updateEntity(mockBoard))
     .next()
     .apply(updateService, updateService.onBoardsUpdate)
@@ -117,6 +124,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockBoard,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.updateEntity(mockBoard))
     .finish()
     .next()
@@ -133,6 +142,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockBoard,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.remove(mockBoard))
     .next()
     .apply(updateService, updateService.onBoardsUpdate)
@@ -140,6 +151,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockBoard,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.remove(mockBoard))
     .finish()
     .next()
@@ -156,6 +169,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockColumn,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.add(mockColumn))
     .next()
     .apply(updateService, updateService.onColumnsUpdate)
@@ -163,6 +178,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockColumn,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.add(mockColumn))
     .finish()
     .next()
@@ -179,6 +196,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockColumn,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.updateEntity(mockColumn))
     .next()
     .apply(updateService, updateService.onColumnsUpdate)
@@ -186,6 +205,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockColumn,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.updateEntity(mockColumn))
     .finish()
     .next()
@@ -202,6 +223,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockColumn,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.remove(mockColumn))
     .next()
     .apply(updateService, updateService.onColumnsUpdate)
@@ -209,6 +232,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockColumn,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.remove(mockColumn))
     .finish()
     .next()
@@ -225,6 +250,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockTodo,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.add(mockTodo))
     .next()
     .apply(updateService, updateService.onTodosUpdate)
@@ -232,6 +259,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockTodo,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.add(mockTodo))
     .finish()
     .next()
@@ -248,6 +277,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockTodo,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.updateEntity(mockTodo))
     .next()
     .apply(updateService, updateService.onTodosUpdate)
@@ -255,6 +286,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockTodo,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.updateEntity(mockTodo))
     .finish()
     .next()
@@ -271,6 +304,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockTodo,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.remove(mockTodo))
     .next()
     .apply(updateService, updateService.onTodosUpdate)
@@ -278,6 +313,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockTodo,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.remove(mockTodo))
     .finish()
     .next()
@@ -294,6 +331,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockBoardPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.setPositions(mockBoardPositions.order))
     .next()
     .apply(updateService, updateService.onBoardPositionsUpdate)
@@ -301,6 +340,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockBoardPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(BoardsActions.setPositions(mockBoardPositions.order))
     .finish()
     .next()
@@ -312,7 +353,6 @@ describe('Update saga flow', () => {
         // @ts-ignore
         positions: data.order,
         // @ts-ignore
-
         boardId: data.boardId,
       }),
     },
@@ -323,6 +363,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockColumnPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.setPositionsByBoardId({
       positions: mockColumnPositions.order,
       boardId: mockColumnPositions.boardId,
@@ -333,6 +375,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockColumnPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.setPositionsByBoardId({
       positions: mockColumnPositions.order,
       boardId: mockColumnPositions.boardId,
@@ -347,7 +391,6 @@ describe('Update saga flow', () => {
         // @ts-ignore
         positions: data.order,
         // @ts-ignore
-
         boardId: data.boardId,
       }),
     },
@@ -358,6 +401,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockColumnPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.setPositionsByBoardId({
       positions: mockColumnPositions.order,
       boardId: mockColumnPositions.boardId,
@@ -368,6 +413,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockColumnPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(ColumnsActions.setPositionsByBoardId({
       positions: mockColumnPositions.order,
       boardId: mockColumnPositions.boardId,
@@ -382,7 +429,6 @@ describe('Update saga flow', () => {
         // @ts-ignore
         positions: data.order,
         // @ts-ignore
-
         headingId: data.headingId,
       }),
     },
@@ -393,6 +439,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockTodoPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
       headingId: mockTodoPositions.headingId,
@@ -403,6 +451,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockTodoPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
       headingId: mockTodoPositions.headingId,
@@ -427,6 +477,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockTodoPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
       headingId: mockTodoPositions.headingId,
@@ -437,6 +489,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockTodoPositions,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(TodosActions.setPositionsByHeadingId({
       positions: mockTodoPositions.order,
       headingId: mockTodoPositions.headingId,
@@ -457,6 +511,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockComment,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(CommentsActions.add(mockComment))
     .next()
     .apply(updateService, updateService.onCommentsUpdate)
@@ -464,6 +520,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Insert,
       data: mockComment,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(CommentsActions.add(mockComment))
     .finish()
     .next()
@@ -480,6 +538,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockComment,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(CommentsActions.updateText(mockComment))
     .next()
     .apply(updateService, updateService.onCommentsUpdate)
@@ -487,6 +547,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Update,
       data: mockComment,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(CommentsActions.updateText(mockComment))
     .finish()
     .next()
@@ -503,6 +565,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockComment,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(CommentsActions.remove(mockComment))
     .next()
     .apply(updateService, updateService.onCommentsUpdate)
@@ -510,6 +574,8 @@ describe('Update saga flow', () => {
       operation: EnumOperations.Delete,
       data: mockComment,
     })
+    .select(getIsSearchMode)
+    .next(false)
     .put(CommentsActions.remove(mockComment))
     .finish()
     .next()
