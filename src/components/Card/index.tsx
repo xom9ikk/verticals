@@ -86,7 +86,6 @@ export const Card: FC<ICard> = ({
   const username = useSelector(getUsername);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
 
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
@@ -288,16 +287,14 @@ export const Card: FC<ICard> = ({
       })}
       onClick={(e) => !isEditable && handleClick(e)}
     >
-      {
-        todoId !== NEW_TODO_ID && (
+      {todoId !== NEW_TODO_ID && (
         <Bullet
           type={cardType}
           status={status}
           onChangeStatus={handleChangeStatus}
           style={{ marginTop: isEditable ? 11 : 12 }}
         />
-        )
-      }
+      )}
       <div
         className="card__block"
         onMouseDown={() => debouncePress(true)}
@@ -382,7 +379,6 @@ export const Card: FC<ICard> = ({
                 title={title}
                 headingId={headingId}
                 isActive={isActive}
-                isHover={isHover}
                 isNotificationsEnabled={isNotificationsEnabled}
                 expirationDate={expirationDate}
                 color={color}
@@ -420,7 +416,7 @@ export const Card: FC<ICard> = ({
   [
     t, todoId, headingId, status, isEditable, color,
     titleValue, descriptionValue, expirationDateValue, cardType,
-    isActive, files, isHover,
+    isActive, files,
     commentsCount, imagesCount, attachmentsCount,
     isNotificationsEnabled, expirationDate,
   ]);
@@ -434,8 +430,6 @@ export const Card: FC<ICard> = ({
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
       className="card"
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
       onClick={(e) => e.stopPropagation()}
     >
       <div

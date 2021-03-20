@@ -131,7 +131,6 @@ export const Gallery: FC = () => {
             onClick={handleDownload}
             text={t('Download')}
             isMaxWidth
-            isHoverBlock
           />
         </div>
         <div className="gallery__control-button">
@@ -145,7 +144,6 @@ export const Gallery: FC = () => {
               imageSize={24}
               text={isCopied ? t('Copied!') : t('Copy link')}
               isMaxWidth
-              isHoverBlock
             />
           </CopyToClipboard>
         </div>

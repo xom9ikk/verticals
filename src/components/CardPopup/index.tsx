@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   EnumDroppedZoneType, EnumTodoStatus, EnumTodoType, IHeading, ITodo,
 } from '@type/entities';
@@ -19,7 +20,6 @@ import {
 import { Loader } from '@comp/Loader';
 import { Bullet } from '@comp/Bullet';
 import { TextArea } from '@comp/TextArea';
-import { Comments } from '@comp/Comments';
 import { DropZone } from '@comp/DropZone';
 import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
@@ -28,8 +28,11 @@ import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useDebounce } from '@use/debounce';
 import { useColorClass } from '@use/colorClass';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
+import { lazy } from '@router/lazy';
+import { suspense } from '@comp/SuspenseWrapper';
+
+const Comments = lazy(() => import('@comp/Comments'), (module) => module.Comments);
 
 interface ICardPopup {
   columnId: number;
@@ -247,7 +250,6 @@ export const CardPopup: FC<ICardPopup> = ({
                   title={activeTodo.title}
                   headingId={activeTodo.headingId}
                   isActive={false}
-                  isHover
                   isNotificationsEnabled={activeTodo.isNotificationsEnabled}
                   expirationDate={activeTodo.expirationDate}
                   color={activeTodo.color}
@@ -290,7 +292,7 @@ export const CardPopup: FC<ICardPopup> = ({
             </div>
             <hr />
           </div>
-          <Comments />
+          {suspense(Comments)()}
         </DropZone>
       </div>
     </div>

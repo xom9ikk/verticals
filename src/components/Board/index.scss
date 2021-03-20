@@ -14,6 +14,13 @@
   //margin: 0 0 0 6px;
   border-radius: 6px;
   transition: background .1s ease-in-out;
+
+  &:hover {
+    .control-button {
+      opacity: 1;
+    }
+  }
+
   &__counter {
     display: flex;
     justify-content: center;
@@ -24,9 +31,11 @@
     border-radius: 20px;
     padding: 3px 5px 3px 5px;
     font-size: 14px;
+
     &--active {
       background: $white !important;
     }
+
     img {
       width: 16px;
       height: 16px;
@@ -34,19 +43,19 @@
       margin-top: -2px;
     }
   }
-  //&:hover {
-  //  background: rgb(255, 255, 255);
-  //}
+
   &--active {
     background: $primary-light !important;
+
     #{$block}__counter {
       background: $white;
     }
   }
+
   &--editable {
     background: $white !important;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 6px;
-    margin : 1px 0 8px 0;
+    margin: 1px 0 8px 0;
     padding: 5px 10px 5px 6px;
     cursor: pointer;
     border-radius: 6px;
@@ -56,9 +65,11 @@
       max-height: 22px;
       max-width: 22px;
     }
+
     .card__editable-content {
       padding-top: 5px;
     }
+
     .card__textarea {
       font-size: 16px;
       //margin-left: 8px;
@@ -66,47 +77,61 @@
         font-size: 15px;
       }
     }
+
     #{$block}__counter {
       display: none;
     }
   }
+
   &--dragging {
     background: $primary-light !important;
-    box-shadow:  10px 10px 30px rgba(210, 227, 253, 0.5),
+    box-shadow: 10px 10px 30px rgba(210, 227, 253, 0.5),
     -10px -10px 30px rgba(210, 227, 253, 0.3);
   }
+
   &--red {
     background: rgba(255, 106, 86, 0.3);
+
     &:hover {
       background: rgba(255, 106, 86, 0.15);
     }
   }
+
   &--yellow {
     background: rgba(254, 233, 48, 0.3);
+
     &:hover {
       background: rgba(254, 233, 48, 0.15);
     }
   }
+
   &--green {
     background: rgba(156, 196, 71, 0.3);
+
     &:hover {
       background: rgba(156, 196, 71, 0.15);
     }
   }
+
   &--turquoise {
     background: rgba(50, 218, 188, 0.3);
+
     &:hover {
       background: rgba(50, 218, 188, 0.15);
     }
   }
+
   &--blue {
     background: rgba(95, 193, 233, 0.3);
+
     &:hover {
       background: rgba(95, 193, 233, 0.15);
     }
   }
+
   &--gray {
     background: rgba(216, 216, 216, 0.3);
+
     &:hover {
       background: rgba(216, 216, 216, 0.15);
     }

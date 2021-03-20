@@ -15,10 +15,10 @@ interface IMenu {
   id: string;
   onSelect: (action: any, payload: any) => void;
   imageSrc: string;
+  buttonClassName?: string;
   text?: string;
   alt: string;
   tooltip?: string;
-  isHoverBlock?: boolean;
   imageSize?: number;
   size?: number;
   isHide?: boolean;
@@ -40,11 +40,11 @@ interface IMenu {
 const MenuComponent = ({
   id,
   imageSrc,
+  buttonClassName,
   onSelect,
   text,
   alt,
   tooltip,
-  isHoverBlock = false,
   imageSize = 12,
   size,
   isHide = false,
@@ -134,6 +134,7 @@ const MenuComponent = ({
 
   const button = useMemo(() => (
     <ControlButton
+      className={buttonClassName}
       ref={sourceRef}
       imageSrc={imageSrc}
       alt={alt}
@@ -145,7 +146,6 @@ const MenuComponent = ({
       animationDuration={0}
       isHide={isHide}
       isInvisible={isInvisible}
-      isHoverBlock={isHoverBlock}
       isMaxWidth={isMaxWidth}
       isInvertColor={isInvertColor}
       isPrimary={isPrimary}
@@ -157,9 +157,8 @@ const MenuComponent = ({
       onMouseLeave={onMouseLeave}
     />
   ), [
-    isHide, isHoverBlock, isMaxWidth,
-    isInvertColor, size, imageSrc,
-    alt, text,
+    buttonClassName, isHide, isMaxWidth,
+    isInvertColor, size, imageSrc, alt, text,
     activePopupId, style,
   ]);
 

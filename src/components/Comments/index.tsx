@@ -3,15 +3,13 @@ import React, {
 } from 'react';
 import { CommentList } from '@comp/CommentList';
 import { CommentForm } from '@comp/CommentForm';
+import { FormattingHelp } from '@comp/FormattingHelp';
 import { useAutoScroll, ScrollDirection } from '@use/autoScroll';
 import { useSelector } from 'react-redux';
 import { getActiveTodoId, getCommentsByTodoId } from '@store/selectors';
 import { useParamSelector } from '@use/paramSelector';
 
-interface ICommentsWrapper {
-}
-
-export const Comments: FC<ICommentsWrapper> = () => {
+export const Comments: FC = () => {
   const activeTodoId = useSelector(getActiveTodoId);
   const comments = useParamSelector(getCommentsByTodoId, activeTodoId);
 
@@ -52,6 +50,7 @@ export const Comments: FC<ICommentsWrapper> = () => {
         isScrolledToBottom={isLimit}
         onScrollToBottom={scrollToBottom}
       />
+      <FormattingHelp />
     </div>
   );
 };

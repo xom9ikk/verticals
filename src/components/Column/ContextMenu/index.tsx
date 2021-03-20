@@ -14,7 +14,6 @@ interface IColumnContextMenu {
   boardId: number;
   color?: IColor;
   isHide: boolean;
-  isHover: boolean;
   onAddCard: () => void;
   onAddHeading: () => void;
 }
@@ -34,7 +33,6 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
   boardId,
   color,
   isHide,
-  isHover,
   onAddCard,
   onAddHeading,
 }) => {
@@ -84,6 +82,7 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
   return useMemo(() => (isEnabled ? (
     <Menu
       id={`column-${columnId}`}
+      buttonClassName="column-context-menu"
       imageSrc="/assets/svg/dots.svg"
       alt="menu"
       imageSize={22}
@@ -91,7 +90,6 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
       isInvisible
       position="bottom"
       isHide={isHide}
-      isHoverBlock={isHover}
       style={{
         position: 'absolute',
         top: 23,
@@ -136,5 +134,5 @@ export const ColumnContextMenu: FC<IColumnContextMenu> = ({
       />
     </Menu>
   ) : null),
-  [t, columnId, isEnabled, isHide, isHover, color]);
+  [t, columnId, isEnabled, isHide, color]);
 };

@@ -8,10 +8,16 @@
   //border-right: 1px solid rgb(242, 242, 242);
   transition: width .2s ease-in-out;
   height: calc(100vh - 15px);
+
+  .control-button {
+    opacity: 1;
+  }
+
   &--open {
     min-width: $card-popup-width;
     padding: 23px 10px 10px;
     position: relative;
+
     &::before {
       content: "";
       position: absolute;
@@ -26,6 +32,7 @@
       background-repeat: repeat-y;
     }
   }
+
   &__inner {
     display: flex;
     flex-direction: column;
@@ -36,36 +43,45 @@
     box-sizing: border-box;
     border: 3px solid $white;
     transition: .15s box-shadow ease-in-out, .15s border ease-in-out;
+
     &--red {
       @include card-popup-box(255, 106, 86);
     }
+
     &--yellow {
       @include card-popup-box(254, 233, 48);
     }
+
     &--green {
       @include card-popup-box(156, 196, 71);
     }
+
     &--turquoise {
       @include card-popup-box(50, 218, 188);
     }
+
     &--blue {
       @include card-popup-box(95, 193, 233);
     }
+
     &--gray {
       @include card-popup-box(216, 216, 216);
     }
   }
+
   &__header {
     display: flex;
     flex-direction: column;
     padding: 30px 15px 0;
   }
+
   &__input-container {
     display: flex;
     flex-direction: row;
     flex: 1;
     padding-left: 5px;
   }
+
   &__textarea {
     width: 100%;
     box-shadow: $white 0 1px 0;
@@ -73,11 +89,13 @@
     margin-bottom: 10px;
     font-size: 28px;
     font-family: 'Nunito Extra Bold', sans-serif;
+
     &--description {
       font-size: 14px;
       font-family: 'Nunito Regular', sans-serif;
       color: $text;
     }
+
     &-inner {
       display: flex;
       flex-direction: column;
@@ -85,23 +103,28 @@
       margin: 0 5px;
 
     }
+
     &:hover {
       box-shadow: #f1f1f1 0 1px 0;
     }
+
     &:focus {
       box-shadow: #f1f1f1 0 1px 0;
     }
   }
+
   &__toolbar {
     display: flex;
     flex: 1;
     align-items: center;
     justify-content: space-between;
+
     div {
       display: flex;
       align-items: center;
     }
   }
+
   hr {
     margin: 5px 0 5px;
     border: 1px solid rgba(0, 0, 0, 0.06);

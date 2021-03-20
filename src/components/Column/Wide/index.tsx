@@ -54,7 +54,6 @@ export const ColumnWide: FC<IColumnWide> = ({
   const isSearchMode = useSelector(getIsSearchMode);
   const defaultHeadingId = useParamSelector(getDefaultHeadingIdByColumnId, columnId);
 
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
   const handleColumnClick = (event: SyntheticEvent) => {
@@ -105,8 +104,6 @@ export const ColumnWide: FC<IColumnWide> = ({
           'column--dragging': snapshot.isDragging,
           'column--new': mode === EnumColumnMode.New,
         })}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
         onClick={handleColumnClick}
         {...provided.draggableProps}
       >
@@ -148,7 +145,6 @@ export const ColumnWide: FC<IColumnWide> = ({
                         columnId={columnId}
                         boardId={boardId}
                         color={color}
-                        isHover={isHover}
                         isHide={isEditable}
                         onAddCard={handleAddCard}
                         onAddHeading={handleAddHeading}
@@ -193,7 +189,7 @@ export const ColumnWide: FC<IColumnWide> = ({
         </div>
         <ColumnToolbar
           isEnabled={mode === EnumColumnMode.Normal && !isEditable}
-          isHoverBlock={isHover && !isHoverHeader}
+          isInvisible
           onAddCard={handleAddCard}
           onAddHeading={handleAddHeading}
         />
@@ -219,7 +215,7 @@ export const ColumnWide: FC<IColumnWide> = ({
     );
   },
   [snapshot, provided, isEditable,
-    isHoverHeader, isHover, isSearchMode,
+    isHoverHeader, isSearchMode,
     boardId, columnId, belowId,
     title, description, color, mode,
     cardType]); // todos

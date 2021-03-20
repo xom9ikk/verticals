@@ -9,7 +9,6 @@ import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { redirectTo } from '@router/history';
 import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
-import { useHover } from '@use/hover';
 import { useTranslation } from 'react-i18next';
 
 enum EnumMenuActions {
@@ -32,7 +31,6 @@ export const Profile: FC<IProfile> = ({
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
 
-  const { isHovering, hoveringProps } = useHover();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const handleClose = () => {
@@ -89,10 +87,7 @@ export const Profile: FC<IProfile> = ({
   ), [isOpenProfile]);
 
   return (
-    <div
-      className="profile"
-      {...hoveringProps}
-    >
+    <div className="profile">
       <Avatar
         onClick={() => {
           handleMenuButtonClick(EnumMenuActions.OpenProfile);
@@ -105,7 +100,6 @@ export const Profile: FC<IProfile> = ({
         imageSize={22}
         size={24}
         isInvisible
-        isHoverBlock={isHovering}
         position="bottom"
         isAbsolute={false}
         onSelect={handleMenuButtonClick}

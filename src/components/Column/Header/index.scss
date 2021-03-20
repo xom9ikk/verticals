@@ -27,6 +27,12 @@
       //border-radius: 6px;
       background: none;
     }
+
+    &:hover {
+      .column-toolbar {
+        opacity: 0;
+      }
+    }
   }
 
   &__title {

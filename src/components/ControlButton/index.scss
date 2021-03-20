@@ -27,7 +27,7 @@
 
   &__text {
     font-size: 15px;
-    color: transparent;
+    color: $text-light;
     padding-left: 10px;
     //margin-left: -1px;
     transition: color .1s ease-in-out;
@@ -39,8 +39,7 @@
       filter: none;
     }
     #{$block}__text {
-      color: $black !important;
-      filter: none;
+      color: $black;
     }
   }
 

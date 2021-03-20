@@ -9,10 +9,10 @@ import { suspense } from '@comp/SuspenseWrapper';
 import { NotFound } from '@pages/404';
 import { AuthLayout } from '@layouts/auth';
 
-export const MainLayout = lazy(() => import('@layouts/main'), (module) => module.MainLayout);
-export const Register = lazy(() => import('@pages/auth/Register'), (module) => module.Register);
-export const Login = lazy(() => import('@pages/auth/Login'), (module) => module.Login);
-export const Reset = lazy(() => import('@pages/auth/Reset'), (module) => module.Reset);
+const MainLayout = lazy(() => import('@layouts/main'), (module) => module.MainLayout);
+const Register = lazy(() => import('@pages/auth/Register'), (module) => module.Register);
+const Login = lazy(() => import('@pages/auth/Login'), (module) => module.Login);
+const Reset = lazy(() => import('@pages/auth/Reset'), (module) => module.Reset);
 
 export const MainRouter: FC = () => (
   <Router history={history}>

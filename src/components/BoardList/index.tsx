@@ -22,7 +22,6 @@ import {
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
-import { useHover } from '@use/hover';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 
@@ -30,7 +29,6 @@ export const BoardList: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
-  const { isHovering, hoveringProps } = useHover();
 
   const username = useSelector(getUsername);
   const boardPositions = useSelector(getBoardPositions);
@@ -132,21 +130,18 @@ export const BoardList: FC = () => {
   const memoAddNewBoard = useMemo(() => (
     <ControlButton
       imageSrc="/assets/svg/add.svg"
+      className="add-board"
       alt="add"
       text={t('Add board')}
       isInvisible
-      isHoverBlock={isHovering}
       isMaxWidth
       onClick={addNewBoard}
     />
   ),
-  [t, isHovering, editableBoardId]);
+  [t, editableBoardId]);
 
   return (
-    <div
-      className="board-list"
-      {...hoveringProps}
-    >
+    <div className="board-list">
       <Profile onAddNewBoard={addNewBoard} />
       { boardItems }
       { editableBoardId !== NEW_BOARD_ID && memoAddNewBoard }

@@ -5,14 +5,14 @@ import { ControlButton } from '@comp/ControlButton';
 
 interface IColumnToolbar {
   isEnabled: boolean;
-  isHoverBlock: boolean;
+  isInvisible: boolean;
   onAddCard: () => void;
   onAddHeading: () => void;
 }
 
 export const ColumnToolbar: FC<IColumnToolbar> = ({
   isEnabled,
-  isHoverBlock,
+  isInvisible,
   onAddCard,
   onAddHeading,
 }) => {
@@ -21,7 +21,7 @@ export const ColumnToolbar: FC<IColumnToolbar> = ({
   return isEnabled ? (
     <div
       className={cn('column-toolbar', {
-        'column-toolbar--invisible': !isHoverBlock,
+        'column-toolbar--invisible': isInvisible,
       })}
     >
       <div className="column-toolbar__inner">
@@ -29,14 +29,12 @@ export const ColumnToolbar: FC<IColumnToolbar> = ({
           imageSrc="/assets/svg/add.svg"
           text={t('Add card')}
           alt="add"
-          isHoverBlock={isHoverBlock}
           isMaxWidth
           onClick={onAddCard}
         />
         <ControlButton
           imageSrc="/assets/svg/add-head.svg"
           alt="add"
-          isHoverBlock={isHoverBlock}
           imageSize={24}
           size={36}
           tooltip={t('Add heading')}

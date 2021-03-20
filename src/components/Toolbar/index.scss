@@ -5,8 +5,15 @@
   height: 64px;
   position: absolute;
   bottom: 0;
-  z-index:1;
+  z-index: 1;
   background: $sidebar-gradient;
+
+  &:hover {
+    .control-button {
+      opacity: 1;
+    }
+  }
+
   &__inner {
     display: flex;
     justify-content: space-between;
@@ -14,6 +21,7 @@
     margin: 0 20px;
     padding: 10px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+
     &:hover {
       #{$block}__add {
         span {

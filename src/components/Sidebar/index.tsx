@@ -9,6 +9,8 @@ export const Sidebar: FC = ({ children }) => {
   const [isPinnedSidebar, setIsPinnedSidebar] = useState<boolean>(true);
   const [isHover, setIsHover] = useState<boolean>(false);
 
+  const handleSwitcherClick = () => setIsPinnedSidebar((prev) => !prev);
+
   useEffect(() => {
     setIsHover(false);
   }, [isPinnedSidebar]);
@@ -31,14 +33,14 @@ export const Sidebar: FC = ({ children }) => {
         <div className="sidebar__inner">
           <div className="sidebar__toggle">
             <ControlButton
+              className="sidebar-button"
               imageSrc={`/assets/svg/${isPinnedSidebar ? 'hide' : 'show'}-sidebar.svg`}
               tooltip={`${isPinnedSidebar ? t('Hide sidebar') : t('Show sidebar')}`}
               alt="add"
               imageSize={16}
               size={20}
               isInvisible
-              isHoverBlock={isHover}
-              onClick={() => setIsPinnedSidebar((prev) => !prev)}
+              onClick={handleSwitcherClick}
             />
           </div>
           {children}

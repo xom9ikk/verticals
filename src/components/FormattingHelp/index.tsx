@@ -44,7 +44,7 @@ console.log('Okay. Let me multiply it for you', result); // 658878<br>
 <br>
 const places = ['Domino\`s Pizza', 'Mafia', 'KFC', 'McDonald\`s', 'Евразия'];<br>
 const placeForEatToday = places[Math.floor(Math.random() * Math.floor(places.length))];<br>
-console.log(\`Today you will eat at $\{placeForEatToday}, ofc\`); // Today you will eat at Domino\`s Pizza<br>
+console.log(\`Today you will eat at $\{placeForEatToday}, ofc\`); // Today you will eat at Domino\`s Pizza, ofc<br>
 
 \`\`\``,
   `## Tables<br>

@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip';
 
 interface IControlButton {
   imageSrc: string;
+  className?: string;
   text?: string;
   alt: string;
   tooltip?: string;
@@ -28,6 +29,7 @@ interface IControlButton {
 
 const ControlButtonComponent = ({
   imageSrc,
+  className,
   text,
   alt,
   tooltip,
@@ -65,7 +67,7 @@ const ControlButtonComponent = ({
   return (
     <button
       ref={ref}
-      className={cn('control-button', {
+      className={cn('control-button', className, {
         'control-button--hidden': isHide,
         'control-button--invisible': isInvisible && !isHoverBlock,
         'control-button--hover-block': isHoverBlock,

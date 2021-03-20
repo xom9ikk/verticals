@@ -60,7 +60,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
 
   const editableCardId = useSelector(getEditableCardId);
 
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
   const headingContainerRef = useRef<any>(null);
@@ -117,8 +116,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
         className={cn('heading', {
           'heading--dragging': snapshot.isDragging,
         })}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
         onClick={handleHeadingClick}
         {...provided.draggableProps}
       >
@@ -160,7 +157,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
                       isEnabled={mode === EnumHeadingMode.Normal}
                       headingId={headingId}
                       color={color}
-                      isHover={isHover}
                       isHide={isEditable}
                       onAddCard={handleAddCard}
                     />
@@ -176,6 +172,7 @@ export const HeadingWide: FC<IHeadingWide> = ({
                   type={type}
                   isOpenNewCard={editableCardId === `${headingId}-${NEW_TODO_ID}`}
                   dropSnapshot={dropSnapshot}
+                  isShowAddCardButton={isHoverHeader && !isEditable}
                   onAddCard={handleAddCard}
                 />
                 ) }
@@ -189,7 +186,7 @@ export const HeadingWide: FC<IHeadingWide> = ({
   },
   [snapshot, provided, dropSnapshot, dropProvided,
     isEditable, editableCardId,
-    isHoverHeader, isHover, type,
+    isHoverHeader, type,
     columnId, headingId, belowId,
     title, description, color, mode,
     cardType]);

@@ -1,3 +1,6 @@
+import hljs from 'highlight.js';
+import 'highlight.js/styles/tomorrow.css';
+import MarkdownIt from 'markdown-it';
 // @ts-ignore
 import EmojiIt from 'markdown-it-emoji';
 // @ts-ignore
@@ -12,9 +15,6 @@ import MarkdownItMark from 'markdown-it-mark';
 import MarkdownItFootnote from 'markdown-it-footnote';
 // @ts-ignore
 import MarkdownItDeflist from 'markdown-it-deflist';
-import MarkdownIt from 'markdown-it';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/tomorrow.css';
 
 // @ts-ignore
 const md = new MarkdownIt({

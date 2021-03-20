@@ -27,7 +27,6 @@ interface ICardContextMenu {
   title: string;
   headingId: number;
   isActive?: boolean;
-  isHover: boolean;
   isNotificationsEnabled?: boolean;
   expirationDate?: Date | null;
   color?: IColor;
@@ -62,7 +61,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   title,
   headingId,
   isActive,
-  isHover,
   isNotificationsEnabled,
   expirationDate,
   color,
@@ -342,7 +340,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       isInvisible
       isColored={isColored}
       isInvertColor={isActive}
-      isHoverBlock={isHover}
       position="right"
       style={isTransformedPosition ? {
         float: 'right',
@@ -351,17 +348,17 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
       onSelect={handleMenuButtonClick}
     >
       {
-          isOpenDatePicker ? (
-            <DatePicker
-              isOpen={isOpenDatePicker}
-              selectedDate={expirationDate}
-              onSelectDate={handleSelectDate}
-            />
-          ) : buttons
-        }
+        isOpenDatePicker ? (
+          <DatePicker
+            isOpen={isOpenDatePicker}
+            selectedDate={expirationDate}
+            onSelectDate={handleSelectDate}
+          />
+        ) : buttons
+      }
     </Menu>
   ) : null),
-  [isHover, color,
+  [color,
     isNotificationsEnabled,
     status, username, isCopied, isArchivedHeading, isRemovedCards,
     isOpenDatePicker, expirationDate]);

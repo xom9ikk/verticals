@@ -24,12 +24,12 @@ import { Columns } from '@comp/Columns';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import {
-  getActiveBoardId,
   getActiveTodoId,
   getUsername,
 } from '@store/selectors';
 import { TRASH_BOARD_ID } from '@/constants';
 import { useValueRef } from '@use/valueRef';
+import { Gallery } from '@comp/Gallery';
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -41,7 +41,6 @@ export const MainLayout: FC = () => {
 
   const dispatch = useDispatch();
 
-  const activeBoardId = useSelector(getActiveBoardId);
   const activeTodoId = useSelector(getActiveTodoId);
   const username = useSelector(getUsername);
 
@@ -96,7 +95,7 @@ export const MainLayout: FC = () => {
       <Search />
       <BoardList />
     </Sidebar>
-  ), [activeBoardId]);
+  ), []);
 
   const memoRouter = useMemo(() => (
     <Switch>
@@ -116,15 +115,18 @@ export const MainLayout: FC = () => {
       />
       <Route
         path="/"
-        component={() => <Columns />}
+        component={Columns}
       />
     </Switch>
   ), []);
+
+  const memoGallery = useMemo(() => <Gallery />, []);
 
   return (
     <div className="container container--horizontal">
       { memoSidebar }
       { memoRouter }
+      { memoGallery }
     </div>
   );
 };

@@ -13,7 +13,6 @@ interface IHeadingContextMenu {
   headingId: number;
   color?: IColor;
   isHide: boolean;
-  isHover: boolean;
   onAddCard: () => void;
 }
 
@@ -29,7 +28,6 @@ export const HeadingContextMenu: FC<IHeadingContextMenu> = ({
   headingId,
   color,
   isHide,
-  isHover,
   onAddCard,
 }) => {
   const { t } = useTranslation();
@@ -66,6 +64,7 @@ export const HeadingContextMenu: FC<IHeadingContextMenu> = ({
   return useMemo(() => (isEnabled ? (
     <Menu
       id={`heading-${headingId}`}
+      buttonClassName="heading-context-menu"
       imageSrc="/assets/svg/dots.svg"
       alt="menu"
       imageSize={22}
@@ -73,11 +72,10 @@ export const HeadingContextMenu: FC<IHeadingContextMenu> = ({
       isInvisible
       position="bottom"
       isHide={isHide}
-      isHoverBlock={isHover}
       style={{
         position: 'absolute',
         top: 7,
-        right: 10,
+        right: 6,
       }}
       onSelect={handleMenuButtonClick}
     >
@@ -108,5 +106,5 @@ export const HeadingContextMenu: FC<IHeadingContextMenu> = ({
       />
     </Menu>
   ) : null),
-  [t, headingId, isEnabled, isHide, isHover, color]);
+  [t, headingId, isEnabled, isHide, color]);
 };

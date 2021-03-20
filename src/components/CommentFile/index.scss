@@ -8,20 +8,29 @@
   background: #f7f7f7;
   transition: box-shadow .3s ease-in-out;
   border-radius: 6px;
-cursor: pointer;
+  cursor: pointer;
   margin: 5px;
+
   &:hover {
+    .control-button {
+      opacity: 1;
+    }
+
     box-shadow: $primary-light 0 0 0 2px;
+
     #{$block}__overlay {
       opacity: 1;
     }
+
     #{$block}__size {
       opacity: 1;
     }
+
     #{$block}__show-more {
       color: $primary;
     }
   }
+
   &__overlay {
     z-index: 1;
     position: absolute;
@@ -29,7 +38,7 @@ cursor: pointer;
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(255,255,255,0.85);
+    background: rgba(255, 255, 255, 0.85);
     transition: opacity .3s ease-in-out;
     opacity: 0;
     display: flex;
@@ -45,12 +54,14 @@ cursor: pointer;
     //  padding: 5px 15px 0px;
     //}
   }
+
   &__show-more {
     width: 100%;
     text-align: center;
     color: $text-light;
     z-index: 1;
   }
+
   &--image {
     height: 200px;
 
@@ -58,10 +69,12 @@ cursor: pointer;
       justify-content: flex-end;
     }
   }
+
   &--compact {
     max-width: 47%;
     max-height: 120px;
   }
+
   &__image {
     position: absolute;
     top: 0;
@@ -74,6 +87,7 @@ cursor: pointer;
     border-radius: inherit;
     z-index: 0;
   }
+
   &__inner {
     display: flex;
     padding: 18px 12px;
@@ -83,12 +97,14 @@ cursor: pointer;
     align-items: flex-start;
     //z-index: 1;
   }
+
   &__info {
     position: relative;
     display: flex;
     align-items: center;
     font-size: 14px;
     color: $text-dark;
+
     &--text {
       white-space: nowrap;
       max-width: 110px;
@@ -96,6 +112,7 @@ cursor: pointer;
       text-overflow: ellipsis;
     }
   }
+
   &__extension {
     display: flex;
     justify-content: center;
@@ -104,12 +121,14 @@ cursor: pointer;
     position: relative;
     width: 16px;
     margin-right: 10px;
+
     img {
       position: absolute;
       width: 20px;
       height: 24px;
       filter: grayscale(1) brightness(1.4);
     }
+
     span {
       margin-top: 10px;
       font-size: 7px;
@@ -118,16 +137,19 @@ cursor: pointer;
       color: $text;
     }
   }
+
   &__size {
     position: absolute;
     color: $text;
     font-size: 12px;
     opacity: 0;
     transition: opacity .3s ease-in-out;
+
     &--image {
       bottom: 12px;
       right: 20px;
     }
+
     &--file {
       bottom: 5px;
       right: 10px;

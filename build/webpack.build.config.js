@@ -63,19 +63,19 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
     }),
   ],
   optimization: {
-    splitChunks: {},
-    // splitChunks: {
-    //   chunks: 'all',
-    //   minChunks: 2,
-    //   cacheGroups: {
-    //     vendor: {
-    //       name: 'vendors',
-    //       test: /node_modules/,
-    //       // chunks: 'all',
-    //       // enforce: true,
-    //     },
-    //   },
-    // },
+    // splitChunks: {},
+    splitChunks: {
+      chunks: 'all',
+      // minChunks: 2,
+      // cacheGroups: {
+      //   vendor: {
+      //     name: 'vendors',
+      //     test: /node_modules/,
+      //     // chunks: 'all',
+      //     // enforce: true,
+      //   },
+      // },
+    },
     minimize: true,
     minimizer: [
       new TerserPlugin(),

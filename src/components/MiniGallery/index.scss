@@ -8,11 +8,12 @@
   position: relative;
   //height: auto;
 
-  &--opened {
-    margin-top: 5px;
-  }
+  //&--opened {
+  //  margin-top: 5px;
+  //}
 
   &__wrapper {
+    margin-top: 5px;
     //max-width: 215px;
     border-radius: 6px;
     border: 2px solid transparent;
@@ -77,7 +78,7 @@
         color: $white;
         height: 24px;
         width: 24px;
-        top: 8px;
+        top: 13px;
         right: 38px;
         left: auto;
         border-radius: 6px;
@@ -104,7 +105,7 @@
         color: $white;
         height: 24px;
         width: 24px;
-        top: 8px;
+        top: 13px;
         right: 8px;
         border-radius: 6px;
         background-color: rgba(0, 0, 0, 0.2);

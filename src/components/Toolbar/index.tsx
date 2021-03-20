@@ -30,7 +30,6 @@ enum EnumToolbarActions {
 export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [isPinSidebar, setIsPinSidebar] = useState<boolean>(true);
   const language = useSelector(getLanguage);
 
@@ -79,18 +78,13 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   };
 
   return (
-    <div
-      className="toolbar"
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
-    >
+    <div className="toolbar">
       <div className="toolbar__inner">
         <ControlButton
           imageSrc="/assets/svg/add.svg"
           text={t('New workspace')}
           alt="add"
           isMaxWidth
-          isHoverBlock={isHover}
           onClick={() => handleMenuButtonClick(EnumToolbarActions.NewWorkspace)}
         />
         <Menu
@@ -98,7 +92,6 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           imageSrc="/assets/svg/filter.svg"
           alt="preferences"
           tooltip={t('Preferences')}
-          isHoverBlock={isHover}
           imageSize={24}
           size={36}
           position="top"

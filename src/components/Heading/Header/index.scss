@@ -10,6 +10,7 @@
     border: none;
     outline: none;
     letter-spacing: 0;
+    cursor: grab;
     transition: background .1s ease-out, border .2s ease-in-out;
 
     &-container {

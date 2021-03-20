@@ -23,6 +23,10 @@
 
     &:hover {
       background: $hover-color;
+
+      .control-button {
+        opacity: 1;
+      }
     }
 
     &--invert {

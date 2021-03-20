@@ -8,7 +8,13 @@
   width: $sidebar-width+1;
   background: $sidebar-gradient;
   border-right: 1px solid rgba(0, 0, 0, 0.05);
-  z-index: 2;
+  z-index: 3;
+
+  &:hover {
+    .sidebar-button {
+      opacity: 1;
+    }
+  }
 
   &__inner {
     max-height: 100vh;

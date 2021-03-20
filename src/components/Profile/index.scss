@@ -3,6 +3,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 6px 6px;
+  &:hover {
+    .control-button {
+      opacity: 1;
+    };
+  }
+
   &__popup {
     position: fixed;
     right: 10px;

@@ -27,6 +27,7 @@ interface ICardsContainer {
   mode: EnumHeadingMode;
   type: EnumHeadingType;
   isOpenNewCard: boolean;
+  isShowAddCardButton?: boolean;
   dropSnapshot: DroppableStateSnapshot;
   onAddCard?: () => void;
 }
@@ -37,6 +38,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
   mode,
   type,
   isOpenNewCard,
+  isShowAddCardButton,
   dropSnapshot,
   onAddCard,
 }) => {
@@ -61,14 +63,11 @@ export const CardsContainer: FC<ICardsContainer> = ({
       style={{ margin: '1px 0' }}
       isMaxWidth
       isHoverBlock={!dropSnapshot.isDraggingOver
-      && (
-        isHovering
-          || (type === EnumHeadingType.Default && todosCount === 0)
-      )}
+        && (isHovering || isShowAddCardButton || (type === EnumHeadingType.Default && todosCount === 0))}
       onClick={onAddCard}
     />
     )
-  ), [t, isHovering, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
+  ), [t, isHovering, isShowAddCardButton, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
 
   const memoNewCard = useMemo(() => (
     <Card

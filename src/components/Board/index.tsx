@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useMemo, useRef,
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +51,6 @@ export const Board: FC<IBoardComponent> = ({
     belowId, icon, color, title = '', description = '',
   } = useParamSelector(getBoardById, boardId) as IBoard;
 
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useEffectState<string>(title);
   const [descriptionValue, setDescriptionValue] = useEffectState<string>(description);
 
@@ -164,8 +163,6 @@ export const Board: FC<IBoardComponent> = ({
         'board--dragging': snapshot?.isDragging,
         'board--active': isActive,
       })}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
     >
       {
         isEditable ? (
@@ -215,7 +212,6 @@ export const Board: FC<IBoardComponent> = ({
                     title={title}
                     color={color}
                     isActive={isActive}
-                    isHover={isHover}
                   />
                 )}
           </RoundedButton>
@@ -223,7 +219,7 @@ export const Board: FC<IBoardComponent> = ({
       }
     </div>
   ), [
-    t, isHover, isActive, isEditable,
+    t, isActive, isEditable,
     titleValue, descriptionValue, snapshot,
     color, icon, username, isSearchMode,
   ]);

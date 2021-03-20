@@ -19,7 +19,6 @@ interface IBoardContextMenu {
   title: string;
   color?: IColor;
   isActive: boolean;
-  isHover: boolean;
 }
 
 enum EnumMenuActions {
@@ -36,7 +35,6 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
   title,
   color,
   isActive,
-  isHover,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -93,7 +91,6 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
       imageSize={22}
       size={24}
       isInvisible
-      isHoverBlock={isHover}
       style={{
         position: 'absolute',
         right: 6,
@@ -199,5 +196,5 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
         action={EnumMenuActions.Delete}
       />
     </Menu>
-  ), [t, boardId, isHover, isActive, color, username, isCopied]);
+  ), [t, boardId, isActive, color, username, isCopied]);
 };

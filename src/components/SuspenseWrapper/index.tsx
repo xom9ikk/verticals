@@ -15,7 +15,7 @@ export const SuspenseWrapper: FC<ISuspenseWrapper> = ({
   </Suspense>
 );
 
-export const suspense = (Component: FC) => (props: any) => (
+export const suspense = (Component: FC) => (props?: any) => (
   <SuspenseWrapper
     {...props}
     component={Component}

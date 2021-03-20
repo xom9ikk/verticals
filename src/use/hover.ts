@@ -6,16 +6,23 @@ export const useHover = () => {
   return {
     isHovering,
     hoveringProps: {
-      onMouseEnter: () => {
-        setIsHovering(true);
-      },
-      onMouseLeave: () => {
-        setIsHovering(false);
-      },
-      // onMouseOver: () => {
+      // onMouseEnter: () => {
       //   setIsHovering(true);
       // },
-      // onMouseOut: () => {
+      // onMouseLeave: () => {
+      //   console.log('onMouseLeave', false);
+      //   setIsHovering(false);
+      // },
+      onMouseOver: () => {
+        console.log('onMouseLeave', true);
+        setIsHovering(true);
+      },
+      onMouseOut: () => {
+        console.log('onMouseOut', false);
+        setIsHovering(false);
+      },
+      // onMouseOutCapture: () => {
+      //   console.log('onMouseOutCapture', false);
       //   setIsHovering(false);
       // },
     },
