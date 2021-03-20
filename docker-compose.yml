@@ -2,13 +2,13 @@ version: "3.5"
 services:
   verticals-prod:
     image: verticals-prod
+    restart: always
     container_name: verticals-prod
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
       - "172.50.13.1:8080:80"
-#      - "0.0.0.0:8080:80"
     networks:
       verticals-prod_net:
         ipv4_address: 172.50.13.11
