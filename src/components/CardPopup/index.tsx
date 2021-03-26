@@ -23,7 +23,7 @@ import { TextArea } from '@comp/TextArea';
 import { DropZone } from '@comp/DropZone';
 import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
-import { CardContextMenu } from '@comp/CardContextMenu';
+import { TodoContextMenu } from '@comp/Card/Todo/ContextMenu';
 import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { useDebounce } from '@use/debounce';
 import { useColorClass } from '@use/colorClass';
@@ -194,9 +194,8 @@ export const CardPopup: FC<ICardPopup> = ({
                 )
               }
               <DateBadge
-                popupId="card-popup"
+                popupId={`card-popup-${activeTodoId}`}
                 position="bottom"
-                todoId={activeTodoId!}
                 style={{
                   position: 'absolute',
                   top: 5,
@@ -244,7 +243,7 @@ export const CardPopup: FC<ICardPopup> = ({
                   onSelectDate={handleSelectDate}
                   selectedDate={activeTodo.expirationDate}
                 />
-                <CardContextMenu
+                <TodoContextMenu
                   menuId="popup"
                   todoId={activeTodo.id}
                   title={activeTodo.title}

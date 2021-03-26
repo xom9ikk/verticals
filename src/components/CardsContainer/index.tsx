@@ -5,7 +5,6 @@ import {
 } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import { EnumHeadingType, EnumTodoType } from '@type/entities';
-import { Card } from '@comp/Card';
 import {
   getActiveTodoId,
   getEditableCardId,
@@ -20,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
 import { EnumHeadingMode } from '@comp/Heading';
 import { FallbackLoader } from '@comp/FallbackLoader';
+import { TodoCard } from '@comp/Card/Todo';
 
 interface ICardsContainer {
   headingId: number;
@@ -70,39 +70,40 @@ export const CardsContainer: FC<ICardsContainer> = ({
   ), [t, isHovering, isShowAddCardButton, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
 
   const memoNewCard = useMemo(() => (
-    <Card
+    <TodoCard
       todoId={NEW_TODO_ID}
-      headingIdIdForNew={headingId}
+      headingIdForNew={headingId}
       cardType={cardType}
       isEditable
     />
-  ), [headingId, editableCardId]);
+  ), [headingId]);
+
+  const memoTodoList = useMemo(() => todoPositions?.map((id, index) => (
+    <Draggable
+      key={id}
+      draggableId={`todo-${id}`}
+      index={index}
+      isDragDisabled={isSearchMode}
+    >
+      {(dragProvided, dragSnapshot) => (
+        <TodoCard
+          cardType={cardType}
+          provided={dragProvided}
+          snapshot={dragSnapshot}
+          key={id}
+          todoId={id}
+          isActive={activeTodoId === id}
+          isEditable={id === editableCardId}
+          invertColor={type === EnumHeadingType.Archived}
+        />
+      )}
+    </Draggable>
+  )),
+  [todoPositions, isSearchMode, cardType, activeTodoId, editableCardId]);
 
   return (
     <div {...hoveringProps}>
-      {
-        todoPositions?.map((id, index) => (
-          <Draggable
-            key={id}
-            draggableId={`todo-${id}`}
-            index={index}
-            isDragDisabled={isSearchMode}
-          >
-            {(dragProvided, dragSnapshot) => (
-              <Card
-                cardType={cardType}
-                provided={dragProvided}
-                snapshot={dragSnapshot}
-                key={id}
-                todoId={id}
-                isActive={activeTodoId === id}
-                isEditable={id === editableCardId}
-                invertColor={type === EnumHeadingType.Archived}
-              />
-            )}
-          </Draggable>
-        ))
-      }
+      {memoTodoList}
       <FallbackLoader
         isAbsolute
         size="small"

@@ -5,6 +5,7 @@ import { BoardsReducer } from './boards';
 import { ColumnsReducer } from './columns';
 import { HeadingsReducer } from './headings';
 import { TodosReducer } from './todos';
+import { SubTodosReducer } from './sub-todos';
 import { CommentsReducer } from './comments';
 import { CommentAttachmentsReducer } from './comment-attachments';
 
@@ -15,6 +16,7 @@ export const rootReducer = combineReducers({
   columns: ColumnsReducer,
   headings: HeadingsReducer,
   todos: TodosReducer,
+  subTodos: SubTodosReducer,
   comments: CommentsReducer,
   commentAttachments: CommentAttachmentsReducer,
 });

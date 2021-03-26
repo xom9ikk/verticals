@@ -28,16 +28,21 @@
   &__text {
     font-size: 15px;
     color: $text-light;
-    padding-left: 10px;
     //margin-left: -1px;
     transition: color .1s ease-in-out;
+
+    &--with-image {
+      padding-left: 10px;
+    }
   }
 
   &:hover {
     background: $primary-light;
+
     img {
       filter: none;
     }
+
     #{$block}__text {
       color: $black;
     }
@@ -85,12 +90,14 @@
     img {
       position: absolute;
     }
+
     #{$block}__text {
       padding-left: 0;
       font-size: 9px;
       color: $primary;
       filter: grayscale(1) brightness(1.4);
     }
+
     &:hover {
       #{$block}__text {
         color: #2688f3 !important;

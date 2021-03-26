@@ -1,0 +1,41 @@
+.sub-card-container {
+  display: flex;
+  width: 100%;
+  position: relative;
+  max-height: 1000px;
+  transition: max-height .2s ease-in-out;
+  overflow: scroll;
+  padding-left: 15px;
+
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  &::before {
+    content: "";
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+  }
+
+  &--collapse {
+    max-height: 0;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 6px 0 6px;
+    max-height: 100%;
+    width: 100%;
+    border-radius: 6px;
+
+    &--dragging-over {
+      box-shadow: inset 0 0 0 2px $primary;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import cn from 'classnames';
 import ReactTooltip from 'react-tooltip';
 
 interface IControlButton {
-  imageSrc: string;
+  imageSrc?: string;
   className?: string;
   text?: string;
   alt: string;
@@ -92,14 +92,19 @@ const ControlButtonComponent = ({
       data-for="tooltip"
       data-tip={tooltip}
     >
-      <img
-        src={imageSrc}
-        alt={alt}
-        style={{ width: style?.width || imageSize, height: imageSize }}
-      />
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={alt}
+          style={{ width: style?.width || imageSize, height: imageSize }}
+        />
+      )}
       {
         (text || isTextable) && (
-        <span className="control-button__text">
+        <span className={cn('control-button__text', {
+          'control-button__text--with-image': imageSrc,
+        })}
+        >
           &nbsp;
           {text}
           &nbsp;

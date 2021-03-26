@@ -70,7 +70,7 @@ export const HeadingContextMenu: FC<IHeadingContextMenu> = ({
       imageSize={22}
       size={24}
       isInvisible
-      position="bottom"
+      position="right"
       isHide={isHide}
       style={{
         position: 'absolute',

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Input } from '@comp/Input';
 import { ControlButton } from '@comp/ControlButton';
 import {
-  BoardsActions, ColumnsActions, HeadingsActions, SearchActions, SystemActions, TodosActions,
+  BoardsActions, ColumnsActions, HeadingsActions, SearchActions, SubTodosActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 import { useDebounce } from '@use/debounce';
@@ -36,6 +36,7 @@ export const Search: FC = () => {
       dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(HeadingsActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
+      dispatch(SubTodosActions.effect.fetchByBoardId({ boardId: activeBoardId! }));
       dispatch(SystemActions.setIsSearchMode(false));
     }
   }, [query, isSearchMode]);

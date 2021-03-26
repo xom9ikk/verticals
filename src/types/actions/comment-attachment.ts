@@ -4,6 +4,10 @@ export interface IFetchCommentAttachmentsByTodoId {
   readonly todoId: number;
 }
 
+export interface IFetchCommentAttachmentsBySubTodoId {
+  readonly subTodoId: number;
+}
+
 export type ISetCommentAttachments = ICommentAttachments;
 export type IAddCommentAttachment = ICommentAttachment;
 

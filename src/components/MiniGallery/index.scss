@@ -48,7 +48,7 @@
       text-align: center;
       transition: opacity .3s;
       transform: translateZ(0);
-      z-index: 10;
+      z-index: 2;
       &-fraction {
         color: $white;
         font-size: 10px;
@@ -70,7 +70,7 @@
     &-button {
       &-prev {
         position: absolute;
-        z-index: 10;
+        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -97,7 +97,7 @@
       }
       &-next {
         position: absolute;
-        z-index: 10;
+        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -8,8 +8,11 @@ import {
   IColumnService,
   IHeadingService,
   ITodoService,
+  ISubTodoService,
   ICommentAttachmentService,
-  ICommentService, ISearchService, IUpdateService,
+  ICommentService,
+  ISearchService,
+  IUpdateService,
   IUserService,
 } from '@inversify/interfaces/services';
 
@@ -27,6 +30,8 @@ export class Services implements IServices {
 
   todoService: ITodoService;
 
+  subTodoService: ISubTodoService;
+
   commentService: ICommentService;
 
   commentAttachmentService: ICommentAttachmentService;
@@ -42,6 +47,7 @@ export class Services implements IServices {
     @inject(TYPES.ColumnService) columnService: IColumnService,
     @inject(TYPES.HeadingService) headingService: IHeadingService,
     @inject(TYPES.TodoService) todoService: ITodoService,
+    @inject(TYPES.SubTodoService) subTodoService: ISubTodoService,
     @inject(TYPES.CommentService) commentService: ICommentService,
     @inject(TYPES.CommentAttachmentService) commentAttachmentService: ICommentAttachmentService,
     @inject(TYPES.SearchService) searchService: ISearchService,
@@ -53,6 +59,7 @@ export class Services implements IServices {
     this.columnService = columnService;
     this.headingService = headingService;
     this.todoService = todoService;
+    this.subTodoService = subTodoService;
     this.commentService = commentService;
     this.commentAttachmentService = commentAttachmentService;
     this.searchService = searchService;

@@ -2,17 +2,9 @@ import React, { FC, useState } from 'react';
 import { MiniGallery } from '@comp/MiniGallery';
 import { CardAttachments } from '@comp/CardAttachments';
 import { ControlButton } from '@comp/ControlButton';
-import { CommentAttachmentsActions } from '@store/actions';
-import { useDispatch } from 'react-redux';
-import {
-  getCommentFileAttachmentsByTodoId,
-  getCommentImageAttachmentsByTodoId,
-  getCommentsByTodoId,
-  getWidthByHeadingId,
-} from '@store/selectors';
 import { useTranslation } from 'react-i18next';
-import { useParamSelector } from '@use/paramSelector';
 import { DEFAULT_COLUMN_WIDTH } from '@/constants';
+import { ICommentAttachments, IComments } from '@type/entities';
 
 enum EnumToggleType {
   Files,
@@ -21,8 +13,11 @@ enum EnumToggleType {
 }
 
 interface ICardAttachmentsPreview {
-  headingId: number;
-  todoId: number;
+  comments: IComments;
+  images: ICommentAttachments;
+  files: ICommentAttachments;
+  columnWidth: number | null;
+  attachmentFetcher: () => void;
   isActive?: boolean;
   commentsCount?: number;
   imagesCount?: number;
@@ -30,24 +25,21 @@ interface ICardAttachmentsPreview {
 }
 
 export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
-  headingId,
-  todoId,
+  comments,
+  images,
+  files,
+  columnWidth,
+  attachmentFetcher,
   isActive,
   commentsCount,
   imagesCount,
   attachmentsCount,
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const comments = useParamSelector(getCommentsByTodoId, todoId);
-  const imageAttachments = useParamSelector(getCommentImageAttachmentsByTodoId, todoId);
-  const fileAttachments = useParamSelector(getCommentFileAttachmentsByTodoId, todoId);
-  const columnWidth = useParamSelector(getWidthByHeadingId, headingId);
 
   const commentsCountWithCache = comments?.length || commentsCount;
-  const imagesCountWithCache = imageAttachments?.length || imagesCount;
-  const filesCountWithCache = fileAttachments?.length || attachmentsCount;
+  const imagesCountWithCache = images?.length || imagesCount;
+  const filesCountWithCache = files?.length || attachmentsCount;
 
   const [isShowFiles, setIsShowFiles] = useState<boolean>(false);
   const [isShowGallery, setIsShowGallery] = useState<boolean>(false);
@@ -85,7 +77,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
         event.stopPropagation();
         setTimeout(() => setIsShowFiles((prev) => {
           if (!prev) {
-            dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: todoId! }));
+            attachmentFetcher();
           }
           return !prev;
         }), 400);
@@ -95,7 +87,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
         event.stopPropagation();
         setTimeout(() => setIsShowGallery((prev) => {
           if (!prev) {
-            dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: todoId! }));
+            attachmentFetcher();
           }
           return !prev;
         }), 300);
@@ -109,11 +101,11 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
     <>
       <div className="card__toggle-container">
         {renderIcon(
-          filesCountWithCache, 'files', t('Show Files'),
+          filesCountWithCache, 'files', isShowFiles ? t('Hide Files') : t('Show Files'),
           (e) => handleToggle(e, EnumToggleType.Files), isShowFiles,
         )}
         {renderIcon(
-          imagesCountWithCache, 'images', t('Show Gallery'),
+          imagesCountWithCache, 'images', isShowGallery ? t('Hide Gallery') : t('Show Gallery'),
           (e) => handleToggle(e, EnumToggleType.Gallery), isShowGallery,
         )}
         {renderIcon(
@@ -122,12 +114,12 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
         )}
       </div>
       <MiniGallery
-        todoId={todoId}
+        images={images}
         isCollapse={!isShowGallery}
         width={columnWidth === null ? DEFAULT_COLUMN_WIDTH : columnWidth}
       />
       <CardAttachments
-        todoId={todoId}
+        files={files}
         isCollapse={!isShowFiles}
       />
     </>

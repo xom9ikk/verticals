@@ -1,0 +1,25 @@
+.sub-card {
+  &:hover {
+    .subcard-context-menu {
+      opacity: 1;
+    }
+  }
+
+  .card {
+    &__block {
+      padding: 4px 4px 4px 2px;
+
+      .subcard-context-menu {
+        transform: scale(0.9);
+      }
+    }
+
+    &__content {
+      &--editable {
+        .card__block {
+          padding-top: 10px;
+        }
+      }
+    }
+  }
+}

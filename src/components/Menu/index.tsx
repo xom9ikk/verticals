@@ -91,7 +91,6 @@ const MenuComponent = ({
       child, {
         ...child.props,
         onClick: () => {
-          console.log('onClick');
           onSelect(child.props.action, child.props.payload);
         },
       },

@@ -3,6 +3,7 @@ import { IRootState } from '@store/reducers';
 import { TRASH_COLUMN_ID } from '@/constants';
 import i18n from '@/i18n';
 import { getHeadings } from '@store/selectors/headings';
+import { getTodos } from '@store/selectors/todos';
 
 export const getColumns = (state: IRootState) => state.columns;
 export const getColumnPositionsByBoardId = (
@@ -32,6 +33,15 @@ export const getWidthByHeadingId = (headingId: number) => createSelector(
   [getColumns, getHeadings],
   (columns, headings) => {
     const targetHeading = headings.entities.find((heading) => heading.id === headingId);
+    const targetColumn = columns.entities.find((column) => column.id === targetHeading?.columnId);
+    return targetColumn?.width ?? null;
+  },
+);
+export const getWidthByTodoId = (todoId: number) => createSelector(
+  [getColumns, getHeadings, getTodos],
+  (columns, headings, todos) => {
+    const targetTodo = todos.entities.find((todo) => todo.id === todoId);
+    const targetHeading = headings.entities.find((heading) => heading.id === targetTodo?.headingId);
     const targetColumn = columns.entities.find((column) => column.id === targetHeading?.columnId);
     return targetColumn?.width ?? null;
   },

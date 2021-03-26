@@ -45,6 +45,12 @@ describe('System reducer', () => {
       editableCardId: 13,
     });
   });
+  it('set editable card id', () => {
+    expect(SystemReducer(initialState, SystemActions.setEditableSubCardId(17))).toEqual({
+      ...initialState,
+      editableSubCardId: 17,
+    });
+  });
   it('set is search mode', () => {
     expect(SystemReducer(initialState, SystemActions.setIsSearchMode(true))).toEqual({
       ...initialState,

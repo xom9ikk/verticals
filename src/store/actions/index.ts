@@ -5,6 +5,7 @@ export * from './boards';
 export * from './columns';
 export * from './headings';
 export * from './todos';
+export * from './sub-todos';
 export * from './comments';
 export * from './comment-attachments';
 export * from './search';

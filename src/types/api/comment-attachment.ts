@@ -9,6 +9,14 @@ export type IGetCommentAttachmentsByTodoIdResponse = IServerResponse<{
   readonly attachments: ICommentAttachments;
 }>;
 
+export interface IGetCommentAttachmentsBySubTodoIdRequest {
+  readonly subTodoId: number;
+}
+
+export type IGetCommentAttachmentsBySubTodoIdResponse = IServerResponse<{
+  readonly attachments: ICommentAttachments;
+}>;
+
 export interface IUploadCommentAttachmentRequest {
   readonly commentId: number;
   readonly file: FormData;

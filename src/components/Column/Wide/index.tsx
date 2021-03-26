@@ -11,12 +11,11 @@ import { ColumnToolbar } from '@comp/Column/Toolbar';
 import { ColumnContextMenu } from '@comp/Column/ContextMenu';
 import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { SystemActions } from '@store/actions';
-import { getDefaultHeadingIdByColumnId, getIsSearchMode } from '@store/selectors';
+import { getIsSearchMode } from '@store/selectors';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { NEW_COLUMN_ID, NEW_HEADING_ID, NEW_TODO_ID } from '@/constants';
+import { NEW_COLUMN_ID, NEW_HEADING_ID } from '@/constants';
 import { DeletedCardsContainer } from '@comp/DeletedCardsContainer';
 import { Headings } from '@comp/Headings';
-import { useParamSelector } from '@use/paramSelector';
 
 interface IColumnWide {
   snapshot: DraggableStateSnapshot;
@@ -52,8 +51,6 @@ export const ColumnWide: FC<IColumnWide> = ({
   const dispatch = useDispatch();
 
   const isSearchMode = useSelector(getIsSearchMode);
-  const defaultHeadingId = useParamSelector(getDefaultHeadingIdByColumnId, columnId);
-
   const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
 
   const handleColumnClick = (event: SyntheticEvent) => {
@@ -64,7 +61,7 @@ export const ColumnWide: FC<IColumnWide> = ({
   };
 
   const handleAddCard = () => {
-    dispatch(SystemActions.setEditableCardId(`${defaultHeadingId}-${NEW_TODO_ID}`));
+    dispatch(SystemActions.effect.setEditableCardIdByColumnId(columnId));
   };
 
   const handleAddHeading = () => {

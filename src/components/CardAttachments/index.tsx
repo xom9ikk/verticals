@@ -1,50 +1,48 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useDownload } from '@use/download';
-import { getCommentFileAttachmentsByTodoId } from '@store/selectors';
-import { useParamSelector } from '@use/paramSelector';
+import { ICommentAttachments } from '@type/entities';
 
 interface ICardAttachments {
-  todoId?: number,
+  files: ICommentAttachments,
   isCollapse: boolean,
 }
 
 export const CardAttachments: FC<ICardAttachments> = ({
-  todoId = null,
+  files,
   isCollapse,
 }) => {
   const { download } = useDownload();
-  const attachments = useParamSelector(getCommentFileAttachmentsByTodoId, todoId);
 
-  return attachments && attachments.length ? (
+  return (
     <div className={cn('card-attachments', {
       'card-attachments--collapse': isCollapse,
     })}
     >
       <div className="card-attachments__inner">
         {
-          attachments.map((attachment) => (
+          files.map((file) => (
             <button
-              key={attachment.path}
+              key={file.path}
               className="card-attachment"
               onClick={(e) => {
                 e.stopPropagation();
-                download(attachment.path);
+                download(file.path);
               }}
             >
               <div className="comment-file__extension">
                 <img src="/assets/svg/extension.svg" alt="extension" />
                 <span>
-                  {attachment.extension.substring(0, 4)}
+                  {file.extension.substring(0, 4)}
                 </span>
               </div>
               <span className="card-attachment__name">
-                {attachment.name}
+                {file.name}
               </span>
             </button>
           ))
         }
       </div>
     </div>
-  ) : null;
+  );
 };

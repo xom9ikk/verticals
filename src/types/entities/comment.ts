@@ -8,7 +8,8 @@ export interface ICommentLike {
 export interface IComment {
   readonly id: number;
   readonly userId: number;
-  readonly todoId: number;
+  readonly todoId?: number;
+  readonly subTodoId?: number;
   readonly text: string;
   readonly createdAt: number;
   readonly updatedAt: number | null;

@@ -2,10 +2,11 @@
   $block: &;
 
   position: absolute;
+  left: 7px;
+  right: 7px;
   display: flex;
   flex: 1;
   align-items: center;
-  width: calc(100% - 20px);
   height: 40px;
   bottom: 0;
   z-index: 1;

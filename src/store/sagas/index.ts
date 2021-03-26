@@ -5,6 +5,7 @@ import { watchBoard } from '@store/sagas/board';
 import { watchColumn } from '@store/sagas/column';
 import { watchHeading } from '@store/sagas/heading';
 import { watchTodo } from '@store/sagas/todo';
+import { watchSubTodo } from '@store/sagas/sub-todo';
 import { watchComment } from '@store/sagas/comment';
 import { watchCommentAttachment } from '@store/sagas/comment-attachment';
 import { watchSearch } from '@store/sagas/search';
@@ -21,6 +22,7 @@ const {
   columnService,
   headingService,
   todoService,
+  subTodoService,
   commentService,
   commentAttachmentService,
   searchService,
@@ -35,6 +37,7 @@ export function* rootSaga() {
     fork(watchColumn, columnService),
     fork(watchHeading, headingService),
     fork(watchTodo, todoService),
+    fork(watchSubTodo, subTodoService),
     fork(watchComment, commentService),
     fork(watchCommentAttachment, commentAttachmentService),
     fork(watchSearch, searchService),

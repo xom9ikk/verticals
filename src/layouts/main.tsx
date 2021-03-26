@@ -15,7 +15,7 @@ import {
   BoardsActions,
   UserActions,
   ColumnsActions,
-  TodosActions, UpdatesActions,
+  TodosActions, UpdatesActions, SubTodosActions,
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
@@ -54,6 +54,7 @@ export const MainLayout: FC = () => {
     dispatch(BoardsActions.removeTemp());
     dispatch(ColumnsActions.removeTemp());
     dispatch(TodosActions.removeTemp());
+    dispatch(SubTodosActions.removeTemp());
     const isCardOpened = !!refActiveTodoId.current;
     if (isCardOpened) {
       redirectTo(`/${refUsername.current}/${refBoardId.current}`);

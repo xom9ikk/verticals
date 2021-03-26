@@ -9,6 +9,7 @@ import {
   ISetSystemEditableColumnId,
   ISetSystemEditableHeadingId,
   ISetSystemEditableCardId,
+  ISetSystemEditableSubCardId,
   ISetSystemActivePopupId,
   ISetSystemLanguage,
   ISetSystemIsSearchMode,
@@ -26,6 +27,7 @@ export const SystemActions = {
   effect: {
     setLanguage: createAction<ISetSystemLanguage>('SYSTEM-EFFECT/SET_LANGUAGE'),
     fetchLanguage: createAction('SYSTEM-EFFECT/FETCH_LANGUAGE'),
+    setEditableCardIdByColumnId: createAction<number>('SYSTEM/SET_EDITABLE_CARD_ID_BY_COLUMN_ID'),
   },
   setLanguage: createAction<ISetSystemLanguage>('SYSTEM/SET_LANGUAGE'),
   setIsLoadedBoards: createAction<ISetSystemIsLoadedBoards>('SYSTEM/SET_IS_LOADED_BOARDS'),
@@ -36,6 +38,7 @@ export const SystemActions = {
   setEditableColumnId: createAction<ISetSystemEditableColumnId>('SYSTEM/SET_EDITABLE_COLUMN_ID'),
   setEditableHeadingId: createAction<ISetSystemEditableHeadingId>('SYSTEM/SET_EDITABLE_HEADING_ID'),
   setEditableCardId: createAction<ISetSystemEditableCardId>('SYSTEM/SET_EDITABLE_CARD_ID'),
+  setEditableSubCardId: createAction<ISetSystemEditableSubCardId>('SYSTEM/SET_EDITABLE_SUB_CARD_ID'),
   setIsSearchMode: createAction<ISetSystemIsSearchMode>('SYSTEM/SET_IS_SEARCH_MODE'),
   setActiveTodoId: createAction<ISetSystemActiveTodoId>('SYSTEM/SET_ACTIVE_TODO_ID'),
   setEditCommentId: createAction<ISetSystemEditCommentId>('SYSTEM/SET_EDIT_COMMENT_ID'),

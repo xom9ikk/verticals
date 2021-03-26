@@ -13,20 +13,21 @@
     flex: 1;
   }
 
-  &__content {
+  &__color {
     display: flex;
     flex: 1;
-    max-width: 100%;
-    transition: background .1s ease-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
-    border-radius: 6px;
     flex-direction: column;
+    border-radius: 6px;
+    max-width: 100%;
 
     &:hover {
-      background: $hover-color;
-
-      .control-button {
+      .card-context-menu {
         opacity: 1;
       }
+    }
+
+    &--hover {
+      background: $hover-color;
     }
 
     &--invert {
@@ -34,28 +35,6 @@
         background: $white;
       }
     }
-
-    &--editable {
-      //width: $column-width - 27;
-      margin: 1px 3px;
-      //padding: 7px;
-      //padding: 0 7px 7px 7px;
-      box-shadow: rgba(0, 0, 0, 0.20) 0 2px 4px;
-
-      &:hover {
-        background: $white;
-      }
-
-      #{$block}__block {
-        padding-top: 12px;
-        margin-top: -1px;
-      }
-
-      #{$block}__block-wrapper {
-        padding: 0 7px;
-      }
-    }
-
     &--pressed {
       background: $primary-light !important;
     }
@@ -111,6 +90,36 @@
 
       &:hover {
         background: rgba(216, 216, 216, 0.15);
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    max-width: 100%;
+    transition: background .1s ease-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
+    border-radius: 6px;
+    flex-direction: column;
+
+    &--editable {
+      //width: $column-width - 27;
+      margin: 1px 3px;
+      //padding: 7px;
+      //padding: 0 7px 7px 7px;
+      box-shadow: rgba(0, 0, 0, 0.20) 0 2px 4px;
+
+      &:hover {
+        background: $white;
+      }
+
+      #{$block}__block {
+        padding-top: 12px;
+        margin-top: -1px;
+      }
+
+      #{$block}__block-wrapper {
+        padding: 0 7px;
       }
     }
   }

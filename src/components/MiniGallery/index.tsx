@@ -3,25 +3,24 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
-import { getCommentImageAttachmentsByTodoId } from '@store/selectors';
 import { useCollapse } from '@use/animationHeight';
 
 import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { SystemActions } from '@store/actions';
-import { useParamSelector } from '@use/paramSelector';
+import { ICommentAttachments } from '@type/entities';
 
 SwiperCore.use([Pagination]);
 
 interface IMiniGallery {
-  todoId?: number,
+  images: ICommentAttachments,
   width: number,
   isCollapse: boolean,
 }
 
 export const MiniGallery: FC<IMiniGallery> = ({
-  todoId,
+  images,
   width,
   isCollapse: initialIsCollapse,
 }) => {
@@ -31,8 +30,6 @@ export const MiniGallery: FC<IMiniGallery> = ({
   const [isCollapse, setIsCollapse] = useState<boolean>(true);
   const [activeIndex, setActiveIndex] = useState<number>(1);
   const [swiperController, setSwiperController] = useState<SwiperCore>();
-
-  const images = useParamSelector(getCommentImageAttachmentsByTodoId, todoId || null);
 
   const handleClick = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation();

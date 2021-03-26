@@ -12,6 +12,7 @@ import {
   ICommentService,
   ISearchService,
   ITodoService,
+  ISubTodoService,
   IUserService,
   IUpdateService,
 } from '@inversify/interfaces/services';
@@ -24,6 +25,7 @@ import { BoardService } from '@services/board';
 import { ColumnService } from '@services/column';
 import { HeadingService } from '@services/heading';
 import { TodoService } from '@services/todo';
+import { SubTodoService } from '@services/sub-todo';
 import { CommentService } from '@services/comment';
 import { CommentAttachmentService } from '@services/comment-attachment';
 import { SearchService } from '@services/search';
@@ -74,6 +76,11 @@ container
 container
   .bind<ITodoService>(TYPES.TodoService)
   .to(TodoService)
+  .inSingletonScope();
+
+container
+  .bind<ISubTodoService>(TYPES.SubTodoService)
+  .to(SubTodoService)
   .inSingletonScope();
 
 container

@@ -9,6 +9,7 @@ export type ISetSystemEditableBoardId = number | null;
 export type ISetSystemEditableColumnId = number | null;
 export type ISetSystemEditableHeadingId = number | string | null;
 export type ISetSystemEditableCardId = number | string | null;
+export type ISetSystemEditableSubCardId = number | string | null;
 export type ISetSystemIsSearchMode = boolean;
 export type ISetSystemLanguage = EnumLanguage;
 export type ISetSystemActiveTodoId = number | null;

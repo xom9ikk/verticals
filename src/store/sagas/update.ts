@@ -8,7 +8,7 @@ import {
   HeadingsActions,
   TodosActions,
   CommentsActions,
-  UpdatesActions,
+  UpdatesActions, SubTodosActions,
 } from '@store/actions';
 import {
   EnumOperations, IBoardPositionsUpdateData,
@@ -17,7 +17,7 @@ import {
   IHeadingPositionsUpdateData,
   IColumnUpdateData, ICommentUpdateData,
   ITodoPositionsUpdateData, ITodoUpdateData,
-  IUpdateData, IHeadingUpdateData,
+  IUpdateData, IHeadingUpdateData, ISubTodoPositionsUpdateData, ISubTodoUpdateData,
 } from '@type/api';
 import { IUpdateService } from '@inversify/interfaces/services';
 import { getIsSearchMode } from '@store/selectors';
@@ -100,6 +100,13 @@ function* subscribeOnUpdatesWorker(updateService: IUpdateService) {
         delete: TodosActions.remove,
       },
     ));
+    yield* fork(() => subscribeOnEntity<ISubTodoUpdateData>(
+      updateService, updateService.onSubTodosUpdate, {
+        insert: SubTodosActions.add,
+        update: SubTodosActions.updateEntity,
+        delete: SubTodosActions.remove,
+      },
+    ));
     yield* fork(() => subscribeOnEntity<IBoardPositionsUpdateData>(
       updateService,
       updateService.onBoardPositionsUpdate, {
@@ -142,6 +149,19 @@ function* subscribeOnUpdatesWorker(updateService: IUpdateService) {
         update: (data) => TodosActions.setPositionsByHeadingId({
           positions: data.order,
           headingId: data.headingId,
+        }),
+      },
+    ));
+    yield* fork(() => subscribeOnEntity<ISubTodoPositionsUpdateData>(
+      updateService,
+      updateService.onSubTodoPositionsUpdate, {
+        insert: (data) => SubTodosActions.setPositionsByTodoId({
+          positions: data.order,
+          todoId: data.todoId,
+        }),
+        update: (data) => SubTodosActions.setPositionsByTodoId({
+          positions: data.order,
+          todoId: data.todoId,
         }),
       },
     ));

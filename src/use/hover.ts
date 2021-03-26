@@ -14,11 +14,11 @@ export const useHover = () => {
       //   setIsHovering(false);
       // },
       onMouseOver: () => {
-        console.log('onMouseLeave', true);
+        // console.log('onMouseLeave', true);
         setIsHovering(true);
       },
       onMouseOut: () => {
-        console.log('onMouseOut', false);
+        // console.log('onMouseOut', false);
         setIsHovering(false);
       },
       // onMouseOutCapture: () => {

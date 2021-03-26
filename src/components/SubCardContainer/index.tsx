@@ -1,0 +1,115 @@
+import React, {
+  FC, useMemo, useState,
+} from 'react';
+import {
+  Draggable, Droppable,
+} from 'react-beautiful-dnd';
+import { useSelector } from 'react-redux';
+import {
+  getActiveTodoId, getEditableSubCardId,
+  getIsSearchMode,
+} from '@store/selectors';
+import cn from 'classnames';
+import { SubCardContainerToolbar } from '@comp/SubCardContainer/Toolbar';
+import { SubTodoCard } from '@comp/Card/SubTodo';
+import { EnumTodoType, ID } from '@type/entities';
+import { MAX_SUB_TODO, NEW_SUB_TODO_ID } from '@/constants';
+
+interface ISubCardsContainer {
+  todoId: number;
+  subTodoPositions: Array<ID>;
+  cardType: EnumTodoType;
+  isOpen: boolean;
+  onAddSubCard: () => void;
+}
+
+export const SubCardContainer: FC<ISubCardsContainer> = ({
+  todoId,
+  subTodoPositions,
+  cardType,
+  isOpen,
+  onAddSubCard,
+}) => {
+  const [isCollapse, setIsCollapse] = useState<boolean>(true);
+
+  const activeTodoId = useSelector(getActiveTodoId);
+  const isSearchMode = useSelector(getIsSearchMode);
+  const editableSubCardId = useSelector(getEditableSubCardId);
+
+  const subTodosCount = subTodoPositions?.length;
+  const isOpenNewSubCard = editableSubCardId === `${todoId}-${NEW_SUB_TODO_ID}`;
+
+  const handleSwitchCollapse = () => {
+    setIsCollapse((prev) => !prev);
+  };
+
+  const memoNewSubCard = useMemo(() => (
+    <SubTodoCard
+      subTodoId={NEW_SUB_TODO_ID}
+      todoIdForNew={todoId}
+      cardType={cardType}
+      isEditable
+    />
+  ), [todoId]);
+
+  return (
+    <div
+      className={cn('sub-card-container', {
+        'sub-card-container--collapse': !isOpen,
+
+      })}
+    >
+      <Droppable
+        droppableId={`todo-${todoId}`}
+        type="SUBCARD"
+      >
+        {
+          (dropProvided, dropSnapshot) => (
+            <div
+              ref={dropProvided.innerRef}
+              className={cn('sub-card-container__inner', {
+                'sub-card-container__inner--dragging-over': dropSnapshot.isDraggingOver,
+              })}
+            >
+              {
+                subTodoPositions
+                  .slice(0, isCollapse ? MAX_SUB_TODO : subTodoPositions.length)
+                  .map((id, index) => (
+                    <Draggable
+                      key={id}
+                      draggableId={`subTodo-${id}`}
+                      index={index}
+                      isDragDisabled={isSearchMode}
+                    >
+                      {(dragProvided, dragSnapshot) => (
+                        <SubTodoCard
+                          cardType={cardType}
+                          provided={dragProvided}
+                          snapshot={dragSnapshot}
+                          key={id}
+                          subTodoId={id}
+                          isActive={activeTodoId === id}
+                          isEditable={id === editableSubCardId}
+                        />
+                      )}
+                    </Draggable>
+                  ))
+              }
+              {isOpenNewSubCard ? memoNewSubCard
+                : (
+                  <SubCardContainerToolbar
+                    isHide={dropSnapshot.isDraggingOver}
+                    isCollapse={isCollapse}
+                    subTodosCount={subTodosCount}
+                    onSwitchCollapse={handleSwitchCollapse}
+                    onAddSubCard={onAddSubCard}
+                  />
+                )}
+              {dropProvided.placeholder}
+            </div>
+          )
+        }
+      </Droppable>
+    </div>
+  );
+};

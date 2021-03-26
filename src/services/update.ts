@@ -11,7 +11,7 @@ import {
   ICommentAttachmentUpdateResponse,
   ICommentUpdateResponse,
   ITodoPositionsUpdateResponse,
-  ITodoUpdateResponse,
+  ITodoUpdateResponse, ISubTodoUpdateResponse, ISubTodoPositionsUpdateResponse,
 } from '@type/api';
 import { IWSClient } from '@inversify/interfaces/wsClient';
 import { IUpdateService } from '@inversify/interfaces/services';
@@ -58,6 +58,12 @@ export class UpdateService implements IUpdateService {
     });
   }
 
+  onSubTodosUpdate(): Promise<ISubTodoUpdateResponse> {
+    return new Promise((resolve) => {
+      this.wsClient.on<ISubTodoUpdateResponse>('updates', 'sub_todo', resolve);
+    });
+  }
+
   onBoardPositionsUpdate(): Promise<IBoardPositionsUpdateResponse> {
     return new Promise((resolve) => {
       this.wsClient.on<IBoardPositionsUpdateResponse>('updates', 'board_position', resolve);
@@ -79,6 +85,12 @@ export class UpdateService implements IUpdateService {
   onTodoPositionsUpdate(): Promise<ITodoPositionsUpdateResponse> {
     return new Promise((resolve) => {
       this.wsClient.on<ITodoPositionsUpdateResponse>('updates', 'todo_position', resolve);
+    });
+  }
+
+  onSubTodoPositionsUpdate(): Promise<ISubTodoPositionsUpdateResponse> {
+    return new Promise((resolve) => {
+      this.wsClient.on<ISubTodoPositionsUpdateResponse>('updates', 'sub_todo_position', resolve);
     });
   }
 

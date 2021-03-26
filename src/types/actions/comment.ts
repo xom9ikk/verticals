@@ -7,7 +7,8 @@ export interface IFetchCommentsByTodoId {
 export type ISetComments = IComments;
 
 export interface ICreateComment {
-  readonly todoId: number;
+  readonly todoId?: number; // TODO one of
+  readonly subTodoId?: number; // TODO
   readonly text: string;
   readonly replyCommentId?: number;
   readonly files?: FileList | null;
@@ -15,7 +16,8 @@ export interface ICreateComment {
 
 export interface IAddComment {
   readonly id: number;
-  readonly todoId: number;
+  readonly todoId?: number; // TODO one of
+  readonly subTodoId?: number;
   readonly text: string;
   readonly replyCommentId?: number;
 }

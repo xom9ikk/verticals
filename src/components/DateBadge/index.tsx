@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 
 interface IDateBadge {
   popupId: string;
-  todoId: number;
   onSelectDate: (payload: Date | null) => void;
   date?: Date | null;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
@@ -19,7 +18,6 @@ interface IDateBadge {
 
 export const DateBadge: FC<IDateBadge> = ({
   popupId,
-  todoId,
   date = null,
   position = 'right',
   onSelectDate,
@@ -45,7 +43,7 @@ export const DateBadge: FC<IDateBadge> = ({
     <>
       <DatePickerPopup
         position={position}
-        popupId={`date-badge-${popupId}-${todoId}`}
+        popupId={`date-badge-${popupId}`}
         sourceRef={badgeRef}
         onSelectDate={onSelectDate}
         selectedDate={date}

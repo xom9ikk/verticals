@@ -186,5 +186,19 @@
   "Please reload page": "Veuillez recharger la page",
   "We are already working on fixing this error": "Nous travaillons déjà à corriger cette erreur",
   "Unlike": "Unlike",
-  "Like": "Like"
+  "Like": "Like",
+  "Add subcard": "Add subcard",
+  "Hide": "Hide",
+  "Hide subcards": "Hide subcards",
+  "Show subcards": "Show subcards",
+  "Hide Files": "Hide Files",
+  "Hide Gallery": "Hide Gallery",
+  "Edit heading": "Edit heading",
+  "New heading": "New heading",
+  "Heading": "Heading",
+  "Heading created successfully": "Heading created successfully",
+  "Heading removed successfully": "Heading removed successfully",
+  "Heading updated successfully": "Heading updated successfully",
+  "Heading position updated successfully": "Heading position updated successfully",
+  "Heading duplicated successfully": "Heading duplicated successfully"
 }

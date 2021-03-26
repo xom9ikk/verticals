@@ -6,12 +6,15 @@ import {
   IUploadCommentAttachmentsFiles,
   IUploadCommentAttachmentsFile,
   IUploadCommentAttachmentsFileRaw,
-  IRemoveCommentAttachment,
+  IRemoveCommentAttachment, IFetchCommentAttachmentsBySubTodoId,
 } from '@type/actions';
 
 export const CommentAttachmentsActions = {
   effect: {
     fetchByTodoId: createAction<IFetchCommentAttachmentsByTodoId>('COMMENT_ATTACHMENTS-EFFECT/FETCH_BY_TODO_ID'),
+    fetchBySubTodoId: createAction<IFetchCommentAttachmentsBySubTodoId>(
+      'COMMENT_ATTACHMENTS-EFFECT/FETCH_BY_SUB_TODO_ID',
+    ),
     uploadFiles: createAction<IUploadCommentAttachmentsFiles>('COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILES'),
     uploadFile: createAction<PrepareAction<IUploadCommentAttachmentsFile>>(
       'COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILE',

@@ -5,6 +5,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';
 import { CommentAttachmentsActions } from '@store/actions';
 import {
+  IFetchCommentAttachmentsBySubTodoId,
   IFetchCommentAttachmentsByTodoId,
   IRemoveCommentAttachment,
   IUploadCommentAttachmentsFile,
@@ -22,6 +23,21 @@ function* fetchByTodoIdWorker(
   try {
     const response = yield* apply(
       commentAttachmentService, commentAttachmentService.getByTodoId, [action.payload],
+    );
+    const { attachments } = response.data;
+    yield put(CommentAttachmentsActions.merge(attachments));
+  } catch (error) {
+    yield call(show, i18n.t('Attachments'), error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* fetchBySubTodoIdWorker(
+  commentAttachmentService: ICommentAttachmentService,
+  action: PayloadAction<IFetchCommentAttachmentsBySubTodoId>,
+) {
+  try {
+    const response = yield* apply(
+      commentAttachmentService, commentAttachmentService.getBySubTodoId, [action.payload],
     );
     const { attachments } = response.data;
     yield put(CommentAttachmentsActions.merge(attachments));
@@ -79,6 +95,7 @@ function* removeWorker(
 export function* watchCommentAttachment(commentAttachmentService: ICommentAttachmentService) {
   yield all([
     takeLatest(CommentAttachmentsActions.effect.fetchByTodoId, fetchByTodoIdWorker, commentAttachmentService),
+    takeLatest(CommentAttachmentsActions.effect.fetchBySubTodoId, fetchBySubTodoIdWorker, commentAttachmentService),
     takeLatest(CommentAttachmentsActions.effect.uploadFiles, uploadFilesWorker, commentAttachmentService),
     takeEvery(CommentAttachmentsActions.effect.uploadFile, uploadFileWorker, commentAttachmentService),
     takeLatest(CommentAttachmentsActions.effect.remove, removeWorker, commentAttachmentService),

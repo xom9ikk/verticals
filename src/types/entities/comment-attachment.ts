@@ -1,6 +1,7 @@
 export interface ICommentAttachment {
   readonly id: number;
-  readonly todoId: number;
+  readonly todoId?: number;
+  readonly subTodoId?: number;
   readonly commentId: number;
   readonly path: string;
   readonly name: string;

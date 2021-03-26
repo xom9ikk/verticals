@@ -1,5 +1,6 @@
-/* eslint-disable max-len */
 import {
+  IGetCommentAttachmentsBySubTodoIdRequest,
+  IGetCommentAttachmentsBySubTodoIdResponse,
   IGetCommentAttachmentsByTodoIdRequest,
   IGetCommentAttachmentsByTodoIdResponse,
   IRemoveCommentAttachmentRequest,
@@ -10,6 +11,7 @@ import {
 
 export interface ICommentAttachmentService {
   getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest): Promise<IGetCommentAttachmentsByTodoIdResponse>;
+  getBySubTodoId(body: IGetCommentAttachmentsBySubTodoIdRequest): Promise<IGetCommentAttachmentsBySubTodoIdResponse>;
   uploadFile(body: IUploadCommentAttachmentRequest): Promise<IUploadCommentAttachmentResponse>;
   remove(body: IRemoveCommentAttachmentRequest): Promise<IRemoveCommentAttachmentResponse>;
 }

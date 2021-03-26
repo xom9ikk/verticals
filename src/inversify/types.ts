@@ -8,6 +8,7 @@ export const TYPES = {
   ColumnService: Symbol.for('ColumnService'),
   HeadingService: Symbol.for('HeadingService'),
   TodoService: Symbol.for('TodoService'),
+  SubTodoService: Symbol.for('SubTodoService'),
   CommentService: Symbol.for('CommentService'),
   CommentAttachmentService: Symbol.for('CommentAttachmentService'),
   SearchService: Symbol.for('SearchService'),

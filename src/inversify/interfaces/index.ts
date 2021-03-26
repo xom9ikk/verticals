@@ -4,6 +4,7 @@ import {
   IColumnService,
   IHeadingService,
   ITodoService,
+  ISubTodoService,
   ICommentService,
   ICommentAttachmentService,
   ISearchService,
@@ -18,6 +19,7 @@ export interface IServices {
   readonly columnService: IColumnService;
   readonly headingService: IHeadingService;
   readonly todoService: ITodoService;
+  readonly subTodoService: ISubTodoService;
   readonly commentService: ICommentService;
   readonly commentAttachmentService: ICommentAttachmentService;
   readonly searchService: ISearchService;

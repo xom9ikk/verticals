@@ -9,6 +9,8 @@ import {
   ICommentUpdateResponse,
   ITodoPositionsUpdateResponse,
   ITodoUpdateResponse,
+  ISubTodoPositionsUpdateResponse,
+  ISubTodoUpdateResponse,
 } from '@type/api';
 
 export interface IUpdateService {
@@ -18,10 +20,12 @@ export interface IUpdateService {
   onColumnsUpdate(): Promise<IColumnUpdateResponse>;
   onHeadingsUpdate(): Promise<IHeadingUpdateResponse>;
   onTodosUpdate(): Promise<ITodoUpdateResponse>;
+  onSubTodosUpdate(): Promise<ISubTodoUpdateResponse>;
   onBoardPositionsUpdate(): Promise<IBoardPositionsUpdateResponse>;
   onColumnPositionsUpdate(): Promise<IColumnPositionsUpdateResponse>;
   onHeadingPositionsUpdate(): Promise<IHeadingPositionsUpdateResponse>;
   onTodoPositionsUpdate(): Promise<ITodoPositionsUpdateResponse>;
+  onSubTodoPositionsUpdate(): Promise<ISubTodoPositionsUpdateResponse>;
   onCommentsUpdate(): Promise<ICommentUpdateResponse>;
   onCommentAttachmentsUpdate(): Promise<ICommentAttachmentUpdateResponse>;
 }

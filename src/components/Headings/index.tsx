@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import { EnumHeadingMode, Heading } from '@comp/Heading';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEditableCardId, getEditableHeadingId, getHeadingPositionsByColumnId } from '@store/selectors';
+import { getEditableHeadingId, getHeadingPositionsByColumnId } from '@store/selectors';
 import { EnumTodoType } from '@type/entities';
-import { NEW_HEADING_ID, NEW_TODO_ID } from '@/constants';
+import { NEW_HEADING_ID } from '@/constants';
 import { SystemActions } from '@store/actions';
 import { useParamSelector } from '@use/paramSelector';
 import { DroppableProvided } from 'react-beautiful-dnd';
@@ -22,7 +22,6 @@ export const Headings: FC<IHeadings> = ({
   const dispatch = useDispatch();
 
   const editableHeadingId = useSelector(getEditableHeadingId);
-  const editableCardId = useSelector(getEditableCardId); // TODO: need here?
   const headingPositions = useParamSelector(getHeadingPositionsByColumnId, columnId);
 
   const handleAddHeading = () => {
@@ -38,9 +37,7 @@ export const Headings: FC<IHeadings> = ({
         isEditable={editableHeadingId === id}
         columnId={columnId}
         cardType={cardType}
-        isOpenNewCard={editableCardId === `${id}-${NEW_TODO_ID}`}
         mode={EnumHeadingMode.Normal}
-          // isDraggingCard={dropSnapshot.isDraggingOver}
         onAddHeading={handleAddHeading}
       />
     )), [headingPositions, editableHeadingId, cardType]);

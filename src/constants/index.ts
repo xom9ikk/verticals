@@ -5,6 +5,7 @@ export const TRASH_COLUMN_ID = -3;
 export const NEW_COLUMN_ID = -4;
 export const NEW_HEADING_ID = -5;
 export const NEW_TODO_ID = -6;
+export const NEW_SUB_TODO_ID = -7;
 export const DEFAULT_COLUMN_WIDTH = 280;
 export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese',
@@ -17,6 +18,7 @@ export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-rig
   'github', 'linkedin', 'twitter', 'facebook', 'instagram', 'snap', 'tik-tok'];
 export const DEFAULT_BOARD_ICON = '/assets/svg/board/item.svg';
 export const MAX_FILES_IN_COMMENT_PREVIEW = 3;
+export const MAX_SUB_TODO = 4;
 export const LANGUAGES = [
   'English',
   'Русский',

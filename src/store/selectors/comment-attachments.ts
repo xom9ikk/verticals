@@ -12,11 +12,23 @@ export const getCommentFileAttachmentsByTodoId = (todoId: number | null) => crea
   [getCommentAttachments],
   (attachments) => attachments
     .filter((attachment) => !imageTypes.includes(attachment.mimeType)
-        && attachment.todoId === todoId),
+            && attachment.todoId === todoId),
+);
+export const getCommentFileAttachmentsBySubTodoId = (subTodoId: number | null) => createSelector(
+  [getCommentAttachments],
+  (attachments) => attachments
+    .filter((attachment) => !imageTypes.includes(attachment.mimeType)
+            && attachment.subTodoId === subTodoId),
 );
 export const getCommentImageAttachmentsByTodoId = (todoId: number | null) => createSelector(
   [getCommentAttachments],
   (attachments) => attachments
     .filter((attachment) => imageTypes.includes(attachment.mimeType)
         && attachment.todoId === todoId),
+);
+export const getCommentImageAttachmentsBySubTodoId = (subTodoId: number | null) => createSelector(
+  [getCommentAttachments],
+  (attachments) => attachments
+    .filter((attachment) => imageTypes.includes(attachment.mimeType)
+        && attachment.subTodoId === subTodoId),
 );

@@ -11,6 +11,7 @@ export const initialState: ISystem = {
   editableColumnId: null,
   editableHeadingId: null,
   editableCardId: null,
+  editableSubCardId: null,
   isSearchMode: false,
   language: EnumLanguage.English,
   activeTodoId: null,
@@ -34,6 +35,7 @@ export const SystemReducer = createReducer(initialState, (builder) => builder
   .addCase(SystemActions.setEditableColumnId, (draft, action) => { draft.editableColumnId = action.payload; })
   .addCase(SystemActions.setEditableHeadingId, (draft, action) => { draft.editableHeadingId = action.payload; })
   .addCase(SystemActions.setEditableCardId, (draft, action) => { draft.editableCardId = action.payload; })
+  .addCase(SystemActions.setEditableSubCardId, (draft, action) => { draft.editableSubCardId = action.payload; })
   .addCase(SystemActions.setIsSearchMode, (draft, action) => { draft.isSearchMode = action.payload; })
   .addCase(SystemActions.setLanguage, (draft, action) => { draft.language = action.payload; })
   .addCase(SystemActions.setActiveTodoId, (draft, action) => { draft.activeTodoId = action.payload; })

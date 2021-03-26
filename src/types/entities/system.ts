@@ -28,6 +28,7 @@ export interface ISystem {
   readonly editableColumnId: number | null;
   readonly editableHeadingId: number | string | null;
   readonly editableCardId: number | string | null;
+  readonly editableSubCardId: number | string | null;
   readonly isSearchMode: boolean;
   readonly language: EnumLanguage;
   readonly activeTodoId: number | null;

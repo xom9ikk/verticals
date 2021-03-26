@@ -1,8 +1,33 @@
 .color-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   outline: none;
   width: 24px;
   height: 24px;
   border-radius: 50%;
   transition: opacity .1s ease-in-out, box-shadow .1s ease-in-out;
+  background: var(--color-selector-background);
+
+  img {
+    opacity: 0;
+    height: 8px;
+    transition: opacity .1s ease-in-out;
+  }
+
+  &--active {
+    box-shadow: #ffffff 0 0 0 2px, var(--color-selector-background) 0 0 0 4px;
+    &:hover {
+      img {
+        opacity: 1;
+      }
+    }
+  }
+
+  &:hover {
+    background: var(--color-selector-background);
+    box-shadow: #ffffff 0 0 0 2px, var(--color-selector-background) 0 0 0 4px;
+  }
+
 }

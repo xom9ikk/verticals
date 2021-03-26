@@ -1,22 +1,25 @@
 .card-attachments {
   display: flex;
   width: 100%;
-  transition: max-height .3s ease-in-out;
+  transition: all .3s ease-in-out;
   max-height: 300px;
   overflow: scroll;
+
+  &::-webkit-scrollbar-thumb {
+    border: 0 !important;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px !important;
+  }
 
   &__inner {
     display: flex;
     flex-direction: column;
     max-height: 100%;
-    &::-webkit-scrollbar-thumb {
-      border: 0 !important;
-    }
-
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
+    width: 100%;
   }
+
 
   &--collapse {
     max-height: 0;

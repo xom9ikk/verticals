@@ -10,7 +10,9 @@ import {
   EnumHeadingType, EnumTodoStatus, IColor, IHeading,
 } from '@type/entities';
 import { Divider } from '@comp/Divider';
-import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
+import {
+  CommentsActions, SubTodosActions, SystemActions, TodosActions,
+} from '@store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@use/readableId';
 import {
@@ -21,7 +23,7 @@ import { DatePicker } from '@comp/DatePicker';
 import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
 
-interface ICardContextMenu {
+interface ITodoContextMenu {
   menuId: string;
   todoId: number;
   title: string;
@@ -50,12 +52,13 @@ enum EnumCardActions {
   CopyLink,
   Duplicate,
   AddCardBelow,
+  AddSubCardBelow,
   Archive,
   Delete,
   Restore,
 }
 
-export const CardContextMenu: FC<ICardContextMenu> = ({
+export const TodoContextMenu: FC<ITodoContextMenu> = ({
   menuId,
   todoId,
   title,
@@ -100,6 +103,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   };
 
   const handleMenuButtonClick = (action: EnumCardActions, payload?: any) => {
+    console.log('handleMenuButtonClick todo', action);
     switch (action) {
       case EnumCardActions.ChangeColor: {
         onChangeColor(payload);
@@ -148,6 +152,13 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         dispatch(TodosActions.drawBelow({
           belowId: todoId!,
           headingId: headingId!,
+        }));
+        break;
+      }
+      case EnumCardActions.AddSubCardBelow: {
+        dispatch(SubTodosActions.removeTemp());
+        dispatch(SubTodosActions.drawOnTop({
+          todoId,
         }));
         break;
       }
@@ -309,19 +320,25 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
         imageSrc="/assets/svg/menu/add-card.svg"
         action={EnumCardActions.AddCardBelow}
       />,
-      <Divider
+      <MenuItem
         key={13}
+        text={t('Add subcard')}
+        imageSrc="/assets/svg/menu/add-card.svg"
+        action={EnumCardActions.AddSubCardBelow}
+      />,
+      <Divider
+        key={14}
         verticalSpacer={7}
         horizontalSpacer={10}
       />,
       <MenuItem
-        key={14}
+        key={15}
         text={isArchivedHeading ? t('Unarchive') : t('Archive')}
         imageSrc={`/assets/svg/menu/archive${isArchivedHeading ? '' : '-close'}.svg`}
         action={EnumCardActions.Archive}
       />,
       <MenuItem
-        key={15}
+        key={16}
         text={t('Delete')}
         imageSrc="/assets/svg/menu/remove.svg"
         hintText="⌫"
@@ -332,6 +349,7 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   return useMemo(() => (todoId && title ? (
     <Menu
       ref={menuButtonRef}
+      buttonClassName="card-context-menu"
       id={`${menuId}-card-${todoId}`}
       imageSrc={`/assets/svg/dots${isPrimary ? '-primary' : ''}.svg`}
       alt="menu"
@@ -360,6 +378,6 @@ export const CardContextMenu: FC<ICardContextMenu> = ({
   ) : null),
   [color,
     isNotificationsEnabled,
-    status, username, isCopied, isArchivedHeading, isRemovedCards,
+    status, username, isCopied, isArchivedHeading, isRemovedCards, isActive,
     isOpenDatePicker, expirationDate]);
 };

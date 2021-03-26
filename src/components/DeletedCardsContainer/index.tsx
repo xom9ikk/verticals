@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { EnumTodoType } from '@type/entities';
-import { Card } from '@comp/Card';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import {
   getIsLoadedTodos,
   getIsSearchMode,
   getTodosEntities,
 } from '@store/selectors';
+import { TodoCard } from '@comp/Card/Todo';
 
 export const DeletedCardsContainer: FC = () => {
   const isLoadedTodos = useSelector(getIsLoadedTodos);
@@ -20,7 +20,7 @@ export const DeletedCardsContainer: FC = () => {
     <div>
       {
         todos?.map(({ id }) => (
-          <Card
+          <TodoCard
             cardType={EnumTodoType.Checkboxes}
             key={id}
             todoId={id}

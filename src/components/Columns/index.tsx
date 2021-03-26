@@ -6,7 +6,9 @@ import {
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column, EnumColumnMode } from '@comp/Column';
-import { ColumnsActions, HeadingsActions, TodosActions } from '@store/actions';
+import {
+  ColumnsActions, HeadingsActions, SubTodosActions, TodosActions,
+} from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import {
   getActiveBoardId,
@@ -20,9 +22,7 @@ import { NEW_COLUMN_ID, TRASH_BOARD_ID, TRASH_COLUMN_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
 
-interface IColumns { }
-
-export const Columns: FC<IColumns> = () => {
+export const Columns: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -41,6 +41,7 @@ export const Columns: FC<IColumns> = () => {
           dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
           dispatch(HeadingsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
           dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+          dispatch(SubTodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
         } else {
           dispatch(TodosActions.effect.fetchRemoved());
         }
@@ -76,21 +77,14 @@ export const Columns: FC<IColumns> = () => {
       return;
     }
 
-    // TODO: need?
-    // const currentTodos: ITodo[] = todos.filter((todo) => todo.columnId === sourceColumnId);
-
-    // const target: ITodo = currentTodos[source.index];
-
-    // if (!target) {
-    //   return;
-    // }
+    const isDefaultHeadingPosition = (position: number) => position === 0;
 
     if (type === 'HEADING') {
       const sourceColumnId = Number(source.droppableId.split('column-')[1]);
 
-      // moving to same HEADING list
+      // moving to same COLUMN list
       const sourcePosition = source.index;
-      const destinationPosition = destination.index;
+      const destinationPosition = isDefaultHeadingPosition(destination.index) ? 1 : destination.index;
       const targetColumnId = Number(destination.droppableId.split('column-')[1]);
 
       if (source.droppableId === destination.droppableId) {
@@ -112,7 +106,6 @@ export const Columns: FC<IColumns> = () => {
     }
 
     if (type === 'CARD') {
-      console.log(source, destination);
       const sourceHeadingId = Number(source.droppableId.split('heading-')[1]);
 
       // moving to same HEADING list
@@ -133,6 +126,32 @@ export const Columns: FC<IColumns> = () => {
       dispatch(TodosActions.effect.move({
         headingId: sourceHeadingId,
         targetHeadingId,
+        sourcePosition,
+        destinationPosition,
+      }));
+    }
+
+    if (type === 'SUBCARD') {
+      const sourceTodoId = Number(source.droppableId.split('todo-')[1]);
+
+      // moving to same TODO list
+      const sourcePosition = source.index;
+      const destinationPosition = destination.index;
+      const targetTodoId = Number(destination.droppableId.split('todo-')[1]);
+
+      if (source.droppableId === destination.droppableId) {
+        dispatch(SubTodosActions.effect.move({
+          sourcePosition,
+          destinationPosition,
+          todoId: targetTodoId,
+        }));
+        return;
+      }
+
+      // moving to different list
+      dispatch(SubTodosActions.effect.move({
+        todoId: sourceTodoId,
+        targetTodoId,
         sourcePosition,
         destinationPosition,
       }));

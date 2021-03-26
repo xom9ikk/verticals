@@ -14,7 +14,8 @@ export type IGetCommentsByTodoIdResponse = IServerResponse<{
 }>;
 
 export interface ICreateCommentRequest {
-  readonly todoId: number;
+  readonly todoId?: number; // TODO one of
+  readonly subTodoId?: number;
   readonly text: string;
   readonly replyCommentId?: number;
 }

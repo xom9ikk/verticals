@@ -188,5 +188,19 @@
   "Please reload page": "Пожалуйста, обновите страницу",
   "We are already working on fixing this error": "Мы уже работаем над устранением этой ошибки",
   "Unlike": "Убрать лайк",
-  "Like": "Лайк"
+  "Like": "Лайк",
+  "Add subcard": "Add subcard",
+  "Hide": "Hide",
+  "Hide subcards": "Hide subcards",
+  "Show subcards": "Show subcards",
+  "Hide Files": "Hide Files",
+  "Hide Gallery": "Hide Gallery",
+  "Edit heading": "Edit heading",
+  "New heading": "New heading",
+  "Heading": "Heading",
+  "Heading created successfully": "Heading created successfully",
+  "Heading removed successfully": "Heading removed successfully",
+  "Heading updated successfully": "Heading updated successfully",
+  "Heading position updated successfully": "Heading position updated successfully",
+  "Heading duplicated successfully": "Heading duplicated successfully"
 }

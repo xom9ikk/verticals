@@ -2,6 +2,7 @@ import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
+  IGetCommentAttachmentsBySubTodoIdRequest, IGetCommentAttachmentsBySubTodoIdResponse,
   IGetCommentAttachmentsByTodoIdRequest,
   IGetCommentAttachmentsByTodoIdResponse,
   IRemoveCommentAttachmentRequest,
@@ -24,6 +25,12 @@ export class CommentAttachmentService implements ICommentAttachmentService {
 
   getByTodoId(body: IGetCommentAttachmentsByTodoIdRequest) {
     return this.httpClient.get<IGetCommentAttachmentsByTodoIdResponse>('/comment-attachment', {
+      params: body,
+    });
+  }
+
+  getBySubTodoId(body: IGetCommentAttachmentsBySubTodoIdRequest) {
+    return this.httpClient.get<IGetCommentAttachmentsBySubTodoIdResponse>('/comment-attachment', {
       params: body,
     });
   }
