@@ -18,7 +18,7 @@ import {
   getIsSearchMode,
   getActiveBoardTitle,
   getActiveTodoTitle,
-  getBoardPositions,
+  getBoardPositions, getActiveSubTodoTitle,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { useTitle } from '@use/title';
@@ -37,9 +37,10 @@ export const BoardList: FC = () => {
   const activeBoardId = useSelector(getActiveBoardId);
   const activeBoardTitle = useSelector(getActiveBoardTitle);
   const activeTodoTitle = useSelector(getActiveTodoTitle);
+  const activeSubTodoTitle = useSelector(getActiveSubTodoTitle);
   const editableBoardId = useSelector(getEditableBoardId);
 
-  useTitle(activeTodoTitle || activeBoardTitle);
+  useTitle(activeTodoTitle || activeSubTodoTitle || activeBoardTitle);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {

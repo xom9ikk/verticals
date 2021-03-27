@@ -39,7 +39,7 @@ export const MainRouter: FC = () => (
         exact
       />
       <RouteWrapper
-        path="/:userId?/:boardId?/(card)?/:todoId?"
+        path="/:userId?/:boardId?/(card|subcard)?/:cardId?"
         layout={suspense(MainLayout)}
         isPrivate
         redirectPath="/auth/login"

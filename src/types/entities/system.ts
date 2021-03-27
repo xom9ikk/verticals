@@ -32,12 +32,14 @@ export interface ISystem {
   readonly isSearchMode: boolean;
   readonly language: EnumLanguage;
   readonly activeTodoId: number | null;
+  readonly activeSubTodoId: number | null;
   readonly editCommentId: number | null;
   readonly replyCommentId: number | null;
   readonly isOpenProfile: boolean;
   readonly activeBoardId: number | null;
   readonly activeBoardReadableId: string | null;
   readonly activeTodoReadableId: string | null;
+  readonly activeSubTodoReadableId: string | null;
   readonly droppedFiles: {
     type: EnumDroppedZoneType;
     files: FileList;

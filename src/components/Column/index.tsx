@@ -67,9 +67,9 @@ export const Column: FC<IColumnComponent> = ({
           <ColumnCompact
             snapshot={snapshot}
             provided={provided}
-            columnId={columnId!}
+            columnId={columnId}
             color={color}
-            title={title!}
+            title={title}
             onClick={handleClick}
           />
         ) : (
@@ -77,7 +77,7 @@ export const Column: FC<IColumnComponent> = ({
             snapshot={snapshot}
             provided={provided}
             boardId={boardId}
-            columnId={columnId!}
+            columnId={columnId}
             belowId={belowId}
             color={color}
             title={title}
@@ -101,7 +101,7 @@ export const Column: FC<IColumnComponent> = ({
     <>
       {memoColumn}
       <CardPopup
-        columnId={columnId!}
+        columnId={columnId}
         cardType={cardType}
       />
     </>

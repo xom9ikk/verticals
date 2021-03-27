@@ -15,12 +15,14 @@ export const initialState: ISystem = {
   isSearchMode: false,
   language: EnumLanguage.English,
   activeTodoId: null,
+  activeSubTodoId: null,
   editCommentId: null,
   replyCommentId: null,
   isOpenProfile: false,
   activeBoardId: null,
   activeBoardReadableId: null,
   activeTodoReadableId: null,
+  activeSubTodoReadableId: null,
   droppedFiles: null,
   galleryImagesInfo: null,
   isOpenFormattingHelp: false,
@@ -39,12 +41,16 @@ export const SystemReducer = createReducer(initialState, (builder) => builder
   .addCase(SystemActions.setIsSearchMode, (draft, action) => { draft.isSearchMode = action.payload; })
   .addCase(SystemActions.setLanguage, (draft, action) => { draft.language = action.payload; })
   .addCase(SystemActions.setActiveTodoId, (draft, action) => { draft.activeTodoId = action.payload; })
+  .addCase(SystemActions.setActiveSubTodoId, (draft, action) => { draft.activeSubTodoId = action.payload; })
   .addCase(SystemActions.setEditCommentId, (draft, action) => { draft.editCommentId = action.payload; })
   .addCase(SystemActions.setReplyCommentId, (draft, action) => { draft.replyCommentId = action.payload; })
   .addCase(SystemActions.setIsOpenProfile, (draft, action) => { draft.isOpenProfile = action.payload; })
   .addCase(SystemActions.setActiveBoardId, (draft, action) => { draft.activeBoardId = action.payload; })
   .addCase(SystemActions.setActiveBoardReadableId, (draft, action) => { draft.activeBoardReadableId = action.payload; })
   .addCase(SystemActions.setActiveTodoReadableId, (draft, action) => { draft.activeTodoReadableId = action.payload; })
+  .addCase(SystemActions.setActiveSubTodoReadableId, (draft, action) => {
+    draft.activeSubTodoReadableId = action.payload;
+  })
   .addCase(SystemActions.setDroppedFiles, (state, action) => ({
     ...state,
     droppedFiles: action.payload,

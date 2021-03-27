@@ -112,9 +112,9 @@ export const Heading: FC<IHeadingComponent> = ({
                   provided={provided}
                   dropSnapshot={dropSnapshot}
                   dropProvided={dropProvided}
-                  headingId={headingId!}
+                  headingId={headingId}
                   color={color}
-                  title={title!}
+                  title={title}
                   onClick={handleClick}
                 />
               ) : (
@@ -124,7 +124,7 @@ export const Heading: FC<IHeadingComponent> = ({
                   dropSnapshot={dropSnapshot}
                   dropProvided={dropProvided}
                   columnId={columnId}
-                  headingId={headingId!}
+                  headingId={headingId}
                   color={color}
                   title={title}
                   description={description}

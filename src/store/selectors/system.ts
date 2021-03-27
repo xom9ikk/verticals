@@ -2,6 +2,7 @@ import { IRootState } from '@store/reducers';
 import { createSelector } from '@reduxjs/toolkit';
 import { getBoards } from '@store/selectors/boards';
 import { getTodos } from '@store/selectors/todos';
+import { getSubTodos } from '@store/selectors/sub-todos';
 
 export const getIsLoadedBoards = (state: IRootState) => state.system.isLoadedBoards;
 export const getIsLoadedColumns = (state: IRootState) => state.system.isLoadedColumns;
@@ -15,6 +16,7 @@ export const getEditableSubCardId = (state: IRootState) => state.system.editable
 export const getIsSearchMode = (state: IRootState) => state.system.isSearchMode;
 export const getLanguage = (state: IRootState) => state.system.language;
 export const getActiveTodoId = (state: IRootState) => state.system.activeTodoId;
+export const getActiveSubTodoId = (state: IRootState) => state.system.activeSubTodoId;
 export const getEditCommentId = (state: IRootState) => state.system.editCommentId;
 export const getReplyCommentId = (state: IRootState) => state.system.replyCommentId;
 export const getIsOpenProfile = (state: IRootState) => state.system.isOpenProfile;
@@ -33,8 +35,16 @@ export const getActiveTodoTitle = createSelector(
     return activeTodo?.title;
   },
 );
+export const getActiveSubTodoTitle = createSelector(
+  [getActiveTodoId, getSubTodos], (activeSubTodoId, subTodos) => {
+    if (!activeSubTodoId) return;
+    const activeSubTodo = subTodos.entities.find((subTodo) => subTodo.id === activeSubTodoId);
+    return activeSubTodo?.title;
+  },
+);
 export const getActiveBoardReadableId = (state: IRootState) => state.system.activeBoardReadableId;
 export const getActiveTodoReadableId = (state: IRootState) => state.system.activeTodoReadableId;
+export const getActiveSubTodoReadableId = (state: IRootState) => state.system.activeSubTodoReadableId;
 export const getDroppedFiles = (state: IRootState) => state.system.droppedFiles;
 export const getGalleryImagesInfo = (state: IRootState) => state.system.galleryImagesInfo;
 export const getIsOpenFormattingHelp = (state: IRootState) => state.system.isOpenFormattingHelp;

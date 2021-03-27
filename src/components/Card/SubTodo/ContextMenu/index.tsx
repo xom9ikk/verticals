@@ -284,7 +284,7 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
             />,
             <CopyToClipboard
               key={7}
-              text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(
+              text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/subcard/${toReadableId(
                 title, subTodoId,
               )}`} // TODO: move to env
               onCopy={() => {

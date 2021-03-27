@@ -13,12 +13,14 @@ export type ISetSystemEditableSubCardId = number | string | null;
 export type ISetSystemIsSearchMode = boolean;
 export type ISetSystemLanguage = EnumLanguage;
 export type ISetSystemActiveTodoId = number | null;
+export type ISetSystemActiveSubTodoId = number | null;
 export type ISetSystemEditCommentId = number | null;
 export type ISetSystemReplyCommentId = number | null;
 export type ISetSystemIsOpenProfile = boolean;
 export type ISetSystemActiveBoardId = number | null;
 export type ISetSystemActiveBoardReadableId = string | null;
 export type ISetSystemActiveTodoReadableId = string | null;
+export type ISetSystemActiveSubTodoReadableId = string | null;
 export type ISetSystemDroppedFiles = {
   readonly type: EnumDroppedZoneType;
   readonly files: FileList;

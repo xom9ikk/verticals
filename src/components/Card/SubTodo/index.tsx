@@ -77,7 +77,7 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
   };
 
   const handleClickUnwrapped = () => {
-    redirectTo(`/${username}/${activeBoardReadableId}/card/${toReadableId(title, subTodoId)}`);
+    redirectTo(`/${username}/${activeBoardReadableId}/subcard/${toReadableId(title, subTodoId)}`);
   };
 
   const handleDoubleClickUnwrapped = () => {

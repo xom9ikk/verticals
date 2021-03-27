@@ -20,7 +20,7 @@ import {
   ISetSystemActiveTodoReadableId,
   ISetSystemDroppedFiles,
   ISetGalleryImagesInfo,
-  ISetIsOpenFormattingHelp,
+  ISetIsOpenFormattingHelp, ISetSystemActiveSubTodoReadableId, ISetSystemActiveSubTodoId,
 } from '@type/actions';
 
 export const SystemActions = {
@@ -41,12 +41,14 @@ export const SystemActions = {
   setEditableSubCardId: createAction<ISetSystemEditableSubCardId>('SYSTEM/SET_EDITABLE_SUB_CARD_ID'),
   setIsSearchMode: createAction<ISetSystemIsSearchMode>('SYSTEM/SET_IS_SEARCH_MODE'),
   setActiveTodoId: createAction<ISetSystemActiveTodoId>('SYSTEM/SET_ACTIVE_TODO_ID'),
+  setActiveSubTodoId: createAction<ISetSystemActiveSubTodoId>('SYSTEM/SET_ACTIVE_SUB_TODO_ID'),
   setEditCommentId: createAction<ISetSystemEditCommentId>('SYSTEM/SET_EDIT_COMMENT_ID'),
   setReplyCommentId: createAction<ISetSystemReplyCommentId>('SYSTEM/SET_REPLY_COMMENT_ID'),
   setIsOpenProfile: createAction<ISetSystemIsOpenProfile>('SYSTEM/SET_IS_OPEN_PROFILE'),
   setActiveBoardId: createAction<ISetSystemActiveBoardId>('SYSTEM/SET_ACTIVE_BOARD_ID'),
   setActiveBoardReadableId: createAction<ISetSystemActiveBoardReadableId>('SYSTEM/SET_ACTIVE_BOARD_READABLE_ID'),
   setActiveTodoReadableId: createAction<ISetSystemActiveTodoReadableId>('SYSTEM/SET_ACTIVE_TODO_READABLE_ID'),
+  setActiveSubTodoReadableId: createAction<ISetSystemActiveSubTodoReadableId>('SYSTEM/SET_ACTIVE_SUB_TODO_READABLE_ID'),
   setDroppedFiles: createAction<ISetSystemDroppedFiles>('SYSTEM/SET_DROPPED_FILES'),
   setGalleryImagesInfo: createAction<ISetGalleryImagesInfo>('SYSTEM/SET_GALLERY_IMAGES_INFO'),
   setIsOpenFormattingHelp: createAction<ISetIsOpenFormattingHelp>('SYSTEM/SET_IS_OPEN_FORMATTING_HELP'),

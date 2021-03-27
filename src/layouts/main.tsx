@@ -24,6 +24,7 @@ import { Columns } from '@comp/Columns';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import {
+  getActiveSubTodoId,
   getActiveTodoId,
   getUsername,
 } from '@store/selectors';
@@ -33,19 +34,34 @@ import { Gallery } from '@comp/Gallery';
 
 interface IMainLayoutURLParams {
   boardId?: string;
-  todoId?: string;
+  cardId?: string;
+  0: 'card' | 'subcard';
 }
 
+const actions = {
+  card: {
+    setReadable: SystemActions.setActiveTodoReadableId,
+    setActive: SystemActions.setActiveTodoId,
+  },
+  subcard: {
+    setReadable: SystemActions.setActiveSubTodoReadableId,
+    setActive: SystemActions.setActiveSubTodoId,
+  },
+};
+
 export const MainLayout: FC = () => {
-  const { boardId, todoId } = useParams<IMainLayoutURLParams>();
+  const data = useParams<IMainLayoutURLParams>();
+  const { boardId, cardId, 0: cardType } = data;
 
   const dispatch = useDispatch();
 
   const activeTodoId = useSelector(getActiveTodoId);
+  const activeSubTodoId = useSelector(getActiveSubTodoId);
   const username = useSelector(getUsername);
 
   const refBoardId = useValueRef(boardId);
   const refActiveTodoId = useValueRef(activeTodoId);
+  const refActiveSubTodoId = useValueRef(activeSubTodoId);
   const refUsername = useValueRef(username);
 
   const { toNumericId } = useReadableId();
@@ -55,7 +71,7 @@ export const MainLayout: FC = () => {
     dispatch(ColumnsActions.removeTemp());
     dispatch(TodosActions.removeTemp());
     dispatch(SubTodosActions.removeTemp());
-    const isCardOpened = !!refActiveTodoId.current;
+    const isCardOpened = !!refActiveTodoId.current || !!refActiveSubTodoId.current;
     if (isCardOpened) {
       redirectTo(`/${refUsername.current}/${refBoardId.current}`);
     }
@@ -77,13 +93,29 @@ export const MainLayout: FC = () => {
   }, [boardId]);
 
   useEffect(() => {
-    let numericTodoId = null;
-    if (todoId) {
-      numericTodoId = toNumericId(todoId);
-      dispatch(SystemActions.setActiveTodoReadableId(todoId)); // not use?
+    let numericCardId = null;
+    if (cardId) {
+      numericCardId = toNumericId(cardId);
+      dispatch(actions[cardType]?.setReadable(cardId));
     }
-    dispatch(SystemActions.setActiveTodoId(numericTodoId));
-  }, [todoId]);
+    switch (cardType) {
+      case 'card': {
+        dispatch(SystemActions.setActiveTodoId(numericCardId));
+        dispatch(SystemActions.setActiveSubTodoId(null));
+        break;
+      }
+      case 'subcard': {
+        dispatch(SystemActions.setActiveTodoId(null));
+        dispatch(SystemActions.setActiveSubTodoId(numericCardId));
+        break;
+      }
+      default: {
+        dispatch(SystemActions.setActiveSubTodoId(null));
+        dispatch(SystemActions.setActiveTodoId(null));
+        break;
+      }
+    }
+  }, [cardId]);
 
   useEffect(() => {
     dispatch(UserActions.effect.fetchMe());

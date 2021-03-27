@@ -6,7 +6,8 @@ import {
 } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import {
-  getActiveTodoId, getEditableSubCardId,
+  getActiveSubTodoId,
+  getEditableSubCardId,
   getIsSearchMode,
 } from '@store/selectors';
 import cn from 'classnames';
@@ -32,7 +33,7 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
 }) => {
   const [isCollapse, setIsCollapse] = useState<boolean>(true);
 
-  const activeTodoId = useSelector(getActiveTodoId);
+  const activeSubTodoId = useSelector(getActiveSubTodoId);
   const isSearchMode = useSelector(getIsSearchMode);
   const editableSubCardId = useSelector(getEditableSubCardId);
 
@@ -88,7 +89,7 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
                           snapshot={dragSnapshot}
                           key={id}
                           subTodoId={id}
-                          isActive={activeTodoId === id}
+                          isActive={activeSubTodoId === id}
                           isEditable={id === editableSubCardId}
                         />
                       )}
