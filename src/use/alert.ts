@@ -30,13 +30,13 @@ const defaultPreferences: ReactNotificationOptions = {
 
 const show = (
   title: string,
-  message: string,
+  message: string | Error,
   type: IType = ALERT_TYPES.DEFAULT,
   preferences = defaultPreferences,
 ) => {
   store.addNotification({
     title,
-    message,
+    message: message instanceof Error ? message.message : message,
     type,
     ...preferences,
   });

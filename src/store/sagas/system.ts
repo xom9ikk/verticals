@@ -33,7 +33,6 @@ function* fetchLanguageWorker() {
   }
 }
 
-// TODO: test
 function* setEditableCardIdByColumnIdWorker(action: PayloadAction<any>) {
   try {
     const columnId = action.payload;

@@ -39,6 +39,12 @@ describe('System reducer', () => {
       editableColumnId: 13,
     });
   });
+  it('set heading column id', () => {
+    expect(SystemReducer(initialState, SystemActions.setEditableHeadingId(13))).toEqual({
+      ...initialState,
+      editableHeadingId: 13,
+    });
+  });
   it('set editable card id', () => {
     expect(SystemReducer(initialState, SystemActions.setEditableCardId(13))).toEqual({
       ...initialState,
@@ -67,6 +73,12 @@ describe('System reducer', () => {
     expect(SystemReducer(initialState, SystemActions.setActiveTodoId(13))).toEqual({
       ...initialState,
       activeTodoId: 13,
+    });
+  });
+  it('set active sub todo id', () => {
+    expect(SystemReducer(initialState, SystemActions.setActiveSubTodoId(13))).toEqual({
+      ...initialState,
+      activeSubTodoId: 13,
     });
   });
   it('set edit comment id', () => {
@@ -103,6 +115,12 @@ describe('System reducer', () => {
     expect(SystemReducer(initialState, SystemActions.setActiveTodoReadableId('todo-some-thing-eac'))).toEqual({
       ...initialState,
       activeTodoReadableId: 'todo-some-thing-eac',
+    });
+  });
+  it('set active sub todo readable id', () => {
+    expect(SystemReducer(initialState, SystemActions.setActiveSubTodoReadableId('sub-todo-some-thing-eac'))).toEqual({
+      ...initialState,
+      activeSubTodoReadableId: 'sub-todo-some-thing-eac',
     });
   });
   it('set dropped files', () => {

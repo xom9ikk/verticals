@@ -3,10 +3,10 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 
 import { watchSystem } from '@store/sagas/system';
 import { SystemActions } from '@store/actions';
-import { EnumLanguage } from '@type/entities';
+import { EnumHeadingType, EnumLanguage } from '@type/entities';
 import i18n from '@/i18n';
 import { storage } from '@plugins/storage';
-import { LANGUAGE_CODES } from '@/constants';
+import { LANGUAGE_CODES, NEW_TODO_ID } from '@/constants';
 
 describe('System saga flow', () => {
   it('set language', () => {
@@ -32,6 +32,24 @@ describe('System saga flow', () => {
       ])
       .dispatch(SystemActions.effect.fetchLanguage())
       .put(SystemActions.setLanguage(mockData))
+      .silentRun();
+  });
+  it('set editable card id by column id', () => {
+    const columnId = 13;
+    const headingId = 7;
+
+    return expectSaga(watchSystem)
+      .withState({
+        headings: {
+          entities: [{
+            id: headingId,
+            type: EnumHeadingType.Default,
+            columnId,
+          }],
+        },
+      })
+      .dispatch(SystemActions.effect.setEditableCardIdByColumnId(columnId))
+      .put(SystemActions.setEditableCardId(`${headingId}-${NEW_TODO_ID}`))
       .silentRun();
   });
 });
