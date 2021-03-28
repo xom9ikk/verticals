@@ -24,10 +24,11 @@
       .card-context-menu {
         opacity: 1;
       }
+      background: $hover-color;
     }
 
-    &--hover {
-      background: $hover-color;
+    &--editable {
+      background: none !important;
     }
 
     &--invert {

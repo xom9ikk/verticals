@@ -16,6 +16,7 @@ import {
 import { useParamSelector } from '@use/paramSelector';
 import { CardPopupHeader } from '@comp/CardPopup/Header';
 import { CardPopup } from '@comp/CardPopup';
+import { useValueRef } from '@use/valueRef';
 
 interface ISubTodoCardPopup {
   columnId: number;
@@ -32,15 +33,13 @@ export const SubTodoCardPopup: FC<ISubTodoCardPopup> = ({
   const activeSubTodo = useParamSelector(getSubTodoById, activeSubTodoId) as ISubTodo;
   const activeHeading = useParamSelector(getHeadingByTodoId, activeSubTodo.todoId) as IHeading;
 
+  const refActiveSubTodoId = useValueRef(activeSubTodoId);
+
   const isOpen = !!activeSubTodoId && !!activeSubTodo && activeHeading.columnId === columnId;
 
-  console.log('activeSubTodoId', activeSubTodoId);
-  console.log('activeHeading', activeHeading);
-  console.log('columnIdd', columnId);
   const handleSave = (newTitle: string, newDescription: string = '') => {
-    // setIsProgress(true);
     dispatch(SubTodosActions.effect.update({
-      id: activeSubTodoId!,
+      id: refActiveSubTodoId.current!,
       title: newTitle,
       description: newDescription,
     }));

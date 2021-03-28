@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useMemo,
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ import {
   getActiveBoardReadableId,
   getUsername,
 } from '@store/selectors';
-import { Loader } from '@comp/Loader';
 import { DropZone } from '@comp/DropZone';
 import { ControlButton } from '@comp/ControlButton';
 import { useColorClass } from '@use/colorClass';
@@ -44,8 +43,6 @@ export const CardPopup: FC<ICardPopup> = ({
 
   const colorClass = useColorClass('card-popup__inner', color);
 
-  const [isProgress, setIsProgress] = useState<boolean>(false);
-
   const handleClose = () => {
     redirectTo(`/${username}/${activeBoardReadableId}`);
   };
@@ -56,17 +53,6 @@ export const CardPopup: FC<ICardPopup> = ({
       files,
     }));
   };
-
-  useEffect(() => {
-    if (isProgress) {
-      const timeout = setTimeout(() => {
-        setIsProgress(false);
-      }, 800);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [isProgress]);
 
   return useMemo(() => (
     <div
@@ -81,14 +67,6 @@ export const CardPopup: FC<ICardPopup> = ({
         })}
       >
         <DropZone onOpen={handleDropFiles}>
-          <Loader
-            isOpen={isProgress}
-            style={{
-              position: 'absolute',
-              right: 40,
-              top: 12,
-            }}
-          />
           <ControlButton
             imageSrc="/assets/svg/close.svg"
             alt="close"
@@ -112,7 +90,6 @@ export const CardPopup: FC<ICardPopup> = ({
     t,
     isOpen,
     colorClass,
-    isProgress,
     cardType,
     children,
   ]);

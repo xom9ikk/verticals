@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useRef,
+  FC, useEffect, useRef, useState,
 } from 'react';
 import { EnumCardType, EnumTodoStatus, IColor } from '@type/entities';
 import { Bullet } from '@comp/Bullet';
@@ -13,6 +13,7 @@ import { useFocus } from '@use/focus';
 import { useEffectState } from '@use/effectState';
 import { useDebounce } from '@use/debounce';
 import { useNewValues } from '@use/newValues';
+import { Loader } from '@comp/Loader';
 
 interface ICardPopupHeader {
   cardId: number;
@@ -54,12 +55,14 @@ export const CardPopupHeader: FC<ICardPopupHeader> = ({
 
   const titleInputRef = useRef<any>(null);
 
+  const [isProgress, setIsProgress] = useState<boolean>(false);
   const [titleValue, setTitleValue] = useEffectState<string>(title);
   const [descriptionValue, setDescriptionValue] = useEffectState<string | undefined>(description);
 
   const debounceSave = useDebounce(({ old, newValue }) => {
     const isNew = isNewValues([old.title, newValue.title], [old.description, newValue.description]);
     if (isNew) {
+      setIsProgress(true);
       onSave(newValue.title, newValue.description);
     }
   }, 500);
@@ -82,78 +85,98 @@ export const CardPopupHeader: FC<ICardPopupHeader> = ({
     });
   }, [titleValue, descriptionValue]);
 
-  return (
-    <div className="card-popup__header">
-      <div className="card-popup__input-container">
-        {cardType === EnumCardType.Checkboxes && (
-          <Bullet
-            type={cardType}
-            status={status}
-            onChangeStatus={onChangeStatus}
-            size="large"
-            style={{ margin: '5px' }}
-          />
-        )}
-        <DateBadge
-          popupId={`card-popup-${cardId}`}
-          position="bottom"
-          style={{
-            position: 'absolute',
-            top: 5,
-            left: 25,
-          }}
-          date={expirationDate}
-          onSelectDate={onSelectDate}
-        />
-        <div className="card-popup__textarea-inner">
-          <TextArea
-            ref={titleInputRef}
-            className="card__textarea card-popup__textarea"
-            placeholder={t('Card Title')}
-            value={titleValue || ''}
-            onKeyDown={shiftEnterRestriction}
-            onChange={(event: any) => handleChangeText(event, false)}
-            minRows={1}
-            maxRows={3}
-          />
-          <TextArea
-            className="card__textarea card-popup__textarea card-popup__textarea--description"
-            placeholder={t('Notes')}
-            value={descriptionValue || ''}
-            onKeyDown={shiftEnterRestriction}
-            onChange={(event: any) => handleChangeText(event, true)}
-            minRows={1}
-            maxRows={3}
-          />
-        </div>
-      </div>
-      <CardPopupToolbar
-        cardId={cardId!}
-        isNotificationsEnabled={isNotificationsEnabled!}
-        expirationDate={expirationDate}
-        onSwitchNotifications={onSwitchNotifications}
-        onSelectDate={onSelectDate}
-      >
-        <TodoContextMenu
-          menuId="popup"
-          todoId={cardId}
-          title={title}
-          headingId={parentId}
-          isActive={false}
-          isNotificationsEnabled={isNotificationsEnabled}
-          expirationDate={expirationDate}
-          color={color}
-          status={status}
-          size={36}
-          imageSize={24}
-          isPrimary
-          isColored
-          isTransformedPosition={false}
-          onStartEdit={handleStartEdit}
-          onChangeColor={onChangeColor}
-        />
-      </CardPopupToolbar>
-    </div>
+  useEffect(() => {
+    if (isProgress) {
+      const timeout = setTimeout(() => {
+        setIsProgress(false);
+      }, 800);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [isProgress]);
 
+  return (
+    <>
+      <Loader
+        isOpen={isProgress}
+        style={{
+          position: 'absolute',
+          right: 40,
+          top: 7,
+        }}
+      />
+      <div className="card-popup__header">
+        <div className="card-popup__input-container">
+          {cardType === EnumCardType.Checkboxes && (
+            <Bullet
+              type={cardType}
+              status={status}
+              onChangeStatus={onChangeStatus}
+              size="large"
+              style={{ margin: '5px' }}
+            />
+          )}
+          <DateBadge
+            popupId={`card-popup-${cardId}`}
+            position="bottom"
+            style={{
+              position: 'absolute',
+              top: 5,
+              left: 25,
+            }}
+            date={expirationDate}
+            onSelectDate={onSelectDate}
+          />
+          <div className="card-popup__textarea-inner">
+            <TextArea
+              ref={titleInputRef}
+              className="card__textarea card-popup__textarea"
+              placeholder={t('Card Title')}
+              value={titleValue || ''}
+              onKeyDown={shiftEnterRestriction}
+              onChange={(event: any) => handleChangeText(event, false)}
+              minRows={1}
+              maxRows={3}
+            />
+            <TextArea
+              className="card__textarea card-popup__textarea card-popup__textarea--description"
+              placeholder={t('Notes')}
+              value={descriptionValue || ''}
+              onKeyDown={shiftEnterRestriction}
+              onChange={(event: any) => handleChangeText(event, true)}
+              minRows={1}
+              maxRows={3}
+            />
+          </div>
+        </div>
+        <CardPopupToolbar
+          cardId={cardId!}
+          isNotificationsEnabled={isNotificationsEnabled!}
+          expirationDate={expirationDate}
+          onSwitchNotifications={onSwitchNotifications}
+          onSelectDate={onSelectDate}
+        >
+          <TodoContextMenu
+            menuId="popup"
+            todoId={cardId}
+            title={title}
+            headingId={parentId}
+            isActive={false}
+            isNotificationsEnabled={isNotificationsEnabled}
+            expirationDate={expirationDate}
+            color={color}
+            status={status}
+            size={36}
+            imageSize={24}
+            isPrimary
+            isColored
+            isTransformedPosition={false}
+            onStartEdit={handleStartEdit}
+            onChangeColor={onChangeColor}
+          />
+        </CardPopupToolbar>
+      </div>
+    </>
   );
 };

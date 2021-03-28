@@ -15,6 +15,7 @@ import {
 import { useParamSelector } from '@use/paramSelector';
 import { CardPopupHeader } from '@comp/CardPopup/Header';
 import { CardPopup } from '@comp/CardPopup';
+import { useValueRef } from '@use/valueRef';
 
 interface ITodoCardPopup {
   columnId: number;
@@ -31,12 +32,13 @@ export const TodoCardPopup: FC<ITodoCardPopup> = ({
   const activeTodo = useParamSelector(getTodoById, activeTodoId) as ITodo;
   const activeHeading = useParamSelector(getHeadingById, activeTodo.headingId) as IHeading;
 
+  const refActiveTodoId = useValueRef(activeTodoId);
+
   const isOpen = !!activeTodoId && !!activeTodo && activeHeading.columnId === columnId;
 
   const handleSave = (newTitle: string, newDescription: string = '') => {
-    // setIsProgress(true);
     dispatch(TodosActions.effect.update({
-      id: activeTodoId!,
+      id: refActiveTodoId.current!,
       title: newTitle,
       description: newDescription,
     }));

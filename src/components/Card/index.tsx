@@ -45,7 +45,6 @@ export const Card: FC<ICard> = ({
   const { merge } = useFileList();
   const colorClass = useColorClass('card__color', color);
 
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
 
@@ -96,7 +95,7 @@ export const Card: FC<ICard> = ({
           'card__color',
           !isEditable ? colorClass : '',
           className, {
-            'card__color--hover': isHover && !isEditable,
+            'card__color--editable': isEditable,
             'card__color--invert': invertColor,
             'card__color--pressed': isMouseDown || isActive,
             'card__color--dragging': isTodoDragging,
@@ -107,8 +106,6 @@ export const Card: FC<ICard> = ({
           className={cn('card__content', {
             'card__content--editable': isEditable,
           })}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
         >
           <DropZone
             onOpen={handleDropFiles}
