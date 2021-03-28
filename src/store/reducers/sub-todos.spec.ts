@@ -1,6 +1,6 @@
 import { SubTodosActions } from '@store/actions';
 import { EnumColors, EnumTodoStatus } from '@type/entities';
-import { TEMP_ID } from '@/constants';
+import { SUB_TODO_ON_TOP, TEMP_ID } from '@/constants';
 import { SubTodosReducer, initialState } from '@store/reducers/sub-todos';
 
 const mockSubTodos = [{
@@ -246,7 +246,7 @@ describe('SubTodo reducer', () => {
       entities: [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo, {
         id: TEMP_ID,
         todoId: subTodo2.todoId,
-        belowId: -1,
+        belowId: SUB_TODO_ON_TOP,
         title: '',
         attachmentsCount: 0,
         commentsCount: 0,

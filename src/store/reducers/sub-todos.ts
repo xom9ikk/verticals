@@ -2,7 +2,7 @@ import {
   ISubTodos,
 } from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
-import { TEMP_ID } from '@/constants';
+import { SUB_TODO_ON_TOP, TEMP_ID } from '@/constants';
 import { SubTodosActions } from '../actions';
 
 export const initialState: ISubTodos = {
@@ -80,7 +80,7 @@ export const SubTodosReducer = createReducer(initialState, (builder) => builder
     draft.entities.push({
       id: TEMP_ID,
       todoId,
-      belowId: -1,
+      belowId: SUB_TODO_ON_TOP,
       title: '',
       commentsCount: 0,
       imagesCount: 0,

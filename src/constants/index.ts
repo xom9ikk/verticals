@@ -6,6 +6,7 @@ export const NEW_COLUMN_ID = -4;
 export const NEW_HEADING_ID = -5;
 export const NEW_TODO_ID = -6;
 export const NEW_SUB_TODO_ID = -7;
+export const SUB_TODO_ON_TOP = -1;
 export const DEFAULT_COLUMN_WIDTH = 280;
 export const ICONS = ['apple', 'archive', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'attach', 'bachelor',
   'ball', 'bell', 'book', 'bookmark', 'calendar', 'card', 'carrot', 'chair', 'change', 'cheese',
