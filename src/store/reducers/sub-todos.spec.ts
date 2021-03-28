@@ -231,6 +231,33 @@ describe('SubTodo reducer', () => {
       },
     });
   });
+  it('draw on top', () => {
+    const [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo] = mockSubTodos;
+    const initialStateWithFourSubTodos = {
+      entities: [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo],
+      positions: {
+        [subTodo.todoId]: [subTodo.id, subTodo2.id, subTodo3.id],
+        [subTodoFromOtherTodo.todoId]: [subTodoFromOtherTodo.id],
+      },
+    };
+    expect(SubTodosReducer(initialStateWithFourSubTodos, SubTodosActions.drawOnTop({
+      todoId: subTodo2.todoId,
+    }))).toEqual({
+      entities: [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo, {
+        id: TEMP_ID,
+        todoId: subTodo2.todoId,
+        belowId: -1,
+        title: '',
+        attachmentsCount: 0,
+        commentsCount: 0,
+        imagesCount: 0,
+      }],
+      positions: {
+        [subTodo.todoId]: [TEMP_ID, subTodo.id, subTodo2.id, subTodo3.id],
+        [subTodoFromOtherTodo.todoId]: [subTodoFromOtherTodo.id],
+      },
+    });
+  });
   it('remove temporary subTodo', () => {
     const [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo] = mockSubTodos;
     const initialStateWithFourSubTodos = {
