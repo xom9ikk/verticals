@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import useKeys from '@rooks/use-keys';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import { EnumTodoType, IBoard } from '@type/entities';
+import { EnumCardType, IBoard } from '@type/entities';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
 import { BoardsActions, SystemActions } from '@store/actions';
@@ -83,7 +83,7 @@ export const Board: FC<IBoardComponent> = ({
           icon: '/assets/svg/board/item.svg',
           title: normalizedTitleValue,
           description: normalizedDescriptionValue,
-          cardType: EnumTodoType.Checkboxes,
+          cardType: EnumCardType.Checkboxes,
           belowId,
         }));
       } else {

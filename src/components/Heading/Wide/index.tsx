@@ -9,7 +9,7 @@ import {
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumHeadingType, EnumTodoType, IColor } from '@type/entities';
+import { EnumHeadingType, EnumCardType, IColor } from '@type/entities';
 import { EnumHeadingMode } from '@comp/Heading';
 import { HeadingHeader } from '@comp/Heading/Header';
 import { CardsContainer } from '@comp/CardsContainer';
@@ -33,7 +33,7 @@ interface IHeadingWide {
   title?: string;
   description?: string;
   mode: EnumHeadingMode;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   isEditable: boolean;
   type: EnumHeadingType;
   onClick: (event: React.SyntheticEvent) => void;

@@ -113,18 +113,6 @@
     }
   }
 
-  &__toolbar {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: space-between;
-
-    div {
-      display: flex;
-      align-items: center;
-    }
-  }
-
   hr {
     margin: 5px 0 5px;
     border: 1px solid rgba(0, 0, 0, 0.06);

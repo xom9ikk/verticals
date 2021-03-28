@@ -2,7 +2,7 @@ import {
   IAddCommentLikeRequest, IAddCommentLikeResponse,
   ICreateCommentRequest,
   ICreateCommentResponse,
-  IGetAllCommentsResponse,
+  IGetAllCommentsResponse, IGetCommentsBySubTodoIdRequest, IGetCommentsBySubTodoIdResponse,
   IGetCommentsByTodoIdRequest,
   IGetCommentsByTodoIdResponse, IRemoveCommentLikeRequest, IRemoveCommentLikeResponse,
   IRemoveCommentRequest,
@@ -14,6 +14,7 @@ import {
 export interface ICommentService {
   getAll(): Promise<IGetAllCommentsResponse>;
   getByTodoId(body: IGetCommentsByTodoIdRequest): Promise<IGetCommentsByTodoIdResponse>;
+  getBySubTodoId(body: IGetCommentsBySubTodoIdRequest): Promise<IGetCommentsBySubTodoIdResponse>;
   create(body: ICreateCommentRequest): Promise<ICreateCommentResponse>;
   remove(body: IRemoveCommentRequest): Promise<IRemoveCommentResponse>;
   update(body: IUpdateCommentRequest): Promise<IUpdateCommentResponse>;

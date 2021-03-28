@@ -22,7 +22,7 @@ export interface ITodos {
   readonly positions: IPositions;
 }
 
-export enum EnumTodoType {
+export enum EnumCardType {
   Checkboxes,
   Arrows,
   Dots,

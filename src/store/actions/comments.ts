@@ -8,12 +8,13 @@ import {
   IAddCommentLike,
   IRemoveCommentLike,
   IUpdateCommentLike,
-  IUpdateCommentText,
+  IUpdateCommentText, IFetchCommentsBySubTodoId,
 } from '@type/actions';
 
 export const CommentsActions = {
   effect: {
     fetchByTodoId: createAction<IFetchCommentsByTodoId>('COMMENTS-EFFECT/FETCH_BY_TODO_ID'),
+    fetchBySubTodoId: createAction<IFetchCommentsBySubTodoId>('COMMENTS-EFFECT/FETCH_BY_SUB_TODO_ID'),
     create: createAction<ICreateComment>('COMMENTS-EFFECT/CREATE'),
     remove: createAction<IRemoveComment>('COMMENTS-EFFECT/REMOVE'),
     addLike: createAction<IAddCommentLike>('COMMENTS-EFFECT/ADD_LIKE'),

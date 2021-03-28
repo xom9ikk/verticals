@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { IRootState } from '@store/reducers';
-import { EnumTodoType } from '@type/entities';
+import { EnumCardType } from '@type/entities';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import i18n from '@/i18n';
 
@@ -26,5 +26,5 @@ export const getBoardById = (boardId?: number) => createSelector(
 );
 export const getBoardCardType = (boardId?: number) => createSelector(
   [getBoards],
-  (boards) => boards.entities.find((board) => board.id === boardId)?.cardType ?? EnumTodoType.Checkboxes,
+  (boards) => boards.entities.find((board) => board.id === boardId)?.cardType ?? EnumCardType.Checkboxes,
 );

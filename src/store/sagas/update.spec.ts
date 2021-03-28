@@ -5,7 +5,7 @@ import {
 } from '@store/actions';
 import { UpdateService } from '@services/update';
 import { subscribeOnEntity } from '@store/sagas/update';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '@type/entities';
+import { EnumColors, EnumTodoStatus, EnumCardType } from '@type/entities';
 import { EnumOperations } from '@type/api';
 import { getIsSearchMode } from '@store/selectors';
 
@@ -16,7 +16,7 @@ const mockBoard = {
   id: 11,
   title: 'Title',
   icon: 'path/to/icon',
-  cardType: EnumTodoType.Checkboxes,
+  cardType: EnumCardType.Checkboxes,
   description: 'Description for board',
   color: EnumColors.Green,
 };

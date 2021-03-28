@@ -1,12 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import React, { FC } from 'react';
 import { Checkbox } from '@comp/Checkbox';
-import { EnumTodoStatus, EnumTodoType } from '@type/entities';
+import { EnumTodoStatus, EnumCardType } from '@type/entities';
 
 const bullets = ['arrow', 'dot', 'dash'];
 
 interface IBullet {
-  type: EnumTodoType;
+  type: EnumCardType;
   status: EnumTodoStatus;
   onChangeStatus: (status: EnumTodoStatus) => void;
   size?: 'small' | 'medium' | 'large';
@@ -37,7 +37,7 @@ export const Bullet: FC<IBullet> = ({
 
   const renderBullet = () => {
     switch (type) {
-      case EnumTodoType.Checkboxes:
+      case EnumCardType.Checkboxes:
         return (
           <div
             className={`bullet__overlay bullet__overlay--${size}`}
@@ -57,9 +57,9 @@ export const Bullet: FC<IBullet> = ({
             />
           </div>
         );
-      case EnumTodoType.Arrows:
-      case EnumTodoType.Dots:
-      case EnumTodoType.Dashes:
+      case EnumCardType.Arrows:
+      case EnumCardType.Dots:
+      case EnumCardType.Dashes:
         return (
           <img
             className="bullet__image"
@@ -67,7 +67,7 @@ export const Bullet: FC<IBullet> = ({
             alt="bullet"
           />
         );
-      case EnumTodoType.Nothing:
+      case EnumCardType.Nothing:
         return null;
       default: return null;
     }

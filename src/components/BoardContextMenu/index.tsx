@@ -9,7 +9,7 @@ import { Submenu } from '@comp/Submenu';
 import { ControlButton } from '@comp/ControlButton';
 import { BoardsActions, ColumnsActions, SystemActions } from '@store/actions';
 import { useReadableId } from '@use/readableId';
-import { EnumTodoType, IColor } from '@type/entities';
+import { EnumCardType, IColor } from '@type/entities';
 import { getUsername } from '@store/selectors';
 import { ICONS } from '@/constants';
 import { useTranslation } from 'react-i18next';
@@ -115,30 +115,30 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
           text={t('Checkboxes')}
           imageSrc="/assets/svg/menu/square.svg"
           action={EnumMenuActions.CardStyle}
-          payload={EnumTodoType.Checkboxes}
+          payload={EnumCardType.Checkboxes}
         />
         <MenuItem
           text={t('Arrows')}
           imageSrc="/assets/svg/menu/arrow.svg"
           action={EnumMenuActions.CardStyle}
-          payload={EnumTodoType.Arrows}
+          payload={EnumCardType.Arrows}
         />
         <MenuItem
           text={t('Dots')}
           imageSrc="/assets/svg/menu/circle.svg"
           action={EnumMenuActions.CardStyle}
-          payload={EnumTodoType.Dots}
+          payload={EnumCardType.Dots}
         />
         <MenuItem
           text={t('Dashes')}
           imageSrc="/assets/svg/menu/dash.svg"
           action={EnumMenuActions.CardStyle}
-          payload={EnumTodoType.Dashes}
+          payload={EnumCardType.Dashes}
         />
         <MenuItem
           text={t('Nothing')}
           action={EnumMenuActions.CardStyle}
-          payload={EnumTodoType.Nothing}
+          payload={EnumCardType.Nothing}
         />
       </Submenu>
       <Submenu

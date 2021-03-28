@@ -1,5 +1,5 @@
 import {
-  EnumTodoType, IBoards, IColor,
+  EnumCardType, IBoards, IColor,
 } from '@type/entities';
 import { IServerResponse } from './response';
 
@@ -10,7 +10,7 @@ export type IGetAllBoardsResponse = IServerResponse<{
 export interface ICreateBoardRequest {
   readonly icon: string;
   readonly title: string;
-  readonly cardType: EnumTodoType;
+  readonly cardType: EnumCardType;
   readonly description?: string;
   readonly belowId?: number;
 }
@@ -30,7 +30,7 @@ export interface IUpdateBoardRequest {
   readonly id: number;
   readonly icon?: string;
   readonly title?: string;
-  readonly cardType?: EnumTodoType;
+  readonly cardType?: EnumCardType;
   readonly description?: string;
   readonly color?: IColor;
 }

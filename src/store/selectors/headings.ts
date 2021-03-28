@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { IRootState } from '@store/reducers';
 import { EnumHeadingType } from '@type/entities';
+import { getTodosEntities } from '@store/selectors/todos';
 
 export const getHeadings = (state: IRootState) => state.headings;
 export const getHeadingPositionsByColumnId = (
@@ -35,4 +36,12 @@ export const getArchivedHeadingIdByColumnId = (
 export const getHeadingById = (headingId: number) => createSelector(
   [getHeadings],
   (headings) => headings.entities.find((heading) => heading.id === headingId) || {},
+);
+
+export const getHeadingByTodoId = (todoId: number) => createSelector(
+  [getHeadings, getTodosEntities],
+  (headings, todos) => {
+    const targetTodo = todos.find((todo) => todo.id === todoId);
+    return headings.entities.find((heading) => heading.id === targetTodo?.headingId) || {};
+  },
 );

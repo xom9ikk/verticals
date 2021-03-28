@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { EnumTodoType, IBoards } from '@type/entities';
+import { EnumCardType, IBoards } from '@type/entities';
 import { BoardsActions } from '@store/actions';
 import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
 
@@ -62,7 +62,7 @@ export const BoardsReducer = createReducer(initialState, (builder) => builder
       belowId,
       title: '',
       icon: DEFAULT_BOARD_ICON,
-      cardType: EnumTodoType.Checkboxes,
+      cardType: EnumCardType.Checkboxes,
     });
 
     draft.positions.splice(positionIndex + 1, 0, TEMP_ID);

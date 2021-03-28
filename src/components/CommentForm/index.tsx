@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@comp/Avatar';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
 import { TextArea } from '@comp/TextArea';
@@ -16,21 +17,21 @@ import { CommentFormAttachments } from '@comp/CommentFormAttachments';
 import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
+import { ICreateComment } from '@type/actions';
 
 interface ICommentForm {
-  todoId: number | null;
   onChangeTextAreaHeight: (height: number) => void;
   isScrolledToBottom: boolean;
   onScrollToBottom: () => void;
+  onCreate: (data: ICreateComment) => void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({
-  todoId,
   onChangeTextAreaHeight,
   isScrolledToBottom,
   onScrollToBottom,
+  onCreate,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -81,12 +82,11 @@ export const CommentForm: FC<ICommentForm> = ({
       }
       dispatch(SystemActions.setEditCommentId(null));
     } else if (files?.length || commentText) {
-      dispatch(CommentsActions.effect.create({
-        todoId: todoId!,
+      onCreate({
         text: commentText,
         replyCommentId: replyCommentId || undefined,
         files,
-      }));
+      });
       dispatch(SystemActions.setReplyCommentId(null));
     }
     setFiles(null);
@@ -120,13 +120,11 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const handleUploadImages = async () => {
     const openedFiles = await openFiles('image/x-png,image/jpeg', true);
-    console.log('openedFiles', openedFiles);
     setFiles((prev) => merge(prev, openedFiles));
   };
 
   const handleUploadFiles = async () => {
     const openedFiles = await openFiles('*', true);
-    console.log('openedFiles', openedFiles);
     setFiles((prev) => merge(prev, openedFiles));
   };
 
@@ -141,7 +139,6 @@ export const CommentForm: FC<ICommentForm> = ({
   const isAvailableSend = commentText?.length || files?.length;
 
   const handleOutsideClick = () => {
-    console.log('handleOutsideClick');
     dispatch(SystemActions.setEditCommentId(null));
   };
 

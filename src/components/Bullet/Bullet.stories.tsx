@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bullet } from '@comp/Bullet/index';
-import { EnumTodoStatus, EnumTodoType } from '@type/entities';
+import { EnumTodoStatus, EnumCardType } from '@type/entities';
 
 export default {
   title: 'Bullet',
@@ -8,9 +8,9 @@ export default {
     type: {
       control: {
         type: 'select',
-        options: Object.values(EnumTodoType).filter((v) => typeof v === 'number'),
+        options: Object.values(EnumCardType).filter((v) => typeof v === 'number'),
       },
-      defaultValue: EnumTodoType.Arrows,
+      defaultValue: EnumCardType.Arrows,
     },
     status: {
       control: {
@@ -25,7 +25,7 @@ export default {
 };
 
 export const Default = (args: any) => <Bullet {...args} />;
-export const Checkbox = (args: any) => <Bullet {...args} type={EnumTodoType.Checkboxes} />;
-export const Arrow = (args: any) => <Bullet {...args} type={EnumTodoType.Arrows} />;
-export const Dash = (args: any) => <Bullet {...args} type={EnumTodoType.Dashes} />;
-export const Dots = (args: any) => <Bullet {...args} type={EnumTodoType.Dots} />;
+export const Checkbox = (args: any) => <Bullet {...args} type={EnumCardType.Checkboxes} />;
+export const Arrow = (args: any) => <Bullet {...args} type={EnumCardType.Arrows} />;
+export const Dash = (args: any) => <Bullet {...args} type={EnumCardType.Dashes} />;
+export const Dots = (args: any) => <Bullet {...args} type={EnumCardType.Dots} />;

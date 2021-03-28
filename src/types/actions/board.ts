@@ -1,5 +1,5 @@
 import {
-  EnumTodoType, IBoards, IBoard, IColor, ID,
+  EnumCardType, IBoards, IBoard, IColor, ID,
 } from '@type/entities';
 
 export type ISetBoards = IBoards;
@@ -7,7 +7,7 @@ export type ISetBoards = IBoards;
 export interface ICreateBoard {
   readonly icon: string;
   readonly title: string;
-  readonly cardType: EnumTodoType;
+  readonly cardType: EnumCardType;
   readonly description?: string;
   readonly color?: IColor;
   readonly belowId?: number;
@@ -26,7 +26,7 @@ export type IUpdateBoard = {
   | { readonly title: string }
   | { readonly description: string }
   | { readonly color: IColor }
-  | { readonly cardType: EnumTodoType }
+  | { readonly cardType: EnumCardType }
   | { readonly icon: string }
 );
 

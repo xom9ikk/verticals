@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IColumn } from '@type/entities';
 import { ColumnsActions } from '@store/actions';
 import { getBoardCardType, getColumnById, getIsSearchMode } from '@store/selectors';
-import { CardPopup } from '@comp/CardPopup';
 import { ColumnCompact } from '@comp/Column/Compact';
 import { ColumnResizable } from '@comp/Column/Resizable';
 import { useParamSelector } from '@use/paramSelector';
+import { CardPopupWrapper } from '@comp/CardPopup/Wrapper';
 
 export enum EnumColumnMode {
   Normal,
@@ -100,7 +100,7 @@ export const Column: FC<IColumnComponent> = ({
   return (
     <>
       {memoColumn}
-      <CardPopup
+      <CardPopupWrapper
         columnId={columnId}
         cardType={cardType}
       />

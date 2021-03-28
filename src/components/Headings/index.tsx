@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { EnumHeadingMode, Heading } from '@comp/Heading';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEditableHeadingId, getHeadingPositionsByColumnId } from '@store/selectors';
-import { EnumTodoType } from '@type/entities';
+import { EnumCardType } from '@type/entities';
 import { NEW_HEADING_ID } from '@/constants';
 import { SystemActions } from '@store/actions';
 import { useParamSelector } from '@use/paramSelector';
@@ -10,7 +10,7 @@ import { DroppableProvided } from 'react-beautiful-dnd';
 
 interface IHeadings {
   columnId: number;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   dropProvided: DroppableProvided;
 }
 

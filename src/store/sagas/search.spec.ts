@@ -6,7 +6,7 @@ import {
 } from '@store/actions';
 import { SearchService } from '@services/search';
 import { watchSearch } from '@store/sagas/search';
-import { EnumColors, EnumTodoStatus, EnumTodoType } from '@type/entities';
+import { EnumColors, EnumTodoStatus, EnumCardType } from '@type/entities';
 
 // @ts-ignore
 const searchService = new SearchService();
@@ -15,7 +15,7 @@ const mockBoard = {
   id: 11,
   title: 'Title',
   icon: 'path/to/icon',
-  cardType: EnumTodoType.Checkboxes,
+  cardType: EnumCardType.Checkboxes,
   description: 'Description for board',
   color: EnumColors.Green,
 };

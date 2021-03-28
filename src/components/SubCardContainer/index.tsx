@@ -13,13 +13,13 @@ import {
 import cn from 'classnames';
 import { SubCardContainerToolbar } from '@comp/SubCardContainer/Toolbar';
 import { SubTodoCard } from '@comp/Card/SubTodo';
-import { EnumTodoType, ID } from '@type/entities';
+import { EnumCardType, ID } from '@type/entities';
 import { MAX_SUB_TODO, NEW_SUB_TODO_ID } from '@/constants';
 
 interface ISubCardsContainer {
   todoId: number;
   subTodoPositions: Array<ID>;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   isOpen: boolean;
   onAddSubCard: () => void;
 }

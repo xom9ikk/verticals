@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { EnumTodoType, IColor } from '@type/entities';
+import { EnumCardType, IColor } from '@type/entities';
 import { DEFAULT_COLUMN_WIDTH } from '@/constants';
 import { EnumColumnMode } from '@comp/Column';
 import { ColumnWide } from '@comp/Column/Wide';
@@ -21,7 +21,7 @@ interface IColumnResizable {
   description?: string;
   mode: EnumColumnMode;
   width?: number | null;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   isEditable: boolean;
   onClick: (event: React.SyntheticEvent) => void;
 }

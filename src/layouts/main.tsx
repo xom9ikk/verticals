@@ -38,17 +38,6 @@ interface IMainLayoutURLParams {
   0: 'card' | 'subcard';
 }
 
-const actions = {
-  card: {
-    setReadable: SystemActions.setActiveTodoReadableId,
-    setActive: SystemActions.setActiveTodoId,
-  },
-  subcard: {
-    setReadable: SystemActions.setActiveSubTodoReadableId,
-    setActive: SystemActions.setActiveSubTodoId,
-  },
-};
-
 export const MainLayout: FC = () => {
   const data = useParams<IMainLayoutURLParams>();
   const { boardId, cardId, 0: cardType } = data;
@@ -96,7 +85,17 @@ export const MainLayout: FC = () => {
     let numericCardId = null;
     if (cardId) {
       numericCardId = toNumericId(cardId);
-      dispatch(actions[cardType]?.setReadable(cardId));
+      switch (cardType) {
+        case 'card': {
+          dispatch(SystemActions.setActiveTodoReadableId(cardId));
+          break;
+        }
+        case 'subcard': {
+          dispatch(SystemActions.setActiveSubTodoReadableId(cardId));
+          break;
+        }
+        default: break;
+      }
     }
     switch (cardType) {
       case 'card': {

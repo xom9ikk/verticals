@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { redirectTo } from '@router/history';
 import {
-  EnumTodoStatus, EnumTodoType, IColor, ISubTodo,
+  EnumTodoStatus, EnumCardType, IColor, ISubTodo,
 } from '@type/entities';
 import { NEW_SUB_TODO_ID } from '@/constants';
 import { CommentsActions, SystemActions, SubTodosActions } from '@store/actions';
@@ -28,7 +28,7 @@ interface ISubTodoCard {
   snapshot?: DraggableStateSnapshot;
   subTodoId: number;
   todoIdForNew?: number;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   invertColor?: boolean;
   isEditable: boolean;
   isActive?: boolean;

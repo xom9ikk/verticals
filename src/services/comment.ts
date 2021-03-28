@@ -13,7 +13,10 @@ import {
   IGetCommentsByTodoIdResponse,
   IAddCommentLikeRequest,
   IAddCommentLikeResponse,
-  IRemoveCommentLikeRequest, IRemoveCommentLikeResponse,
+  IRemoveCommentLikeRequest,
+  IRemoveCommentLikeResponse,
+  IGetCommentsBySubTodoIdRequest,
+  IGetCommentsBySubTodoIdResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { ICommentService } from '@inversify/interfaces/services';
@@ -34,6 +37,12 @@ export class CommentService implements ICommentService {
 
   getByTodoId(body: IGetCommentsByTodoIdRequest) {
     return this.httpClient.get<IGetCommentsByTodoIdResponse>('/comment', {
+      params: body,
+    });
+  }
+
+  getBySubTodoId(body: IGetCommentsBySubTodoIdRequest) {
+    return this.httpClient.get<IGetCommentsBySubTodoIdResponse>('/comment', {
       params: body,
     });
   }

@@ -1,12 +1,12 @@
 import {
-  EnumTodoType, IColor, ID,
+  EnumCardType, IColor, ID,
 } from '@type/entities';
 
 export interface IBoard {
   readonly id: ID;
   readonly title: string;
   readonly icon: string;
-  readonly cardType: EnumTodoType;
+  readonly cardType: EnumCardType;
   readonly description?: string;
   readonly color?: IColor;
   readonly belowId?: number;

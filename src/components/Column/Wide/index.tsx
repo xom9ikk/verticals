@@ -4,7 +4,7 @@ import React, {
 import cn from 'classnames';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumTodoType, IColor } from '@type/entities';
+import { EnumCardType, IColor } from '@type/entities';
 import { EnumColumnMode } from '@comp/Column';
 import { ColumnHeader } from '@comp/Column/Header';
 import { ColumnToolbar } from '@comp/Column/Toolbar';
@@ -27,7 +27,7 @@ interface IColumnWide {
   title?: string;
   description?: string;
   mode: EnumColumnMode;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   isEditable: boolean;
   onClick: (event: React.SyntheticEvent) => void;
   onResize: (event: React.MouseEvent | React.TouchEvent) => void;

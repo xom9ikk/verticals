@@ -5,17 +5,25 @@ import { CommentList } from '@comp/CommentList';
 import { CommentForm } from '@comp/CommentForm';
 import { FormattingHelp } from '@comp/FormattingHelp';
 import { useAutoScroll, ScrollDirection } from '@use/autoScroll';
-import { useSelector } from 'react-redux';
-import { getActiveTodoId, getCommentsByTodoId } from '@store/selectors';
-import { useParamSelector } from '@use/paramSelector';
+import { ICreateComment } from '@type/actions';
+import { IComments } from '@type/entities';
 
-export const Comments: FC = () => {
-  const activeTodoId = useSelector(getActiveTodoId);
-  const comments = useParamSelector(getCommentsByTodoId, activeTodoId);
+interface ICommentsComponent {
+  cardId: number;
+  comments: IComments,
+  onCreate: (data: ICreateComment) => void,
+}
 
+export const Comments: FC<ICommentsComponent> = ({
+  cardId,
+  comments,
+  onCreate,
+}) => {
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0);
   const [commentsMaxCounter, setCommentsMaxCounter] = useState<number>(0);
+
   const listRef = useRef<any>(null);
+
   const { scrollToBottom, isLimit } = useAutoScroll(
     listRef,
     ScrollDirection.Bottom,
@@ -36,7 +44,7 @@ export const Comments: FC = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [activeTodoId]);
+  }, [cardId]);
 
   return (
     <div className="comments">
@@ -45,10 +53,10 @@ export const Comments: FC = () => {
         comments={comments}
       />
       <CommentForm
-        todoId={activeTodoId}
         onChangeTextAreaHeight={setTextAreaHeight}
         isScrolledToBottom={isLimit}
         onScrollToBottom={scrollToBottom}
+        onCreate={onCreate}
       />
       <FormattingHelp />
     </div>

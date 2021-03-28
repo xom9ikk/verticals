@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { EnumTodoType } from '@type/entities';
+import { EnumCardType } from '@type/entities';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import {
   getIsLoadedTodos,
@@ -21,7 +21,7 @@ export const DeletedCardsContainer: FC = () => {
       {
         todos?.map(({ id }) => (
           <TodoCard
-            cardType={EnumTodoType.Checkboxes}
+            cardType={EnumCardType.Checkboxes}
             key={id}
             todoId={id}
             isEditable={false}

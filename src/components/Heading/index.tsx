@@ -6,7 +6,7 @@ import {
   Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumHeadingType, EnumTodoType, IHeading } from '@type/entities';
+import { EnumHeadingType, EnumCardType, IHeading } from '@type/entities';
 import { HeadingsActions } from '@store/actions';
 import { getHeadingById, getIsSearchMode } from '@store/selectors';
 import { HeadingCompact } from '@comp/Heading/Compact';
@@ -23,7 +23,7 @@ interface IHeadingComponent {
   isEditable: boolean;
   columnId: number;
   headingId: number;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   isOpenNewCard?: boolean;
   // isDraggingCard: boolean;
   onAddHeading?: () => void;

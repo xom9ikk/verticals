@@ -9,7 +9,7 @@ import {
 } from '@store/selectors';
 import {
   IAddCommentLike,
-  ICreateComment,
+  ICreateComment, IFetchCommentsBySubTodoId,
   IFetchCommentsByTodoId,
   IRemoveComment,
   IRemoveCommentLike,
@@ -23,6 +23,16 @@ const { show, ALERT_TYPES } = useAlert();
 function* fetchByTodoIdWorker(commentService: ICommentService, action: PayloadAction<IFetchCommentsByTodoId>) {
   try {
     const response = yield* apply(commentService, commentService.getByTodoId, [action.payload]);
+    const { comments } = response.data;
+    yield put(CommentsActions.setAll(comments));
+  } catch (error) {
+    yield call(show, i18n.t('Comment'), error, ALERT_TYPES.DANGER);
+  }
+}
+
+function* fetchBySubTodoIdWorker(commentService: ICommentService, action: PayloadAction<IFetchCommentsBySubTodoId>) {
+  try {
+    const response = yield* apply(commentService, commentService.getBySubTodoId, [action.payload]);
     const { comments } = response.data;
     yield put(CommentsActions.setAll(comments));
   } catch (error) {
@@ -120,6 +130,7 @@ function* removeLikeWorker(commentService: ICommentService, action: PayloadActio
 export function* watchComment(commentService: ICommentService) {
   yield all([
     takeLatest(CommentsActions.effect.fetchByTodoId, fetchByTodoIdWorker, commentService),
+    takeLatest(CommentsActions.effect.fetchBySubTodoId, fetchBySubTodoIdWorker, commentService),
     takeLatest(CommentsActions.effect.create, createWorker, commentService),
     takeLatest(CommentsActions.effect.remove, removeWorker, commentService),
     takeLatest(CommentsActions.effect.updateText, updateWorker, commentService),

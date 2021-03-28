@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { EnumHeadingType, EnumTodoType } from '@type/entities';
+import { EnumHeadingType, EnumCardType } from '@type/entities';
 import { getArchivedHeadingIdByColumnId, getTodoPositionsByHeadingId } from '@store/selectors';
 import { Divider } from '@comp/Divider';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import cn from 'classnames';
 
 interface IArchiveContainer {
   columnId: number;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
 }
 
 export const ArchiveContainer: FC<IArchiveContainer> = ({

@@ -13,6 +13,14 @@ export type IGetCommentsByTodoIdResponse = IServerResponse<{
   readonly comments: IComments;
 }>;
 
+export interface IGetCommentsBySubTodoIdRequest {
+  readonly subTodoId: number;
+}
+
+export type IGetCommentsBySubTodoIdResponse = IServerResponse<{
+  readonly comments: IComments;
+}>;
+
 export interface ICreateCommentRequest {
   readonly todoId?: number; // TODO one of
   readonly subTodoId?: number;

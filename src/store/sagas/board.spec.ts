@@ -7,7 +7,7 @@ import { watchBoard } from '@store/sagas/board';
 import { BoardsActions, SystemActions } from '@store/actions';
 import { BoardService } from '@services/board';
 import {
-  EnumColors, EnumTodoType,
+  EnumColors, EnumCardType,
 } from '@type/entities';
 import { getActiveBoardId, getUsername } from '@store/selectors';
 import { useReadableId } from '@use/readableId';
@@ -21,7 +21,7 @@ const mockBoard = {
   id: 1,
   title: 'Title',
   icon: 'path/to/icon',
-  cardType: EnumTodoType.Checkboxes,
+  cardType: EnumCardType.Checkboxes,
   description: 'Description for board',
   color: EnumColors.Green,
 };

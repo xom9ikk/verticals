@@ -4,7 +4,7 @@ import {
   Draggable, DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { EnumHeadingType, EnumTodoType } from '@type/entities';
+import { EnumHeadingType, EnumCardType } from '@type/entities';
 import {
   getActiveTodoId,
   getEditableCardId,
@@ -23,7 +23,7 @@ import { TodoCard } from '@comp/Card/Todo';
 
 interface ICardsContainer {
   headingId: number;
-  cardType: EnumTodoType;
+  cardType: EnumCardType;
   mode: EnumHeadingMode;
   type: EnumHeadingType;
   isOpenNewCard: boolean;

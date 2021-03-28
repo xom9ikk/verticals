@@ -4,6 +4,10 @@ export interface IFetchCommentsByTodoId {
   readonly todoId: number;
 }
 
+export interface IFetchCommentsBySubTodoId {
+  readonly subTodoId: number;
+}
+
 export type ISetComments = IComments;
 
 export interface ICreateComment {
