@@ -95,14 +95,10 @@ export const SubTodosReducer = createReducer(initialState, (builder) => builder
     const {
       todoId, sourcePosition, destinationPosition, targetTodoId,
     } = action.payload;
-    console.log('todoId, sourcePosition, destinationPosition, targetTodoId',
-      todoId, sourcePosition, destinationPosition, targetTodoId);
 
     if (targetTodoId) {
       const subTodoId = draft.positions[todoId][sourcePosition];
       draft.entities[draft.entities.findIndex((subTodo) => subTodo.id === subTodoId)].todoId = targetTodoId;
-      console.log('remove from todoId', todoId);
-      console.log(' draft.positions[todoId]', sourcePosition);
       draft.positions[todoId].splice(sourcePosition, 1);
       if (draft.positions[targetTodoId]) {
         draft.positions[targetTodoId].splice(destinationPosition, 0, subTodoId);
