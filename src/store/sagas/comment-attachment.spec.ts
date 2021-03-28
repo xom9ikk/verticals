@@ -13,6 +13,7 @@ const { show, ALERT_TYPES } = useAlert();
 const mockAttachment = {
   id: 1,
   todoId: 13,
+  subTodoId: 14,
   commentId: 12,
   path: '/path/to/comment/attachment/1',
   name: 'File name #1',
@@ -39,6 +40,25 @@ describe('Comment attachment saga flow', () => {
       ])
       .dispatch(CommentAttachmentsActions.effect.fetchByTodoId(payload))
       .apply(commentAttachmentService, commentAttachmentService.getByTodoId, [payload])
+      .put(CommentAttachmentsActions.merge(mockData.attachments))
+      .silentRun();
+  });
+  it('fetch by sub todo id', () => {
+    const mockData = {
+      attachments: [mockAttachment],
+    };
+    const payload = {
+      subTodoId: mockAttachment.subTodoId,
+    };
+
+    return expectSaga(watchCommentAttachment, commentAttachmentService)
+      .provide([
+        [matchers.apply.fn(commentAttachmentService.getBySubTodoId), {
+          data: mockData,
+        }],
+      ])
+      .dispatch(CommentAttachmentsActions.effect.fetchBySubTodoId(payload))
+      .apply(commentAttachmentService, commentAttachmentService.getBySubTodoId, [payload])
       .put(CommentAttachmentsActions.merge(mockData.attachments))
       .silentRun();
   });

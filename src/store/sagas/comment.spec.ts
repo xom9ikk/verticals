@@ -17,6 +17,7 @@ const mockComment = {
   id: 1,
   userId: 11,
   todoId: 13,
+  subTodoId: 14,
   text: 'Comment text',
   createdAt: new Date().getTime(),
   updatedAt: new Date().getTime(),
@@ -46,6 +47,25 @@ describe('Comment saga flow', () => {
       ])
       .dispatch(CommentsActions.effect.fetchByTodoId(payload))
       .apply(commentService, commentService.getByTodoId, [payload])
+      .put(CommentsActions.setAll(mockData.comments))
+      .silentRun();
+  });
+  it('fetch by sub todo id', () => {
+    const mockData = {
+      comments: [mockComment],
+    };
+    const payload = {
+      subTodoId: mockComment.subTodoId,
+    };
+
+    return expectSaga(watchComment, commentService)
+      .provide([
+        [matchers.apply.fn(commentService.getBySubTodoId), {
+          data: mockData,
+        }],
+      ])
+      .dispatch(CommentsActions.effect.fetchBySubTodoId(payload))
+      .apply(commentService, commentService.getBySubTodoId, [payload])
       .put(CommentsActions.setAll(mockData.comments))
       .silentRun();
   });
