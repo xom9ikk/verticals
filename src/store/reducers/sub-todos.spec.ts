@@ -40,7 +40,7 @@ const mockSubTodos = [{
   attachmentsCount: 0,
   imagesCount: 3,
 }, {
-  id: 3,
+  id: 4,
   todoId: 22,
   title: 'SubTodo Title #4',
   description: 'Description for subTodo #4',
@@ -52,7 +52,7 @@ const mockSubTodos = [{
   attachmentsCount: 4,
   imagesCount: 2,
 }, {
-  id: 4,
+  id: 5,
   todoId: 22,
   title: 'SubTodo Title #5',
   description: 'Description for subTodo #5',
@@ -157,9 +157,39 @@ describe('SubTodo reducer', () => {
       sourcePosition: 0,
       destinationPosition: 0,
     }))).toEqual({
-      entities: [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo],
+      entities: [subTodo, subTodo2, subTodo3, {
+        ...subTodoFromOtherTodo,
+        todoId: subTodo.todoId,
+      }],
       positions: {
         [subTodo.todoId]: [subTodoFromOtherTodo.id, subTodo.id, subTodo2.id, subTodo3.id],
+        [subTodoFromOtherTodo.todoId]: [],
+      },
+    });
+  });
+  it('move between todos when target todo positions is empty', () => {
+    const [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo] = mockSubTodos;
+    const initialStateWithFourSubTodos = {
+      entities: [subTodo, subTodo2, subTodo3, subTodoFromOtherTodo],
+      positions: {
+        [subTodo.todoId]: [subTodo.id, subTodo2.id, subTodo3.id],
+        [subTodoFromOtherTodo.todoId]: [subTodoFromOtherTodo.id],
+      },
+    };
+    const targetTodoId = 777;
+    expect(SubTodosReducer(initialStateWithFourSubTodos, SubTodosActions.move({
+      todoId: subTodoFromOtherTodo.todoId,
+      targetTodoId,
+      sourcePosition: 0,
+      destinationPosition: 0,
+    }))).toEqual({
+      entities: [subTodo, subTodo2, subTodo3, {
+        ...subTodoFromOtherTodo,
+        todoId: targetTodoId,
+      }],
+      positions: {
+        [targetTodoId]: [subTodoFromOtherTodo.id],
+        [subTodo.todoId]: [subTodo.id, subTodo2.id, subTodo3.id],
         [subTodoFromOtherTodo.todoId]: [],
       },
     });
