@@ -46,7 +46,7 @@ const mockTodos = [{
   attachmentsCount: 0,
   imagesCount: 3,
 }, {
-  id: 3,
+  id: 4,
   headingId: 22,
   title: 'Todo Title #4',
   description: 'Description for todo #4',
@@ -60,7 +60,7 @@ const mockTodos = [{
   attachmentsCount: 4,
   imagesCount: 2,
 }, {
-  id: 4,
+  id: 5,
   headingId: 22,
   title: 'Todo Title #5',
   description: 'Description for todo #5',
@@ -167,9 +167,39 @@ describe('Todo reducer', () => {
       sourcePosition: 0,
       destinationPosition: 0,
     }))).toEqual({
-      entities: [todo, todo2, todo3, todoFromOtherHeading],
+      entities: [todo, todo2, todo3, {
+        ...todoFromOtherHeading,
+        headingId: todo.headingId,
+      }],
       positions: {
         [todo.headingId]: [todoFromOtherHeading.id, todo.id, todo2.id, todo3.id],
+        [todoFromOtherHeading.headingId]: [],
+      },
+    });
+  });
+  it('move between headings when target heading positions is empty', () => {
+    const [todo, todo2, todo3, todoFromOtherHeading] = mockTodos;
+    const initialStateWithFourTodos = {
+      entities: [todo, todo2, todo3, todoFromOtherHeading],
+      positions: {
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
+        [todoFromOtherHeading.headingId]: [todoFromOtherHeading.id],
+      },
+    };
+    const targetHeadingId = 777;
+    expect(TodosReducer(initialStateWithFourTodos, TodosActions.move({
+      headingId: todoFromOtherHeading.headingId,
+      targetHeadingId,
+      sourcePosition: 0,
+      destinationPosition: 0,
+    }))).toEqual({
+      entities: [todo, todo2, todo3, {
+        ...todoFromOtherHeading,
+        headingId: targetHeadingId,
+      }],
+      positions: {
+        [targetHeadingId]: [todoFromOtherHeading.id],
+        [todo.headingId]: [todo.id, todo2.id, todo3.id],
         [todoFromOtherHeading.headingId]: [],
       },
     });
