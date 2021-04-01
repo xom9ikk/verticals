@@ -1,5 +1,5 @@
 import React, {
-  FC, useMemo, useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
 import {
   Draggable, Droppable,
@@ -43,6 +43,12 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
   const handleSwitchCollapse = () => {
     setIsCollapse((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (isOpenNewSubCard && isCollapse && subTodosCount > MAX_SUB_TODO) {
+      setIsCollapse(false);
+    }
+  }, [subTodosCount]);
 
   const memoNewSubCard = useMemo(() => (
     <SubTodoCard

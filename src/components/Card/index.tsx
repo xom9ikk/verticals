@@ -13,6 +13,7 @@ import { useFocus } from '@use/focus';
 import { useDebounce } from '@use/debounce';
 import { useColorClass } from '@use/colorClass';
 import { useFileList } from '@use/fileList';
+import { useHover } from '@use/hover';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -44,6 +45,7 @@ export const Card: FC<ICard> = ({
 }) => {
   const { merge } = useFileList();
   const colorClass = useColorClass('card__color', color);
+  const { isHovering, hoveringProps } = useHover();
 
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
   const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
@@ -95,6 +97,7 @@ export const Card: FC<ICard> = ({
           'card__color',
           !isEditable ? colorClass : '',
           className, {
+            'card__color--hovered': isHovering && !!subCardComponent,
             'card__color--editable': isEditable,
             'card__color--invert': invertColor,
             'card__color--pressed': isMouseDown || isActive,
@@ -105,7 +108,9 @@ export const Card: FC<ICard> = ({
         <div
           className={cn('card__content', {
             'card__content--editable': isEditable,
+            'card__content--hovered': isHovering,
           })}
+          {...hoveringProps}
         >
           <DropZone
             onOpen={handleDropFiles}

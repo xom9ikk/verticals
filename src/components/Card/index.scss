@@ -24,7 +24,13 @@
       .card-context-menu {
         opacity: 1;
       }
+    }
+
+    &--hovered {
       background: $hover-color;
+      #{$block}__content {
+        background: transparent;
+      }
     }
 
     &--editable {
@@ -102,6 +108,10 @@
     transition: background .1s ease-out, box-shadow .1s ease-in-out, height .2s ease-in-out;
     border-radius: 6px;
     flex-direction: column;
+
+    &--hovered {
+      background: $hover-color;
+    }
 
     &--editable {
       //width: $column-width - 27;
