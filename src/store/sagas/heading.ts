@@ -23,7 +23,6 @@ function* fetchByBoardIdWorker(headingService: IHeadingService, action: PayloadA
     const response = yield* apply(headingService, headingService.getByBoardId, [action.payload]);
     const { headings } = response.data;
     yield put(HeadingsActions.setAll(headings));
-    // yield put(SystemActions.setIsLoadedHeadings(true));
   } catch (error) {
     yield call(show, i18n.t('Heading'), error, ALERT_TYPES.DANGER);
   }
@@ -88,7 +87,6 @@ function* duplicateWorker(headingService: IHeadingService, action: PayloadAction
       },
       position,
     }));
-    // yield all(todos.entities.map((todo: ITodo) => put(TodosActions.add(todo))));
     yield call(show, i18n.t('Heading'), i18n.t('Heading duplicated successfully'), ALERT_TYPES.SUCCESS);
   } catch (error) {
     yield call(show, i18n.t('Heading'), error, ALERT_TYPES.DANGER);

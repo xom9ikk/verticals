@@ -27,7 +27,7 @@ const mockHeadings = [{
   color: EnumColors.Gray,
   isCollapsed: true,
 }, {
-  id: 3,
+  id: 4,
   columnId: 22,
   title: 'Heading Title #4',
   description: 'Description for heading #4',
@@ -35,7 +35,7 @@ const mockHeadings = [{
   color: EnumColors.Turquoise,
   isCollapsed: true,
 }, {
-  id: 4,
+  id: 5,
   columnId: 22,
   title: 'Heading Title #5',
   description: 'Description for heading #5',
@@ -136,9 +136,39 @@ describe('Heading reducer', () => {
       sourcePosition: 0,
       destinationPosition: 0,
     }))).toEqual({
-      entities: [heading, heading2, heading3, headingFromOtherColumn],
+      entities: [heading, heading2, heading3, {
+        ...headingFromOtherColumn,
+        columnId: heading.columnId,
+      }],
       positions: {
         [heading.columnId]: [headingFromOtherColumn.id, heading.id, heading2.id, heading3.id],
+        [headingFromOtherColumn.columnId]: [],
+      },
+    });
+  });
+  it('move between columns when target column positions is empty', () => {
+    const [heading, heading2, heading3, headingFromOtherColumn] = mockHeadings;
+    const initialStateWithFourHeadings = {
+      entities: [heading, heading2, heading3, headingFromOtherColumn],
+      positions: {
+        [heading.columnId]: [heading.id, heading2.id, heading3.id],
+        [headingFromOtherColumn.columnId]: [headingFromOtherColumn.id],
+      },
+    };
+    const targetColumnId = 777;
+    expect(HeadingsReducer(initialStateWithFourHeadings, HeadingsActions.move({
+      columnId: headingFromOtherColumn.columnId,
+      targetColumnId,
+      sourcePosition: 0,
+      destinationPosition: 0,
+    }))).toEqual({
+      entities: [heading, heading2, heading3, {
+        ...headingFromOtherColumn,
+        columnId: targetColumnId,
+      }],
+      positions: {
+        [targetColumnId]: [headingFromOtherColumn.id],
+        [heading.columnId]: [heading.id, heading2.id, heading3.id],
         [headingFromOtherColumn.columnId]: [],
       },
     });

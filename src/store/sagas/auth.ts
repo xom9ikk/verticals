@@ -44,7 +44,6 @@ function* signInWorker(authService: IAuthService, action: PayloadAction<ISignIn>
     yield call(show, i18n.t('Success'), i18n.t('Successful login'), ALERT_TYPES.SUCCESS);
     yield call(redirectTo, '/');
   } catch (error) {
-    console.log('error', error);
     yield call(show, i18n.t('Error'), error, ALERT_TYPES.DANGER);
   }
 }

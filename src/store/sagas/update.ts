@@ -40,7 +40,6 @@ export function* subscribeOnEntity<T>(
       // eslint-disable-next-line no-continue
       continue;
     }
-    // console.log('>>>>update', operation, data);
     switch (operation) {
       case EnumOperations.Insert: {
         if (handlers.insert) {
