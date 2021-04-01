@@ -42,7 +42,7 @@ export const HeadingsReducer = createReducer(initialState, (builder) => builder
 
     if (targetColumnId) {
       const headingId = draft.positions[columnId][sourcePosition];
-      draft.entities[draft.entities.findIndex((todo) => todo.id === headingId)].columnId = targetColumnId;
+      draft.entities[draft.entities.findIndex((heading) => heading.id === headingId)].columnId = targetColumnId;
       draft.positions[columnId].splice(sourcePosition, 1);
       if (draft.positions[targetColumnId]) {
         draft.positions[targetColumnId].splice(destinationPosition, 0, headingId);
