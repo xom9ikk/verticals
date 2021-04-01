@@ -10,7 +10,7 @@ on:
 
 jobs:
   delivery_code:
-    name: Test and delivery code to server
+    name: Test and delivery dist to server
     runs-on: ubuntu-16.04
 
     steps:
@@ -23,17 +23,17 @@ jobs:
         working-directory: ${{ env.APP_NAME }}
         run: npm install
 
-      - name: Lint 🧐
-        working-directory: ${{ env.APP_NAME }}
-        run: npm run lint
-
-      - name: Test 🚨
-        working-directory: ${{ env.APP_NAME }}
-        run: npm run test
-
-      - name: Regression check 👀
-        working-directory: ${{ env.APP_NAME }}
-        run: npm run loki:update
+#      - name: Lint 🧐
+#        working-directory: ${{ env.APP_NAME }}
+#        run: npm run lint
+#
+#      - name: Test 🚨
+#        working-directory: ${{ env.APP_NAME }}
+#        run: npm run test
+#
+#      - name: Regression check 👀
+#        working-directory: ${{ env.APP_NAME }}
+#        run: npm run loki:update
 
       - name: Setup .env 🧠
         working-directory: ${{ env.APP_NAME }}
@@ -47,14 +47,19 @@ jobs:
         working-directory: ${{ env.APP_NAME }}
         run: npm run build
 
+      - name: Remove extra folders 🔨
+        working-directory: ${{ env.APP_NAME }}
+        run: rm -rf node_modules
+
       - name: Copy dist ✍️
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          source: ${{ env.APP_NAME }}/dist
+          source: ${{ env.APP_NAME }}
           target: ${{ env.PATH_TO_APPS }}
+
 
       - name: Start rerun script 😎
         uses: appleboy/ssh-action@master
