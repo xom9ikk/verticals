@@ -25,7 +25,6 @@ interface IHeadingComponent {
   headingId: number;
   cardType: EnumCardType;
   isOpenNewCard?: boolean;
-  // isDraggingCard: boolean;
   onAddHeading?: () => void;
   mode: EnumHeadingMode;
 }
@@ -36,9 +35,6 @@ export const Heading: FC<IHeadingComponent> = ({
   columnId,
   headingId,
   cardType,
-  // isOpenNewCard,
-  // isDraggingCard,
-  // onAddHeading,
   mode = EnumHeadingMode.Normal,
 }) => {
   const dispatch = useDispatch();
@@ -91,7 +87,7 @@ export const Heading: FC<IHeadingComponent> = ({
     </Draggable>
   );
 
-  const DraggableOrDiv = isDefault ? Div : DraggableComponent;
+  const DraggableOrDiv = useMemo(() => (isDefault ? Div : DraggableComponent), [isDefault]);
 
   return useMemo(() => (
     <DraggableOrDiv

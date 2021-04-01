@@ -68,7 +68,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
   const handleHeadingClick = (event: SyntheticEvent) => {
     if (mode === EnumHeadingMode.New) {
       event.stopPropagation();
-      // dispatch(SystemActions.setEditableHeadingId(NEW_COLUMN_ID));
     }
   };
 
@@ -106,7 +105,7 @@ export const HeadingWide: FC<IHeadingWide> = ({
   }, [isEditable]);
 
   return useMemo(() => {
-    console.log('TODO: Heading redraw');
+    console.log('TODO: Heading redraw', isHoverHeader, !isEditable);
     return (
       <div
         ref={(ref) => {
@@ -163,7 +162,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
                   </>
                   )
                 }
-
                 { mode === EnumHeadingMode.Normal && (
                 <CardsContainer
                   headingId={headingId}

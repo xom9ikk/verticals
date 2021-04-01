@@ -148,12 +148,6 @@ export const ColumnWide: FC<IColumnWide> = ({
                       />
                       { mode !== EnumColumnMode.New && (
                         <>
-                          {/* Default */}
-                          {/* Naming Heading 1 */}
-                          {/* Naming Heading 2 */}
-                          {/* Naming Heading 3 */}
-                          {/* Arch */}
-
                           {
                             mode === EnumColumnMode.Deleted ? (
                               <DeletedCardsContainer />
