@@ -1,11 +1,13 @@
 .footer {
+  position: relative;
   display: flex;
   flex: 0 1;
   flex-direction: row;
-  justify-content: flex-end;
-  padding: 6px;
 
   &__text {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
     font-family: 'Nunito Light', sans-serif;
     font-size: 10px;
     color: $text-light;
