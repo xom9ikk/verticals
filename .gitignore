@@ -7,3 +7,5 @@
 .stryker-tmp
 /reports
 /coverage
+
+.run/
