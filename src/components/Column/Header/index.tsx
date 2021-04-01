@@ -1,4 +1,5 @@
 import React, {
+  BaseSyntheticEvent,
   FC, useMemo, useRef,
 } from 'react';
 import cn from 'classnames';
@@ -118,11 +119,13 @@ export const ColumnHeader: FC<IColumnHeader> = ({
     }
   };
 
-  const handleChange = (event: any, isDescription: boolean) => {
-    const { value } = event.target;
-    return isDescription
-      ? setDescriptionValue(value)
-      : setTitleValue(value);
+  const handleChange = (event: BaseSyntheticEvent) => {
+    const { value, name } = event.target;
+    switch (name) {
+      case 'title': setTitleValue(value); break;
+      case 'description': setDescriptionValue(value); break;
+      default: break;
+    }
   };
 
   const memoTitle = useMemo(() => (
@@ -134,12 +137,13 @@ export const ColumnHeader: FC<IColumnHeader> = ({
               ref={titleInputRef}
               className="column__title column__title--editable"
               value={titleValue}
+              name="title"
               placeholder={t('New column')}
               minRows={1}
               maxRows={4}
               onKeyDown={shiftEnterRestriction}
-              onKeyDownCapture={(event) => handleKeyDown(event)}
-              onChange={(event) => handleChange(event, false)}
+              onKeyDownCapture={handleKeyDown}
+              onChange={handleChange}
             />
           ) : (
             <span className={cn('column__title', { 'column__title--empty': !titleValue })}>
@@ -156,12 +160,13 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       <TextArea
         className="column__description column__description--editable"
         value={descriptionValue}
+        name="description"
         placeholder={t('Notes')}
         minRows={1}
         maxRows={4}
         onKeyDown={shiftEnterRestriction}
-        onKeyDownCapture={(event) => handleKeyDown(event)}
-        onChange={(event) => handleChange(event, true)}
+        onKeyDownCapture={handleKeyDown}
+        onChange={handleChange}
       />
     ) : (
       <span

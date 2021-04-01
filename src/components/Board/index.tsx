@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, {
+  BaseSyntheticEvent,
   FC, useEffect, useMemo, useRef,
 } from 'react';
 import cn from 'classnames';
@@ -105,11 +106,13 @@ export const Board: FC<IBoardComponent> = ({
     }
   };
 
-  const handleChange = (event: any, isDescription: boolean) => {
-    const { value } = event.target;
-    return isDescription
-      ? setDescriptionValue(value)
-      : setTitleValue(value);
+  const handleChange = (event: BaseSyntheticEvent) => {
+    const { value, name } = event.target;
+    switch (name) {
+      case 'title': setTitleValue(value); break;
+      case 'description': setDescriptionValue(value); break;
+      default: break;
+    }
   };
 
   const handleEsc = () => {
@@ -173,22 +176,24 @@ export const Board: FC<IBoardComponent> = ({
                 ref={titleInputRef}
                 className="card__textarea"
                 value={titleValue}
+                name="title"
                 placeholder={t('New Board')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onChange={(event: any) => handleChange(event, false)}
-                onKeyDownCapture={(event: any) => handleKeyDown(event)}
+                onChange={handleChange}
+                onKeyDownCapture={handleKeyDown}
               />
               <TextArea
                 className="card__textarea card__textarea--description"
                 value={descriptionValue}
+                name="description"
                 placeholder={t('Notes')}
                 minRows={1}
                 maxRows={20}
                 onKeyDown={shiftEnterRestriction}
-                onChange={(event: any) => handleChange(event, true)}
-                onKeyDownCapture={(event: any) => handleKeyDown(event)}
+                onChange={handleChange}
+                onKeyDownCapture={handleKeyDown}
               />
             </div>
           </div>

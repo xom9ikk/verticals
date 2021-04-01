@@ -1,4 +1,5 @@
 import React, {
+  BaseSyntheticEvent,
   Dispatch, FC, SetStateAction, useEffect, useRef,
 } from 'react';
 import useKeys from '@rooks/use-keys';
@@ -137,11 +138,13 @@ export const CardEditable: FC<ICard> = ({
     onSetFiles(new DataTransfer().files);
   };
 
-  const handleChangeText = (event: any, isDescription: boolean) => {
-    const { value } = event.target;
-    return isDescription
-      ? setDescriptionValue(value)
-      : setTitleValue(value);
+  const handleChange = (event: BaseSyntheticEvent) => {
+    const { value, name } = event.target;
+    switch (name) {
+      case 'title': setTitleValue(value); break;
+      case 'description': setDescriptionValue(value); break;
+      default: break;
+    }
   };
 
   const handleUploadFile = async () => {
@@ -215,22 +218,24 @@ export const CardEditable: FC<ICard> = ({
         ref={titleInputRef}
         className="card__textarea"
         value={titleValue}
+        name="title"
         placeholder={t('New Card')}
         minRows={1}
         maxRows={20}
         onKeyDown={shiftEnterRestriction}
         onKeyDownCapture={handleKeyDown}
-        onChange={(event: any) => handleChangeText(event, false)}
+        onChange={handleChange}
       />
       <TextArea
         className="card__textarea card__textarea--description"
         value={descriptionValue}
+        name="description"
         placeholder={t('Notes')}
         minRows={1}
         maxRows={20}
         onKeyDown={shiftEnterRestriction}
         onKeyDownCapture={handleKeyDown}
-        onChange={(event: any) => handleChangeText(event, true)}
+        onChange={handleChange}
       />
       <div>
         {expirationDateValue && (

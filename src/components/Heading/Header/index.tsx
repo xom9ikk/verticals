@@ -1,4 +1,6 @@
-import React, { FC, useMemo, useRef } from 'react';
+import React, {
+  BaseSyntheticEvent, FC, useMemo, useRef,
+} from 'react';
 import cn from 'classnames';
 import { useColorClass } from '@use/colorClass';
 import { DraggableProvided } from 'react-beautiful-dnd';
@@ -119,11 +121,13 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
     }
   };
 
-  const handleChange = (event: any, isDescription: boolean) => {
-    const { value } = event.target;
-    return isDescription
-      ? setDescriptionValue(value)
-      : setTitleValue(value);
+  const handleChange = (event: BaseSyntheticEvent) => {
+    const { value, name } = event.target;
+    switch (name) {
+      case 'title': setTitleValue(value); break;
+      case 'description': setDescriptionValue(value); break;
+      default: break;
+    }
   };
 
   const memoTitle = useMemo(() => (
@@ -135,12 +139,13 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
               ref={titleInputRef}
               className="heading__title heading__title--editable"
               value={titleValue}
+              name="title"
               placeholder={t('New heading')}
               minRows={1}
               maxRows={2}
               onKeyDown={shiftEnterRestriction}
-              onKeyDownCapture={(event) => handleKeyDown(event)}
-              onChange={(event) => handleChange(event, false)}
+              onKeyDownCapture={handleKeyDown}
+              onChange={handleChange}
             />
           ) : (
             <span className={cn('heading__title', {
@@ -161,12 +166,13 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
       <TextArea
         className="heading__description heading__description--editable"
         value={descriptionValue}
+        name="description"
         placeholder={t('Notes')}
         minRows={1}
         maxRows={2}
         onKeyDown={shiftEnterRestriction}
-        onKeyDownCapture={(event) => handleKeyDown(event)}
-        onChange={(event) => handleChange(event, true)}
+        onKeyDownCapture={handleKeyDown}
+        onChange={handleChange}
       />
     ) : (
       descriptionValue && (

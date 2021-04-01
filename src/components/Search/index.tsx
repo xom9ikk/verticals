@@ -1,4 +1,5 @@
 import React, {
+  BaseSyntheticEvent,
   FC, useEffect, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,6 +46,8 @@ export const Search: FC = () => {
     setQuery('');
   };
 
+  const handleQueryChange = (event: BaseSyntheticEvent) => setQuery(event.target.value);
+
   return (
     <div className="search">
       <Input
@@ -52,7 +55,7 @@ export const Search: FC = () => {
         placeholder={t('Search')}
         name="search"
         value={query}
-        onChange={(e: any) => setQuery(e.target.value)}
+        onChange={handleQueryChange}
         style={{ height: 36, paddingLeft: 33 }}
       >
         <img src="/assets/svg/search.svg" alt="search" />

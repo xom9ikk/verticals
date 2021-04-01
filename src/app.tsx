@@ -31,7 +31,7 @@ export const App: FC = () => {
         effect="solid"
         multiline
         arrowColor="transparent"
-        overridePosition={({ left, top }) => ({ left, top })}
+        // overridePosition={({ left, top }) => ({ left, top })}
       />
     </Suspense>
   );

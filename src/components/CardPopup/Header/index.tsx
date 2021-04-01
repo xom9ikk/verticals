@@ -1,4 +1,5 @@
 import React, {
+  BaseSyntheticEvent,
   FC, useEffect, useRef, useState,
 } from 'react';
 import { EnumCardType, EnumTodoStatus, IColor } from '@type/entities';
@@ -67,11 +68,13 @@ export const CardPopupHeader: FC<ICardPopupHeader> = ({
     }
   }, 500);
 
-  const handleChangeText = (event: any, isDescription: boolean) => {
-    const { value } = event.target;
-    return isDescription
-      ? setDescriptionValue(value)
-      : setTitleValue(value);
+  const handleChange = (event: BaseSyntheticEvent) => {
+    const { value, name } = event.target;
+    switch (name) {
+      case 'title': setTitleValue(value); break;
+      case 'description': setDescriptionValue(value); break;
+      default: break;
+    }
   };
 
   const handleStartEdit = () => {
@@ -134,8 +137,9 @@ export const CardPopupHeader: FC<ICardPopupHeader> = ({
               className="card__textarea card-popup__textarea"
               placeholder={t('Card Title')}
               value={titleValue || ''}
+              name="title"
               onKeyDown={shiftEnterRestriction}
-              onChange={(event: any) => handleChangeText(event, false)}
+              onChange={handleChange}
               minRows={1}
               maxRows={3}
             />
@@ -143,8 +147,9 @@ export const CardPopupHeader: FC<ICardPopupHeader> = ({
               className="card__textarea card-popup__textarea card-popup__textarea--description"
               placeholder={t('Notes')}
               value={descriptionValue || ''}
+              name="description"
               onKeyDown={shiftEnterRestriction}
-              onChange={(event: any) => handleChangeText(event, true)}
+              onChange={handleChange}
               minRows={1}
               maxRows={3}
             />
