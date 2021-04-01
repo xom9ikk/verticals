@@ -6,7 +6,7 @@ env:
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
 
 jobs:
   delivery_code:
@@ -35,16 +35,28 @@ jobs:
         working-directory: ${{ env.APP_NAME }}
         run: npm run loki:update
 
-      - name: Copy repo ✍️
+      - name: Setup .env 🧠
+        working-directory: ${{ env.APP_NAME }}
+        run: echo "${{ secrets.ENV_FILE }}" >> .env.production
+
+      - name: Add commit hash to .env 🧠
+        working-directory: ${{ env.APP_NAME }}
+        run: echo "COMMIT_HASH=${{ github.sha }}" >> .env.production
+
+      - name: Build 🔨
+        working-directory: ${{ env.APP_NAME }}
+        run: npm run build
+
+      - name: Copy dist ✍️
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          source: ${{ env.APP_NAME }}
+          source: ${{ env.APP_NAME }}/dist
           target: ${{ env.PATH_TO_APPS }}
 
-      - name: Run rebuild script 😎
+      - name: Start rerun script 😎
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -52,5 +64,5 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd ${{ env.PATH_TO_APPS }}/${{ env.APP_NAME }}
-            chmod +x ./rebuild.sh
-            nohup ./rebuild.sh > nohup.out 2> nohup.err < /dev/null &
+            chmod +x ./rerun.sh
+            nohup ./rerun.sh > nohup.out 2> nohup.err < /dev/null &
