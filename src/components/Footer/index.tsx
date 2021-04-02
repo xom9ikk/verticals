@@ -5,8 +5,7 @@ import { version } from '../../../package.json';
 export const Footer: FC = () => (
   <footer className="footer">
     <span className="footer__text">
-      build:
-      {' '}
+      v.
       {version}
       -
       {process.env.COMMIT_HASH}
