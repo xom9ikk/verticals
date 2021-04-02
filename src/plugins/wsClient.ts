@@ -27,7 +27,6 @@ export class WSClient implements IWSClient {
 
     const httpClient = container.get<IHttpClient>(TYPES.HttpClient);
     this.authRefresher = new AuthRefresher<string>(httpClient, this.handleReconnect.bind(this));
-    console.log('constructor ws', this.instances);
   }
 
   handleReconnect(path: string) {

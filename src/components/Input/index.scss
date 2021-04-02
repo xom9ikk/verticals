@@ -60,7 +60,7 @@
       border-color: #ef0ef6 !important;
     }
     &--disabled {
-      background: rgb(247, 247, 247);
+      background: $hover-color;
       box-shadow: none;
       color: $text-light;
       &:focus {

@@ -13,6 +13,7 @@ const MainLayout = lazy(() => import('@layouts/main'), (module) => module.MainLa
 const Register = lazy(() => import('@pages/auth/Register'), (module) => module.Register);
 const Login = lazy(() => import('@pages/auth/Login'), (module) => module.Login);
 const Reset = lazy(() => import('@pages/auth/Reset'), (module) => module.Reset);
+const About = lazy(() => import('@pages/About'), (module) => module.About);
 
 export const MainRouter: FC = () => (
   <Router history={history}>
@@ -36,6 +37,12 @@ export const MainRouter: FC = () => (
         layout={AuthLayout}
         component={suspense(Reset)}
         redirectPath="/"
+        exact
+      />
+      <RouteWrapper
+        path="/about"
+        layout={suspense(About)}
+        isRedirectFromPublic={false}
         exact
       />
       <RouteWrapper
