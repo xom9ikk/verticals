@@ -14,7 +14,8 @@ const PATHS = {
 module.exports = {
   target: 'web',
   entry: {
-    app: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
+    app: `${PATHS.src}/index.tsx`,
+    // app: ['@babel/polyfill', `${PATHS.src}/index.tsx`],
   },
   output: {
     filename: path.join('js', '[name].[fullhash].js'),
