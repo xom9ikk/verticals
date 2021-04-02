@@ -84,6 +84,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           imageSrc="/assets/svg/add.svg"
           text={t('New workspace')}
           alt="add"
+          tooltip={t('Soon. Stay tuned for updates in email')}
           isMaxWidth
           onClick={() => handleMenuButtonClick(EnumToolbarActions.NewWorkspace)}
         />

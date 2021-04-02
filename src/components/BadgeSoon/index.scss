@@ -1,0 +1,42 @@
+.badge-soon {
+  position: absolute;
+  top: 7px;
+  right: -15px;
+  transform: rotate(45deg);
+
+  &__inner {
+    color: $white;
+    padding: 0 20px;
+    width: 200px;
+    font-size: 10px;
+
+    &--primary {
+      background: $primary;
+    }
+
+    &--red {
+      background: rgb(255, 106, 86);
+    }
+
+    &--yellow {
+      background: rgb(254, 233, 48);
+    }
+
+    &--green {
+      background: rgb(156, 196, 71);
+    }
+
+    &--turquoise {
+      background: rgb(50, 218, 188);
+    }
+
+    &--blue {
+      background: rgb(95, 193, 233);
+    }
+
+    &--white {
+      background: $white;
+      color: $black;
+    }
+  }
+}

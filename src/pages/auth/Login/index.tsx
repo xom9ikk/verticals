@@ -10,6 +10,7 @@ import { useForm } from '@use/form';
 import { AuthActions } from '@store/actions';
 import { validatorLoginForm } from '@helpers/validator/form/login';
 import { useTranslation } from 'react-i18next';
+import { BadgeSoon } from '@comp/BadgeSoon';
 
 interface IFormValidatedState {
   email: string;
@@ -67,11 +68,12 @@ export const Login: FC = () => {
         {t('Sign In')}
       </Button>
       <Button
-        type="submit"
+        type="button"
         isMaxWidth
       >
         <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
+        <BadgeSoon text="Soon" />
       </Button>
       <Link
         to="/auth/reset"

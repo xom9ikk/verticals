@@ -10,6 +10,7 @@ import { Divider } from '@comp/Divider';
 import { AuthActions } from '@store/actions';
 import { validatorRegisterForm } from '@helpers/validator/form/register';
 import { useTranslation } from 'react-i18next';
+import { BadgeSoon } from '@comp/BadgeSoon';
 
 interface IFormValidatedState {
   name: string;
@@ -103,13 +104,11 @@ export const Register: FC = () => {
         Sign Up
       </Button>
       <Divider />
-      <Button
-        type="submit"
-        isMaxWidth
-      >
+      <Button isMaxWidth type="button">
         <img src="/assets/svg/google.svg" alt="google" />
         &nbsp;
         {t('Sign in with Google')}
+        <BadgeSoon text="Soon" />
       </Button>
     </Form>
   );

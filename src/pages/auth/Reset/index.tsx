@@ -9,6 +9,7 @@ import { useForm } from '@use/form';
 import { AuthActions } from '@store/actions';
 import { validatorResetForm } from '@helpers/validator/form/reset';
 import { useTranslation } from 'react-i18next';
+import { BadgeSoon } from '@comp/BadgeSoon';
 
 interface IFormValidatedState {
   email: string;
@@ -52,6 +53,7 @@ export const Reset: FC = () => {
         isMaxWidth
       >
         {t('Send a password reset email')}
+        <BadgeSoon text="Soon" color="white" />
       </Button>
     </Form>
   );
