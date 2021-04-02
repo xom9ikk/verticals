@@ -2,7 +2,7 @@ import React, {
   forwardRef,
 } from 'react';
 import cn from 'classnames';
-import { CommentItem } from '@comp/CommentItem';
+import { CommentItem } from '@comp/Comments/Item';
 import { IComment, IComments } from '@type/entities';
 
 interface ICommentList {

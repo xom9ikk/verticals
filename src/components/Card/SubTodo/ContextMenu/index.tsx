@@ -4,8 +4,8 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
-import { MenuItem } from '@comp/MenuItem';
-import { Submenu } from '@comp/Submenu';
+import { MenuItem } from '@comp/Menu/Item';
+import { SubMenu } from '@comp/Menu/Sub';
 import {
   EnumTodoStatus, IColor,
 } from '@type/entities';
@@ -221,7 +221,7 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
               action={EnumCardActions.AddDate}
               isAutoClose={false}
             />,
-            <Submenu
+            <SubMenu
               key={4}
               text={t('Complete')}
               imageSrc="/assets/svg/menu/complete.svg"
@@ -268,7 +268,7 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
                 <span>{t('Click')}</span>
                 {t('on a checkbox to mark as canceled')}
               </MenuItem>
-            </Submenu>,
+            </SubMenu>,
             <Divider
               key={5}
               verticalSpacer={7}

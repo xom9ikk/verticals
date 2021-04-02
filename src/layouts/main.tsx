@@ -19,7 +19,7 @@ import {
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
-import { BoardList } from '@comp/BoardList';
+import { Boards } from '@comp/Boards';
 import { Columns } from '@comp/Columns';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
@@ -125,7 +125,7 @@ export const MainLayout: FC = () => {
   const memoSidebar = useMemo(() => (
     <Sidebar>
       <Search />
-      <BoardList />
+      <Boards />
     </Sidebar>
   ), []);
 

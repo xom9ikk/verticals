@@ -1,8 +1,8 @@
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
-import { CommentList } from '@comp/CommentList';
-import { CommentForm } from '@comp/CommentForm';
+import { CommentList } from '@comp/Comments/List';
+import { CommentForm } from '@comp/Comments/Form';
 import { FormattingHelp } from '@comp/FormattingHelp';
 import { useAutoScroll, ScrollDirection } from '@use/autoScroll';
 import { ICreateComment } from '@type/actions';

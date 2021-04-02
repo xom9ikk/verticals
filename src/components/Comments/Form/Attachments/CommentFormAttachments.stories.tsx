@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+import { CommentFormAttachments } from '@comp/Comments/Form/Attachments/index';
 
 export default {
   title: 'CommentFormAttachments',

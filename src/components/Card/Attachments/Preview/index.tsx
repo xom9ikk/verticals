@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { MiniGallery } from '@comp/MiniGallery';
-import { CardAttachments } from '@comp/CardAttachments';
+import { CardAttachments } from '@comp/Card/Attachments';
 import { ControlButton } from '@comp/ControlButton';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_COLUMN_WIDTH } from '@/constants';

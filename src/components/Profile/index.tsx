@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
 import { Avatar } from '@comp/Avatar';
 import { Divider } from '@comp/Divider';
-import { MenuItem } from '@comp/MenuItem';
+import { MenuItem } from '@comp/Menu/Item';
 import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { redirectTo } from '@router/history';

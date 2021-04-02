@@ -25,7 +25,7 @@ import { useTitle } from '@use/title';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
 
-export const BoardList: FC = () => {
+export const Boards: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();

@@ -2,10 +2,10 @@ import React, { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Menu } from '@comp/Menu';
-import { MenuItem } from '@comp/MenuItem';
+import { MenuItem } from '@comp/Menu/Item';
 import { Divider } from '@comp/Divider';
 import { ColorPicker } from '@comp/ColorPicker';
-import { Submenu } from '@comp/Submenu';
+import { SubMenu } from '@comp/Menu/Sub';
 import { ControlButton } from '@comp/ControlButton';
 import { BoardsActions, ColumnsActions, SystemActions } from '@store/actions';
 import { useReadableId } from '@use/readableId';
@@ -107,7 +107,7 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
         action={EnumMenuActions.EditBoard}
       />
       <Divider verticalSpacer={7} horizontalSpacer={10} />
-      <Submenu
+      <SubMenu
         text={t('Card style')}
         imageSrc="/assets/svg/menu/rect.svg"
       >
@@ -140,8 +140,8 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
           action={EnumMenuActions.CardStyle}
           payload={EnumCardType.Nothing}
         />
-      </Submenu>
-      <Submenu
+      </SubMenu>
+      <SubMenu
         text={t('Icon')}
         imageSrc="/assets/svg/menu/icon.svg"
       >
@@ -164,7 +164,7 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
             })
           }
         </div>
-      </Submenu>
+      </SubMenu>
       <MenuItem
         text={t('Reverse column order')}
         imageSrc="/assets/svg/menu/reverse.svg"

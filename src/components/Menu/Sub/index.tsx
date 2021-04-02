@@ -1,15 +1,15 @@
 import React, { FC, useRef, useState } from 'react';
 import { Popup } from '@comp/Popup';
-import { MenuItem } from '@comp/MenuItem';
+import { MenuItem } from '@comp/Menu/Item';
 
-interface ISubmenu {
+interface ISubMenu {
   text: string;
   imageSrc: string;
   maxHeight?: number;
   isHideScroll?: boolean;
 }
 
-export const Submenu: FC<ISubmenu> = ({
+export const SubMenu: FC<ISubMenu> = ({
   text,
   imageSrc,
   maxHeight,

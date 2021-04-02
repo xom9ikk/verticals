@@ -30,7 +30,7 @@ import { TodoContextMenu } from '@comp/Card/Todo/ContextMenu';
 import { useReadableId } from '@use/readableId';
 import { useParamSelector } from '@use/paramSelector';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { TodoAttachmentsPreview } from '@comp/CardAttachmentsPreview/Todo';
+import { TodoAttachmentsPreview } from '@comp/Card/Attachments/Preview/Todo';
 
 interface ITodoCard {
   provided?: DraggableProvided;

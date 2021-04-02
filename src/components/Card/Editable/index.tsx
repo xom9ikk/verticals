@@ -11,7 +11,7 @@ import { TextArea } from '@comp/TextArea';
 import { DateBadge } from '@comp/DateBadge';
 import { ControlButton } from '@comp/ControlButton';
 import { DatePickerPopup } from '@comp/DatePicker/Popup';
-import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+import { CommentFormAttachments } from '@comp/Comments/Form/Attachments';
 import { useFocus } from '@use/focus';
 import { useOpenFiles } from '@use/openFiles';
 import { useEffectState } from '@use/effectState';

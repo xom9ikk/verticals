@@ -5,10 +5,10 @@ import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
 import { ICommentLike } from '@type/entities';
-import { MenuItem } from '@comp/MenuItem';
+import { MenuItem } from '@comp/Menu/Item';
 import { Menu } from '@comp/Menu';
 import { Divider } from '@comp/Divider';
-import { CommentFile } from '@comp/CommentFile';
+import { CommentFile } from '@comp/Comments/File';
 import { Avatar } from '@comp/Avatar';
 import {
   CommentAttachmentsActions,

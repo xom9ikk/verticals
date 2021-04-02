@@ -8,7 +8,7 @@ import {
   getWidthByHeadingId,
 } from '@store/selectors';
 import { useParamSelector } from '@use/paramSelector';
-import { CardAttachmentsPreview } from '@comp/CardAttachmentsPreview';
+import { CardAttachmentsPreview } from '@comp/Card/Attachments/Preview';
 
 interface ITodoAttachmentsPreview {
   headingId: number;

@@ -13,7 +13,7 @@ import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@store/selectors';
 import { useOpenFiles } from '@use/openFiles';
-import { CommentFormAttachments } from '@comp/CommentFormAttachments';
+import { CommentFormAttachments } from '@comp/Comments/Form/Attachments';
 import { EnumDroppedZoneType } from '@type/entities';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';

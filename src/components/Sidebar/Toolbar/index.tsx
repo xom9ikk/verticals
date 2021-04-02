@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu } from '@comp/Menu';
-import { MenuItem } from '@comp/MenuItem';
+import { MenuItem } from '@comp/Menu/Item';
 import { Divider } from '@comp/Divider';
-import { Submenu } from '@comp/Submenu';
+import { SubMenu } from '@comp/Menu/Sub';
 import { AuthActions, SystemActions } from '@store/actions';
 import { EnumLanguage } from '@type/entities';
 import { redirectTo } from '@router/history';
@@ -78,8 +78,8 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   };
 
   return (
-    <div className="toolbar">
-      <div className="toolbar__inner">
+    <div className="sidebar-toolbar">
+      <div className="sidebar-toolbar__inner">
         <ControlButton
           imageSrc="/assets/svg/add.svg"
           text={t('New workspace')}
@@ -110,7 +110,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             action={EnumToolbarActions.AccountSettings}
           />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
-          <Submenu
+          <SubMenu
             text={`${t('Language')}: ${LANGUAGES[language]}`}
             imageSrc="/assets/svg/menu/language.svg"
             maxHeight={170}
@@ -128,8 +128,8 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
                 />
               ))
             }
-          </Submenu>
-          <Submenu
+          </SubMenu>
+          <SubMenu
             text={t('More')}
             imageSrc="/assets/svg/dots.svg"
           >
@@ -145,7 +145,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
               text={t('Privacy Policy')}
               action={EnumToolbarActions.PrivacyPolicy}
             />
-          </Submenu>
+          </SubMenu>
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuItem
             text={t('Logout')}

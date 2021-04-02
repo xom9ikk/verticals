@@ -21,7 +21,7 @@ import {
   CardEditable, ICreateCardEntity, IUpdateCardEntity,
 } from '@comp/Card/Editable';
 import { Card } from '@comp/Card';
-import { SubTodoAttachmentsPreview } from '@comp/CardAttachmentsPreview/SubTodo';
+import { SubTodoAttachmentsPreview } from '@comp/Card/Attachments/Preview/SubTodo';
 
 interface ISubTodoCard {
   provided?: DraggableProvided;

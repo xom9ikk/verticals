@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Menu } from '@comp/Menu';
 import { ColorPicker } from '@comp/ColorPicker';
-import { MenuItem } from '@comp/MenuItem';
+import { MenuItem } from '@comp/Menu/Item';
 import { Divider } from '@comp/Divider';
 import { IColor } from '@type/entities';
 import { ColumnsActions, SystemActions } from '@store/actions';

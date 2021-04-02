@@ -8,8 +8,8 @@ import { getActivePopupId } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import useKeys from '@rooks/use-keys';
-import { MenuItem } from '@comp/MenuItem';
-import { Submenu } from '@comp/Submenu';
+import { MenuItem } from '@comp/Menu/Item';
+import { SubMenu } from '@comp/Menu/Sub';
 
 interface IMenu {
   id: string;
@@ -106,11 +106,11 @@ const MenuComponent = ({
       style={{ zIndex: 2 }}
       width={width}
     >
-      {React.Children.map(children, (child: ReactComponentElement<typeof MenuItem | typeof Submenu>) => {
+      {React.Children.map(children, (child: ReactComponentElement<typeof MenuItem | typeof SubMenu>) => {
         if (child.type.displayName === 'MenuItem') {
           return wrapping(child);
         }
-        if (child.type.displayName === 'Submenu') {
+        if (child.type.displayName === 'SubMenu') {
           return React.cloneElement(
             child, {
               ...child.props,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommentFile } from '@comp/CommentFile';
+import { CommentFile } from '@comp/Comments/File/index';
 
 export default {
   title: 'CommentFile',
