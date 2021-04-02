@@ -56,7 +56,7 @@ export const Popup: FC<IPopup> = ({
         })}
         style={{
           minWidth: defaultWidth,
-          overflowY: isSubMenu ? 'scroll' : 'hidden',
+          overflow: isSubMenu ? 'scroll' : 'hidden',
           maxHeight,
         }}
       >

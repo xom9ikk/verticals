@@ -42,8 +42,8 @@ export const SettingsLayout: FC = ({ children }) => {
   )), []);
 
   return (
-    <>
-      <div className="settings">
+    <div className="settings">
+      <div className="settings__inner">
         <div className="settings__sidebar">
           <h1 className="settings__title">{t('Settings')}</h1>
           <div>
@@ -56,6 +56,6 @@ export const SettingsLayout: FC = ({ children }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
