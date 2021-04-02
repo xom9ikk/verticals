@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 // @ts-ignore
-import { version } from '../../../package.json';
+import packageData from '../../../package.json';
 
 export const Footer: FC = () => (
   <footer className="footer">
     <span className="footer__text">
       v.
-      {version}
+      {packageData.version}
       -
       {process.env.COMMIT_HASH}
     </span>
