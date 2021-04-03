@@ -3,6 +3,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const PATHS = {
   src: path.resolve('src'),
@@ -75,6 +76,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -89,7 +94,7 @@ module.exports = {
     }),
     new HTMLWebpackPlugin({
       title: 'Verticals — checklist with vertical separation',
-      description: 'TODO Checklist With Vertical Separation',
+      description: 'Checklist with Vertical separation',
       favicon: path.resolve(PATHS.static, 'favicon.ico'),
       template: path.resolve(PATHS.static, 'index.html'),
       filename: 'index.html',

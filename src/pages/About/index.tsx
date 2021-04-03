@@ -146,7 +146,7 @@ export const About: FC = () => (
     <div className="about__block">
       <div className="about__wrapper">
         <div className="about__block-footer">
-          <h2 style={{ fontSize: 60, letterSpacing: -2 }}>Write, plan, and get organized. 😎</h2>
+          <h2 style={{ fontSize: 60, letterSpacing: -2 }}>Write, plan, and get organized 😎</h2>
           <h3>One tool for everything you need.</h3>
           <Link to="/auth/register" className="link">
             <Button modificator="primary" type="button" style={{ width: 200, marginTop: 40 }}>

@@ -88,8 +88,12 @@ export const SubTodosReducer = createReducer(initialState, (builder) => builder
     });
 
     const positionIndex = 0;
-
-    draft.positions[todoId].splice(positionIndex, 0, TEMP_ID);
+    if (draft.positions[todoId]) {
+      draft.positions[todoId].splice(positionIndex, 0, TEMP_ID);
+    } else {
+      draft.positions[todoId] = [];
+      draft.positions[todoId].push(TEMP_ID);
+    }
   })
   .addCase(SubTodosActions.move, (draft, action) => {
     const {
