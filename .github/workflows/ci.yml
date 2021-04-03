@@ -1,4 +1,4 @@
-name: test-and-delivery-action
+name: test-build-delivery
 
 env:
   APP_NAME: "verticals"
@@ -9,8 +9,8 @@ on:
     branches: [ master ]
 
 jobs:
-  delivery_code:
-    name: Test and delivery dist to server
+  test_build_delivery:
+    name: test, build and delivery bundle to server
     runs-on: ubuntu-16.04
 
     steps:
@@ -59,7 +59,6 @@ jobs:
           key: ${{ secrets.KEY }}
           source: ${{ env.APP_NAME }}
           target: ${{ env.PATH_TO_APPS }}
-
 
       - name: Start rerun script 😎
         uses: appleboy/ssh-action@master
