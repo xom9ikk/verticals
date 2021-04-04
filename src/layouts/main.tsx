@@ -40,7 +40,6 @@ interface IMainLayoutURLParams {
 
 export const MainLayout: FC = () => {
   const data = useParams<IMainLayoutURLParams>();
-  console.log('data', data);
   const { boardId, cardId, 0: cardType } = data;
 
   const dispatch = useDispatch();
@@ -121,6 +120,10 @@ export const MainLayout: FC = () => {
     dispatch(UserActions.effect.fetchMe());
     dispatch(BoardsActions.effect.fetchAll());
     dispatch(UpdatesActions.effect.subscribe());
+
+    return () => {
+      dispatch(SystemActions.setActiveBoardId(null));
+    };
   }, []);
 
   const memoSidebar = useMemo(() => (
