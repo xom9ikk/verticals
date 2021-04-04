@@ -2,7 +2,7 @@ import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Draggable, Droppable,
+  Draggable, DroppableProvided, DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import {
@@ -17,6 +17,8 @@ import { EnumCardType, ID } from '@type/entities';
 import { MAX_SUB_TODO, NEW_SUB_TODO_ID } from '@/constants';
 
 interface ISubCardsContainer {
+  dropSnapshot: DroppableStateSnapshot;
+  dropProvided: DroppableProvided;
   todoId: number;
   subTodoPositions: Array<ID>;
   cardType: EnumCardType;
@@ -25,6 +27,8 @@ interface ISubCardsContainer {
 }
 
 export const SubCardContainer: FC<ISubCardsContainer> = ({
+  dropSnapshot,
+  dropProvided,
   todoId,
   subTodoPositions,
   cardType,
@@ -59,26 +63,32 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
     />
   ), [todoId]);
 
+  useEffect(() => {
+    console.log('SubCardContainer mount');
+    return () => {
+      console.log('SubCardContainer unmount');
+    };
+  }, []);
+
   return (
     <div
       className={cn('sub-card-container', {
         'sub-card-container--collapse': !isOpen,
-
       })}
     >
-      <Droppable
-        droppableId={`todo-${todoId}`}
-        type="SUBCARD"
+      {/* <Droppable */}
+      {/*  droppableId={`todo-${todoId}`} */}
+      {/*  type="SUBCARD" */}
+      {/* > */}
+      {/*  { */}
+      {/*    (dropProvided, dropSnapshot) => ( */}
+      <div
+        ref={dropProvided.innerRef}
+        className={cn('sub-card-container__inner', {
+          'sub-card-container__inner--dragging-over': dropSnapshot.isDraggingOver,
+        })}
       >
         {
-          (dropProvided, dropSnapshot) => (
-            <div
-              ref={dropProvided.innerRef}
-              className={cn('sub-card-container__inner', {
-                'sub-card-container__inner--dragging-over': dropSnapshot.isDraggingOver,
-              })}
-            >
-              {
                 subTodoPositions
                   .slice(0, isCollapse ? MAX_SUB_TODO : subTodoPositions.length)
                   .map((id, index) => (
@@ -102,21 +112,21 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
                     </Draggable>
                   ))
               }
-              {isOpenNewSubCard ? memoNewSubCard
-                : (
-                  <SubCardContainerToolbar
-                    isHide={dropSnapshot.isDraggingOver}
-                    isCollapse={isCollapse}
-                    subTodosCount={subTodosCount}
-                    onSwitchCollapse={handleSwitchCollapse}
-                    onAddSubCard={onAddSubCard}
-                  />
-                )}
-              {dropProvided.placeholder}
-            </div>
-          )
-        }
-      </Droppable>
+        {isOpenNewSubCard ? memoNewSubCard
+          : (
+            <SubCardContainerToolbar
+              isHide={dropSnapshot.isDraggingOver}
+              isCollapse={isCollapse}
+              subTodosCount={subTodosCount}
+              onSwitchCollapse={handleSwitchCollapse}
+              onAddSubCard={onAddSubCard}
+            />
+          )}
+        {dropProvided.placeholder}
+      </div>
+      {/* ) */}
+      {/* } */}
+      {/* </Droppable> */}
     </div>
   );
 };

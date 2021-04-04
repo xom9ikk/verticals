@@ -3,7 +3,6 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const PATHS = {
   src: path.resolve('src'),
@@ -47,21 +46,7 @@ module.exports = {
         test: /\.ts(x?)?$/,
         exclude: '/node_modules/',
         use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              // presets: [
-              //   '@babel/preset-env',
-              //   '@babel/preset-react',
-              //   '@babel/preset-typescript',
-              // ],
-              // plugins: [
-              //   ['@babel/plugin-proposal-decorators', { legacy: true }],
-              //   'babel-plugin-parameter-decorator',
-              //   '@babel/plugin-syntax-dynamic-import',
-              // ],
-            },
-          },
+          { loader: 'babel-loader' },
         ],
       },
       {
@@ -76,10 +61,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new WorkboxPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true
-    }),
     new CopyWebpackPlugin({
       patterns: [
         {

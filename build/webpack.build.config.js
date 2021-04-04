@@ -6,6 +6,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const TerserPlugin = require('terser-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config');
 
@@ -51,6 +52,10 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
     ],
   },
   plugins: [
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
+    }),
     new Dotenv({
       path: path.resolve('.env.production'),
     }),

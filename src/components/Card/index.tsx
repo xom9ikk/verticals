@@ -77,6 +77,13 @@ export const Card: FC<ICard> = ({
     }
   }, [snapshot?.isDragging]);
 
+  useEffect(() => {
+    console.log('CARD mount', color);
+    return () => {
+      console.log('CARD unmount', color);
+    };
+  }, []);
+
   return (
     <div
       ref={provided?.innerRef}

@@ -164,138 +164,135 @@ export const TodoCard: FC<ITodoCard> = ({
     dispatch(SystemActions.setEditableSubCardId(`${todoId}-${NEW_SUB_TODO_ID}`));
   };
 
-  const card = () => (
-    <Card
-      provided={provided}
-      snapshot={snapshot}
-      color={color}
-      invertColor={invertColor}
-      isEditable={isEditable}
-      isActive={isActive}
-      onSaveFiles={saveFiles}
-      subCardComponent={(
-        <SubCardContainer
-          todoId={todoId}
-          subTodoPositions={subTodoPositions}
-          cardType={cardType}
-          isOpen={isOpenSubCardList && subTodoPositions.length > 0}
-          onAddSubCard={handleAddSubCard}
-        />
-      )}
-    >
-      {(files, setFiles) => (
-        <div
-          className={cn('card__block-wrapper', {
-            'card__block-wrapper--editable': isEditable,
-          })}
-          onClick={(e) => !isEditable && handleClick(e)}
-        >
-          {todoId !== NEW_TODO_ID && (
-            <Bullet
-              type={cardType}
-              status={status}
-              onChangeStatus={handleChangeStatus}
-              style={{ marginTop: isEditable ? 11 : 12 }}
-            />
-          )}
-          <div
-            className="card__block"
-            onDoubleClick={!isEditable ? handleDoubleClick : () => {}}
-          >
-            {isEditable ? (
-              <CardEditable
-                belowId={belowId}
-                title={title}
-                description={description}
-                expirationDate={expirationDate}
-                isNewCard={targetCardForHeadingId === newCardForHeadingId}
-                datePopupId={`card-${todoId}`}
-                files={files}
-                onSetFiles={setFiles}
-                onSaveFiles={saveFiles}
-                onUpdateEntity={handleUpdateTodo}
-                onCreateEntity={handleCreateTodo}
-              />
-            ) : (
-              <div className="card__inner">
-                <TodoContextMenu
-                  menuId="card"
-                  todoId={todoId}
-                  title={title}
-                  headingId={headingId}
-                  isActive={isActive}
-                  isNotificationsEnabled={isNotificationsEnabled}
-                  expirationDate={expirationDate}
-                  color={color}
-                  status={status}
-                  onStartEdit={handleDoubleClickUnwrapped}
-                  onChangeColor={handleColorPick}
-                />
-                <div
-                  className={cn('card__title', {
-                    'card__title--cross-out': status === EnumTodoStatus.Canceled,
-                  })}
-                >
-                  {title}
-                </div>
-                <DateBadge
-                  popupId={`card-${todoId}`}
-                  date={expirationDate}
-                  onSelectDate={handleSelectDateAndUpdate}
-                />
-                <div className="card__toggle-container">
-                  <ControlButton
-                    isHide={!subTodoPositions.length}
-                    imageSrc="/assets/svg/subcards.svg"
-                    tooltip={isOpenSubCardList ? t('Hide subcards') : t('Show subcards')}
-                    alt="sub-card"
-                    imageSize={16}
-                    size={20}
-                    isInvertColor={isActive}
-                    isTextable
-                    onClick={handleClickSubcardButton}
-                    onDoubleClick={(e) => e.stopPropagation()}
-                    isColored={isOpenSubCardList}
-                    isStopPropagation={false}
-                    style={{
-                      borderRadius: 4,
-                    }}
-                  />
-                </div>
-                <TodoAttachmentsPreview
-                  headingId={headingId}
-                  todoId={todoId}
-                  isActive={isActive}
-                  commentsCount={commentsCount}
-                  imagesCount={imagesCount}
-                  attachmentsCount={attachmentsCount}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </Card>
-  );
-
-  return isOpenSubCardList ? card() : (
+  return (
     <Droppable
       droppableId={`todo-${todoId}`}
       type="SUBCARD"
     >
-      {
-        (dropProvided, dropSnapshot) => (
-          <div
-            ref={dropProvided.innerRef}
-            style={{ borderRadius: 6 }}
-            className={cn({
-              'sub-card-container__inner--dragging-over': dropSnapshot.isDraggingOver,
-            })}
+      {(dropProvided, dropSnapshot) => (
+        <div
+          ref={dropProvided.innerRef}
+          style={{ borderRadius: 6 }}
+          className={cn({
+            'sub-card-container__inner--dragging-over':
+              (!isOpenSubCardList || subTodoPositions.length === 0) && dropSnapshot.isDraggingOver,
+          })}
+        >
+          <Card
+            provided={provided}
+            snapshot={snapshot}
+            color={color}
+            invertColor={invertColor}
+            isEditable={isEditable}
+            isActive={isActive}
+            onSaveFiles={saveFiles}
+            subCardComponent={(
+              <SubCardContainer
+                dropProvided={dropProvided}
+                dropSnapshot={dropSnapshot}
+                todoId={todoId}
+                subTodoPositions={subTodoPositions}
+                cardType={cardType}
+                isOpen={isOpenSubCardList && subTodoPositions.length > 0}
+                onAddSubCard={handleAddSubCard}
+              />
+            )}
           >
-            {card()}
-          </div>
-        )
-      }
+            {(files, setFiles) => (
+              <div
+                className={cn('card__block-wrapper', {
+                  'card__block-wrapper--editable': isEditable,
+                })}
+                onClick={(e) => !isEditable && handleClick(e)}
+              >
+                {todoId !== NEW_TODO_ID && (
+                <Bullet
+                  type={cardType}
+                  status={status}
+                  onChangeStatus={handleChangeStatus}
+                  style={{ marginTop: isEditable ? 11 : 12 }}
+                />
+                )}
+                <div
+                  className="card__block"
+                  onDoubleClick={!isEditable ? handleDoubleClick : () => {}}
+                >
+                  {isEditable ? (
+                    <CardEditable
+                      belowId={belowId}
+                      title={title}
+                      description={description}
+                      expirationDate={expirationDate}
+                      isNewCard={targetCardForHeadingId === newCardForHeadingId}
+                      datePopupId={`card-${todoId}`}
+                      files={files}
+                      onSetFiles={setFiles}
+                      onSaveFiles={saveFiles}
+                      onUpdateEntity={handleUpdateTodo}
+                      onCreateEntity={handleCreateTodo}
+                    />
+                  ) : (
+                    <div className="card__inner">
+                      <TodoContextMenu
+                        menuId="card"
+                        todoId={todoId}
+                        title={title}
+                        headingId={headingId}
+                        isActive={isActive}
+                        isNotificationsEnabled={isNotificationsEnabled}
+                        expirationDate={expirationDate}
+                        color={color}
+                        status={status}
+                        onStartEdit={handleDoubleClickUnwrapped}
+                        onChangeColor={handleColorPick}
+                      />
+                      <div
+                        className={cn('card__title', {
+                          'card__title--cross-out': status === EnumTodoStatus.Canceled,
+                        })}
+                      >
+                        {title}
+                      </div>
+                      <DateBadge
+                        popupId={`card-${todoId}`}
+                        date={expirationDate}
+                        onSelectDate={handleSelectDateAndUpdate}
+                      />
+                      <div className="card__toggle-container">
+                        <ControlButton
+                          isHide={!subTodoPositions.length}
+                          imageSrc="/assets/svg/subcards.svg"
+                          tooltip={isOpenSubCardList ? t('Hide subcards') : t('Show subcards')}
+                          alt="sub-card"
+                          imageSize={16}
+                          size={20}
+                          isInvertColor={isActive}
+                          isTextable
+                          onClick={handleClickSubcardButton}
+                          onDoubleClick={(e) => e.stopPropagation()}
+                          isColored={isOpenSubCardList}
+                          isStopPropagation={false}
+                          style={{
+                            borderRadius: 4,
+                          }}
+                        />
+                      </div>
+                      <TodoAttachmentsPreview
+                        headingId={headingId}
+                        todoId={todoId}
+                        isActive={isActive}
+                        commentsCount={commentsCount}
+                        imagesCount={imagesCount}
+                        attachmentsCount={attachmentsCount}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </Card>
+        </div>
+      )}
     </Droppable>
   );
 };

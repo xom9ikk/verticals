@@ -13,7 +13,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
-    port: 3001,
+    port: 3002,
     open: true,
     compress: true,
     hot: true,
