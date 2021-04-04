@@ -40,6 +40,7 @@ interface IMainLayoutURLParams {
 
 export const MainLayout: FC = () => {
   const data = useParams<IMainLayoutURLParams>();
+  console.log('data', data);
   const { boardId, cardId, 0: cardType } = data;
 
   const dispatch = useDispatch();

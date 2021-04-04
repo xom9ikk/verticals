@@ -5,7 +5,7 @@ import { useAlert } from '@use/alert';
 import { redirectTo } from '@router/history';
 import { storage } from '@plugins/storage';
 import { watchAuth } from '@store/sagas/auth';
-import { AuthActions } from '@store/actions';
+import { AuthActions, SystemActions } from '@store/actions';
 import { AuthService } from '@services/auth';
 
 // @ts-ignore
@@ -91,7 +91,8 @@ describe('Auth saga flow', () => {
       token: '',
       refreshToken: '',
     }))
-    .call(redirectTo, '/')
+    .put(SystemActions.setActiveBoardId(null))
+    .call(redirectTo, '/auth/login')
     .silentRun());
   it('reset password', () => {
     const actionPayload = {

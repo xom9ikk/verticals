@@ -34,8 +34,18 @@ class Storage implements IStorage {
     return Storage.get('refreshToken') ?? '';
   }
 
+  subscribe(callback: () => void) {
+    window.addEventListener('storage', callback);
+  }
+
+  unsubscribe(callback: () => void) {
+    window.removeEventListener('storage', callback);
+  }
+
   private static set(key: string, value: any) {
-    return window.localStorage.setItem(key, JSON.stringify(value));
+    const result = window.localStorage.setItem(key, JSON.stringify(value));
+    window.dispatchEvent(new Event('storage'));
+    return result;
   }
 
   private static get(key: string) {

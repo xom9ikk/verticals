@@ -1,6 +1,6 @@
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import React, { FC } from 'react';
-import { storage } from '@plugins/storage';
+import { useAuthenticated } from '@use/authenticated';
 
 interface IRoutePropsWrapper extends RouteProps {
   component?: React.FC;
@@ -18,8 +18,9 @@ export const RouteWrapper: FC<IRoutePropsWrapper> = ({
   redirectPath = '/auth/login',
   ...rest
 }) => {
+  const { isAuthenticated } = useAuthenticated();
+
   const render = (props: any) => {
-    const isAuthenticated = !!storage.getToken();
     const isRedirect = (isPrivate && !isAuthenticated) || (isRedirectFromPublic && !isPrivate && isAuthenticated);
 
     return (

@@ -4,7 +4,7 @@ import {
 import { useAlert } from '@use/alert';
 import { storage } from '@plugins/storage';
 import { redirectTo } from '@router/history';
-import { AuthActions } from '@store/actions';
+import { AuthActions, SystemActions } from '@store/actions';
 import {
   IChangePassword,
   IResetPassword,
@@ -69,7 +69,8 @@ function* logoutWorker(authService: IAuthService) {
       token: '',
       refreshToken: '',
     }));
-    yield call(redirectTo, '/');
+    yield put(SystemActions.setActiveBoardId(null));
+    yield call(redirectTo, '/auth/login');
   }
 }
 
