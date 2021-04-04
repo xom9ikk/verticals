@@ -24,6 +24,7 @@ enum EnumToolbarActions {
   WriteToDeveloper,
   TermsOfService,
   PrivacyPolicy,
+  About,
   Logout,
 }
 
@@ -67,6 +68,10 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
       }
       case EnumToolbarActions.PrivacyPolicy: {
         // TODO:
+        break;
+      }
+      case EnumToolbarActions.About: {
+        redirectTo('/about');
         break;
       }
       case EnumToolbarActions.Logout: {
@@ -146,6 +151,11 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
               action={EnumToolbarActions.PrivacyPolicy}
             />
           </SubMenu>
+          <MenuItem
+            text={t('About')}
+            imageSrc="/assets/svg/menu/copy-link.svg"
+            action={EnumToolbarActions.About}
+          />
           <Divider verticalSpacer={7} horizontalSpacer={10} />
           <MenuItem
             text={t('Logout')}

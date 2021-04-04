@@ -23,6 +23,7 @@ module.exports = {
     'react/button-has-type': 'off',
     'react/no-array-index-key': 'off',
     'react/require-default-props': 'off',
+    'react/jsx-no-target-blank': 'off',
     'import/prefer-default-export': 'off',
     'consistent-return': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
@@ -30,5 +31,7 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
     'jsx-a11y/mouse-events-have-key-events': 'off',
+    'jsx-a11y/accessible-emoji': 'off',
+    'jsx-a11y/media-has-caption': 'off',
   }
 };

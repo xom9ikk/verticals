@@ -1,4 +1,6 @@
 .menu-item {
+  $block: &;
+
   outline: none;
   border: none;
   background: none;
@@ -63,6 +65,11 @@
 
   &:hover {
     background: $primary-light;
+
+    #{$block}__icon {
+      filter: none !important;
+    }
+
   }
 
   &__block {
