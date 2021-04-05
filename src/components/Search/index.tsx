@@ -60,16 +60,12 @@ export const Search: FC = () => {
       >
         <img src="/assets/svg/search.svg" alt="search" />
         <ControlButton
+          className="search__button"
           imageSrc="/assets/svg/close.svg"
           alt="clear"
           isHide={query.length === 0}
           imageSize={10}
           size={21}
-          style={{
-            position: 'absolute',
-            right: 4,
-            top: 7,
-          }}
           onClick={handleClear}
         />
       </Input>

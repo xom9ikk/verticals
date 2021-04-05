@@ -123,32 +123,31 @@ export const CommentItem: FC<ICommentItem> = ({
     }));
   };
 
+  console.log(isShowMore);
   const memoAttachments = useMemo(() => (
     <div className="comment__attachments">
-      {
-        attachments
-          .slice(0, isShowMore ? attachments.length : MAX_FILES_IN_COMMENT_PREVIEW)
-          .sort((file) => (isImage(file.extension) ? -1 : 1))
-          .map((file, index) => {
-            let isCompact = attachments.length > 1;
-            if (index === attachments.length - 1) {
-              isCompact = index % 2 !== 0 || attachments.length === index - 1;
-            }
-            return (
-              <CommentFile
-                key={file.id}
-                id={file.id}
-                size={file.size}
-                name={file.name}
-                path={file.path}
-                extension={file.extension}
-                onRemove={handleRemove}
-                isCompact={isCompact}
-                isImage={isImage(file.extension)}
-              />
-            );
-          })
-      }
+      {attachments
+        .slice(0, isShowMore ? attachments.length : MAX_FILES_IN_COMMENT_PREVIEW)
+        .sort((file) => (isImage(file.extension) ? -1 : 1))
+        .map((file, index) => {
+          let isCompact = attachments.length > 1;
+          if (index === attachments.length - 1) {
+            isCompact = index % 2 !== 0 || attachments.length === index - 1;
+          }
+          return (
+            <CommentFile
+              key={file.id}
+              id={file.id}
+              size={file.size}
+              name={file.name}
+              path={file.path}
+              extension={file.extension}
+              onRemove={handleRemove}
+              isCompact={isCompact}
+              isImage={isImage(file.extension)}
+            />
+          );
+        })}
       {
         attachments.length > MAX_FILES_IN_COMMENT_PREVIEW
         && !isShowMore && (
@@ -166,7 +165,7 @@ export const CommentItem: FC<ICommentItem> = ({
         )
       }
     </div>
-  ), [t, attachments]);
+  ), [t, attachments, isShowMore]);
 
   const memoComment = useMemo(() => (
     <div className="comment__content">
