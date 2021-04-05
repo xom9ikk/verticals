@@ -12,7 +12,8 @@ interface IPopup {
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   width?: number;
   maxHeight?: number;
-  isHideScroll?: boolean;
+  isHideVerticalScroll?: boolean;
+  isHideHorizontalScroll?: boolean;
   style?: React.CSSProperties;
 }
 
@@ -31,7 +32,8 @@ export const Popup: FC<IPopup> = ({
   position = 'top',
   width: defaultWidth = 240,
   maxHeight,
-  isHideScroll = false,
+  isHideVerticalScroll = true,
+  isHideHorizontalScroll = true,
   style,
   children,
 }) => {
@@ -52,7 +54,8 @@ export const Popup: FC<IPopup> = ({
     >
       <div
         className={cn('popup__inner', {
-          'popup__inner--hide-scroll': !isHideScroll,
+          'popup__inner--hide-vertical-scroll': isHideVerticalScroll,
+          'popup__inner--hide-horizontal-scroll': isHideHorizontalScroll,
         })}
         style={{
           minWidth: defaultWidth,

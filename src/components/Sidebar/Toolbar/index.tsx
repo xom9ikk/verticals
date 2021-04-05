@@ -119,20 +119,18 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
             text={`${t('Language')}: ${LANGUAGES[language]}`}
             imageSrc="/assets/svg/menu/language.svg"
             maxHeight={170}
-            isHideScroll
+            isHideVerticalScroll={false}
           >
-            {
-              LANGUAGES.map((lng, index) => (
-                <MenuItem
-                  key={lng}
-                  text={lng}
-                  hintImageSrc={getTickSvg(index)}
-                  isColoredHintImage
-                  action={EnumToolbarActions.ChangeLanguage}
-                  payload={index}
-                />
-              ))
-            }
+            {LANGUAGES.map((lng, index) => (
+              <MenuItem
+                key={lng}
+                text={lng}
+                hintImageSrc={getTickSvg(index)}
+                isColoredHintImage
+                action={EnumToolbarActions.ChangeLanguage}
+                payload={index}
+              />
+            ))}
           </SubMenu>
           <SubMenu
             text={t('More')}

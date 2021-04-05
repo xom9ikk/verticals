@@ -14,11 +14,6 @@ body {
     background: $primary-light;
   }
 
-  ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-
   ::-webkit-resizer,
   ::-webkit-scrollbar-button,
   ::-webkit-scrollbar-corner {

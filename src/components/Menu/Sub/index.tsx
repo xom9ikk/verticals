@@ -6,14 +6,16 @@ interface ISubMenu {
   text: string;
   imageSrc: string;
   maxHeight?: number;
-  isHideScroll?: boolean;
+  isHideVerticalScroll?: boolean;
+  isHideHorizontalScroll?: boolean;
 }
 
 export const SubMenu: FC<ISubMenu> = ({
   text,
   imageSrc,
   maxHeight,
-  isHideScroll,
+  isHideVerticalScroll,
+  isHideHorizontalScroll,
   children,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -32,7 +34,8 @@ export const SubMenu: FC<ISubMenu> = ({
         position="right"
         isAbsolute={false}
         maxHeight={maxHeight}
-        isHideScroll={isHideScroll}
+        isHideVerticalScroll={isHideVerticalScroll}
+        isHideHorizontalScroll={isHideHorizontalScroll}
         style={{ marginLeft: -10, marginTop: -7 }}
       >
         {children}
