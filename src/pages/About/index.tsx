@@ -34,7 +34,7 @@ export const About: FC = () => (
         <div className="about__block-second">
           <video autoPlay loop>
             <source
-              src=""
+              src="/assets/videos/1.mov"
               type="video/mp4"
             />
           </video>
@@ -86,7 +86,6 @@ export const About: FC = () => (
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Adipisci aut doloremque dolores ipsa iste nesciunt nihil placeat porro quod sit!
-
             </p>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, excepturi.

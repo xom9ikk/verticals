@@ -55,6 +55,7 @@ enum EnumCardActions {
   AddSubCardBelow,
   Archive,
   Delete,
+  PermanentlyDelete,
   Restore,
 }
 
@@ -177,6 +178,10 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
         dispatch(TodosActions.remove({ id: todoId! }));
         break;
       }
+      case EnumCardActions.PermanentlyDelete: {
+        dispatch(TodosActions.effect.remove({ id: todoId }));
+        break;
+      }
       default: break;
     }
   };
@@ -197,10 +202,15 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
 
   const buttons = isRemovedCards ? [
     <MenuItem
-      key={15}
+      key={1}
       text={t('Restore')}
       imageSrc="/assets/svg/menu/restore.svg"
       action={EnumCardActions.Restore}
+    />, <MenuItem
+      key={2}
+      text={t('Delete')}
+      imageSrc="/assets/svg/board/trash.svg"
+      action={EnumCardActions.PermanentlyDelete}
     />] : [<ColorPicker
       key={0}
       onPick={(newColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor)}
