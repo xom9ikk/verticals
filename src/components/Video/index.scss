@@ -1,0 +1,15 @@
+.video {
+  $block: &;
+
+  box-shadow: 4px 4px 8px #e3e3e3, -4px -4px 8px #f1f1f1;
+  border-radius: 10px;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  transition: box-shadow .5s ease;
+
+  &:hover {
+    box-shadow: 6px 6px 20px #dcdcdc, -6px -6px 20px #e6e6e6;
+  }
+}

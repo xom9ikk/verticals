@@ -40,8 +40,12 @@ export class AuthRefresher<T extends string | IAxiosErrorRetry> {
   }
 
   async websocketResponseInterceptor(event: CloseEvent, ctx: T) {
-    if (event.code === UNAUTHORIZED_WS_CODE) {
-      await this.refreshTokens(ctx);
+    try {
+      if (event.code === UNAUTHORIZED_WS_CODE) {
+        await this.refreshTokens(ctx);
+      }
+    } catch (e) {
+      this.retryRequest(ctx);
     }
   }
 
