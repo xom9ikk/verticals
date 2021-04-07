@@ -8,152 +8,242 @@ import { AboutFeature } from '@comp/AboutFeature';
 
 const features = [{
   title: 'Boards',
-  description: ['Является основным строительным блоком вашего планирования. Внутри себя может содержать колонки/заголовки/todo и sub todo.', 'Для раскрытия всего функционала досок посмотрите видео и описание ниже.'],
+  description: [
+    'Is the <b>main building block</b> of your planning. It can contain columns, headers, todo and sub todo internally.',
+    'To reveal all the functionality of the boards, watch the video and description below.',
+  ],
   videoSrc: '/assets/videos/1.mp4',
   iconSrc: '/assets/svg/board/file.svg',
 }, {
   title: 'Columns',
-  description: ['С помощью столбиков можно группировать целые блоки задач. Колонки могут содержать todo или заголовки.', 'Чтобы узнать все возможности колонок ознакомьтесь с нашей презентацией ниже.'],
+  description: [
+    'Columns can be used to <b>group whole task blocks</b>. Columns can contain todo or headers.',
+    'To find out all the possibilities of the columns, check out our presentation below.',
+  ],
   videoSrc: '/assets/videos/2.mp4',
   iconSrc: '/assets/svg/board/file.svg',
 }, {
   title: 'Headings',
-  description: ['Большие списки сильно усложняют восприятие. Чтобы избежать этого используйте заголовки. С их помощью можно создать определенную структуру.', 'Как пример, в них можно хранить категории, названия этапов, версионность или что-то ещё.'],
+  description: [
+    'Large lists make it very difficult to read. Use headings to avoid this. With their help, you can create a <b>certain structure.</b>',
+    'For example, they can store categories, stage names, versioning, or something else...',
+  ],
   videoSrc: '/assets/videos/3.mp4',
   iconSrc: '/assets/svg/board/file.svg',
 }, {
   title: 'Todos',
-  description: ['Самый распространенный блок с которым вам придется работать. Это карточка, которая отображает какую-то задачу для выполнения.', 'О дополнительных возможностях карточки рассказано ниже.'],
+  description: [
+    'The <b>most common block</b> you will have to work with. This is a card that displays a task to complete.',
+    'The additional features of the card are described below.',
+  ],
   videoSrc: '/assets/videos/4.mp4',
   iconSrc: '/assets/svg/board/file.svg',
 }, {
   title: 'Work Status',
-  description: ['Verticals имеет больше состояний задач, чем много других аналогичных продуктов, которые имеют только статусы <b>To Do</b> и <b>Done</b>. С помощью статусов вы можете контроллировать прогресс выполнения каждой todo или sub todo.', 'Всего есть 4 статуса: <b>To do</b>, <b>Doing</b>, <b>Canceled</b>, <b>Done</b>.'],
+  description: [
+    'Verticals has more task states than many other similar products that only have <b>To Do</b> and <b>Done</b> statuses. With statuses, you can control the progress of each todo or sub todo.',
+    'There are 4 statuses in total: <b>To do</b>, <b>Doing</b>, <b>Canceled</b>, <b>Done</b>.',
+  ],
   videoSrc: '/assets/videos/5.mp4',
   iconSrc: '/assets/svg/menu/rounded-square-half-filled.svg',
 }, {
   title: 'Sub Todos',
-  description: ['Это своего рода подзадачи, которые необходимо выполнить для реализации какой-то большой задачи. Хоть и рекомендуется хранить большие задачи в заголовке или даже колонке, но иногда этого мало и на помощь приходят sub todo', 'Вы можете использовать sub todo, как чек-лист для своей задачи.'],
+  description: [
+    'These are a kind of subtasks that need to be completed in order to implement some kind of large task. Although it is recommended to store large tasks in a heading or even a column, sometimes this is not enough and sub todo comes to the rescue.',
+    'You can use sub todo as a <b>checklist</b> for your task.',
+  ],
   videoSrc: '/assets/videos/6.mp4',
   iconSrc: '/assets/svg/board/file.svg',
 }, {
   title: 'Board Color',
-  description: ['Не секрет, что выделение чего-то цветом помогает в восприятии информации.', 'Вы можете выделять доски любым понравившемся вам цветом, чтобы сфокусировать своё внимание на доске.'],
+  description: [
+    'It\'s no secret that highlighting something with color helps in the <b>perception of information.</b>',
+    'You can highlight the boards in any color you like to focus your attention on the board.',
+  ],
   videoSrc: '/assets/videos/7.mp4',
   iconSrc: '/assets/svg/board/light-bulb.svg',
 }, {
   title: 'Column Color',
-  description: ['Колонки тоже можно выделять цветом. Цвет применяется не ко всему столбцу, а только к его верхней части.', 'Таким образом это не будет мешать и отвлекать вас при работе с содержимым колонки.'],
+  description: [
+    'Columns can also be <b>highlighted with color</b>. The color is applied not to the entire column, but only to its top.',
+    'Thus, it will not interfere and distract you when working with the content of the column.',
+  ],
   videoSrc: '/assets/videos/8.mp4',
   iconSrc: '/assets/svg/board/light-bulb.svg',
 }, {
   title: 'Heading Color',
-  description: ['Как и колонки, заголовки тоже позволяют помечать себя цветом. Для удобвства использования у заголовка помечается цветом только верхняя часть, чтобы не забирать на себя слишком много внимания при работе с задачами в заголовке.', ''],
+  description: [
+    'Like columns, headings also let you colorize themselves.',
+    'For ease of use, only the <b>upper part of the header is marked with color</b>, so as not to take too much attention when working with tasks in the heading.',
+  ],
   videoSrc: '/assets/videos/9.mp4',
   iconSrc: '/assets/svg/board/light-bulb.svg',
 }, {
   title: 'Todo Color',
-  description: ['Задачи можно так же помечать цветом, как и заголовки, это удобно, когда, к примеру, вам нужно сфокусировать всё своё внимание на выполнении конкретной задачи.', 'Используются не очень насыщенные цвета, чтобы не фокусировать внимание лишь на цвете.'],
+  description: [
+    'Tasks can be colored in the same way as headings, this is convenient when, for example, you need to focus all your attention on completing a specific task.',
+    'The colors are <b>not very saturated so as not to focus on the color only.</b>',
+  ],
   videoSrc: '/assets/videos/10.mp4',
   iconSrc: '/assets/svg/board/light-bulb.svg',
 }, {
   title: 'Sub Todo Color',
-  description: ['Sub todo это прямой аналог todo рассмотренного выше, поэтому для sub todo тоже имеется возможность использовать цвета.', 'Используются не очень насыщенные цвета, чтобы не фокусировать внимание лишь на цвете.'],
+  description: [
+    'Sub todo is a direct analogue of the todo discussed above, so the sub todo also has the <b>ability to use colors.</b>',
+    'The colors are not very saturated so as not to focus on the color only.',
+  ],
   videoSrc: '/assets/videos/11.mp4',
   iconSrc: '/assets/svg/board/light-bulb.svg',
 }, {
   title: 'Board Icon',
-  description: ['Чтобы улучшить узнаваемость досок мы можем выделять их цветом, давать уникальные имена, менять их позиции. Но ничто так не позволяет зацепиться глазу, как уникальной иконке. Именно поэтому для досок есть иконки.', 'По умолчанию они одинаковые, но если есть необходимость, то вы можете легко изменить иконку по своему вкусу или выбрать ту иконку, котоаря лучше всего описывает вашу доску.'],
+  description: [
+    'To improve the recognizability of the boards, we can highlight them in color, give them unique names, and change their positions. But nothing allows the eye to catch on like a <b>unique icon.</b> This is why there are icons for the boards.',
+    'By default, they are the same, but if necessary, you can easily change the icon to your liking or choose the icon that best describes your board.',
+  ],
   videoSrc: '/assets/videos/12.mp4',
   iconSrc: '/assets/svg/logo.svg',
 }, {
   title: 'Card Style',
-  description: ['Не всегда для работы с задачами нам нужны классические чекбоксы. Иногда у нас бывают просто списки задач, которые нам нужно просто перемещать между колонками/заголовками. В таком случае можно использовать другой стиль карточек.', 'Стиль карточек применяется ко всем todo и sub todo относящиеся к этой доске.'],
+  description: [
+    'We do not always need classic checkboxes to work with tasks. Sometimes we just have task lists that we just need to move between columns, headers. In this case, you can use a <b>different style of cards.</b>',
+    'The card style is applied to all todo and sub todo related to this board.',
+  ],
   videoSrc: '/assets/videos/13.mp4',
   iconSrc: '/assets/svg/menu/rect.svg',
 }, {
   title: 'Minimize Column',
-  description: ['Для того, чтобы получить более чистый и лишенный ненужных данных UX вы можете свернуть те колонки, которые не нужны вам на текущий момент. В свернутой колонке отображается название колонки и количеству задач, которые она содержит.', 'Свернутые колонки легче упорядочивать при смене позиций.'],
+  description: [
+    'For a cleaner, data-free user experience, you can <b>collapse the columns</b> you don\'t need at the moment. The collapsed column displays the name of the column and the number of tasks it contains.',
+    'Collapsed columns are easier to reorder when changing positions.',
+  ],
   videoSrc: '/assets/videos/14.mp4',
   iconSrc: '/assets/svg/menu/dash.svg',
 }, {
   title: 'Minimize Heading',
-  description: ['Если вы сейчас не работаете над конкретным заголовоком и его содержимое для вас сейчас не интересно, то вы можете свернуть его, чтобы он не занимал слишком много места.', 'В свернутом состоянии заголовок выглядит как todo и на нем отображено количество вложенных todo & название заголовка.'],
+  description: [
+    'If you are not currently working on a specific heading and its content is not interesting to you right now, then you can <b>collapse</b> it so that it does not take up too much space.',
+    'When collapsed, the title looks like a todo and displays the number of nested todo & heading title.',
+  ],
   videoSrc: '/assets/videos/15.mp4',
   iconSrc: '/assets/svg/menu/dash.svg',
 }, {
   title: 'Reverse Columns',
-  description: ['Иногда может быть полезно инвертировать порядок колонок внутри доски. Для этого просто нажмите соответствующую кнопку в контекстном меню.', 'Чтобы применить обратную операцию по реверсу порядка колонок выполните это действие снова.'],
+  description: [
+    'Sometimes it can be useful to <b>invert the order of the columns</b> within the board. To do this, simply click the corresponding button in the context menu.',
+    'To apply the reverse operation to reverse the column order, do this again.',
+  ],
   videoSrc: '/assets/videos/16.mp4',
   iconSrc: '/assets/svg/menu/reverse.svg',
 }, {
   title: 'Recycle Bin',
-  description: ['При удалении карточки она не удаляется безвозвратно, а просто переносится в корзину. Это полезно, когда вы случайно удалили карточку или после удаления вы решили, что она вам нужна.', 'Таким образом вся информация по карточке, включая комментарии и вложения можно восстановить в один клик.'],
+  description: [
+    'When you delete a card, it is not permanently deleted, but transferred to the <b>Recycle Bin</b>. This is useful when you accidentally delete a card or after deleting you decide that you need it.',
+    'Thus, all information on the card, including comments and attachments, can be restored in one click.',
+  ],
   videoSrc: '/assets/videos/17.mp4',
   iconSrc: '/assets/svg/menu/remove.svg',
 }, {
   title: 'Boards Moving',
-  description: ['Необходимый порядок досок не всегда совпадает с тем порядком, в котором мы их создаем. Кроме того иногда могут измениться приоритеты и некоторые доски должны подняться в списке, либо опуститься вниз.', 'Для изменения порядка просто зажмите и перетащите доску на целевую позицию.'],
+  description: [
+    'The required order of the boards does not always match the order in which we create them. In addition, priorities can sometimes change and some boards must go up in the list, or go down.',
+    'To <b>change the order</b>, simply pinch and drag the board to the target position.',
+  ],
   videoSrc: '/assets/videos/18.mp4',
   iconSrc: '/assets/svg/menu/duplicate.svg',
 }, {
   title: 'Columns Moving',
-  description: ['Если вы используете колонки для учёта спринтов, то необходимости в перегруппировке колонок может и не быть. Но если колонки никак не связаны между собой и представляют один достаточно большой блок работ, то в таком случае упорядочивание позиций может стать очень полезным.', 'Зажмите верхнюю часть колонки и перетащите колонку на целевое место.'],
+  description: [
+    'If you are using columns to track weekly sprints, you may not need to rearrange the columns. But if the contents of the columns have nothing in common and represent one large enough block of work, then <b>ordering the positions</b> can be very useful.',
+    'Pinch the top of the column and drag the column to the target location.',
+  ],
   videoSrc: '/assets/videos/19.mp4',
   iconSrc: '/assets/svg/menu/duplicate.svg',
 }, {
   title: 'Headings Moving',
-  description: ['Заголовки, как и колонки можно перетаскивать. Используйте эту возможность для того, чтобы правильно расставлять свои приоритеты в задачах и быть максимально продуктивным в процессе работы над блоком задач.', 'Для перемещения нужно зажать верхнюю часть заголовка и перетащить на необходимую позицию.'],
+  description: [
+    'Headings, like columns, can be dragged and dropped. Use this opportunity in order to correctly <b>prioritize tasks</b> and be as productive as possible in the process of working on a block of tasks.',
+    'To move, you need to pinch down the top part of the header and drag it to the required position.',
+  ],
   videoSrc: '/assets/videos/20.mp4',
   iconSrc: '/assets/svg/menu/duplicate.svg',
 }, {
   title: 'Todo Moving',
-  description: ['Задачи время от времени нужно группировать и выставлять приоритетные задачи наверх списка. С течением времени приоритеты могут изменяться и поэтому очень необходимо иметь возможность перемещать задачи.', 'Перемещение доступно внутри колонки/заголовка или даже между ними. Просто нажмите и перетащите задачу на нужное место.'],
+  description: [
+    'Tasks from time to time need to be <b>grouped and prioritized</b> to the top of the list. Priorities can change over time and therefore it is very important to be able to move tasks.',
+    'Moving is available within a column, heading or even between them. Just click and drag the task to the desired location.',
+  ],
   videoSrc: '/assets/videos/21.mp4',
   iconSrc: '/assets/svg/menu/duplicate.svg',
 }, {
   title: 'Sub Todo Moving',
-  description: ['Sub todo представляет собой маленькую часть на пути к выполнению задачи. И правильное выполнение подзадач может быстрее привести к завершению работы над задачей в целом.', 'Поэтому изменение позиций подзадач из чек-листа играет важную роль в процессе планирования подходов к решению конкретной задачи.'],
+  description: [
+    'The sub todo represents a small part of the path to completing a task. And the correct execution of subtasks can lead to the <b>completion of the task as a whole faster.</b>',
+    'Therefore, changing the positions of subtasks from the checklist plays an important role in the process of planning approaches to solving a specific problem.',
+  ],
   videoSrc: '/assets/videos/22.mp4',
   iconSrc: '/assets/svg/menu/duplicate.svg',
 }, {
   title: 'Deadlines',
-  description: ['Просто поставить перед собой задачу недостаточно. Если не оценивать сроки выполнения задачи, то эта задача может не выполняться длительный промежуток времени. И в таком случае весь процесс планирования сходит на нет.', 'Используйте умный календарь для выбора дат. Вы можете описать простыми словами когда наступит deadline и дата подставится автоматически.'],
+  description: [
+    'It is not enough to simply set a task for yourself. If you do not estimate the timing of a task, then this task may not be completed for a long period of time. And in this case, the whole planning process comes to naught.',
+    'Use a <b>smart calendar to select dates.</b> You can describe in simple words when the deadline comes and the date will be inserted automatically.',
+  ],
   videoSrc: '/assets/videos/23.mp4',
   iconSrc: '/assets/svg/calendar.svg',
 }, {
   title: 'Archives',
-  description: ['Некоторые задачи могут утратить приоритет, но, возможно, к ним все же придется вернуться через какой-то промежуток времени.', 'В таком случае лучше не удалять карточку насовсем или перемещать ее в корзину. Вместо этого просто архивируйте карточку и она переместится в архивный список внутри колонки.'],
+  description: [
+    'Some tasks may lose priority, but you may still have to return to them after a certain period of time.',
+    'In this case, it is better not to permanently delete the card or move it to the trash can. Instead, just <b>archive the card</b> and it will move to the archive list within the column.',
+  ],
   videoSrc: '/assets/videos/24.mp4',
   iconSrc: '/assets/svg/menu/archive.svg',
 }, {
   title: 'Comments & Attachments',
-  description: ['Для хорошей и продуктивной коммуникации между членами команды нужно место, где задачу можно обсудить. Добавить необходимые материалы для выполнения.', 'Это могут быть картинки, файлы любого расширения и текстовые комментарии, которые поддерживают Markdown формат, о котором речь пойдет ниже.'],
+  description: [
+    'For good and productive communication between team members, you need a place where the problem can be <b>discussed and add the necessary materials</b> to complete.',
+    'These can be pictures, files of any extension, and text comments that support the Markdown format, which will be discussed below.',
+  ],
   videoSrc: '/assets/videos/25.mp4',
   iconSrc: '/assets/svg/bubble.svg',
 }, {
   title: 'Preview & Gallery',
-  description: ['Карточки позволяют прикреплять к ним комментарии, различные файлы и картинки. И порой не очень удобно постоянно открывать попап с комментариями к карточке, чтобы увидеть все вложения.', 'С помощью продемонстрированной в видео функции вы можете мгновенно просматривать все вложения, без необходимости открытия попапа комментариев к карточке.'],
+  description: [
+    'Cards allow you to attach comments to them, various files and pictures. And sometimes it is not very convenient to constantly open a popup with comments to the card in order to see all attachments.',
+    'Using the function demonstrated in the video, you can instantly <b>view all attachments</b>, without having to open a popup of comments to the card.',
+  ],
   videoSrc: '/assets/videos/26.mp4',
   iconSrc: '/assets/svg/gallery.svg',
 }, {
   title: 'Markdown Support',
-  description: ['Очень часто доски используются программистами, которым довольно часто приходится сталкиваться с Markdown форматом. Verticals поддерживает такую возможность для комментариев. Вы можете с легкостью форматировать свой текст, вставлять кусочки кода, рисовать таблицы и многое другое.', 'Больше информации можно найти на попапе с помощью по форматированию текста.'],
+  description: [
+    'Very often whiteboards are used by programmers who quite often have to deal with the Markdown format. Verticals supports this feature for comments. You can easily format your text, <b>insert pieces of code, draw tables,</b> and more.',
+    'More information can be found on the popup with the help of text formatting.',
+  ],
   videoSrc: '/assets/videos/27.mp4',
   iconSrc: '/assets/svg/board/rocket.svg',
 }, {
   title: 'Column Width',
-  description: ['Если названия карточек имеют очень большую длину, то в таком случае ширину колонки можно увеличить, чтобы не занимать много места в высоту и не было необходимости в дополнительной прокрутке..', ' Просто наведите курсор между колонками, чтобы появился характерный указатель изменения размера и перетащите его до того размера, который необходим для комфортной работы с колонкой.'],
+  description: [
+    'If the names of the cards are very long, then the column width can be increased so as not to take up a lot of space in height and there is no need for additional scrolling.',
+    'Just hover your cursor between the columns for a distinctive resize pointer and drag it to the <b>size you need to comfortably work with the column.</b>',
+  ],
   videoSrc: '/assets/videos/28.mp4',
   iconSrc: '/assets/svg/menu/edit.svg',
 }, {
   title: 'Flexible Sidebar',
-  description: ['При работе на устройстве с небольшим разрешением правильнее использовать всё пространство для отображение того, что действительно важно', ' Переключение между досками и другие функции, которые находятся на сайдбаре используются не часто и поэтому сайдбар при необходимости можно скрыть.'],
+  description: [
+    'When working on a device with a low resolution, it is more correct to <b>use all the space to display what really matters.</b>',
+    'Switching between boards and other functions that are located on the sidebar are not often used and therefore the sidebar can be hidden if necessary.',
+  ],
   videoSrc: '/assets/videos/29.mp4',
   iconSrc: '/assets/svg/menu/hide-sidebar.svg',
 }, {
   title: 'Search',
-  description: ['Для удобного поиска по названиям задач вы можете использовать поиск. Поиск происходит сразу по всем доскам/столбцам/заголовкам. После поиска вы можете посмотреть сколько совпадений было найдено для каждой доски.', 'Названия колонок/заголовков и sub todo не входят в результаты поиска. Только заголовки todo.'],
+  description: [
+    'For a convenient search by task names, you can use the search. All boards, columns, headings are searched at once. After searching, you can see <b>how many matches were found</b> for each board.',
+    'Column, heading names and sub todo names are not included in the search results. Todo headers only.',
+  ],
   videoSrc: '/assets/videos/30.mp4',
   iconSrc: '/assets/svg/board/search.svg',
 }];
