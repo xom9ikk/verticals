@@ -1,0 +1,59 @@
+.about {
+  &__feature {
+    $block: &;
+
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    width: 100%;
+    padding: 25px 40px 25px;
+
+    &--reversed {
+      flex-direction: row-reverse;
+
+      #{$block}-info {
+        margin-right: 0;
+      }
+
+      #{$block}-preview {
+        margin-right: 50px;
+      }
+    }
+
+    p {
+      font-size: 24px;
+      font-family: "Nunito Light", sans-serif;
+    }
+
+    &-info {
+      flex: 35%;
+      display: flex;
+      flex-direction: column;
+      margin-right: 50px;
+      flex-shrink: 0;
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+
+      b {
+        font-family: "Nunito Extra Bold", sans-serif;
+      }
+    }
+
+    &-title {
+      font-size: 50px;
+      line-height: 80%;
+      font-family: "Nunito Extra Bold", sans-serif;
+      margin: 15px 0;
+    }
+
+    &-preview {
+      display: flex;
+      flex: 65%;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
