@@ -279,9 +279,6 @@ export const About: FC = () => (
         <div className="about__block-second">
           <Video
             src="/assets/videos/21.mp4"
-            style={{
-              transform: 'translateY(-120px)',
-            }}
           />
           <h2>Value & Goal of this tool 🚀</h2>
           <h3>

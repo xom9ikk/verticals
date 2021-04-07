@@ -38,6 +38,10 @@
       flex: 1;
       flex-direction: column;
       align-items: center;
+
+      .video {
+        transform: translateY(-120px);
+      }
     }
 
     &-footer {
@@ -98,9 +102,18 @@
 
 @media (max-width: 960px) {
   .about {
+    &__wrapper {
+      padding: 25px 25px 50px;
+    }
     &__block {
       &-first {
+        margin: 75px 0 75px;
         flex-direction: column;
+      }
+      &-second {
+        .video {
+          transform: translateY(-100px);
+        }
       }
     }
 

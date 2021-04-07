@@ -1,18 +1,16 @@
 import React, {
-  CSSProperties, FC, useRef, useState,
+  FC, useRef, useState,
 } from 'react';
 import { Waypoint } from 'react-waypoint';
 
 interface IVideo {
   src: string;
   isAutoPlay?: boolean;
-  style?: CSSProperties;
 }
 
 export const Video: FC<IVideo> = ({
   src,
   isAutoPlay = false,
-  style,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -38,7 +36,6 @@ export const Video: FC<IVideo> = ({
         muted
         autoPlay={isAutoPlay}
         loop
-        style={style}
       >
         {isFirstEntered && (
           <source
