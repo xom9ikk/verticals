@@ -1,7 +1,6 @@
 {
   "name": "verticals-frontend",
   "version": "1.0.1",
-  "private": true,
   "description": "Frontend part for verticals project",
   "scripts": {
     "start": "webpack serve --config ./build/webpack.dev.config.js",

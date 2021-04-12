@@ -1,8 +1,8 @@
-<p align="center"><a href='https://verticals.xom9ik.com'><img src='https://github.com/xom9ikk/verticals/raw/master/static/icons/icon-512x512.png' height='60' alt='Verticals Logo' aria-label='verticals.xom9ik.com' /></a></p>
+<p align="center"><a href='https://verticals.xom9ik.com'><img src='/static/icons/icon-512x512.png' height='60' alt='Verticals Logo' aria-label='verticals.xom9ik.com' /></a></p>
 <p align="center">
   <a href='https://verticals.xom9ik.com'>Verticals — checklist with vertical separation</a>
 </p>
-<img align="center" src="https://github.com/xom9ikk/verticals/raw/readme/src/public/assets/gif/21.gif" alt="preview" />
+<img align="center" src="/src/public/assets/gif/21.gif" alt="preview" />
 
 # For users 😀
 
