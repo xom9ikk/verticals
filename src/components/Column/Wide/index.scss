@@ -50,23 +50,7 @@
       -10px -10px 30px rgba(210, 227, 253, 0.4);
 
       #{$block}__header {
-        background: $primary-light;
-      }
-
-      .card__textarea {
-        background: $primary-light !important;
-      }
-    }
-
-    &--hovered {
-      background: $hover-color;
-
-      #{$block}__title-editable {
-        background: $hover-color;
-      }
-
-      #{$block}__description-editable {
-        background: $hover-color;
+        background: none !important;
       }
     }
   }

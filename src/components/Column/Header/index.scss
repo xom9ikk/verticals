@@ -10,6 +10,17 @@
     letter-spacing: 0;
     transition: background .1s ease-out, border .2s ease-in-out;
 
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: -100px;
+      right: 0;
+      z-index: -1;
+      transition: background .1s ease-out;
+    }
+
     &-container {
       display: flex;
       margin-bottom: 10px;
@@ -26,9 +37,20 @@
       padding: 14px 9px 10px 7px;
       //border-radius: 6px;
       background: none;
+      &:before {
+        background: none !important;
+      }
+      &:hover {
+        &:before {
+          background: none !important;
+        }
+      }
     }
 
     &:hover {
+      &:before {
+        background: $hover-color;
+      }
       .column-toolbar {
         opacity: 0;
       }

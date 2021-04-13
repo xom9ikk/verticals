@@ -29,7 +29,6 @@ interface IColumnHeader {
   color?: IColor;
   isEditable: boolean;
   mode: EnumColumnMode;
-  onHover: (isHovered: boolean) => void;
   onClick: (e: React.SyntheticEvent) => void;
   onDoubleClick: (e: React.SyntheticEvent) => void;
 }
@@ -44,7 +43,6 @@ export const ColumnHeader: FC<IColumnHeader> = ({
   color,
   isEditable,
   mode,
-  onHover,
   onClick,
   onDoubleClick,
 }) => {
@@ -186,11 +184,9 @@ export const ColumnHeader: FC<IColumnHeader> = ({
       ref={headerRef}
       role="button"
       tabIndex={0}
-      className={cn('column__header', colorClass, {
+      className={cn('column__header', isEditable ? '' : colorClass, {
         'column__header--editable': isEditable,
       })}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       {...provided.dragHandleProps}
