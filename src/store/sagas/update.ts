@@ -1,23 +1,23 @@
 import {
-  all, apply, takeLatest, fork, put, select,
+  all, apply, fork, put, select, takeLatest,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
   BoardsActions,
   ColumnsActions,
-  HeadingsActions,
-  TodosActions,
   CommentsActions,
-  UpdatesActions, SubTodosActions,
+  HeadingsActions,
+  SubTodosActions,
+  TodosActions, UpdatesActions,
 } from '@store/actions';
 import {
   EnumOperations, IBoardPositionsUpdateData,
   IBoardUpdateData,
   IColumnPositionsUpdateData,
-  IHeadingPositionsUpdateData,
-  IColumnUpdateData, ICommentUpdateData,
-  ITodoPositionsUpdateData, ITodoUpdateData,
-  IUpdateData, IHeadingUpdateData, ISubTodoPositionsUpdateData, ISubTodoUpdateData,
+  IColumnUpdateData,
+  ICommentUpdateData, IHeadingPositionsUpdateData,
+  IHeadingUpdateData, ISubTodoPositionsUpdateData,
+  ISubTodoUpdateData, ITodoPositionsUpdateData, ITodoUpdateData, IUpdateData,
 } from '@type/api';
 import { IUpdateService } from '@inversify/interfaces/services';
 import { getIsSearchMode } from '@store/selectors';

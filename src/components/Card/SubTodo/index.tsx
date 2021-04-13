@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { redirectTo } from '@router/history';
 import {
-  EnumTodoStatus, EnumCardType, IColor, ISubTodo,
+  EnumCardType, EnumTodoStatus, IColor, ISubTodo,
 } from '@type/entities';
 import { NEW_SUB_TODO_ID } from '@/constants';
-import { CommentsActions, SystemActions, SubTodosActions } from '@store/actions';
-import { getUsername, getActiveBoardReadableId, getSubTodoById } from '@store/selectors';
+import { CommentsActions, SubTodosActions, SystemActions } from '@store/actions';
+import { getActiveBoardReadableId, getSubTodoById, getUsername } from '@store/selectors';
 import { Bullet } from '@comp/Bullet';
 import { DateBadge } from '@comp/DateBadge';
 import { SubTodoContextMenu } from '@comp/Card/SubTodo/ContextMenu';

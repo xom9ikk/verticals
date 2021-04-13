@@ -4,7 +4,7 @@ import React, {
 import { CommentList } from '@comp/Comments/List';
 import { CommentForm } from '@comp/Comments/Form';
 import { FormattingHelp } from '@comp/FormattingHelp';
-import { useAutoScroll, ScrollDirection } from '@use/autoScroll';
+import { ScrollDirection, useAutoScroll } from '@use/autoScroll';
 import { ICreateComment } from '@type/actions';
 import { IComments } from '@type/entities';
 

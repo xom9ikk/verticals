@@ -45,7 +45,6 @@ export class WSClient implements IWSClient {
 
   open(path: string) {
     const authQuery = WSClient.getAuthQuery();
-    console.log('authQuery', authQuery);
     if (this.instances[path]) {
       return;
     }

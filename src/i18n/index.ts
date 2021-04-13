@@ -2,7 +2,6 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 // @ts-ignore
 import isLokiRunning from '@loki/is-loki-running';
-
 import Backend from 'i18next-http-backend';
 
 i18n

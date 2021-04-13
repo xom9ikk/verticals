@@ -11,11 +11,11 @@ import { SuspenseWrapper } from '@comp/SuspenseWrapper';
 import { Account } from '@pages/settings/Account';
 import { Profile } from '@pages/settings/Profile';
 import {
-  SystemActions,
   BoardsActions,
-  UserActions,
   ColumnsActions,
-  TodosActions, UpdatesActions, SubTodosActions,
+  SubTodosActions,
+  SystemActions,
+  TodosActions, UpdatesActions, UserActions,
 } from '@store/actions';
 import { Sidebar } from '@comp/Sidebar';
 import { Search } from '@comp/Search';
@@ -31,6 +31,7 @@ import {
 import { TRASH_BOARD_ID } from '@/constants';
 import { useValueRef } from '@use/valueRef';
 import { Gallery } from '@comp/Gallery';
+import { DocumentTitle } from '@comp/DocumentTitle';
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -38,7 +39,7 @@ interface IMainLayoutURLParams {
   0: 'card' | 'subcard';
 }
 
-export const MainLayout: FC = () => {
+export const MainLayout: FC = React.memo(() => {
   const data = useParams<IMainLayoutURLParams>();
   const { boardId, cardId, 0: cardType } = data;
 
@@ -158,11 +159,14 @@ export const MainLayout: FC = () => {
 
   const memoGallery = useMemo(() => <Gallery />, []);
 
+  const memoDocumentTitle = useMemo(() => <DocumentTitle />, []);
+
   return (
     <div className="container container--horizontal">
       { memoSidebar }
       { memoRouter }
       { memoGallery }
+      { memoDocumentTitle }
     </div>
   );
-};
+});

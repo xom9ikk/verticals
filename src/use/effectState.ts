@@ -1,5 +1,5 @@
 import {
-  SetStateAction, Dispatch, useEffect, useState,
+  Dispatch, SetStateAction, useEffect, useState,
 } from 'react';
 
 export const useEffectState = <T>(value: T): [T, Dispatch<SetStateAction<T>>] => {

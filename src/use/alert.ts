@@ -1,4 +1,4 @@
-import { store, ReactNotificationOptions } from 'react-notifications-component';
+import { ReactNotificationOptions, store } from 'react-notifications-component';
 
 type IType = 'success' | 'danger' | 'info' | 'default' | 'warning';
 

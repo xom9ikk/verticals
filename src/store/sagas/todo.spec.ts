@@ -1,8 +1,7 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-
 import { useAlert } from '@use/alert';
-import { TodosActions, SystemActions, CommentsActions } from '@store/actions';
+import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import { TodoService } from '@services/todo';
 import { EnumColors, EnumTodoStatus } from '@type/entities';
 import { watchTodo } from '@store/sagas/todo';

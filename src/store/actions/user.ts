@@ -1,20 +1,20 @@
-import { createAction, PrepareAction } from '@reduxjs/toolkit';
+import { PrepareAction, createAction } from '@reduxjs/toolkit';
 import {
+  ISetAvatar,
+  ISetAvatarRaw,
+  ISetEmail,
+  ISetEmailRaw,
+  ISetPersonalData,
   ISetUserData,
+  ISetUsername,
+  ISetUsernameRaw,
   IUpdateEmail,
   IUpdateEmailRaw,
   IUpdatePersonalData,
-  IUploadAvatar,
-  IUploadAvatarRaw,
-  ISetEmail,
-  ISetEmailRaw,
-  ISetUsername,
-  ISetUsernameRaw,
-  ISetPersonalData,
-  ISetAvatar,
-  ISetAvatarRaw,
   IUpdateUsername,
   IUpdateUsernameRaw,
+  IUploadAvatar,
+  IUploadAvatarRaw,
 } from '@type/actions';
 
 export const UserActions = {

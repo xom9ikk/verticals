@@ -1,29 +1,25 @@
-import React, { FC, useMemo } from 'react';
+import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  DragDropContext, Draggable, Droppable, DropResult,
-} from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
 import { Board } from '@comp/Board';
 import { Profile } from '@comp/Profile';
-import { BoardsActions, SystemActions } from '@store/actions';
+import { SystemActions } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import { Link } from 'react-router-dom';
 import {
   getActiveBoardId,
+  getBoardPositions,
   getEditableBoardId,
   getIsLoadedBoards,
-  getUsername,
   getIsSearchMode,
-  getActiveBoardTitle,
-  getActiveTodoTitle,
-  getBoardPositions, getActiveSubTodoTitle,
+  getUsername,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
-import { useTitle } from '@use/title';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
 import { useTranslation } from 'react-i18next';
+import { BoardsDragDropContainer } from '@comp/Board/DragDropContainer';
 
 export const Boards: FC = () => {
   const { t } = useTranslation();
@@ -35,28 +31,7 @@ export const Boards: FC = () => {
   const isSearchMode = useSelector(getIsSearchMode);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const activeBoardId = useSelector(getActiveBoardId);
-  const activeBoardTitle = useSelector(getActiveBoardTitle);
-  const activeTodoTitle = useSelector(getActiveTodoTitle);
-  const activeSubTodoTitle = useSelector(getActiveSubTodoTitle);
   const editableBoardId = useSelector(getEditableBoardId);
-
-  useTitle(activeTodoTitle || activeSubTodoTitle || activeBoardTitle);
-
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) {
-      return;
-    }
-    const { source, destination } = result;
-    const sourcePosition = source.index;
-    const destinationPosition = destination?.index;
-    if (destinationPosition === undefined || sourcePosition === destinationPosition) {
-      return;
-    }
-    dispatch(BoardsActions.effect.move({
-      sourcePosition,
-      destinationPosition,
-    }));
-  };
 
   const addNewBoard = () => {
     dispatch(SystemActions.setEditableBoardId(NEW_BOARD_ID));
@@ -70,51 +45,49 @@ export const Boards: FC = () => {
     redirectTo(`/${username}/${toReadableId(title, id)}`);
   };
 
-  const boardItems = useMemo(() => (
-    <div
-      onClick={(e) => {
-        if (editableBoardId) {
-          e.stopPropagation();
-        }
-      }}
-    >
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {boardPositions.map((id, index) => (
-                <Draggable
-                  key={`board-${id}`}
-                  draggableId={`board-${id}`}
-                  index={index}
-                  isDragDisabled={isSearchMode}
-                >
-                  {(draggableProvided, draggableSnapshot) => (
-                    <div
-                      ref={draggableProvided.innerRef}
-                      {...draggableProvided.draggableProps}
-                      {...draggableProvided.dragHandleProps}
-                    >
-                      <Board
-                        snapshot={draggableSnapshot}
-                        key={id}
-                        boardId={id}
-                        isActive={activeBoardId === id}
-                        isEditable={editableBoardId === id}
-                        onClick={handleClick}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+  const handleBoardClick = (event: BaseSyntheticEvent) => {
+    if (editableBoardId) {
+      event.stopPropagation();
+    }
+  };
+
+  const memoBoards = useMemo(() => (
+    <div onClick={handleBoardClick}>
+      <BoardsDragDropContainer>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {boardPositions.map((id, index) => (
+              <Draggable
+                key={`board-${id}`}
+                draggableId={`board-${id}`}
+                index={index}
+                isDragDisabled={isSearchMode}
+              >
+                {(draggableProvided, draggableSnapshot) => (
+                  <div
+                    ref={draggableProvided.innerRef}
+                    {...draggableProvided.draggableProps}
+                    {...draggableProvided.dragHandleProps}
+                  >
+                    <Board
+                      key={id}
+                      snapshot={draggableSnapshot}
+                      boardId={id}
+                      isActive={activeBoardId === id}
+                      isEditable={editableBoardId === id}
+                      onClick={handleClick}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </BoardsDragDropContainer>
       <Link to={`/${username}/trash`}>
         {!isSearchMode && (
           <Board
@@ -141,19 +114,20 @@ export const Boards: FC = () => {
   ),
   [t, editableBoardId]);
 
+  const memoNewBoard = useMemo(() => (
+    <Board
+      boardId={NEW_BOARD_ID}
+      isEditable={editableBoardId === NEW_BOARD_ID}
+    />
+  ),
+  [editableBoardId]);
+
   return (
     <div className="board-list">
       <Profile onAddNewBoard={addNewBoard} />
-      { boardItems }
+      { memoBoards }
       { editableBoardId !== NEW_BOARD_ID && memoAddNewBoard }
-      {
-        editableBoardId === NEW_BOARD_ID && (
-        <Board
-          boardId={NEW_BOARD_ID}
-          isEditable={editableBoardId === NEW_BOARD_ID}
-        />
-        )
-      }
+      { editableBoardId === NEW_BOARD_ID && memoNewBoard }
       <FallbackLoader
         backgroundColor="#fafafa"
         isAbsolute

@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { FC } from 'react';
 import { Checkbox } from '@comp/Checkbox';
-import { EnumTodoStatus, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumTodoStatus } from '@type/entities';
 
 const bullets = ['arrow', 'dot', 'dash'];
 

@@ -1,11 +1,10 @@
 import { testSaga } from 'redux-saga-test-plan';
-
 import {
   BoardsActions, ColumnsActions, CommentsActions, SubTodosActions, TodosActions,
 } from '@store/actions';
 import { UpdateService } from '@services/update';
 import { subscribeOnEntity } from '@store/sagas/update';
-import { EnumColors, EnumTodoStatus, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumColors, EnumTodoStatus } from '@type/entities';
 import { EnumOperations } from '@type/api';
 import { getIsSearchMode } from '@store/selectors';
 

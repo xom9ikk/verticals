@@ -8,15 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { redirectTo } from '@router/history';
 import {
-  EnumTodoStatus, EnumCardType, IColor, ITodo,
+  EnumCardType, EnumTodoStatus, IColor, ITodo,
 } from '@type/entities';
 import { NEW_SUB_TODO_ID, NEW_TODO_ID, TEMP_ID } from '@/constants';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
-  getUsername,
   getActiveBoardReadableId,
-  getTodoById,
   getSubTodoPositionsByTodoId,
+  getTodoById,
+  getUsername,
 } from '@store/selectors';
 import { Card } from '@comp/Card';
 import { Bullet } from '@comp/Bullet';

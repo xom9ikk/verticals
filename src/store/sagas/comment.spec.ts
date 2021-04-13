@@ -1,6 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-
 import { useAlert } from '@use/alert';
 import { CommentAttachmentsActions, CommentsActions } from '@store/actions';
 import { CommentService } from '@services/comment';

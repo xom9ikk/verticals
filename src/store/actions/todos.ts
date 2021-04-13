@@ -6,13 +6,13 @@ import {
   IDuplicateTodo,
   IFetchTodosByBoardId,
   IInsertTodo,
-  IRemoveTodo,
-  ISetTodos,
-  IUpdateTodo,
   IMoveTodo,
+  IRemoveTodo,
   ISetTodoPositionsByHeadingId,
+  ISetTodos,
   ISwitchArchivedTodo,
   ISwitchRemovedTodo,
+  IUpdateTodo,
 } from '@type/actions';
 
 export const TodosActions = {

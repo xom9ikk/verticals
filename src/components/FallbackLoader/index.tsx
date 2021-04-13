@@ -14,7 +14,7 @@ interface IFallbackLoader {
   minimumZIndex?: number;
 }
 
-export const FallbackLoader: FC<IFallbackLoader> = ({
+export const FallbackLoader: FC<IFallbackLoader> = React.memo(({
   backgroundColor,
   isLoading: initialIsLoading = true,
   isFixed,
@@ -73,7 +73,7 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
     };
   }, [initialIsLoading]);
 
-  return useMemo(() => (
+  return (
     <div
       className={cn('fallback-loader', {
         'fallback-loader--fixed': isFixed,
@@ -91,6 +91,5 @@ export const FallbackLoader: FC<IFallbackLoader> = ({
         />
       </div>
     </div>
-  ), [isFixed, isAbsolute, backgroundColor, size,
-    isShowLoader, isLoading, zIndex]);
-};
+  );
+});

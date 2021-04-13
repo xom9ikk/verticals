@@ -1,5 +1,4 @@
-import React, { FC, useMemo } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IColumn } from '@type/entities';
 import { ColumnsActions } from '@store/actions';
@@ -8,6 +7,7 @@ import { ColumnCompact } from '@comp/Column/Compact';
 import { ColumnResizable } from '@comp/Column/Resizable';
 import { useParamSelector } from '@use/paramSelector';
 import { CardPopupWrapper } from '@comp/CardPopup/Wrapper';
+import { DraggableOrDiv } from '@comp/DraggableWrapper';
 
 export enum EnumColumnMode {
   Normal,
@@ -57,7 +57,7 @@ export const Column: FC<IColumnComponent> = ({
   const isDragDisabled = mode !== EnumColumnMode.Normal || isSearchMode;
 
   const memoColumn = useMemo(() => (
-    <Draggable
+    <DraggableOrDiv
       index={index}
       draggableId={draggableId}
       isDragDisabled={isDragDisabled}
@@ -89,7 +89,7 @@ export const Column: FC<IColumnComponent> = ({
             onClick={handleClick}
           />
         ))}
-    </Draggable>
+    </DraggableOrDiv>
   ),
   [
     draggableId, index, isDragDisabled, cardType,

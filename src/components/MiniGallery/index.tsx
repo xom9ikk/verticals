@@ -4,10 +4,8 @@ import React, {
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useCollapse } from '@use/animationHeight';
-
 import SwiperCore, { Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import { SystemActions } from '@store/actions';
 import { ICommentAttachments } from '@type/entities';
 

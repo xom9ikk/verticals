@@ -4,11 +4,10 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
-import SwiperCore, { Pagination, Keyboard } from 'swiper';
+import SwiperCore, { Keyboard, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import useKeys from '@rooks/use-keys';
-
 import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { getGalleryImagesInfo } from '@store/selectors';

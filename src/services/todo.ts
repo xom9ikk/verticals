@@ -1,25 +1,25 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
   ICreateTodoRequest,
   ICreateTodoResponse,
-  IRemoveTodoRequest,
-  IRemoveTodoResponse,
-  IUpdateTodoRequest,
-  IUpdateTodoResponse,
-  IUpdateTodoPositionRequest,
-  IUpdateTodoPositionResponse,
-  IGetAllTodosResponse,
-  IGetTodosByBoardIdRequest,
-  IGetTodosByBoardIdResponse,
   IDuplicateTodoRequest,
   IDuplicateTodoResponse,
+  IGetAllTodosResponse,
   IGetRemovedTodosResponse,
+  IGetTodosByBoardIdRequest,
+  IGetTodosByBoardIdResponse,
+  IRemoveTodoRequest,
+  IRemoveTodoResponse,
   ISwitchArchivedTodoRequest,
   ISwitchArchivedTodoResponse,
   ISwitchRemovedTodoRequest,
   ISwitchRemovedTodoResponse,
+  IUpdateTodoPositionRequest,
+  IUpdateTodoPositionResponse,
+  IUpdateTodoRequest,
+  IUpdateTodoResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { ITodoService } from '@inversify/interfaces/services';

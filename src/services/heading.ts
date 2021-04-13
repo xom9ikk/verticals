@@ -1,14 +1,14 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
   ICreateHeadingRequest, ICreateHeadingResponse,
-  IRemoveHeadingRequest, IRemoveHeadingResponse,
-  IUpdateHeadingRequest, IUpdateHeadingResponse,
-  IUpdateHeadingPositionRequest, IUpdateHeadingPositionResponse,
-  IGetAllHeadingsResponse,
-  IGetHeadingsByBoardIdRequest, IGetHeadingsByBoardIdResponse,
   IDuplicateHeadingRequest, IDuplicateHeadingResponse,
+  IGetAllHeadingsResponse, IGetHeadingsByBoardIdRequest,
+  IGetHeadingsByBoardIdResponse, IRemoveHeadingRequest,
+  IRemoveHeadingResponse,
+  IUpdateHeadingPositionRequest, IUpdateHeadingPositionResponse,
+  IUpdateHeadingRequest, IUpdateHeadingResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { IHeadingService } from '@inversify/interfaces/services';

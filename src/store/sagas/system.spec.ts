@@ -1,6 +1,5 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-
 import { watchSystem } from '@store/sagas/system';
 import { SystemActions } from '@store/actions';
 import { EnumHeadingType, EnumLanguage } from '@type/entities';

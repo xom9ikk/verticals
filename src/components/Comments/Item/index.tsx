@@ -15,11 +15,11 @@ import {
   CommentsActions, SystemActions,
 } from '@store/actions';
 import {
-  getFullName,
+  getCommentAttachmentsByCommentId,
   getCommentById,
   getEditCommentId,
+  getFullName,
   getUsername,
-  getCommentAttachmentsByCommentId,
 } from '@store/selectors';
 import { ControlButton } from '@comp/ControlButton';
 import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';

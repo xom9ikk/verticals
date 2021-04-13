@@ -1,17 +1,17 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
   IBoardPositionsUpdateResponse,
   IBoardUpdateResponse,
   IColumnPositionsUpdateResponse,
-  IHeadingPositionsUpdateResponse,
   IColumnUpdateResponse,
-  IHeadingUpdateResponse,
   ICommentAttachmentUpdateResponse,
   ICommentUpdateResponse,
-  ITodoPositionsUpdateResponse,
-  ITodoUpdateResponse, ISubTodoUpdateResponse, ISubTodoPositionsUpdateResponse,
+  IHeadingPositionsUpdateResponse,
+  IHeadingUpdateResponse,
+  ISubTodoPositionsUpdateResponse,
+  ISubTodoUpdateResponse, ITodoPositionsUpdateResponse, ITodoUpdateResponse,
 } from '@type/api';
 import { IWSClient } from '@inversify/interfaces/wsClient';
 import { IUpdateService } from '@inversify/interfaces/services';

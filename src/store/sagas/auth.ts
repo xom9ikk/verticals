@@ -8,9 +8,9 @@ import { AuthActions, SystemActions } from '@store/actions';
 import {
   IChangePassword,
   IResetPassword,
+  ISetAuthInfo,
   ISignIn,
   ISignUp,
-  ISetAuthInfo,
 } from '@type/actions';
 import { PayloadAction } from '@reduxjs/toolkit';
 import i18n from '@/i18n';

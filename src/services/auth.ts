@@ -1,14 +1,14 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { IAuthService } from '@inversify/interfaces/services';
 import {
-  ILogoutResponse,
+  IChangePasswordRequest,
+  IChangePasswordResponse, ILogoutResponse,
   IResetPasswordRequest, IResetPasswordResponse,
   ISignInRequest, ISignInResponse,
   ISignUpRequest, ISignUpResponse,
-  IChangePasswordRequest, IChangePasswordResponse,
 } from '@type/api';
 
 @injectable()

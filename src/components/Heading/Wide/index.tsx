@@ -9,11 +9,10 @@ import {
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumHeadingType, EnumCardType, IColor } from '@type/entities';
+import { EnumCardType, EnumHeadingType, IColor } from '@type/entities';
 import { EnumHeadingMode } from '@comp/Heading';
 import { HeadingHeader } from '@comp/Heading/Header';
 import { CardsContainer } from '@comp/CardsContainer';
-
 import { SystemActions } from '@store/actions';
 import { getEditableCardId } from '@store/selectors';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bullet } from '@comp/Bullet/index';
-import { EnumTodoStatus, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumTodoStatus } from '@type/entities';
 
 export default {
   title: 'Bullet',

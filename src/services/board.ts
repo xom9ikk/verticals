@@ -1,16 +1,16 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
   ICreateBoardRequest,
   ICreateBoardResponse,
+  IGetAllBoardsResponse,
   IRemoveBoardRequest,
   IRemoveBoardResponse,
-  IUpdateBoardRequest,
-  IUpdateBoardResponse,
   IUpdateBoardPositionRequest,
   IUpdateBoardPositionResponse,
-  IGetAllBoardsResponse,
+  IUpdateBoardRequest,
+  IUpdateBoardResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { IBoardService } from '@inversify/interfaces/services';

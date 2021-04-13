@@ -1,5 +1,5 @@
 import { SystemActions } from '@store/actions';
-import { initialState, SystemReducer } from '@store/reducers/system';
+import { SystemReducer, initialState } from '@store/reducers/system';
 import { EnumLanguage } from '@type/entities';
 
 describe('System reducer', () => {

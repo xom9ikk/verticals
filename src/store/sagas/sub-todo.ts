@@ -6,10 +6,10 @@ import { useAlert } from '@use/alert';
 import { CommentsActions, SubTodosActions } from '@store/actions';
 import {
   ICreateSubTodo,
-  IRemoveSubTodo,
-  IMoveSubTodo,
   IDuplicateSubTodo,
   IFetchSubTodosByBoardId,
+  IMoveSubTodo,
+  IRemoveSubTodo,
   IUpdateSubTodo,
 } from '@type/actions';
 import i18n from '@/i18n';

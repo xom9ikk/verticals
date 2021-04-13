@@ -6,11 +6,11 @@ import { useAlert } from '@use/alert';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   ICreateTodo,
-  IRemoveTodo,
-  IMoveTodo,
   IDuplicateTodo,
   IFetchTodosByBoardId,
-  IUpdateTodo, ISwitchArchivedTodo, ISwitchRemovedTodo,
+  IMoveTodo,
+  IRemoveTodo,
+  ISwitchArchivedTodo, ISwitchRemovedTodo, IUpdateTodo,
 } from '@type/actions';
 import i18n from '@/i18n';
 import { ITodoService } from '@inversify/interfaces/services';

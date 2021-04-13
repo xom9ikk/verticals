@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
-  EnumDroppedZoneType, EnumCardType, IColor,
+  EnumCardType, EnumDroppedZoneType, IColor,
 } from '@type/entities';
 import {
   SystemActions,

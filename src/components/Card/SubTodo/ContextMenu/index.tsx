@@ -10,7 +10,7 @@ import {
   EnumTodoStatus, IColor,
 } from '@type/entities';
 import { Divider } from '@comp/Divider';
-import { CommentsActions, SystemActions, SubTodosActions } from '@store/actions';
+import { CommentsActions, SubTodosActions, SystemActions } from '@store/actions';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useReadableId } from '@use/readableId';
 import {

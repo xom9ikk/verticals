@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { EnumHeadingType, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumHeadingType } from '@type/entities';
 import { getArchivedHeadingIdByColumnId, getTodoPositionsByHeadingId } from '@store/selectors';
 import { Divider } from '@comp/Divider';
 import { useTranslation } from 'react-i18next';

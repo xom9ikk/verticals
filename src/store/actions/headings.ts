@@ -7,8 +7,8 @@ import {
   IInsertHeading,
   IMoveHeading,
   IRemoveHeading,
-  ISetHeadings,
   ISetHeadingPositionsByColumnId,
+  ISetHeadings,
   IUpdateHeading,
 } from '@type/actions';
 

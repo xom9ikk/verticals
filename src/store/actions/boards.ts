@@ -6,8 +6,8 @@ import {
   IInsertBoard,
   IMoveBoard,
   IRemoveBoard,
-  ISetBoards,
   ISetBoardPositions,
+  ISetBoards,
   IUpdateBoard,
 } from '@type/actions';
 

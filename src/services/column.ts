@@ -1,15 +1,15 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
   ICreateColumnRequest, ICreateColumnResponse,
-  IRemoveColumnRequest, IRemoveColumnResponse,
-  IUpdateColumnRequest, IUpdateColumnResponse,
-  IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
-  IGetAllColumnsResponse,
-  IGetColumnsByBoardIdRequest, IGetColumnsByBoardIdResponse,
   IDuplicateColumnRequest, IDuplicateColumnResponse,
+  IGetAllColumnsResponse, IGetColumnsByBoardIdRequest,
+  IGetColumnsByBoardIdResponse, IRemoveColumnRequest,
+  IRemoveColumnResponse,
   IReverseColumnOrderRequest, IReverseColumnOrderResponse,
+  IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
+  IUpdateColumnRequest, IUpdateColumnResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { IColumnService } from '@inversify/interfaces/services';

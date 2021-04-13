@@ -1,5 +1,5 @@
 import {
-  IColor, IHeading, IHeadings, ID,
+  IColor, ID, IHeading, IHeadings,
 } from '@type/entities';
 
 export interface IFetchHeadingsByBoardId {

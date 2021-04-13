@@ -1,12 +1,12 @@
-import { createAction, PrepareAction } from '@reduxjs/toolkit';
+import { PrepareAction, createAction } from '@reduxjs/toolkit';
 import {
-  IFetchCommentAttachmentsByTodoId,
-  ISetCommentAttachments,
   IAddCommentAttachment,
-  IUploadCommentAttachmentsFiles,
+  IFetchCommentAttachmentsBySubTodoId,
+  IFetchCommentAttachmentsByTodoId,
+  IRemoveCommentAttachment,
+  ISetCommentAttachments,
   IUploadCommentAttachmentsFile,
-  IUploadCommentAttachmentsFileRaw,
-  IRemoveCommentAttachment, IFetchCommentAttachmentsBySubTodoId,
+  IUploadCommentAttachmentsFileRaw, IUploadCommentAttachmentsFiles,
 } from '@type/actions';
 
 export const CommentAttachmentsActions = {

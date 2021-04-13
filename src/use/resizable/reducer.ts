@@ -1,4 +1,4 @@
-import { directionCalcMap, IResizableState } from '@use/resizable/types';
+import { IResizableState, directionCalcMap } from '@use/resizable/types';
 import { createAction, createReducer } from '@reduxjs/toolkit';
 
 export const actions = {

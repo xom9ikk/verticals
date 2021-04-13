@@ -1,22 +1,23 @@
+import useKeys from '@rooks/use-keys';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import cn from 'classnames';
 import React, {
   BaseSyntheticEvent, FC, useMemo, useRef,
 } from 'react';
-import cn from 'classnames';
-import { useColorClass } from '@use/colorClass';
 import { DraggableProvided } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
+import { Divider } from '@comp/Divider';
 import { EnumHeadingMode } from '@comp/Heading';
 import { TextArea } from '@comp/TextArea';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { EnumHeadingType, IColor } from '@type/entities';
 import { HeadingsActions, SystemActions } from '@store/actions';
-import { useDispatch } from 'react-redux';
+import { EnumHeadingType, IColor } from '@type/entities';
+import { useColorClass } from '@use/colorClass';
+import { useEffectState } from '@use/effectState';
 import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import useKeys from '@rooks/use-keys';
-import { useTranslation } from 'react-i18next';
-import { useEffectState } from '@use/effectState';
-import { Divider } from '@comp/Divider';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 
 interface IHeadingHeader {
   provided: DraggableProvided;

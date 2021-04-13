@@ -3,11 +3,12 @@ import React, {
   BaseSyntheticEvent,
   FC, useEffect, useMemo, useRef,
 } from 'react';
-import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import useKeys from '@rooks/use-keys';
 import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import cn from 'classnames';
 import { EnumCardType, IBoard } from '@type/entities';
 import { TextArea } from '@comp/TextArea';
 import { RoundedButton } from '@comp/RoundedButton';
@@ -16,10 +17,9 @@ import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
 import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { getBoardById, getIsSearchMode, getUsername } from '@store/selectors';
+import { getBoardById, getIsSearchMode } from '@store/selectors';
 import { BoardContextMenu } from '@comp/Board/ContextMenu';
 import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
-import { useTranslation } from 'react-i18next';
 import { BoardCounter } from '@comp/Board/Counter';
 import { useEffectState } from '@use/effectState';
 import { useParamSelector } from '@use/paramSelector';
@@ -46,8 +46,8 @@ export const Board: FC<IBoardComponent> = ({
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
 
-  const username = useSelector(getUsername);
   const isSearchMode = useSelector(getIsSearchMode);
+
   const {
     belowId, icon, color, title = '', description = '',
   } = useParamSelector(getBoardById, boardId) as IBoard;
@@ -226,6 +226,6 @@ export const Board: FC<IBoardComponent> = ({
   ), [
     t, isActive, isEditable,
     titleValue, descriptionValue, snapshot,
-    color, icon, username, isSearchMode,
+    color, icon, isSearchMode,
   ]);
 };

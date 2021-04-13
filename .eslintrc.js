@@ -1,17 +1,56 @@
+const path = require('path');
+
 module.exports = {
   parser:  '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint',
+  ],
   extends: [
     'airbnb-typescript',
+    'plugin:import/recommended',
   ],
   parserOptions: {
     'project': './tsconfig.json'
   },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: path.resolve('build', 'webpack.dev.config.js')
+      }
+    }
+  },
   rules: {
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'unknown',
+        ],
+        pathGroups: [
+          {
+            pattern: '@namespaced/**',
+            group: 'internal',
+            position: 'after',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['builtin'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        }
+      },
+    ],
     'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['draft'] }],
-    'max-len': ["error", { "code": 120 }],
+    'max-len': ['error', { 'code': 120 }],
     'import/extensions': 'off',
-    'semi': [2, 'always'],
+    'semi': ['error', 'always'],
     'no-console': 'warn',
     'no-eval': 'error',
     'import/first': 'error',

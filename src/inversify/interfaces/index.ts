@@ -2,14 +2,14 @@ import {
   IAuthService,
   IBoardService,
   IColumnService,
-  IHeadingService,
-  ITodoService,
-  ISubTodoService,
-  ICommentService,
   ICommentAttachmentService,
+  ICommentService,
+  IHeadingService,
   ISearchService,
-  IUserService,
+  ISubTodoService,
+  ITodoService,
   IUpdateService,
+  IUserService,
 } from '@inversify/interfaces/services';
 
 export interface IServices {

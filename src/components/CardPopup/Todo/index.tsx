@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  EnumTodoStatus, EnumCardType, IColor, IHeading, ITodo,
+  EnumCardType, EnumTodoStatus, IColor, IHeading, ITodo,
 } from '@type/entities';
 import {
   CommentAttachmentsActions, CommentsActions, SystemActions, TodosActions,

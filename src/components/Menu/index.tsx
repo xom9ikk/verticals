@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, ReactComponentElement, ReactElement, SyntheticEvent, useMemo, useRef,
+  ReactComponentElement, ReactElement, SyntheticEvent, forwardRef, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Popup } from '@comp/Popup';

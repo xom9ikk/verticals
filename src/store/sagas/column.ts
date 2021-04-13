@@ -7,11 +7,11 @@ import {
   ColumnsActions, SystemActions,
 } from '@store/actions';
 import {
-  IFetchColumnsByBoardId,
   ICreateColumn,
-  IRemoveColumn,
-  IMoveColumn,
   IDuplicateColumn,
+  IFetchColumnsByBoardId,
+  IMoveColumn,
+  IRemoveColumn,
   IReverseColumnOrder,
   IUpdateColumn,
 } from '@type/actions';

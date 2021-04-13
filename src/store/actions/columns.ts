@@ -9,8 +9,8 @@ import {
   IMoveColumn,
   IRemoveColumn,
   IReverseColumnOrder,
-  ISetColumns,
   ISetColumnPositionsByBoardId,
+  ISetColumns,
   IUpdateColumn,
 } from '@type/actions';
 

@@ -1,5 +1,5 @@
 import { BoardsActions } from '@store/actions';
-import { EnumColors, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumColors } from '@type/entities';
 import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
 import { BoardsReducer, initialState } from '@store/reducers/boards';
 

@@ -2,15 +2,15 @@ import {
   IBoardPositionsUpdateResponse,
   IBoardUpdateResponse,
   IColumnPositionsUpdateResponse,
-  IHeadingPositionsUpdateResponse,
   IColumnUpdateResponse,
-  IHeadingUpdateResponse,
   ICommentAttachmentUpdateResponse,
   ICommentUpdateResponse,
-  ITodoPositionsUpdateResponse,
-  ITodoUpdateResponse,
+  IHeadingPositionsUpdateResponse,
+  IHeadingUpdateResponse,
   ISubTodoPositionsUpdateResponse,
   ISubTodoUpdateResponse,
+  ITodoPositionsUpdateResponse,
+  ITodoUpdateResponse,
 } from '@type/api';
 
 export interface IUpdateService {

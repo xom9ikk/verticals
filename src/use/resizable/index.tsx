@@ -1,10 +1,10 @@
 import React, {
-  useEffect, useCallback, useRef, useReducer, Reducer,
+  Reducer, useCallback, useEffect, useReducer, useRef,
 } from 'react';
 import { actions, resizableReducer } from '@use/resizable/reducer';
 import { getPositionFromMouseOrTouch } from '@use/resizable/utils';
 import {
-  directionMap, windowEvents, IResizableOption, IResizableState,
+  IResizableOption, IResizableState, directionMap, windowEvents,
 } from '@use/resizable/types';
 
 export const useResizable = (option: IResizableOption) => {

@@ -1,17 +1,15 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, {
   FC, useMemo,
 } from 'react';
-import {
-  Draggable, DraggableProvided, DraggableStateSnapshot, Droppable,
-} from 'react-beautiful-dnd';
+import { Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumHeadingType, EnumCardType, IHeading } from '@type/entities';
+import { EnumCardType, EnumHeadingType, IHeading } from '@type/entities';
 import { HeadingsActions } from '@store/actions';
 import { getHeadingById, getIsSearchMode } from '@store/selectors';
 import { HeadingCompact } from '@comp/Heading/Compact';
 import { useParamSelector } from '@use/paramSelector';
 import { HeadingWide } from '@comp/Heading/Wide';
+import { DraggableOrDiv } from '@comp/DraggableWrapper';
 
 export enum EnumHeadingMode {
   Normal,
@@ -62,32 +60,6 @@ export const Heading: FC<IHeadingComponent> = ({
   const isDefault = type === EnumHeadingType.Default;
   const isNew = mode === EnumHeadingMode.New;
   const isDragDisabled = isNew || isSearchMode || isDefault;
-
-  // @ts-ignore TODO
-  const Div = ({ children }) => <div>{children({ innerRef: () => {} }, {})}</div>;
-  interface IDraggableComponent {
-    index: number;
-    draggableId: string;
-    isDragDisabled: boolean;
-    children: (p: DraggableProvided, s: DraggableStateSnapshot) => any
-  }
-
-  const DraggableComponent: FC<IDraggableComponent> = ({
-    index,
-    draggableId,
-    isDragDisabled,
-    children,
-  }) => (
-    <Draggable
-      index={index}
-      draggableId={draggableId}
-      isDragDisabled={isDragDisabled}
-    >
-      {children}
-    </Draggable>
-  );
-
-  const DraggableOrDiv = useMemo(() => (isDefault ? Div : DraggableComponent), [isDefault]);
 
   return useMemo(() => (
     <DraggableOrDiv

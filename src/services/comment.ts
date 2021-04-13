@@ -1,22 +1,22 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { TYPES } from '@inversify/types';
 import {
-  IGetAllCommentsResponse,
+  IAddCommentLikeRequest,
+  IAddCommentLikeResponse,
   ICreateCommentRequest,
   ICreateCommentResponse,
+  IGetAllCommentsResponse,
+  IGetCommentsBySubTodoIdRequest,
+  IGetCommentsBySubTodoIdResponse,
+  IGetCommentsByTodoIdRequest,
+  IGetCommentsByTodoIdResponse,
+  IRemoveCommentLikeRequest,
+  IRemoveCommentLikeResponse,
   IRemoveCommentRequest,
   IRemoveCommentResponse,
   IUpdateCommentRequest,
   IUpdateCommentResponse,
-  IGetCommentsByTodoIdRequest,
-  IGetCommentsByTodoIdResponse,
-  IAddCommentLikeRequest,
-  IAddCommentLikeResponse,
-  IRemoveCommentLikeRequest,
-  IRemoveCommentLikeResponse,
-  IGetCommentsBySubTodoIdRequest,
-  IGetCommentsBySubTodoIdResponse,
 } from '@type/api';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { ICommentService } from '@inversify/interfaces/services';

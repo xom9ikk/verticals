@@ -1,14 +1,14 @@
 import { createAction } from '@reduxjs/toolkit';
 import {
-  IFetchCommentsByTodoId,
-  ISetComments,
-  ICreateComment,
   IAddComment,
-  IRemoveComment,
   IAddCommentLike,
+  ICreateComment,
+  IFetchCommentsBySubTodoId,
+  IFetchCommentsByTodoId,
+  IRemoveComment,
   IRemoveCommentLike,
-  IUpdateCommentLike,
-  IUpdateCommentText, IFetchCommentsBySubTodoId,
+  ISetComments,
+  IUpdateCommentLike, IUpdateCommentText,
 } from '@type/actions';
 
 export const CommentsActions = {

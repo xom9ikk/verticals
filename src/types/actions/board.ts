@@ -1,5 +1,5 @@
 import {
-  EnumCardType, IBoards, IBoard, IColor, ID,
+  EnumCardType, IBoard, IBoards, IColor, ID,
 } from '@type/entities';
 
 export type ISetBoards = IBoards;

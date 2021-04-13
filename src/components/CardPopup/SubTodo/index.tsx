@@ -3,10 +3,10 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  EnumTodoStatus, EnumCardType, IColor, IHeading, ISubTodo,
+  EnumCardType, EnumTodoStatus, IColor, IHeading, ISubTodo,
 } from '@type/entities';
 import {
-  CommentAttachmentsActions, CommentsActions, SystemActions, SubTodosActions,
+  CommentAttachmentsActions, CommentsActions, SubTodosActions, SystemActions,
 } from '@store/actions';
 import {
   getActiveSubTodoId,

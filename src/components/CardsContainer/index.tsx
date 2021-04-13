@@ -4,7 +4,7 @@ import {
   Draggable, DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { EnumHeadingType, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumHeadingType } from '@type/entities';
 import {
   getActiveTodoId,
   getEditableCardId,

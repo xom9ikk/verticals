@@ -1,21 +1,22 @@
+import cn from 'classnames';
 import React, {
   FC, SyntheticEvent, useEffect, useMemo, useState,
 } from 'react';
-import cn from 'classnames';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumCardType, IColor } from '@type/entities';
+
+import { NEW_COLUMN_ID, NEW_HEADING_ID } from '@/constants';
+import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { EnumColumnMode } from '@comp/Column';
+import { ColumnContextMenu } from '@comp/Column/ContextMenu';
 import { ColumnHeader } from '@comp/Column/Header';
 import { ColumnToolbar } from '@comp/Column/Toolbar';
-import { ColumnContextMenu } from '@comp/Column/ContextMenu';
-import { ArchiveContainer } from '@comp/ArchiveContainer';
-import { SystemActions } from '@store/actions';
-import { getIsSearchMode } from '@store/selectors';
-import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { NEW_COLUMN_ID, NEW_HEADING_ID } from '@/constants';
 import { DeletedCardsContainer } from '@comp/DeletedCardsContainer';
 import { Headings } from '@comp/Headings';
+import { SystemActions } from '@store/actions';
+import { getIsSearchMode } from '@store/selectors';
+import { EnumCardType, IColor } from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 
 interface IColumnWide {
   snapshot: DraggableStateSnapshot;
@@ -91,7 +92,8 @@ export const ColumnWide: FC<IColumnWide> = ({
   }, []);
 
   return useMemo(() => {
-    console.log('TODO: Column redraw');
+    const a = 1;
+    // console.log('TODO: Column redraw');
     return (
       <div
         ref={(ref) => {

@@ -7,11 +7,11 @@ import {
   IDuplicateSubTodo,
   IFetchSubTodosByBoardId,
   IInsertSubTodo,
+  IMoveSubTodo,
   IRemoveSubTodo,
+  ISetSubTodoPositionsByTodoId,
   ISetSubTodos,
   IUpdateSubTodo,
-  IMoveSubTodo,
-  ISetSubTodoPositionsByTodoId,
 } from '@type/actions';
 
 export const SubTodosActions = {

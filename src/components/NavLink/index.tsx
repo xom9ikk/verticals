@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import { Route, Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 interface INavLink {
   to: any;

@@ -1,5 +1,5 @@
 import {
-  all, apply, call, put, takeLatest, takeEvery,
+  all, apply, call, put, takeEvery, takeLatest,
 } from 'typed-redux-saga';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { useAlert } from '@use/alert';

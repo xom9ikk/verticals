@@ -1,18 +1,19 @@
 import React, { FC, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ICONS } from '@/constants';
+import { ColorPicker } from '@comp/ColorPicker';
+import { ControlButton } from '@comp/ControlButton';
+import { Divider } from '@comp/Divider';
 import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/Menu/Item';
-import { Divider } from '@comp/Divider';
-import { ColorPicker } from '@comp/ColorPicker';
 import { SubMenu } from '@comp/Menu/Sub';
-import { ControlButton } from '@comp/ControlButton';
-import { BoardsActions, ColumnsActions, SystemActions } from '@store/actions';
-import { useReadableId } from '@use/readableId';
-import { EnumCardType, IColor } from '@type/entities';
+import { ColumnsActions, BoardsActions, SystemActions } from '@store/actions';
 import { getUsername } from '@store/selectors';
-import { ICONS } from '@/constants';
-import { useTranslation } from 'react-i18next';
+import { EnumCardType, IColor } from '@type/entities';
+import { useReadableId } from '@use/readableId';
 
 interface IBoardContextMenu {
   boardId: number;

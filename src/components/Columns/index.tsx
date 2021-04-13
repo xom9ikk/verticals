@@ -1,15 +1,13 @@
 import React, {
   FC, useEffect, useMemo,
 } from 'react';
-import {
-  DragDropContext, Droppable, DroppableProvided, DropResult,
-} from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Column, EnumColumnMode } from '@comp/Column';
 import {
   ColumnsActions, HeadingsActions, SubTodosActions, TodosActions,
 } from '@store/actions';
 import { FallbackLoader } from '@comp/FallbackLoader';
+import { ColumnsDragDropContainer } from '@comp/Column/DragDropContainer';
 import {
   getActiveBoardId,
   getColumnPositionsByBoardId,
@@ -19,144 +17,31 @@ import {
   getIsSearchMode,
 } from '@store/selectors';
 import { NEW_COLUMN_ID, TRASH_BOARD_ID, TRASH_COLUMN_ID } from '@/constants';
-import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
 
 export const Columns: FC = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const isSearchMode = useSelector(getIsSearchMode);
-  const activeBoardId = useSelector(getActiveBoardId);
-
-  const columnPositions = useParamSelector(getColumnPositionsByBoardId, activeBoardId);
   const isLoadedBoards = useSelector(getIsLoadedBoards);
   const isLoadedColumns = useSelector(getIsLoadedColumns);
   const editableColumnId = useSelector(getEditableColumnId);
+  const activeBoardId = useSelector(getActiveBoardId);
+
+  const columnPositions = useParamSelector(getColumnPositionsByBoardId, activeBoardId);
 
   useEffect(() => {
     if (activeBoardId !== null && !isSearchMode) {
-      const timeout = setTimeout(() => {
-        if (activeBoardId !== TRASH_BOARD_ID) {
-          dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
-          dispatch(HeadingsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
-          dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
-          dispatch(SubTodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
-        } else {
-          dispatch(TodosActions.effect.fetchRemoved());
-        }
-      }, 100);
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [activeBoardId]);
-
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination, type } = result;
-    // dropped nowhere
-    if (!destination) {
-      return;
-    }
-
-    // did not move anywhere - can bail early
-    if (source.droppableId === destination.droppableId && source.index === destination.index) {
-      return;
-    }
-
-    // reordering column
-    if (type === 'COLUMN') {
-      if (destination.index >= columnPositions.length) {
-        return;
+      if (activeBoardId !== TRASH_BOARD_ID) {
+        dispatch(ColumnsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+        dispatch(HeadingsActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+        dispatch(TodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+        dispatch(SubTodosActions.effect.fetchByBoardId({ boardId: activeBoardId }));
+      } else {
+        dispatch(TodosActions.effect.fetchRemoved());
       }
-      dispatch(ColumnsActions.effect.move({
-        sourcePosition: source.index,
-        destinationPosition: destination.index,
-        boardId: Number(source.droppableId.split('board-')[1]),
-      }));
-      return;
     }
-
-    const isDefaultHeadingPosition = (position: number) => position === 0;
-
-    if (type === 'HEADING') {
-      const sourceColumnId = Number(source.droppableId.split('column-')[1]);
-
-      // moving to same COLUMN list
-      const sourcePosition = source.index;
-      const destinationPosition = isDefaultHeadingPosition(destination.index) ? 1 : destination.index;
-      const targetColumnId = Number(destination.droppableId.split('column-')[1]);
-
-      if (source.droppableId === destination.droppableId) {
-        dispatch(HeadingsActions.effect.move({
-          sourcePosition,
-          destinationPosition,
-          columnId: targetColumnId,
-        }));
-        return;
-      }
-
-      // moving to different list
-      dispatch(HeadingsActions.effect.move({
-        columnId: sourceColumnId,
-        targetColumnId,
-        sourcePosition,
-        destinationPosition,
-      }));
-    }
-
-    if (type === 'CARD') {
-      const sourceHeadingId = Number(source.droppableId.split('heading-')[1]);
-
-      // moving to same HEADING list
-      const sourcePosition = source.index;
-      const destinationPosition = destination.index;
-      const targetHeadingId = Number(destination.droppableId.split('heading-')[1]);
-
-      if (source.droppableId === destination.droppableId) {
-        dispatch(TodosActions.effect.move({
-          sourcePosition,
-          destinationPosition,
-          headingId: targetHeadingId,
-        }));
-        return;
-      }
-
-      // moving to different list
-      dispatch(TodosActions.effect.move({
-        headingId: sourceHeadingId,
-        targetHeadingId,
-        sourcePosition,
-        destinationPosition,
-      }));
-    }
-
-    if (type === 'SUBCARD') {
-      const sourceTodoId = Number(source.droppableId.split('todo-')[1]);
-
-      // moving to same TODO list
-      const sourcePosition = source.index;
-      const destinationPosition = destination.index;
-      const targetTodoId = Number(destination.droppableId.split('todo-')[1]);
-
-      if (source.droppableId === destination.droppableId) {
-        dispatch(SubTodosActions.effect.move({
-          sourcePosition,
-          destinationPosition,
-          todoId: targetTodoId,
-        }));
-        return;
-      }
-
-      // moving to different list
-      dispatch(SubTodosActions.effect.move({
-        todoId: sourceTodoId,
-        targetTodoId,
-        sourcePosition,
-        destinationPosition,
-      }));
-    }
-  };
+  }, [activeBoardId, isSearchMode]);
 
   const memoColumns = useMemo(() => columnPositions
     .map((id, index) => (
@@ -181,56 +66,41 @@ export const Columns: FC = () => {
 
   const memoDeletedCardsColumn = useMemo(() => (
     <Column
-      columnId={TRASH_COLUMN_ID}
       index={0}
+      columnId={TRASH_COLUMN_ID}
       boardId={activeBoardId!}
       isEditable={false}
       mode={EnumColumnMode.Deleted}
     />
-  ), [t, activeBoardId]);
-
-  const memoColumnsContainer = useMemo(() => (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable
-        droppableId={`board-${activeBoardId}`}
-        type="COLUMN"
-        direction="horizontal"
-      >
-        {(provided: DroppableProvided) => (
-          <div
-            ref={provided.innerRef}
-            className="columns"
-            {...provided.droppableProps}
-          >
-            <FallbackLoader
-              backgroundColor="#ffffff"
-              isAbsolute
-              size="medium"
-              delay={500}
-              minimumZIndex={2}
-              isLoading={!isLoadedBoards || !isLoadedColumns}
-            />
-            {
-              activeBoardId === TRASH_BOARD_ID ? memoDeletedCardsColumn : (
-                <>
-                  { memoColumns }
-                  { memoNewColumn }
-                </>
-              )
-             }
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-  ), [
-    t, isLoadedBoards, isLoadedColumns, isSearchMode,
-    activeBoardId, editableColumnId, columnPositions,
-  ]);
+  ), [activeBoardId]);
 
   return (
-    <>
-      {memoColumnsContainer}
-    </>
+    <ColumnsDragDropContainer activeBoardId={activeBoardId}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          className="columns"
+          {...provided.droppableProps}
+        >
+          <FallbackLoader
+            backgroundColor="#ffffff"
+            isAbsolute
+            size="medium"
+            delay={500}
+            minimumZIndex={2}
+            isLoading={!isLoadedBoards || !isLoadedColumns}
+          />
+          {
+            activeBoardId === TRASH_BOARD_ID ? memoDeletedCardsColumn : (
+              <>
+                { memoColumns }
+                { snapshot.isDraggingOver ? null : memoNewColumn }
+              </>
+            )
+          }
+          {provided.placeholder}
+        </div>
+      )}
+    </ColumnsDragDropContainer>
   );
 };

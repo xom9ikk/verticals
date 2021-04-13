@@ -1,5 +1,5 @@
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useAuthenticated } from '@use/authenticated';
 
 interface IRoutePropsWrapper extends RouteProps {
@@ -10,7 +10,7 @@ interface IRoutePropsWrapper extends RouteProps {
   redirectPath?: string;
 }
 
-export const RouteWrapper: FC<IRoutePropsWrapper> = ({
+const RedirectRoute: FC<IRoutePropsWrapper> = ({
   component: Component = () => <></>,
   layout: Layout,
   isPrivate = false,
@@ -20,20 +20,30 @@ export const RouteWrapper: FC<IRoutePropsWrapper> = ({
 }) => {
   const { isAuthenticated } = useAuthenticated();
 
-  const render = (props: any) => {
-    const isRedirect = (isPrivate && !isAuthenticated) || (isRedirectFromPublic && !isPrivate && isAuthenticated);
+  const isRedirect = (isPrivate && !isAuthenticated) || (isRedirectFromPublic && !isPrivate && isAuthenticated);
 
-    return (
-      isRedirect
-        ? <Redirect to={{ pathname: redirectPath }} />
-        : <Layout {...props}><Component {...props} /></Layout>
-    );
-  };
-
-  return (
-    <Route
-      {...rest}
-      render={render}
-    />
-  );
+  return useMemo(() => (isRedirect
+    ? <Redirect to={{ pathname: redirectPath }} />
+    : <Layout {...rest}><Component {...rest} /></Layout>),
+  [isRedirect]);
 };
+
+export const RouteWrapper: FC<IRoutePropsWrapper> = ({
+  component,
+  layout,
+  isPrivate,
+  isRedirectFromPublic,
+  redirectPath,
+  ...rest
+}) => (
+  <Route {...rest}>
+    <RedirectRoute
+      component={component}
+      layout={layout}
+      isPrivate={isPrivate}
+      isRedirectFromPublic={isRedirectFromPublic}
+      redirectPath={redirectPath}
+      {...rest}
+    />
+  </Route>
+);

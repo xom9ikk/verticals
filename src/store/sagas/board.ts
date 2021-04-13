@@ -13,9 +13,9 @@ import { useReadableId } from '@use/readableId';
 import { redirectTo } from '@router/history';
 import {
   ICreateBoard,
+  IMoveBoard,
   IRemoveBoard,
   IUpdateBoard,
-  IMoveBoard,
 } from '@type/actions';
 import i18n from '@/i18n';
 import { IBoardService } from '@inversify/interfaces/services';

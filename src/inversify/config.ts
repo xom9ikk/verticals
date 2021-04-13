@@ -7,14 +7,14 @@ import {
   IAuthService,
   IBoardService,
   IColumnService,
-  IHeadingService,
   ICommentAttachmentService,
   ICommentService,
+  IHeadingService,
   ISearchService,
-  ITodoService,
   ISubTodoService,
-  IUserService,
+  ITodoService,
   IUpdateService,
+  IUserService,
 } from '@inversify/interfaces/services';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { IWSClient } from '@inversify/interfaces/wsClient';

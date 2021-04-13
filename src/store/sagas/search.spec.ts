@@ -1,12 +1,11 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-
 import {
   BoardsActions, ColumnsActions, SearchActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { SearchService } from '@services/search';
 import { watchSearch } from '@store/sagas/search';
-import { EnumColors, EnumTodoStatus, EnumCardType } from '@type/entities';
+import { EnumCardType, EnumColors, EnumTodoStatus } from '@type/entities';
 
 // @ts-ignore
 const searchService = new SearchService();

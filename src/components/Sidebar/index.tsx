@@ -4,7 +4,9 @@ import { Toolbar } from '@comp/Sidebar/Toolbar';
 import { ControlButton } from '@comp/ControlButton';
 import { useTranslation } from 'react-i18next';
 
-export const Sidebar: FC = ({ children }) => {
+export const Sidebar: FC = ({
+  children,
+}) => {
   const { t } = useTranslation();
   const [isPinnedSidebar, setIsPinnedSidebar] = useState<boolean>(true);
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -17,6 +19,14 @@ export const Sidebar: FC = ({ children }) => {
 
   const isUnpinned = !isPinnedSidebar && !isHover;
 
+  const handleMouseEnter = () => {
+    setIsHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHover(false);
+  };
+
   return (
     <>
       <div className={cn('sidebar__overlay', {
@@ -27,8 +37,8 @@ export const Sidebar: FC = ({ children }) => {
         className={cn('sidebar', {
           'sidebar--unpinned': isUnpinned,
         })}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <div className="sidebar__inner">
           <div className="sidebar__toggle">
