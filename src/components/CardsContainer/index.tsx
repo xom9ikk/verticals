@@ -117,8 +117,6 @@ export const CardsContainer: FC<ICardsContainer> = ({
         {type === EnumHeadingType.Default || type === EnumHeadingType.Custom
           ? (isOpenNewCard ? memoNewCard : memoAddCard)
           : null}
-        {/* {type !== EnumHeadingType.Archived && dropSnapshot.isDraggingOver && <div style={{ height: 36 }} />} */}
-        {/* {type !== EnumHeadingType.Archived && dropProvided.placeholder} */}
       </>
     </div>
   );

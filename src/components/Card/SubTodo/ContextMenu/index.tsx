@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useRef, useState,
 } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
@@ -170,7 +170,13 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
     }));
   };
 
-  return useMemo(() => (subTodoId && title ? (
+  const handleColorPick = (newColor: IColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor);
+
+  const handleCopy = () => {
+    handleMenuButtonClick(EnumCardActions.CopyLink);
+  };
+
+  return subTodoId && title ? (
     <Menu
       ref={menuButtonRef}
       buttonClassName="subcard-context-menu"
@@ -200,7 +206,7 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
           [
             <ColorPicker
               key={0}
-              onPick={(newColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor)}
+              onPick={handleColorPick}
               activeColor={color}
             />,
             <MenuItem
@@ -288,9 +294,7 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
               text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/subcard/${toReadableId(
                 title, subTodoId,
               )}`} // TODO: move to env
-              onCopy={() => {
-                handleMenuButtonClick(EnumCardActions.CopyLink);
-              }}
+              onCopy={handleCopy}
             >
               <MenuItem
                 text={isCopied ? t('Copied!') : t('Copy link')}
@@ -331,9 +335,5 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
         )
       }
     </Menu>
-  ) : null),
-  [color,
-    isNotificationsEnabled,
-    status, username, isCopied,
-    isOpenDatePicker, expirationDate]);
+  ) : null;
 };

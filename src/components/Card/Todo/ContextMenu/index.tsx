@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, useEffect, useRef, useState,
 } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
@@ -84,10 +84,11 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
   const { openFiles } = useOpenFiles();
 
   const username = useSelector(getUsername);
+  const activePopupId = useSelector(getActivePopupId);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
   const heading = useParamSelector(getHeadingById, headingId) as IHeading;
-  const isArchivedHeading = heading.type === EnumHeadingType.Archived;
 
+  const isArchivedHeading = heading.type === EnumHeadingType.Archived;
   const isRemovedCards = activeBoardReadableId === 'trash';
 
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -187,8 +188,6 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
     }
   };
 
-  const activePopupId = useSelector(getActivePopupId);
-
   useEffect(() => {
     setIsOpenDatePicker(false);
   }, [activePopupId]);
@@ -199,6 +198,12 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
       id: todoId!,
       expirationDate: selectedDate,
     }));
+  };
+
+  const handleColorPick = (newColor: IColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor);
+
+  const handleCopy = () => {
+    handleMenuButtonClick(EnumCardActions.CopyLink);
   };
 
   const buttons = isRemovedCards ? [
@@ -214,7 +219,7 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
       action={EnumCardActions.PermanentlyDelete}
     />] : [<ColorPicker
       key={0}
-      onPick={(newColor) => handleMenuButtonClick(EnumCardActions.ChangeColor, newColor)}
+      onPick={handleColorPick}
       activeColor={color}
     />,
       <MenuItem
@@ -304,9 +309,7 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
         text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(
           title, todoId,
         )}`} // TODO: move to env
-        onCopy={() => {
-          handleMenuButtonClick(EnumCardActions.CopyLink);
-        }}
+        onCopy={handleCopy}
       >
         <MenuItem
           text={isCopied ? t('Copied!') : t('Copy link')}
@@ -357,7 +360,7 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
       />,
   ];
 
-  return useMemo(() => (todoId && title ? (
+  return todoId && title ? (
     <Menu
       ref={menuButtonRef}
       buttonClassName="card-context-menu"
@@ -386,9 +389,5 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
         ) : buttons
       }
     </Menu>
-  ) : null),
-  [color,
-    isNotificationsEnabled,
-    status, username, isCopied, isArchivedHeading, isRemovedCards, isActive,
-    isOpenDatePicker, expirationDate]);
+  ) : null;
 };

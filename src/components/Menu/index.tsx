@@ -98,7 +98,7 @@ const MenuComponent = ({
     )
   );
 
-  const popup = useMemo(() => (
+  const memoPopup = useMemo(() => (isActive ? (
     <Popup
       isOpen={isActive}
       position={position}
@@ -129,10 +129,12 @@ const MenuComponent = ({
         );
       })}
     </Popup>
-  ),
+  ) : null),
   [isActive, position, sourceRef, isAbsolute, children]);
 
-  const button = useMemo(() => (
+  const handleDoubleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  const memoButton = useMemo(() => (
     <ControlButton
       className={buttonClassName}
       ref={sourceRef}
@@ -152,7 +154,7 @@ const MenuComponent = ({
       isColored={isColored}
       isStopPropagation={false}
       onClick={handleClick}
-      onDoubleClick={(e) => e.stopPropagation()}
+      onDoubleClick={handleDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     />
@@ -170,8 +172,8 @@ const MenuComponent = ({
 
   return (
     <div ref={wrapperRef}>
-      {button}
-      {popup}
+      {memoButton}
+      {memoPopup}
     </div>
   );
 };
