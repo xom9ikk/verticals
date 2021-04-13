@@ -22,12 +22,13 @@ export type IGetCommentsBySubTodoIdResponse = IServerResponse<{
   readonly comments: IComments;
 }>;
 
-export interface ICreateCommentRequest {
-  readonly todoId?: number; // TODO one of
-  readonly subTodoId?: number;
+export type ICreateCommentRequest = {
   readonly text: string;
   readonly replyCommentId?: number;
-}
+} & (
+  | { readonly todoId: number }
+  | { readonly subTodoId: number }
+);
 
 export type ICreateCommentResponse = IServerResponse<{
   readonly commentId: number;

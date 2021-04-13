@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Avatar } from '@comp/Avatar';
 import { CommentFormAttachments } from '@comp/Comments/Form/Attachments';
+import { ICreateCommentData } from '@comp/Comments/Wrapper';
 import { ControlButton } from '@comp/ControlButton';
 import { TextArea } from '@comp/TextArea';
 import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
 import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@store/selectors';
-import { ICreateComment } from '@type/actions';
 import { EnumDroppedZoneType } from '@type/entities';
 import { useFileList } from '@use/fileList';
 import { useFocus } from '@use/focus';
@@ -25,7 +25,7 @@ interface ICommentForm {
   onChangeTextAreaHeight: (height: number) => void;
   isScrolledToBottom: boolean;
   onScrollToBottom: () => void;
-  onCreate: (data: ICreateComment) => void;
+  onCreate: (data: ICreateCommentData) => void;
 }
 
 export const CommentForm: FC<ICommentForm> = ({

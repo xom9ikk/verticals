@@ -1,0 +1,54 @@
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@mixin font-face(
+  $name,
+  $path,
+  $weight: null,
+  $style: null,
+  $extensions: eot woff2 woff ttf svg,
+  $locals: null
+) {
+  $src: null;
+  $mods: (
+    eot: '?#iefix',
+    svg: '#' + str-replace($name, ' ', '_'),
+  );
+  $formats: (
+    woff2: 'woff2',
+    woff: 'woff',
+    otf: 'opentype',
+    ttf: 'truetype',
+  );
+
+  @each $local in $locals {
+    $src: append($src, local($local), comma);
+  }
+
+  @each $ext in $extensions {
+    $mod: if(map-has-key($mods, $ext), $ext + map-get($mods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append(
+      $src,
+      url(quote($path + '.' + $mod)) format(quote($format)),
+      comma
+    );
+  }
+
+  @font-face {
+    font: {
+      family: quote($name);
+      weight: $weight;
+      style: $style;
+      display: swap;
+    }
+    src: $src;
+  }
+}

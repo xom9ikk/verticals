@@ -10,21 +10,23 @@ export interface IFetchCommentsBySubTodoId {
 
 export type ISetComments = IComments;
 
-export interface ICreateComment {
-  readonly todoId?: number; // TODO one of
-  readonly subTodoId?: number; // TODO
+export type ICreateComment = {
   readonly text: string;
   readonly replyCommentId?: number;
   readonly files?: FileList | null;
-}
+} & (
+  | { readonly todoId: number }
+  | { readonly subTodoId: number }
+);
 
-export interface IAddComment {
+export type IAddComment = {
   readonly id: number;
-  readonly todoId?: number; // TODO one of
-  readonly subTodoId?: number;
   readonly text: string;
   readonly replyCommentId?: number;
-}
+} & (
+  | { readonly todoId: number }
+  | { readonly subTodoId: number }
+);
 
 export interface IRemoveComment {
   readonly id: number;

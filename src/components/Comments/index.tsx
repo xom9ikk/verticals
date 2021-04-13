@@ -4,15 +4,15 @@ import React, {
 
 import { CommentForm } from '@comp/Comments/Form';
 import { CommentList } from '@comp/Comments/List';
+import { ICreateCommentData } from '@comp/Comments/Wrapper';
 import { FormattingHelp } from '@comp/FormattingHelp';
-import { ICreateComment } from '@type/actions';
 import { IComments } from '@type/entities';
 import { ScrollDirection, useAutoScroll } from '@use/autoScroll';
 
 interface ICommentsComponent {
   cardId: number;
   comments: IComments,
-  onCreate: (data: ICreateComment) => void,
+  onCreate: (data: ICreateCommentData) => void,
 }
 
 export const Comments: FC<ICommentsComponent> = ({
