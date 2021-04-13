@@ -2,9 +2,9 @@ import React, {
   FC, useEffect,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  EnumCardType, EnumTodoStatus, IColor, IHeading, ISubTodo,
-} from '@type/entities';
+
+import { CardPopup } from '@comp/CardPopup';
+import { CardPopupHeader } from '@comp/CardPopup/Header';
 import {
   CommentAttachmentsActions, CommentsActions, SubTodosActions, SystemActions,
 } from '@store/actions';
@@ -13,9 +13,10 @@ import {
   getHeadingByTodoId,
   getSubTodoById,
 } from '@store/selectors';
+import {
+  EnumCardType, EnumTodoStatus, IColor, IHeading, ISubTodo,
+} from '@type/entities';
 import { useParamSelector } from '@use/paramSelector';
-import { CardPopupHeader } from '@comp/CardPopup/Header';
-import { CardPopup } from '@comp/CardPopup';
 import { useValueRef } from '@use/valueRef';
 
 interface ISubTodoCardPopup {

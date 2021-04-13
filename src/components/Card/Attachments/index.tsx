@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
-import { useDownload } from '@use/download';
+import React, { FC } from 'react';
+
 import { ICommentAttachments } from '@type/entities';
+import { useDownload } from '@use/download';
 
 interface ICardAttachments {
   files: ICommentAttachments,

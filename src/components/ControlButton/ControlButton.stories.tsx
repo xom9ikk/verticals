@@ -1,6 +1,7 @@
 import React from 'react';
-import { ControlButton } from '@comp/ControlButton';
 import ReactTooltip from 'react-tooltip';
+
+import { ControlButton } from '@comp/ControlButton';
 
 export default {
   title: 'ControlButton',

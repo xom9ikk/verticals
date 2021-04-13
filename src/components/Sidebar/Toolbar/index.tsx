@@ -1,16 +1,17 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { LANGUAGES } from '@/constants';
+import { ControlButton } from '@comp/ControlButton';
+import { Divider } from '@comp/Divider';
 import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/Menu/Item';
-import { Divider } from '@comp/Divider';
 import { SubMenu } from '@comp/Menu/Sub';
-import { AuthActions, SystemActions } from '@store/actions';
-import { EnumLanguage } from '@type/entities';
 import { redirectTo } from '@router/history';
+import { AuthActions, SystemActions } from '@store/actions';
 import { getLanguage } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
-import { useTranslation } from 'react-i18next';
-import { LANGUAGES } from '@/constants';
+import { EnumLanguage } from '@type/entities';
 
 interface IToolbar {
   onChangeDisplaySidebar: (isPinSidebar: boolean) => void;

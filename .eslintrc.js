@@ -72,5 +72,6 @@ module.exports = {
     'jsx-a11y/mouse-events-have-key-events': 'off',
     'jsx-a11y/accessible-emoji': 'off',
     'jsx-a11y/media-has-caption': 'off',
+    'import/no-cycle': 'off',
   }
 };

@@ -1,13 +1,17 @@
 import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
-import { Board } from '@comp/Board';
-import { Profile } from '@comp/Profile';
-import { SystemActions } from '@store/actions';
-import { FallbackLoader } from '@comp/FallbackLoader';
-import { useReadableId } from '@use/readableId';
-import { redirectTo } from '@router/history';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
+import { Board } from '@comp/Board';
+import { BoardsDragDropContainer } from '@comp/Board/DragDropContainer';
+import { ControlButton } from '@comp/ControlButton';
+import { FallbackLoader } from '@comp/FallbackLoader';
+import { Profile } from '@comp/Profile';
+import { redirectTo } from '@router/history';
+import { SystemActions } from '@store/actions';
 import {
   getActiveBoardId,
   getBoardPositions,
@@ -16,10 +20,7 @@ import {
   getIsSearchMode,
   getUsername,
 } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
-import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
-import { useTranslation } from 'react-i18next';
-import { BoardsDragDropContainer } from '@comp/Board/DragDropContainer';
+import { useReadableId } from '@use/readableId';
 
 export const Boards: FC = () => {
   const { t } = useTranslation();

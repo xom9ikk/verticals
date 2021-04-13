@@ -1,12 +1,13 @@
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
-import { CommentList } from '@comp/Comments/List';
+
 import { CommentForm } from '@comp/Comments/Form';
+import { CommentList } from '@comp/Comments/List';
 import { FormattingHelp } from '@comp/FormattingHelp';
-import { ScrollDirection, useAutoScroll } from '@use/autoScroll';
 import { ICreateComment } from '@type/actions';
 import { IComments } from '@type/entities';
+import { ScrollDirection, useAutoScroll } from '@use/autoScroll';
 
 interface ICommentsComponent {
   cardId: number;

@@ -1,12 +1,13 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { ISearchService } from '@inversify/interfaces/services';
 import { TYPES } from '@inversify/types';
 import {
   ISearchByTodoTitleRequest,
   ISearchByTodoTitleResponse,
 } from '@type/api';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { ISearchService } from '@inversify/interfaces/services';
 
 @injectable()
 export class SearchService implements ISearchService {

@@ -1,8 +1,9 @@
 import React, {
   FC,
 } from 'react';
-import { TodoComments } from '@comp/Comments/Todo';
+
 import { SubTodoComments } from '@comp/Comments/SubTodo';
+import { TodoComments } from '@comp/Comments/Todo';
 
 export const CommentsWrapper: FC = () => (
   <>

@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
-import { useFormat } from '@use/format';
-import { useDownload } from '@use/download';
+import React, { FC } from 'react';
+
 import { ControlButton } from '@comp/ControlButton';
+import { useDownload } from '@use/download';
+import { useFormat } from '@use/format';
 // import { SystemActions } from '@store/actions';
 // import { useDispatch } from 'react-redux';
 

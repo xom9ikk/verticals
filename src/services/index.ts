@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
-import { TYPES } from '@inversify/types';
 import { IServices } from '@inversify/interfaces';
 import {
   IAuthService,
@@ -15,6 +15,7 @@ import {
   IUpdateService,
   IUserService,
 } from '@inversify/interfaces/services';
+import { TYPES } from '@inversify/types';
 
 @injectable()
 export class Services implements IServices {

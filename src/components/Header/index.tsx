@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@comp/Button';
 import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
+
+import { Button } from '@comp/Button';
 
 export const Header: FC = () => {
   const { t } = useTranslation();

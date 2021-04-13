@@ -1,5 +1,6 @@
-import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
+import React, { FC, useMemo } from 'react';
+
 import {
   getCountTodosByBoardId,
 } from '@store/selectors';

@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Video } from '@comp/Video';
+
+import { AboutFeature } from '@comp/AboutFeature';
 import { Button } from '@comp/Button';
 import { Header } from '@comp/Header';
-import { AboutFeature } from '@comp/AboutFeature';
+import { Video } from '@comp/Video';
 
 const features = [{
   title: 'Boards',

@@ -1,5 +1,5 @@
-import React, { forwardRef, useEffect } from 'react';
 import cn from 'classnames';
+import React, { forwardRef, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
 
 interface IControlButton {

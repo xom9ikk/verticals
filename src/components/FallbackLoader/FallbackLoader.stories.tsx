@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FallbackLoader } from '@comp/FallbackLoader';
 
 export default {

@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import {
   Router, Switch,
 } from 'react-router-dom';
-import { lazy } from '@router/lazy';
-import { history } from '@router/history';
-import { RouteWrapper } from '@router/router';
+
 import { suspense } from '@comp/SuspenseWrapper';
-import { NotFound } from '@pages/404';
 import { AuthLayout } from '@layouts/auth';
+import { NotFound } from '@pages/404';
+import { history } from '@router/history';
+import { lazy } from '@router/lazy';
+import { RouteWrapper } from '@router/router';
 import { useAuthenticated } from '@use/authenticated';
 
 const MainLayout = lazy(() => import('@layouts/main'), (module) => module.MainLayout);

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import subMinutes from 'date-fns/subMinutes';
 import addMinutes from 'date-fns/addMinutes';
+import subMinutes from 'date-fns/subMinutes';
 
 export const useNormalizeDate = () => {
   const normalizeDate = (date: Date | number | null) => {

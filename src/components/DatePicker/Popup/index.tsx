@@ -1,12 +1,13 @@
+import useKeys from '@rooks/use-keys';
 import React, {
   FC, useEffect, useRef,
 } from 'react';
-import { Popup } from '@comp/Popup';
 import { useDispatch, useSelector } from 'react-redux';
-import { getActivePopupId } from '@store/selectors';
-import { SystemActions } from '@store/actions';
+
 import { DatePicker } from '@comp/DatePicker';
-import useKeys from '@rooks/use-keys';
+import { Popup } from '@comp/Popup';
+import { SystemActions } from '@store/actions';
+import { getActivePopupId } from '@store/selectors';
 
 interface IDatePickerPopup {
   popupId: string;

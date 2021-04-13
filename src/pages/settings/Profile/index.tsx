@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import useWith from 'ramda/src/useWith';
-import { Input } from '@comp/Input';
+import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Avatar } from '@comp/Avatar';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { Avatar } from '@comp/Avatar';
+import { Input } from '@comp/Input';
 import { SyncInput } from '@comp/SyncInput';
-import { useForm } from '@use/form';
-import { useOpenFiles } from '@use/openFiles';
+import validator from '@helpers/validator';
+import { validatorProfileForm } from '@helpers/validator/form/profile';
+import { UserActions } from '@store/actions';
 import {
   getBio, getName, getSurname, getUsername,
 } from '@store/selectors';
-import { UserActions } from '@store/actions';
-import validator from '@helpers/validator';
-import { validatorProfileForm } from '@helpers/validator/form/profile';
-import { useTranslation } from 'react-i18next';
+import { useForm } from '@use/form';
+import { useOpenFiles } from '@use/openFiles';
 
 interface IFormValidatedState {
   name: string;

@@ -1,11 +1,12 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { watchSystem } from '@store/sagas/system';
-import { SystemActions } from '@store/actions';
-import { EnumHeadingType, EnumLanguage } from '@type/entities';
+
+import { LANGUAGE_CODES, NEW_TODO_ID } from '@/constants';
 import i18n from '@/i18n';
 import { storage } from '@plugins/storage';
-import { LANGUAGE_CODES, NEW_TODO_ID } from '@/constants';
+import { SystemActions } from '@store/actions';
+import { watchSystem } from '@store/sagas/system';
+import { EnumHeadingType, EnumLanguage } from '@type/entities';
 
 describe('System saga flow', () => {
   it('set language', () => {

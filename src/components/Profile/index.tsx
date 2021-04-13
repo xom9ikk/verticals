@@ -1,15 +1,16 @@
 import React, { FC, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Menu } from '@comp/Menu';
-import { Avatar } from '@comp/Avatar';
-import { Divider } from '@comp/Divider';
-import { MenuItem } from '@comp/Menu/Item';
-import { ControlButton } from '@comp/ControlButton';
-import { SystemActions } from '@store/actions';
-import { redirectTo } from '@router/history';
-import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Avatar } from '@comp/Avatar';
+import { ControlButton } from '@comp/ControlButton';
+import { Divider } from '@comp/Divider';
+import { Menu } from '@comp/Menu';
+import { MenuItem } from '@comp/Menu/Item';
+import { redirectTo } from '@router/history';
+import { SystemActions } from '@store/actions';
+import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
 
 enum EnumMenuActions {
   OpenProfile,

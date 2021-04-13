@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { FC } from 'react';
+
 import { Checkbox } from '@comp/Checkbox';
 import { EnumCardType, EnumTodoStatus } from '@type/entities';
 

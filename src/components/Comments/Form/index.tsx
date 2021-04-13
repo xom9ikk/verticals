@@ -1,24 +1,25 @@
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import cn from 'classnames';
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
-import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Avatar } from '@comp/Avatar';
-import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
+import { CommentFormAttachments } from '@comp/Comments/Form/Attachments';
+import { ControlButton } from '@comp/ControlButton';
 import { TextArea } from '@comp/TextArea';
-import { useFocus } from '@use/focus';
-import { useFileList } from '@use/fileList';
+import { CommentAttachmentsActions, CommentsActions, SystemActions } from '@store/actions';
 import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@store/selectors';
-import { useOpenFiles } from '@use/openFiles';
-import { CommentFormAttachments } from '@comp/Comments/Form/Attachments';
-import { EnumDroppedZoneType } from '@type/entities';
-import { ControlButton } from '@comp/ControlButton';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import { useParamSelector } from '@use/paramSelector';
 import { ICreateComment } from '@type/actions';
+import { EnumDroppedZoneType } from '@type/entities';
+import { useFileList } from '@use/fileList';
+import { useFocus } from '@use/focus';
+import { useOpenFiles } from '@use/openFiles';
+import { useParamSelector } from '@use/paramSelector';
 
 interface ICommentForm {
   onChangeTextAreaHeight: (height: number) => void;

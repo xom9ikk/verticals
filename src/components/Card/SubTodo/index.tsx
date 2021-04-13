@@ -1,27 +1,28 @@
+import cn from 'classnames';
 import React, {
   FC, useEffect,
 } from 'react';
-import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { redirectTo } from '@router/history';
-import {
-  EnumCardType, EnumTodoStatus, IColor, ISubTodo,
-} from '@type/entities';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { NEW_SUB_TODO_ID } from '@/constants';
-import { CommentsActions, SubTodosActions, SystemActions } from '@store/actions';
-import { getActiveBoardReadableId, getSubTodoById, getUsername } from '@store/selectors';
 import { Bullet } from '@comp/Bullet';
-import { DateBadge } from '@comp/DateBadge';
-import { SubTodoContextMenu } from '@comp/Card/SubTodo/ContextMenu';
-import { useReadableId } from '@use/readableId';
-import { useParamSelector } from '@use/paramSelector';
-import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { Card } from '@comp/Card';
+import { SubTodoAttachmentsPreview } from '@comp/Card/Attachments/Preview/SubTodo';
 import {
   CardEditable, ICreateCardEntity, IUpdateCardEntity,
 } from '@comp/Card/Editable';
-import { Card } from '@comp/Card';
-import { SubTodoAttachmentsPreview } from '@comp/Card/Attachments/Preview/SubTodo';
+import { SubTodoContextMenu } from '@comp/Card/SubTodo/ContextMenu';
+import { DateBadge } from '@comp/DateBadge';
+import { redirectTo } from '@router/history';
+import { CommentsActions, SubTodosActions, SystemActions } from '@store/actions';
+import { getActiveBoardReadableId, getSubTodoById, getUsername } from '@store/selectors';
+import {
+  EnumCardType, EnumTodoStatus, IColor, ISubTodo,
+} from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { useParamSelector } from '@use/paramSelector';
+import { useReadableId } from '@use/readableId';
 
 interface ISubTodoCard {
   provided?: DraggableProvided;

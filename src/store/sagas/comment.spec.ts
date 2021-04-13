@@ -1,12 +1,13 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { CommentAttachmentsActions, CommentsActions } from '@store/actions';
+
 import { CommentService } from '@services/comment';
+import { CommentAttachmentsActions, CommentsActions } from '@store/actions';
 import { watchComment } from '@store/sagas/comment';
 import {
   getAvatarUrl, getName, getSurname, getUsername,
 } from '@store/selectors';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const commentService = new CommentService();

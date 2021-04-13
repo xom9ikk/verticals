@@ -1,10 +1,11 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { ColumnsActions, SystemActions } from '@store/actions';
+
 import { ColumnService } from '@services/column';
-import { EnumColors } from '@type/entities';
+import { ColumnsActions, SystemActions } from '@store/actions';
 import { watchColumn } from '@store/sagas/column';
+import { EnumColors } from '@type/entities';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const columnService = new ColumnService();

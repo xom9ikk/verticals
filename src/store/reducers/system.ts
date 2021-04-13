@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { EnumLanguage, ISystem } from '@type/entities';
+
 import { SystemActions } from '@store/actions';
+import { EnumLanguage, ISystem } from '@type/entities';
 
 export const initialState: ISystem = {
   isLoadedBoards: false,

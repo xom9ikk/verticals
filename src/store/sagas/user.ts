@@ -1,14 +1,15 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { IUserService } from '@inversify/interfaces/services';
 import { UserActions } from '@store/actions';
 import {
   IUpdateEmail, IUpdatePersonalData, IUpdateUsername, IUploadAvatar,
 } from '@type/actions';
-import i18n from '@/i18n';
-import { IUserService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
 
 const { show, ALERT_TYPES } = useAlert();
 

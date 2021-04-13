@@ -1,7 +1,7 @@
-import { TodosActions } from '@store/actions';
-import { EnumColors, EnumTodoStatus } from '@type/entities';
 import { TEMP_ID } from '@/constants';
+import { TodosActions } from '@store/actions';
 import { TodosReducer, initialState } from '@store/reducers/todos';
+import { EnumColors, EnumTodoStatus } from '@type/entities';
 
 const mockTodos = [{
   id: 1,

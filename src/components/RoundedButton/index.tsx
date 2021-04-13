@@ -1,5 +1,6 @@
-import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
+import React, { FC, useMemo } from 'react';
+
 import { IColor } from '@type/entities';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
 import { useColorClass } from '@use/colorClass';

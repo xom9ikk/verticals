@@ -1,18 +1,19 @@
+import cn from 'classnames';
 import React, {
   Dispatch,
   FC, SetStateAction, useEffect, useRef, useState,
 } from 'react';
-import cn from 'classnames';
 import {
   DraggableProvided,
   DraggableStateSnapshot,
 } from 'react-beautiful-dnd';
-import { IColor } from '@type/entities';
+
 import { DropZone } from '@comp/DropZone';
-import { useFocus } from '@use/focus';
-import { useDebounce } from '@use/debounce';
+import { IColor } from '@type/entities';
 import { useColorClass } from '@use/colorClass';
+import { useDebounce } from '@use/debounce';
 import { useFileList } from '@use/fileList';
+import { useFocus } from '@use/focus';
 import { useHover } from '@use/hover';
 
 interface ICard {

@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import useWith from 'ramda/src/useWith';
-import { Input } from '@comp/Input';
-import { Button } from '@comp/Button';
-import { Form } from '@comp/Form';
-import { useForm } from '@use/form';
-import { Divider } from '@comp/Divider';
-import { AuthActions } from '@store/actions';
-import { validatorRegisterForm } from '@helpers/validator/form/register';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
 import { BadgeSoon } from '@comp/BadgeSoon';
+import { Button } from '@comp/Button';
+import { Divider } from '@comp/Divider';
+import { Form } from '@comp/Form';
+import { Input } from '@comp/Input';
+import { validatorRegisterForm } from '@helpers/validator/form/register';
+import { AuthActions } from '@store/actions';
+import { useForm } from '@use/form';
 
 interface IFormValidatedState {
   name: string;

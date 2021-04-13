@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import useWith from 'ramda/src/useWith';
-import { Input } from '@comp/Input';
+import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
+import { BadgeSoon } from '@comp/BadgeSoon';
 import { Button } from '@comp/Button';
 import { Form } from '@comp/Form';
-import { useForm } from '@use/form';
-import { AuthActions } from '@store/actions';
+import { Input } from '@comp/Input';
 import { validatorResetForm } from '@helpers/validator/form/reset';
-import { useTranslation } from 'react-i18next';
-import { BadgeSoon } from '@comp/BadgeSoon';
+import { AuthActions } from '@store/actions';
+import { useForm } from '@use/form';
 
 interface IFormValidatedState {
   email: string;

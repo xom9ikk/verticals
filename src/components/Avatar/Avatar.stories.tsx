@@ -1,6 +1,7 @@
 import React from 'react';
-import { Avatar } from '@comp/Avatar/index';
 import ReactTooltip from 'react-tooltip';
+
+import { Avatar } from '@comp/Avatar/index';
 
 export default {
   title: 'Avatar',

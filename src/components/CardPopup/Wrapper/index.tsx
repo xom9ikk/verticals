@@ -1,8 +1,9 @@
 import React, {
   FC,
 } from 'react';
-import { TodoCardPopup } from '@comp/CardPopup/Todo';
+
 import { SubTodoCardPopup } from '@comp/CardPopup/SubTodo';
+import { TodoCardPopup } from '@comp/CardPopup/Todo';
 import { EnumCardType } from '@type/entities';
 
 interface ICardPopupWrapper {

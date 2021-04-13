@@ -1,5 +1,8 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IUpdateService } from '@inversify/interfaces/services';
+import { IWSClient } from '@inversify/interfaces/wsClient';
 import { TYPES } from '@inversify/types';
 import {
   IBoardPositionsUpdateResponse,
@@ -13,8 +16,6 @@ import {
   ISubTodoPositionsUpdateResponse,
   ISubTodoUpdateResponse, ITodoPositionsUpdateResponse, ITodoUpdateResponse,
 } from '@type/api';
-import { IWSClient } from '@inversify/interfaces/wsClient';
-import { IUpdateService } from '@inversify/interfaces/services';
 
 @injectable()
 export class UpdateService implements IUpdateService {

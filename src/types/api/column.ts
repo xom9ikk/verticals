@@ -1,6 +1,7 @@
 import {
   IColor, IColumns, ITodos,
 } from '@type/entities';
+
 import { IServerResponse } from './response';
 
 export type IGetAllColumnsResponse = IServerResponse<{

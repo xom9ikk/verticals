@@ -1,24 +1,25 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, select, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { IBoardService } from '@inversify/interfaces/services';
+import { redirectTo } from '@router/history';
 import {
   BoardsActions, SystemActions,
 } from '@store/actions';
 import {
   getActiveBoardId, getUsername,
 } from '@store/selectors';
-import { useReadableId } from '@use/readableId';
-import { redirectTo } from '@router/history';
 import {
   ICreateBoard,
   IMoveBoard,
   IRemoveBoard,
   IUpdateBoard,
 } from '@type/actions';
-import i18n from '@/i18n';
-import { IBoardService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
+import { useReadableId } from '@use/readableId';
 
 const { show, ALERT_TYPES } = useAlert();
 const { toReadableId } = useReadableId();

@@ -1,11 +1,12 @@
 import { injectable } from 'inversify';
+
 import 'reflect-metadata';
-import { IWSClient } from '@inversify/interfaces/wsClient';
-import { storage } from '@plugins/storage';
-import { AuthRefresher } from '@plugins/authRefresher';
 import { container } from '@inversify/config';
-import { TYPES } from '@inversify/types';
 import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { IWSClient } from '@inversify/interfaces/wsClient';
+import { TYPES } from '@inversify/types';
+import { AuthRefresher } from '@plugins/authRefresher';
+import { storage } from '@plugins/storage';
 
 @injectable()
 export class WSClient implements IWSClient {

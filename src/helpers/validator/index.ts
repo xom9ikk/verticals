@@ -1,5 +1,6 @@
 // @ts-ignore
 import is from 'is_js';
+
 import i18n from '@/i18n';
 
 export type IValidatorPayload = string | null;

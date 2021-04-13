@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
 import * as Sentry from '@sentry/react';
+import createSagaMiddleware from 'redux-saga';
 import createSentryMiddleware from 'redux-sentry-middleware';
-import { rootSaga } from '@store/sagas';
+
 import { rootReducer } from '@store/reducers';
+import { rootSaga } from '@store/sagas';
 
 const sagaMiddleware = createSagaMiddleware({
   onError: (error, { sagaStack }) => {

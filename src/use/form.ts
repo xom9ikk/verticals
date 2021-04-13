@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { IUseValidatorResult, useValidator } from '@use/validator';
+
 import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
+import { IUseValidatorResult, useValidator } from '@use/validator';
 
 export interface IFormValues {
   readonly [key: string]: IValidatorPayload;

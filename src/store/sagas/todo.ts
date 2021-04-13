@@ -1,8 +1,10 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { ITodoService } from '@inversify/interfaces/services';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   ICreateTodo,
@@ -12,8 +14,7 @@ import {
   IRemoveTodo,
   ISwitchArchivedTodo, ISwitchRemovedTodo, IUpdateTodo,
 } from '@type/actions';
-import i18n from '@/i18n';
-import { ITodoService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
 
 const { show, ALERT_TYPES } = useAlert();
 

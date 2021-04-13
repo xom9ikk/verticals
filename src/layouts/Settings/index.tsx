@@ -2,9 +2,10 @@
 import React, {
   FC, useMemo,
 } from 'react';
-import { RoundedButton } from '@comp/RoundedButton';
-import { NavLink } from '@comp/NavLink';
 import { useTranslation } from 'react-i18next';
+
+import { NavLink } from '@comp/NavLink';
+import { RoundedButton } from '@comp/RoundedButton';
 
 enum EnumMenu {
   Account='account',

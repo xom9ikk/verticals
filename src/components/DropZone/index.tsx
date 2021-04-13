@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react';
 import cn from 'classnames';
-import { useFileList } from '@use/fileList';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { useFileList } from '@use/fileList';
 
 const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE);
 

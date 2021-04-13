@@ -1,5 +1,8 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { ISubTodoService } from '@inversify/interfaces/services';
 import { TYPES } from '@inversify/types';
 import {
   ICreateSubTodoRequest,
@@ -17,8 +20,6 @@ import {
   IUpdateSubTodoRequest,
   IUpdateSubTodoResponse,
 } from '@type/api';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { ISubTodoService } from '@inversify/interfaces/services';
 
 @injectable()
 export class SubTodoService implements ISubTodoService {

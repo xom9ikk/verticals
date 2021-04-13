@@ -1,9 +1,11 @@
+import useKeys from '@rooks/use-keys';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import cn from 'classnames';
 import React, { FC } from 'react';
 import { createPortal } from 'react-dom';
-import cn from 'classnames';
+
 import { ControlButton } from '@comp/ControlButton';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import useKeys from '@rooks/use-keys';
+
 import { Button } from '../Button';
 
 interface IModal {

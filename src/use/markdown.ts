@@ -2,19 +2,19 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow.css';
 import MarkdownIt from 'markdown-it';
 // @ts-ignore
+import MarkdownItDeflist from 'markdown-it-deflist';
+// @ts-ignore
 import EmojiIt from 'markdown-it-emoji';
 // @ts-ignore
-import MarkdownItSub from 'markdown-it-sub';
-// @ts-ignore
-import MarkdownItSup from 'markdown-it-sup';
+import MarkdownItFootnote from 'markdown-it-footnote';
 // @ts-ignore
 import MarkdownItIns from 'markdown-it-ins';
 // @ts-ignore
 import MarkdownItMark from 'markdown-it-mark';
 // @ts-ignore
-import MarkdownItFootnote from 'markdown-it-footnote';
+import MarkdownItSub from 'markdown-it-sub';
 // @ts-ignore
-import MarkdownItDeflist from 'markdown-it-deflist';
+import MarkdownItSup from 'markdown-it-sup';
 
 // @ts-ignore
 const md = new MarkdownIt({

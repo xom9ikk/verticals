@@ -1,14 +1,15 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { ISearchService } from '@inversify/interfaces/services';
 import {
   BoardsActions, ColumnsActions, HeadingsActions, SearchActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { ISearchByTodoTitle } from '@type/actions';
-import i18n from '@/i18n';
-import { ISearchService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
 
 const { show, ALERT_TYPES } = useAlert();
 

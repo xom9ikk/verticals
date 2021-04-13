@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { ColumnsActions } from '@store/actions';
+
 import { TEMP_ID } from '@/constants';
+import { ColumnsActions } from '@store/actions';
 import { IColumns } from '@type/entities';
 
 export const initialState: IColumns = {

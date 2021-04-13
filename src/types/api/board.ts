@@ -1,6 +1,7 @@
 import {
   EnumCardType, IBoards, IColor,
 } from '@type/entities';
+
 import { IServerResponse } from './response';
 
 export type IGetAllBoardsResponse = IServerResponse<{

@@ -1,8 +1,8 @@
 import { Container } from 'inversify';
-import { TYPES } from '@inversify/types';
-import { HttpClient } from '@plugins/httpClient';
-import { WSClient } from '@plugins/wsClient';
+
+import { Services } from '@/services';
 import { IServices } from '@inversify/interfaces';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
 import {
   IAuthService,
   IBoardService,
@@ -16,20 +16,21 @@ import {
   IUpdateService,
   IUserService,
 } from '@inversify/interfaces/services';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { IWSClient } from '@inversify/interfaces/wsClient';
-import { Services } from '@/services';
+import { TYPES } from '@inversify/types';
+import { HttpClient } from '@plugins/httpClient';
+import { WSClient } from '@plugins/wsClient';
 import { AuthService } from '@services/auth';
-import { UserService } from '@services/user';
 import { BoardService } from '@services/board';
 import { ColumnService } from '@services/column';
-import { HeadingService } from '@services/heading';
-import { TodoService } from '@services/todo';
-import { SubTodoService } from '@services/sub-todo';
 import { CommentService } from '@services/comment';
 import { CommentAttachmentService } from '@services/comment-attachment';
+import { HeadingService } from '@services/heading';
 import { SearchService } from '@services/search';
+import { SubTodoService } from '@services/sub-todo';
+import { TodoService } from '@services/todo';
 import { UpdateService } from '@services/update';
+import { UserService } from '@services/user';
 
 const container = new Container();
 

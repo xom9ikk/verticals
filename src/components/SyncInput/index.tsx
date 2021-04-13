@@ -1,14 +1,15 @@
 /* eslint-disable no-nested-ternary */
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import React, {
   FC, useEffect, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
+
 import { Input } from '@comp/Input';
 import { Loader } from '@comp/Loader';
-import { useValidator } from '@use/validator';
 import { IValidatorPayload, IValidatorResult } from '@helpers/validator';
 import { useDebounce } from '@use/debounce';
+import { useValidator } from '@use/validator';
 
 interface ISyncInput {
   type: string,

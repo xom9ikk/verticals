@@ -1,9 +1,10 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { CommentAttachmentsActions } from '@store/actions';
+
 import { CommentAttachmentService } from '@services/comment-attachment';
+import { CommentAttachmentsActions } from '@store/actions';
 import { watchCommentAttachment } from '@store/sagas/comment-attachment';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const commentAttachmentService = new CommentAttachmentService();

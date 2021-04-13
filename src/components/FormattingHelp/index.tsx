@@ -1,10 +1,11 @@
 import React, { FC, useMemo } from 'react';
-import { SystemActions } from '@store/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { getIsOpenFormattingHelp } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
-import { useMarkdown } from '@use/markdown';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ControlButton } from '@comp/ControlButton';
+import { SystemActions } from '@store/actions';
+import { getIsOpenFormattingHelp } from '@store/selectors';
+import { useMarkdown } from '@use/markdown';
 
 const strings = [
   '# Header 1 8-)',

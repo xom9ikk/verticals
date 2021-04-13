@@ -2,12 +2,14 @@ import React, {
   FC, useEffect, useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { NEW_COLUMN_ID, TRASH_BOARD_ID, TRASH_COLUMN_ID } from '@/constants';
 import { Column, EnumColumnMode } from '@comp/Column';
+import { ColumnsDragDropContainer } from '@comp/Column/DragDropContainer';
+import { FallbackLoader } from '@comp/FallbackLoader';
 import {
   ColumnsActions, HeadingsActions, SubTodosActions, TodosActions,
 } from '@store/actions';
-import { FallbackLoader } from '@comp/FallbackLoader';
-import { ColumnsDragDropContainer } from '@comp/Column/DragDropContainer';
 import {
   getActiveBoardId,
   getColumnPositionsByBoardId,
@@ -16,7 +18,6 @@ import {
   getIsLoadedColumns,
   getIsSearchMode,
 } from '@store/selectors';
-import { NEW_COLUMN_ID, TRASH_BOARD_ID, TRASH_COLUMN_ID } from '@/constants';
 import { useParamSelector } from '@use/paramSelector';
 
 export const Columns: FC = () => {

@@ -3,13 +3,14 @@ import React, {
 } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumCardType, EnumHeadingType, IHeading } from '@type/entities';
+
+import { DraggableOrDiv } from '@comp/DraggableWrapper';
+import { HeadingCompact } from '@comp/Heading/Compact';
+import { HeadingWide } from '@comp/Heading/Wide';
 import { HeadingsActions } from '@store/actions';
 import { getHeadingById, getIsSearchMode } from '@store/selectors';
-import { HeadingCompact } from '@comp/Heading/Compact';
+import { EnumCardType, EnumHeadingType, IHeading } from '@type/entities';
 import { useParamSelector } from '@use/paramSelector';
-import { HeadingWide } from '@comp/Heading/Wide';
-import { DraggableOrDiv } from '@comp/DraggableWrapper';
 
 export enum EnumHeadingMode {
   Normal,

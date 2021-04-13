@@ -1,16 +1,24 @@
+import cn from 'classnames';
 import React, {
   BaseSyntheticEvent,
   FC, useEffect, useState,
 } from 'react';
-import cn from 'classnames';
+import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
-import { redirectTo } from '@router/history';
-import {
-  EnumCardType, EnumTodoStatus, IColor, ITodo,
-} from '@type/entities';
+
 import { NEW_SUB_TODO_ID, NEW_TODO_ID, TEMP_ID } from '@/constants';
+import { Bullet } from '@comp/Bullet';
+import { Card } from '@comp/Card';
+import { TodoAttachmentsPreview } from '@comp/Card/Attachments/Preview/Todo';
+import {
+  CardEditable, ICreateCardEntity, IUpdateCardEntity,
+} from '@comp/Card/Editable';
+import { TodoContextMenu } from '@comp/Card/Todo/ContextMenu';
+import { ControlButton } from '@comp/ControlButton';
+import { DateBadge } from '@comp/DateBadge';
+import { SubCardContainer } from '@comp/SubCardContainer';
+import { redirectTo } from '@router/history';
 import { CommentsActions, SystemActions, TodosActions } from '@store/actions';
 import {
   getActiveBoardReadableId,
@@ -18,19 +26,12 @@ import {
   getTodoById,
   getUsername,
 } from '@store/selectors';
-import { Card } from '@comp/Card';
-import { Bullet } from '@comp/Bullet';
-import { DateBadge } from '@comp/DateBadge';
-import { SubCardContainer } from '@comp/SubCardContainer';
-import { ControlButton } from '@comp/ControlButton';
 import {
-  CardEditable, ICreateCardEntity, IUpdateCardEntity,
-} from '@comp/Card/Editable';
-import { TodoContextMenu } from '@comp/Card/Todo/ContextMenu';
-import { useReadableId } from '@use/readableId';
-import { useParamSelector } from '@use/paramSelector';
+  EnumCardType, EnumTodoStatus, IColor, ITodo,
+} from '@type/entities';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { TodoAttachmentsPreview } from '@comp/Card/Attachments/Preview/Todo';
+import { useParamSelector } from '@use/paramSelector';
+import { useReadableId } from '@use/readableId';
 
 interface ITodoCard {
   provided?: DraggableProvided;

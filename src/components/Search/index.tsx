@@ -2,15 +2,16 @@ import React, {
   BaseSyntheticEvent,
   FC, useEffect, useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input } from '@comp/Input';
+
 import { ControlButton } from '@comp/ControlButton';
+import { Input } from '@comp/Input';
 import {
   BoardsActions, ColumnsActions, HeadingsActions, SearchActions, SubTodosActions, SystemActions, TodosActions,
 } from '@store/actions';
 import { getActiveBoardId, getIsSearchMode } from '@store/selectors';
 import { useDebounce } from '@use/debounce';
-import { useTranslation } from 'react-i18next';
 
 export const Search: FC = () => {
   const { t } = useTranslation();

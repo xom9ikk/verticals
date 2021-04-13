@@ -1,6 +1,6 @@
 import { HeadingsActions } from '@store/actions';
-import { EnumColors, EnumHeadingType } from '@type/entities';
 import { HeadingsReducer, initialState } from '@store/reducers/headings';
+import { EnumColors, EnumHeadingType } from '@type/entities';
 
 const mockHeadings = [{
   id: 1,

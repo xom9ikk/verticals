@@ -1,8 +1,10 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { IHeadingService } from '@inversify/interfaces/services';
 import { HeadingsActions } from '@store/actions';
 import {
   ICreateHeading,
@@ -13,8 +15,7 @@ import {
   IUpdateHeading,
 } from '@type/actions';
 import { EnumHeadingType } from '@type/entities';
-import i18n from '@/i18n';
-import { IHeadingService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
 
 const { show, ALERT_TYPES } = useAlert();
 

@@ -1,7 +1,8 @@
-import React, {
-  FC, useEffect, useMemo, useState,
-} from 'react';
 import cn from 'classnames';
+import React, {
+  FC, useEffect, useState,
+} from 'react';
+
 import { Loader } from '@comp/Loader';
 
 interface IFallbackLoader {

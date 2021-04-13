@@ -1,5 +1,5 @@
-import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import React, { FC } from 'react';
+import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 // @ts-ignore TODO
 const Div = ({ children }) => <div>{children({ innerRef: () => {} }, {})}</div>;

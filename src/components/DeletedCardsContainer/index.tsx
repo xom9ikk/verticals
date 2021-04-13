@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { EnumCardType } from '@type/entities';
+
+import { TodoCard } from '@comp/Card/Todo';
 import { FallbackLoader } from '@comp/FallbackLoader';
 import {
   getIsLoadedTodos,
   getIsSearchMode,
   getTodosEntities,
 } from '@store/selectors';
-import { TodoCard } from '@comp/Card/Todo';
+import { EnumCardType } from '@type/entities';
 
 export const DeletedCardsContainer: FC = () => {
   const isLoadedTodos = useSelector(getIsLoadedTodos);

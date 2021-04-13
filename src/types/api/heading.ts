@@ -1,6 +1,7 @@
 import {
   IColor, IHeadings, ITodos,
 } from '@type/entities';
+
 import { IServerResponse } from './response';
 
 export type IGetAllHeadingsResponse = IServerResponse<{

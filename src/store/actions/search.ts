@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
+
 import { ISearchByTodoTitle } from '@type/actions';
 
 export const SearchActions = {

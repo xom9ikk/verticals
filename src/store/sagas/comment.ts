@@ -1,8 +1,10 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, select, takeLatest, takeLeading,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { ICommentService } from '@inversify/interfaces/services';
 import { CommentAttachmentsActions, CommentsActions } from '@store/actions';
 import {
   getAvatarUrl, getName, getSurname, getUsername,
@@ -15,8 +17,7 @@ import {
   IRemoveCommentLike,
   IUpdateCommentText,
 } from '@type/actions';
-import i18n from '@/i18n';
-import { ICommentService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
 
 const { show, ALERT_TYPES } = useAlert();
 

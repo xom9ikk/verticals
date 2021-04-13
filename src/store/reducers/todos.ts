@@ -1,8 +1,10 @@
+import { createReducer } from '@reduxjs/toolkit';
+
+import { TEMP_ID } from '@/constants';
 import {
   ITodos,
 } from '@type/entities';
-import { createReducer } from '@reduxjs/toolkit';
-import { TEMP_ID } from '@/constants';
+
 import { TodosActions } from '../actions';
 
 export const initialState: ITodos = {

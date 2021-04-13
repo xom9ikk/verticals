@@ -1,15 +1,18 @@
+import cn from 'classnames';
+import format from 'date-fns/format';
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
-import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import format from 'date-fns/format';
-import { ICommentLike } from '@type/entities';
-import { MenuItem } from '@comp/Menu/Item';
-import { Menu } from '@comp/Menu';
-import { Divider } from '@comp/Divider';
-import { CommentFile } from '@comp/Comments/File';
+
+import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
 import { Avatar } from '@comp/Avatar';
+import { CommentFile } from '@comp/Comments/File';
+import { ControlButton } from '@comp/ControlButton';
+import { Divider } from '@comp/Divider';
+import { Menu } from '@comp/Menu';
+import { MenuItem } from '@comp/Menu/Item';
 import {
   CommentAttachmentsActions,
   CommentsActions, SystemActions,
@@ -21,10 +24,8 @@ import {
   getFullName,
   getUsername,
 } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
-import { MAX_FILES_IN_COMMENT_PREVIEW } from '@/constants';
+import { ICommentLike } from '@type/entities';
 import { useMarkdown } from '@use/markdown';
-import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
 
 interface ICommentItem {

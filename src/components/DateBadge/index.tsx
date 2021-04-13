@@ -1,12 +1,13 @@
-import React, { FC, useRef } from 'react';
 import cn from 'classnames';
 import format from 'date-fns/format';
-import isToday from 'date-fns/isToday';
 import isFuture from 'date-fns/isFuture';
 import isThisYear from 'date-fns/isThisYear';
+import isToday from 'date-fns/isToday';
 import isTomorrow from 'date-fns/isTomorrow';
-import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import React, { FC, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
 
 interface IDateBadge {
   popupId: string;

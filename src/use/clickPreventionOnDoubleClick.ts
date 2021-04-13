@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useCancellablePromises } from './cancellablePromise';
 
 export const useClickPreventionOnDoubleClick = (

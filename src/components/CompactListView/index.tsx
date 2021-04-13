@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
-import { IColor } from '@type/entities';
 import cn from 'classnames';
-import { useColorClass } from '@use/colorClass';
+import React, { FC } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+
+import { IColor } from '@type/entities';
+import { useColorClass } from '@use/colorClass';
 
 interface IColumnContextMenu {
   snapshot: DraggableStateSnapshot;

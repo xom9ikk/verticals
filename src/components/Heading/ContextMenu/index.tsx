@@ -1,12 +1,13 @@
 import React, { FC, useMemo } from 'react';
-import { Menu } from '@comp/Menu';
-import { ColorPicker } from '@comp/ColorPicker';
-import { MenuItem } from '@comp/Menu/Item';
-import { Divider } from '@comp/Divider';
-import { IColor } from '@type/entities';
-import { HeadingsActions, SystemActions } from '@store/actions';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
+import { ColorPicker } from '@comp/ColorPicker';
+import { Divider } from '@comp/Divider';
+import { Menu } from '@comp/Menu';
+import { MenuItem } from '@comp/Menu/Item';
+import { HeadingsActions, SystemActions } from '@store/actions';
+import { IColor } from '@type/entities';
 
 interface IHeadingContextMenu {
   isEnabled?: boolean;

@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { IRootState } from '@store/reducers';
 
 export const getUsername = (state: IRootState) => state.user.username;

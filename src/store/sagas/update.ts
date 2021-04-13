@@ -1,7 +1,9 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, fork, put, select, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
+
+import { IUpdateService } from '@inversify/interfaces/services';
 import {
   BoardsActions,
   ColumnsActions,
@@ -10,6 +12,7 @@ import {
   SubTodosActions,
   TodosActions, UpdatesActions,
 } from '@store/actions';
+import { getIsSearchMode } from '@store/selectors';
 import {
   EnumOperations, IBoardPositionsUpdateData,
   IBoardUpdateData,
@@ -19,8 +22,6 @@ import {
   IHeadingUpdateData, ISubTodoPositionsUpdateData,
   ISubTodoUpdateData, ITodoPositionsUpdateData, ITodoUpdateData, IUpdateData,
 } from '@type/api';
-import { IUpdateService } from '@inversify/interfaces/services';
-import { getIsSearchMode } from '@store/selectors';
 
 interface IOperationHandlers<T> {
   insert?: (data: T) => PayloadAction<any>,

@@ -1,7 +1,8 @@
 import { AxiosError, AxiosRequestConfig } from 'axios';
-import { IRefreshResponse } from '@type/api';
+
 import { IHttpClient } from '@inversify/interfaces/httpClient';
 import { storage } from '@plugins/storage';
+import { IRefreshResponse } from '@type/api';
 
 const UNAUTHORIZED_HTTP_STATUS = 401;
 const UNAUTHORIZED_WS_CODE = 1011;

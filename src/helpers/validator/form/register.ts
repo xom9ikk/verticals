@@ -1,5 +1,5 @@
-import validator from '@helpers/validator';
 import i18n from '@/i18n';
+import validator from '@helpers/validator';
 
 export const validatorRegisterForm = ({
   name: validator.text({ min: 2, name: i18n.t('First name') }),

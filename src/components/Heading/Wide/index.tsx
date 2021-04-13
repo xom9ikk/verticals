@@ -1,7 +1,7 @@
+import cn from 'classnames';
 import React, {
   FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
-import cn from 'classnames';
 import {
   DraggableProvided,
   DraggableStateSnapshot,
@@ -9,15 +9,16 @@ import {
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EnumCardType, EnumHeadingType, IColor } from '@type/entities';
-import { EnumHeadingMode } from '@comp/Heading';
-import { HeadingHeader } from '@comp/Heading/Header';
+
+import { NEW_TODO_ID } from '@/constants';
 import { CardsContainer } from '@comp/CardsContainer';
+import { EnumHeadingMode } from '@comp/Heading';
+import { HeadingContextMenu } from '@comp/Heading/ContextMenu';
+import { HeadingHeader } from '@comp/Heading/Header';
 import { SystemActions } from '@store/actions';
 import { getEditableCardId } from '@store/selectors';
+import { EnumCardType, EnumHeadingType, IColor } from '@type/entities';
 import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { NEW_TODO_ID } from '@/constants';
-import { HeadingContextMenu } from '@comp/Heading/ContextMenu';
 import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
 
 interface IHeadingWide {

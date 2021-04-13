@@ -1,25 +1,26 @@
+import cn from 'classnames';
 import React, {
   FC, useMemo,
 } from 'react';
-import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import {
-  EnumCardType, EnumDroppedZoneType, IColor,
-} from '@type/entities';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ControlButton } from '@comp/ControlButton';
+import { DropZone } from '@comp/DropZone';
+import { suspense } from '@comp/SuspenseWrapper';
+import { redirectTo } from '@router/history';
+import { lazy } from '@router/lazy';
 import {
   SystemActions,
 } from '@store/actions';
-import { redirectTo } from '@router/history';
 import {
   getActiveBoardReadableId,
   getUsername,
 } from '@store/selectors';
-import { DropZone } from '@comp/DropZone';
-import { ControlButton } from '@comp/ControlButton';
+import {
+  EnumCardType, EnumDroppedZoneType, IColor,
+} from '@type/entities';
 import { useColorClass } from '@use/colorClass';
-import { lazy } from '@router/lazy';
-import { suspense } from '@comp/SuspenseWrapper';
 
 const CommentsWrapper = lazy(() => import('@comp/Comments/Wrapper'), (module) => module.CommentsWrapper);
 

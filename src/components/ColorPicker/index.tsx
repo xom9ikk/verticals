@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+
 import { ColorSelector } from '@comp/ColorSelector';
 import { EnumColors, IColor, colors } from '@type/entities';
 

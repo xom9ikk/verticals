@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { App } from '@/app';
 import { Sentry } from '@/sentry';
 import { Store } from '@/store';
-import { App } from '@/app';
 
 ReactDOM.render(
   <Sentry>

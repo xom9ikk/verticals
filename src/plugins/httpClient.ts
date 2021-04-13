@@ -1,9 +1,10 @@
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+
 import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { storage } from '@plugins/storage';
 import { AuthRefresher, IAxiosErrorRetry } from '@plugins/authRefresher';
+import { storage } from '@plugins/storage';
 
 const DEFAULT_CONTENT_TYPE = 'application/json; charset=utf-8';
 

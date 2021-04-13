@@ -1,5 +1,6 @@
-import { storage } from '@plugins/storage';
 import { useEffect, useState } from 'react';
+
+import { storage } from '@plugins/storage';
 
 export const useStorageSubscribed = <T>(selector: () => T) => {
   const [value, setValue] = useState<T>(selector());

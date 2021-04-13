@@ -1,9 +1,10 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { watchUser } from '@store/sagas/user';
-import { UserActions } from '@store/actions';
+
 import { UserService } from '@services/user';
+import { UserActions } from '@store/actions';
+import { watchUser } from '@store/sagas/user';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const userService = new UserService();

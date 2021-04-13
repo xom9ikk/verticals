@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
-import { MiniGallery } from '@comp/MiniGallery';
+import { useTranslation } from 'react-i18next';
+
+import { DEFAULT_COLUMN_WIDTH } from '@/constants';
 import { CardAttachments } from '@comp/Card/Attachments';
 import { ControlButton } from '@comp/ControlButton';
-import { useTranslation } from 'react-i18next';
-import { DEFAULT_COLUMN_WIDTH } from '@/constants';
+import { MiniGallery } from '@comp/MiniGallery';
 import { ICommentAttachments, IComments } from '@type/entities';
 
 enum EnumToggleType {

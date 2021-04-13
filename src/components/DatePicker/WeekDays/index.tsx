@@ -1,5 +1,5 @@
-import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
+import React, { FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const weekend = [0, 6];

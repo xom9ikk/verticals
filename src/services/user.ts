@@ -1,13 +1,14 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { IUserService } from '@inversify/interfaces/services';
 import { TYPES } from '@inversify/types';
 import {
   IGetMeResponse, IRemoveUserAvatarResponse,
   IUpdateUserRequest, IUpdateUserResponse,
   IUploadUserAvatarRequest, IUploadUserAvatarResponse,
 } from '@type/api';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { IUserService } from '@inversify/interfaces/services';
 
 @injectable()
 export class UserService implements IUserService {

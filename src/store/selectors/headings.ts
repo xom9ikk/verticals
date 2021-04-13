@@ -1,7 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { IRootState } from '@store/reducers';
-import { EnumHeadingType } from '@type/entities';
 import { getTodosEntities } from '@store/selectors/todos';
+import { EnumHeadingType } from '@type/entities';
 
 export const getHeadings = (state: IRootState) => state.headings;
 export const getHeadingPositionsByColumnId = (

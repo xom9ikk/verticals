@@ -92,8 +92,7 @@ export const ColumnWide: FC<IColumnWide> = ({
   }, []);
 
   return useMemo(() => {
-    const a = 1;
-    // console.log('TODO: Column redraw');
+    console.log('TODO: Column redraw');
     return (
       <div
         ref={(ref) => {

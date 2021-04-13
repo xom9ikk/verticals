@@ -1,11 +1,12 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { redirectTo } from '@router/history';
+
 import { storage } from '@plugins/storage';
-import { watchAuth } from '@store/sagas/auth';
-import { AuthActions, SystemActions } from '@store/actions';
+import { redirectTo } from '@router/history';
 import { AuthService } from '@services/auth';
+import { AuthActions, SystemActions } from '@store/actions';
+import { watchAuth } from '@store/sagas/auth';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const authService = new AuthService();

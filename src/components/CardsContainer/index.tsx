@@ -3,8 +3,14 @@ import React, { FC, useMemo } from 'react';
 import {
   Draggable, DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { EnumCardType, EnumHeadingType } from '@type/entities';
+
+import { NEW_TODO_ID } from '@/constants';
+import { TodoCard } from '@comp/Card/Todo';
+import { ControlButton } from '@comp/ControlButton';
+import { FallbackLoader } from '@comp/FallbackLoader';
+import { EnumHeadingMode } from '@comp/Heading';
 import {
   getActiveTodoId,
   getEditableCardId,
@@ -12,14 +18,9 @@ import {
   getIsSearchMode,
   getTodoPositionsByHeadingId,
 } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
+import { EnumCardType, EnumHeadingType } from '@type/entities';
 import { useHover } from '@use/hover';
-import { NEW_TODO_ID } from '@/constants';
-import { useTranslation } from 'react-i18next';
 import { useParamSelector } from '@use/paramSelector';
-import { EnumHeadingMode } from '@comp/Heading';
-import { FallbackLoader } from '@comp/FallbackLoader';
-import { TodoCard } from '@comp/Card/Todo';
 
 interface ICardsContainer {
   headingId: number;

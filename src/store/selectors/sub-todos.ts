@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { IRootState } from '@store/reducers';
 
 export const getSubTodos = (state: IRootState) => state.subTodos;

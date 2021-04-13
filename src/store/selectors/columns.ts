@@ -1,7 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { IRootState } from '@store/reducers';
+
 import { TRASH_COLUMN_ID } from '@/constants';
 import i18n from '@/i18n';
+import { IRootState } from '@store/reducers';
 import { getHeadings } from '@store/selectors/headings';
 import { getTodos } from '@store/selectors/todos';
 

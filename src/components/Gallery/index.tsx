@@ -1,18 +1,19 @@
+import useKeys from '@rooks/use-keys';
+import cn from 'classnames';
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { createPortal } from 'react-dom';
-import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import SwiperCore, { Keyboard, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import useKeys from '@rooks/use-keys';
+
 import { ControlButton } from '@comp/ControlButton';
 import { SystemActions } from '@store/actions';
 import { getGalleryImagesInfo } from '@store/selectors';
 import { useDownload } from '@use/download';
-import { useTranslation } from 'react-i18next';
 
 SwiperCore.use([Pagination, Keyboard]);
 

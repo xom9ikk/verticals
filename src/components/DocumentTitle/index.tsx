@@ -1,7 +1,8 @@
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
+
 import { getActiveBoardTitle, getActiveSubTodoTitle, getActiveTodoTitle } from '@store/selectors';
 import { useTitle } from '@use/title';
-import React, { FC } from 'react';
 
 export const DocumentTitle: FC = () => {
   const activeBoardTitle = useSelector(getActiveBoardTitle);

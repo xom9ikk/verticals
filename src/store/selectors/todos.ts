@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { IRootState } from '@store/reducers';
 import { getColumns } from '@store/selectors/columns';
 import { getHeadings } from '@store/selectors/headings';

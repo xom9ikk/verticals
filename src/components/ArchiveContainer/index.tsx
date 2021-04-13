@@ -1,13 +1,14 @@
-import React, { FC, useState } from 'react';
-import { EnumCardType, EnumHeadingType } from '@type/entities';
-import { getArchivedHeadingIdByColumnId, getTodoPositionsByHeadingId } from '@store/selectors';
-import { Divider } from '@comp/Divider';
-import { useTranslation } from 'react-i18next';
-import { useParamSelector } from '@use/paramSelector';
-import { CardsContainer } from '@comp/CardsContainer';
-import { EnumHeadingMode } from '@comp/Heading';
-import { Droppable } from 'react-beautiful-dnd';
 import cn from 'classnames';
+import React, { FC, useState } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
+
+import { CardsContainer } from '@comp/CardsContainer';
+import { Divider } from '@comp/Divider';
+import { EnumHeadingMode } from '@comp/Heading';
+import { getArchivedHeadingIdByColumnId, getTodoPositionsByHeadingId } from '@store/selectors';
+import { EnumCardType, EnumHeadingType } from '@type/entities';
+import { useParamSelector } from '@use/paramSelector';
 
 interface IArchiveContainer {
   columnId: number;

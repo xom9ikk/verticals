@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { EnumCardType, IBoards } from '@type/entities';
-import { BoardsActions } from '@store/actions';
+
 import { DEFAULT_BOARD_ICON, TEMP_ID } from '@/constants';
+import { BoardsActions } from '@store/actions';
+import { EnumCardType, IBoards } from '@type/entities';
 
 export const initialState: IBoards = {
   entities: [],

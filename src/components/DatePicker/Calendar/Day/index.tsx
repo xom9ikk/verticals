@@ -1,9 +1,9 @@
-import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
-import isSameDay from 'date-fns/isSameDay';
-import isWeekend from 'date-fns/isWeekend';
 import isPast from 'date-fns/isPast';
+import isSameDay from 'date-fns/isSameDay';
 import isToday from 'date-fns/isToday';
+import isWeekend from 'date-fns/isWeekend';
+import React, { FC, useMemo } from 'react';
 
 interface ICalendarDay {
   date: Date;

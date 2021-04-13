@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
-import { SystemActions } from '@store/actions';
+import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
+
+import { SystemActions } from '@store/actions';
 
 interface IMenuItem {
   text: string;

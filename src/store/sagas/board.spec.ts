@@ -1,14 +1,15 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
+
 import { redirectTo } from '@router/history';
-import { watchBoard } from '@store/sagas/board';
-import { BoardsActions, SystemActions } from '@store/actions';
 import { BoardService } from '@services/board';
+import { BoardsActions, SystemActions } from '@store/actions';
+import { watchBoard } from '@store/sagas/board';
+import { getActiveBoardId, getUsername } from '@store/selectors';
 import {
   EnumCardType, EnumColors,
 } from '@type/entities';
-import { getActiveBoardId, getUsername } from '@store/selectors';
+import { useAlert } from '@use/alert';
 import { useReadableId } from '@use/readableId';
 
 // @ts-ignore

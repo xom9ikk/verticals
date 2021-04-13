@@ -1,8 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
-import { Toolbar } from '@comp/Sidebar/Toolbar';
-import { ControlButton } from '@comp/ControlButton';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { ControlButton } from '@comp/ControlButton';
+import { Toolbar } from '@comp/Sidebar/Toolbar';
 
 export const Sidebar: FC = ({
   children,

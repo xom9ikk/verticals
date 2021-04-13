@@ -1,25 +1,26 @@
+import useKeys from '@rooks/use-keys';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import React, {
   BaseSyntheticEvent,
   Dispatch, FC, SetStateAction, useEffect, useRef,
 } from 'react';
-import useKeys from '@rooks/use-keys';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import { SubTodosActions, SystemActions, TodosActions } from '@store/actions';
-import { TextArea } from '@comp/TextArea';
-import { DateBadge } from '@comp/DateBadge';
-import { ControlButton } from '@comp/ControlButton';
-import { DatePickerPopup } from '@comp/DatePicker/Popup';
+
 import { CommentFormAttachments } from '@comp/Comments/Form/Attachments';
-import { useFocus } from '@use/focus';
-import { useOpenFiles } from '@use/openFiles';
+import { ControlButton } from '@comp/ControlButton';
+import { DateBadge } from '@comp/DateBadge';
+import { DatePickerPopup } from '@comp/DatePicker/Popup';
+import { TextArea } from '@comp/TextArea';
+import { SubTodosActions, SystemActions, TodosActions } from '@store/actions';
 import { useEffectState } from '@use/effectState';
-import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
+import { useFileList } from '@use/fileList';
+import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
 import { useNormalizeDate } from '@use/normalizeDate';
-import { useFileList } from '@use/fileList';
+import { useOpenFiles } from '@use/openFiles';
+import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 
 export interface IUpdateCardEntity {
   title: string;

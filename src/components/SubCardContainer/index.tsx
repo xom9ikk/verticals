@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import React, {
   FC, useEffect, useMemo, useState,
 } from 'react';
@@ -5,16 +6,16 @@ import {
   Draggable, DroppableProvided, DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+
+import { MAX_SUB_TODO, NEW_SUB_TODO_ID } from '@/constants';
+import { SubTodoCard } from '@comp/Card/SubTodo';
+import { SubCardContainerToolbar } from '@comp/SubCardContainer/Toolbar';
 import {
   getActiveSubTodoId,
   getEditableSubCardId,
   getIsSearchMode,
 } from '@store/selectors';
-import cn from 'classnames';
-import { SubCardContainerToolbar } from '@comp/SubCardContainer/Toolbar';
-import { SubTodoCard } from '@comp/Card/SubTodo';
 import { EnumCardType, ID } from '@type/entities';
-import { MAX_SUB_TODO, NEW_SUB_TODO_ID } from '@/constants';
 
 interface ISubCardsContainer {
   dropSnapshot: DroppableStateSnapshot;

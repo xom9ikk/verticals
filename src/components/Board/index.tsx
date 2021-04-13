@@ -1,29 +1,30 @@
 /* eslint-disable no-nested-ternary */
+import useKeys from '@rooks/use-keys';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
+import cn from 'classnames';
 import React, {
   BaseSyntheticEvent,
   FC, useEffect, useMemo, useRef,
 } from 'react';
+import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { DraggableStateSnapshot } from 'react-beautiful-dnd';
-import useKeys from '@rooks/use-keys';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import cn from 'classnames';
-import { EnumCardType, IBoard } from '@type/entities';
-import { TextArea } from '@comp/TextArea';
+
+import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
+import { BoardContextMenu } from '@comp/Board/ContextMenu';
+import { BoardCounter } from '@comp/Board/Counter';
 import { RoundedButton } from '@comp/RoundedButton';
+import { TextArea } from '@comp/TextArea';
 import { BoardsActions, SystemActions } from '@store/actions';
+import { getBoardById, getIsSearchMode } from '@store/selectors';
+import { EnumCardType, IBoard } from '@type/entities';
+import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
+import { useEffectState } from '@use/effectState';
 import { useFocus } from '@use/focus';
 import { useNewValues } from '@use/newValues';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { useClickPreventionOnDoubleClick } from '@use/clickPreventionOnDoubleClick';
-import { getBoardById, getIsSearchMode } from '@store/selectors';
-import { BoardContextMenu } from '@comp/Board/ContextMenu';
-import { NEW_BOARD_ID, TRASH_BOARD_ID } from '@/constants';
-import { BoardCounter } from '@comp/Board/Counter';
-import { useEffectState } from '@use/effectState';
 import { useParamSelector } from '@use/paramSelector';
 import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 
 interface IBoardComponent {
   boardId: number;

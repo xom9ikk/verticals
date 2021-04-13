@@ -1,6 +1,6 @@
+import i18n from '@/i18n';
 import { useAlert } from '@use/alert';
 import { useFormat } from '@use/format';
-import i18n from '@/i18n';
 
 export const useFileList = () => {
   const { show, ALERT_TYPES } = useAlert();

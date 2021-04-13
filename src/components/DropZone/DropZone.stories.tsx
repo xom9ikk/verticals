@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { DropZone } from '@comp/DropZone';
 
 export default {

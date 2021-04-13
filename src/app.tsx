@@ -1,7 +1,7 @@
 import React, { FC, Suspense, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useDispatch } from 'react-redux';
 import ReactNotification from 'react-notifications-component';
+import { useDispatch } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 
 import 'swiper/swiper.scss';

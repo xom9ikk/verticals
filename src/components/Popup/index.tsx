@@ -1,7 +1,7 @@
+import cn from 'classnames';
 import React, {
   FC, MutableRefObject, useMemo, useState,
 } from 'react';
-import cn from 'classnames';
 import { createPortal } from 'react-dom';
 
 interface IPopup {

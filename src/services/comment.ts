@@ -1,5 +1,8 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { ICommentService } from '@inversify/interfaces/services';
 import { TYPES } from '@inversify/types';
 import {
   IAddCommentLikeRequest,
@@ -18,8 +21,6 @@ import {
   IUpdateCommentRequest,
   IUpdateCommentResponse,
 } from '@type/api';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { ICommentService } from '@inversify/interfaces/services';
 
 @injectable()
 export class CommentService implements ICommentService {

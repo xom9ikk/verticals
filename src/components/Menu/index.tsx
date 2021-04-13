@@ -1,15 +1,16 @@
+import useKeys from '@rooks/use-keys';
+import useOutsideClickRef from '@rooks/use-outside-click-ref';
 import React, {
   ReactComponentElement, ReactElement, SyntheticEvent, forwardRef, useMemo, useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { ControlButton } from '@comp/ControlButton';
+import { MenuItem } from '@comp/Menu/Item';
+import { SubMenu } from '@comp/Menu/Sub';
 import { Popup } from '@comp/Popup';
 import { SystemActions } from '@store/actions';
 import { getActivePopupId } from '@store/selectors';
-import { ControlButton } from '@comp/ControlButton';
-import useOutsideClickRef from '@rooks/use-outside-click-ref';
-import useKeys from '@rooks/use-keys';
-import { MenuItem } from '@comp/Menu/Item';
-import { SubMenu } from '@comp/Menu/Sub';
 
 interface IMenu {
   id: string;

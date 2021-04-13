@@ -1,6 +1,7 @@
-import { IComments } from '@type/entities';
 import { createReducer } from '@reduxjs/toolkit';
+
 import { CommentsActions } from '@store/actions';
+import { IComments } from '@type/entities';
 
 export const initialState: IComments = [];
 

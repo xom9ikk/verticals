@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
+
 import { HeadingsActions } from '@store/actions';
 import { EnumHeadingType, IHeadings } from '@type/entities';
 

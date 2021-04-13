@@ -1,12 +1,13 @@
 import React, { FC, useMemo } from 'react';
-import { EnumHeadingMode, Heading } from '@comp/Heading';
+import { DroppableProvided } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { NEW_HEADING_ID } from '@/constants';
+import { EnumHeadingMode, Heading } from '@comp/Heading';
+import { SystemActions } from '@store/actions';
 import { getEditableHeadingId, getHeadingPositionsByColumnId } from '@store/selectors';
 import { EnumCardType } from '@type/entities';
-import { NEW_HEADING_ID } from '@/constants';
-import { SystemActions } from '@store/actions';
 import { useParamSelector } from '@use/paramSelector';
-import { DroppableProvided } from 'react-beautiful-dnd';
 
 interface IHeadings {
   columnId: number;

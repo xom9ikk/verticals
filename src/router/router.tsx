@@ -1,5 +1,6 @@
-import { Redirect, Route, RouteProps } from 'react-router-dom';
 import React, { FC, useMemo } from 'react';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
+
 import { useAuthenticated } from '@use/authenticated';
 
 interface IRoutePropsWrapper extends RouteProps {

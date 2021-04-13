@@ -1,4 +1,5 @@
 import { PrepareAction, createAction } from '@reduxjs/toolkit';
+
 import {
   ISetAvatar,
   ISetAvatarRaw,

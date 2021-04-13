@@ -1,6 +1,7 @@
 import {
   EnumTodoStatus, IColor, ISubTodos,
 } from '@type/entities';
+
 import { IServerResponse } from './response';
 
 export type IGetAllSubTodosResponse = IServerResponse<{

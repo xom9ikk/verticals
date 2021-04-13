@@ -1,5 +1,8 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { IColumnService } from '@inversify/interfaces/services';
 import { TYPES } from '@inversify/types';
 import {
   ICreateColumnRequest, ICreateColumnResponse,
@@ -11,8 +14,6 @@ import {
   IUpdateColumnPositionRequest, IUpdateColumnPositionResponse,
   IUpdateColumnRequest, IUpdateColumnResponse,
 } from '@type/api';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { IColumnService } from '@inversify/interfaces/services';
 
 @injectable()
 export class ColumnService implements IColumnService {

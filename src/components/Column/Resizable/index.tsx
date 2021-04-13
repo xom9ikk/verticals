@@ -1,11 +1,12 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { EnumCardType, IColor } from '@type/entities';
+import { useDispatch } from 'react-redux';
+
 import { DEFAULT_COLUMN_WIDTH } from '@/constants';
 import { EnumColumnMode } from '@comp/Column';
 import { ColumnWide } from '@comp/Column/Wide';
 import { ColumnsActions } from '@store/actions';
+import { EnumCardType, IColor } from '@type/entities';
 import { useDebounce } from '@use/debounce';
 import { useResizable } from '@use/resizable';
 import { EnumScrollPosition, useScrollToRef } from '@use/scrollToRef';

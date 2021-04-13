@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
-import { IColor } from '@type/entities';
 import {
   DraggableProvided,
   DraggableStateSnapshot,
   DroppableProvided,
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
-import { getTodoPositionsByHeadingId } from '@store/selectors';
-import { useParamSelector } from '@use/paramSelector';
+
 import { CompactListView } from '@comp/CompactListView';
+import { getTodoPositionsByHeadingId } from '@store/selectors';
+import { IColor } from '@type/entities';
+import { useParamSelector } from '@use/paramSelector';
 
 interface IHeadingContextMenu {
   snapshot: DraggableStateSnapshot;

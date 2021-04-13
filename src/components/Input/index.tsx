@@ -1,5 +1,6 @@
-import React, { forwardRef } from 'react';
 import cn from 'classnames';
+import React, { forwardRef } from 'react';
+
 import { TextArea } from '@comp/TextArea';
 
 interface IInput {

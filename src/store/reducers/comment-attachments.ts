@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import uniqBy from 'lodash.uniqby';
-import { ICommentAttachments } from '@type/entities';
+
 import { CommentAttachmentsActions } from '@store/actions';
+import { ICommentAttachments } from '@type/entities';
 
 export const initialState: ICommentAttachments = [];
 

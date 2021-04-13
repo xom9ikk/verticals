@@ -1,4 +1,5 @@
 import { IUser } from '@type/entities';
+
 import { IServerResponse } from './response';
 
 export type IGetMeResponse = IServerResponse<IUser>;

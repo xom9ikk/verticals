@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-import { CommentAttachmentsActions } from '@store/actions';
 import { useDispatch } from 'react-redux';
+
+import { CardAttachmentsPreview } from '@comp/Card/Attachments/Preview';
+import { CommentAttachmentsActions } from '@store/actions';
 import {
   getCommentFileAttachmentsByTodoId,
   getCommentImageAttachmentsByTodoId,
@@ -8,7 +10,6 @@ import {
   getWidthByHeadingId,
 } from '@store/selectors';
 import { useParamSelector } from '@use/paramSelector';
-import { CardAttachmentsPreview } from '@comp/Card/Attachments/Preview';
 
 interface ITodoAttachmentsPreview {
   headingId: number;

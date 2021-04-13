@@ -1,15 +1,24 @@
 /* eslint-disable no-nested-ternary */
+import useKeys from '@rooks/use-keys';
 import React, {
   FC, useEffect, useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useParams } from 'react-router-dom';
-import useKeys from '@rooks/use-keys';
-import { RouteWrapper } from '@router/router';
-import { SettingsLayout } from '@layouts/Settings';
+
+import { TRASH_BOARD_ID } from '@/constants';
+import { Boards } from '@comp/Boards';
+import { Columns } from '@comp/Columns';
+import { DocumentTitle } from '@comp/DocumentTitle';
+import { Gallery } from '@comp/Gallery';
+import { Search } from '@comp/Search';
+import { Sidebar } from '@comp/Sidebar';
 import { SuspenseWrapper } from '@comp/SuspenseWrapper';
+import { SettingsLayout } from '@layouts/Settings';
 import { Account } from '@pages/settings/Account';
 import { Profile } from '@pages/settings/Profile';
+import { redirectTo } from '@router/history';
+import { RouteWrapper } from '@router/router';
 import {
   BoardsActions,
   ColumnsActions,
@@ -17,21 +26,13 @@ import {
   SystemActions,
   TodosActions, UpdatesActions, UserActions,
 } from '@store/actions';
-import { Sidebar } from '@comp/Sidebar';
-import { Search } from '@comp/Search';
-import { Boards } from '@comp/Boards';
-import { Columns } from '@comp/Columns';
-import { useReadableId } from '@use/readableId';
-import { redirectTo } from '@router/history';
 import {
   getActiveSubTodoId,
   getActiveTodoId,
   getUsername,
 } from '@store/selectors';
-import { TRASH_BOARD_ID } from '@/constants';
+import { useReadableId } from '@use/readableId';
 import { useValueRef } from '@use/valueRef';
-import { Gallery } from '@comp/Gallery';
-import { DocumentTitle } from '@comp/DocumentTitle';
 
 interface IMainLayoutURLParams {
   boardId?: string;

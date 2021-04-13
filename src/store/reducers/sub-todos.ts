@@ -1,8 +1,10 @@
+import { createReducer } from '@reduxjs/toolkit';
+
+import { SUB_TODO_ON_TOP, TEMP_ID } from '@/constants';
 import {
   ISubTodos,
 } from '@type/entities';
-import { createReducer } from '@reduxjs/toolkit';
-import { SUB_TODO_ON_TOP, TEMP_ID } from '@/constants';
+
 import { SubTodosActions } from '../actions';
 
 export const initialState: ISubTodos = {

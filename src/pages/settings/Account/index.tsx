@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import useWith from 'ramda/src/useWith';
+import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from '@comp/Button';
-import { SyncInput } from '@comp/SyncInput';
-import { getEmail } from '@store/selectors';
-import { AuthActions, UserActions } from '@store/actions';
-import validator from '@helpers/validator';
-import { Modal } from '@comp/Modal';
 import { Form } from '@comp/Form';
 import { Input } from '@comp/Input';
-import { useForm } from '@use/form';
+import { Modal } from '@comp/Modal';
+import { SyncInput } from '@comp/SyncInput';
+import validator from '@helpers/validator';
 import { validatorChangePasswordForm } from '@helpers/validator/form/changePassword';
-import { useTranslation } from 'react-i18next';
+import { AuthActions, UserActions } from '@store/actions';
+import { getEmail } from '@store/selectors';
+import { useForm } from '@use/form';
 
 interface IFormValidatedState {
   oldPassword: string;

@@ -1,7 +1,7 @@
-import { ColumnsActions } from '@store/actions';
-import { EnumColors } from '@type/entities';
 import { TEMP_ID } from '@/constants';
+import { ColumnsActions } from '@store/actions';
 import { ColumnsReducer, initialState } from '@store/reducers/columns';
+import { EnumColors } from '@type/entities';
 
 const mockColumns = [{
   id: 1,

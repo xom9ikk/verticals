@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
 import * as SentryReact from '@sentry/react';
-import { Integrations } from '@sentry/tracing';
 import SentryRRWeb from '@sentry/rrweb';
+import { Integrations } from '@sentry/tracing';
+import React, { FC } from 'react';
+
 import { ErrorFallback } from '@comp/ErrorFallback';
 
 SentryReact.init({

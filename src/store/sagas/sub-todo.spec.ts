@@ -1,10 +1,11 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { CommentsActions, SubTodosActions } from '@store/actions';
+
 import { SubTodoService } from '@services/sub-todo';
-import { EnumColors, EnumTodoStatus } from '@type/entities';
+import { CommentsActions, SubTodosActions } from '@store/actions';
 import { watchSubTodo } from '@store/sagas/sub-todo';
+import { EnumColors, EnumTodoStatus } from '@type/entities';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const subTodoService = new SubTodoService();

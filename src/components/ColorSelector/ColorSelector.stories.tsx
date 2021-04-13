@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ColorSelector } from '@comp/ColorSelector';
 import { colors } from '@type/entities';
 

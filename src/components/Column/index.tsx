@@ -1,13 +1,14 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IColumn } from '@type/entities';
-import { ColumnsActions } from '@store/actions';
-import { getBoardCardType, getColumnById, getIsSearchMode } from '@store/selectors';
+
+import { CardPopupWrapper } from '@comp/CardPopup/Wrapper';
 import { ColumnCompact } from '@comp/Column/Compact';
 import { ColumnResizable } from '@comp/Column/Resizable';
-import { useParamSelector } from '@use/paramSelector';
-import { CardPopupWrapper } from '@comp/CardPopup/Wrapper';
 import { DraggableOrDiv } from '@comp/DraggableWrapper';
+import { ColumnsActions } from '@store/actions';
+import { getBoardCardType, getColumnById, getIsSearchMode } from '@store/selectors';
+import { IColumn } from '@type/entities';
+import { useParamSelector } from '@use/paramSelector';
 
 export enum EnumColumnMode {
   Normal,

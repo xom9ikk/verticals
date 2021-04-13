@@ -1,7 +1,7 @@
-import { SubTodosActions } from '@store/actions';
-import { EnumColors, EnumTodoStatus } from '@type/entities';
 import { SUB_TODO_ON_TOP, TEMP_ID } from '@/constants';
+import { SubTodosActions } from '@store/actions';
 import { SubTodosReducer, initialState } from '@store/reducers/sub-todos';
+import { EnumColors, EnumTodoStatus } from '@type/entities';
 
 const mockSubTodos = [{
   id: 1,

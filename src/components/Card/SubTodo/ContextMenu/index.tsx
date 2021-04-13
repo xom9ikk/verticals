@@ -1,26 +1,27 @@
 import React, {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu } from '@comp/Menu';
+
 import { ColorPicker } from '@comp/ColorPicker';
+import { DatePicker } from '@comp/DatePicker';
+import { Divider } from '@comp/Divider';
+import { Menu } from '@comp/Menu';
 import { MenuItem } from '@comp/Menu/Item';
 import { SubMenu } from '@comp/Menu/Sub';
-import {
-  EnumTodoStatus, IColor,
-} from '@type/entities';
-import { Divider } from '@comp/Divider';
 import { CommentsActions, SubTodosActions, SystemActions } from '@store/actions';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { useReadableId } from '@use/readableId';
 import {
   getActiveBoardReadableId,
   getActivePopupId,
   getUsername,
 } from '@store/selectors';
+import {
+  EnumTodoStatus, IColor,
+} from '@type/entities';
 import { useOpenFiles } from '@use/openFiles';
-import { DatePicker } from '@comp/DatePicker';
-import { useTranslation } from 'react-i18next';
+import { useReadableId } from '@use/readableId';
 
 interface ISubTodoContextMenu {
   menuId: string;

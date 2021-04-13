@@ -1,8 +1,9 @@
-import { IRootState } from '@store/reducers';
 import { createSelector } from '@reduxjs/toolkit';
+
+import { IRootState } from '@store/reducers';
 import { getBoards } from '@store/selectors/boards';
-import { getTodos } from '@store/selectors/todos';
 import { getSubTodos } from '@store/selectors/sub-todos';
+import { getTodos } from '@store/selectors/todos';
 
 export const getIsLoadedBoards = (state: IRootState) => state.system.isLoadedBoards;
 export const getIsLoadedColumns = (state: IRootState) => state.system.isLoadedColumns;

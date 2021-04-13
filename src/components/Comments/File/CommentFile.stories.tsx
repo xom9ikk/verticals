@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { CommentFile } from '@comp/Comments/File/index';
 
 export default {

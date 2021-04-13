@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ColorPicker } from '@comp/ColorPicker';
 import { EnumColors } from '@type/entities';
 

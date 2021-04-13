@@ -1,11 +1,12 @@
 import React, {
   Reducer, useCallback, useEffect, useReducer, useRef,
 } from 'react';
+
 import { actions, resizableReducer } from '@use/resizable/reducer';
-import { getPositionFromMouseOrTouch } from '@use/resizable/utils';
 import {
   IResizableOption, IResizableState, directionMap, windowEvents,
 } from '@use/resizable/types';
+import { getPositionFromMouseOrTouch } from '@use/resizable/utils';
 
 export const useResizable = (option: IResizableOption) => {
   const ref = useRef<HTMLDivElement>(null);

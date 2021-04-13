@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { RoundedButton } from '@comp/RoundedButton';
 import { EnumColors } from '@type/entities';
 

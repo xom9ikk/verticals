@@ -1,8 +1,10 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, takeEvery, takeLatest,
 } from 'typed-redux-saga';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useAlert } from '@use/alert';
+
+import i18n from '@/i18n';
+import { ICommentAttachmentService } from '@inversify/interfaces/services';
 import { CommentAttachmentsActions } from '@store/actions';
 import {
   IFetchCommentAttachmentsBySubTodoId,
@@ -11,8 +13,7 @@ import {
   IUploadCommentAttachmentsFile,
   IUploadCommentAttachmentsFiles,
 } from '@type/actions';
-import i18n from '@/i18n';
-import { ICommentAttachmentService } from '@inversify/interfaces/services';
+import { useAlert } from '@use/alert';
 
 const { show, ALERT_TYPES } = useAlert();
 

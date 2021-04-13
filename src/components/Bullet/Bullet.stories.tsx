@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Bullet } from '@comp/Bullet/index';
 import { EnumCardType, EnumTodoStatus } from '@type/entities';
 

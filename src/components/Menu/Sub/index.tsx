@@ -1,6 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
-import { Popup } from '@comp/Popup';
+
 import { MenuItem } from '@comp/Menu/Item';
+import { Popup } from '@comp/Popup';
 
 interface ISubMenu {
   text: string;

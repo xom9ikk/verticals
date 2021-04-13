@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   DragDropContext,
   DropResult,
@@ -7,6 +6,8 @@ import {
   DroppableProvided,
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
+import { useDispatch } from 'react-redux';
+
 import {
   ColumnsActions,
   HeadingsActions,

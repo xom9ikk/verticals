@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
 import format from 'date-fns/format';
+import React, { FC } from 'react';
+
 import { ControlButton } from '@comp/ControlButton';
 
 interface IDatePickerTag {

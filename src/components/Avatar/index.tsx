@@ -1,7 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getAvatarUrl, getFullName } from '@store/selectors';
 import ReactTooltip from 'react-tooltip';
+
+import { getAvatarUrl, getFullName } from '@store/selectors';
 
 interface IAvatar {
   userAvatarUrl?: string | null

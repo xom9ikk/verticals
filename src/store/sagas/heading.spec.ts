@@ -1,10 +1,11 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { useAlert } from '@use/alert';
-import { HeadingsActions } from '@store/actions';
+
 import { HeadingService } from '@services/heading';
-import { EnumColors, EnumHeadingType } from '@type/entities';
+import { HeadingsActions } from '@store/actions';
 import { watchHeading } from '@store/sagas/heading';
+import { EnumColors, EnumHeadingType } from '@type/entities';
+import { useAlert } from '@use/alert';
 
 // @ts-ignore
 const headingService = new HeadingService();

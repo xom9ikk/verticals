@@ -1,5 +1,8 @@
 import { inject, injectable } from 'inversify';
+
 import 'reflect-metadata';
+import { IHttpClient } from '@inversify/interfaces/httpClient';
+import { IHeadingService } from '@inversify/interfaces/services';
 import { TYPES } from '@inversify/types';
 import {
   ICreateHeadingRequest, ICreateHeadingResponse,
@@ -10,8 +13,6 @@ import {
   IUpdateHeadingPositionRequest, IUpdateHeadingPositionResponse,
   IUpdateHeadingRequest, IUpdateHeadingResponse,
 } from '@type/api';
-import { IHttpClient } from '@inversify/interfaces/httpClient';
-import { IHeadingService } from '@inversify/interfaces/services';
 
 @injectable()
 export class HeadingService implements IHeadingService {

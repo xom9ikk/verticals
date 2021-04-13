@@ -2,19 +2,20 @@ import React, {
   BaseSyntheticEvent,
   FC, useEffect, useRef, useState,
 } from 'react';
-import { EnumCardType, EnumTodoStatus, IColor } from '@type/entities';
-import { Bullet } from '@comp/Bullet';
-import { DateBadge } from '@comp/DateBadge';
-import { TextArea } from '@comp/TextArea';
-import { CardPopupToolbar } from '@comp/CardPopup/Toolbar';
-import { TodoContextMenu } from '@comp/Card/Todo/ContextMenu';
 import { useTranslation } from 'react-i18next';
-import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
-import { useFocus } from '@use/focus';
-import { useEffectState } from '@use/effectState';
-import { useDebounce } from '@use/debounce';
-import { useNewValues } from '@use/newValues';
+
+import { Bullet } from '@comp/Bullet';
+import { TodoContextMenu } from '@comp/Card/Todo/ContextMenu';
+import { CardPopupToolbar } from '@comp/CardPopup/Toolbar';
+import { DateBadge } from '@comp/DateBadge';
 import { Loader } from '@comp/Loader';
+import { TextArea } from '@comp/TextArea';
+import { EnumCardType, EnumTodoStatus, IColor } from '@type/entities';
+import { useDebounce } from '@use/debounce';
+import { useEffectState } from '@use/effectState';
+import { useFocus } from '@use/focus';
+import { useNewValues } from '@use/newValues';
+import { useShiftEnterRestriction } from '@use/shiftEnterRestriction';
 
 interface ICardPopupHeader {
   cardId: number;
