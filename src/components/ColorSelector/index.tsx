@@ -11,17 +11,19 @@ export const ColorSelector: FC<IColorSelector> = ({
   color,
   isActive,
   onClick,
-}) => (
-  <button
-    className={cn('color-selector', {
-      'color-selector--active': isActive,
-    })}
-    style={{
+}) => {
+  const handleClick = () => onClick(color);
+
+  return (
+    <button
+      className={cn('color-selector', {
+        'color-selector--active': isActive,
+      })}
       // @ts-ignore
-      '--color-selector-background': color,
-    }}
-    onClick={() => onClick(color)}
-  >
-    { isActive && <img src="/assets/svg/menu/cross.svg" alt="cross" /> }
-  </button>
-);
+      style={{ '--color-selector-background': color }}
+      onClick={handleClick}
+    >
+      { isActive && <img src="/assets/svg/menu/cross.svg" alt="cross" /> }
+    </button>
+  );
+};

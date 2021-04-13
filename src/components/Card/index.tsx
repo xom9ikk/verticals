@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, {
   Dispatch,
-  FC, SetStateAction, useEffect, useRef, useState,
+  FC, SetStateAction, SyntheticEvent, useEffect, useRef, useState,
 } from 'react';
 import {
   DraggableProvided,
@@ -70,6 +70,17 @@ export const Card: FC<ICard> = ({
     }
   };
 
+  const handleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  const handleMouseUp = () => debouncePress(false);
+
+  const handleMouseDown = (event: SyntheticEvent) => {
+    if (!subCardComponent) {
+      event.stopPropagation();
+    }
+    debouncePress(true);
+  };
+
   const isTodoDragging = snapshot?.draggingOver?.includes('heading');
 
   useEffect(() => {
@@ -91,27 +102,19 @@ export const Card: FC<ICard> = ({
       {...provided?.draggableProps}
       {...provided?.dragHandleProps}
       className="card"
-      onMouseDown={(e) => {
-        if (!subCardComponent) {
-          e.stopPropagation();
-        }
-        debouncePress(true);
-      }}
-      onMouseUp={() => debouncePress(false)}
-      onClick={(e) => e.stopPropagation()}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onClick={handleClick}
     >
       <div
-        className={cn(
-          'card__color',
-          !isEditable ? colorClass : '',
+        className={cn('card__color', !isEditable ? colorClass : '',
           className, {
             'card__color--hovered': isHovering && !!subCardComponent,
             'card__color--editable': isEditable,
             'card__color--invert': invertColor,
             'card__color--pressed': isMouseDown || isActive,
             'card__color--dragging': isTodoDragging,
-          },
-        )}
+          })}
       >
         <div
           className={cn('card__content', {

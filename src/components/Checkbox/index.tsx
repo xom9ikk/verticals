@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 
 interface ICheckbox {
   isActive: boolean;
@@ -13,25 +13,27 @@ export const Checkbox: FC<ICheckbox> = ({
   onChange,
   size = 'small',
   style,
-}) => (
-  <div
-    className={`checkbox checkbox--${size}`}
-    style={style}
-    onClick={(e) => e.stopPropagation()}
-  >
-    <input
-      type="checkbox"
-      className="checkbox__input"
-      defaultChecked={isActive}
-      onChange={(e) => {
-        onChange(e);
-      }}
-    />
-    <div className={cn('checkbox__imitator', {
-      'checkbox__imitator--active': isActive,
-    })}
+}) => {
+  const handleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  return (
+    <div
+      className={`checkbox checkbox--${size}`}
+      style={style}
+      onClick={handleClick}
     >
-      <img src="/assets/svg/tick.svg" alt="tick" />
+      <input
+        type="checkbox"
+        className="checkbox__input"
+        defaultChecked={isActive}
+        onChange={onChange}
+      />
+      <div className={cn('checkbox__imitator', {
+        'checkbox__imitator--active': isActive,
+      })}
+      >
+        <img src="/assets/svg/tick.svg" alt="tick" />
+      </div>
     </div>
-  </div>
-);
+  );
+};

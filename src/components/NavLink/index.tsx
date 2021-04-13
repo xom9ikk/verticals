@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 import { Link, Route } from 'react-router-dom';
 
 interface INavLink {
@@ -28,29 +28,33 @@ export const NavLink: FC<INavLink> = ({
   isActive: getIsActive,
   children,
   ...rest
-}) => (
-  <Route
-    path={typeof to === 'object' ? to.pathname : to}
-    exact={exact}
-    strict={strict}
-    location={location}
-  >
-    {({ location: l, match }) => {
-      const isActive = !!(getIsActive ? getIsActive(match, l) : match);
-      return (
-        <Link
-          to={to}
-          className={cn(className, {
-            [activeClassName]: isActive,
-            [inactiveClassName]: !isActive,
-          })}
-          style={isActive ? { ...style, ...activeStyle } : style}
-          {...rest}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {typeof children === 'function' ? children(isActive) : children}
-        </Link>
-      );
-    }}
-  </Route>
-);
+}) => {
+  const handleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  return (
+    <Route
+      path={typeof to === 'object' ? to.pathname : to}
+      exact={exact}
+      strict={strict}
+      location={location}
+    >
+      {({ location: l, match }) => {
+        const isActive = !!(getIsActive ? getIsActive(match, l) : match);
+        return (
+          <Link
+            to={to}
+            className={cn(className, {
+              [activeClassName]: isActive,
+              [inactiveClassName]: !isActive,
+            })}
+            style={isActive ? { ...style, ...activeStyle } : style}
+            {...rest}
+            onClick={handleClick}
+          >
+            {typeof children === 'function' ? children(isActive) : children}
+          </Link>
+        );
+      }}
+    </Route>
+  );
+};

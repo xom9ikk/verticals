@@ -36,7 +36,6 @@ export default {
           effect="solid"
           multiline
           arrowColor="transparent"
-          overridePosition={({ left, top }) => ({ left, top })}
         />
         <Story />
       </>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_COLUMN_WIDTH } from '@/constants';
@@ -45,6 +45,8 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
   const [isShowFiles, setIsShowFiles] = useState<boolean>(false);
   const [isShowGallery, setIsShowGallery] = useState<boolean>(false);
 
+  const handleDoubleClick = (event: SyntheticEvent) => event.stopPropagation();
+
   const renderIcon = (
     count: number | undefined,
     name: string,
@@ -63,7 +65,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
     isTextable
     text={text}
     onClick={onClick}
-    onDoubleClick={(e) => e.stopPropagation()}
+    onDoubleClick={handleDoubleClick}
     isColored={isColored}
     isStopPropagation={false}
     style={{

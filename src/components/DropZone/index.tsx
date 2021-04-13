@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useFileList } from '@use/fileList';
@@ -38,6 +38,12 @@ export const DropZone: FC<IDropZone> = ({
     }
   };
 
+  const handleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  const handleDragLeave = () => {
+    setIsDrag(false);
+  };
+
   return (
     <div
       onDragEnter={handleDrag}
@@ -48,9 +54,7 @@ export const DropZone: FC<IDropZone> = ({
         className={cn('drop-zone__overlay', `drop-zone__overlay--${size}`, {
           'drop-zone__overlay--hidden': !isDrag,
         })}
-        onDragLeave={() => {
-          setIsDrag(false);
-        }}
+        onDragLeave={handleDragLeave}
       >
         <h3>{t('Drop files here')}</h3>
         <input
@@ -59,7 +63,7 @@ export const DropZone: FC<IDropZone> = ({
           multiple
           className="drop-zone__input"
           onDrop={handleDrop}
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleClick}
         />
       </div>
     </div>

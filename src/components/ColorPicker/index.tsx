@@ -16,14 +16,16 @@ export const ColorPicker: FC<IColorPicker> = ({ onPick, activeColor }) => {
           .filter((v) => Number.isFinite(v))
           .map((color, index) => {
             const isActive = activeColor === index;
+            const handleClick = () => {
+              onPick(isActive ? null : index);
+            };
+
             return (
               <ColorSelector
                 key={colors[Number(color)]}
                 color={colors[Number(color)]}
                 isActive={isActive}
-                onClick={() => {
-                  onPick(isActive ? null : index);
-                }}
+                onClick={handleClick}
               />
             );
           })

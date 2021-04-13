@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, {
   BaseSyntheticEvent,
-  FC, useEffect, useState,
+  FC, SyntheticEvent, useEffect, useState,
 } from 'react';
 import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
@@ -165,6 +165,16 @@ export const TodoCard: FC<ITodoCard> = ({
     dispatch(SystemActions.setEditableSubCardId(`${todoId}-${NEW_SUB_TODO_ID}`));
   };
 
+  const handleBlockClick = (event: SyntheticEvent) => !isEditable && handleClick(event);
+
+  const handleToggleDoubleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  const handleBlockDoubleClick = (event: SyntheticEvent) => {
+    if (!isEditable) {
+      handleDoubleClick(event);
+    }
+  };
+
   return (
     <Droppable
       droppableId={`todo-${todoId}`}
@@ -204,7 +214,7 @@ export const TodoCard: FC<ITodoCard> = ({
                 className={cn('card__block-wrapper', {
                   'card__block-wrapper--editable': isEditable,
                 })}
-                onClick={(e) => !isEditable && handleClick(e)}
+                onClick={handleBlockClick}
               >
                 {todoId !== NEW_TODO_ID && (
                 <Bullet
@@ -216,7 +226,7 @@ export const TodoCard: FC<ITodoCard> = ({
                 )}
                 <div
                   className="card__block"
-                  onDoubleClick={!isEditable ? handleDoubleClick : () => {}}
+                  onDoubleClick={handleBlockDoubleClick}
                 >
                   {isEditable ? (
                     <CardEditable
@@ -270,7 +280,7 @@ export const TodoCard: FC<ITodoCard> = ({
                           isInvertColor={isActive}
                           isTextable
                           onClick={handleClickSubcardButton}
-                          onDoubleClick={(e) => e.stopPropagation()}
+                          onDoubleClick={handleToggleDoubleClick}
                           isColored={isOpenSubCardList}
                           isStopPropagation={false}
                           style={{

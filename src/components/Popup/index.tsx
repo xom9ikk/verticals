@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, {
-  FC, MutableRefObject, useMemo, useState,
+  FC, MutableRefObject, SyntheticEvent, useMemo, useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -42,6 +42,8 @@ export const Popup: FC<IPopup> = ({
     clientHeight: 0,
   });
 
+  const handleClick = (event: SyntheticEvent) => event.stopPropagation();
+
   const popup = () => (
     <div
       className={cn('popup', {
@@ -49,8 +51,8 @@ export const Popup: FC<IPopup> = ({
         'popup--submenu': isSubMenu,
       })}
       style={style}
-      onClick={(e) => e.stopPropagation()}
-      onDoubleClick={(e) => e.stopPropagation()}
+      onClick={handleClick}
+      onDoubleClick={handleClick}
     >
       <div
         className={cn('popup__inner', {
@@ -131,7 +133,7 @@ export const Popup: FC<IPopup> = ({
 
     const content = (
       <div
-        ref={((el) => setObserved(el))}
+        ref={setObserved}
         style={wrapperStyle}
       >
         {popup()}

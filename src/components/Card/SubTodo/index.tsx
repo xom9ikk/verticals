@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, {
-  FC, useEffect,
+  FC, SyntheticEvent, useEffect,
 } from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -134,6 +134,14 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
     }));
   };
 
+  const handleBlockClick = (event: SyntheticEvent) => !isEditable && handleClick(event);
+
+  const handleBlockDoubleClick = (event: SyntheticEvent) => {
+    if (!isEditable) {
+      handleDoubleClick(event);
+    }
+  };
+
   return (
     <Card
       provided={provided}
@@ -145,81 +153,79 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
       isActive={isActive}
       onSaveFiles={saveFiles}
     >
-      {
-        (files, setFiles) => (
-          <div
-            className={cn('card__block-wrapper', {
-              'card__block-wrapper--editable': isEditable,
-            })}
-            onClick={(e) => !isEditable && handleClick(e)}
-          >
-            {subTodoId !== NEW_SUB_TODO_ID && (
+      {(files, setFiles) => (
+        <div
+          className={cn('card__block-wrapper', {
+            'card__block-wrapper--editable': isEditable,
+          })}
+          onClick={handleBlockClick}
+        >
+          {subTodoId !== NEW_SUB_TODO_ID && (
             <Bullet
               type={cardType}
               status={status}
               onChangeStatus={handleChangeStatus}
               style={{ marginTop: isEditable ? 9 : 10 }}
             />
-            )}
-            <div
-              className="card__block"
-              onDoubleClick={!isEditable ? handleDoubleClick : () => {}}
-            >
-              {isEditable ? (
-                <CardEditable
-                  belowId={belowId}
+          )}
+          <div
+            className="card__block"
+            onDoubleClick={handleBlockDoubleClick}
+          >
+            {isEditable ? (
+              <CardEditable
+                belowId={belowId}
+                title={title}
+                description={description}
+                expirationDate={expirationDate}
+                isNewCard={targetCardForTodoId === newCardForTodoId}
+                datePopupId={`sub-card-${subTodoId}`}
+                files={files}
+                onSetFiles={setFiles}
+                onSaveFiles={saveFiles}
+                onUpdateEntity={handleUpdateSubTodo}
+                onCreateEntity={handleCreateSubTodo}
+              />
+            ) : (
+              <div className="card__inner">
+                <SubTodoContextMenu
+                  menuId="sub-card"
+                  subTodoId={subTodoId}
                   title={title}
-                  description={description}
+                  todoId={todoId}
+                  isActive={isActive}
+                  isNotificationsEnabled={isNotificationsEnabled}
                   expirationDate={expirationDate}
-                  isNewCard={targetCardForTodoId === newCardForTodoId}
-                  datePopupId={`sub-card-${subTodoId}`}
-                  files={files}
-                  onSetFiles={setFiles}
-                  onSaveFiles={saveFiles}
-                  onUpdateEntity={handleUpdateSubTodo}
-                  onCreateEntity={handleCreateSubTodo}
+                  color={color}
+                  status={status}
+                  onStartEdit={handleDoubleClickUnwrapped}
+                  onChangeColor={handleColorPick}
                 />
-              ) : (
-                <div className="card__inner">
-                  <SubTodoContextMenu
-                    menuId="sub-card"
-                    subTodoId={subTodoId}
-                    title={title}
-                    todoId={todoId}
-                    isActive={isActive}
-                    isNotificationsEnabled={isNotificationsEnabled}
-                    expirationDate={expirationDate}
-                    color={color}
-                    status={status}
-                    onStartEdit={handleDoubleClickUnwrapped}
-                    onChangeColor={handleColorPick}
-                  />
-                  <div
-                    className={cn('card__title', {
-                      'card__title--cross-out': status === EnumTodoStatus.Canceled,
-                    })}
-                  >
-                    {title}
-                  </div>
-                  <DateBadge
-                    popupId={`sub-card-${subTodoId}`}
-                    date={expirationDate}
-                    onSelectDate={handleSelectDateAndUpdate}
-                  />
-                  <SubTodoAttachmentsPreview
-                    todoId={todoId}
-                    subTodoId={subTodoId}
-                    isActive={isActive}
-                    commentsCount={commentsCount}
-                    imagesCount={imagesCount}
-                    attachmentsCount={attachmentsCount}
-                  />
+                <div
+                  className={cn('card__title', {
+                    'card__title--cross-out': status === EnumTodoStatus.Canceled,
+                  })}
+                >
+                  {title}
                 </div>
-              )}
-            </div>
+                <DateBadge
+                  popupId={`sub-card-${subTodoId}`}
+                  date={expirationDate}
+                  onSelectDate={handleSelectDateAndUpdate}
+                />
+                <SubTodoAttachmentsPreview
+                  todoId={todoId}
+                  subTodoId={subTodoId}
+                  isActive={isActive}
+                  commentsCount={commentsCount}
+                  imagesCount={imagesCount}
+                  attachmentsCount={attachmentsCount}
+                />
+              </div>
+            )}
           </div>
-        )
-      }
+        </div>
+      )}
     </Card>
   );
 };

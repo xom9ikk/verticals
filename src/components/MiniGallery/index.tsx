@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, {
-  FC, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import SwiperCore, { Pagination } from 'swiper';
@@ -70,6 +70,13 @@ export const MiniGallery: FC<IMiniGallery> = ({
     swiperController?.slidePrev();
   };
 
+  const handleDoubleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  const handleSlideChange = (swiper: SwiperCore) => {
+    const newActiveIndex = swiper.activeIndex - 1;
+    setActiveIndex(newActiveIndex);
+  };
+
   const memoSwiper = useMemo(() => (images.length ? (
     <div className="mini-gallery__wrapper">
       <Swiper
@@ -84,10 +91,7 @@ export const MiniGallery: FC<IMiniGallery> = ({
           // @ts-ignore
         style={{ '--mini-gallery-width': `${width}px` }}
         onSwiper={setSwiperController}
-        onSlideChangeTransitionEnd={(swiper) => {
-          const newActiveIndex = swiper.activeIndex - 1;
-          setActiveIndex(newActiveIndex);
-        }}
+        onSlideChangeTransitionEnd={handleSlideChange}
       >
         {
           images.map((image) => (
@@ -110,7 +114,7 @@ export const MiniGallery: FC<IMiniGallery> = ({
         'mini-gallery--opened': !isCollapse,
       })}
       onClick={handleClick}
-      onDoubleClick={(e) => e.stopPropagation()}
+      onDoubleClick={handleDoubleClick}
     >
       { memoSwiper }
     </div>

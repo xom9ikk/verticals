@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import format from 'date-fns/format';
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, SyntheticEvent, useEffect, useMemo, useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -124,7 +124,20 @@ export const CommentItem: FC<ICommentItem> = ({
     }));
   };
 
-  console.log(isShowMore);
+  const handleDoubleClick = (event: SyntheticEvent) => event.stopPropagation();
+
+  const handleClickOnLikedUser = () => {
+    dispatch(SystemActions.setIsOpenProfile(true));
+  };
+
+  const handleReplyClick = () => handleMenuButtonClick(EnumMenuActions.Reply);
+
+  const handleLikeClick = () => handleMenuButtonClick(EnumMenuActions.Like);
+
+  const handleDoubleClickCapture = () => setIsDoubleClick(true);
+
+  const handleCompactClick = () => setIsShowMore(true);
+
   const memoAttachments = useMemo(() => (
     <div className="comment__attachments">
       {attachments
@@ -149,12 +162,10 @@ export const CommentItem: FC<ICommentItem> = ({
             />
           );
         })}
-      {
-        attachments.length > MAX_FILES_IN_COMMENT_PREVIEW
-        && !isShowMore && (
+      {attachments.length > MAX_FILES_IN_COMMENT_PREVIEW && !isShowMore && (
         <div
           className="comment-file comment-file--compact"
-          onClick={() => { setIsShowMore(true); }}
+          onClick={handleCompactClick}
         >
           <div className="comment-file__overlay" />
           <span className="comment-file__show-more">
@@ -163,8 +174,7 @@ export const CommentItem: FC<ICommentItem> = ({
             {t('more items...')}
           </span>
         </div>
-        )
-      }
+      )}
     </div>
   ), [t, attachments, isShowMore]);
 
@@ -175,8 +185,7 @@ export const CommentItem: FC<ICommentItem> = ({
           'comment__header--replied': replyCommentId,
         })}
       >
-        {
-          replyCommentId && (
+        {replyCommentId && (
           <>
             <div className="comment-form__reply--divider" />
             <div className="comment-form__reply--name">
@@ -186,18 +195,15 @@ export const CommentItem: FC<ICommentItem> = ({
               </span>
             </div>
           </>
-          )
-        }
+        )}
       </div>
-      {
-        text && (
-          <div
-            className="comment__text markdown"
-            onDoubleClick={(e) => e.stopPropagation()}
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
-          />
-        )
-      }
+      {text && (
+      <div
+        className="comment__text markdown"
+        onDoubleClick={handleDoubleClick}
+        dangerouslySetInnerHTML={{ __html: renderMarkdown(text) }}
+      />
+      )}
       { memoAttachments }
     </div>
   ), [
@@ -209,14 +215,10 @@ export const CommentItem: FC<ICommentItem> = ({
     text,
   ]);
 
-  const handleClickOnLikedUser = () => {
-    dispatch(SystemActions.setIsOpenProfile(true));
-  };
-
   return (
     <div
       className="comment"
-      onDoubleClickCapture={() => setIsDoubleClick(true)}
+      onDoubleClickCapture={handleDoubleClickCapture}
     >
       <Avatar />
       <div
@@ -235,7 +237,7 @@ export const CommentItem: FC<ICommentItem> = ({
               alt="like"
               imageSize={16}
               size={22}
-              onClick={() => handleMenuButtonClick(EnumMenuActions.Like)}
+              onClick={handleLikeClick}
             />
             <ControlButton
               imageSrc="/assets/svg/reply.svg"
@@ -243,36 +245,32 @@ export const CommentItem: FC<ICommentItem> = ({
               alt="reply"
               imageSize={16}
               size={22}
-              onClick={() => handleMenuButtonClick(EnumMenuActions.Reply)}
+              onClick={handleReplyClick}
             />
           </div>
           <div className="comment__controls--actions">
-            {
-              updatedAt !== createdAt ? (
-                <span>
-                  {t('Edited')}
-                  {' '}
-                  (
-                  {format(new Date(updatedAt!), 'dd MMM, hh:mm')}
-                  )&nbsp;·&nbsp;
-                </span>
-              ) : null
-            }
+            {updatedAt !== createdAt ? (
+              <span>
+                {t('Edited')}
+                {' '}
+                (
+                {format(new Date(updatedAt!), 'dd MMM, hh:mm')}
+                )&nbsp;·&nbsp;
+              </span>
+            ) : null}
             <div className="comment__date">{format(new Date(createdAt), 'dd MMM, hh:mm')}</div>
             <div className="comment__like-bubbles">
-              {
-                likedUsers && likedUsers?.length > 0 && likedUsers.map((user) => (
-                  <Avatar
-                    key={user.username}
-                    size={16}
-                    onClick={handleClickOnLikedUser}
-                    borderSize="small"
-                    style={{ marginLeft: -8, background: '#f7f7f7' }}
-                    userAvatarUrl={user.avatar}
-                    userFullName={`${user.name} ${user.surname}`}
-                  />
-                ))
-              }
+              {likedUsers && likedUsers?.length > 0 && likedUsers.map((user) => (
+                <Avatar
+                  key={user.username}
+                  size={16}
+                  onClick={handleClickOnLikedUser}
+                  borderSize="small"
+                  style={{ marginLeft: -8, background: '#f7f7f7' }}
+                  userAvatarUrl={user.avatar}
+                  userFullName={`${user.name} ${user.surname}`}
+                />
+              ))}
             </div>
             <Menu
               id={`comment-${id}`}

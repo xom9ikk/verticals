@@ -22,11 +22,15 @@ export const SubMenu: FC<ISubMenu> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const sourceRef = useRef<any>(null);
 
+  const handleMouseEnter = () => setIsOpen(true);
+
+  const handleMouseLeave = () => setIsOpen(false);
+
   return (
     <span
       ref={sourceRef}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Popup
         isOpen={isOpen}

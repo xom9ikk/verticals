@@ -60,6 +60,11 @@ export const Gallery: FC = () => {
     swiperController?.slidePrev();
   };
 
+  const handleSlideChange = (swiper: SwiperCore) => {
+    const newActiveIndex = swiper.activeIndex - 1;
+    setActiveIndex(newActiveIndex);
+  };
+
   const setBlur = (value: number) => {
     root!.style.filter = `blur(${value}px)`;
   };
@@ -84,18 +89,13 @@ export const Gallery: FC = () => {
           loop
           pagination={{ type: 'fraction' }}
           onSwiper={setSwiperController}
-          onSlideChangeTransitionEnd={(swiper) => {
-            const newActiveIndex = swiper.activeIndex - 1;
-            setActiveIndex(newActiveIndex);
-          }}
+          onSlideChangeTransitionEnd={handleSlideChange}
         >
-          {
-            images && images?.length > 0 && images.map((image) => (
-              <SwiperSlide key={image.path}>
-                <img src={image.path} alt={`${index + 1}`} />
-              </SwiperSlide>
-            ))
-          }
+          {images && images?.length > 0 && images.map((image) => (
+            <SwiperSlide key={image.path}>
+              <img src={image.path} alt={`${index + 1}`} />
+            </SwiperSlide>
+          ))}
         </Swiper>
         <button className="swiper-button-next" onClick={handleNext} />
         <button className="swiper-button-prev" onClick={handlePrev} />

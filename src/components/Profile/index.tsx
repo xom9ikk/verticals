@@ -71,6 +71,10 @@ export const Profile: FC<IProfile> = ({
     handleMenuButtonClick(EnumMenuActions.CopyLink);
   };
 
+  const handleClick = () => {
+    handleMenuButtonClick(EnumMenuActions.OpenProfile);
+  };
+
   const profile = useMemo(() => isOpenProfile && (
   <div className="profile__popup">
     <ControlButton
@@ -97,9 +101,7 @@ export const Profile: FC<IProfile> = ({
   return (
     <div className="profile">
       <Avatar
-        onClick={() => {
-          handleMenuButtonClick(EnumMenuActions.OpenProfile);
-        }}
+        onClick={handleClick}
       />
       <Menu
         id="profile"

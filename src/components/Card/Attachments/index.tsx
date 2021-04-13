@@ -21,28 +21,26 @@ export const CardAttachments: FC<ICardAttachments> = ({
     })}
     >
       <div className="card-attachments__inner">
-        {
-          files.map((file) => (
-            <button
-              key={file.path}
-              className="card-attachment"
-              onClick={(e) => {
-                e.stopPropagation();
-                download(file.path);
-              }}
-            >
-              <div className="comment-file__extension">
-                <img src="/assets/svg/extension.svg" alt="extension" />
-                <span>
-                  {file.extension.substring(0, 4)}
-                </span>
-              </div>
-              <span className="card-attachment__name">
-                {file.name}
+        {files.map((file) => (
+          <button
+            key={file.path}
+            className="card-attachment"
+            onClick={(event) => {
+              event.stopPropagation();
+              download(file.path);
+            }}
+          >
+            <div className="comment-file__extension">
+              <img src="/assets/svg/extension.svg" alt="extension" />
+              <span>
+                {file.extension.substring(0, 4)}
               </span>
-            </button>
-          ))
-        }
+            </div>
+            <span className="card-attachment__name">
+              {file.name}
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   );

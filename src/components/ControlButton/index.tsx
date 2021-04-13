@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, SyntheticEvent, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
 
 interface IControlButton {
@@ -58,6 +58,13 @@ const ControlButtonComponent = ({
     padding ${animationDuration}ms ease-in-out`,
   };
 
+  const handleClick = (event: SyntheticEvent) => {
+    if (isStopPropagation) {
+      event.stopPropagation();
+    }
+    onClick?.(event);
+  };
+
   useEffect(() => {
     if (tooltip) {
       ReactTooltip.rebuild();
@@ -77,12 +84,7 @@ const ControlButtonComponent = ({
         'control-button--colored': isColored,
         'control-button--textable': isTextable,
       })}
-      onClick={(e) => {
-        if (isStopPropagation) {
-          e.stopPropagation();
-        }
-        onClick?.(e);
-      }}
+      onClick={handleClick}
       onDoubleClick={onDoubleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

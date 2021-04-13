@@ -82,6 +82,8 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
     }
   };
 
+  const handleNewWorkspaceClick = () => handleMenuButtonClick(EnumToolbarActions.NewWorkspace);
+
   return (
     <div className="sidebar-toolbar">
       <div className="sidebar-toolbar__inner">
@@ -91,7 +93,7 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
           alt="add"
           tooltip={t('Soon. Stay tuned for updates in email')}
           isMaxWidth
-          onClick={() => handleMenuButtonClick(EnumToolbarActions.NewWorkspace)}
+          onClick={handleNewWorkspaceClick}
         />
         <Menu
           id="preferences"

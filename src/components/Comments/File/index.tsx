@@ -49,6 +49,8 @@ export const CommentFile: FC<ICommentFile> = ({
     }
   };
 
+  const handleClick = () => onRemove(id);
+
   return (
     <div
       className={cn('comment-file', {
@@ -79,7 +81,7 @@ export const CommentFile: FC<ICommentFile> = ({
           imageSize={22}
           size={24}
           isInvisible
-          onClick={() => onRemove(id)}
+          onClick={handleClick}
           style={{ position: 'absolute', right: 5, top: 5 }}
         />
         <div className={cn('comment-file__size', {
@@ -91,8 +93,7 @@ export const CommentFile: FC<ICommentFile> = ({
         </div>
       </div>
       <div className="comment-file__inner">
-        {
-          !isImage && (
+        {!isImage && (
           <div className="comment-file__info">
             <div className="comment-file__extension">
               <img src="/assets/svg/extension.svg" alt="extension" />
@@ -104,8 +105,7 @@ export const CommentFile: FC<ICommentFile> = ({
               {name}
             </div>
           </div>
-          )
-        }
+        )}
       </div>
     </div>
   );
