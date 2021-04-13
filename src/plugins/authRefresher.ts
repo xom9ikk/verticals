@@ -61,7 +61,11 @@ export class AuthRefresher<T extends string | IAxiosErrorRetry> {
         throw new Error();
       }
 
-      return await this.refreshTokens(ctx);
+      try {
+        return await this.refreshTokens(ctx);
+      } catch (e) {
+        this.retryRequest(ctx);
+      }
     } catch (e) {
       const errorMessage = error?.response?.data?.message || DEFAULT_ERROR_MESSAGE;
       return Promise.reject(errorMessage);
