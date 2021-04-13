@@ -6,7 +6,7 @@
     "start": "webpack serve --config ./build/webpack.dev.config.js",
     "i18n:extract": "i18next-scanner",
     "analyze": "node ./build/analyze.js",
-    "build": "webpack --config ./build/webpack.build.config.js",
+    "build": "webpack --config ./build/webpack.production.config.js",
     "ts:check": "npx tsc --pretty",
     "lint": "npm run ts:check && eslint --ext .js,.jsx,.ts,.tsx ./src",
     "lint:fix": "npm run ts:check && eslint --ext .js,.jsx,.ts,.tsx ./src --fix",

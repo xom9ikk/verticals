@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const chalk = require('chalk');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const webpackConfig = require('./webpack.build.config');
+const webpackConfig = require('./webpack.production.config');
 
 const green = (text) => chalk.green.bold(text);
 
