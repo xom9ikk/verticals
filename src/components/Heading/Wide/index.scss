@@ -10,6 +10,10 @@
     .heading-context-menu {
       opacity: 1;
     }
+
+    .add-card {
+      opacity: 1;
+    }
   }
 
   &--no-margin {
@@ -26,7 +30,11 @@
 
 
     &--editable {
-      box-shadow: 3px 3px 7px #eaeaea, -3px -3px 7px #f1f1f1;
+      box-shadow: 2px 2px 5px #eaeaea, -2px -2px 5px #f1f1f1;
+
+      .add-card {
+        display: none;
+      }
     }
 
     &--dragging {
@@ -50,18 +58,6 @@
 
       .card__textarea {
         background: $primary-light !important;
-      }
-    }
-
-    &--hovered {
-      background: $hover-color;
-
-      #{$block}__title-editable {
-        background: $hover-color;
-      }
-
-      #{$block}__description-editable {
-        background: $hover-color;
       }
     }
   }

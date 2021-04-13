@@ -13,6 +13,24 @@
     cursor: grab;
     transition: background .1s ease-out, border .2s ease-in-out;
 
+    &:before {
+      border-radius: 6px;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
+      transition: background .1s ease-out;
+    }
+
+    &:hover {
+      &:before {
+        background: $hover-color;
+      }
+    }
+
     &-container {
       display: flex;
       justify-content: space-between;
@@ -24,6 +42,14 @@
       margin: 3px 3px 0;
       padding: 4px 7px 0 5px;
       background: none;
+      &:before {
+        background: none !important;
+      }
+      &:hover {
+        &:before {
+          background: none !important;
+        }
+      }
     }
 
     &--new {

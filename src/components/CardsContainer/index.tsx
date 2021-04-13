@@ -59,6 +59,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
     <ControlButton
       imageSrc="/assets/svg/add.svg"
       alt="add"
+      className="add-card"
       text={t('Add card')}
       isInvisible
       style={{ margin: '1px 0' }}

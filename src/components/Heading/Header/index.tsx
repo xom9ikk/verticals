@@ -30,7 +30,6 @@ interface IHeadingHeader {
   isEditable: boolean;
   mode: EnumHeadingMode;
   type: EnumHeadingType;
-  onHover: (isHovered: boolean) => void;
   onClick: (e: React.SyntheticEvent) => void;
   onDoubleClick: (e: React.SyntheticEvent) => void;
 }
@@ -45,7 +44,6 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
   isEditable,
   mode,
   type,
-  onHover,
   onClick,
   onDoubleClick,
 }) => {
@@ -194,12 +192,10 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
       ref={headerRef}
       role="button"
       tabIndex={0}
-      className={cn('heading__header', colorClass, {
+      className={cn('heading__header', isEditable ? '' : colorClass, {
         'heading__header--editable': isEditable,
         'heading__header--new': isNewHeading,
       })}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       {...provided.dragHandleProps}

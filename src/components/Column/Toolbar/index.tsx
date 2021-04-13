@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { ControlButton } from '@comp/ControlButton';
 
 interface IColumnToolbar {
-  isEnabled: boolean;
+  isEnabled?: boolean;
   isInvisible: boolean;
   onAddCard: () => void;
   onAddHeading: () => void;
 }
 
 export const ColumnToolbar: FC<IColumnToolbar> = ({
-  isEnabled,
+  isEnabled = true,
   isInvisible,
   onAddCard,
   onAddHeading,

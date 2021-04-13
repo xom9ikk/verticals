@@ -6,13 +6,11 @@ import { DraggableProvided, DraggableStateSnapshot, Droppable } from 'react-beau
 import { useDispatch, useSelector } from 'react-redux';
 
 import { NEW_COLUMN_ID, NEW_HEADING_ID } from '@/constants';
-import { ArchiveContainer } from '@comp/ArchiveContainer';
 import { EnumColumnMode } from '@comp/Column';
+import { ColumnContent } from '@comp/Column/Content';
 import { ColumnContextMenu } from '@comp/Column/ContextMenu';
 import { ColumnHeader } from '@comp/Column/Header';
 import { ColumnToolbar } from '@comp/Column/Toolbar';
-import { DeletedCardsContainer } from '@comp/DeletedCardsContainer';
-import { Headings } from '@comp/Headings';
 import { SystemActions } from '@store/actions';
 import { getIsSearchMode } from '@store/selectors';
 import { EnumCardType, IColor } from '@type/entities';
@@ -53,11 +51,9 @@ export const ColumnWide: FC<IColumnWide> = ({
 
   const isSearchMode = useSelector(getIsSearchMode);
 
-  const handleColumnClick = (event: SyntheticEvent) => {
-    if (mode === EnumColumnMode.New) {
-      event.stopPropagation();
-      dispatch(SystemActions.setEditableColumnId(NEW_COLUMN_ID));
-    }
+  const handleAddColumn = (event: SyntheticEvent) => {
+    event.stopPropagation();
+    dispatch(SystemActions.setEditableColumnId(NEW_COLUMN_ID));
   };
 
   const handleAddCard = () => {
@@ -90,10 +86,17 @@ export const ColumnWide: FC<IColumnWide> = ({
     }
   }, []);
 
-  const memoNewColumn = useMemo(() => mode === EnumColumnMode.New && !isEditable && !isSearchMode && (
-  <span className="column__new-overlay">
-    <img src="/assets/svg/add.svg" alt="add" />
-  </span>
+  const memoNewColumn = useMemo(() => (
+    <div
+      className="column column--new"
+      onClick={handleAddColumn}
+    >
+      <div className="column__wrapper">
+        <span className="column__new-overlay">
+          <img src="/assets/svg/add.svg" alt="add" />
+        </span>
+      </div>
+    </div>
   ), [mode, isEditable, isSearchMode]);
 
   const memoResizer = useMemo(() => mode === EnumColumnMode.Normal && (
@@ -113,14 +116,12 @@ export const ColumnWide: FC<IColumnWide> = ({
     />
   ), [mode]);
 
-  return useMemo(() => (
+  const memoColumn = useMemo(() => (
     <div
       ref={provided.innerRef}
       className={cn('column', {
         'column--dragging': snapshot.isDragging,
-        'column--new': mode === EnumColumnMode.New,
       })}
-      onClick={handleColumnClick}
       {...provided.draggableProps}
     >
       <div
@@ -162,35 +163,20 @@ export const ColumnWide: FC<IColumnWide> = ({
                     onAddCard={handleAddCard}
                     onAddHeading={handleAddHeading}
                   />
-                  { mode !== EnumColumnMode.New && (
-                    <>
-                      {
-                        mode === EnumColumnMode.Deleted ? (
-                          <DeletedCardsContainer />
-                        ) : (
-                          <Headings
-                            dropProvided={dropProvided}
-                            columnId={columnId}
-                            cardType={cardType}
-                          />
-                        )
-                      }
-                      <ArchiveContainer
-                        columnId={columnId}
-                        cardType={cardType}
-                      />
-                    </>
-                  ) }
+                  <ColumnContent
+                    columnId={columnId}
+                    mode={mode}
+                    cardType={cardType}
+                    dropProvided={dropProvided}
+                  />
                 </>
                 {dropProvided.placeholder}
               </div>
             )}
           </Droppable>
         </div>
-        { memoNewColumn }
       </div>
       <ColumnToolbar
-        isEnabled={mode === EnumColumnMode.Normal && !isEditable}
         isInvisible
         onAddCard={handleAddCard}
         onAddHeading={handleAddHeading}
@@ -199,7 +185,15 @@ export const ColumnWide: FC<IColumnWide> = ({
     </div>
   ),
   [snapshot, provided, isEditable,
-    isSearchMode, boardId, columnId, belowId,
+    boardId, columnId, belowId,
     title, description, color, mode,
     cardType]);
+
+  return (
+    <>
+      {mode === EnumColumnMode.New && !isEditable && !isSearchMode
+        ? memoNewColumn
+        : memoColumn}
+    </>
+  );
 };

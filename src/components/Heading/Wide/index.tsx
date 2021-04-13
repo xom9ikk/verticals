@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, {
-  FC, SyntheticEvent, useEffect, useMemo, useRef, useState,
+  FC, SyntheticEvent, useEffect, useRef,
 } from 'react';
 import {
   DraggableProvided,
@@ -60,8 +60,6 @@ export const HeadingWide: FC<IHeadingWide> = ({
 
   const editableCardId = useSelector(getEditableCardId);
 
-  const [isHoverHeader, setIsHoverHeader] = useState<boolean>(false);
-
   const headingContainerRef = useRef<any>(null);
   const [scrollToRef, refForScroll] = useScrollToRef<HTMLDivElement>();
 
@@ -104,65 +102,59 @@ export const HeadingWide: FC<IHeadingWide> = ({
     }
   }, [isEditable]);
 
-  return useMemo(() => {
-    console.log('TODO: Heading redraw', isHoverHeader, !isEditable);
-    return (
+  return (
+    <div
+      ref={(ref) => {
+        provided.innerRef(ref);
+        refForScroll.current = ref;
+      }}
+      className={cn('heading', {
+        'heading--dragging': snapshot.isDragging,
+      })}
+      onClick={handleHeadingClick}
+      {...provided.draggableProps}
+    >
       <div
-        ref={(ref) => {
-          provided.innerRef(ref);
-          refForScroll.current = ref;
-        }}
-        className={cn('heading', {
-          'heading--dragging': snapshot.isDragging,
+        ref={headingContainerRef}
+        className={cn('heading__wrapper', {
+          'heading__wrapper--editable': isEditable,
+          'heading__wrapper--dragging': snapshot.isDragging,
         })}
-        onClick={handleHeadingClick}
-        {...provided.draggableProps}
       >
-        <div
-          ref={headingContainerRef}
-          className={cn('heading__wrapper', {
-            'heading__wrapper--editable': isEditable,
-            'heading__wrapper--dragging': snapshot.isDragging,
-            'heading__wrapper--hovered': isHoverHeader && !isEditable,
-          })}
-        >
-          <div className="heading__inner">
-            <div
-              ref={dropProvided.innerRef}
-              className={cn('heading__container', {
-                'heading__container--dragging-over': dropSnapshot.isDraggingOver && type !== EnumHeadingType.Default,
-              })}
-            >
-              <div>
-                {
-                  type !== EnumHeadingType.Default && (
-                  <>
-                    <HeadingHeader
-                      provided={provided}
-                      columnId={columnId}
-                      headingId={headingId}
-                      belowId={belowId}
-                      title={title}
-                      description={description}
-                      color={color}
-                      isEditable={isEditable}
-                      mode={mode}
-                      type={type}
-                      onHover={setIsHoverHeader}
-                      onClick={handleClick}
-                      onDoubleClick={handleDoubleClick}
-                    />
-                    <HeadingContextMenu
-                      isEnabled={mode === EnumHeadingMode.Normal}
-                      headingId={headingId}
-                      color={color}
-                      isHide={isEditable}
-                      onAddCard={handleAddCard}
-                    />
-                  </>
-                  )
-                }
-                { mode === EnumHeadingMode.Normal && (
+        <div className="heading__inner">
+          <div
+            ref={dropProvided.innerRef}
+            className={cn('heading__container', {
+              'heading__container--dragging-over': dropSnapshot.isDraggingOver && type !== EnumHeadingType.Default,
+            })}
+          >
+            <div>
+              {type !== EnumHeadingType.Default && (
+              <>
+                <HeadingHeader
+                  provided={provided}
+                  columnId={columnId}
+                  headingId={headingId}
+                  belowId={belowId}
+                  title={title}
+                  description={description}
+                  color={color}
+                  isEditable={isEditable}
+                  mode={mode}
+                  type={type}
+                  onClick={handleClick}
+                  onDoubleClick={handleDoubleClick}
+                />
+                <HeadingContextMenu
+                  isEnabled={mode === EnumHeadingMode.Normal}
+                  headingId={headingId}
+                  color={color}
+                  isHide={isEditable}
+                  onAddCard={handleAddCard}
+                />
+              </>
+              )}
+              {mode === EnumHeadingMode.Normal && (
                 <CardsContainer
                   headingId={headingId}
                   cardType={cardType}
@@ -170,22 +162,14 @@ export const HeadingWide: FC<IHeadingWide> = ({
                   type={type}
                   isOpenNewCard={editableCardId === `${headingId}-${NEW_TODO_ID}`}
                   dropSnapshot={dropSnapshot}
-                  isShowAddCardButton={isHoverHeader && !isEditable}
                   onAddCard={handleAddCard}
                 />
-                ) }
-              </div>
-              {dropProvided.placeholder}
+              )}
             </div>
+            {dropProvided.placeholder}
           </div>
         </div>
       </div>
-    );
-  },
-  [snapshot, provided, dropSnapshot, dropProvided,
-    isEditable, editableCardId,
-    isHoverHeader, type,
-    columnId, headingId, belowId,
-    title, description, color, mode,
-    cardType]);
+    </div>
+  );
 };
