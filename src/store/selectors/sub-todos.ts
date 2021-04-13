@@ -20,23 +20,3 @@ export const getSubTodoPositionsByTodoId = (
     return positions;
   },
 );
-// export const getCountSubTodosByColumnId = (columnId?: number) => createSelector(
-//   [getColumns, getHeadings, getSubTodos],
-//   (columns, headings, subTodos) => {
-//     const filteredHeadings = headings.entities.filter((heading) => heading.columnId === columnId);
-//     const headingIds = filteredHeadings.map((heading) => heading.id);
-//     const filteredSubTodos = subTodos.entities.filter((todo) => headingIds.includes(todo.headingId));
-//     return filteredSubTodos.length;
-//   },
-// );
-// export const getCountSubTodosByBoardId = (boardId: number | null) => createSelector(
-//   [getColumns, getHeadings, getSubTodos],
-//   (columns, headings, subTodos) => {
-//     const filteredColumns = columns.entities.filter((column) => column.boardId === boardId);
-//     const columnIds = filteredColumns.map((column) => column.id);
-//     const filteredHeadings = headings.entities.filter((heading) => columnIds.includes(heading.columnId));
-//     const headingIds = filteredHeadings.map((heading) => heading.id);
-//     const filteredSubTodos = subTodos.entities.filter((todo) => headingIds.includes(todo.headingId));
-//     return filteredSubTodos.length;
-//   },
-// );

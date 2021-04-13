@@ -64,56 +64,42 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
     />
   ), [todoId]);
 
-  useEffect(() => {
-    console.log('SubCardContainer mount');
-    return () => {
-      console.log('SubCardContainer unmount');
-    };
-  }, []);
-
   return (
     <div
       className={cn('sub-card-container', {
         'sub-card-container--collapse': !isOpen,
       })}
     >
-      {/* <Droppable */}
-      {/*  droppableId={`todo-${todoId}`} */}
-      {/*  type="SUBCARD" */}
-      {/* > */}
-      {/*  { */}
-      {/*    (dropProvided, dropSnapshot) => ( */}
       <div
         ref={dropProvided.innerRef}
         className={cn('sub-card-container__inner', {
           'sub-card-container__inner--dragging-over': dropSnapshot.isDraggingOver,
         })}
       >
-        {
-                subTodoPositions
-                  .slice(0, isCollapse ? MAX_SUB_TODO : subTodoPositions.length)
-                  .map((id, index) => (
-                    <Draggable
-                      key={id}
-                      draggableId={`subTodo-${id}`}
-                      index={index}
-                      isDragDisabled={isSearchMode}
-                    >
-                      {(dragProvided, dragSnapshot) => (
-                        <SubTodoCard
-                          cardType={cardType}
-                          provided={dragProvided}
-                          snapshot={dragSnapshot}
-                          key={id}
-                          subTodoId={id}
-                          isActive={activeSubTodoId === id}
-                          isEditable={id === editableSubCardId}
-                        />
-                      )}
-                    </Draggable>
-                  ))
-              }
-        {isOpenNewSubCard ? memoNewSubCard
+        {subTodoPositions
+          .slice(0, isCollapse ? MAX_SUB_TODO : subTodoPositions.length)
+          .map((id, index) => (
+            <Draggable
+              key={id}
+              draggableId={`subTodo-${id}`}
+              index={index}
+              isDragDisabled={isSearchMode}
+            >
+              {(dragProvided, dragSnapshot) => (
+                <SubTodoCard
+                  cardType={cardType}
+                  provided={dragProvided}
+                  snapshot={dragSnapshot}
+                  key={id}
+                  subTodoId={id}
+                  isActive={activeSubTodoId === id}
+                  isEditable={id === editableSubCardId}
+                />
+              )}
+            </Draggable>
+          ))}
+        {isOpenNewSubCard
+          ? memoNewSubCard
           : (
             <SubCardContainerToolbar
               isHide={dropSnapshot.isDraggingOver}
@@ -125,9 +111,6 @@ export const SubCardContainer: FC<ISubCardsContainer> = ({
           )}
         {dropProvided.placeholder}
       </div>
-      {/* ) */}
-      {/* } */}
-      {/* </Droppable> */}
     </div>
   );
 };

@@ -82,7 +82,6 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
   };
 
   const handleDoubleClickUnwrapped = () => {
-    // TODO: ???
     dispatch(SystemActions.setEditableSubCardId(subTodoId));
   };
 
@@ -94,7 +93,6 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
   const saveFiles = (attachedFiles: FileList | null) => {
     if (attachedFiles?.length) {
       dispatch(CommentsActions.effect.create({
-        // TODO
         subTodoId,
         text: '',
         files: attachedFiles,

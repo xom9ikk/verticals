@@ -19,7 +19,7 @@ export const CommentAttachmentsActions = {
     uploadFiles: createAction<IUploadCommentAttachmentsFiles>('COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILES'),
     uploadFile: createAction<PrepareAction<IUploadCommentAttachmentsFile>>(
       'COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILE',
-      (payload: IUploadCommentAttachmentsFileRaw) => { // TODO: move to saga?
+      (payload: IUploadCommentAttachmentsFileRaw) => {
         const { commentId, file } = payload;
         const formData = new FormData();
         formData.append(file.name, file);

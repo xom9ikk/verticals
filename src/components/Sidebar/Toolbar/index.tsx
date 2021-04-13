@@ -38,10 +38,9 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
   const getTickSvg = (menuLanguage: EnumLanguage) => (language === menuLanguage ? '/assets/svg/menu/tick.svg' : '');
 
   const handleMenuButtonClick = (action: EnumToolbarActions, payload?: any) => {
-    console.log('action', action);
     switch (action) {
       case EnumToolbarActions.NewWorkspace: {
-        // TODO:
+        // TODO: New workspace
         break;
       }
       case EnumToolbarActions.SwitchSidebar: {
@@ -64,11 +63,11 @@ export const Toolbar: FC<IToolbar> = ({ onChangeDisplaySidebar }) => {
         break;
       }
       case EnumToolbarActions.TermsOfService: {
-        // TODO:
+        // TODO: Link to terms of service
         break;
       }
       case EnumToolbarActions.PrivacyPolicy: {
-        // TODO:
+        // TODO: Link to privacy policy
         break;
       }
       case EnumToolbarActions.About: {

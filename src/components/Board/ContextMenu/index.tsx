@@ -13,6 +13,7 @@ import { SubMenu } from '@comp/Menu/Sub';
 import { ColumnsActions, BoardsActions, SystemActions } from '@store/actions';
 import { getUsername } from '@store/selectors';
 import { EnumCardType, IColor } from '@type/entities';
+import { useHostname } from '@use/hostname';
 import { useReadableId } from '@use/readableId';
 
 interface IBoardContextMenu {
@@ -40,6 +41,8 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
+  const hostname = useHostname();
+
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const username = useSelector(getUsername);
@@ -81,6 +84,10 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
       }
       default: break;
     }
+  };
+
+  const handleCopy = () => {
+    handleMenuButtonClick(EnumMenuActions.CopyLink);
   };
 
   return useMemo(() => (
@@ -150,6 +157,10 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
           {
             ICONS.map((filename) => {
               const link = `/assets/svg/board/${filename}.svg`;
+              const handleClick = () => {
+                dispatch(BoardsActions.effect.update({ id: boardId, icon: link }));
+              };
+
               return (
                 <ControlButton
                   key={filename}
@@ -157,9 +168,7 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
                   alt={filename}
                   imageSize={24}
                   size={36}
-                  onClick={() => {
-                    dispatch(BoardsActions.effect.update({ id: boardId, icon: link }));
-                  }}
+                  onClick={handleClick}
                 />
               );
             })
@@ -172,10 +181,8 @@ export const BoardContextMenu: FC<IBoardContextMenu> = ({
         action={EnumMenuActions.ReverseColumnOrder}
       />
       <CopyToClipboard
-        text={`verticals.xom9ik.com/${username}/${toReadableId(title, boardId!)}`} // TODO: move to env
-        onCopy={() => {
-          handleMenuButtonClick(EnumMenuActions.CopyLink);
-        }}
+        text={`${hostname}/${username}/${toReadableId(title, boardId!)}`}
+        onCopy={handleCopy}
       >
         <MenuItem
           text={isCopied ? t('Copied!') : t('Copy link')}

@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-// TODO: refactor
 @include font-face(
   $name: 'Nunito Extra Light',
   $path: '/assets/fonts/Nunito-ExtraLight',
@@ -12,6 +11,7 @@
   $style: normal,
   $locals: 'Nunito Extra Light',
 );
+
 @include font-face(
   $name: 'Nunito Light',
   $path: '/assets/fonts/Nunito-Light',
@@ -19,6 +19,7 @@
   $style: normal,
   $locals: 'Nunito Light',
 );
+
 @include font-face(
   $name: 'Nunito Regular',
   $path: '/assets/fonts/Nunito-Regular',
@@ -26,6 +27,7 @@
   $style: normal,
   $locals: 'Nunito Regular',
 );
+
 @include font-face(
   $name: 'Nunito Semi Bold',
   $path: '/assets/fonts/Nunito-SemiBold',
@@ -33,6 +35,7 @@
   $style: normal,
   $locals: 'Nunito Semi Bold',
 );
+
 @include font-face(
   $name: 'Nunito Bold',
   $path: '/assets/fonts/Nunito-Bold',
@@ -40,6 +43,7 @@
   $style: normal,
   $locals: 'Nunito Bold',
 );
+
 @include font-face(
   $name: 'Nunito Extra Bold',
   $path: '/assets/fonts/Nunito-ExtraBold',
@@ -47,54 +51,6 @@
   $style: normal,
   $locals: 'Nunito Extra Bold',
 );
-//
-//@font-face {
-//  font-family: 'Nunito Extra Light';
-//  src: url('/assets/fonts/Nunito-ExtraLight.woff2') format('woff2'),
-//  url('/assets/fonts/Nunito-ExtraLight.woff') format('woff');
-//  font-style: normal;
-//  font-weight: normal; // 100
-//}
-
-//@font-face {
-//  font-family: 'Nunito Light';
-//  src: url('/assets/fonts/Nunito-Light.woff2') format('woff2'),
-//  url('/assets/fonts/Nunito-Light.woff') format('woff');
-//  font-style: normal;
-//  font-weight: normal; // 200
-//}
-
-//@font-face {
-//  font-family: 'Nunito Regular';
-//  src: url('/assets/fonts/Nunito-Regular.woff2') format('woff2'),
-//  url('/assets/fonts/Nunito-Regular.woff') format('woff');
-//  font-style: normal;
-//  font-weight: normal; // 400
-//}
-
-//@font-face {
-//  font-family: 'Nunito Semi Bold';
-//  src: url('/assets/fonts/Nunito-SemiBold.woff2') format('woff2'),
-//  url('/assets/fonts/Nunito-SemiBold.woff') format('woff');
-//  font-style: normal;
-//  font-weight: normal; // 700
-//}
-
-//@font-face {
-//  font-family: 'Nunito Bold';
-//  src: url('/assets/fonts/Nunito-Bold.woff2') format('woff2'),
-//  url('/assets/fonts/Nunito-Bold.woff') format('woff');
-//  font-style: normal;
-//  font-weight: normal; // 800
-//}
-//
-//@font-face {
-//  font-family: 'Nunito Extra Bold';
-//  src: url('/assets/fonts/Nunito-ExtraBold.woff2') format('woff2'),
-//  url('/assets/fonts/Nunito-ExtraBold.woff') format('woff');
-//  font-style: normal;
-//  font-weight: normal; // 900
-//}
 
 body {
   font-family: 'Nunito Regular', 'Open Sans', sans-serif;

@@ -20,6 +20,7 @@ import {
 import {
   EnumTodoStatus, IColor,
 } from '@type/entities';
+import { useHostname } from '@use/hostname';
 import { useOpenFiles } from '@use/openFiles';
 import { useReadableId } from '@use/readableId';
 
@@ -77,6 +78,7 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const { openFiles } = useOpenFiles();
+  const hostname = useHostname();
 
   const username = useSelector(getUsername);
   const activeBoardReadableId = useSelector(getActiveBoardReadableId);
@@ -291,9 +293,9 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
             />,
             <CopyToClipboard
               key={7}
-              text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/subcard/${toReadableId(
+              text={`${hostname}/${username}/${activeBoardReadableId}/subcard/${toReadableId(
                 title, subTodoId,
-              )}`} // TODO: move to env
+              )}`}
               onCopy={handleCopy}
             >
               <MenuItem

@@ -20,6 +20,7 @@ import {
 import {
   EnumHeadingType, EnumTodoStatus, IColor, IHeading,
 } from '@type/entities';
+import { useHostname } from '@use/hostname';
 import { useOpenFiles } from '@use/openFiles';
 import { useParamSelector } from '@use/paramSelector';
 import { useReadableId } from '@use/readableId';
@@ -82,6 +83,7 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
   const dispatch = useDispatch();
   const { toReadableId } = useReadableId();
   const { openFiles } = useOpenFiles();
+  const hostname = useHostname();
 
   const username = useSelector(getUsername);
   const activePopupId = useSelector(getActivePopupId);
@@ -306,9 +308,9 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
       />,
       <CopyToClipboard
         key={9}
-        text={`verticals.xom9ik.com/${username}/${activeBoardReadableId}/card/${toReadableId(
+        text={`${hostname}/${username}/${activeBoardReadableId}/card/${toReadableId(
           title, todoId,
-        )}`} // TODO: move to env
+        )}`}
         onCopy={handleCopy}
       >
         <MenuItem

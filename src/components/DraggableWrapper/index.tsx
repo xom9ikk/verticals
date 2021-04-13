@@ -1,14 +1,22 @@
 import React, { FC } from 'react';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
-// @ts-ignore TODO
-const Div = ({ children }) => <div>{children({ innerRef: () => {} }, {})}</div>;
+interface IDiv {
+  children: any;
+}
+
 interface IDraggableComponent {
   index: number;
   draggableId: string;
   isDragDisabled: boolean;
   children: (p: DraggableProvided, s: DraggableStateSnapshot) => any
 }
+
+interface IDraggableComponent {
+  isDragDisabled: boolean;
+}
+
+const Div: FC<IDiv> = ({ children }) => <div>{children({ innerRef: () => {} }, {})}</div>;
 
 const DraggableComponent: FC<IDraggableComponent> = ({
   index,
@@ -24,10 +32,6 @@ const DraggableComponent: FC<IDraggableComponent> = ({
     {children}
   </Draggable>
 );
-
-interface IDraggableComponent {
-  isDragDisabled: boolean;
-}
 
 export const DraggableOrDiv: FC<IDraggableComponent> = React.memo(({
   isDragDisabled,

@@ -56,6 +56,7 @@ module.exports = {
     'import/first': 'error',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
+    'react/no-danger': 'off',
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-filename-extension': 'off',

@@ -11,6 +11,7 @@ import { MenuItem } from '@comp/Menu/Item';
 import { redirectTo } from '@router/history';
 import { SystemActions } from '@store/actions';
 import { getFullName, getIsOpenProfile, getUsername } from '@store/selectors';
+import { useHostname } from '@use/hostname';
 
 enum EnumMenuActions {
   OpenProfile,
@@ -28,6 +29,8 @@ export const Profile: FC<IProfile> = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const hostname = useHostname();
+
   const isOpenProfile = useSelector(getIsOpenProfile);
   const fullName = useSelector(getFullName);
   const username = useSelector(getUsername);
@@ -62,6 +65,10 @@ export const Profile: FC<IProfile> = ({
       }
       default: break;
     }
+  };
+
+  const handleCopy = () => {
+    handleMenuButtonClick(EnumMenuActions.CopyLink);
   };
 
   const profile = useMemo(() => isOpenProfile && (
@@ -123,10 +130,8 @@ export const Profile: FC<IProfile> = ({
           action={EnumMenuActions.AddBoard}
         />
         <CopyToClipboard
-          text={`verticals.xom9ik.com/${username}`} // TODO: move to env
-          onCopy={() => {
-            handleMenuButtonClick(EnumMenuActions.CopyLink);
-          }}
+          text={`${hostname}/${username}`}
+          onCopy={handleCopy}
         >
           <MenuItem
             text={isCopied ? t('Copied!') : t('Copy link')}

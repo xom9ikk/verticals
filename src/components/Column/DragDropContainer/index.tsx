@@ -104,7 +104,7 @@ export const ColumnsDragDropContainer: FC<IColumnsDragDropContainer> = ({
     if (type === 'SUBCARD') {
       const sourceTodoId = Number(source.droppableId.split('todo-')[1]);
 
-      // moving to same TODO list
+      // moving to same to do list
       const sourcePosition = source.index;
       const destinationPosition = destination.index;
       const targetTodoId = Number(destination.droppableId.split('todo-')[1]);

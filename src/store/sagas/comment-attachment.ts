@@ -53,7 +53,7 @@ function* uploadFilesWorker(
 ) {
   try {
     const { files, commentId } = action.payload;
-    for (let i = 0; i < files.length; i += 1) { // TODO: foreach?
+    for (let i = 0; i < files.length; i += 1) {
       const file = files[i];
       yield put(CommentAttachmentsActions.effect.uploadFile({
         commentId,
