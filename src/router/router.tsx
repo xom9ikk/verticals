@@ -26,7 +26,7 @@ const RedirectRoute: FC<IRoutePropsWrapper> = ({
   return useMemo(() => (isRedirect
     ? <Redirect to={{ pathname: redirectPath }} />
     : <Layout {...rest}><Component {...rest} /></Layout>),
-  [isRedirect]);
+  [isRedirect, redirectPath]);
 };
 
 export const RouteWrapper: FC<IRoutePropsWrapper> = ({
