@@ -75,7 +75,9 @@ module.exports = {
     }),
     new HTMLWebpackPlugin({
       title: 'Verticals — checklist with vertical separation',
-      description: 'Checklist with Vertical separation',
+      description: 'Using the beautiful and intuitive interface, ' +
+        'where there is nothing superfluous, it is very easy to organize your workspace for carrying out tasks. ' +
+        'Try it yourself!',
       favicon: path.resolve(PATHS.static, 'favicon.ico'),
       template: path.resolve(PATHS.static, 'index.html'),
       filename: 'index.html',
