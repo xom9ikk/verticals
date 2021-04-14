@@ -79,7 +79,7 @@ export const TodoCardPopup: FC<ITodoCardPopup> = ({
       dispatch(CommentsActions.effect.fetchByTodoId({ todoId: activeTodoId! }));
       dispatch(CommentAttachmentsActions.effect.fetchByTodoId({ todoId: activeTodoId! }));
     }
-  }, [activeTodoId]);
+  }, [activeTodoId, activeTodo, activeHeading]);
 
   return (
     <CardPopup

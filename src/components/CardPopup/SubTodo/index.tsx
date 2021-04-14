@@ -80,7 +80,7 @@ export const SubTodoCardPopup: FC<ISubTodoCardPopup> = ({
       dispatch(CommentsActions.effect.fetchBySubTodoId({ subTodoId: activeSubTodoId! }));
       dispatch(CommentAttachmentsActions.effect.fetchBySubTodoId({ subTodoId: activeSubTodoId! }));
     }
-  }, [activeSubTodoId]);
+  }, [activeSubTodoId, activeSubTodo, activeHeading]);
 
   return (
     <CardPopup
