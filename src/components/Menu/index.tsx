@@ -26,8 +26,6 @@ interface IMenu {
   isInvisible?: boolean;
   onClick?: (event: React.SyntheticEvent) => void;
   isMaxWidth?:boolean;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
   position?: 'top' | 'left' | 'right' | 'bottom' | 'normal';
   isAbsolute?: boolean;
   isInvertColor?: boolean;
@@ -52,8 +50,6 @@ const MenuComponent = ({
   isInvisible = false,
   onClick,
   isMaxWidth,
-  onMouseEnter,
-  onMouseLeave,
   position,
   isAbsolute = true,
   isInvertColor,
@@ -155,8 +151,6 @@ const MenuComponent = ({
       isStopPropagation={false}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
     />
   ), [
     buttonClassName, isHide, isMaxWidth,

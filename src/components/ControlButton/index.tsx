@@ -23,8 +23,6 @@ interface IControlButton {
   style?: React.CSSProperties;
   onClick?: (event: React.SyntheticEvent) => void;
   onDoubleClick?: (event: React.SyntheticEvent) => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 }
 
 const ControlButtonComponent = ({
@@ -48,8 +46,6 @@ const ControlButtonComponent = ({
   style,
   onClick,
   onDoubleClick,
-  onMouseEnter,
-  onMouseLeave,
 }: IControlButton, ref: any) => {
   const defaultTransition = {
     transition: `background ${animationDuration}ms ease-out, 
@@ -86,8 +82,6 @@ const ControlButtonComponent = ({
       })}
       onClick={handleClick}
       onDoubleClick={onDoubleClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       style={size ? {
         height: size, width: size, ...defaultTransition, ...style,
       } : { ...defaultTransition, ...style }}

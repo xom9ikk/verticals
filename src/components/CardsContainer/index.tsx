@@ -19,7 +19,6 @@ import {
   getTodoPositionsByHeadingId,
 } from '@store/selectors';
 import { EnumCardType, EnumHeadingType } from '@type/entities';
-import { useHover } from '@use/hover';
 import { useParamSelector } from '@use/paramSelector';
 
 interface ICardsContainer {
@@ -44,7 +43,6 @@ export const CardsContainer: FC<ICardsContainer> = ({
   onAddCard,
 }) => {
   const { t } = useTranslation();
-  const { isHovering, hoveringProps } = useHover();
 
   const activeTodoId = useSelector(getActiveTodoId);
   const isLoadedTodos = useSelector(getIsLoadedTodos);
@@ -72,12 +70,12 @@ export const CardsContainer: FC<ICardsContainer> = ({
           isInvisible
           style={style}
           isMaxWidth
-          isHoverBlock={isHovering || isShowAddCardButton || (type === EnumHeadingType.Default && todosCount === 0)}
+          isHoverBlock={isShowAddCardButton || (type === EnumHeadingType.Default && todosCount === 0)}
           onClick={onAddCard}
         />
       )
     );
-  }, [t, isHovering, isShowAddCardButton, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
+  }, [t, isShowAddCardButton, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
 
   const memoNewCard = useMemo(() => (
     <TodoCard
@@ -112,7 +110,7 @@ export const CardsContainer: FC<ICardsContainer> = ({
   [todoPositions, isSearchMode, cardType, activeTodoId, editableCardId]);
 
   return (
-    <div {...hoveringProps}>
+    <div>
       {memoTodoList}
       <FallbackLoader
         isAbsolute

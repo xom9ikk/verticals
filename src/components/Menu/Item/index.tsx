@@ -14,8 +14,6 @@ interface IMenuItem {
   onClick?: () => void;
   action?: number;
   payload?: any;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 }
 
 export const MenuItem: FC<IMenuItem> = ({
@@ -26,8 +24,6 @@ export const MenuItem: FC<IMenuItem> = ({
   isColoredHintImage,
   isAutoClose = true,
   onClick,
-  onMouseEnter,
-  onMouseLeave,
   children,
 }) => {
   const dispatch = useDispatch();
@@ -44,8 +40,6 @@ export const MenuItem: FC<IMenuItem> = ({
       type="button"
       className="menu-item"
       onClick={handleClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
     >
       <div className="menu-item__block">
         <div className="menu-item__row">

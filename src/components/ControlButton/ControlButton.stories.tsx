@@ -24,8 +24,6 @@ export default {
     isStopPropagation: { control: { type: 'boolean' }, defaultValue: false },
     onClick: { action: 'clicked' },
     onDoubleClick: { action: 'double clicked' },
-    onMouseEnter: { action: 'mouse enter' },
-    onMouseLeave: { action: 'mouse leave' },
   },
   decorators: [
     (Story: any) => (
