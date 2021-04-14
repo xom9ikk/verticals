@@ -11,8 +11,10 @@ interface IRoutePropsWrapper extends RouteProps {
   redirectPath?: string;
 }
 
+const DefaultComponent = () => <></>;
+
 const RedirectRoute: FC<IRoutePropsWrapper> = ({
-  component: Component = () => <></>,
+  component: Component = DefaultComponent,
   layout: Layout,
   isPrivate = false,
   isRedirectFromPublic = true,
@@ -26,7 +28,7 @@ const RedirectRoute: FC<IRoutePropsWrapper> = ({
   return useMemo(() => (isRedirect
     ? <Redirect to={{ pathname: redirectPath }} />
     : <Layout {...rest}><Component {...rest} /></Layout>),
-  [isRedirect, redirectPath]);
+  [Layout, Component, isRedirect, redirectPath, rest]);
 };
 
 export const RouteWrapper: FC<IRoutePropsWrapper> = ({

@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import useKeys from '@rooks/use-keys';
 import React, {
-  FC, useEffect, useMemo,
+  FC, Suspense, useEffect, useMemo,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useParams } from 'react-router-dom';
@@ -13,11 +13,8 @@ import { DocumentTitle } from '@comp/DocumentTitle';
 import { Gallery } from '@comp/Gallery';
 import { Search } from '@comp/Search';
 import { Sidebar } from '@comp/Sidebar';
-import { SuspenseWrapper } from '@comp/SuspenseWrapper';
-import { SettingsLayout } from '@layouts/Settings';
-import { Account } from '@pages/settings/Account';
-import { Profile } from '@pages/settings/Profile';
 import { redirectTo } from '@router/history';
+import { lazy } from '@router/lazy';
 import { RouteWrapper } from '@router/router';
 import {
   BoardsActions,
@@ -33,6 +30,10 @@ import {
 } from '@store/selectors';
 import { useReadableId } from '@use/readableId';
 import { useValueRef } from '@use/valueRef';
+
+const SettingsLayout = lazy(() => import('@layouts/Settings'), (module) => module.SettingsLayout);
+const Account = lazy(() => import('@pages/settings/Account'), (module) => module.Account);
+const Profile = lazy(() => import('@pages/settings/Profile'), (module) => module.Profile);
 
 interface IMainLayoutURLParams {
   boardId?: string;
@@ -136,26 +137,28 @@ export const MainLayout: FC = React.memo(() => {
   ), []);
 
   const memoRouter = useMemo(() => (
-    <Switch>
-      <RouteWrapper
-        path="/settings/account"
-        layout={SettingsLayout}
-        component={() => <SuspenseWrapper component={Account} />}
-        isPrivate
-        exact
-      />
-      <RouteWrapper
-        path="/settings/profile"
-        layout={SettingsLayout}
-        component={() => <SuspenseWrapper component={Profile} />}
-        isPrivate
-        exact
-      />
-      <Route
-        path="/"
-        component={Columns}
-      />
-    </Switch>
+    <Suspense fallback={<></>}>
+      <Switch>
+        <RouteWrapper
+          path="/settings/account"
+          layout={SettingsLayout}
+          component={Account}
+          isPrivate
+          exact
+        />
+        <RouteWrapper
+          path="/settings/profile"
+          layout={SettingsLayout}
+          component={Profile}
+          isPrivate
+          exact
+        />
+        <Route
+          path="/"
+          component={Columns}
+        />
+      </Switch>
+    </Suspense>
   ), []);
 
   const memoGallery = useMemo(() => <Gallery />, []);

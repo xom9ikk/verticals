@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, Suspense } from 'react';
 import {
   Router, Switch,
 } from 'react-router-dom';
 
-import { suspense } from '@comp/SuspenseWrapper';
 import { AuthLayout } from '@layouts/auth';
 import { NotFound } from '@pages/404';
 import { history } from '@router/history';
@@ -22,56 +21,58 @@ export const MainRouter: FC = () => {
 
   return (
     <Router history={history}>
-      <Switch>
-        <RouteWrapper
-          path="/auth/register"
-          layout={AuthLayout}
-          component={suspense(Register)}
-          redirectPath="/"
-          exact
-        />
-        <RouteWrapper
-          path="/auth/login"
-          layout={AuthLayout}
-          component={suspense(Login)}
-          redirectPath="/"
-          exact
-        />
-        <RouteWrapper
-          path="/auth/reset"
-          layout={AuthLayout}
-          component={suspense(Reset)}
-          redirectPath="/"
-          exact
-        />
-        {isAuthenticated
-          ? (
-            <RouteWrapper
-              path="/about"
-              layout={suspense(About)}
-              isPrivate
-              exact
-            />
-          )
-          : (
-            <RouteWrapper
-              path="/"
-              layout={suspense(About)}
-              isRedirectFromPublic={false}
-              exact
-            />
-          )}
-        <RouteWrapper
-          path="/:userId?/:boardId?/(card|subcard)?/:cardId?"
-          layout={suspense(MainLayout)}
-          isPrivate
-          redirectPath="/"
-        />
-        <RouteWrapper
-          layout={AuthLayout}
-          component={NotFound}
-        />
-      </Switch>
+      <Suspense fallback={<></>}>
+        <Switch>
+          <RouteWrapper
+            path="/auth/register"
+            layout={AuthLayout}
+            component={Register}
+            redirectPath="/"
+            exact
+          />
+          <RouteWrapper
+            path="/auth/login"
+            layout={AuthLayout}
+            component={Login}
+            redirectPath="/"
+            exact
+          />
+          <RouteWrapper
+            path="/auth/reset"
+            layout={AuthLayout}
+            component={Reset}
+            redirectPath="/"
+            exact
+          />
+          {isAuthenticated
+            ? (
+              <RouteWrapper
+                path="/about"
+                layout={About}
+                isPrivate
+                exact
+              />
+            )
+            : (
+              <RouteWrapper
+                path="/"
+                layout={About}
+                isRedirectFromPublic={false}
+                exact
+              />
+            )}
+          <RouteWrapper
+            path="/:userId?/:boardId?/(card|subcard)?/:cardId?"
+            layout={MainLayout}
+            isPrivate
+            redirectPath="/"
+          />
+          <RouteWrapper
+            layout={AuthLayout}
+            component={NotFound}
+          />
+        </Switch>
+      </Suspense>
     </Router>
   );
 };

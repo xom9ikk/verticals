@@ -1,13 +1,12 @@
 import cn from 'classnames';
 import React, {
-  FC, useMemo,
+  FC, Suspense, useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ControlButton } from '@comp/ControlButton';
 import { DropZone } from '@comp/DropZone';
-import { suspense } from '@comp/SuspenseWrapper';
 import { redirectTo } from '@router/history';
 import { lazy } from '@router/lazy';
 import {
@@ -81,7 +80,9 @@ export const CardPopup: FC<ICardPopup> = ({
             onClick={handleClose}
           />
           {children}
-          {suspense(CommentsWrapper)()}
+          <Suspense fallback={<></>}>
+            <CommentsWrapper />
+          </Suspense>
         </DropZone>
       </div>
       )}
