@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { FC, useMemo } from 'react';
+import React, { CSSProperties, FC, useMemo } from 'react';
 import {
   Draggable, DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
@@ -54,22 +54,30 @@ export const CardsContainer: FC<ICardsContainer> = ({
 
   const todosCount = todoPositions?.length;
 
-  const memoAddCard = useMemo(() => (
-    (mode !== EnumHeadingMode.New) && (
-    <ControlButton
-      imageSrc="/assets/svg/add.svg"
-      alt="add"
-      className="add-card"
-      text={t('Add card')}
-      isInvisible
-      style={{ margin: '1px 0' }}
-      isMaxWidth
-      isHoverBlock={!dropSnapshot.isDraggingOver
-        && (isHovering || isShowAddCardButton || (type === EnumHeadingType.Default && todosCount === 0))}
-      onClick={onAddCard}
-    />
-    )
-  ), [t, isHovering, isShowAddCardButton, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
+  const memoAddCard = useMemo(() => {
+    const style: CSSProperties = {
+      margin: '1px 0',
+    };
+    if (dropSnapshot.isDraggingOver) {
+      style.opacity = 0;
+      style.transition = 'unset';
+    }
+    return (
+      (mode !== EnumHeadingMode.New) && (
+        <ControlButton
+          imageSrc="/assets/svg/add.svg"
+          alt="add"
+          className="add-card"
+          text={t('Add card')}
+          isInvisible
+          style={style}
+          isMaxWidth
+          isHoverBlock={isHovering || isShowAddCardButton || (type === EnumHeadingType.Default && todosCount === 0)}
+          onClick={onAddCard}
+        />
+      )
+    );
+  }, [t, isHovering, isShowAddCardButton, dropSnapshot, isOpenNewCard, mode, type, todosCount]);
 
   const memoNewCard = useMemo(() => (
     <TodoCard
