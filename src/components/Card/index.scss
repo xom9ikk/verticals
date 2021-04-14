@@ -28,6 +28,7 @@
 
     &--hovered {
       background: $hover-color;
+
       #{$block}__content {
         background: transparent;
       }
@@ -42,6 +43,7 @@
         background: $white;
       }
     }
+
     &--pressed {
       background: $primary-light !important;
     }

@@ -7,6 +7,7 @@
   height: inherit;
   width: inherit;
   position: relative;
+
   &__overlay {
     display: flex;
     justify-content: center;
@@ -15,13 +16,16 @@
     background: rgba(255, 255, 255, 0.92);
     border: 2px dashed $primary;
     z-index: 2;
+
     h3 {
       color: #222222;
     }
+
     &--hidden {
       z-index: -1;
       opacity: 0;
     }
+
     &--large {
       border-radius: 13px;
       top: -4px;
@@ -30,10 +34,12 @@
       right: -4px;
       border: 2px dashed $primary;
       transition: opacity .2s ease-out;
+
       h3 {
         font-size: 18px;
       }
     }
+
     &--small {
       border-radius: 6px;
       top: -1px;
@@ -41,11 +47,13 @@
       left: 0;
       right: 0;
       border: 1px solid $primary;
+
       h3 {
         font-size: 14px;
       }
     }
   }
+
   &__input {
     position: absolute;
     width: 100%;

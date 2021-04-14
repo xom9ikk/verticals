@@ -27,6 +27,7 @@
     border-radius: 6px;
     transition: background .1s ease-out, box-shadow .3s ease-in-out, scale .5s ease-in-out;
     overflow-y: scroll;
+
     &::-webkit-scrollbar {
       width: 0;
     }

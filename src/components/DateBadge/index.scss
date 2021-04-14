@@ -16,6 +16,7 @@
   &:hover {
     background: $white;
     filter: none;
+
     img {
       filter: none;
     }
@@ -24,8 +25,10 @@
   &--yellow {
     background: #fee930 !important;
     color: $black;
+
     &:hover {
       filter: brightness(0.95);
+
       img {
         filter: grayscale(1) brightness(1.4);
       }
@@ -35,9 +38,11 @@
   &--red {
     background: #ff6a56 !important;
     color: $white;
+
     &:hover {
       filter: saturate(2);
     }
+
     img {
       filter: grayscale(1) brightness(3) !important;
     }

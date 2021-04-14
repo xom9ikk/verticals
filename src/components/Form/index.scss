@@ -2,24 +2,30 @@
   display: flex;
   align-items: center;
   flex: 1;
+
   &--center {
     justify-content: center;
   }
+
   &--right {
     justify-content: right;
   }
+
   &--left {
     justify-content: left;
   }
+
   &__inner {
     min-width: 280px;
     display: flex;
     align-items: center;
     flex-direction: column;
+
     &--max-width {
       width: 100%;
     }
   }
+
   &__title {
     color: $black;
     font-family: "Nunito Extra Bold", sans-serif;
@@ -27,18 +33,22 @@
     line-height: 50px;
     text-align: center;
   }
+
   &__subtitle {
     color: $text;
     font-size: 15px;
     text-align: center;
     margin-bottom: 32px;
   }
+
   .input {
     margin-bottom: 20px;
   }
+
   .button {
     margin-bottom: 20px;
   }
+
   a {
     margin-bottom: 20px;
   }

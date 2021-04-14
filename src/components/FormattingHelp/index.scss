@@ -14,25 +14,30 @@
     z-index: 2;
     overflow: scroll;
   }
+
   &__original {
     background: $hover-color;
     border-radius: 6px;
     max-width: 260px;
     min-width: 260px;
+
     div {
       padding: 7px 10px;
       font-size: 14px;
     }
   }
+
   &__result {
     background: $hover-color;
     border-radius: 6px;
     max-width: 300px;
     padding: 7px 10px;
   }
+
   &__title {
     font-size: 34px;
   }
+
   &__subtitle {
     font-size: 14px;
     color: $text;

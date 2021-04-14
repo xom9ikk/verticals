@@ -29,6 +29,7 @@
       height: 90%;
       margin-right: 5px;
     }
+
     &--name {
       font-size: 15px;
       color: $black;
@@ -36,6 +37,7 @@
       max-height: 40px;
       overflow: hidden;
     }
+
     &--text {
       font-size: 15px;
       color: $text-light;
@@ -60,6 +62,7 @@
         box-shadow: $primary-light 0 0 0 2px;
       }
     }
+
     &-inner {
       display: flex;
       align-items: center;

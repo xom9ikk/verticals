@@ -4,21 +4,25 @@
   transition: box-shadow .2s ease-in-out;
   cursor: pointer;
   object-fit: cover;
+
   &--small-border {
     &:hover {
       box-shadow: $primary-light 0 0 0 1px;
     }
   }
+
   &--medium-border {
     &:hover {
       box-shadow: $primary-light 0 0 0 2px;
     }
   }
+
   &--large-border {
     &:hover {
       box-shadow: $primary-light 0 0 0 3px;
     }
   }
+
   &--letter {
     display: flex;
     justify-content: center;

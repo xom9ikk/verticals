@@ -33,9 +33,11 @@
       margin: 3px;
       padding: 14px 9px 10px 7px;
       background: none;
+
       &:before {
         background: none !important;
       }
+
       &:hover {
         &:before {
           background: none !important;
@@ -47,6 +49,7 @@
       &:before {
         background: $hover-color;
       }
+
       .column-toolbar {
         opacity: 0;
       }

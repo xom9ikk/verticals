@@ -5,13 +5,16 @@
   align-items: center;
   overflow-y: scroll;
   margin-bottom: 20px;
+
   &::-webkit-scrollbar {
     width: 0;
     height: 0;
   }
+
   &--empty {
     justify-content: center;
     color: $text;
+
     img {
       filter: grayscale(1) brightness(1.4);
     }

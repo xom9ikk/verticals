@@ -10,6 +10,7 @@
   &:hover {
     box-shadow: $primary-light 0 0 0 2px;
   }
+
   &__input {
     position: absolute;
     opacity: 0;
@@ -21,6 +22,7 @@
     z-index: 1;
     cursor: pointer;
   }
+
   &__imitator {
     display: flex;
     width: inherit;
@@ -28,9 +30,11 @@
     border-radius: inherit;
     border: 1px solid $text-light;
     transition: box-shadow .1s ease-in-out, background .1s ease-in-out, border .1s ease-in-out;
+
     &:hover {
       box-shadow: $primary-light 0 0 0 2px;
     }
+
     img {
       opacity: 0;
       width: inherit;
@@ -39,36 +43,45 @@
       margin: -1px;
       transition: opacity .1s ease-in-out;
     }
+
     &--active {
       background: $primary;
       border: 1px solid $primary;
+
       &:hover {
         box-shadow: none;
       }
+
       img {
         opacity: 1;
       }
     }
   }
+
   &--active {
     background: $primary;
     border: 1px solid $primary;
+
     &:hover {
       box-shadow: none;
     }
+
     img {
       opacity: 1;
       transition: opacity .1s ease-in-out;
     }
   }
+
   &--small {
     width: 12px;
     height: 12px;
   }
+
   &--medium {
     width: 14px;
     height: 14px;
   }
+
   &--large {
     width: 18px;
     height: 18px;

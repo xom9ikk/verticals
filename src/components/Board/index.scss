@@ -55,6 +55,7 @@
     cursor: pointer;
     border-radius: 6px;
     border: none;
+
     img {
       max-height: 22px;
       max-width: 22px;
@@ -66,6 +67,7 @@
 
     .card__textarea {
       font-size: 16px;
+
       &--description {
         font-size: 15px;
       }

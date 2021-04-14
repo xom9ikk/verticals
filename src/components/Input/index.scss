@@ -1,15 +1,18 @@
 .input {
   width: 100%;
+
   &__wrapper {
     display: flex;
     flex-direction: column;
   }
+
   &__inner {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
+
   &__holder {
     width: 100%;
     position: relative;
@@ -25,6 +28,7 @@
     }
 
   }
+
   &__error {
     color: $danger;
     font-size: 14px;
@@ -32,11 +36,13 @@
     padding-top: 6px;
     transition: height .2s ease-in, opacity .2s ease-in;
     opacity: 0;
+
     &--open {
       height: 20px;
       opacity: 1;
     }
   }
+
   &__field {
     width: 100%;
     padding: 10px;
@@ -49,30 +55,38 @@
     box-shadow: rgb(218, 218, 218) 0 0 0 1px;
     caret-color: rgb(35, 135, 251);
     transition: box-shadow 0.2s ease 0s;
+
     &--light-border {
       box-shadow: rgba(33, 33, 33, 0.2) 0 0 2px;
     }
+
     &:focus {
       box-shadow: $primary-light 0 0 0 2px;
     }
+
     &--invalid {
       border-color: $danger !important;
     }
+
     &--valid {
       border-color: #ef0ef6 !important;
     }
+
     &--disabled {
       background: $hover-color;
       box-shadow: none;
       color: $text-light;
+
       &:focus {
         box-shadow: none;
       }
     }
+
     &::placeholder {
       color: $text-light;
     }
   }
+
   &__label {
     padding-top: 10px;
     font-size: 16px;
