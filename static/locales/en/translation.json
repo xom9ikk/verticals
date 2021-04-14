@@ -200,5 +200,17 @@
   "Heading removed successfully": "Heading removed successfully",
   "Heading updated successfully": "Heading updated successfully",
   "Heading position updated successfully": "Heading position updated successfully",
-  "Heading duplicated successfully": "Heading duplicated successfully"
+  "Heading duplicated successfully": "Heading duplicated successfully",
+  "Edit subcard": "Edit subcard",
+  "Add subcard below": "Add subcard below",
+  "Soon. Stay tuned for updates in email": "Soon. Stay tuned for updates in email",
+  "About": "About",
+  "Show {{count}} more...": "Show {{count}} more...",
+  "Show {{count}} more..._plural": "Show {{count}} more...",
+  "SubTodo": "SubTodo",
+  "SubTodo created successfully": "SubTodo created successfully",
+  "SubTodo removed successfully": "SubTodo removed successfully",
+  "SubTodo updated successfully": "SubTodo updated successfully",
+  "SubTodo position updated successfully": "SubTodo position updated successfully",
+  "SubTodo duplicated successfully": "SubTodo duplicated successfully"
 }
