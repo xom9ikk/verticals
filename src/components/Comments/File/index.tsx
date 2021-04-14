@@ -4,8 +4,6 @@ import React, { FC } from 'react';
 import { ControlButton } from '@comp/ControlButton';
 import { useDownload } from '@use/download';
 import { useFormat } from '@use/format';
-// import { SystemActions } from '@store/actions';
-// import { useDispatch } from 'react-redux';
 
 interface ICommentFile {
   id: number;
@@ -40,8 +38,6 @@ export const CommentFile: FC<ICommentFile> = ({
     console.log('download', path);
     download(path);
   };
-
-  // const dispatch = useDispatch();
 
   const handleOpenGallery = () => {
     if (isImage) {

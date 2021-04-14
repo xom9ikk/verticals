@@ -50,8 +50,6 @@ export const MainRouter: FC = () => {
               path="/about"
               layout={suspense(About)}
               isPrivate
-              // redirectPath="/"
-              // isRedirectFromPublic={false}
               exact
             />
           )

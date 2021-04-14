@@ -67,7 +67,7 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
     const normalizedTitleValue = titleValue.trim();
     const normalizedDescriptionValue = descriptionValue?.trim();
 
-    if (mode === EnumHeadingMode.Normal) { // && belowId === undefined
+    if (mode === EnumHeadingMode.Normal) {
       const isNew = isNewValues([title, normalizedTitleValue], [description, normalizedDescriptionValue]);
       if (normalizedTitleValue && isNew) {
         dispatch(HeadingsActions.effect.update({
@@ -80,7 +80,7 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
         setDescriptionValue(description);
       }
     }
-    if (mode === EnumHeadingMode.New) { // || belowId !== undefined
+    if (mode === EnumHeadingMode.New) {
       if (normalizedTitleValue) {
         dispatch(HeadingsActions.effect.create({
           title: normalizedTitleValue,
@@ -101,7 +101,6 @@ export const HeadingHeader: FC<IHeadingHeader> = ({
   };
 
   const handleEsc = () => {
-    // dispatch(SystemActions.setEditableHeadingId(null));
     saveHeadingHeader();
   };
 

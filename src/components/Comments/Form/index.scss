@@ -17,10 +17,11 @@
     max-height: 40px;
     height: 0;
     overflow: hidden;
-    //transition: height .1s ease-in-out;
+
     &--open {
       height: 100%;
     }
+
     &--divider {
       min-width: 2px;
       background: $primary;

@@ -93,7 +93,6 @@ describe('User saga flow', () => {
         }],
       ])
       .dispatch(UserActions.effect.uploadAvatar(payload))
-      // .apply(userService, userService.uploadAvatar, [{}])
       .put(UserActions.setAvatar(payload))
       .call(show, 'User', 'Avatar successfully uploaded', ALERT_TYPES.SUCCESS)
       .silentRun();

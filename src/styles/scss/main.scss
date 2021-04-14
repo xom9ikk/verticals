@@ -6,11 +6,6 @@
 @import '../../index';
 
 body {
-  //&::-webkit-scrollbar {
-  //  width: 0;
-  //}
-  //overflow: hidden;
-  //animation: rainbow 30s ease 1;
   ::selection {
     background: $primary-light;
   }

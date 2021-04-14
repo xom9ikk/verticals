@@ -69,9 +69,6 @@
     flex-wrap: unset;
     overflow-y: auto;
     margin-top: 5px;
-    //#{$block}__item:not(:last-child) {
-    //  border-bottom: 2px dashed $primary-light;
-    //}
 
     &::-webkit-scrollbar-thumb {
       border: 5px solid $white !important;

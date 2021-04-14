@@ -9,8 +9,8 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    saveMissing: false, // send not translated keys to endpoint
-    keySeparator: false, // we do not use keys in form messages.welcome
+    saveMissing: false,
+    keySeparator: false,
     interpolation: {
       escapeValue: false,
     },

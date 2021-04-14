@@ -26,7 +26,6 @@ export const MenuItem: FC<IMenuItem> = ({
   isColoredHintImage,
   isAutoClose = true,
   onClick,
-  // action,
   onMouseEnter,
   onMouseLeave,
   children,

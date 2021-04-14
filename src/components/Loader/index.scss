@@ -6,12 +6,10 @@
 
   .meter {
     fill: none;
-    //stroke-width: 2px;
     stroke-linecap: round;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
     stroke-dasharray: 360;
-    //stroke-dashoffset: 325;
     stroke: $primary;
   }
 

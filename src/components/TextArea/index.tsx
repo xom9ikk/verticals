@@ -97,14 +97,6 @@ const TextAreaComponent = ({
     }
   }, [value]);
 
-  // useEffect(() => {
-  //   if (ref) {
-  //     console.log('textAreaRef', textAreaRef.current);
-  //     // eslint-disable-next-line no-param-reassign
-  //     ref.current = ref.current;
-  //   }
-  // }, [textAreaRef]);
-
   return (
     <textarea
       {...attrs}

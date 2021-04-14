@@ -1,20 +1,13 @@
 .mini-gallery {
   $block: &;
 
-  //max-width: 215px;
   width: 100%;
   overflow: hidden;
   height: 0;
   position: relative;
-  //height: auto;
-
-  //&--opened {
-  //  margin-top: 5px;
-  //}
 
   &__wrapper {
     margin-top: 5px;
-    //max-width: 215px;
     border-radius: 6px;
     border: 2px solid transparent;
     overflow: hidden;
@@ -32,14 +25,9 @@
       width: auto !important;
     }
     &-wrapper {
-      //max-width: calc(100% - 70px);
       max-width: $column-width - 61;
-      //max-width: calc(var(--mini-gallery-width) - 70px);
       margin-bottom: -5px;
-      //margin-right: -5px;
       img {
-        //width: calc(100% - 70px + 2px);
-        //width: $column-width - 70 + 2;
         width: calc(var(--mini-gallery-width) - 61px + 2px);
       }
     }

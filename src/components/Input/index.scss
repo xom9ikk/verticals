@@ -72,13 +72,6 @@
     &::placeholder {
       color: $text-light;
     }
-    // test without it
-    //&:-ms-input-placeholder {
-    //  color: $text-light;
-    //}
-    //&::-ms-input-placeholder {
-    //  color: $text-light;
-    //}
   }
   &__label {
     padding-top: 10px;
@@ -87,6 +80,5 @@
     font-family: 'Nunito Bold', sans-serif;
     width: 150px;
     min-width: 150px;
-    //flex-basis: 30%;
   }
 }

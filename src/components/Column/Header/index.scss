@@ -30,12 +30,8 @@
     }
 
     &--editable {
-      //box-shadow: rgba(0, 0, 0, 0.20) 0 2px 6px;
-      //min-width: $column-width - 27;
-      //max-width: $column-width - 27;
       margin: 3px;
       padding: 14px 9px 10px 7px;
-      //border-radius: 6px;
       background: none;
       &:before {
         background: none !important;

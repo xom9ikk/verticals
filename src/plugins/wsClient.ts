@@ -58,7 +58,6 @@ export class WSClient implements IWSClient {
 
     this.instances[path].addEventListener('message', (event) => {
       const { channel, data } = JSON.parse(event.data);
-      // console.log('message', path, event, this.listeners);
       if (this.listeners?.[path]?.[channel]) {
         this.listeners[path][channel].forEach((callback) => {
           callback(data);
@@ -67,7 +66,7 @@ export class WSClient implements IWSClient {
     });
 
     this.instances[path].addEventListener('error', (event) => {
-      console.log('error', path, event);
+      console.error('error', path, event);
     });
 
     this.instances[path].addEventListener(
