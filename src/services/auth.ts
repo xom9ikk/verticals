@@ -23,7 +23,10 @@ export class AuthService implements IAuthService {
   }
 
   signUp(body: ISignUpRequest) {
-    return this.httpClient.post<ISignUpResponse>('/auth/register', body);
+    return this.httpClient.post<ISignUpResponse>('/auth/register', {
+      ...body,
+      isSetupDefaultBoard: true,
+    });
   }
 
   signIn(body: ISignInRequest) {
