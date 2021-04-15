@@ -19,7 +19,6 @@ interface ICardAttachmentsPreview {
   files: ICommentAttachments;
   columnWidth: number | null;
   attachmentFetcher: () => void;
-  isActive?: boolean;
   commentsCount?: number;
   imagesCount?: number;
   attachmentsCount?: number;
@@ -31,7 +30,6 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
   files,
   columnWidth,
   attachmentFetcher,
-  isActive,
   commentsCount,
   imagesCount,
   attachmentsCount,
@@ -61,7 +59,7 @@ export const CardAttachmentsPreview: FC<ICardAttachmentsPreview> = ({
     alt={name}
     imageSize={16}
     size={20}
-    isInvertColor={isActive}
+    isInvertColor={false}
     isTextable
     text={text}
     onClick={onClick}

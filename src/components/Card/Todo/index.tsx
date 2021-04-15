@@ -249,7 +249,7 @@ export const TodoCard: FC<ITodoCard> = ({
                         todoId={todoId}
                         title={title}
                         headingId={headingId}
-                        isActive={isActive}
+                        isActive={false}
                         isNotificationsEnabled={isNotificationsEnabled}
                         expirationDate={expirationDate}
                         color={color}
@@ -277,7 +277,7 @@ export const TodoCard: FC<ITodoCard> = ({
                             alt="sub-card"
                             imageSize={16}
                             size={20}
-                            isInvertColor={isActive}
+                            isInvertColor={false}
                             isTextable
                             onClick={handleClickSubcardButton}
                             onDoubleClick={handleToggleDoubleClick}
@@ -292,7 +292,6 @@ export const TodoCard: FC<ITodoCard> = ({
                       <TodoAttachmentsPreview
                         headingId={headingId}
                         todoId={todoId}
-                        isActive={isActive}
                         commentsCount={commentsCount}
                         imagesCount={imagesCount}
                         attachmentsCount={attachmentsCount}

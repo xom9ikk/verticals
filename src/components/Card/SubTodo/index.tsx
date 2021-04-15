@@ -193,7 +193,7 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
                   subTodoId={subTodoId}
                   title={title}
                   todoId={todoId}
-                  isActive={isActive}
+                  isActive={false}
                   isNotificationsEnabled={isNotificationsEnabled}
                   expirationDate={expirationDate}
                   color={color}
@@ -216,7 +216,6 @@ export const SubTodoCard: FC<ISubTodoCard> = ({
                 <SubTodoAttachmentsPreview
                   todoId={todoId}
                   subTodoId={subTodoId}
-                  isActive={isActive}
                   commentsCount={commentsCount}
                   imagesCount={imagesCount}
                   attachmentsCount={attachmentsCount}
