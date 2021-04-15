@@ -37,14 +37,10 @@
       }
     }
 
-    &--pressed {
-      background: $primary-light !important;
-    }
-
     &--dragging {
       background: $primary-light;
-      box-shadow: 10px 10px 30px rgba(210, 227, 253, 0.5),
-      -10px -10px 30px rgba(210, 227, 253, 0.3);
+      box-shadow: 5px 5px 15px rgba(210, 227, 253, 0.5),
+      -5px -5px 15px rgba(210, 227, 253, 0.3);
     }
 
     &--red {
@@ -94,6 +90,10 @@
         background: rgba(216, 216, 216, 0.15);
       }
     }
+
+    &--pressed {
+      background: $primary-light;
+    }
   }
 
   &__content {
@@ -112,13 +112,12 @@
       top: 0;
       bottom: 0;
       right: 0;
-      z-index: -1;
       transition: background .05s ease-out;
     }
 
     &:hover {
       &:before {
-        background: $hover-color;
+        background: $hover-color !important;
       }
     }
 
