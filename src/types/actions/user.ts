@@ -27,7 +27,6 @@ export interface ISetAvatar {
   readonly avatar: ISetAvatarRaw;
 }
 
-export type IUploadAvatarRaw = File;
 export type IUploadAvatar = FormData;
 
 export interface IUpdatePersonalData {

@@ -47,7 +47,7 @@ export const CardPopup: FC<ICardPopup> = ({
     redirectTo(`/${username}/${activeBoardReadableId}`);
   };
 
-  const handleDropFiles = (files: FileList) => {
+  const handleDropFiles = (files: FormData) => {
     dispatch(SystemActions.setDroppedFiles({
       type: EnumDroppedZoneType.CardPopup,
       files,

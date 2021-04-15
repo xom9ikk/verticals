@@ -1,4 +1,4 @@
-import { PrepareAction, createAction } from '@reduxjs/toolkit';
+import { createAction } from '@reduxjs/toolkit';
 
 import {
   IAddCommentAttachment,
@@ -7,7 +7,7 @@ import {
   IRemoveCommentAttachment,
   ISetCommentAttachments,
   IUploadCommentAttachmentsFile,
-  IUploadCommentAttachmentsFileRaw, IUploadCommentAttachmentsFiles,
+  IUploadCommentAttachmentsFiles,
 } from '@type/actions';
 
 export const CommentAttachmentsActions = {
@@ -17,20 +17,7 @@ export const CommentAttachmentsActions = {
       'COMMENT_ATTACHMENTS-EFFECT/FETCH_BY_SUB_TODO_ID',
     ),
     uploadFiles: createAction<IUploadCommentAttachmentsFiles>('COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILES'),
-    uploadFile: createAction<PrepareAction<IUploadCommentAttachmentsFile>>(
-      'COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILE',
-      (payload: IUploadCommentAttachmentsFileRaw) => {
-        const { commentId, file } = payload;
-        const formData = new FormData();
-        formData.append(file.name, file);
-        return {
-          payload: {
-            commentId,
-            file: formData,
-          },
-        };
-      },
-    ),
+    uploadFile: createAction<IUploadCommentAttachmentsFile>('COMMENT_ATTACHMENTS-EFFECT/UPLOAD_FILE'),
     remove: createAction<IRemoveCommentAttachment>('COMMENT_ATTACHMENTS-EFFECT/REMOVE'),
   },
   merge: createAction<ISetCommentAttachments>('COMMENT_ATTACHMENTS/MERGE'),

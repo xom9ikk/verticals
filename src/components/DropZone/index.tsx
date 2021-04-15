@@ -2,12 +2,12 @@ import cn from 'classnames';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useFileList } from '@use/fileList';
+import { useFormData } from '@use/formData';
 
 const MAX_FILE_SIZE = Number(process.env.MAX_FILE_SIZE);
 
 interface IDropZone {
-  onOpen: (files: FileList) => void;
+  onOpen: (files: FormData) => void;
   size?: 'small' | 'large';
   accept?: string;
 }
@@ -19,23 +19,17 @@ export const DropZone: FC<IDropZone> = ({
   children,
 }) => {
   const { t } = useTranslation();
-  const { restrictFileSize } = useFileList();
+  const { restrictFileSize } = useFormData();
   const [isDrag, setIsDrag] = useState<boolean>(false);
 
   const handleDrop = (event: any) => {
-    const filteredFiles = restrictFileSize(event.dataTransfer.files, MAX_FILE_SIZE);
-    onOpen(filteredFiles!);
+    const formData = restrictFileSize(event.dataTransfer.files, MAX_FILE_SIZE);
+    onOpen(formData);
     setIsDrag(false);
   };
 
-  const handleDrag = (event: React.DragEvent) => {
-    if (event?.dataTransfer?.items?.length) {
-      const items = [...event?.dataTransfer?.items];
-      const isContainsFile = items.some((item) => item.kind === 'file');
-      if (isContainsFile) {
-        setIsDrag(true);
-      }
-    }
+  const handleDrag = () => {
+    setIsDrag(true);
   };
 
   const handleClick = (event: SyntheticEvent) => event.stopPropagation();

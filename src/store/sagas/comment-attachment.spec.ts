@@ -83,9 +83,12 @@ describe('Comment attachment saga flow', () => {
       .silentRun();
   });
   it('upload file', () => {
+    const file = new FormData();
+    file.append('key', 'value');
+
     const payload = {
       commentId: mockAttachment.commentId,
-      file: { name: '1.zip' },
+      file,
     };
 
     return expectSaga(watchCommentAttachment, commentAttachmentService)

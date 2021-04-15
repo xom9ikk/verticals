@@ -8,7 +8,7 @@ import { TodoComments } from '@comp/Comments/Todo';
 export interface ICreateCommentData {
   readonly text: string;
   readonly replyCommentId?: number;
-  readonly files?: FileList | null;
+  readonly files?: FormData;
 }
 
 export const CommentsWrapper: FC = () => (

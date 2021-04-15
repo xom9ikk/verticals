@@ -99,11 +99,11 @@ export const TodoContextMenu: FC<ITodoContextMenu> = ({
   const menuButtonRef = useRef<any>();
 
   const handleUploadFiles = async () => {
-    const openedFiles = await openFiles('*', true);
+    const formData = await openFiles('*', true);
     dispatch(CommentsActions.effect.create({
       todoId: todoId!,
       text: '',
-      files: openedFiles,
+      files: formData,
     }));
   };
 

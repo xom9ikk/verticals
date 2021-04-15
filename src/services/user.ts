@@ -29,7 +29,6 @@ export class UserService implements IUserService {
   }
 
   uploadAvatar(body: IUploadUserAvatarRequest) {
-    console.log('body', body);
     return this.httpClient.post<IUploadUserAvatarResponse>('/user/avatar', body, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });

@@ -48,8 +48,8 @@ export const Profile: FC = () => {
   );
 
   const handleClick = async () => {
-    const [file] = await openFiles('image/x-png,image/jpeg', false) || [];
-    dispatch(UserActions.effect.uploadAvatar(file));
+    const formData = await openFiles('image/x-png,image/jpeg', false) || [];
+    dispatch(UserActions.effect.uploadAvatar(formData));
   };
 
   const handleDelete = (event: React.SyntheticEvent) => {

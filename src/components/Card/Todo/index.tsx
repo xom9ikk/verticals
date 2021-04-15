@@ -112,12 +112,12 @@ export const TodoCard: FC<ITodoCard> = ({
     handleDoubleClick,
   } = useClickPreventionOnDoubleClick(handleClickUnwrapped, handleDoubleClickUnwrapped, isEditable);
 
-  const saveFiles = (attachedFiles: FileList | null) => {
-    if (attachedFiles?.length) {
+  const saveFiles = (attachedFormData: FormData) => {
+    if (!attachedFormData.entries().next().done) {
       dispatch(CommentsActions.effect.create({
         todoId,
         text: '',
-        files: attachedFiles,
+        files: attachedFormData,
       }));
     }
   };

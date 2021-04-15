@@ -42,7 +42,7 @@ export interface ISystem {
   readonly activeSubTodoReadableId: string | null;
   readonly droppedFiles: {
     type: EnumDroppedZoneType;
-    files: FileList;
+    files: FormData;
   } | null;
   readonly galleryImagesInfo: {
     images: ICommentAttachments | null;

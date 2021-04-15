@@ -13,13 +13,9 @@ export type IAddCommentAttachment = ICommentAttachment;
 
 export interface IUploadCommentAttachmentsFiles {
   readonly commentId: number;
-  readonly files: FileList;
+  readonly files: FormData;
 }
 
-export interface IUploadCommentAttachmentsFileRaw {
-  readonly commentId: number;
-  readonly file: File;
-}
 export interface IUploadCommentAttachmentsFile {
   readonly commentId: number;
   readonly file: FormData;

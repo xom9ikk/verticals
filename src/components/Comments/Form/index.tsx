@@ -16,8 +16,8 @@ import {
   getCommentById, getDroppedFiles, getEditCommentId, getFullName, getReplyCommentId,
 } from '@store/selectors';
 import { EnumDroppedZoneType } from '@type/entities';
-import { useFileList } from '@use/fileList';
 import { useFocus } from '@use/focus';
+import { useFormData } from '@use/formData';
 import { useOpenFiles } from '@use/openFiles';
 import { useParamSelector } from '@use/paramSelector';
 
@@ -38,7 +38,7 @@ export const CommentForm: FC<ICommentForm> = ({
   const dispatch = useDispatch();
   const { focus } = useFocus();
   const { openFiles } = useOpenFiles();
-  const { merge, filter } = useFileList();
+  const { merge, filter } = useFormData();
   const commentInputRef = useRef<any>();
 
   const fullName = useSelector(getFullName);
@@ -50,7 +50,7 @@ export const CommentForm: FC<ICommentForm> = ({
 
   const [commentText, setCommentText] = useState<string>('');
   const [shiftPressed, setShiftPressed] = useState<boolean>();
-  const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
+  const [files, setFiles] = useState<FormData>(new FormData());
 
   useEffect(() => {
     setCommentText(commentForEdit?.text || '');
@@ -82,7 +82,7 @@ export const CommentForm: FC<ICommentForm> = ({
         }));
       }
       dispatch(SystemActions.setEditCommentId(null));
-    } else if (files?.length || commentText) {
+    } else if (!files.entries().next().done || commentText) {
       onCreate({
         text: commentText,
         replyCommentId: replyCommentId || undefined,
@@ -90,7 +90,7 @@ export const CommentForm: FC<ICommentForm> = ({
       });
       dispatch(SystemActions.setReplyCommentId(null));
     }
-    setFiles(null);
+    setFiles(new FormData());
     setCommentText('');
   };
 
@@ -137,7 +137,7 @@ export const CommentForm: FC<ICommentForm> = ({
     dispatch(SystemActions.setIsOpenFormattingHelp(true));
   };
 
-  const isAvailableSend = commentText?.length || files?.length;
+  const isAvailableSend = commentText?.length || !files.entries().next().done;
 
   const handleOutsideClick = () => {
     dispatch(SystemActions.setEditCommentId(null));

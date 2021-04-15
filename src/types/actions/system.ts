@@ -23,7 +23,7 @@ export type ISetSystemActiveTodoReadableId = string | null;
 export type ISetSystemActiveSubTodoReadableId = string | null;
 export type ISetSystemDroppedFiles = {
   readonly type: EnumDroppedZoneType;
-  readonly files: FileList;
+  readonly files: FormData;
 } | null;
 export type ISetGalleryImagesInfo = {
   readonly images: ICommentAttachments | null;

@@ -16,7 +16,7 @@ export interface ICreateSubTodo {
   readonly status?: EnumTodoStatus;
   readonly belowId?: number;
   readonly expirationDate?: Date | null;
-  readonly files?: FileList | null;
+  readonly files?: FormData;
 }
 
 export type IAddSubTodo = ISubTodo;

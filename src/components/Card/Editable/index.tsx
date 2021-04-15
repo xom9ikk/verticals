@@ -14,8 +14,8 @@ import { DatePickerPopup } from '@comp/DatePicker/Popup';
 import { TextArea } from '@comp/TextArea';
 import { SubTodosActions, SystemActions, TodosActions } from '@store/actions';
 import { useEffectState } from '@use/effectState';
-import { useFileList } from '@use/fileList';
 import { useFocus } from '@use/focus';
+import { useFormData } from '@use/formData';
 import { useNewValues } from '@use/newValues';
 import { useNormalizeDate } from '@use/normalizeDate';
 import { useOpenFiles } from '@use/openFiles';
@@ -29,10 +29,8 @@ export interface IUpdateCardEntity {
 }
 
 export type ICreateCardEntity = IUpdateCardEntity & {
-  files: IFiles;
+  files: FormData;
 };
-
-type IFiles = FileList | null;
 
 interface ICard {
   belowId?: number;
@@ -41,9 +39,9 @@ interface ICard {
   expirationDate?: Date | null;
   isNewCard: boolean;
   datePopupId: string;
-  files: IFiles;
-  onSetFiles: Dispatch<SetStateAction<IFiles>>;
-  onSaveFiles: (files: IFiles) => void;
+  files: FormData;
+  onSetFiles: Dispatch<SetStateAction<FormData>>;
+  onSaveFiles: (formData: FormData) => void;
   onUpdateEntity: (data: IUpdateCardEntity) => void;
   onCreateEntity: (data: ICreateCardEntity) => void;
 }
@@ -67,7 +65,7 @@ export const CardEditable: FC<ICard> = ({
   const { shiftEnterRestriction } = useShiftEnterRestriction();
   const { isNewValues } = useNewValues();
   const { normalizeDate } = useNormalizeDate();
-  const { merge, filter } = useFileList();
+  const { merge, filter } = useFormData();
 
   const [titleValue, setTitleValue] = useEffectState<string>(title);
   const [descriptionValue, setDescriptionValue] = useEffectState<string>(description);
@@ -136,7 +134,7 @@ export const CardEditable: FC<ICard> = ({
       }
     }
     // dispatch(TodosActions.removeTemp());
-    onSetFiles(new DataTransfer().files);
+    onSetFiles(new FormData());
   };
 
   const handleChange = (event: BaseSyntheticEvent) => {
@@ -149,8 +147,8 @@ export const CardEditable: FC<ICard> = ({
   };
 
   const handleUploadFile = async () => {
-    const openedFiles = await openFiles('*', true);
-    onSetFiles((prev) => merge(prev, openedFiles));
+    const formData = await openFiles('*', true);
+    onSetFiles((prev) => merge(prev, formData));
   };
 
   const handleRemoveFile = (index: number) => {
