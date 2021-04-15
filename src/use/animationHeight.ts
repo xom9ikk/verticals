@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign,no-caller,no-restricted-properties */
+/* eslint-disable no-param-reassign */
 export const useCollapse = () => {
   const collapse = (element: HTMLElement, delay: number) => {
     const sectionHeight = element.scrollHeight;

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies,no-console */
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const chalk = require('chalk');
