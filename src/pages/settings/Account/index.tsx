@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import useWith from 'ramda/src/useWith';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';

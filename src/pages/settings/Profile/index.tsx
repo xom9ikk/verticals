@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import useWith from 'ramda/src/useWith';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';

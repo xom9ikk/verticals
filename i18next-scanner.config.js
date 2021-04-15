@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const fs = require('fs');
 const chalk = require('chalk');
 const typescriptTransform = require('i18next-scanner-typescript');

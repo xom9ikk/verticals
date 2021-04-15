@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { FC } from 'react';
 
 import i18n from '@/i18n';
