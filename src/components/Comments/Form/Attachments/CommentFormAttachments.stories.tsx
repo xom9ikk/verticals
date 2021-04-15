@@ -38,9 +38,13 @@ const loaders = [
       link,
       `file-${index}`,
     ));
-    const files = await Promise.all(promises);
+    const result = await Promise.all(promises);
+    const formData = new FormData();
+    result.forEach((file) => {
+      formData.append(file.name, file);
+    });
     return {
-      files,
+      files: formData,
     };
   },
 ];
