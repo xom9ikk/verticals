@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  position: relative;
   cursor: grab;
   padding: 1px 0;
 
@@ -23,14 +24,6 @@
     &:hover {
       .card-context-menu {
         opacity: 1;
-      }
-    }
-
-    &--hovered {
-      background: $hover-color;
-
-      #{$block}__content {
-        background: transparent;
       }
     }
 
@@ -111,8 +104,22 @@
     border-radius: 6px;
     flex-direction: column;
 
-    &--hovered {
-      background: $hover-color;
+    &:before {
+      border-radius: 6px;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
+      transition: background .05s ease-out;
+    }
+
+    &:hover {
+      &:before {
+        background: $hover-color;
+      }
     }
 
     &--editable {

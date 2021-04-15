@@ -270,23 +270,24 @@ export const TodoCard: FC<ITodoCard> = ({
                         onSelectDate={handleSelectDateAndUpdate}
                       />
                       <div className="card__toggle-container">
-                        <ControlButton
-                          isHide={!subTodoPositions.length}
-                          imageSrc="/assets/svg/subcards.svg"
-                          tooltip={isOpenSubCardList ? t('Hide subcards') : t('Show subcards')}
-                          alt="sub-card"
-                          imageSize={16}
-                          size={20}
-                          isInvertColor={isActive}
-                          isTextable
-                          onClick={handleClickSubcardButton}
-                          onDoubleClick={handleToggleDoubleClick}
-                          isColored={isOpenSubCardList}
-                          isStopPropagation={false}
-                          style={{
-                            borderRadius: 4,
-                          }}
-                        />
+                        {subTodoPositions.length > 0 && (
+                          <ControlButton
+                            imageSrc="/assets/svg/subcards.svg"
+                            tooltip={isOpenSubCardList ? t('Hide subcards') : t('Show subcards')}
+                            alt="sub-card"
+                            imageSize={16}
+                            size={20}
+                            isInvertColor={isActive}
+                            isTextable
+                            onClick={handleClickSubcardButton}
+                            onDoubleClick={handleToggleDoubleClick}
+                            isColored={isOpenSubCardList}
+                            isStopPropagation={false}
+                            style={{
+                              borderRadius: 4,
+                            }}
+                          />
+                        )}
                       </div>
                       <TodoAttachmentsPreview
                         headingId={headingId}
