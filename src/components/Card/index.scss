@@ -92,7 +92,7 @@
     }
 
     &--pressed {
-      background: $primary-light;
+      background: $primary-light !important;
     }
   }
 
@@ -122,8 +122,17 @@
     }
 
     &--editable {
-      margin: 1px 3px;
-      box-shadow: rgba(0, 0, 0, 0.20) 0 2px 4px;
+      box-shadow: rgba(0, 0, 0, 0.20) 0 1px 6px;
+
+      &:before {
+        background: $white !important;
+      }
+
+      &:hover {
+        &:before {
+          background: $white !important;
+        }
+      }
 
       &:hover {
         background: $white;

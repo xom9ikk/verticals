@@ -14,7 +14,6 @@ import { useParamSelector } from '@use/paramSelector';
 interface ITodoAttachmentsPreview {
   headingId: number;
   todoId: number;
-  isActive?: boolean;
   commentsCount?: number;
   imagesCount?: number;
   attachmentsCount?: number;
