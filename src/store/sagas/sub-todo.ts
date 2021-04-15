@@ -33,7 +33,7 @@ function* createWorker(subTodoService: ISubTodoService, action: PayloadAction<IC
     const { belowId, files, ...entity } = action.payload;
     const response = yield* apply(subTodoService, subTodoService.create, [action.payload]);
     const { subTodoId, position } = response.data;
-    if (files?.length) {
+    if (!files?.entries().next().done) {
       yield put(CommentsActions.effect.create({
         subTodoId,
         text: '',

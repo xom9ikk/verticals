@@ -13,7 +13,7 @@ export type ISetComments = IComments;
 export type ICreateComment = {
   readonly text: string;
   readonly replyCommentId?: number;
-  readonly files?: FileList | null;
+  readonly files?: FormData;
 } & (
   | { readonly todoId: number }
   | { readonly subTodoId: number }

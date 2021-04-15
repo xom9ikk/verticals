@@ -15,7 +15,6 @@ import {
   IUpdateUsername,
   IUpdateUsernameRaw,
   IUploadAvatar,
-  IUploadAvatarRaw,
 } from '@type/actions';
 
 export const UserActions = {
@@ -30,16 +29,7 @@ export const UserActions = {
       (payload: IUpdateEmailRaw) => ({ payload: { email: payload } }),
     ),
     updatePersonalData: createAction<IUpdatePersonalData>('USER-EFFECT/UPDATE_PERSONAL_DATA'),
-    uploadAvatar: createAction<PrepareAction<IUploadAvatar>>(
-      'USER-EFFECT/UPLOAD_AVATAR',
-      (payload: IUploadAvatarRaw) => {
-        const formData = new FormData();
-        formData.append('avatar', payload);
-        return {
-          payload: formData,
-        };
-      },
-    ),
+    uploadAvatar: createAction<IUploadAvatar>('USER-EFFECT/UPLOAD_AVATAR'),
     removeAvatar: createAction('USER-EFFECT/REMOVE_AVATAR'),
   },
   setUserData: createAction<ISetUserData>('USER/SET_USER_DATA'),

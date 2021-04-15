@@ -89,11 +89,11 @@ export const SubTodoContextMenu: FC<ISubTodoContextMenu> = ({
   const menuButtonRef = useRef<any>();
 
   const handleUploadFiles = async () => {
-    const openedFiles = await openFiles('*', true);
+    const formData = await openFiles('*', true);
     dispatch(CommentsActions.effect.create({
       subTodoId: subTodoId!,
       text: '',
-      files: openedFiles,
+      files: formData,
     }));
   };
 

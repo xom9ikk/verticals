@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
   all, apply, call, put, takeEvery, takeLatest,
@@ -53,8 +54,9 @@ function* uploadFilesWorker(
 ) {
   try {
     const { files, commentId } = action.payload;
-    for (let i = 0; i < files.length; i += 1) {
-      const file = files[i];
+    for (const [key, value] of files.entries()) {
+      const file = new FormData();
+      file.append(key, value);
       yield put(CommentAttachmentsActions.effect.uploadFile({
         commentId,
         file,

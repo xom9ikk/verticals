@@ -82,7 +82,8 @@ describe('User saga flow', () => {
       .silentRun();
   });
   it('upload avatar', () => {
-    const payload = 'payload-avatar-data';
+    const payload = new FormData();
+    payload.append('key', 'value');
 
     return expectSaga(watchUser, userService)
       .provide([

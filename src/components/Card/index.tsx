@@ -12,8 +12,8 @@ import { DropZone } from '@comp/DropZone';
 import { IColor } from '@type/entities';
 import { useColorClass } from '@use/colorClass';
 import { useDebounce } from '@use/debounce';
-import { useFileList } from '@use/fileList';
 import { useFocus } from '@use/focus';
+import { useFormData } from '@use/formData';
 
 interface ICard {
   provided?: DraggableProvided;
@@ -23,11 +23,11 @@ interface ICard {
   isEditable: boolean;
   className?: string;
   isActive?: boolean;
-  onSaveFiles?: (files: FileList | null) => void;
+  onSaveFiles?: (formData: FormData) => void;
   subCardComponent?: any;
   children?: (
-    files: FileList | null,
-    setFiles: Dispatch<SetStateAction<FileList | null>>
+    formData: FormData,
+    setFiles: Dispatch<SetStateAction<FormData>>
   ) => React.ReactElement<HTMLElement>;
 }
 
@@ -43,11 +43,11 @@ export const Card: FC<ICard> = ({
   subCardComponent,
   children,
 }) => {
-  const { merge } = useFileList();
+  const { merge } = useFormData();
   const colorClass = useColorClass('card__color', color);
 
   const [isMouseDown, setIsMouseDown] = useState<boolean>();
-  const [files, setFiles] = useState<FileList | null>(new DataTransfer().files);
+  const [files, setFiles] = useState<FormData>(new FormData());
 
   const titleInputRef = useRef<any>(null);
 
@@ -59,12 +59,12 @@ export const Card: FC<ICard> = ({
     }
   }, 300);
 
-  const handleDropFiles = (droppedFiles: FileList) => {
-    const mergedFiles = merge(files, droppedFiles);
+  const handleDropFiles = (droppedFiles: FormData) => {
+    const mergedFormData = merge(files, droppedFiles);
     if (!isEditable) {
-      onSaveFiles?.(mergedFiles);
+      onSaveFiles?.(mergedFormData);
     } else {
-      setFiles(mergedFiles);
+      setFiles(mergedFormData);
     }
   };
 
