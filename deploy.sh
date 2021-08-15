@@ -30,4 +30,4 @@ server {
   return 301 https://\$host\$request_uri;
 }" >> /etc/nginx/sites-enabled/$APP_NAME.conf
 sudo service nginx start
-sh ./rebuild.sh
+sh ./rerun.sh
