@@ -31,9 +31,9 @@ jobs:
         working-directory: ${{ env.APP_NAME }}
         run: npm run test
 
-      - name: Regression check 👀
-        working-directory: ${{ env.APP_NAME }}
-        run: npm run loki:update
+#       - name: Regression check 👀
+#         working-directory: ${{ env.APP_NAME }}
+#         run: npm run loki:update
 
       - name: Setup .env 🧠
         working-directory: ${{ env.APP_NAME }}
